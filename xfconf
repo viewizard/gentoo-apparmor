@@ -9,25 +9,14 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile xfce4-taskmanager /usr/bin/xfce4-taskmanager {
+profile xfconf /usr/lib64/xfce4/xfconf/xfconfd flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/gtk>
-  #include <abstractions/nvidia>
-  #include <abstractions/X>
-  #include <abstractions/nameservice-local>
-  #include <abstractions/xdg-open>
 
-  capability sys_ptrace,
 
-  @{PROC}/ r,
-  @{PROC}/@{pid}/cmdline r,
-  @{PROC}/@{pid}/stat r,
-
-  /usr/bin/xfce4-taskmanager r,
-  /usr/bin/xfce4-appfinder Px,
-
-  owner @{HOME}/.config/xfce4/xfce4-taskmanager.rc* rw,
+  /etc/xdg/xfce4/xfconf/ r,
+  /etc/xdg/xfce4/xfconf/** r,
+  owner @{HOME}/.config/xfce4/xfconf/ rw,
+  owner @{HOME}/.config/xfce4/xfconf/** rw,
   
 }
