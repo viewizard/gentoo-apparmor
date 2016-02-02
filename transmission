@@ -1,0 +1,44 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+# config for abstractions/program-work-with-disk-** (**-rk,rwk)
+@{PROG_DIR}="**"
+# we could download folders with files, not just files...
+@{PROG_FILE}="**"
+@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/}"
+
+profile transmission /usr/bin/transmission-* {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/audio>
+  #include <abstractions/gtk>
+  #include <abstractions/qt>
+  #include <abstractions/nvidia>
+  #include <abstractions/X>
+  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/nameservice>
+  #include <abstractions/xdg-open>
+
+
+  @{PROC}/sys/kernel/random/uuid r,
+
+  /usr/bin/transmission-* rm,
+  /usr/bin/canberra-gtk-play ixr,
+  /etc/ssl/openssl.cnf r,
+  
+  owner @{HOME}/.cache/transmission/ rw,
+  owner @{HOME}/.cache/transmission/** rw,
+  owner @{HOME}/.config/transmission/ rw,
+  owner @{HOME}/.config/transmission/** rw,
+  
+}

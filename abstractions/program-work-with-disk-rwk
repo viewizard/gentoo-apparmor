@@ -1,0 +1,28 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# Some programs should work with disk - read user data, store results.
+# Don't forget, provide configuration in profile, like:
+# @{PROG_DIR}="[^.]**"
+# @{PROG_FILE}="{[^.]*.pdf,[^.]*.xps,qt_temp.*}"
+# @{PROG_FOLDERS}="{@{HOME},/mnt/,/media/}"
+# Example for folder downloads (torrent, etc):
+# @{PROG_FILE}="**"
+
+/ r,
+@{PROG_FOLDERS} r,
+@{PROG_FOLDERS}@{PROG_DIR}/ r,
+@{PROG_FOLDERS}@{PROG_FILE} rwk,
+@{PROG_FOLDERS}@{PROG_DIR}/@{PROG_FILE} rwk,
+
+# program-related places for xdg-open:
+owner @{HOME}/.claws-mail/mimetmp/ r,
+owner @{HOME}/.claws-mail/mimetmp/* r,
+  

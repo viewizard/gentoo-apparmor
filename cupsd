@@ -1,0 +1,101 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile cupsd /usr/sbin/cupsd {
+  #include <abstractions/base>
+  #include <abstractions/bash>
+  #include <abstractions/dbus>
+  #include <abstractions/nameservice>
+  #include <abstractions/perl>
+
+  capability chown,
+  capability dac_override,
+  capability fowner,
+  capability fsetid,
+  capability net_bind_service,
+  capability setgid,
+  capability setuid,
+  capability kill,
+
+  /bin/bash ixr,
+  /bin/cat ix,
+
+  /usr/bin/foomatic-rip ixr,
+  /etc/foomatic/** r,
+
+  /usr/bin/gs ix,
+  /usr/lib/ghostscript/** m,
+  /usr/lib64/ghostscript/** m,
+  /usr/share/ghostscript/** r,
+  /usr/libexec/cups/notifier/ r,
+  /usr/libexec/cups/daemon/* ix,
+  /usr/libexec/cups/cgi-bin/* ix,
+  /etc/ghostscript/** r,
+  
+  # web-admin part
+  /etc/pam.d/* r,
+  /lib64/security/* m,
+  /etc/login.defs r,
+  /etc/shadow r,
+  /etc/environment r,
+  /etc/security/pam_env.conf r,
+  /usr/libexec/cups/backend/ r,
+  /usr/libexec/cups/backend/* ix,
+  # usb backend
+  /dev/ r,
+  /dev/bus/usb/ r,
+  /etc/udev/udev.conf r,
+  /sys/bus/ r,
+  /sys/bus/usb/devices/ r,
+  /sys/class/ r,
+  /sys/devices/pci**/usb**/ r,
+  /sys/devices/pci**/usb**/* r,
+
+  /dev/lp0 rw,
+  /dev/tty rw,
+  /dev/ttyS? w,
+  /etc/cups rw,
+  /etc/cups/ r,
+  /etc/cups/** r,
+  /etc/cups/certs w,
+  /etc/cups/certs/* w,
+  /etc/cups/*.conf* rw,
+  /etc/cups/ppd rw,
+  /etc/papersize r,
+  /etc/printcap rw,
+  /etc/cups/printcap rw,
+  /etc/cups/ssl rw,
+  /etc/cups/yes/* rw,
+  /etc/hosts.allow r,
+  /etc/hosts.deny r,
+  @{PROC}/meminfo r,
+  @{PROC}/sys/dev/parport/** r,
+  /sys/class/usb r,
+  /usr/bin/perl ix,
+  /usr/bin/smbspool ixr,
+  /usr/lib/cups/backend/* ixr,
+  /usr/lib/cups/filter/* ixr,
+  /usr/sbin/cupsd mixr,
+  /usr/share/cups/** r,
+  /var/log/cups/ rw,
+  /var/log/cups/access_log rw,
+  /var/log/cups/error_log rw,
+  /var/log/cups/page_log rw,
+  /var/spool/cups rw,
+  /var/spool/cups/** rw,
+  /var/spool/cups/tmp w,
+  /var/spool/cups/tmp/ r,
+  /{,var/}run/cups/ rw,
+  /{,var/}run/cups/** rw,
+  /var/cache/cups/ rw,
+  /var/cache/cups/** rw,
+  
+}

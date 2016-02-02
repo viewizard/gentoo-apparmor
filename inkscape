@@ -1,0 +1,47 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+# config for abstractions/program-work-with-disk-** (**-rk,rwk)
+@{PROG_DIR}="[^.]**"
+@{PROG_FILE}="[^.]*"
+@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/}"
+
+profile inkscape /usr/bin/inkscape {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/dbus-session>
+  #include <abstractions/gtk>
+  #include <abstractions/nvidia>
+  #include <abstractions/enchant>
+  #include <abstractions/user-tmp>
+  #include <abstractions/python>
+  #include <abstractions/X>
+  #include <abstractions/xdg-open>
+  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/nameservice-local>
+  
+  
+  /sys/devices/system/cpu/ r,
+  
+  /usr/bin/inkscape r,
+  /usr/bin/python{2.[4-9],3.[3-9]} ix,
+  
+  /usr/share/inkscape/ r,
+  /usr/share/inkscape/** r,
+
+  owner @{HOME}/.cache/inkscape/ rw,
+  owner @{HOME}/.cache/inkscape/** rw,
+  owner @{HOME}/.config/inkscape/ rw,
+  owner @{HOME}/.config/inkscape/** rw,
+
+}

@@ -1,0 +1,83 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+  #include <abstractions/X>
+  #include <abstractions/nvidia>
+  #include <abstractions/user-tmp>
+  #include <abstractions/nameservice-local>
+  #include <abstractions/xdg-open>
+
+
+  /bin/bash Pux,
+  /usr/bin/htop Cx,
+  /usr/libexec/gnome-pty-helper Cx,
+  
+  owner @{PROC}/@{pid}/fd/ r,
+
+  /dev/pts/[0-9]* rw,
+  /dev/ptmx rw,
+  
+  /usr/bin/xfce4-terminal rm,
+  /usr/share/vte/termcap-0.0/xterm r,
+  
+  owner @{HOME}/.config/xfce4/terminal/* rw,
+  owner @{HOME}/.config/xfce4/help.rc* rw,
+
+  
+  profile gnome-pty-helper /usr/libexec/gnome-pty-helper {
+    #include <abstractions/base>
+    #include <abstractions/freedesktop.org>
+    #include <abstractions/nvidia>
+    #include <abstractions/nameservice-local>
+
+    /dev/pts/* rw,
+    /dev/ptmx rw,
+    /run/utmp rw,
+    deny /run/utmp k,
+    /var/log/wtmp w,
+    /usr/libexec/gnome-pty-helper r,
+    /var/log/wtmp wk,
+  }
+  
+  profile htop /usr/bin/htop flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/freedesktop.org>
+    #include <abstractions/fonts>
+    #include <abstractions/nameservice-local>
+    
+    capability sys_ptrace,
+    
+    /dev/pts/* rw,
+    
+    /usr/bin/htop r,
+    /etc/terminfo/x/xterm r,
+    
+    @{PROC}/sys/kernel/pid_max r,
+    @{PROC}/ r,
+    @{PROC}/loadavg r,
+    @{PROC}/uptime r,
+    @{PROC}/@{pid}/task/ r,
+    @{PROC}/@{pid}/statm r,
+    @{PROC}/@{pid}/stat r,
+    @{PROC}/@{pid}/cmdline r,
+    @{PROC}/@{pid}/task/@{pid}/statm r,
+    @{PROC}/@{pid}/task/@{pid}/stat r,
+    @{PROC}/@{pid}/task/@{pid}/cmdline r,
+    
+    owner @{HOME}/.config/htop/htoprc rw,
+  }  
+  
+}

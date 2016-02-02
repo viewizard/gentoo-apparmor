@@ -1,0 +1,23 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+/usr/lib{,32,64}/python{2.[4-9],3.[3-9]}/**.{pyc,so}           mr,
+/usr/lib{,32,64}/python{2.[4-9],3.[3-9]}/**.{egg,py,pth}       r,
+/usr/lib{,32,64}/python{2.[4-9],3.[3-9]}/{site,dist}-packages/ r,
+/usr/lib{,32,64}/python3.[3-9]/lib-dynload/*.so            mr,
+
+# Site-wide configuration
+/etc/python{2.[4-9],3.[3-9]}/** r,
+
+# wx paths
+/usr/lib/wx/python/*.pth r,
+
+# python build configuration and headers
+/usr/include/python{2.[4-9],3.[3-9]}*/pyconfig.h r,

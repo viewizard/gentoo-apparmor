@@ -1,0 +1,53 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+# config for abstractions/program-work-with-disk-** (**-rk,rwk)
+@{PROG_DIR}="[^.]**"
+@{PROG_FILE}="[^.]*"
+@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/}"
+
+profile juffed /usr/bin/juffed {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/dbus-session>
+  #include <abstractions/gtk>
+  #include <abstractions/qt>
+  #include <abstractions/nvidia>
+  #include <abstractions/user-tmp>
+  #include <abstractions/X>
+  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/nameservice-local>
+
+
+  capability dac_override,
+  
+  /dev/pts/[0-9]* rw,
+
+  /usr/bin/juffed r,
+  
+  /usr/share/juffed/** r,
+  /tmp/libgksu-*/.Xauthority r,
+  owner @{HOME}/.config/juff/ rw,
+  owner @{HOME}/.config/juff/* rwk,
+
+
+  # for root - let's allow all system files
+  # for users - hiden files in users "home"
+  owner /** rw,
+  /usr/portage/** r,
+  /usr/local/portage/** rw,
+  
+  # Noisy
+  deny @{HOMEDIRS}/ r,
+  
+}

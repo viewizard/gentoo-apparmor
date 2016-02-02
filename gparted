@@ -1,0 +1,76 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile gparted /usr/sbin/gpartedbin flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+  #include <abstractions/nvidia>
+  #include <abstractions/X>
+  #include <abstractions/nameservice-local>
+  
+  capability dac_override,
+  capability sys_admin,
+  capability sys_rawio,
+  capability setuid,
+  capability setgid,
+  
+  /dev/ r,
+  /dev/sd[a-z] rw,
+  /dev/sd[a-z]* rwk,
+  /dev/zd* r,
+  @{PROC}/@{pid}/fd/ r,
+  @{PROC}/version r,
+  @{PROC}/partitions r,
+  @{PROC}/swaps r,
+  @{PROC}/@{pid}/mountinfo r,
+  /run/blkid/blkid.tab* rwl,
+  /run/mount/utab* rwk,
+  /sys/devices/pci**/block/sd[a-z]/ r,
+  /sys/devices/pci**/block/sd[a-z]/dev r,
+  /sys/devices/pci**/block/sd[a-z]/ext_range r,
+  /sys/devices/pci**/block/sd[a-z]/sd[a-z]*/ r,
+  /sys/devices/pci**/block/sd[a-z]/sd[a-z]*/size r,
+  /sys/devices/pci**/block/sd[a-z]/sd[a-z]*/start r,
+  /sys/devices/pci**/{ata,usb}**/host*/target**/vendor r,
+  /sys/devices/pci**/{ata,usb}**/host*/target**/model r,
+  /sys/devices/virtual/block/zd*/ r,
+  /sys/devices/virtual/block/zd*/dev r,
+  /sys/devices/virtual/block/zd*/ext_range r,
+  /sys/devices/virtual/block/zd*/zd*/ r,
+  /sys/devices/virtual/block/zd*/zd*/size r,
+  /sys/devices/virtual/block/zd*/zd*/start r,
+  
+  /usr/sbin/gpartedbin r,
+  /bin/udevadm ix,
+  /bin/umount ix,
+  /usr/bin/mtools ix,
+  /sbin/e2image ix,
+  /sbin/blkid ix,
+  /sbin/dumpe2fs ix,
+  /sbin/hdparm ix,
+  /sbin/tune2fs ix,
+  /sbin/swaplabel ix,
+  /sbin/mke2fs ix,
+  /usr/sbin/fsck.* ix,
+  /usr/sbin/mkfs.* ix,
+  /usr/sbin/mkntfs ix,
+  /usr/sbin/ntfslabel ix,
+  /usr/sbin/ntfsresize ix,
+  
+  /etc/fstab r,
+  /etc/mke2fs.conf r,
+  /etc/udev/udev.conf r,
+  /etc/mtools/mtools.conf r,
+  @{HOME}/.Xauthority r,
+  
+}

@@ -1,0 +1,44 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+# config for abstractions/program-work-with-disk-** (**-rk,rwk)
+@{PROG_DIR}="**"
+@{PROG_FILE}="*.kdbx"
+@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/}"
+
+profile keepassx /usr/bin/keepassx {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+  #include <abstractions/qt>
+  #include <abstractions/nvidia>
+  #include <abstractions/user-tmp>
+  #include <abstractions/X>
+  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/nameservice-local>
+  #include <abstractions/xdg-open>
+
+
+  @{PROC}/@{pid}/cmdline r,
+  @{PROC}/@{pid}/status r,
+  @{PROC}/@{pid}/task/ r,
+
+  /usr/bin/ r,
+  /usr/bin/keepassx r,
+  /usr/share/keepassx/ r,
+  /usr/share/keepassx/** r,
+  
+  owner @{HOME}/.config/keepassx/ rw,
+  owner @{HOME}/.config/keepassx/** rwk,
+    
+}

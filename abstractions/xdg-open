@@ -1,0 +1,110 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# execution external programs with xdg-open
+/usr/bin/xdg-open ixr,
+/usr/bin/exo-open ixr,
+
+/dev/tty rw,
+owner @{PROC}/@{pid}/fd/ r,
+
+# helpers
+/usr/share/xfce4/helpers/ r,
+/usr/share/xfce4/helpers/* r,
+/usr/lib64/xfce4/exo-1/exo-helper-1 ix,
+/etc/xdg/xfce4/helpers.rc r,
+owner @{HOME}/.config/xfce4/helpers.rc r,
+owner @{HOME}/.local/share/xfce4/helpers/ r,
+owner @{HOME}/.local/share/xfce4/helpers/* r,
+owner @{HOME}/.local/share/applications/ r,
+owner @{HOME}/.local/share/applications/** r,
+
+
+
+######################################################
+# external programs with AppArmor profiles
+######################################################
+
+#-----------------------------------------------------
+# web-browser
+#-----------------------------------------------------
+
+# chromium
+/usr/lib64/chromium-browser/chromium-launcher.sh Px,
+# firefox
+/usr/lib64/firefox/firefox Px,
+
+
+#-----------------------------------------------------
+# p-2-p (torrent, etc)
+#-----------------------------------------------------
+
+# transmission
+/usr/bin/transmission-* Px,
+
+
+#-----------------------------------------------------
+# office
+#-----------------------------------------------------
+
+# libreoffice
+/usr/lib64/libreoffice/program/soffice Px,
+# wps-office
+/usr/bin/et Px,
+/usr/bin/wpp Px,
+/usr/bin/wps Px,
+
+
+#-----------------------------------------------------
+# images
+#-----------------------------------------------------
+
+# ristretto
+/usr/bin/ristretto Px,
+# gimp
+/usr/bin/gimp* Px,
+# inkscape
+/usr/bin/inkscape Px,
+
+
+#-----------------------------------------------------
+# pdf/text viewers
+#-----------------------------------------------------
+
+# qpdfview
+/usr/bin/qpdfview Px,
+# masterpdfeditor3
+/opt/master-pdf-editor-3/masterpdfeditor3 Px,
+
+
+
+#-----------------------------------------------------
+# audio/video
+#-----------------------------------------------------
+
+# audacious
+/usr/bin/audacious Px,
+# mpv
+/usr/bin/mpv Px,
+# smplayer
+/usr/bin/smplayer Px,
+# vlc
+/usr/bin/vlc Px,
+
+
+
+#-----------------------------------------------------
+# file manager
+#-----------------------------------------------------
+
+#######  without AppArmor profiles (!)
+# thunar
+/usr/bin/thunar Pux,
+#######

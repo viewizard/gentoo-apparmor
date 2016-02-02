@@ -1,0 +1,49 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile pidgin /usr/bin/pidgin {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/audio>
+  #include <abstractions/enchant>
+  #include <abstractions/bash>
+  #include <abstractions/consoles>
+  #include <abstractions/dbus>
+  #include <abstractions/gtk>
+  #include <abstractions/nvidia>
+  #include <abstractions/nameservice>
+  #include <abstractions/user-tmp>
+  #include <abstractions/X>
+  #include <abstractions/private-files-strict>
+  #include <abstractions/ssl_certs>
+  #include <abstractions/xdg-open>
+  
+  capability sys_ptrace,
+  
+  /dev/shm/ r,
+  /dev/shm/* rw,
+  /etc/pulse/client.conf r,
+  owner /tmp/orbit-*/* w,
+  owner /tmp/pulse-*/* w,
+  
+  /usr/bin/gconftool-2 rix,
+  /usr/bin/pidgin rm,
+  /usr/lib64/libvisual-*/**.so rm,
+  /usr/lib64/pidgin/*.so rm,
+  /usr/lib64/purple*/*.so rm,
+  /usr/share/purple/ca-certs/ r,
+  /usr/share/purple/ca-certs/** r,
+  
+  owner @{HOME}/.purple/ rw,
+  owner @{HOME}/.purple/** rwkm,
+  
+}

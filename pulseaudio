@@ -1,0 +1,49 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile pulseaudio /usr/bin/pulseaudio flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/audio>
+  #include <abstractions/dbus-session>
+  #include <abstractions/user-tmp>
+  #include <abstractions/X>
+  
+
+  /sys/bus/ r,
+  /sys/class/ r,
+  /sys/class/sound/ r,
+  /sys/devices/pci**/sound/card*/uevent r,
+  /sys/devices/pci**/sound/card*/pcm*/pcm_class r,
+  /run/udev/data/+sound:card* r,
+  /sys/devices/system/cpu/ r,
+  /sys/devices/virtual/dmi/id/sys_vendor r,
+  /sys/devices/virtual/dmi/id/board_vendor r,
+  /sys/devices/virtual/dmi/id/bios_vendor r,
+  owner @{PROC}/@{pid}/fd/ r,
+  owner @{PROC}/@{pid}/stat r,
+
+  /usr/bin/pulseaudio ixr,
+  /usr/libexec/pulse/gconf-helper ix,
+  
+  /etc/udev/udev.conf r,
+  /usr/lib64/pulseaudio/ r,
+  /usr/lib64/pulseaudio/** r,
+  /usr/lib64/pulse-*/modules/** m,
+  /usr/share/pulseaudio/** r,
+  /usr/share/applications/ r,
+  /usr/share/applications/* r,
+  
+  owner @{HOME}/.config/pulse/ rw,
+  owner @{HOME}/.config/pulse/** rwk,
+  # alsa-source-ALC
+  owner @{HOME}/orcexec.* rwm,
+  
+}

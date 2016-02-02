@@ -1,0 +1,38 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+# config for abstractions/program-work-with-disk-** (**-rk,rwk)
+@{PROG_DIR}="[^.]**"
+@{PROG_FILE}="[^.]*"
+@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/}"
+
+
+profile tumbler /usr/lib64/tumbler-1/tumblerd {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/nvidia>
+  #include <abstractions/user-tmp>
+  #include <abstractions/program-work-with-disk-rk>
+
+  /usr/lib64/tumbler-1/plugins/** m,
+  /etc/xdg/tumbler/tumbler.rc r,
+  /etc/udev/udev.conf r,
+  /usr/share/thumbnailers/ r,
+  
+  owner @{HOME}/.cache/sessions/thumbs*/ r,
+  owner @{HOME}/.cache/sessions/thumbs*/*.png r,
+  owner @{HOME}/.local/share/gvfs-metadata/* r,
+  
+  # Noisy
+  deny @{HOME}/.* r,
+
+}

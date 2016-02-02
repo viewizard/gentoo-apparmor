@@ -1,0 +1,60 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile syslog-ng /usr/sbin/syslog-ng {
+  #include <abstractions/base>
+  #include <abstractions/consoles>
+  #include <abstractions/nameservice>
+
+  capability chown,
+  capability dac_override,
+  capability dac_read_search,
+  capability fsetid,
+  capability fowner,
+  capability sys_tty_config,
+  capability sys_resource,
+  capability syslog,
+  capability sys_ptrace,
+
+  unix (receive) type=dgram,
+  unix (receive) type=stream,
+
+  /dev/tty12 w,
+  /dev/kmsg r,
+  /dev/log w,
+  /dev/syslog w,
+  /dev/tty10 rw,
+  /dev/xconsole rw,
+  @{PROC}/kmsg r,
+  @{PROC}/@{pid}/cgroup r,
+  @{PROC}/@{pid}/loginuid r,
+  @{PROC}/@{pid}/sessionid r,
+  @{PROC}/uptime r,
+  # since we use different uid/gid
+  @{PROC}/@{pid}/cmdline r,
+  @{PROC}/@{pid}/status r,
+  
+  /etc/syslog-ng/* r,  
+  /etc/hosts.deny r,
+  /etc/hosts.allow r,
+  /{usr/,}sbin/syslog-ng mr,
+  /sys/devices/system/cpu/online r,
+  /usr/share/syslog-ng/** r,
+  /usr/share/include/scl** r,
+
+  /var/lib/*/dev/log w,
+  /var/lib/syslog-ng/syslog-ng.persist* rw,
+  /var/log/** w,
+  /{,var/}run/syslog-ng.pid krw,
+  /{,var/}run/syslog-ng.ctl rw,
+  /{var/,}run/syslog-ng/additional-log-sockets.conf r,
+
+}

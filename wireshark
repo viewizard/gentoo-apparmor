@@ -1,0 +1,52 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+# config for abstractions/program-work-with-disk-** (**-rk,rwk)
+@{PROG_DIR}="[^.]**"
+@{PROG_FILE}="[^.]*"
+@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/}"
+
+profile wireshark /usr/bin/{tshark,wireshark} {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/dbus-session>
+  #include <abstractions/gtk>
+  #include <abstractions/qt>
+  #include <abstractions/nvidia>
+  #include <abstractions/user-tmp>
+  #include <abstractions/X>
+  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/nameservice>
+  #include <abstractions/xdg-open>
+
+  capability net_admin,
+  capability net_raw,
+
+  /dev/pts/[0-9]* rw,
+  /sys/class/net/ r,
+  @{PROC}/@{pid}/net/dev r,
+  /sys/bus/usb/devices/ r,
+
+  
+  /usr/bin/wireshark r,
+  /usr/bin/dumpcap ix,
+
+  /etc/libnl/classid r,
+  /usr/share/wireshark/ r,
+  /usr/share/wireshark/** r,
+  /usr/lib64/wireshark/plugins/** m,
+
+  owner @{HOME}/.wireshark/ rw,
+  owner @{HOME}/.wireshark/** rw,
+  
+}

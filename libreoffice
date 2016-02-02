@@ -1,0 +1,87 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+# config for abstractions/program-work-with-disk-** (**-rk,rwk)
+@{PROG_DIR}="[^.]**"
+@{PROG_FILE}="{[^.]*,.~*}"
+@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/}"
+
+
+profile libreoffice /usr/{bin,lib64/libreoffice/program}/soffice {
+  #include <abstractions/base>
+  #include <abstractions/nameservice-local>
+
+  /dev/tty rw,
+  
+  owner @{HOME}/.Xauthority r,
+  
+  /bin/dirname ix,
+  /bin/basename ix,
+  /bin/grep ix,
+  /bin/uname ix,
+  /bin/ls ix,
+  /bin/sed ix,
+  /bin/bash r,
+  /usr/lib64/libreoffice/program/oosplash ix,
+  /usr/lib64/libreoffice/program/javaldx ix,
+  /usr/lib64/libreoffice/program/soffice.bin Px,
+
+  owner @{HOME}/.config/libreoffice/ rw,
+  owner @{HOME}/.config/libreoffice/** rwk,
+  
+}
+
+
+profile libreoffice.bin /usr/lib64/libreoffice/program/soffice.bin {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/dbus-session>
+  #include <abstractions/enchant>
+  #include <abstractions/gtk>
+  #include <abstractions/qt>
+  #include <abstractions/nvidia>
+  #include <abstractions/user-tmp>
+  #include <abstractions/X>
+  #include <abstractions/ssl_keys>
+  #include <abstractions/cups-client>
+  #include <abstractions/xdg-open>
+  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/nameservice-local>
+
+
+  /sys/devices/system/cpu/ r,
+  
+  /bin/sed ix,
+  /bin/grep ix,
+  /bin/bash ixr,
+  /usr/lib64/libreoffice/program/open-url ix,
+  
+  /usr/lib64/libreoffice/ r,
+  /usr/lib64/libreoffice/** r,
+  /usr/share/liblangtag/** r,
+  /usr/share/libexttextcat/ r,
+  /usr/share/libexttextcat/* r,
+  /opt/icedtea-bin-*/jre/lib/** rm,
+  /tmp/.* m,  
+  
+  owner @{HOME}/.config/libreoffice/ rw,
+  owner @{HOME}/.config/libreoffice/** rwk,
+  owner @{HOME}/.languagetool-ooo.cfg rw,
+
+
+  # Noisy
+  deny @{HOMEDIRS}/* w,
+  deny @{HOMEDIRS}/*/ w,
+  deny /usr/lib64/libreoffice/share/uno_packages/cache/* w,
+  
+}

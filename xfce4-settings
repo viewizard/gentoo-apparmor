@@ -1,0 +1,78 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyboard,-mime,-mouse}-settings{,-editor,-manager} flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+  #include <abstractions/qt>
+  #include <abstractions/nvidia>
+  #include <abstractions/X>
+  #include <abstractions/nameservice-local>
+  #include <abstractions/xdg-open>
+
+  @{PROC}/@{pid}/fd/ r,
+
+  /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyboard,-mime,-mouse}-settings{,-editor,-manager} ixr,
+  
+  # we can use current profile for binaries:
+  /usr/bin/xfce4-session-settings Pixr,
+  /usr/bin/thunar-volman-settings Pixr,
+  /usr/bin/xfwm4-workspace-settings Pixr,
+  /usr/bin/exo-preferred-applications Pixr,
+  /usr/bin/xfce4-panel Pixr,
+  /usr/bin/xfce4-notifyd-config Pixr,
+  /usr/bin/xfwm4-tweaks-settings Pixr,
+  /usr/bin/xfwm4-settings Pixr,
+  /usr/bin/thunar-settings Pixr, /usr/bin/dbus-send Pixr,
+  
+  # rest binaries should use their own profile:
+  /usr/bin/qtchooser Puxr,
+  /usr/bin/pavucontrol Puxr,
+  /usr/bin/gparted-pkexec Puxr,
+  /usr/bin/xfdesktop-settings Puxr,
+  /usr/lib64/python-exec/python-exec2 Puxr, # menu editor "alacarte"
+
+
+  /etc/xdg/ r,
+  /etc/xdg/autostart/ r,
+  /etc/xdg/autostart/* r,
+  /etc/xdg/menus/xfce-settings-manager.menu r,
+  /usr/share/ r,
+  /usr/share/mime/ r,
+  /usr/share/cursors/ r,
+  /usr/share/desktop-directories/* r,
+  
+  owner @{HOME}/.local/share/ r,
+  owner @{HOME}/.config/ r,
+  owner @{HOME}/.config/autostart/ r,
+  owner @{HOME}/.config/autostart/* rw,
+  owner @{HOME}/.config/mimeapps.list* rw,
+  
+}
+
+profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+  #include <abstractions/nvidia>
+  #include <abstractions/X>
+  #include <abstractions/user-tmp>
+  #include <abstractions/nameservice-local>
+
+  /usr/bin/xfsettingsd r,
+  /usr/bin/xkbcomp ixr,
+  
+  /etc/xdg/autostart/xfsettingsd.desktop r,
+
+}
