@@ -19,14 +19,20 @@
 profile tumbler /usr/lib64/tumbler-1/tumblerd {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
   #include <abstractions/nvidia>
   #include <abstractions/user-tmp>
   #include <abstractions/program-work-with-disk-rk>
+
+  capability dac_override,
+  capability dac_read_search,
 
   /usr/lib64/tumbler-1/plugins/** m,
   /etc/xdg/tumbler/tumbler.rc r,
   /etc/udev/udev.conf r,
   /usr/share/thumbnailers/ r,
+  /usr/share/poppler/                   r,
+  /usr/share/poppler/**                 r,
   
   owner @{HOME}/.cache/sessions/thumbs*/ r,
   owner @{HOME}/.cache/sessions/thumbs*/*.png r,

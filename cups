@@ -9,12 +9,13 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile cupsd /usr/sbin/cupsd {
+profile cups /usr/sbin/cupsd {
   #include <abstractions/base>
   #include <abstractions/bash>
   #include <abstractions/dbus>
   #include <abstractions/nameservice>
   #include <abstractions/perl>
+  #include <abstractions/authentication>
 
   capability chown,
   capability dac_override,
@@ -41,12 +42,7 @@ profile cupsd /usr/sbin/cupsd {
   /etc/ghostscript/** r,
   
   # web-admin part
-  /etc/pam.d/* r,
-  /lib64/security/* m,
-  /etc/login.defs r,
-  /etc/shadow r,
   /etc/environment r,
-  /etc/security/pam_env.conf r,
   /usr/libexec/cups/backend/ r,
   /usr/libexec/cups/backend/* ix,
   # usb backend

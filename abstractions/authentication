@@ -20,6 +20,8 @@
 /etc/security/*             r,
 /etc/shadow                 r,
 /etc/gshadow                r,
+/etc/passwd         	    r,
+/etc/login.defs             r,
 
 /lib{,32,64}/security/pam_filter/*  mr,
 /lib{,32,64}/security/pam_*.so      mr,
@@ -27,9 +29,6 @@
 
 # kerberos
 #include <abstractions/kerberosclient>
-# SuSE's pwdutils are different:
-/etc/default/passwd         r,
-/etc/login.defs             r,
 
 # p11-kit (PKCS#11 modules configuration)
 #include <abstractions/p11-kit>
