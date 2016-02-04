@@ -9,14 +9,14 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile gparted /usr/sbin/gpartedbin flags=(complain) {
+profile gparted /usr/{bin,sbin}/{gpartedbin,gparted-pkexec} flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/nameservice-local>
+  #include <abstractions/nameservice>
   
   capability dac_override,
   capability sys_admin,

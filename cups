@@ -13,6 +13,7 @@ profile cups /usr/sbin/cupsd {
   #include <abstractions/base>
   #include <abstractions/bash>
   #include <abstractions/dbus>
+  #include <abstractions/fonts>
   #include <abstractions/nameservice>
   #include <abstractions/perl>
   #include <abstractions/authentication>
@@ -33,12 +34,14 @@ profile cups /usr/sbin/cupsd {
   /etc/foomatic/** r,
 
   /usr/bin/gs ix,
+  /usr/bin/pdftops ix,
   /usr/lib/ghostscript/** m,
   /usr/lib64/ghostscript/** m,
   /usr/share/ghostscript/** r,
   /usr/libexec/cups/notifier/ r,
   /usr/libexec/cups/daemon/* ix,
   /usr/libexec/cups/cgi-bin/* ix,
+  /usr/libexec/cups/filter/* ix,
   /etc/ghostscript/** r,
   
   # web-admin part

@@ -28,8 +28,10 @@
 /usr/share/texmf/{,*/}fonts/**        r,
 /usr/share/texlive/texmf-dist/fonts/** r,
 
-owner @{HOME}/.{,cache/}fontconfig/   r,
-owner @{HOME}/.{,cache/}fontconfig/** mrl,
+owner @{HOME}/.fontconfig/   r,
+owner @{HOME}/.fontconfig/** mrl,
+owner @{HOME_CACHE}/fontconfig/   r,
+owner @{HOME_CACHE}/fontconfig/** mrl,
 owner @{HOME}/.config/fontconfig/     r,
 owner @{HOME}/.config/fontconfig/**   r,
 
@@ -46,5 +48,7 @@ owner @{HOME}/.config/fontconfig/**   r,
 # Since we don't have users fonts, we use system-wide fonts cache only.
 #
 deny /var/cache/fontconfig/ w,
-deny owner @{HOME}/.{,cache/}fontconfig/   w,
-deny owner @{HOME}/.{,cache/}fontconfig/** w,
+deny @{HOME}/.fontconfig/   w,
+deny @{HOME}/.fontconfig/** w,
+deny @{HOME_CACHE}/fontconfig/   w,
+deny @{HOME_CACHE}/fontconfig/** w,

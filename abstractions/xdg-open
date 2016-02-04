@@ -8,6 +8,7 @@
 #
 # ------------------------------------------------------------------
 
+
 # execution external programs with xdg-open
 /usr/bin/xdg-open ixr,
 /usr/bin/exo-open ixr,
@@ -27,9 +28,12 @@ owner @{HOME}/.local/share/applications/ r,
 owner @{HOME}/.local/share/applications/** r,
 
 
-
 ######################################################
-# external programs with AppArmor profiles
+# Since all programs will be able to launch this
+# binary we can't use abstractions/executable-binary
+# or even abstractions/executable-binary-strict
+# here, we need more strict rules with fixed programs 
+# list and Px only!
 ######################################################
 
 #-----------------------------------------------------
@@ -82,7 +86,6 @@ owner @{HOME}/.local/share/applications/** r,
 /opt/master-pdf-editor-3/masterpdfeditor3 Px,
 
 
-
 #-----------------------------------------------------
 # audio/video
 #-----------------------------------------------------
@@ -97,7 +100,6 @@ owner @{HOME}/.local/share/applications/** r,
 /usr/bin/vlc Px,
 
 
-
 #-----------------------------------------------------
 # terminal
 #-----------------------------------------------------
@@ -110,7 +112,7 @@ owner @{HOME}/.local/share/applications/** r,
 # file manager
 #-----------------------------------------------------
 
-#######  without AppArmor profiles (!)
+#######  without AppArmor profiles (!) FIX ME  #######
 # thunar
 /usr/bin/thunar Pux,
-#######
+######################################################

@@ -17,7 +17,7 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
   #include <abstractions/qt>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/nameservice-local>
+  #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
 
   @{PROC}/@{pid}/fd/ r,
@@ -36,11 +36,7 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
   /usr/bin/thunar-settings Pixr, /usr/bin/dbus-send Pixr,
   
   # rest binaries should use their own profile:
-  /usr/bin/qtchooser Puxr,
-  /usr/bin/pavucontrol Puxr,
-  /usr/bin/gparted-pkexec Puxr,
-  /usr/bin/xfdesktop-settings Puxr,
-  /usr/lib64/python-exec/python-exec2 Puxr, # menu editor "alacarte"
+  #include <abstractions/executable-binary>
 
 
   /etc/xdg/ r,
@@ -68,7 +64,7 @@ profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd flags=(complain) {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/user-tmp>
-  #include <abstractions/nameservice-local>
+  #include <abstractions/nameservice>
 
   /usr/bin/xfsettingsd r,
   /usr/bin/xkbcomp ixr,

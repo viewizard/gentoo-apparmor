@@ -14,13 +14,14 @@ profile xfce4-notifyd /usr/lib64/xfce4/notifyd/xfce4-notifyd flags=(complain) {
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/gtk>
+  #include <abstractions/user-tmp>
   #include <abstractions/nvidia>
   #include <abstractions/X>
 
 
   /usr/lib64/pango/*/modules/* m,
 
-  owner @{HOME}/.cache/xfce4-notifyd-theme.rc* rw,
+  owner @{HOME_CACHE}/xfce4-notifyd-theme.rc* rw,
   
 }
 

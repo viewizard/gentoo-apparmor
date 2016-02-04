@@ -21,9 +21,11 @@ profile mousepad /usr/bin/mousepad {
   #include <abstractions/fonts>
   #include <abstractions/dbus-session>
   #include <abstractions/gtk>
+  #include <abstractions/cups-client>
   #include <abstractions/nvidia>
   #include <abstractions/user-tmp>
   #include <abstractions/X>
+  #include <abstractions/user-systemwide-files>
   #include <abstractions/program-work-with-disk-rwk>
 
 
@@ -37,15 +39,5 @@ profile mousepad /usr/bin/mousepad {
   /tmp/libgksu-*/.Xauthority r,
   owner @{HOME}/.config/Mousepad/ rw,
   owner @{HOME}/.config/Mousepad/* rwk,
-
-
-  # for root - let's allow all system files
-  # for users - hiden files in users "home"
-  owner /** rw,
-  /usr/portage/** r,
-  /usr/local/portage/** rw,
-  /etc/suricata/** rw,
-  /etc/polkit-1/rules.d/* rw,
-  /var/log/** r,
   
 }

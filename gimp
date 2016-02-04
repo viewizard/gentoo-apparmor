@@ -20,13 +20,14 @@ profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/dbus-session>
+  #include <abstractions/cups-client>
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/xdg-open>
   #include <abstractions/program-work-with-disk-rwk>
-  #include <abstractions/nameservice-local>
+  #include <abstractions/nameservice>
   
 
   /usr/bin/gimp-* rm,
@@ -43,8 +44,8 @@ profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   /usr/lib64/gegl-[0-9].[0-9]/* m,
   /usr/share/xml/iso-codes/* r,
   
-  owner @{HOME}/.cache/gegl-[0-9].[0-9]/ rw,
-  owner @{HOME}/.cache/gegl-[0-9].[0-9]/** rw, 
+  owner @{HOME_CACHE}/gegl-[0-9].[0-9]/ rw,
+  owner @{HOME_CACHE}/gegl-[0-9].[0-9]/** rw, 
   owner @{HOME}/.local/share/gegl-[0-9].[0-9]/ rw,
   owner @{HOME}/.local/share/gegl-[0-9].[0-9]/** rw,
   owner @{HOME}/.gimp-[0-9].[0-9]/ rw,

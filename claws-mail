@@ -18,6 +18,7 @@ profile claws-mail /usr/bin/claws-mail {
   #include <abstractions/nameservice>
   #include <abstractions/p11-kit>
   #include <abstractions/nvidia>
+  #include <abstractions/cups-client>
   #include <abstractions/gtk>
   #include <abstractions/private-files-strict>
   #include <abstractions/X>
@@ -35,8 +36,8 @@ profile claws-mail /usr/bin/claws-mail {
   owner @{HOME}/.claws-mail/** rw,
   owner @{HOME}/Mail/ rw,
   owner @{HOME}/Mail/** rw,
-  owner @{HOME}/.cache/webkit/ rw,
-  owner @{HOME}/.cache/webkit/** rwk,
+  owner @{HOME_CACHE}/webkit/ rw,
+  owner @{HOME_CACHE}/webkit/** rwk,
 
   # noise
   deny / r,

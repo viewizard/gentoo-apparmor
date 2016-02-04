@@ -1,0 +1,40 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile dbus /usr/bin/dbus-{cleanup-sockets,daemon,launch,run-session,send,uuidgen} flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/nameservice>
+  #include <abstractions/X>
+  #include <abstractions/dbus>
+  #include <abstractions/dbus-accessibility>
+  #include <abstractions/dbus-session>
+  #include <abstractions/executable-binary>
+
+  capability sys_resource,
+  capability setgid,
+  capability setuid,
+
+
+  @{PROC}/@{pid}/cmdline r,
+  
+  /usr/bin/dbus-{cleanup-sockets,daemon,launch,run-session,send,uuidgen} ix,
+  
+  /etc/dbus-1/** r,
+  /usr/share/dbus-1/** r,
+  /run/dbus.pid rw,
+  
+  /etc/at-spi2/accessibility.conf r,
+  
+  owner @{HOME}/.dbus/** rw,
+  
+}
+

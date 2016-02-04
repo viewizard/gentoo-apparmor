@@ -36,7 +36,7 @@ profile wine /usr/bin/wine {
   owner @{PROC}/@{pid}/mem r,
     
   /usr/share/wine/** r,
-  owner @{HOME}/.cache/fontconfig/* r,
+  owner @{HOME_CACHE}/fontconfig/* r,
   owner @{HOME}/.config/fontconfig/fonts.conf r,
   owner @{HOME}/.config/pulse/cookie rk,
 
@@ -112,8 +112,8 @@ profile wine-preloader /usr/bin/wine-preloader {
   
 
   ### ---
-  owner @{HOME}/.cache/eve*/ rw,
-  owner @{HOME}/.cache/eve*/** rw,
+  owner @{HOME_CACHE}/eve*/ rw,
+  owner @{HOME_CACHE}/eve*/** rw,
   owner @{HOME}/Desktop/AstroMenace/ rwm,
   owner @{HOME}/Desktop/AstroMenace/** rwm,
 
@@ -147,8 +147,8 @@ profile wineserver /usr/bin/wineserver {
   
 
   ### ---
-  owner @{HOME}/.cache/eve*/ rw,
-  owner @{HOME}/.cache/eve*/** rw,
+  owner @{HOME_CACHE}/eve*/ rw,
+  owner @{HOME_CACHE}/eve*/** rw,
   owner @{HOME}/Desktop/AstroMenace/ rw,
   owner @{HOME}/Desktop/AstroMenace/** rw,
   

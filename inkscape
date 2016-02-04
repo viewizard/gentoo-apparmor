@@ -20,6 +20,7 @@ profile inkscape /usr/bin/inkscape {
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/dbus-session>
+  #include <abstractions/cups-client>
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/enchant>
@@ -28,19 +29,18 @@ profile inkscape /usr/bin/inkscape {
   #include <abstractions/X>
   #include <abstractions/xdg-open>
   #include <abstractions/program-work-with-disk-rwk>
-  #include <abstractions/nameservice-local>
+  #include <abstractions/nameservice>
   
   
   /sys/devices/system/cpu/ r,
   
   /usr/bin/inkscape r,
-  /usr/bin/python{2.[4-9],3.[3-9]} ix,
   
   /usr/share/inkscape/ r,
   /usr/share/inkscape/** r,
 
-  owner @{HOME}/.cache/inkscape/ rw,
-  owner @{HOME}/.cache/inkscape/** rw,
+  owner @{HOME_CACHE}/inkscape/ rw,
+  owner @{HOME_CACHE}/inkscape/** rw,
   owner @{HOME}/.config/inkscape/ rw,
   owner @{HOME}/.config/inkscape/** rw,
 

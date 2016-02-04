@@ -9,23 +9,26 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile xfwm4 /usr/bin/xfwm4 {
+profile xfwm4 /usr/bin/xfwm4 flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/nameservice-local>
+  #include <abstractions/nameservice>
 
+
+  owner @{PROC}/@{pid}/fd/ r,
 
   /usr/bin/xfwm4 rm,
+  /usr/lib64/xfce4/xfwm4/helper-dialog ix,
   
   /usr/share/xfwm4/ r,
   /usr/share/xfwm4/** r,
 
-  owner @{HOME}/.cache/sessions/ rw,
-  owner @{HOME}/.cache/sessions/xfwm4-*.state rw,
+  owner @{HOME_CACHE}/sessions/ rw,
+  owner @{HOME_CACHE}/sessions/xfwm4-*.state rw,
   
 }
 

@@ -12,7 +12,7 @@
 
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="**"
-@{PROG_FILE}="*.kdbx"
+@{PROG_FILE}="{*.kdbx,.*.kdbx.lock}"
 @{PROG_FOLDERS}="{@{HOME},/mnt/,/media/}"
 
 profile keepassx /usr/bin/keepassx {
@@ -21,11 +21,12 @@ profile keepassx /usr/bin/keepassx {
   #include <abstractions/fonts>
   #include <abstractions/gtk>
   #include <abstractions/qt>
+  #include <abstractions/cups-client>
   #include <abstractions/nvidia>
   #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/program-work-with-disk-rwk>
-  #include <abstractions/nameservice-local>
+  #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
 
 

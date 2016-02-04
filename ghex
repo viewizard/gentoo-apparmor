@@ -9,25 +9,26 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile xfce4-taskmanager /usr/bin/xfce4-taskmanager {
+
+# config for abstractions/program-work-with-disk-** (**-rk,rwk)
+@{PROG_DIR}="[^.]**"
+@{PROG_FILE}="[^.]*"
+@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/}"
+
+profile ghex /usr/bin/ghex {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/nameservice>
+  #include <abstractions/user-systemwide-files>
+  #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/xdg-open>
+  #include <abstractions/cups-client>
+  #include <abstractions/nameservice>
 
-  capability sys_ptrace,
 
-  @{PROC}/ r,
-  @{PROC}/@{pid}/cmdline r,
-  @{PROC}/@{pid}/stat r,
-
-  /usr/bin/xfce4-taskmanager r,
-  /usr/bin/xfce4-appfinder Px,
-
-  owner @{HOME}/.config/xfce4/xfce4-taskmanager.rc* rw,
+  /usr/bin/ghex r,
   
 }

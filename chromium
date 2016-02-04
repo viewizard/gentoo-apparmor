@@ -118,9 +118,9 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   /etc/chromium/ r,
   /etc/chromium/** r,
   owner @{HOME}/.pki/nssdb/* rwk,
-  owner @{HOME}/.cache/chromium/ rw,
-  owner @{HOME}/.cache/chromium/** rw,
-  owner @{HOME}/.cache/chromium/Cache/* mr,
+  owner @{HOME_CACHE}/chromium/ rw,
+  owner @{HOME_CACHE}/chromium/** rw,
+  owner @{HOME_CACHE}/chromium/Cache/* mr,
   owner @{HOME}/.config/chromium/ rw,
   owner @{HOME}/.config/chromium/** rwk,
   owner @{HOME}/.config/chromium/**/Cache/* mr,
@@ -179,14 +179,11 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
     /usr/bin/lsb_release r,
     /bin/bash ixr,
     /usr/bin/dpkg-query ixr,
-    /usr/include/python2.[6789]/pyconfig.h r,
     /etc/lsb-release r,
     /var/lib/dpkg/** r,
     deny /usr/bin/find xr,
 
-    /usr/lib64/python3.[0-9]/dist-packages/ r,
     /usr/bin/ r,
-    /usr/bin/python3.[0-9] r,
   }
 
 

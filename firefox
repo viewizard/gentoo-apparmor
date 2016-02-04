@@ -89,9 +89,9 @@ profile firefox /usr/{bin,lib,lib64}/{firefox,firefox/bin**}{,/firefox,/firefox-
   owner @{HOME}/.{firefox,mozilla}/**/*.{db,parentlock,sqlite}* k,
   owner @{HOME}/.{firefox,mozilla}/plugins/** rm,
   owner @{HOME}/.{firefox,mozilla}/**/plugins/** rm,
-  owner @{HOME}/.cache/mozilla/{,firefox/} rw,
-  owner @{HOME}/.cache/mozilla/firefox/** rw,
-  owner @{HOME}/.cache/mozilla/firefox/**/*.sqlite k,
+  owner @{HOME_CACHE}/mozilla/{,firefox/} rw,
+  owner @{HOME_CACHE}/mozilla/firefox/** rw,
+  owner @{HOME_CACHE}/mozilla/firefox/**/*.sqlite k,
 
   # Allow 'x' for downloaded extensions, but inherit policy for safety
   owner @{HOME}/.mozilla/**/extensions/** mixr,

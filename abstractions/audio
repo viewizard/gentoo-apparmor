@@ -47,7 +47,7 @@ owner @{HOME}/.asoundrc r,
 /etc/esound/esd.conf r,
 
 # libcanberra
-owner @{HOME}/.cache/event-sound-cache.* rwk,
+owner @{HOME_CACHE}/event-sound-cache.* rwk,
 
 # pulse
 /etc/pulse/ r,
@@ -57,9 +57,10 @@ owner /dev/shm/pulse-shm* rwk,
 owner @{HOME}/.pulse-cookie rwk,
 owner @{HOME}/.pulse/ rw,
 owner @{HOME}/.pulse/* rwk,
+owner @{HOME}/.config/pulse/ rw,
+owner @{HOME}/.config/pulse/* rwk,
 owner /{,var/}run/user/*/pulse/  rw,
 owner /{,var/}run/user/*/pulse/{native,pid} rwk,
-owner @{HOME}/.config/pulse/cookie rwk,
 owner /tmp/pulse-*/ rw,
 owner /tmp/pulse-*/* rw,
 

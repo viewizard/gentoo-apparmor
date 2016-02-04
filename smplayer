@@ -27,7 +27,7 @@ profile smplayer /usr/bin/smplayer {
   #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/program-work-with-disk-rk>
-  #include <abstractions/nameservice-local>
+  #include <abstractions/nameservice>
 
 
   /usr/bin/smplayer r,
@@ -39,6 +39,7 @@ profile smplayer /usr/bin/smplayer {
   # mplayer
   /etc/mplayer/mplayer.conf r,
   /etc/terminfo/l/linux r,
+  /usr/share/terminfo/u/unknown r,
 
   owner @{HOME}/.config/smplayer/ rw,
   owner @{HOME}/.config/smplayer/** rwk,

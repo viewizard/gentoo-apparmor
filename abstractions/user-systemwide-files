@@ -1,0 +1,29 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+
+# Note! We dont care about special permision for home
+# or media/mnt folders here. This should be figured out
+# through abstractions/program-work-with-disk-{rk,rwk}
+
+# This file should care only about system-wide files and
+# should be use with abstractions/program-work-with-disk-...
+  
+# For root - allow all system files owned by root,
+# for regular users - hiden files in users "home"
+owner /** rw,
+
+# For root - allow files owned by system-users,
+# for regular users - DAC take care about this.
+/usr/portage/** r,
+/usr/local/portage/** rw,
+/etc/suricata/** rw,
+/etc/polkit-1/rules.d/* rw,
+/var/log/** r,

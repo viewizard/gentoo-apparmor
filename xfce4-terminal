@@ -17,7 +17,7 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
   #include <abstractions/X>
   #include <abstractions/nvidia>
   #include <abstractions/user-tmp>
-  #include <abstractions/nameservice-local>
+  #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
 
 
@@ -25,8 +25,6 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
   /usr/bin/htop Cx,
   /usr/libexec/gnome-pty-helper Cx,
   
-  owner @{PROC}/@{pid}/fd/ r,
-
   /dev/pts/[0-9]* rw,
   /dev/ptmx rw,
   
@@ -41,7 +39,7 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/freedesktop.org>
     #include <abstractions/nvidia>
-    #include <abstractions/nameservice-local>
+    #include <abstractions/nameservice>
 
     /dev/pts/* rw,
     /dev/ptmx rw,
@@ -56,7 +54,7 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/freedesktop.org>
     #include <abstractions/fonts>
-    #include <abstractions/nameservice-local>
+    #include <abstractions/nameservice>
     
     capability sys_ptrace,
     

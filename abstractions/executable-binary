@@ -8,11 +8,15 @@
 #
 # ------------------------------------------------------------------
 
-# Local only, for all kind of nameservices - nameservice
 
-/etc/passwd r,
-/etc/group r,
-/etc/nsswitch.conf r,
-deny /etc/resolv.conf r,
-deny /etc/host.conf r,
-deny /etc/hosts r,
+# Pux - less security, but any program will work for sure
+
+/opt/** Pux,
+/bin/** Pux,
+/sbin/** Pux,
+/usr/bin/** Pux,
+/usr/sbin/** Pux,
+/usr/local/bin/** Pux,
+/usr/local/sbin/** Pux,
+/usr/libexec/** Pux,
+/usr/lib{,32,64}/** Pux,
