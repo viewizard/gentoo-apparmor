@@ -9,25 +9,15 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile xfce4-taskmanager /usr/bin/xfce4-taskmanager {
+profile xdg-open /usr/bin/xdg-open {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/gtk>
-  #include <abstractions/nvidia>
-  #include <abstractions/X>
-  #include <abstractions/nameservice>
-  #include <abstractions/executable-binary-helper>
 
-  capability sys_ptrace,
 
-  @{PROC}/ r,
-  @{PROC}/@{pid}/cmdline r,
-  @{PROC}/@{pid}/stat r,
+  /dev/tty rw,
 
-  /usr/bin/xfce4-taskmanager r,
-  /usr/bin/xfce4-appfinder Px,
-
-  owner @{HOME}/.config/xfce4/xfce4-taskmanager.rc* rw,
+  /bin/bash r,
+  /usr/bin/xdg-open r,
+  /usr/bin/exo-open Px,
   
 }

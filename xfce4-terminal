@@ -18,13 +18,14 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
   #include <abstractions/nvidia>
   #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
-  #include <abstractions/xdg-open>
+  #include <abstractions/executable-binary-helper>
 
 
   /bin/bash Pux,
   /usr/bin/htop Cx,
   /usr/libexec/gnome-pty-helper Cx,
-  
+
+  owner @{PROC}/@{pid}/fd/ r,  
   /dev/pts/[0-9]* rw,
   /dev/ptmx rw,
   

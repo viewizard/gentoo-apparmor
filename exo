@@ -1,0 +1,71 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile exo-open /usr/bin/exo-open {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/nvidia>
+  #include <abstractions/X>
+  #include <abstractions/executable-binary-helper>
+
+
+  owner @{PROC}/@{pid}/fd/ r,
+
+  /usr/bin/exo-open r,
+  /usr/lib64/xfce4/exo-1/exo-helper-1 Px,
+  
+  
+}
+
+
+profile exo-helper /usr/lib64/xfce4/exo-1/exo-helper-1 {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/nvidia>
+  #include <abstractions/X>
+  #include <abstractions/gtk>
+  #include <abstractions/fonts>
+  #include <abstractions/executable-binary-helper>
+  
+  owner @{PROC}/@{pid}/fd/ r,
+  
+  /usr/lib64/xfce4/exo-1/exo-helper-1 r,
+  
+  # helpers
+  /usr/share/ r,
+  /usr/local/share/ r,
+  /usr/share/xfce4/ r,
+  /usr/share/xfce4/helpers/ r,
+  /usr/share/xfce4/helpers/* r,
+  /etc/xdg/xfce4/helpers.rc r,
+  owner @{HOME}/.config/xfce4/helpers.rc* rw,
+  owner @{HOME}/.config/mimeapps.list* rw,
+  owner @{HOME}/.local/share/ r,
+  owner @{HOME}/.local/share/xfce4/ r,
+  owner @{HOME}/.local/share/xfce4/helpers/ r,
+  owner @{HOME}/.local/share/xfce4/helpers/* r,
+  owner @{HOME}/.local/share/applications/ r,
+  owner @{HOME}/.local/share/applications/** r,
+
+}
+
+
+profile exo-preferred-applications /usr/bin/exo-preferred-applications {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+
+  /dev/tty rw,
+
+  /bin/bash r,
+  /usr/bin/exo-preferred-applications r,
+  /usr/lib64/xfce4/exo-1/exo-helper-1 Px,
+
+}
