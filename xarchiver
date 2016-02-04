@@ -12,35 +12,51 @@
 
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*.{emp,xml,txt}"
+@{PROG_FILE}="[^.]*"
 @{PROG_FOLDERS}="{@{HOME},/mnt/,/media/}"
 
-profile pyfa /usr/lib64/python-exec/python2.[4-9]/pyfa {
+profile xarchiver /usr/bin/xarchiver {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/gtk>
-  #include <abstractions/python>
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/nameservice>
+  #include <abstractions/user-systemwide-files>
   #include <abstractions/program-work-with-disk-rwk>
-  #include <abstractions/user-tmp>
-  #include <abstractions/xdg-open>
 
 
   /dev/tty rw,
+  /sys/devices/system/cpu/ r,
+
+  /usr/bin/xarchiver r,
   
   /bin/bash ix,
-  /sbin/ldconfig ix,
+  /bin/rm ix,
+  /bin/cp ix,
+  /opt/rar/rar Cx,
+  /bin/bzip2 ix,
+  /bin/gzip ix,
+  /usr/bin/xz ix,
+  /bin/tar ix,
+  /bin/gunzip ix,
+  /usr/bin/zip ix,
+  /usr/bin/unzip ix,
+  /usr/bin/7za ixr,
+  /usr/lib64/p7zip/7za ix,
   
-  /usr/share/pyfa/ r,
-  /usr/share/pyfa/* rk,
+  profile rar /opt/rar/rar {
+    #include <abstractions/base>
+    #include <abstractions/user-systemwide-files>
+    #include <abstractions/program-work-with-disk-rwk>
   
-  owner @{HOME}/.pyfa/ rw,
-  owner @{HOME}/.pyfa/** rwk,
-  
-  # Noisy
-  deny /usr/lib64/python2.7/site-packages/wxversion.pyc w,
+    /opt/rar/rar r,
     
+    # Noisy
+    deny /etc/ r,
+    deny /usr/lib64/ r,
+    deny /usr/local/lib64/ r,
+  }
+  
 }

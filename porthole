@@ -9,13 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*.{emp,xml,txt}"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/}"
-
-profile pyfa /usr/lib64/python-exec/python2.[4-9]/pyfa {
+profile porthole /usr/lib64/python-exec/python2.[4-9]/porthole flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -24,23 +18,30 @@ profile pyfa /usr/lib64/python-exec/python2.[4-9]/pyfa {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/nameservice>
-  #include <abstractions/program-work-with-disk-rwk>
-  #include <abstractions/user-tmp>
-  #include <abstractions/xdg-open>
 
 
   /dev/tty rw,
-  
+
   /bin/bash ix,
-  /sbin/ldconfig ix,
+  /bin/uname ix,
+
+  /usr/portage/** r,
+  /usr/local/portage/** r,
+  /var/db/pkg/ r,
+  /var/db/pkg/** r,  
+  /etc/portage/** r,
+  /etc/profile.env r,
+  /usr/share/portage/** r,
+  /var/lib/portage/* r,
+  /var/cache/edb/** r,
   
-  /usr/share/pyfa/ r,
-  /usr/share/pyfa/* rk,
+  /usr/share/gtksourceview-2.0/** r,
+  /usr/share/porthole/** r,
   
-  owner @{HOME}/.pyfa/ rw,
-  owner @{HOME}/.pyfa/** rwk,
+  owner @{HOME}/.porthole/ rw,
+  owner @{HOME}/.porthole/prefs.xml rw,
   
   # Noisy
-  deny /usr/lib64/python2.7/site-packages/wxversion.pyc w,
-    
+  deny /usr/lib64/python2.7/site-packages/cairo/__init__.pyc w,
+  
 }
