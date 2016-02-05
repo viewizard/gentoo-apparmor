@@ -18,12 +18,17 @@ profile porthole /usr/lib64/python-exec/python2.[4-9]/porthole flags=(complain) 
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/nameservice>
+  #include <abstractions/xdg-open>
 
 
   /dev/tty rw,
 
   /bin/bash ix,
   /bin/uname ix,
+  
+  /usr/bin/sandbox ixr,
+  /etc/sandbox.conf r,
+  /etc/sandbox.d/* r,
 
   /usr/portage/** r,
   /usr/local/portage/** r,

@@ -9,13 +9,21 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile python-exec /usr/lib64/python-exec/python-exec2 flags=(complain) {
+profile tor /usr/bin/tor flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/nameservice>
 
-  /bin/env r,
+  capability setgid,
+  capability setuid,
   
-  audit /usr/lib64/python-exec/python2.[4-9]/* Pux,
+  @{PROC}/sys/kernel/random/uuid r,
+  /sys/devices/system/cpu/ r,
 
-  /etc/env.d/python/config r,
+  /etc/tor/torrc r,
+  
+  /usr/share/tor/** r,
+  /var/lib/tor/** rwk,
+  /run/tor/ rw,
+  /run/tor/tor.pid rw,
   
 }
