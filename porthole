@@ -25,10 +25,13 @@ profile porthole /usr/lib64/python-exec/python2.[4-9]/porthole flags=(complain) 
 
   /bin/bash ix,
   /bin/uname ix,
+  /usr/lib64/portage/python2.7/ebuild.sh ix,
   
   /usr/bin/sandbox ixr,
   /etc/sandbox.conf r,
+  /etc/sandbox.d/ r,
   /etc/sandbox.d/* r,
+  /usr/share/sandbox/* r,
 
   /usr/portage/** r,
   /usr/local/portage/** r,
@@ -39,6 +42,7 @@ profile porthole /usr/lib64/python-exec/python2.[4-9]/porthole flags=(complain) 
   /usr/share/portage/** r,
   /var/lib/portage/* r,
   /var/cache/edb/** r,
+  /var/db/porthole/descriptions.db w,
   
   /usr/share/gtksourceview-2.0/** r,
   /usr/share/porthole/** r,

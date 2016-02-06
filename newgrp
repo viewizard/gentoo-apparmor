@@ -1,0 +1,34 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile newgrp /usr/bin/newgrp flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/nameservice>
+  #include <abstractions/executable-binary-helper>
+
+
+  capability setgid,
+  capability setuid,
+  
+  /dev/tty rw,
+  /dev/pts/[0-9] rw,
+
+  owner @{PROC}/@{pid}/loginuid r,
+  
+  /usr/bin/newgrp r,
+  /bin/bash ix,
+  
+  /etc/gshadow r,
+  /etc/shadow r,
+  /etc/login.defs r,
+
+}
