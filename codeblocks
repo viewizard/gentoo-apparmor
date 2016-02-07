@@ -1,0 +1,68 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+# config for abstractions/program-work-with-disk-** (**-rk,rwk)
+@{PROG_DIR}="[^.]**"
+@{PROG_FILE}="[^.]*"
+@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/}"
+
+profile codeblocks /usr/bin/codeblocks flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/dbus-session>
+  #include <abstractions/gtk>
+  #include <abstractions/nvidia>
+  #include <abstractions/user-tmp>
+  #include <abstractions/X>
+  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/nameservice>
+
+
+  /dev/tty rw,
+
+  /bin/bash ix,
+
+  /usr/bin/codeblocks r,
+  /usr/bin/gcc ix,
+  /usr/x86_64-pc-linux-gnu/gcc-bin/[4-9].[0-9].[0-9]/x86_64-pc-linux-gnu-gcc ix,
+  /usr/bin/g++ ix,
+  /usr/x86_64-pc-linux-gnu/gcc-bin/[4-9].[0-9].[0-9]/x86_64-pc-linux-gnu-g++ ix,
+  /usr/bin/gfortran ix,
+  /usr/x86_64-pc-linux-gnu/gcc-bin/[4-9].[0-9].[0-9]/x86_64-pc-linux-gnu-gfortran ix,
+  /usr/bin/llvm-ar ix,
+  /usr/libexec/gcc/x86_64-pc-linux-gnu/[4-9].[0-9].[0-9]/cc1plus ix,
+  /usr/libexec/gcc/x86_64-pc-linux-gnu/[4-9].[0-9].[0-9]/collect2 ix,
+  /usr/x86_64-pc-linux-gnu/binutils-bin/*/as ix,
+  /usr/x86_64-pc-linux-gnu/binutils-bin/*/ld ix,
+  
+  /usr/include/ r,
+  /usr/include/** r,
+  /etc/ld.so.conf r,
+  /etc/ld.so.conf.d/ r,
+  /etc/ld.so.conf.d/* r,
+  /usr/libexec/gcc/x86_64-pc-linux-gnu/[4-9].[0-9].[0-9]/*.so* rm,
+  
+  /usr/share/codeblocks/ r,
+  /usr/share/codeblocks/** r,
+  
+  owner @{HOME}/.config/codeblocks/ rw,
+  owner @{HOME}/.config/codeblocks/* rw,
+  owner @{HOME}/.local/share/codeblocks/ rw,
+  owner @{HOME}/.local/share/codeblocks/** rw,
+  
+  
+  # we need x permission in order to launch compilled binary
+  audit owner @{PROG_FOLDERS}@{PROG_FILE} ix,
+  audit owner @{PROG_FOLDERS}@{PROG_DIR}/@{PROG_FILE} ix,
+  
+}

@@ -9,21 +9,14 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile tor /usr/bin/tor {
+profile links /usr/bin/links {
   #include <abstractions/base>
+  #include <abstractions/X>
   #include <abstractions/nameservice>
+  #include <abstractions/user-download>
+  #include <abstractions/user-upload>
 
-  capability setgid,
-  capability setuid,
-  
-  @{PROC}/sys/kernel/random/uuid r,
-  /sys/devices/system/cpu/ r,
+  owner @{HOME}/.links/ rw,
+  owner @{HOME}/.links/** rw,
 
-  /etc/tor/torrc r,
-  
-  /usr/share/tor/** r,
-  /var/lib/tor/** rwk,
-  /run/tor/ rw,
-  /run/tor/tor.pid rw,
-  
 }

@@ -49,12 +49,6 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   /opt/kingsoft/wps-office/office6/ r,
   /opt/kingsoft/wps-office/office6/** rmk,
   
-  
-  # Noisy
-  deny /opt/kingsoft/wps-office/office6/startup/ w,
-  deny /etc/xdg/kingsoft.conf w,
-
-
   owner @{HOME}/.config/Kingsoft/ rw,
   owner @{HOME}/.config/Kingsoft/** rwk,
   owner @{HOME}/.config/kingsoft/ rw,
@@ -63,5 +57,9 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   owner @{HOME}/.kingsoft/office6/** rwk,
   owner @{HOME}/.local/share/data/Kingsoft/ rw,
   owner @{HOME}/.local/share/data/Kingsoft/** rwk,
-    
+
+  # Noisy
+  deny /opt/kingsoft/wps-office/office6/startup/ w,
+  deny /etc/xdg/kingsoft.conf w,
+  
 }

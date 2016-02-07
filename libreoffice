@@ -15,7 +15,6 @@
 @{PROG_FILE}="{[^.]*,.~*}"
 @{PROG_FOLDERS}="{@{HOME},/mnt/,/media/}"
 
-
 profile libreoffice /usr/{bin,lib64/libreoffice/program}/soffice {
   #include <abstractions/base>
   #include <abstractions/nameservice>
@@ -60,6 +59,7 @@ profile libreoffice.bin /usr/lib64/libreoffice/program/soffice.bin {
 
 
   /dev/tty rw,
+  /dev/pts/[0-9] rw,
   /sys/devices/system/cpu/ r,
   
   /bin/sed ix,
