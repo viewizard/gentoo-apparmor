@@ -1,0 +1,36 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile at-spi-bus-launcher /usr/libexec/at-spi-bus-launcher flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/dbus>
+  #include <abstractions/dconf>
+  #include <abstractions/gtk>
+  #include <abstractions/nameservice>
+  
+  owner @{PROC}/@{pid}/fd/ r,
+  
+  /usr/libexec/at-spi-bus-launcher r,
+  /usr/bin/dbus-daemon ix,
+  /usr/libexec/at-spi2-registryd Px,
+  
+  /usr/share/dbus-1/accessibility-services/ r,
+  /usr/share/dbus-1/accessibility-services/* r,
+  /etc/at-spi2/accessibility.conf r,
+  
+}
+
+profile at-spi2-registryd /usr/libexec/at-spi2-registryd flags=(complain) {
+  #include <abstractions/base>
+  
+  /usr/libexec/at-spi2-registryd r,
+  
+}

@@ -28,7 +28,9 @@ profile firefox /usr/{bin,lib,lib64}/{firefox,firefox/bin**}{,/firefox,/firefox-
   #include <abstractions/user-upload>
   #include <abstractions/dconf>
   #include <abstractions/X>
+  #include <abstractions/executable-binary-helper>
 
+  /dev/tty rw,
 
   # for networking
   @{PROC}/@{pid}/net/if_inet6 r,
@@ -104,5 +106,8 @@ profile firefox /usr/{bin,lib,lib64}/{firefox,firefox/bin**}{,/firefox,/firefox-
   # benefit from glibc's secure execute.
   /bin/ps Uxr,
   /bin/uname Uxr,
-
+  
+  owner @{HOME}/.local/share/gvfs-metadata/home r,
+  /usr/bin/firefox r,
+  
 }

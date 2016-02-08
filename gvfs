@@ -1,0 +1,163 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monitor flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  capability dac_override,
+  
+  @{PROC}/@{pid}/mounts r,
+  /sys/devices/pci**/block/sd[a-z]/sd[a-z]*/uevent r,
+  /run/udev/data/* r,
+  
+  /usr/libexec/gvfs-udisks2-volume-monitor r,
+  
+  /etc/fstab r,
+  /etc/udev/udev.conf r,
+  /usr/share/mime/treemagic r,
+  /media/*/ r,
+  
+  owner @{HOME}/.local/share/mime/treemagic r,
+  
+}
+
+
+profile gvfsd /usr/libexec/gvfsd flags=(complain) {
+  #include <abstractions/base>
+  
+  owner @{PROC}/@{pid}/fd/ rw,
+  
+  /usr/libexec/gvfsd r,
+  /usr/libexec/gvfsd-trash Px,
+  /usr/libexec/gvfsd-fuse Px,
+  
+  /usr/share/gvfs/ r,
+  /usr/share/gvfs/** r,
+  
+}
+
+profile gvfsd-archive /usr/libexec/gvfsd-archive flags=(complain) {
+  #include <abstractions/base>
+  
+  
+}
+
+profile gvfsd-burn /usr/libexec/gvfsd-burn flags=(complain) {
+  #include <abstractions/base>
+  
+  
+}
+
+profile gvfsd-computer /usr/libexec/gvfsd-computer flags=(complain) {
+  #include <abstractions/base>
+  
+  
+}
+
+profile gvfsd-dav /usr/libexec/gvfsd-dav flags=(complain) {
+  #include <abstractions/base>
+  
+  
+}
+
+profile gvfsd-ftp /usr/libexec/gvfsd-ftp flags=(complain) {
+  #include <abstractions/base>
+  
+  
+}
+
+profile gvfsd-fuse /usr/libexec/gvfsd-fuse flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  capability dac_override,
+  capability sys_admin,
+  
+  /dev/fuse rw,
+  
+  @{PROC}/@{pid}/mounts r,
+  
+  /usr/libexec/gvfsd-fuse r,
+  /usr/bin/fusermount ixr,
+  
+  /etc/fuse.conf r,
+  
+  @{HOME}/.gvfs/ rw,
+  @{HOME}/.gvfs/** rw,
+  
+}
+
+profile gvfsd-http /usr/libexec/gvfsd-http flags=(complain) {
+  #include <abstractions/base>
+  
+  
+}
+
+profile gvfsd-localtest /usr/libexec/gvfsd-localtest flags=(complain) {
+  #include <abstractions/base>
+  
+  
+}
+
+profile gvfsd-metadata /usr/libexec/gvfsd-metadata flags=(complain) {
+  #include <abstractions/base>
+  
+  /usr/libexec/gvfsd-metadata r,
+  
+  owner @{HOME}/.local/share/gvfs-metadata/ rw,
+  owner @{HOME}/.local/share/gvfs-metadata/** rw,
+  
+}
+
+profile gvfsd-network /usr/libexec/gvfsd-network flags=(complain) {
+  #include <abstractions/base>
+  
+  
+}
+
+profile gvfsd-recent /usr/libexec/gvfsd-recent flags=(complain) {
+  #include <abstractions/base>
+  
+  
+}
+
+profile gvfsd-sftp /usr/libexec/gvfsd-sftp flags=(complain) {
+  #include <abstractions/base>
+  
+  
+}
+
+profile gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse flags=(complain) {
+  #include <abstractions/base>
+  
+  
+}
+
+profile gvfsd-trash /usr/libexec/gvfsd-trash flags=(complain) {
+  #include <abstractions/base>
+  
+  @{PROC}/@{pid}/mounts r,
+  
+  /usr/libexec/gvfsd-trash r,
+  
+  # we must be able create and read all files
+  # DAC will care about access permissions
+  @{HOME}/** rw,
+  /mnt/** rw,
+  /media/** rw,
+  
+  /usr/share/mime/mime.cache r,
+  owner @{HOME}/.local/share/mime/mime.cache r,
+  owner @{HOME}/.local/share/Trash/ rw,
+  owner @{HOME}/.local/share/Trash/** rw,
+  
+}

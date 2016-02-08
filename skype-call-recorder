@@ -12,39 +12,26 @@
 
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*"
+# we also need create subfolders, not just files
+@{PROG_FILE}="{*/,[^.]*.{wav,ogg,mp3}}"
 @{PROG_FOLDERS}="{@{HOME},/mnt/,/media/}"
 
-profile meld /usr/bin/meld {
+profile skype-call-recorder /usr/bin/skype-call-recorder {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
-  #include <abstractions/gtk>
-  #include <abstractions/python>
-  #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/user-systemwide-files>
-  #include <abstractions/program-work-with-disk-rwk>
-  #include <abstractions/executable-binary-helper>
-  #include <abstractions/cups-client>
+  #include <abstractions/gtk>
+  #include <abstractions/qt>
+  #include <abstractions/nvidia>
   #include <abstractions/user-tmp>
+  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/nameservice>
+  #include <abstractions/xdg-open>
 
 
-  capability dac_override,
-  capability dac_read_search,
-  capability fowner,
-
-  /usr/bin/meld r,
-  /usr/bin/dbus-launch ix,
+  /usr/bin/skype-call-recorder r,
   
-  /dev/pts/[0-9]* rw,
-  /dev/shm/* l,
-  
-  /usr/share/meld/** r,
-  /usr/share/gtksourceview-2.0/ r,
-  /usr/share/gtksourceview-2.0/** r,
-  
-  # Noisy
-  deny /usr/lib64/python{2.[4-9],3.[3-9]}/site-packages/cairo/__init__.pyc w,
-  
+  owner @{HOME}/.skypecallrecorder.lock rwk,
+  owner @{HOME}/.skypecallrecorder.rc rwk,
 }

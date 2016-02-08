@@ -33,6 +33,7 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   /dev/ r,
   /dev/tty rw,
   /dev/pts/[0-9]* rw,
+  @{PROC}/@{pid}/sched r,
 
   # Networking
   @{PROC}/@{pid}/net/if_inet6 r,
@@ -129,6 +130,7 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   owner @{HOME}/.config/chromium/**/Dictionaries/*.bdic mr,
 
   # Allow transitions to ourself and our sandbox
+  /usr/bin/chromium-browser Pxr,
   /usr/lib64/chromium-browser/chrome ix,
   /usr/lib64/chromium-browser/chromium-launcher.sh Px,
   /usr/lib64/chromium-browser/chrome-sandbox cx -> sandbox,

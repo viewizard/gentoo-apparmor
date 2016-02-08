@@ -8,11 +8,11 @@
 #
 # ------------------------------------------------------------------
 
+#include <tunables/global>
+profile ssh-agent /usr/bin/ssh-agent flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/user-tmp>
 
-# execution external programs with xdg-open
-/usr/bin/xdg-open Pxr,
-owner @{PROC}/@{pid}/fd/ r,
-
-# sg/newgrp for work with network connection via iptables uid/gid-owner
-/usr/bin/newgrp Px,
-/usr/bin/id ixr,
+  /etc/ssl/openssl.cnf r,
+  
+}
