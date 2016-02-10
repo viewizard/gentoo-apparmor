@@ -30,50 +30,50 @@ profile firefox /usr/{bin,lib,lib64}/{firefox,firefox/bin**}{,/firefox,/firefox-
   #include <abstractions/X>
   #include <abstractions/executable-binary-helper>
 
+
   /dev/tty rw,
 
-  # for networking
-  @{PROC}/@{pid}/net/if_inet6 r,
-  @{PROC}/@{pid}/net/ipv6_route r,
-  @{PROC}/@{pid}/net/dev r,
-  @{PROC}/@{pid}/net/wireless r,
-
-  # should maybe be in abstractions
-  /etc/ r,
-  /etc/mime.types r,
-  owner @{HOME}/.macromedia/** rw,
-  owner /tmp/** m,
-  owner /var/tmp/** m,
-  /tmp/.X[0-9]*-lock r,
-  /etc/udev/udev.conf r,
-  
-  # Noisy
-  deny /run/udev/data/** r,
-  deny @{HOMEDIRS}/* w,
-  deny @{HOMEDIRS}/*/ w,
-  deny owner @{HOME}/* r,
-
-  /etc/timezone r,
-  /usr/share/myspell/ r,
-  
-  # These are needed when a new user starts firefox and firefox.sh is used
-  /usr/lib64/firefox/** ixr,
-  /usr/bin/basename ixr,
-  /usr/bin/dirname ixr,
-  /usr/bin/pwd ixr,
-  /sbin/killall5 ixr,
-  /bin/which ixr,
-  /usr/bin/tr ixr,
   @{PROC}/ r,
   @{PROC}/@{pid}/mountinfo r,
   @{PROC}/@{pid}/stat r,
   owner @{PROC}/@{pid}/task/@{pid}/stat r,
   @{PROC}/filesystems r,
   /sys/devices/pci[0-9]*/**/uevent r,
+  # for networking
+  @{PROC}/@{pid}/net/if_inet6 r,
+  @{PROC}/@{pid}/net/ipv6_route r,
+  @{PROC}/@{pid}/net/dev r,
+  @{PROC}/@{pid}/net/wireless r,
+  # about:memory
+  owner @{PROC}/@{pid}/statm r,
+  owner @{PROC}/@{pid}/smaps r,
 
+  /etc/ r,
   /etc/mtab r,
   /etc/fstab r,
-
+  /etc/mime.types r,
+  /etc/timezone r,
+  /etc/udev/udev.conf r,
+  /usr/share/myspell/ r,
+  owner /tmp/** m,
+  owner /var/tmp/** m,
+  owner @{HOME}/.macromedia/** rw,
+  owner @{HOME}/.local/share/gvfs-metadata/home r,
+  
+  /usr/bin/firefox r,
+  /sbin/killall5 ixr,
+  /bin/which ixr,
+  /usr/bin/tr ixr,
+  /bin/ps ixr,
+  /bin/uname ixr,
+  /usr/bin/basename ixr,
+  /usr/bin/dirname ixr,
+  /usr/bin/pwd ixr,
+  /usr/lib64/firefox/** ixr,
+  # Allow 'x' for downloaded extensions, but inherit policy for safety
+  owner @{HOME}/.mozilla/**/extensions/** mixr,
+  /usr/lib/firefox/browser/extensions/** mixr,
+  
   # Needed for the crash reporter
   owner @{PROC}/@{pid}/environ r,
   owner @{PROC}/@{pid}/auxv r,
@@ -81,10 +81,6 @@ profile firefox /usr/{bin,lib,lib64}/{firefox,firefox/bin**}{,/firefox,/firefox-
   /usr/bin/expr ix,
   /sys/devices/system/cpu/ r,
   /sys/devices/system/cpu/** r,
-
-  # about:memory
-  owner @{PROC}/@{pid}/statm r,
-  owner @{PROC}/@{pid}/smaps r,
 
   # Firefox configuration
   owner @{HOME}/.{firefox,mozilla}/ rw,
@@ -96,18 +92,10 @@ profile firefox /usr/{bin,lib,lib64}/{firefox,firefox/bin**}{,/firefox,/firefox-
   owner @{HOME_CACHE}/mozilla/firefox/** rw,
   owner @{HOME_CACHE}/mozilla/firefox/**/*.sqlite k,
 
-  # Allow 'x' for downloaded extensions, but inherit policy for safety
-  owner @{HOME}/.mozilla/**/extensions/** mixr,
-  /usr/lib/firefox/browser/extensions/** mixr,
-
-  # Miscellaneous (to be abstracted)
-  # Ideally these would use a child profile. They are all ELF executables
-  # so running with 'Ux', while not ideal, is ok because we will at least
-  # benefit from glibc's secure execute.
-  /bin/ps Uxr,
-  /bin/uname Uxr,
-  
-  owner @{HOME}/.local/share/gvfs-metadata/home r,
-  /usr/bin/firefox r,
+  # Noisy
+  deny /run/udev/data/** r,
+  deny @{HOMEDIRS}/* w,
+  deny @{HOMEDIRS}/*/ w,
+  deny owner @{HOME}/* r,
   
 }

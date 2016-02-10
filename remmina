@@ -13,16 +13,25 @@ profile remmina /usr/bin/remmina {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
+  #include <abstractions/audio>
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dconf>
   #include <abstractions/nameservice>
 
 
   /usr/bin/remmina r,
   /usr/lib64/remmina/plugins/** m,
   
+  /etc/timezone r,
+  /etc/machine-id r,
+  /usr/share/remmina/ r,
+  /usr/share/remmina/** r,
+  
   owner @{HOME}/.remmina/ rw,
   owner @{HOME}/.remmina/* rw,
+  owner @{HOME}/.config/freerdp/ rw,
+  owner @{HOME}/.config/freerdp/** rw,
 
 }

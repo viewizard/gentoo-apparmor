@@ -73,6 +73,7 @@ profile wine-preloader /usr/bin/wine-preloader {
   #include <abstractions/nvidia>
   #include <abstractions/user-tmp>
 
+  /dev/pts/[0-9] rw,
 
   /sys/devices/system/cpu/cpu*/cpufreq/* r,
   /sys/devices/system/cpu/cpu*/cache/index*/* r,
@@ -94,6 +95,7 @@ profile wine-preloader /usr/bin/wine-preloader {
   /etc/fstab r,
   /etc/printcap r,
   /etc/machine-id r,
+  /etc/terminfo/x/xterm r,
   /usr/lib32/wine/* m,
   /usr/share/wine/** r,
   /usr/share/icons/** r,

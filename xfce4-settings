@@ -66,8 +66,11 @@ profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd flags=(complain) {
   #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
 
+  owner @{PROC}/@{pid}/fd/ r,
+  
   /usr/bin/xfsettingsd r,
   /usr/bin/xkbcomp ixr,
+  /usr/bin/xflock4 ix,
   
   /etc/xdg/autostart/xfsettingsd.desktop r,
 

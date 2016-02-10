@@ -29,12 +29,24 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
 
   capability sys_admin,
   capability sys_chroot,
+  ptrace (trace) peer=@{profile_name},
   
   /dev/ r,
   /dev/tty rw,
   /dev/pts/[0-9]* rw,
-  @{PROC}/@{pid}/sched r,
 
+  @{PROC}/ r,
+  @{PROC}/filesystems r,
+  @{PROC}/sys/kernel/shmmax r,
+  @{PROC}/@{pid}/sched r,
+  @{PROC}/@{pid}/smaps r,
+  @{PROC}/@{pid}/statm r,
+  @{PROC}/@{pid}/stat r,
+  @{PROC}/@{pid}/task/ r,
+  @{PROC}/@{pid}/task/@{pid}/stat r,
+  owner @{PROC}/@{pid}/io r,
+  owner @{PROC}/@{pid}/oom_{,score_}adj w,
+  owner /{dev,run}/shm/{,.}org.chromium.* mrw,
   # Networking
   @{PROC}/@{pid}/net/if_inet6 r,
   @{PROC}/@{pid}/net/ipv6_route r,
@@ -44,15 +56,6 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   /etc/mime.types r,
   /etc/mtab r,
 
-  @{PROC}/filesystems r,
-  @{PROC}/ r,
-  @{PROC}/@{pid}/task/ r,
-  @{PROC}/@{pid}/task/@{pid}/stat r,
-  @{PROC}/@{pid}/smaps r,
-  @{PROC}/@{pid}/statm r,
-  @{PROC}/@{pid}/stat r,
-  owner @{PROC}/@{pid}/io r,
-  owner @{PROC}/@{pid}/oom_{,score_}adj w,
   # Needed for the crash reporter
   owner @{PROC}/@{pid}/auxv r,
   @{PROC}/@{pid}/setgroups rw,
@@ -75,8 +78,21 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   /sys/devices/virtual/block/**/removable r,
   /sys/devices/virtual/block/**/uevent r,
   /sys/devices/virtual/block/**/size r,
-  # This is requested, but doesn't seem to actually be needed so deny for now
-  deny /run/udev/data/** r,
+
+
+  /bin/ps Uxr,
+  /usr/bin/xdg-settings Cxr -> xdgsettings,
+  /usr/bin/lsb_release Cxr -> lsb_release,
+  /bin/readlink ixr,
+
+  # Allow transitions to ourself and our sandbox
+  /usr/bin/chromium-browser Pxr,
+  /usr/lib64/chromium-browser/chrome ix,
+  /usr/lib64/chromium-browser/chromium-launcher.sh Px,
+  /usr/lib64/chromium-browser/chrome-sandbox cx -> sandbox,
+  # Helpers
+  /usr/bin/gvfs-open ixr,
+  
 
   # chromium mmaps all kinds of things for speed.
   /etc/passwd m,
@@ -84,27 +100,12 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   /usr/share/fonts/**/*.pfb m,
   /usr/share/mime/mime.cache m,
   /usr/share/icons/**/*.cache m,
+  /usr/lib64/chromium-browser/*.pak mr,
+  /usr/lib64/chromium-browser/locales/* mr,
   owner /{dev,run}/shm/pulse-shm* m,
   owner @{HOME}/.local/share/mime/mime.cache m,
   owner /tmp/** m,
 
-  @{PROC}/sys/kernel/shmmax r,
-  owner /{dev,run}/shm/{,.}org.chromium.* mrw,
-
-  /usr/lib64/chromium-browser/*.pak mr,
-  /usr/lib64/chromium-browser/locales/* mr,
-
-  # Noisy
-  deny /usr/lib64/chromium-browser/** w,
-  deny @{HOMEDIRS}/* w,
-  deny @{HOMEDIRS}/*/ w,
-  deny owner @{HOME}/* r,
-
-  # Allow ptracing ourselves
-  ptrace (trace) peer=@{profile_name},
-
-  # Helpers
-  /usr/bin/gvfs-open ixr,
 
 #  # Importing firefox settings
 #  @{PROC}/@{pid}/oom_{,score_}adj w,
@@ -129,16 +130,13 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   owner @{HOME}/.config/chromium/Dictionaries/*.bdic mr,
   owner @{HOME}/.config/chromium/**/Dictionaries/*.bdic mr,
 
-  # Allow transitions to ourself and our sandbox
-  /usr/bin/chromium-browser Pxr,
-  /usr/lib64/chromium-browser/chrome ix,
-  /usr/lib64/chromium-browser/chromium-launcher.sh Px,
-  /usr/lib64/chromium-browser/chrome-sandbox cx -> sandbox,
-
-  /bin/ps Uxr,
-  /usr/bin/xdg-settings Cxr -> xdgsettings,
-  /usr/bin/lsb_release Cxr -> lsb_release,
-  /bin/readlink ixr,
+  # Noisy
+  deny /run/udev/data/** r,
+  deny /usr/lib64/chromium-browser/** w,
+  deny @{HOMEDIRS}/* w,
+  deny @{HOMEDIRS}/*/ w,
+  deny owner @{HOME}/* r,
+  
 
   profile xdgsettings {
     #include <abstractions/base>
@@ -166,6 +164,7 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
     /usr/bin/gconftool-2 ix,
     /usr/bin/[gm]awk ixr,
     /usr/bin/xdg-mime ixr,
+    
     owner @{HOME}/.local/share/applications/ w,
     owner @{HOME}/.local/share/applications/mimeapps.list* rw,
   }

@@ -37,8 +37,7 @@ profile gvfsd /usr/libexec/gvfsd flags=(complain) {
   owner @{PROC}/@{pid}/fd/ rw,
   
   /usr/libexec/gvfsd r,
-  /usr/libexec/gvfsd-trash Px,
-  /usr/libexec/gvfsd-fuse Px,
+  /usr/libexec/gvfsd-* Px,
   
   /usr/share/gvfs/ r,
   /usr/share/gvfs/** r,
@@ -136,9 +135,26 @@ profile gvfsd-sftp /usr/libexec/gvfsd-sftp flags=(complain) {
   
 }
 
+profile gvfsd-smb /usr/libexec/gvfsd-smb flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/dconf>
+  #include <abstractions/gtk>
+  
+  /etc/samba/smb.conf r,
+  
+  /usr/libexec/gvfsd-smb r,
+  
+}
+
 profile gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/dconf>
+  #include <abstractions/gtk>
   
+  /etc/samba/smb.conf r,
+  
+  /usr/libexec/gvfsd-smb-browse r,
   
 }
 
