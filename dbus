@@ -23,7 +23,7 @@ profile dbus /usr/bin/dbus-{cleanup-sockets,daemon,launch,run-session,send,uuidg
   capability setgid,
   capability setuid,
 
-
+  @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/cmdline r,
   
   /usr/bin/dbus-{cleanup-sockets,daemon,launch,run-session,send,uuidgen} ix,

@@ -12,7 +12,7 @@
 
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*.{mpeg,vob,ogg,asf,wav,wmv,wma,mov,mp3,mp4,avi,mkv,mka,webm,vivo,ts,ogm,aac,h264,3p2,3gp,3ga,flv}"
+@{PROG_FILE}="[^.]*.{mpeg,vob,ogg,asf,wav,wmv,wma,mov,mp3,mp4,avi,mkv,mka,webm,vivo,ts,ogm,aac,h264,3p2,3gp,3ga,flv,ass,smi,srt,sub,txt,mdv,ssa,sup,tt,smil}"
 @{PROG_FOLDERS}="{@{HOME},/mnt/,/media/}"
 
 profile smplayer /usr/bin/smplayer {
@@ -29,6 +29,8 @@ profile smplayer /usr/bin/smplayer {
   #include <abstractions/program-work-with-disk-rk>
   #include <abstractions/nameservice>
 
+
+  /dev/ r,
 
   /usr/bin/smplayer r,
   /usr/bin/mplayer ix,

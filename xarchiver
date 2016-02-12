@@ -25,14 +25,20 @@ profile xarchiver /usr/bin/xarchiver {
   #include <abstractions/nameservice>
   #include <abstractions/user-systemwide-files>
   #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/xdg-open>
 
 
+  capability dac_override,
+  capability dac_read_search,
+  capability chown,
+  
   /dev/tty rw,
   /sys/devices/system/cpu/ r,
 
   /usr/bin/xarchiver r,
   
   /bin/bash ix,
+  /bin/mv ix,
   /bin/rm ix,
   /bin/cp ix,
   /opt/rar/rar Cx,

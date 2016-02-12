@@ -1,0 +1,70 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# FIX ME!
+
+#include <tunables/global>
+profile sudo /usr/bin/sudo flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/authentication>
+  
+  # FIX ME!
+  #include <abstractions/executable-binary>
+  /media/** Pux,
+  /mnt/** Pux,
+  
+
+  capability setuid,
+  capability setgid,
+  capability sys_resource,
+  capability chown,
+  
+  /dev/ r,
+  /dev/tty rw,
+  
+  @{PROC}/@{pid}/fd/ r,
+  owner @{PROC}/@{pid}/stat r,
+  
+  /usr/bin/sudo r,
+  /usr/local/bin/askpass.sh Px,
+ 
+  /usr/lib64/sudo/sudoers.so m,
+  /usr/libexec/sudo/libsudo_util.so* mr,
+  
+  /etc/sudoers r,
+  /etc/sudoers.d/ r,
+  /etc/sudoers.d/* r,
+  /etc/environment r,
+  /etc/security/limits.d/ r,
+  /etc/security/limits.d/* r,
+  
+  /run/utmp rk,
+  /run/sudo/ rw,
+  /run/sudo/ts/ rw,
+  /run/sudo/ts/* rwk,
+  
+}
+
+profile sudo.askpass /usr/local/bin/askpass.sh flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/nvidia>
+  #include <abstractions/gtk>
+  #include <abstractions/X>
+  
+  /dev/tty rw,
+
+  /usr/local/bin/askpass.sh r,
+  /usr/bin/zenity ixr,
+  /bin/bash ixr,
+  
+}
