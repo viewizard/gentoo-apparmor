@@ -12,36 +12,30 @@
 
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*.{emp,xml,txt}"
+@{PROG_FILE}="[^.]*"
 @{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
-profile pyfa /usr/lib64/python-exec/python2.[4-9]/pyfa {
+profile qgit /usr/bin/qgit4 flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
+  #include <abstractions/dbus-session>
   #include <abstractions/gtk>
-  #include <abstractions/python>
+  #include <abstractions/qt>
   #include <abstractions/nvidia>
-  #include <abstractions/X>
-  #include <abstractions/nameservice>
-  #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/user-tmp>
-  #include <abstractions/xdg-open>
+  #include <abstractions/X>
+  #include <abstractions/user-systemwide-files>
+  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/nameservice>
 
 
-  /dev/tty rw,
+  /usr/bin/qgit4 r,
+  /usr/bin/git ix,
+  /bin/cat ix,
+  /usr/bin/meld Px,
+
+  owner @{HOME}/.config/qgit/ rw,
+  owner @{HOME}/.config/qgit/** rwk,
   
-  /bin/bash ix,
-  /sbin/ldconfig ix,
-  
-  /usr/share/pyfa/ r,
-  /usr/share/pyfa/* rk,
-  /bin/env r,
-  
-  owner @{HOME}/.pyfa/ rw,
-  owner @{HOME}/.pyfa/** rwk,
-  
-  # Noisy
-  deny /usr/lib64/python2.7/site-packages/wxversion.pyc w,
-    
 }

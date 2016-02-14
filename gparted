@@ -14,25 +14,36 @@ profile gparted /usr/{bin,sbin}/{gpartedbin,gparted-pkexec} flags=(complain) {
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/gtk>
+  #include <abstractions/dbus-session>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/authentication>
   #include <abstractions/nameservice>
+  #include <abstractions/executable-binary-helper>
   
   capability dac_override,
   capability sys_admin,
   capability sys_rawio,
   capability setuid,
   capability setgid,
+  capability sys_ptrace,
   
   /dev/ r,
+  /dev/tty rw,
   /dev/sd[a-z] rw,
   /dev/sd[a-z]* rwk,
   /dev/zd* r,
+  @{PROC}/ r,
   @{PROC}/@{pid}/fd/ r,
   @{PROC}/version r,
   @{PROC}/partitions r,
   @{PROC}/swaps r,
+  @{PROC}/uptime r,
+  @{PROC}/tty/drivers r,
   @{PROC}/@{pid}/mountinfo r,
+  @{PROC}/@{pid}/stat r,
+  @{PROC}/@{pid}/status r,
+  @{PROC}/sys/kernel/pid_max r,
   /run/blkid/ rw,
   /run/blkid/blkid.tab* rwl,
   /run/mount/utab* rwk,
@@ -51,9 +62,19 @@ profile gparted /usr/{bin,sbin}/{gpartedbin,gparted-pkexec} flags=(complain) {
   /sys/devices/virtual/block/zd*/zd*/size r,
   /sys/devices/virtual/block/zd*/zd*/start r,
   
-  /usr/sbin/gpartedbin r,
+  /usr/sbin/gpartedbin ixr,
+  /usr/sbin/gparted ixr,
+  /usr/bin/pkexec ix,
+  /usr/bin/gparted-pkexec r,
   /bin/udevadm ix,
   /bin/umount ix,
+  /bin/ps ix,
+  /bin/sed ix,
+  /usr/bin/id ix,
+  /bin/touch ix,
+  /bin/rm ix,
+  /bin/grep ix,
+  /bin/egrep ixr,
   /usr/bin/mtools ix,
   /sbin/e2image ix,
   /sbin/blkid ix,
@@ -69,9 +90,13 @@ profile gparted /usr/{bin,sbin}/{gpartedbin,gparted-pkexec} flags=(complain) {
   /usr/sbin/ntfsresize ix,
   
   /etc/fstab r,
+  /etc/shells r,
+  /etc/environment r,
   /etc/mke2fs.conf r,
   /etc/udev/udev.conf r,
   /etc/mtools/mtools.conf r,
+  /etc/security/limits.d/ r,
+  
   @{HOME}/.Xauthority r,
   
 }

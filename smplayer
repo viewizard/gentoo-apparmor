@@ -12,8 +12,8 @@
 
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*.{mpeg,vob,ogg,asf,wav,wmv,wma,mov,mp3,mp4,avi,mkv,mka,webm,vivo,ts,ogm,aac,h264,3p2,3gp,3ga,flv,ass,smi,srt,sub,txt,mdv,ssa,sup,tt,smil}"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/}"
+@{PROG_FILE}="[^.]*.{mpeg,vob,ogg,asf,wav,wmv,wma,mov,mp3,mp4,avi,mkv,mka,webm,vivo,ts,ogm,aac,h264,3p2,3gp,3ga,flv,ass,smi,srt,sub,txt,mdv,ssa,sup,tt,smil,gif}"
+@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile smplayer /usr/bin/smplayer {
   #include <abstractions/base>
@@ -42,6 +42,7 @@ profile smplayer /usr/bin/smplayer {
   /etc/mplayer/mplayer.conf r,
   /etc/terminfo/l/linux r,
   /usr/share/terminfo/u/unknown r,
+  owner /tmp/.* m,
 
   owner @{HOME}/.config/smplayer/ rw,
   owner @{HOME}/.config/smplayer/** rwk,
@@ -49,5 +50,9 @@ profile smplayer /usr/bin/smplayer {
   owner @{HOME}/.mplayer/ rw,
   owner @{HOME}/.mplayer/config rw,
   owner @{HOME}/session.log rw,
+  
+   # Noisy
+  deny @{HOMEDIRS}/* w,
+  deny @{HOMEDIRS}/*/ w,
   
 }

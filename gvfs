@@ -17,6 +17,7 @@ profile gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monitor fla
   
   @{PROC}/@{pid}/mounts r,
   /sys/devices/pci**/block/sd[a-z]/sd[a-z]*/uevent r,
+  /sys/devices/virtual/block/md0/uevent r,
   /run/udev/data/* r,
   
   /usr/libexec/gvfs-udisks2-volume-monitor r,
@@ -119,7 +120,10 @@ profile gvfsd-metadata /usr/libexec/gvfsd-metadata flags=(complain) {
 
 profile gvfsd-network /usr/libexec/gvfsd-network flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/dconf>
+  #include <abstractions/gtk>
   
+  /usr/libexec/gvfsd-network r,
   
 }
 
@@ -140,10 +144,14 @@ profile gvfsd-smb /usr/libexec/gvfsd-smb flags=(complain) {
   #include <abstractions/freedesktop.org>
   #include <abstractions/dconf>
   #include <abstractions/gtk>
+  #include <abstractions/nameservice>
   
   /etc/samba/smb.conf r,
   
   /usr/libexec/gvfsd-smb r,
+  
+  /var/cache/samba/ r,
+  /var/cache/samba/** r,
   
 }
 
@@ -151,10 +159,14 @@ profile gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/dconf>
   #include <abstractions/gtk>
+  #include <abstractions/nameservice>
   
   /etc/samba/smb.conf r,
   
   /usr/libexec/gvfsd-smb-browse r,
+
+  /var/cache/samba/ r,
+  /var/cache/samba/** r,
   
 }
 
