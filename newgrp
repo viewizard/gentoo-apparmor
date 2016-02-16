@@ -20,7 +20,7 @@ profile newgrp /usr/bin/newgrp flags=(complain) {
   capability setuid,
   
   /dev/tty rw,
-  /dev/pts/[0-9] rw,
+  /dev/pts/[0-9]* rw,
 
   owner @{PROC}/@{pid}/loginuid r,
   

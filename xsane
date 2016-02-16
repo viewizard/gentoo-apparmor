@@ -12,40 +12,37 @@
 
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*"
+@{PROG_FILE}="[^.]*.{jpg,jpeg,tif,tiff,png,pnm,ps,pdf,rgba,txt}"
 @{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
-profile meld /usr/bin/meld {
+profile xsane /usr/bin/xsane flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/gtk>
-  #include <abstractions/python>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/user-systemwide-files>
   #include <abstractions/program-work-with-disk-rwk>
-  #include <abstractions/executable-binary-helper>
-  #include <abstractions/cups-client>
-  #include <abstractions/user-tmp>
 
 
-  capability dac_override,
-  capability dac_read_search,
-  capability fowner,
+  /sys/bus/ r,
+  /dev/bus/usb/ r,
+  /sys/bus/usb/devices/ r,
+  /sys/bus/scsi/devices/ r,
+  /sys/class/ r,
+  /sys/devices/pci**/usb*/** r,
+  /sys/devices/pci**/ata*/** r,
 
-  /usr/bin/meld r,
-  /bin/env r,
-  /usr/bin/dbus-launch ix,
+  /usr/bin/xsane r,
+
+  /etc/udev/udev.conf r,
+  /etc/sane.d/ r,
+  /etc/sane.d/** r,
+
+  /usr/share/sane/xsane/ r,
+  /usr/share/sane/xsane/** r,
   
-  /dev/pts/[0-9]* rw,
-  /dev/shm/* l,
-  
-  /usr/share/meld/** r,
-  /usr/share/gtksourceview-2.0/ r,
-  /usr/share/gtksourceview-2.0/** r,
-  
-  # Noisy
-  deny /usr/lib64/python{2.[4-9],3.[3-9]}/site-packages/cairo/__init__.pyc w,
+  owner @{HOME}/.sane/ rw,
+  owner @{HOME}/.sane/** rw,
   
 }
