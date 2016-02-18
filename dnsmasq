@@ -1,0 +1,27 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile dnsmasq /usr/sbin/dnsmasq {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+
+  capability setgid,
+  capability setuid,
+  capability net_bind_service,
+  
+  /etc/dnsmasq.conf r,
+  /usr/share/dnsmasq/ r,
+  /usr/share/dnsmasq/* r,
+  /var/lib/misc/dnsmasq.leases rw,
+  
+  /run/dnsmasq.pid rw,
+  
+}

@@ -1,0 +1,39 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile dnscrypt-proxy /usr/sbin/dnscrypt-proxy {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+
+  capability setgid,
+  capability setuid,
+  capability sys_chroot,
+  capability net_admin,
+  capability net_bind_service,
+  capability dac_override,
+  
+  /run/dnscrypt-proxy/dnscrypt-proxy.pid rwl,
+  /var/log/dnscrypt-proxy.log rw,
+
+  /usr/share/dnscrypt-proxy/ r,
+  /usr/share/dnscrypt-proxy/* r,
+  
+}
+
+
+profile dnscrypt-proxy.hostip /usr/bin/hostip {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+ 
+  /dev/pts/[0-9]* rw,
+  @{PROC}/sys/kernel/random/uuid r,
+  
+}
