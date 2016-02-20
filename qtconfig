@@ -9,19 +9,20 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile polkit-gnome /usr/libexec/polkit-gnome-authentication-agent-1 {
+profile qtconfig /usr/{,lib/qt4/,lib32/qt4/,lib64/qt4/}bin/{qtconfig,qtchooser} flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/gtk>
+  #include <abstractions/qt>
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/nameservice>
-  #include <abstractions/authentication>
+  
 
-  @{PROC}/@{pid}/fd/ r,
+  /usr/{,lib/qt4/,lib32/qt4/,lib64/qt4/}bin/{qtconfig,qtchooser} ixr,
 
-  /usr/libexec/polkit-gnome-authentication-agent-1 r,
-  /usr/lib64/polkit-1/polkit-agent-helper-1 ix,
+  /etc/xdg/qtchooser/ r,
+  /etc/xdg/qtchooser/** r,
   
 }

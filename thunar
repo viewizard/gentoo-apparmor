@@ -1,0 +1,86 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+# config for abstractions/program-work-with-disk-** (**-rk,rwk)
+@{PROG_DIR}="**"
+# we could copy folders, not just files
+@{PROG_FILE}="**"
+@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
+
+profile thunar /usr/bin/{Thunar,thunar} flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/dbus-session>
+  #include <abstractions/gtk>
+  #include <abstractions/nvidia>
+  #include <abstractions/user-tmp>
+  #include <abstractions/X>
+  #include <abstractions/nameservice>
+  #include <abstractions/user-systemwide-files>
+  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/executable-binary>
+
+
+  capability dac_override,
+  capability sys_resource,
+  capability fowner,
+  capability sys_admin,
+
+  /dev/tty rw,
+
+  /sys/devices/pci**/uevent r,
+  /sys/devices/virtual/block/md*/uevent r,
+  /run/udev/data/* r,
+
+  /usr/bin/thunar mr,
+  
+  /etc/udev/udev.conf r,
+  /usr/lib64/thunarx-2/* m,
+  /usr/share/ r,
+  /usr/local/share/ r,
+  /usr/share/Thunar/ r,
+  /usr/share/Thunar/sendto/ r,
+  /usr/share/Thunar/sendto/*.desktop r,
+ 
+  owner @{HOME}/.config/Thunar/ rw,
+  owner @{HOME}/.config/Thunar/** rwk,
+  owner @{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
+  owner @{HOME}/.local/share/gvfs-metadata/ rw,
+  owner @{HOME}/.local/share/gvfs-metadata/** rw,
+  
+  # we need x permission in order to launch users scripts and binary
+  audit owner @{PROG_FOLDERS}@{PROG_FILE} ix,
+  audit owner @{PROG_FOLDERS}@{PROG_DIR}/@{PROG_FILE} ix,
+  
+}
+
+
+profile thunar-settings /usr/bin/thunar-settings flags=(complain) {
+  #include <abstractions/base>
+
+  /dev/tty rw,
+  
+  /usr/bin/dbus-send Pixr,
+  /usr/bin/thunar-settings r,
+  /bin/bash r,
+  
+}
+
+profile thunar-ThunarBulkRename /usr/lib64/Thunar/ThunarBulkRename flags=(complain) {
+  #include <abstractions/base>
+
+  /dev/tty rw,
+  
+  /usr/bin/thunar Px,
+  
+}
