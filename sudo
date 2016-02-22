@@ -11,7 +11,7 @@
 # FIX ME!
 
 #include <tunables/global>
-profile sudo /usr/bin/sudo flags=(complain) {
+profile sudo /usr/bin/sudo {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
@@ -54,7 +54,7 @@ profile sudo /usr/bin/sudo flags=(complain) {
   
 }
 
-profile sudo.askpass /usr/local/bin/askpass.sh flags=(complain) {
+profile sudo.askpass /usr/local/bin/askpass.sh {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>

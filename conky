@@ -26,11 +26,14 @@ profile conky /usr/bin/conky {
   /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor r,
   /sys/class/i2c-adapter/ r,
   /sys/devices/pci**/i2c-*/name r,
+  /sys/devices/platform/*/ r,
+  /sys/devices/platform/*/name r,
 
 
   /bin/bash Pux,
   /usr/bin/conky r,
   
+  /etc/sensors3.conf r,
   /etc/terminfo/l/linux r,
   
   owner @{HOME}/.conkyrc r,
