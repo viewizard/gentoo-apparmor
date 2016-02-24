@@ -73,3 +73,16 @@ profile nvidia-modprobe /opt/bin/nvidia-modprobe flags=(complain) {
   #include <abstractions/nvidia>
 
 }
+
+
+profile nvidia-smi /opt/bin/nvidia-smi flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nvidia>
+
+  capability sys_admin,
+
+  /dev/nvidiactl rw,
+  /dev/nvidia0 rw,
+  @{PROC}/driver/nvidia/params r,
+
+}

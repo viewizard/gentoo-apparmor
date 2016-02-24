@@ -1,0 +1,49 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile polkit.polkitd /usr/lib/polkit-1/polkitd flags=(complain) {
+  #include <abstractions/base>
+
+#  /etc/polkit-1/ r,
+#  /etc/polkit-1/** r,
+
+#  /usr/share/polkit-1/ r,
+#  /usr/share/polkit-1/** r,
+  
+#  /var/lib/polkit-1/ r,
+#  /var/lib/polkit-1/** rw,
+  
+}
+
+profile polkit.polkit-agent-helper /usr/lib/polkit-1/polkit-agent-helper-1 flags=(complain) {
+  #include <abstractions/base>
+  
+}
+
+profile polkit.pkaction /usr/bin/pkaction flags=(complain) {
+  #include <abstractions/base>
+  
+}
+
+profile polkit.pkcheck /usr/bin/pkcheck flags=(complain) {
+  #include <abstractions/base>
+  
+}
+
+profile polkit.pkexec /usr/bin/pkexec flags=(complain) {
+  #include <abstractions/base>
+  
+}
+
+profile polkit.pkttyagent /usr/bin/pkttyagent flags=(complain) {
+  #include <abstractions/base>
+  
+}

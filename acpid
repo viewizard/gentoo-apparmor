@@ -9,35 +9,38 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile xdg-open /usr/bin/xdg-open {
+profile acpid /usr/sbin/acpid flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/dbus>
-  #include <abstractions/dbus-session>
-  #include <abstractions/freedesktop.org>
   #include <abstractions/nameservice>
 
+  owner @{PROC}/@{pid}/fd/ r,
+  @{PROC}/@{pid}/loginuid r,
 
   /dev/tty rw,
-  owner @{PROC}/@{pid}/fd/ r,
-
-  /bin/bash r,
-  /usr/bin/xdg-open r,
-  /usr/bin/exo-open Px,
-  /usr/bin/dbus-send ix,
-  /usr/bin/xprop ix,
-  /bin/grep ix,
+  /dev/input/ r,
+  /dev/input/event* r,
+  
+  /bin/bash ix,
+  /usr/bin/logger ix,
+  
+  /etc/acpi/ r,
+  /etc/acpi/** ixr,
+  
+  /run/acpid.pid rwl,
+  /run/acpid.socket rw,
   
 }
 
-profile xdg-email /usr/bin/xdg-email {
+profile acpid.acpi_listen /usr/bin/acpi_listen flags=(complain) {
   #include <abstractions/base>
+  
+}
 
-  /dev/tty rw,
-
-  /bin/bash r,
-  /usr/bin/xdg-email r,
-  /bin/sed ix,
-  /usr/bin/which ix,
-  /usr/bin/exo-open Px,
+profile acpid.kacpimon /usr/sbin/kacpimon flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/pts/[0-9]* rw,
+  /dev/input/ r,
+  /dev/input/event* r,
   
 }

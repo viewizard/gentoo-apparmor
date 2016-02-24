@@ -8,12 +8,23 @@
 #
 # ------------------------------------------------------------------
 
+#include <tunables/global>
+profile dconf /usr/bin/dconf flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/dconf>
 
-# execution external programs with xdg-open
-/usr/bin/xdg-open Pxr,
-/usr/bin/xdg-email Pxr,
-owner @{PROC}/@{pid}/fd/ r,
+  
+}
 
-# sg/newgrp for work with network connection via iptables uid/gid-owner
-/usr/bin/newgrp Px,
-/usr/bin/id ixr,
+
+profile dconf-service /usr/libexec/dconf-service flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/dconf>
+
+  @{PROC}/cmdline r,
+
+  /usr/libexec/dconf-service r,
+  
+  owner @{HOME}/.config/dconf/user* rw,
+  
+}

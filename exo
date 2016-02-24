@@ -45,6 +45,7 @@ profile exo-helper /usr/lib64/xfce4/exo-1/exo-helper-1 {
   owner @{PROC}/@{pid}/fd/ r,
   
   /usr/lib64/xfce4/exo-1/exo-helper-1 r,
+  /usr/lib64/xfce4/exo-1/exo-compose-mail-1 Px,
   
   # helpers
   /usr/share/ r,
@@ -62,6 +63,18 @@ profile exo-helper /usr/lib64/xfce4/exo-1/exo-helper-1 {
   owner @{HOME}/.local/share/applications/ r,
   owner @{HOME}/.local/share/applications/** r,
 
+}
+
+
+profile exo-compose-mail /usr/lib64/xfce4/exo-1/exo-compose-mail-1 {
+  #include <abstractions/base>
+  #include <abstractions/executable-binary-helper>
+   
+  /usr/lib64/xfce4/exo-1/exo-compose-mail-1 r,
+  
+  /bin/env r,
+  /usr/bin/perl ix,
+  
 }
 
 

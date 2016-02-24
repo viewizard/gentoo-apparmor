@@ -112,6 +112,11 @@ profile gvfsd-localtest /usr/libexec/gvfsd-localtest flags=(complain) {
 profile gvfsd-metadata /usr/libexec/gvfsd-metadata flags=(complain) {
   #include <abstractions/base>
   
+  /etc/udev/udev.conf r,
+  /sys/devices/pci**/block/sd[a-z]/sd[a-z]*/uevent r,
+  /sys/devices/virtual/block/md0/uevent r,
+  /run/udev/data/* r,
+    
   /usr/libexec/gvfsd-metadata r,
   
   owner @{HOME}/.local/share/gvfs-metadata/ rw,

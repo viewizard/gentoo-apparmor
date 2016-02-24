@@ -1,0 +1,31 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile suricata /usr/bin/suricata flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/user-tmp>
+
+  capability setgid,
+  capability setuid,
+  capability setpcap,
+  capability net_admin,
+  
+  /sys/devices/system/cpu/ r,
+
+  /etc/suricata/ r,
+  /etc/suricata/** r,
+  /usr/share/misc/magic.mgc r,
+  
+  /var/lib/suricata/** rwk,
+  /run/suricata.pid rw,
+  
+}

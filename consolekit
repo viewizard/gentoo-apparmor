@@ -1,0 +1,93 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile consolekit.ck-history /usr/bin/ck-history flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+
+  /dev/pts/[0-9]* rw,
+
+  /var/log/ConsoleKit/history r,
+    
+}
+
+profile consolekit.ck-launch-session /usr/bin/ck-launch-session flags=(complain) {
+  #include <abstractions/base>
+  
+}
+
+profile consolekit.ck-list-sessions /usr/bin/ck-list-sessions flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  /dev/pts/[0-9]* rw,
+  
+}
+
+profile consolekit.ck-log-system-restart /usr/sbin/ck-log-system-restart flags=(complain) {
+  #include <abstractions/base>
+  
+}
+
+profile consolekit.ck-log-system-start /usr/sbin/ck-log-system-start flags=(complain) {
+  #include <abstractions/base>
+  
+}
+
+profile consolekit.ck-log-system-stop /usr/sbin/ck-log-system-stop flags=(complain) {
+  #include <abstractions/base>
+  
+}
+
+profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  capability sys_tty_config,
+  capability sys_ptrace,
+
+  @{PROC}/@{pid}/fd/ r,
+  @{PROC}/@{pid}/stat r,
+  @{PROC}/tty/drivers r,
+  @{PROC}/@{pid}/environ r,
+  @{PROC}/@{pid}/sessionid r,
+  /dev/tty* r,
+  /sys/devices/virtual/tty/tty*/active r,
+  /sys/power/state r,
+  
+  /usr/lib64/ConsoleKit/* Pix,
+  /usr/bin/pm-is-supported ix,
+  
+  /etc/ConsoleKit/ r,
+  /etc/ConsoleKit/** r,
+  /etc/pm/config.d/ r,
+  /etc/pm/config.d/** r,
+  
+  /run/ConsoleKit/ rw,
+  /run/ConsoleKit/* rw,
+  
+  /var/log/ConsoleKit/ r,
+  /var/log/ConsoleKit/** rw,
+  
+}
+
+profile consolekit.udev-acl /usr/{lib,lib32,lib64}/ConsoleKit/udev-acl flags=(complain) {
+  #include <abstractions/base>
+  
+  
+  /etc/udev/udev.conf r,
+  /run/udev/tags/udev-acl/ r,
+  /sys/devices/**/uevent r,
+  
+  /run/ConsoleKit/database r,
+  
+  
+}

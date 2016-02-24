@@ -30,6 +30,8 @@ profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   #include <abstractions/nameservice>
   
 
+  owner @{PROC}/@{pid}/fd/ rw,
+
   /usr/bin/gimp-* rm,
   /usr/bin/gimp-console-* r,
   /usr/lib64/gimp/[0-9].[0-9]/plug-ins/* ix,
