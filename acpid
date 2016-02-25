@@ -18,7 +18,10 @@ profile acpid /usr/sbin/acpid flags=(complain) {
 
   /dev/tty rw,
   /dev/input/ r,
+  /dev/input/by-id/ r,
+  /dev/input/by-path/ r,
   /dev/input/event* r,
+  /dev/input/mouse* r,
   
   /bin/bash ix,
   /usr/bin/logger ix,

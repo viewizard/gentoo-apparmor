@@ -59,12 +59,15 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon flags=(compla
   @{PROC}/tty/drivers r,
   @{PROC}/@{pid}/environ r,
   @{PROC}/@{pid}/sessionid r,
-  /dev/tty* r,
+  /dev/tty* rw,
   /sys/devices/virtual/tty/tty*/active r,
   /sys/power/state r,
   
   /usr/lib64/ConsoleKit/* Pix,
-  /usr/bin/pm-is-supported ix,
+  /usr/bin/pm-is-supported ixr,
+  /bin/grep ix,
+  /bin/bash ixr,
+  /bin/tr ix,
   
   /etc/ConsoleKit/ r,
   /etc/ConsoleKit/** r,
