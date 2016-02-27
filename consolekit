@@ -63,11 +63,12 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon flags=(compla
   /sys/devices/virtual/tty/tty*/active r,
   /sys/power/state r,
   
-  /usr/lib64/ConsoleKit/* Pix,
+  /usr/lib64/ConsoleKit/** Pix,
   /usr/bin/pm-is-supported ixr,
   /bin/grep ix,
   /bin/bash ixr,
   /bin/tr ix,
+  /sbin/shutdown Cxr -> shutdown,
   
   /etc/ConsoleKit/ r,
   /etc/ConsoleKit/** r,
@@ -79,6 +80,25 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon flags=(compla
   
   /var/log/ConsoleKit/ r,
   /var/log/ConsoleKit/** rw,
+  
+  
+  profile shutdown flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    capability setuid,
+    capability dac_override,
+    capability sys_tty_config,
+    
+    /dev/tty* rw,
+    /dev/initctl rw,
+    
+    /sbin/shutdown r,
+    /sbin/init ix,
+    
+    /run/utmp rk,
+    /run/shutdown.pid rw,
+  }
   
 }
 
