@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
+# config for abstractions/program-work-with-disk-** (**-rk,rwk,rwkl)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*"
 @{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
@@ -24,13 +24,15 @@ profile xarchiver /usr/bin/xarchiver {
   #include <abstractions/X>
   #include <abstractions/nameservice>
   #include <abstractions/user-systemwide-files>
-  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/user-tmp>
+  #include <abstractions/program-work-with-disk-rwkl>
   #include <abstractions/xdg-open>
 
 
   capability dac_override,
   capability dac_read_search,
   capability chown,
+  capability fowner,
   
   /dev/tty rw,
   /sys/devices/system/cpu/ r,
@@ -41,6 +43,10 @@ profile xarchiver /usr/bin/xarchiver {
   /bin/mv ix,
   /bin/rm ix,
   /bin/cp ix,
+  /bin/dd ix,
+  /bin/cpio ixr,
+  /usr/x86_64-pc-linux-gnu/binutils-bin/*/ar ix,
+  
   /opt/rar/rar Cx,
   /bin/bzip2 ix,
   /bin/gzip ix,
@@ -52,10 +58,12 @@ profile xarchiver /usr/bin/xarchiver {
   /usr/bin/7za ixr,
   /usr/lib64/p7zip/7za ix,
   
+  /tmp/** rw,
+  
   profile rar /opt/rar/rar {
     #include <abstractions/base>
     #include <abstractions/user-systemwide-files>
-    #include <abstractions/program-work-with-disk-rwk>
+    #include <abstractions/program-work-with-disk-rwkl>
   
     /opt/rar/rar r,
     

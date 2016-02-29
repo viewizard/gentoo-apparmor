@@ -77,6 +77,7 @@ profile wine-preloader /usr/bin/wine-preloader {
 
   /sys/devices/system/cpu/cpu*/cpufreq/* r,
   /sys/devices/system/cpu/cpu*/cache/index*/* r,
+  /sys/devices/system/cpu/cpufreq/policy*/{scaling_cur_freq,scaling_max_freq,cpuinfo_max_freq} r,
   /sys/devices/system/node/** r,
   @{PROC}/cpuinfo r,
   @{PROC}/meminfo r,
@@ -91,6 +92,7 @@ profile wine-preloader /usr/bin/wine-preloader {
   /usr/bin/wine-preloader mrPx,
   /usr/bin/wineserver Px,
   
+  /etc/mime.types r,
   /etc/localtime r,
   /etc/fstab r,
   /etc/printcap r,
@@ -111,6 +113,9 @@ profile wine-preloader /usr/bin/wine-preloader {
   deny /var/lib/dbus/machine-id r,
   deny @{HOMEDIRS}/* w,
   deny @{HOMEDIRS}/*/ w,
+  deny /etc/ r,
+  deny /usr/local/ r,
+  deny /usr/local/lib64/ r,
   
 
   # FIX ME!
@@ -132,6 +137,7 @@ profile wineserver /usr/bin/wineserver {
 
   owner @{PROC}/@{pid}/mem r,
 
+  /etc/mime.types r,
   /usr/bin/wineserver mr,
   /usr/share/wine/* r,
   /tmp/.wine-*/** m,
