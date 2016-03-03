@@ -1,0 +1,37 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile linphone /usr/bin/linphone{,c,csh} flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+  #include <abstractions/nvidia>
+  #include <abstractions/X>
+  #include <abstractions/user-tmp>
+  #include <abstractions/nameservice>
+  #include <abstractions/audio>
+
+
+  /etc/machine-id r,
+  /etc/udev/udev.conf r,
+
+  /usr/share/linphone/ r,
+  /usr/share/linphone/** r,
+  /usr/share/sounds/linphone/ r,
+  /usr/share/sounds/linphone/** r,
+  /usr/share/pixmaps/linphone/ r,
+  /usr/share/pixmaps/linphone/** r,
+
+  owner @{HOME}/.linphonerc rw,
+  owner @{HOME}/.linphone-history.db rwk,
+  
+}

@@ -1,0 +1,30 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile qtox /usr/bin/qtox flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+  #include <abstractions/qt>
+  #include <abstractions/nvidia>
+  #include <abstractions/X>
+  #include <abstractions/user-tmp>
+  #include <abstractions/user-download>
+  #include <abstractions/user-upload>
+  #include <abstractions/nameservice>
+  #include <abstractions/audio>
+
+
+  owner @{HOME}/.config/tox/ rw,
+  owner @{HOME}/.config/tox/** rwk,
+  
+}
