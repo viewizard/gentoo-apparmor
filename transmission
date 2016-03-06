@@ -9,13 +9,6 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="**"
-# we could download folders with files, not just files...
-@{PROG_FILE}="**"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
-
 profile transmission /usr/bin/transmission-* {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -25,7 +18,9 @@ profile transmission /usr/bin/transmission-* {
   #include <abstractions/qt>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/dconf>
+  #include <abstractions/user-download>
+  #include <abstractions/user-upload>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
 
