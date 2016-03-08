@@ -9,15 +9,23 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
+# config for abstractions/program-work-with-disk-** (**-rk,rwk)
+@{PROG_DIR}="[^.]**"
+@{PROG_FILE}="[^.]*.png"
+@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
+
 profile alacarte /usr/lib64/python-exec/python2.[4-9]/alacarte {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
+  #include <abstractions/dconf>
   #include <abstractions/gtk>
   #include <abstractions/python>
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/nameservice>
+  #include <abstractions/program-work-with-disk-rk>
 
 
   /usr/share/alacarte/* r,

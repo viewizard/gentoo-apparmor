@@ -69,6 +69,8 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon flags=(compla
   /bin/bash ixr,
   /bin/tr ix,
   /sbin/shutdown Cxr -> shutdown,
+  /sbin/shutdown_bin Cxr -> shutdown,
+  /sbin/shutdown_delay.sh Cxr -> shutdown,
   
   /etc/ConsoleKit/ r,
   /etc/ConsoleKit/** r,
@@ -95,14 +97,21 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon flags=(compla
     
     /sbin/shutdown r,
     /sbin/init ix,
-    
-    # for bash script
-    /bin/bash ix,
-    /bin/ps ix,
-    /bin/grep ix,
-    
+       
     /run/utmp rk,
     /run/shutdown.pid rw,
+    
+    # for bash script
+    capability sys_ptrace,
+    /bin/bash ixr,
+    /bin/ps ix,
+    /bin/grep ix,
+    /bin/cut ix,
+    @{PROC}/ r,
+    @{PROC}/@{pid}/stat r,
+    @{PROC}/@{pid}/status r,
+    @{PROC}/uptime r,
+    @{PROC}/tty/drivers r,
   }
   
 }
