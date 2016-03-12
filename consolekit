@@ -102,16 +102,21 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon flags=(compla
     /run/shutdown.pid rw,
     
     # for bash script
+    #include <abstractions/authentication>
     capability sys_ptrace,
+    /dev/initctl rw,
     /bin/bash ixr,
     /bin/ps ix,
     /bin/grep ix,
     /bin/cut ix,
+    /usr/bin/getent ix,
+    /bin/su ix,
     @{PROC}/ r,
     @{PROC}/@{pid}/stat r,
     @{PROC}/@{pid}/status r,
     @{PROC}/uptime r,
     @{PROC}/tty/drivers r,
+    owner @{PROC}/@{pid}/loginuid r,
   }
   
 }
