@@ -9,6 +9,12 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
+# config for abstractions/program-work-with-disk-** (**-rk,rwk)
+@{PROG_DIR}="[^.]**"
+@{PROG_FILE}="[^.]*.rdp"
+@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
+
 profile remmina /usr/bin/remmina {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -19,6 +25,7 @@ profile remmina /usr/bin/remmina {
   #include <abstractions/X>
   #include <abstractions/dconf>
   #include <abstractions/nameservice>
+  #include <abstractions/program-work-with-disk-rwk>
 
 
   /usr/bin/remmina rm,

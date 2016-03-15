@@ -20,25 +20,17 @@ profile mpv /usr/bin/mpv {
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/audio>
-  #include <abstractions/dbus-session>
   #include <abstractions/nvidia>
+  #include <abstractions/dbus-session>
   #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/program-work-with-disk-rk>
 
 
-  /usr/bin/mpv r,
+  /usr/bin/mpv r, 
+  /usr/bin/xdg-screensaver Pxr,
+
   /tmp/.* m,
-  
-  # xdg-screensaver
-  /usr/bin/xdg-screensaver ixr,
-  /dev/tty rw,
-  /bin/grep ix,
-  /bin/mv ix,
-  /bin/sed ix,
-  /usr/bin/which ix,
-  /usr/bin/dbus-send ix,
-  /usr/bin/xset ix,
 
   # Noisy
   deny @{HOMEDIRS}/* w,

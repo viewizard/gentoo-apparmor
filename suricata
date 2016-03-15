@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile suricata /usr/bin/suricata flags=(complain) {
+profile suricata /usr/bin/suricata {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/user-tmp>
@@ -18,6 +18,8 @@ profile suricata /usr/bin/suricata flags=(complain) {
   capability setuid,
   capability setpcap,
   capability net_admin,
+  capability dac_read_search,
+  capability dac_override,
   
   /sys/devices/system/cpu/ r,
 

@@ -15,7 +15,10 @@ profile grive /usr/bin/grive {
   #include <abstractions/ssl_certs>
   #include <abstractions/nameservice>
 
-
+  /dev/pts/[0-9]* rw,
+  
+  /usr/bin/grive r,
+  
   owner @{HOME}/GoogleDrive/ r,
   owner @{HOME}/GoogleDrive/** rw,
   owner @{HOME}/.local/share/Trash/files/ r,

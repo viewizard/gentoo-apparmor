@@ -41,3 +41,23 @@ profile xdg-email /usr/bin/xdg-email {
   /usr/bin/exo-open Px,
   
 }
+
+profile xdg-screensaver /usr/bin/xdg-screensaver {
+  #include <abstractions/base>
+  #include <abstractions/dbus-session>
+  #include <abstractions/X>
+
+  /dev/tty rw,
+
+  /usr/bin/xdg-screensaver r,
+  /usr/bin/xautolock Pux,
+  /bin/bash r,
+  /bin/grep ix,
+  /bin/mv ix,
+  /bin/sed ix,
+  /usr/bin/which ix,
+  /bin/hostname ix,
+  /usr/bin/dbus-send ix,
+  /usr/bin/xset ix,
+  
+}

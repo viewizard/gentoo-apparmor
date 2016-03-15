@@ -24,6 +24,7 @@ profile teamspeak /usr/bin/teamspeak3 {
   #include <abstractions/X>
 
   /dev/tty rw,
+  owner @{PROC}/@{pid}/auxv r,
 
   /usr/bin/teamspeak3 r,
   /opt/teamspeak3-client/ r,

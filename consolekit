@@ -68,9 +68,9 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon flags=(compla
   /bin/grep ix,
   /bin/bash ixr,
   /bin/tr ix,
-  /sbin/shutdown Cxr -> shutdown,
-  /sbin/shutdown_bin Cxr -> shutdown,
-  /sbin/shutdown_delay.sh Cxr -> shutdown,
+  /sbin/shutdown Puxr,
+  /sbin/shutdown_bin Puxr,
+  /sbin/shutdown_delay.sh Puxr,
   
   /etc/ConsoleKit/ r,
   /etc/ConsoleKit/** r,
@@ -82,42 +82,6 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon flags=(compla
   
   /var/log/ConsoleKit/ r,
   /var/log/ConsoleKit/** rw,
-  
-  
-  profile shutdown flags=(complain) {
-    #include <abstractions/base>
-    #include <abstractions/nameservice>
-    
-    capability setuid,
-    capability dac_override,
-    capability sys_tty_config,
-    
-    /dev/tty* rw,
-    /dev/initctl rw,
-    
-    /sbin/shutdown r,
-    /sbin/init ix,
-       
-    /run/utmp rk,
-    /run/shutdown.pid rw,
-    
-    # for bash script
-    #include <abstractions/authentication>
-    capability sys_ptrace,
-    /dev/initctl rw,
-    /bin/bash ixr,
-    /bin/ps ix,
-    /bin/grep ix,
-    /bin/cut ix,
-    /usr/bin/getent ix,
-    /bin/su ix,
-    @{PROC}/ r,
-    @{PROC}/@{pid}/stat r,
-    @{PROC}/@{pid}/status r,
-    @{PROC}/uptime r,
-    @{PROC}/tty/drivers r,
-    owner @{PROC}/@{pid}/loginuid r,
-  }
   
 }
 
