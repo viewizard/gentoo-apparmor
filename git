@@ -1,0 +1,36 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+# config for abstractions/program-work-with-disk-** (**-rk,rwk)
+@{PROG_DIR}="[^.]**"
+@{PROG_FILE}="[^.]*"
+@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
+
+profile git /usr/bin/git flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/user-systemwide-files>
+  #include <abstractions/program-work-with-disk-rwkl>
+  #include <abstractions/nameservice>
+  #include <abstractions/ssl_certs>
+
+  capability fowner,
+  
+  /dev/tty rw,
+  /dev/pts/[0-9]* rw,
+
+  /usr/bin/git r,
+  /usr/libexec/git-core/git ix,
+  /usr/libexec/git-core/git-remote-http ix,
+  /usr/libexec/git-core/git-remote-https ix,
+
+  
+}

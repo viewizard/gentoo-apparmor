@@ -24,6 +24,7 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
   /bin/bash Pux,
   /usr/bin/htop Cx,
   /usr/libexec/gnome-pty-helper Cx,
+  /usr/bin/passwd.sh Cx,
 
   owner @{PROC}/@{pid}/fd/ r,  
   /dev/pts/[0-9]* rw,
@@ -60,7 +61,7 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
     
     capability sys_ptrace,
     
-    /dev/pts/* rw,
+    /dev/pts/[0-9]* rw,
     
     /usr/bin/htop r,
     /etc/terminfo/x/xterm r,
@@ -78,6 +79,43 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
     @{PROC}/@{pid}/task/@{pid}/cmdline r,
     
     owner @{HOME}/.config/htop/htoprc rw,
-  }  
+  }
+  
+  # since we don't have GUI in xfce4 for passwd, we use our script
+  profile passwd.sh /usr/bin/passwd.sh flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/authentication>
+    
+    capability chown,
+    capability fsetid,
+    capability sys_ptrace,
+    
+    /dev/tty rw,
+    /dev/pts/[0-9]* rw,
+    owner @{PROC}/@{pid}/loginuid r,
+    @{PROC}/ r,
+    @{PROC}/@{pid}/stat r,
+    @{PROC}/@{pid}/status r,
+    @{PROC}/@{pid}/cmdline r,
+    @{PROC}/uptime r,
+    
+    /etc/.pwd.lock rwk,
+    /etc/nshadow rw,
+    /etc/shadow rw,
+    /etc/terminfo/x/xterm r,
+    
+    /usr/bin/passwd.sh r,
+    /bin/bash r,
+    
+    /bin/passwd rix,
+    /bin/sleep ix,
+    /bin/ps ix,
+    /bin/basename ix,
+    /usr/bin/tput ix,
+    
+    /run/utmp rk,
+
+  }
   
 }
