@@ -13,6 +13,10 @@ profile acpid /usr/sbin/acpid flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
 
+  capability sys_tty_config,
+
+  /dev/tty[0-9]* rw,
+
   owner @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/loginuid r,
 
@@ -25,6 +29,8 @@ profile acpid /usr/sbin/acpid flags=(complain) {
   
   /bin/bash ix,
   /usr/bin/logger ix,
+  /bin/sed ix,
+  /bin/ps ix,
   
   /etc/acpi/ r,
   /etc/acpi/** ixr,

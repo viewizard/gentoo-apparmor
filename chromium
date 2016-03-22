@@ -135,6 +135,7 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   owner @{HOME}/.config/chromium/**/Dictionaries/*.bdic mr,
 
   # Noisy
+  deny /dev/bus/usb/ r,
   deny /run/udev/data/** r,
   deny /usr/lib64/chromium-browser/** w,
   deny @{HOMEDIRS}/* w,

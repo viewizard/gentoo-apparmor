@@ -66,11 +66,12 @@ profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd {
   #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
 
+  /dev/tty rw,
   owner @{PROC}/@{pid}/fd/ r,
   
   /usr/bin/xfsettingsd r,
   /usr/bin/xkbcomp ixr,
-  /usr/bin/xflock4 ix,
+  /usr/bin/xflock4 ixr,
   
   /etc/xdg/autostart/xfsettingsd.desktop r,
 

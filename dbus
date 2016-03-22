@@ -23,6 +23,8 @@ profile dbus /usr/bin/dbus-{cleanup-sockets,daemon,launch,run-session,send,uuidg
   capability sys_resource,
   capability setgid,
   capability setuid,
+  capability dac_read_search,
+  capability dac_override,
 
   @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/cmdline r,
