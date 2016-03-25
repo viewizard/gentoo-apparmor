@@ -26,6 +26,7 @@ profile sudo /usr/bin/sudo {
   capability setgid,
   capability sys_resource,
   capability chown,
+  capability fowner,
   capability dac_override,
   
   /dev/ r,
@@ -40,6 +41,7 @@ profile sudo /usr/bin/sudo {
   /usr/lib64/sudo/sudoers.so m,
   /usr/libexec/sudo/libsudo_util.so* mr,
   
+  /etc/pamusb.conf r,
   /etc/sudoers r,
   /etc/sudoers.d/ r,
   /etc/sudoers.d/* r,
@@ -51,6 +53,9 @@ profile sudo /usr/bin/sudo {
   /run/sudo/ rw,
   /run/sudo/ts/ rw,
   /run/sudo/ts/* rwk,
+  
+  @{HOME}/.pamusb/*.pad rw,
+  /media/**.pad rw,
   
 }
 

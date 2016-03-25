@@ -19,12 +19,14 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
   #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
+  #include <abstractions/dbus-session>
 
 
   /bin/bash Pux,
   /usr/bin/htop Cx,
   /usr/libexec/gnome-pty-helper Cx,
   /usr/bin/passwd.sh Cx,
+  /usr/bin/dbus-daemon Px,
 
   owner @{PROC}/@{pid}/fd/ r,  
   /dev/pts/[0-9]* rw,
@@ -43,6 +45,10 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
     #include <abstractions/freedesktop.org>
     #include <abstractions/nvidia>
     #include <abstractions/nameservice>
+        
+    capability setuid,
+    capability setgid,
+    capability fsetid,
 
     /dev/pts/* rw,
     /dev/ptmx rw,
