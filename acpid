@@ -14,11 +14,16 @@ profile acpid /usr/sbin/acpid flags=(complain) {
   #include <abstractions/nameservice>
 
   capability sys_tty_config,
+  capability sys_ptrace,
 
   /dev/tty[0-9]* rw,
 
+  @{PROC}/ r,
   owner @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/loginuid r,
+  owner @{PROC}/@{pid}/stat r,
+  owner @{PROC}/uptime r,
+  owner @{PROC}/sys/kernel/pid_max r,
 
   /dev/tty rw,
   /dev/input/ r,

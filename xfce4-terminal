@@ -19,14 +19,12 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
   #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
-  #include <abstractions/dbus-session>
 
 
   /bin/bash Pux,
   /usr/bin/htop Cx,
   /usr/libexec/gnome-pty-helper Cx,
   /usr/bin/passwd.sh Cx,
-  /usr/bin/dbus-daemon Px,
 
   owner @{PROC}/@{pid}/fd/ r,  
   /dev/pts/[0-9]* rw,
@@ -38,6 +36,12 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
   
   owner @{HOME}/.config/xfce4/terminal/* rw,
   owner @{HOME}/.config/xfce4/help.rc* rw,
+  
+  
+  #include <abstractions/dbus-session>  
+  /usr/bin/dbus-daemon Px,
+  owner @{HOME}/.dbus/ rw,
+  owner @{HOME}/.dbus/** rw,
 
   
   profile gnome-pty-helper /usr/libexec/gnome-pty-helper {
@@ -99,12 +103,15 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
     
     /dev/tty rw,
     /dev/pts/[0-9]* rw,
+    /sys/devices/virtual/block/**/name r,
     owner @{PROC}/@{pid}/loginuid r,
     @{PROC}/ r,
     @{PROC}/@{pid}/stat r,
     @{PROC}/@{pid}/status r,
     @{PROC}/@{pid}/cmdline r,
     @{PROC}/uptime r,
+    @{PROC}/cmdline r,
+    @{PROC}/@{pid}/mountinfo r,
     
     /etc/.pwd.lock rwk,
     /etc/nshadow rw,
@@ -119,6 +126,9 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
     /bin/ps ix,
     /bin/basename ix,
     /usr/bin/tput ix,
+    /bin/cat ix,
+    /bin/mount ix,
+    /bin/grep ix,
     
     /run/utmp rk,
 
