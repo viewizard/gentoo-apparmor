@@ -44,6 +44,9 @@ profile gvfsd /usr/libexec/gvfsd flags=(complain) {
   /usr/share/gvfs/ r,
   /usr/share/gvfs/** r,
   
+  /run/user/*/gvfs/ rw,
+  /run/user/*/gvfs/** rw,
+  
   owner @{HOME}/.gvfs/ rw,
   
 }
@@ -93,6 +96,9 @@ profile gvfsd-fuse /usr/libexec/gvfsd-fuse flags=(complain) {
   /usr/bin/fusermount ixr,
   
   /etc/fuse.conf r,
+  
+  /run/user/*/gvfs/ rw,
+  /run/user/*/gvfs/** rw,
   
   @{HOME}/.gvfs/ rw,
   @{HOME}/.gvfs/** rw,

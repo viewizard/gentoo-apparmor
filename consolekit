@@ -53,6 +53,8 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon flags=(compla
   
   capability sys_tty_config,
   capability sys_ptrace,
+  capability sys_admin,
+  capability chown,
 
   @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/stat r,
@@ -69,6 +71,9 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon flags=(compla
   /bin/bash ixr,
   /bin/tr ix,
   /sbin/shutdown Puxr,
+  /bin/cut ix,
+  /usr/bin/getent ix,
+  /bin/mkdir ix,
   
   /etc/ConsoleKit/ r,
   /etc/ConsoleKit/** r,
@@ -77,6 +82,8 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon flags=(compla
   
   /run/ConsoleKit/ rw,
   /run/ConsoleKit/* rw,
+  /run/user/ rw,
+  /run/user/** rw,
   
   /var/log/ConsoleKit/ r,
   /var/log/ConsoleKit/** rw,
