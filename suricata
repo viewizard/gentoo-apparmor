@@ -20,8 +20,13 @@ profile suricata /usr/bin/suricata {
   capability net_admin,
   capability dac_read_search,
   capability dac_override,
+  capability sys_module,
+  capability sys_nice,
+  capability net_raw,
   
   /sys/devices/system/cpu/ r,
+  
+  @{PROC}/@{pid}/net/dev r,
 
   /etc/suricata/ r,
   /etc/suricata/** r,

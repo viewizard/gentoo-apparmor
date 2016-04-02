@@ -31,6 +31,7 @@ profile sudo /usr/bin/sudo {
   
   /dev/ r,
   /dev/tty rw,
+  /dev/pts/[0-9]* rw,
   
   @{PROC}/@{pid}/fd/ r,
   owner @{PROC}/@{pid}/stat r,

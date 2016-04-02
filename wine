@@ -104,6 +104,7 @@ profile wine-preloader /usr/bin/wine-preloader {
   /tmp/* m,
   
   owner @{HOME}/.config/pulse/cookie rk,
+  owner @{HOME}/.wine*/ rw,
   owner @{HOME}/.wine*/* mrw,
   owner @{HOME}/.wine*/** mrw,
 
@@ -111,6 +112,7 @@ profile wine-preloader /usr/bin/wine-preloader {
   deny / r,
   deny /etc/fstab r,
   deny /var/lib/dbus/machine-id r,
+  deny @{HOME}/.* w,
   deny @{HOMEDIRS}/* w,
   deny @{HOMEDIRS}/*/ w,
   deny /etc/ r,

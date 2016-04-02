@@ -21,9 +21,12 @@ profile acpid /usr/sbin/acpid flags=(complain) {
   @{PROC}/ r,
   owner @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/loginuid r,
-  owner @{PROC}/@{pid}/stat r,
+  @{PROC}/@{pid}/stat r,
+  @{PROC}/@{pid}/status r,
+  @{PROC}/@{pid}/cmdline r,
   owner @{PROC}/uptime r,
   owner @{PROC}/sys/kernel/pid_max r,
+  @{PROC}/tty/drivers r,
 
   /dev/tty rw,
   /dev/input/ r,
@@ -32,10 +35,15 @@ profile acpid /usr/sbin/acpid flags=(complain) {
   /dev/input/event* r,
   /dev/input/mouse* r,
   
-  /bin/bash ix,
+  /bin/bash ixr,
   /usr/bin/logger ix,
   /bin/sed ix,
   /bin/ps ix,
+  /usr/bin/gawk ix,
+  /usr/bin/pinky ix,
+  /usr/bin/pgrep ix,
+  /bin/pidof ix,
+  /sbin/shutdown Pux,
   
   /etc/acpi/ r,
   /etc/acpi/** ixr,
@@ -43,6 +51,7 @@ profile acpid /usr/sbin/acpid flags=(complain) {
   
   /run/acpid.pid rwl,
   /run/acpid.socket rw,
+  /run/utmp rk,
   
 }
 
