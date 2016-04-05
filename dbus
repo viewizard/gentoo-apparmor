@@ -18,7 +18,6 @@ profile dbus /usr/bin/dbus-{cleanup-sockets,daemon,launch,run-session,send,uuidg
   #include <abstractions/dbus>
   #include <abstractions/dbus-accessibility>
   #include <abstractions/dbus-session>
-  #include <abstractions/executable-binary>
 
   capability sys_resource,
   capability setgid,
@@ -30,6 +29,19 @@ profile dbus /usr/bin/dbus-{cleanup-sockets,daemon,launch,run-session,send,uuidg
   @{PROC}/@{pid}/cmdline r,
   
   /usr/bin/dbus-{cleanup-sockets,daemon,launch,run-session,send,uuidgen} ixr,
+  
+  # FIX ME!
+  /etc/X11/Sessions/** Pux,
+  /opt/** Pux,
+  /bin/** Pux,
+  /sbin/** Pux,
+  /usr/bin/** Pux,
+  /usr/sbin/** Pux,
+  /usr/local/bin/** Pux,
+  /usr/local/sbin/** Pux,
+  /usr/libexec/** Pux,
+  /usr/lib{,32,64}/** Pux,
+  /usr/share/hplip/** Pux,
   
   /etc/dbus-1/** r,
   /usr/share/dbus-1/** r,

@@ -9,24 +9,34 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile qtconfig /usr/{,lib/qt4/,lib32/qt4/,lib64/qt4/}bin/{qtconfig,qtchooser} flags=(complain) {
+profile xfce4-panel /usr/bin/xfce4-panel flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/gtk>
-  #include <abstractions/qt>
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/nameservice>
-  
+  #include <abstractions/executable-binary-strict>
 
-  /usr/{,lib/qt4/,lib32/qt4/,lib64/qt4/}bin/{qtconfig,qtchooser} ixr,
-  /usr/lib64/qt4/bin/lrelease ix,
+
+  @{PROC}/@{pid}/fd/ r,
+
+  /bin/bash Px,
   
   # FIX ME!
-  /usr/lib64/qt4/bin/qmake Pux,
+  /usr/bin/gksu Pux,
+  /usr/lib64/xfce4/panel/wrapper-1.0 Pux,
+  /usr/lib64/xfce4/panel/wrapper-2.0 Pux,
+  /usr/lib64/xfce4/panel-plugins/xfce4-xkb-plugin Pux,
+  /usr/lib64/xfce4/panel-plugins/xfce4-kbdleds-plugin Pux,
+  /usr/lib64/xfce4/panel-plugins/xfce4-sensors-plugin Pux,
+  
 
-  /etc/xdg/qtchooser/ r,
-  /etc/xdg/qtchooser/** r,
+  /usr/share/xfce4/panel/plugins/ r,
+  /usr/share/xfce4/panel/plugins/*.desktop r,
+  /usr/share/xfce4/panel-plugins/ r,
+  /usr/share/xfce4/panel-plugins/*.desktop r,
+  owner @{HOME}/.config/xfce4/panel/launcher-**.desktop r,
   
 }

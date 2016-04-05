@@ -29,7 +29,6 @@ profile thunar /usr/bin/{Thunar,thunar} flags=(complain) {
   #include <abstractions/nameservice>
   #include <abstractions/user-systemwide-files>
   #include <abstractions/program-work-with-disk-rwk>
-  #include <abstractions/executable-binary>
 
 
   capability dac_override,
@@ -45,6 +44,19 @@ profile thunar /usr/bin/{Thunar,thunar} flags=(complain) {
   /run/udev/data/* r,
 
   /usr/bin/thunar mr,
+  
+  # FIX ME!
+  /etc/X11/Sessions/** Pux,
+  /opt/** Pux,
+  /bin/** Pux,
+  /sbin/** Pux,
+  /usr/bin/** Pux,
+  /usr/sbin/** Pux,
+  /usr/local/bin/** Pux,
+  /usr/local/sbin/** Pux,
+  /usr/libexec/** Pux,
+  /usr/lib{,32,64}/** Pux,
+  /usr/share/hplip/** Pux,
   
   /etc/udev/udev.conf r,
   /usr/lib64/thunarx-2/* m,

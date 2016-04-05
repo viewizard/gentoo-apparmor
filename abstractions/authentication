@@ -32,3 +32,11 @@
 
 # p11-kit (PKCS#11 modules configuration)
 #include <abstractions/p11-kit>
+
+# pam_usb
+/etc/pamusb.conf r,
+/media/*/.pamusb/*.pad rw,
+@{HOME}/.pamusb/*.pad rw,
+
+# pam_mount
+/run/pam_mount/* rwk,

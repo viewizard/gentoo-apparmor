@@ -17,10 +17,20 @@ profile sudo /usr/bin/sudo {
   #include <abstractions/authentication>
   
   # FIX ME!
-  #include <abstractions/executable-binary>
   /media/** Pux,
   /mnt/** Pux,
-  
+  # FIX ME!
+  /etc/X11/Sessions/** Pux,
+  /opt/** Pux,
+  /bin/** Pux,
+  /sbin/** Pux,
+  /usr/bin/** Pux,
+  /usr/sbin/** Pux,
+  /usr/local/bin/** Pux,
+  /usr/local/sbin/** Pux,
+  /usr/libexec/** Pux,
+  /usr/lib{,32,64}/** Pux,
+  /usr/share/hplip/** Pux,  
 
   capability setuid,
   capability setgid,
@@ -42,7 +52,6 @@ profile sudo /usr/bin/sudo {
   /usr/lib64/sudo/sudoers.so m,
   /usr/libexec/sudo/libsudo_util.so* mr,
   
-  /etc/pamusb.conf r,
   /etc/sudoers r,
   /etc/sudoers.d/ r,
   /etc/sudoers.d/* r,
@@ -54,9 +63,6 @@ profile sudo /usr/bin/sudo {
   /run/sudo/ rw,
   /run/sudo/ts/ rw,
   /run/sudo/ts/* rwk,
-  
-  @{HOME}/.pamusb/*.pad rw,
-  /media/**.pad rw,
   
 }
 

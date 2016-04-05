@@ -18,13 +18,25 @@ profile xfce4-session /usr/bin/xfce4-session flags=(complain) {
   #include <abstractions/X>
   #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
-  #include <abstractions/executable-binary>
 
 
   /dev/tty rw,
   @{PROC}/@{pid}/fd/ r,
 
   /usr/bin/xfce4-session rm,
+
+  # FIX ME!
+  /etc/X11/Sessions/** Pux,
+  /opt/** Pux,
+  /bin/** Pux,
+  /sbin/** Pux,
+  /usr/bin/** Pux,
+  /usr/sbin/** Pux,
+  /usr/local/bin/** Pux,
+  /usr/local/sbin/** Pux,
+  /usr/libexec/** Pux,
+  /usr/lib{,32,64}/** Pux,
+  /usr/share/hplip/** Pux,
 
   owner @{HOME}/.ICEauthority* w,
   
