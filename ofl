@@ -1,0 +1,24 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile ofl /usr/bin/ofl flags=(complain) {
+  #include <abstractions/base>
+  
+  capability dac_override,
+  capability sys_ptrace,
+  
+  @{PROC} r,
+  @{PROC}/@{pid}/task/ r,
+  @{PROC}/@{pid}/task/@{pid}/fd/ r,
+  
+  /usr/bin/ofl r,
+  
+}

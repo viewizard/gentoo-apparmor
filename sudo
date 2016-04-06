@@ -81,3 +81,14 @@ profile sudo.askpass /usr/local/bin/askpass.sh {
   /bin/bash ixr,
   
 }
+
+profile sudo.gksudo /usr/bin/{gksu,gksudo} flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/tty rw,
+  
+  /bin/bash r,
+  /usr/bin/gksu r,
+  /usr/bin/sudo Px,
+  
+}

@@ -1,0 +1,48 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile sysvinit.halt /sbin/{halt,poweroff,reboot} flags=(complain) {
+  #include <abstractions/base>
+  
+  /sbin/{halt,poweroff,reboot} r,
+  /sbin/shutdown Px,
+  
+  /run/utmp rk,
+  
+}
+
+profile sysvinit.shutdown /sbin/shutdown flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  capability setuid,
+  capability dac_override,
+  capability sys_tty_config,
+  
+  /dev/tty[0-9]* w,
+  /dev/initctl w,
+  
+  /sbin/shutdown r,
+  /sbin/init Px,
+  
+  /run/shutdown.pid w,
+  /run/utmp rk,
+  
+}
+
+profile sysvinit.init /sbin/init flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/initctl w,
+  
+  /sbin/init r,
+  
+}

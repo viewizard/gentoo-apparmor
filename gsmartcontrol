@@ -22,6 +22,9 @@ profile gsmartcontrol /usr/bin/gsmartcontrol flags=(complain) {
   
   /dev/sd[a-z] r,
   /dev/zd* r,
+  /sys/devices/pci**/usb*/*/idVendor r,
+  /sys/devices/pci**/usb*/*/idProduct r,
+  /sys/devices/pci**/usb*/*/bcdDevice r,
   
   @{PROC}/@{pid}/fd/ r,
   @{PROC}/partitions r,
