@@ -35,7 +35,7 @@ profile wine /usr/bin/wine {
   @{PROC}/scsi/scsi r,
   owner @{PROC}/@{pid}/mem r,
     
-  /usr/share/wine/** r,
+  /usr/share/wine/** rk,
   owner @{HOME_CACHE}/fontconfig/* r,
   owner @{HOME}/.config/fontconfig/fonts.conf r,
   owner @{HOME}/.config/pulse/cookie rk,
@@ -100,7 +100,7 @@ profile wine-preloader /usr/bin/wine-preloader {
   /etc/machine-id r,
   /etc/terminfo/x/xterm r,
   /usr/lib32/wine/* m,
-  /usr/share/wine/** r,
+  /usr/share/wine/** rk,
   /usr/share/icons/** r,
   /tmp/* m,
   
@@ -113,6 +113,7 @@ profile wine-preloader /usr/bin/wine-preloader {
   deny / r,
   deny /etc/fstab r,
   deny /var/lib/dbus/machine-id r,
+  deny @{HOME}/ r,
   deny @{HOME}/.* w,
   deny @{HOMEDIRS}/* w,
   deny @{HOMEDIRS}/*/ w,
@@ -142,7 +143,7 @@ profile wineserver /usr/bin/wineserver {
 
   /etc/mime.types r,
   /usr/bin/wineserver mr,
-  /usr/share/wine/** r,
+  /usr/share/wine/** rk,
   /tmp/.wine-*/** m,
   owner /tmp/.wine-*/** rwlk,
   
@@ -157,6 +158,9 @@ profile wineserver /usr/bin/wineserver {
   deny / r,
   deny /media/*/ r,
   deny /mnt/*/ r,
+  deny @{HOME}/ r,
+  deny /dev/sd[a-z] r,
+  deny /dev/sd[a-z][0-9] r,
   
 
   # FIX ME!

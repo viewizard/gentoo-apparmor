@@ -18,6 +18,8 @@ profile xfce4-session /usr/bin/xfce4-session flags=(complain) {
   #include <abstractions/X>
   #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
+  #include <abstractions/dbus-session>
+  #include <abstractions/executable-binary-strict>
 
 
   /dev/tty rw,
@@ -25,33 +27,29 @@ profile xfce4-session /usr/bin/xfce4-session flags=(complain) {
 
   /usr/bin/xfce4-session rm,
 
-  # FIX ME!
-  /etc/X11/Sessions/** Pux,
-  /opt/** Pux,
-  /bin/** Pux,
-  /sbin/** Pux,
-  /usr/bin/** Pux,
-  /usr/sbin/** Pux,
-  /usr/local/bin/** Pux,
-  /usr/local/sbin/** Pux,
-  /usr/libexec/** Pux,
-  /usr/lib{,32,64}/** Pux,
-  /usr/share/hplip/** Pux,
+  # FIX ME! - <abstractions/executable-binary-strict>
+  /usr/bin/mate-screensaver.sh Pux,
+  /usr/bin/xdg-user-dirs-gtk-update Pux,
+  /usr/bin/start-pulseaudio-x11 Pux,
+
 
   owner @{HOME}/.ICEauthority* w,
   
   /etc/xdg/ r,
   /etc/xdg/autostart/ r,
   /etc/xdg/autostart/* r,
+  
+  owner @{HOME}/.xfce4-session.verbose-log* rw,
   owner @{HOME}/.config/ r,
   owner @{HOME}/.config/autostart/ r,
   owner @{HOME}/.config/autostart/* r,
+  owner @{HOME}/.dbus/session-bus/ rw,
+  owner @{HOME}/.dbus/session-bus/* rw,
 
   owner @{HOME_CACHE}/sessions/ rw,
   owner @{HOME_CACHE}/sessions/thumbs*/ rw,
   owner @{HOME_CACHE}/sessions/thumbs*/*.png rw,
   owner @{HOME_CACHE}/gpg-agent-info rw,
-  owner @{HOME}/.xfce4-session.verbose-log* rw,
   
 }
 

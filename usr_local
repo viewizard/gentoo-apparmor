@@ -1,0 +1,65 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile usr_local.bin /usr/local/bin/* flags=(complain) {
+  #include <abstractions/base>
+#  #include <abstractions/executable-binary-strict>
+
+  /dev/tty rw,
+  /dev/pts/[0-9]* rw,
+
+  /usr/local/bin/* r,
+  /bin/bash r,
+  
+  # FIX ME! - <abstractions/executable-binary-strict>
+  /bin/ln Pux,
+  /bin/sleep Pux,
+  /usr/bin/cairo-clock Px,
+  /usr/bin/killall Pux,
+  /usr/bin/conky Px,
+  
+  # FIX ME!
+  audit /opt/** Pux,
+  audit /bin/** Pux,
+  audit /usr/bin/** Pux,
+  audit /usr/local/bin/** Pux,
+  
+}
+
+
+profile usr_local.sbin /usr/local/sbin/* flags=(complain) {
+  #include <abstractions/base>
+#  #include <abstractions/executable-binary-strict>
+
+  /dev/tty rw,
+  /dev/pts/[0-9]* rw,
+  
+  /usr/local/sbin/* r,
+  /bin/bash r,
+  
+  # FIX ME! - <abstractions/executable-binary-strict>
+  /usr/sbin/gdisk Pux,
+  /bin/grep Pux,
+  /bin/dd Pux,
+  /bin/mount Px,
+  /bin/umount Px,
+  /usr/sbin/aideinit Pux,
+
+  # FIX ME!
+  audit /opt/** Pux,
+  audit /bin/** Pux,
+  audit /sbin/** Pux,
+  audit /usr/bin/** Pux,
+  audit /usr/sbin/** Pux,
+  audit /usr/local/bin/** Pux,
+  audit /usr/local/sbin/** Pux,
+  
+}

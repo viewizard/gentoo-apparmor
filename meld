@@ -28,6 +28,7 @@ profile meld /usr/bin/meld {
   #include <abstractions/executable-binary-helper>
   #include <abstractions/cups-client>
   #include <abstractions/user-tmp>
+  #include <abstractions/dbus-session>
 
 
   capability dac_override,
@@ -36,7 +37,6 @@ profile meld /usr/bin/meld {
 
   /usr/bin/meld r,
   /bin/env r,
-  /usr/bin/dbus-launch ix,
   
   /dev/pts/[0-9]* rw,
   /dev/shm/* l,

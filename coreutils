@@ -9,26 +9,13 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile newgrp /usr/bin/newgrp {
+profile coreutils.env /bin/env flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/nameservice>
-  #include <abstractions/executable-binary-helper>
+  #include <abstractions/executable-binary-strict>
 
-
-  capability setgid,
-  capability setuid,
+  /bin/env r,
   
-  /dev/tty rw,
-  /dev/pts/[0-9]* rw,
-
-  owner @{PROC}/@{pid}/loginuid r,
+  # FIX ME! - <abstractions/executable-binary-strict>
+  /usr/bin/xfdesktop Pux,
   
-  /usr/bin/newgrp r,
-  /bin/bash ix,
-  
-  /etc/gshadow r,
-  /etc/shadow r,
-  /etc/login.defs r,
-
 }

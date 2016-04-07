@@ -22,14 +22,7 @@ profile xfce4-panel /usr/bin/xfce4-panel flags=(complain) {
 
   @{PROC}/@{pid}/fd/ r,
 
-  /bin/bash Px,
-  /usr/bin/gksu Px,
-  /usr/lib64/xfce4/panel/wrapper-1.0 Px,
-  /usr/lib64/xfce4/panel/wrapper-2.0 Px,
-  /usr/lib64/xfce4/panel-plugins/xfce4-xkb-plugin Px,
-  /usr/lib64/xfce4/panel-plugins/xfce4-kbdleds-plugin Px,
-  /usr/lib64/xfce4/panel-plugins/xfce4-sensors-plugin Px,
-  
+  /usr/bin/xfce4-panel r,
 
   /usr/share/xfce4/panel/plugins/ r,
   /usr/share/xfce4/panel/plugins/*.desktop r,
@@ -46,8 +39,19 @@ profile xfce4-panel.wrapper-1.0 /usr/lib64/xfce4/panel/wrapper-1.0 flags=(compla
   #include <abstractions/X>
   #include <abstractions/gtk>
   #include <abstractions/nameservice>
+  #include <abstractions/executable-binary-strict>
   
   @{PROC}/@{pid}/fd/ r,
+  
+  # FIX ME! - <abstractions/executable-binary-strict>
+  /usr/bin/thunar-volman-settings Pux,
+  /usr/bin/xfdesktop-settings Pux,
+  /usr/bin/nvidia-settings Pux,
+  /usr/bin/mate-screensaver-preferences Pux,
+  /usr/bin/putty Pux,
+  /usr/bin/wpa_gui Pux,
+  /usr/bin/winecfg Pux,
+  /usr/bin/notepad Pux,
   
   /usr/share/alacarte/* r,
   /etc/xdg/menus/**.menu r,
@@ -87,10 +91,9 @@ profile xfce4-panel.wrapper-2.0 /usr/lib64/xfce4/panel/wrapper-2.0 flags=(compla
   #include <abstractions/gtk>
   #include <abstractions/audio>
   #include <abstractions/dbus-session>
+  #include <abstractions/executable-binary-strict>
   
   @{PROC}/@{pid}/fd/ r,
-  
-  /usr/bin/pulseaudio Px,
   
 }
 
