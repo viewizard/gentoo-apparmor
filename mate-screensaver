@@ -1,0 +1,83 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile mate-screensaver-preferences /usr/bin/mate-screensaver-preferences flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/X>
+  #include <abstractions/gtk>
+  #include <abstractions/dconf>
+
+
+  owner @{PROC}/@{pid}/fd/ r,
+  
+  /usr/bin/mate-screensaver-preferences r,
+  /usr/libexec/mate-screensaver-gl-helper Px,
+  /usr/libexec/mate-screensaver/popsquares Px,
+  /usr/libexec/mate-screensaver/floaters Px,
+  /usr/libexec/mate-screensaver/slideshow Px,
+
+  /etc/xdg/menus/mate-screensavers.menu r,
+  /usr/share/mate-screensaver/ r,
+  /usr/share/mate-screensaver/** r,
+  /usr/share/{,mate/}desktop-directories/ r,
+  /usr/share/{,mate/}desktop-directories/*.directory r,
+  owner @{HOME}/.local/share/desktop-directories/ r,
+  owner @{HOME}/.local/share/desktop-directories/*.directory r,
+  
+}
+
+profile mate-screensaver.popsquares /usr/libexec/mate-screensaver/popsquares flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/X>
+  #include <abstractions/gtk>
+  
+  /usr/libexec/mate-screensaver/popsquares r,
+  
+}
+
+profile mate-screensaver.floaters /usr/libexec/mate-screensaver/floaters flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/X>
+  #include <abstractions/gtk>
+  
+  /usr/libexec/mate-screensaver/floaters r,
+  
+  /usr/share/pixmaps/gnome-logo-white.svg r,
+  /usr/share/pixmaps/mate-logo-white.svg r,
+  
+}
+
+profile mate-screensaver.slideshow /usr/libexec/mate-screensaver/slideshow flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/X>
+  #include <abstractions/gtk>
+  
+  /usr/libexec/mate-screensaver/slideshow r,
+  
+  /usr/share/backgrounds/cosmos/ r,
+  /usr/local/share/backgrounds/*.{jpg,jpeg,tga,png,bmp} r,
+  /usr/local/share/backgrounds/ r,
+  /usr/local/share/backgrounds/*.{jpg,jpeg,tga,png,bmp} r,
+  
+}
+
+profile mate-screensaver-gl-helper /usr/libexec/mate-screensaver-gl-helper flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/X>
+  #include <abstractions/nvidia>
+
+  /usr/libexec/mate-screensaver-gl-helper r,
+  
+}

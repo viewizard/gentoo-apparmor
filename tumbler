@@ -15,7 +15,6 @@
 @{PROG_FILE}="[^.]*"
 @{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
-
 profile tumbler /usr/lib64/tumbler-1/tumblerd {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -31,6 +30,7 @@ profile tumbler /usr/lib64/tumbler-1/tumblerd {
   /etc/xdg/tumbler/tumbler.rc r,
   /etc/udev/udev.conf r,
   /usr/share/thumbnailers/ r,
+  /usr/local/share/backgrounds/** r,
   
   owner @{HOME_CACHE}/sessions/thumbs*/ r,
   owner @{HOME_CACHE}/sessions/thumbs*/*.png r,

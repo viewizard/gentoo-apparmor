@@ -15,7 +15,7 @@
 @{PROG_FILE}="[^.]*"
 @{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/,/etc/X11/}"
 
-profile nvidia-settings /opt/bin/nvidia-settings flags=(complain) {
+profile nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -27,7 +27,7 @@ profile nvidia-settings /opt/bin/nvidia-settings flags=(complain) {
   #include <abstractions/nameservice>
 
 
-  /opt/bin/nvidia-settings r,
+  /{usr,opt}/bin/nvidia-settings r,
   /bin/bash cx,
   
   /usr/share/nvidia/ r,
@@ -68,7 +68,7 @@ profile nvidia-settings /opt/bin/nvidia-settings flags=(complain) {
 }
 
 
-profile nvidia-modprobe /opt/bin/nvidia-modprobe flags=(complain) {
+profile nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nvidia>
 

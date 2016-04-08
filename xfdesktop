@@ -1,0 +1,83 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile xfdesktop /usr/bin/xfdesktop flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/X>
+  #include <abstractions/gtk>
+  #include <abstractions/nameservice>
+  #include <abstractions/executable-binary-strict>
+  
+  @{PROC}/@{pid}/fd/ r,
+  
+  /usr/bin/xfdesktop r,
+  
+  /usr/lib64/thunarx-2/*.so m,
+  
+  /etc/xdg/menus/**.menu r,
+  /etc/xdg/menus/applications-merged/ r,
+  /usr/share/desktop-directories/ r,
+  /usr/share/desktop-directories/*.directory r,
+  
+  /opt/**/ r,
+  /opt/**.{png,jpg,bmp} r,
+  /usr/share/**/ r,
+  /usr/share/**.{png,jpg,bmp} r,
+  /usr/local/share/**/ r,
+  /usr/local/share/**.{png,jpg,bmp} r,
+  owner @{HOME}/ r,
+  owner @{HOME}/[^.]** r,
+  owner @{HOME}/**.{png,jpg,bmp} r,
+  owner @{HOME}/[^.]**/ r,
+  
+  owner @{HOME}/.local/share/gvfs-metadata/root* r,
+  owner @{HOME}/.local/share/gvfs-metadata/home* r,
+  
+  owner @{HOME}/.config/xfce4/desktop/ rw,
+  owner @{HOME}/.config/xfce4/desktop/** rw,
+  owner @{HOME}/.config/Thunar/ rw,
+  owner @{HOME}/.config/Thunar/** rw,
+  owner @{HOME}/.config/menus/**.menu r,
+  owner @{HOME}/.config/menus/applications-merged/ r,
+  owner @{HOME}/.local/share/desktop-directories/ r,
+  owner @{HOME}/.local/share/desktop-directories/*.directory r,
+  
+}
+
+profile xfdesktop-settings /usr/bin/xfdesktop-settings flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/X>
+  #include <abstractions/gtk>
+  
+  @{PROC}/@{pid}/mountinfo r,
+  
+  /usr/bin/xfdesktop-settings r,
+  
+  /opt/**/ r,
+  /opt/**.{png,jpg,bmp} r,
+  /usr/share/**/ r,
+  /usr/share/**.{png,jpg,bmp} r,
+  /usr/local/share/**/ r,
+  /usr/local/share/**.{png,jpg,bmp} r,
+  owner @{HOME}/ r,
+  owner @{HOME}/**.{png,jpg,bmp} r,
+  owner @{HOME}/**/ r,
+  owner @{HOME}/.local/share/gvfs-metadata/root* r,
+  owner @{HOME}/.local/share/gvfs-metadata/home* r,
+  
+  # Noisy
+  deny owner @{HOME}/.* r,
+  
+}
