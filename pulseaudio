@@ -48,3 +48,27 @@ profile pulseaudio /usr/bin/pulseaudio {
   owner @{HOME}/orcexec.* rwm,
   
 }
+
+profile pulseaudio.start-pulseaudio-x11 /usr/bin/start-pulseaudio-x11 flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/tty rw,
+  
+  /bin/bash r,
+  /usr/bin/start-pulseaudio-x11 r,
+  /usr/bin/pactl Px,
+  
+}
+
+profile pulseaudio.pactl /usr/bin/pactl flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/audio>
+  #include <abstractions/X>
+  #include <abstractions/dbus-session>
+  
+  owner @{PROC}/@{pid}/fd/ r,
+  
+  /usr/bin/pactl r,
+  /usr/bin/pulseaudio Px,
+  
+}
