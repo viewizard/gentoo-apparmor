@@ -14,17 +14,15 @@ profile at-spi-bus-launcher /usr/libexec/at-spi-bus-launcher {
   #include <abstractions/dbus>
   #include <abstractions/dconf>
   #include <abstractions/gtk>
-  #include <abstractions/nameservice>
   
   owner @{PROC}/@{pid}/fd/ r,
   
   /usr/libexec/at-spi-bus-launcher r,
-  /usr/bin/dbus-daemon ix,
-  /usr/libexec/at-spi2-registryd Px,
+  /usr/bin/dbus-daemon Px,
   
-  /usr/share/dbus-1/accessibility-services/ r,
-  /usr/share/dbus-1/accessibility-services/* r,
   /etc/at-spi2/accessibility.conf r,
+  
+  owner @{HOME}/.session.log w,
   
 }
 
@@ -32,5 +30,7 @@ profile at-spi2-registryd /usr/libexec/at-spi2-registryd {
   #include <abstractions/base>
   
   /usr/libexec/at-spi2-registryd r,
+  
+  owner @{HOME}/.session.log w,
   
 }

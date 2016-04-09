@@ -9,6 +9,60 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+profile mate-screensaver /usr/bin/mate-screensaver flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/X>
+  #include <abstractions/gtk>
+  #include <abstractions/dconf>
+  
+  owner @{PROC}/@{pid}/fd/ r,
+  
+  /usr/bin/mate-screensaver r,
+  /usr/libexec/mate-screensaver-dialog Px,
+  /usr/libexec/mate-screensaver-gl-helper Px,
+  /usr/libexec/mate-screensaver/popsquares Px,
+  /usr/libexec/mate-screensaver/floaters Px,
+  /usr/libexec/mate-screensaver/slideshow Px,
+  
+  /etc/xdg/menus/mate-screensavers.menu r,
+  /usr/share/mate-screensaver/ r,
+  /usr/share/mate-screensaver/** r,
+  /usr/share/{,mate/}desktop-directories/ r,
+  /usr/share/{,mate/}desktop-directories/*.directory r,
+  owner @{HOME}/.local/share/desktop-directories/ r,
+  owner @{HOME}/.local/share/desktop-directories/*.directory r,
+  
+}
+
+profile mate-screensaver.sh /usr/bin/mate-screensaver.sh flags=(complain) {
+  #include <abstractions/base>
+
+  /dev/tty rw,
+
+  /bin/bash r,
+  /usr/bin/mate-screensaver.sh r,
+  /usr/bin/mate-screensaver Px,
+  /usr/bin/xautolock Px,
+  # FIX ME!
+  /usr/bin/pamusb-agent Pux,
+  /bin/grep Pux,
+  /bin/ps Pux,
+  /usr/bin/gsettings Pux,
+  /bin/sleep Pux,
+  /usr/bin/killall Pux,
+  
+  # killall
+  #include <abstractions/nameservice>
+  
+  # gsettings
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/gtk>
+  #include <abstractions/dconf>
+  
+}
+
 profile mate-screensaver-preferences /usr/bin/mate-screensaver-preferences flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -16,7 +70,6 @@ profile mate-screensaver-preferences /usr/bin/mate-screensaver-preferences flags
   #include <abstractions/X>
   #include <abstractions/gtk>
   #include <abstractions/dconf>
-
 
   owner @{PROC}/@{pid}/fd/ r,
   
@@ -79,5 +132,38 @@ profile mate-screensaver-gl-helper /usr/libexec/mate-screensaver-gl-helper flags
   #include <abstractions/nvidia>
 
   /usr/libexec/mate-screensaver-gl-helper r,
+  
+}
+
+profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/X>
+  #include <abstractions/gtk>
+  #include <abstractions/dconf>
+  #include <abstractions/nameservice>
+  #include <abstractions/authentication>
+
+  /usr/libexec/mate-screensaver-dialog r,
+  /bin/bash Pux, # FIX ME!
+  # FIX ME!
+  /sbin/unix_chkpwd Pux,
+  
+  /etc/environment r,
+  /usr/share/mate-screensaver/ r,
+  /usr/share/mate-screensaver/** r,
+  /run/utmp rk,
+  
+  owner @{HOME}/.face r,
+  
+}
+
+profile mate-screensaver-command /usr/bin/mate-screensaver-command flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/pts/[0-9]* rw,
+  
+  /usr/bin/mate-screensaver-command r,
   
 }

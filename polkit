@@ -9,21 +9,24 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile polkit.polkitd /usr/lib/polkit-1/polkitd flags=(complain) {
+profile polkit.polkitd /usr/lib{,32,64}/polkit-1/polkitd flags=(complain) {
   #include <abstractions/base>
-
-#  /etc/polkit-1/ r,
-#  /etc/polkit-1/** r,
-
-#  /usr/share/polkit-1/ r,
-#  /usr/share/polkit-1/** r,
+  #include <abstractions/nameservice>
   
-#  /var/lib/polkit-1/ r,
-#  /var/lib/polkit-1/** rw,
+  capability setgid,
+  capability setuid,
+
+  /etc/polkit-1/ r,
+  /etc/polkit-1/** r,
+
+  /usr/share/polkit-1/ r,
+  /usr/share/polkit-1/** r,
+  
+  /run/ConsoleKit/database r,
   
 }
 
-profile polkit.polkit-agent-helper /usr/lib/polkit-1/polkit-agent-helper-1 flags=(complain) {
+profile polkit.polkit-agent-helper /usr/lib{,32,64}/polkit-1/polkit-agent-helper-1 flags=(complain) {
   #include <abstractions/base>
   
 }

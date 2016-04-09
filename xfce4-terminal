@@ -54,7 +54,8 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
     capability setgid,
     capability fsetid,
 
-    /dev/pts/* rw,
+    /dev/pts/ r,
+    /dev/pts/[0-9]* rw,
     /dev/ptmx rw,
     /run/utmp rw,
     deny /run/utmp k,

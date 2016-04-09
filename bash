@@ -52,9 +52,11 @@ profile bash /bin/{bash,rbash,sh} flags=(complain) {
   /bin/mount Px,
   /bin/umount Px,
   /usr/lib64/python-exec/python-exec2 Px,
+  /usr/bin/mate-screensaver-command Px,
   
   # FIX ME!
   /etc/acpi/default.sh Pux,
+  /etc/init.d/dbus Pux,
   /bin/tail Pux,
   /bin/date Pux,
   /bin/sed Pux,
@@ -86,6 +88,7 @@ profile bash /bin/{bash,rbash,sh} flags=(complain) {
   /bin/tr Pux,
   /bin/nano Pux,
   /bin/ln Pux,
+  /bin/sleep Pux,
   /sbin/apparmor_parser Pux,
   /sbin/mdadm Pux,
   /sbin/blkid Pux,
@@ -116,7 +119,6 @@ profile bash /bin/{bash,rbash,sh} flags=(complain) {
   /usr/bin/diff Pux,
   /usr/bin/xargs Pux,
   /usr/bin/emerge-webrsync Pux,
-  /usr/bin/mate-screensaver-command Pux,
   /usr/bin/cmake pux, #! px ! - ERROR: ld.so: object 'libsandbox.so' from LD_PRELOAD cannot be preloaded
   /usr/bin/gawk Pux,
   /usr/bin/autom4te-2.69 Pux,
@@ -124,6 +126,9 @@ profile bash /bin/{bash,rbash,sh} flags=(complain) {
   /usr/bin/xsltproc Pux,
   /usr/bin/sdl-config Pux,
   /usr/bin/freetype-config Pux,
+  /usr/bin/killall Pux,
+  /usr/bin/gsettings Pux,
+  /usr/bin/pamusb-agent Pux,
   /usr/sbin/run-crons Pux,
   /usr/sbin/logcheck Pux,
   /usr/sbin/migrate-pax Pux,

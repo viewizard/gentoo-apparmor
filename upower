@@ -9,17 +9,23 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile pam_mount.pmvarrun /usr/sbin/pmvarrun flags=(complain) {
+profile upower.upowerd /usr/lib{,32,64}/upower/upowerd flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/nameservice>
-  #include <abstractions/authentication>
   
-  capability chown,
-  capability dac_override,
-  capability fsetid,
+  /dev/bus/usb/ r,
+  /sys/bus/ r,
+  /sys/bus/usb/devices/ r,
+  /sys/bus/hid/devices/ r,
+  /sys/class/ r,
+  /sys/class/input/ r,
+  /sys/class/power_supply/ r,
+  /sys/devices/pci**/usb*/* r,
+  /sys/devices/pci**/usb*/**/* r,
+  /sys/devices/**/input*/capabilities/sw r,
   
-  /usr/sbin/pmvarrun r,
+  /etc/UPower/UPower.conf r,
+  /etc/udev/udev.conf r,
   
-  /run/pam_mount/ w,
+  /run/udev/data/* r,
   
 }

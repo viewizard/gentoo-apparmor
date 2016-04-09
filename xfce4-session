@@ -29,7 +29,6 @@ profile xfce4-session /usr/bin/xfce4-session flags=(complain) {
   /bin/bash Pux, # FIX ME!
 
   # FIX ME! - <abstractions/executable-binary-strict>
-  /usr/bin/mate-screensaver.sh Pux,
   /usr/bin/xdg-user-dirs-gtk-update Pux,
   /usr/bin/start-pulseaudio-x11 Pux,
 
@@ -61,7 +60,7 @@ profile xfce4-session-logout /usr/bin/xfce4-session-logout flags=(complain) {
   #include <abstractions/nvidia>
   #include <abstractions/X>
 
-  /dev/pts/0 rw,
+  /dev/pts/[0-9]* rw,
   /usr/bin/xfce4-session-logout r,
   
 }

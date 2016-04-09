@@ -1,0 +1,109 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile udisks-daemon /usr/lib{,32,64}/udisks/udisks-daemon flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/sd[a-z] r,
+  /dev/loop* r,
+  /dev/zd* r,
+  /dev/dm-* r,
+  /sys/bus/ r,
+  /sys/bus/pci/devices/ r,
+  /sys/class/ r,
+  /sys/class/block/ r,
+  /sys/class/scsi_host/ r,
+  /sys/module/block/parameters/events_dfl_poll_msecs r,
+  /sys/devices/virtual/block/md*/ r,
+  /sys/devices/virtual/block/md*/** r,
+  /sys/devices/virtual/block/dm-*/ r,
+  /sys/devices/virtual/block/dm-*/** r,
+  /sys/devices/virtual/block/loop*/ r,
+  /sys/devices/virtual/block/loop*/** r,
+  /sys/devices/virtual/block/zd*/ r,
+  /sys/devices/virtual/block/zd*/** r,
+  /sys/devices/virtual/block/zd*/zd*/ r,
+  /sys/devices/virtual/block/zd*/zd*/** r,
+  /sys/devices/pci**/class r,
+  /sys/devices/pci**/ r,
+  /sys/devices/pci**/uevent r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/ r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/** r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/sd[a-z][0-9]*/ r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/sd[a-z][0-9]*/** r,
+  /sys/devices/pci**/usb*/**/* r,
+  /sys/devices/pci**/ata*/**/block/sd[a-z]/ r,
+  /sys/devices/pci**/ata*/**/block/sd[a-z]/** r,
+  /sys/devices/pci**/ata*/**/block/sd[a-z]/sd[a-z][0-9]*/ r,
+  /sys/devices/pci**/ata*/**/block/sd[a-z]/sd[a-z][0-9]*/** r,
+  /sys/devices/pci**/ata*/**/* r,
+  @{PROC}/mdstat r,
+  @{PROC}/@{pid}/mountinfo r,
+  
+  /etc/udev/udev.conf r,
+  /etc/fstab r,
+  
+  /run/udisks/ rw,
+  /run/udev/data/* r,
+  
+}
+
+profile udisks.udisksd /usr/libexec/udisks2/udisksd flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  capability sys_rawio,
+  
+  /dev/sd[a-z] r,
+  /dev/loop* r,
+  /dev/zd* r,
+  /dev/dm-* r,
+  /sys/bus/ r,
+  /sys/class/ r,
+  /sys/class/block/ r,
+  /sys/devices/virtual/block/md*/ r,
+  /sys/devices/virtual/block/md*/** r,
+  /sys/devices/virtual/block/dm-*/ r,
+  /sys/devices/virtual/block/dm-*/** r,
+  /sys/devices/virtual/block/loop*/ r,
+  /sys/devices/virtual/block/loop*/** r,
+  /sys/devices/virtual/block/zd*/ r,
+  /sys/devices/virtual/block/zd*/** r,
+  /sys/devices/virtual/block/zd*/zd*/ r,
+  /sys/devices/virtual/block/zd*/zd*/** r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/ r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/** r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/sd[a-z][0-9]*/ r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/sd[a-z][0-9]*/** r,
+  /sys/devices/pci**/ata*/**/block/sd[a-z]/ r,
+  /sys/devices/pci**/ata*/**/block/sd[a-z]/** r,
+  /sys/devices/pci**/ata*/**/block/sd[a-z]/sd[a-z][0-9]*/ r,
+  /sys/devices/pci**/ata*/**/block/sd[a-z]/sd[a-z][0-9]*/** r,
+  /sys/devices/pci**/usb*/**/uevent r,
+  /sys/devices/pci**/usb*/**/remove r,
+  
+  @{PROC}/@{pid}/mountinfo r,
+  @{PROC}/swaps r,
+  @{PROC}/@{pid}/fd/ r,
+  
+  /usr/libexec/udisks2/udisksd r,
+  /bin/mount Px,
+  /bin/umount Px,
+  
+  /etc/udev/udev.conf r,
+  /etc/fstab r,
+  /media/*/ w,
+  
+  /run/udisks2/ rw,
+  /run/udisks2/mounted-fs* rw,
+  /run/udev/data/* r,
+  
+}
