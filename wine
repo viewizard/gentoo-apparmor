@@ -170,3 +170,31 @@ profile wineserver /usr/bin/wineserver {
   owner @{HOME}/Desktop/AstroMenace/** rw,
   
 }
+
+
+profile wine.notepad /usr/bin/notepad flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/tty rw,
+  
+  /usr/bin/notepad r,
+  /bin/bash r,
+  /bin/basename ix,
+  /bin/dirname ix,
+  /usr/bin/wine Px,
+    
+}
+
+
+profile wine.winecfg /usr/bin/winecfg flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/tty rw,
+  
+  /usr/bin/winecfg r,
+  /bin/bash r,
+  /bin/basename ix,
+  /bin/dirname ix,
+  /usr/bin/wine Px,
+    
+}

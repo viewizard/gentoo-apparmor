@@ -80,3 +80,15 @@ profile xfce4-session-settings /usr/bin/xfce4-session-settings flags=(complain) 
   owner @{HOME}/.config/autostart/* rw,
   
 }
+
+
+profile xfce4-session.xflock4 /usr/bin/xflock4 flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/tty rw,
+  
+  /usr/bin/xflock4 r,
+  /bin/bash r,
+  /usr/bin/mate-screensaver-command Px,
+  
+}

@@ -9,9 +9,10 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile dhcpcd /sbin/dhcpcd {
+profile dhcpcd /sbin/dhcpcd flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  #include <abstractions/consoles>
 
   capability net_raw,
   capability net_admin,
@@ -19,10 +20,7 @@ profile dhcpcd /sbin/dhcpcd {
   capability sys_tty_config,
   capability net_bind_service,
 
-  /dev/tty rw,
-  /dev/console rw,
-
-  /bin/bash rmix,
+  /bin/bash r,
   /bin/touch rmix,
   /bin/mkdir rmix,
   /bin/rm rmix,
@@ -40,7 +38,7 @@ profile dhcpcd /sbin/dhcpcd {
   /etc/dhcpcd.conf r,
   /etc/dhcpcd.duid rw,
   /proc/sys/net/ipv4/conf/*/promote_secondaries rwk,
-  /run/dhcpcd/ wr,
+  /run/dhcpcd/ rw,
   /run/dhcpcd/resolv.conf/ rw,
   /run/dhcpcd/resolv.conf/* rw,
   /run/dhcpcd/resolv.conf.*.dhcp rw,

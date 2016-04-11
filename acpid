@@ -11,47 +11,60 @@
 #include <tunables/global>
 profile acpid /usr/sbin/acpid flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/nameservice>
 
-  capability sys_tty_config,
-  capability sys_ptrace,
-
-  /dev/tty[0-9]* rw,
-
-  @{PROC}/ r,
   owner @{PROC}/@{pid}/fd/ r,
-  @{PROC}/@{pid}/loginuid r,
-  @{PROC}/@{pid}/stat r,
-  @{PROC}/@{pid}/status r,
-  @{PROC}/@{pid}/cmdline r,
-  owner @{PROC}/uptime r,
-  owner @{PROC}/sys/kernel/pid_max r,
-  @{PROC}/tty/drivers r,
 
-  /dev/tty rw,
   /dev/input/ r,
   /dev/input/by-id/ r,
   /dev/input/by-path/ r,
   /dev/input/event* r,
   /dev/input/mouse* r,
   
-  /bin/bash ixr,
-  /usr/bin/logger ix,
-  /bin/sed ix,
-  /bin/ps ix,
-  /usr/bin/gawk ix,
-  /usr/bin/pinky ix,
-  /usr/bin/pgrep ix,
-  /bin/pidof ix,
-  /sbin/shutdown Px,
+  /bin/bash Cxr -> shell,
   
   /etc/acpi/ r,
-  /etc/acpi/** ixr,
-  /usr/bin/fgconsole ix,
+  /etc/acpi/** r,
   
   /run/acpid.pid rwl,
   /run/acpid.socket rw,
-  /run/utmp rk,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    capability sys_tty_config,
+    capability sys_ptrace,
+    
+    /dev/tty rw,
+    /dev/tty[0-9]* rw,
+    
+    @{PROC}/ r,
+    @{PROC}/@{pid}/loginuid r,
+    @{PROC}/@{pid}/stat r,
+    @{PROC}/@{pid}/status r,
+    @{PROC}/@{pid}/cmdline r,
+    owner @{PROC}/uptime r,
+    owner @{PROC}/sys/kernel/pid_max r,
+    @{PROC}/tty/drivers r,
+    
+    /bin/bash r,
+    /usr/bin/logger ix,
+    /usr/bin/pinky ix,
+    /usr/bin/pgrep ix,
+    /bin/ps ix,
+    /usr/bin/gawk ix,
+    /bin/sed ix,
+    /usr/bin/fgconsole ix,
+    /bin/pidof ix,
+    /sbin/shutdown Px,
+    
+    /etc/acpi/default.sh ixr,
+    /etc/acpi/actions/powerbtn.sh ixr,
+    
+    /run/utmp rk,
+  
+  }
   
 }
 

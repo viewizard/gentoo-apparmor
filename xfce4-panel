@@ -23,7 +23,6 @@ profile xfce4-panel /usr/bin/xfce4-panel flags=(complain) {
   @{PROC}/@{pid}/fd/ r,
 
   /usr/bin/xfce4-panel r,
-  /bin/bash Pux, # FIX ME!
 
   /usr/share/xfce4/panel/plugins/ r,
   /usr/share/xfce4/panel/plugins/*.desktop r,
@@ -43,14 +42,6 @@ profile xfce4-panel.wrapper-1.0 /usr/lib64/xfce4/panel/wrapper-1.0 flags=(compla
   #include <abstractions/executable-binary-strict>
   
   @{PROC}/@{pid}/fd/ r,
-  
-  # FIX ME! - <abstractions/executable-binary-strict>
-  /usr/bin/thunar-volman-settings Pux,
-  /usr/bin/putty Pux,
-  /usr/bin/wpa_gui Pux,
-  /usr/bin/winecfg Pux,
-  /usr/bin/notepad Pux,
-  /usr/bin/xflock4 Pux,
   
   /usr/share/alacarte/* r,
   /etc/xdg/menus/**.menu r,
@@ -132,7 +123,7 @@ profile xfce4-panel.xfce4-sensors-plugin /usr/lib64/xfce4/panel-plugins/xfce4-se
   /sys/class/thermal/ r,
   /sys/devices/pci**/i2c-*/name r,
   /sys/devices/platform/*/ r,
-  /sys/devices/platform/*/* r,
+  /sys/devices/platform/*/** r,
   /sys/module/acpi/parameters/acpica_version r,
   
   /etc/sensors3.conf r,

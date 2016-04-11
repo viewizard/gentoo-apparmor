@@ -9,15 +9,19 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile coreutils.env /bin/env flags=(complain) {
+profile wpa_supplicant.wpa_gui /usr/bin/wpa_gui flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/executable-binary-strict>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/X>
+  #include <abstractions/gtk>
+  #include <abstractions/qt>
+  #include <abstractions/nameservice>
 
-  /dev/pts/[0-9]* rw,
-
-  /bin/env r,
   
-  # FIX ME!
-  audit /usr/lib64/portage/python2.7/ebuild-helpers/prepallstrip Pux,
+  /usr/bin/wpa_gui r,
+  
+  owner @{HOME}/.config/wpa_supplicant/ rw,
+  owner @{HOME}/.config/wpa_supplicant/wpa_gui.conf rwk,
   
 }

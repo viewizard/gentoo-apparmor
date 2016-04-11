@@ -36,8 +36,7 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   owner @{PROC}/@{pid}/auxv r,
   
   /bin/dirname ix,
-  /bin/bash ixr,
-  /bin/uname ix,
+  /bin/bash Cxr -> shell,
   /opt/kingsoft/wps-office/office6/et ix,
   /opt/kingsoft/wps-office/office6/wpp ix,
   /opt/kingsoft/wps-office/office6/wps ix,
@@ -61,5 +60,16 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   # Noisy
   deny /opt/kingsoft/wps-office/office6/startup/ w,
   deny /etc/xdg/kingsoft.conf w,
+
+
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /bin/uname ix,
+    
+  }
   
 }

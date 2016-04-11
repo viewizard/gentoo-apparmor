@@ -28,7 +28,7 @@ profile nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(complain) {
 
 
   /{usr,opt}/bin/nvidia-settings r,
-  /bin/bash cx,
+  /bin/bash Cx -> shell,
   
   /usr/share/nvidia/ r,
   /usr/share/nvidia/** r,
@@ -43,7 +43,7 @@ profile nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(complain) {
   @{HOMEDIRS}/*/ w,
   
   
-  profile bash /bin/bash flags=(complain) {
+  profile shell flags=(complain) {
     #include <abstractions/base>
     
     capability sys_ptrace,

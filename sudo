@@ -35,27 +35,15 @@ profile sudo /usr/bin/sudo {
   /bin/bash Pux, # FIX ME!
   
   # FIX ME!
-  /media/** Pux,
-  /mnt/** Pux,
+  audit /media/** Pux,
+  audit /mnt/** Pux,
   
-#  /usr/sbin/pmvarrun Px,
-#  /usr/bin/thunar Px,
-#  /usr/bin/dbus-daemon Px,
-#  /usr/bin/gksu_askpass.sh Px,
-#  /usr/bin/gsmartcontrol Px,
-#  /usr/bin/exo-open Px,
-  # FIX ME!
-  audit /etc/X11/Sessions/** Pux,
-  audit /opt/** Pux,
-  audit /bin/** Pux,
-  audit /sbin/** Pux,
-  audit /usr/bin/** Pux,
-  audit /usr/sbin/** Pux,
-  audit /usr/local/bin/** Pux,
-  audit /usr/local/sbin/** Pux,
-  audit /usr/libexec/** Pux,
-  audit /usr/lib{,32,64}/** Pux,
-  
+  /usr/sbin/pmvarrun Px,
+  /usr/bin/thunar Px,
+  /usr/bin/dbus-daemon Px,
+  /usr/bin/gksu_askpass.sh Px,
+  /usr/bin/gsmartcontrol Px,
+  /usr/bin/exo-open Px,
   
   /usr/lib64/sudo/sudoers.so m,
   /usr/libexec/sudo/libsudo_util.so* mr,

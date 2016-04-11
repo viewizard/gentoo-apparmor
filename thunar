@@ -47,9 +47,12 @@ profile thunar /usr/bin/{Thunar,thunar} flags=(complain) {
   /usr/bin/thunar mr,
   
   /bin/bash Pux, # FIX ME!
+  # FIX ME!
+  # we need x permission in order to launch users scripts and binary
+  audit owner @{PROG_FOLDERS}@{PROG_FILE} ix,
+  audit owner @{PROG_FOLDERS}@{PROG_DIR}/@{PROG_FILE} ix,
   # FIX ME! - <abstractions/executable-binary-strict>
 #  /usr/bin/dbus-launch ix, # <abstractions/dbus-session>
-#  /usr/bin/thunar-volman Pux,
   # FIX ME!
   audit /etc/X11/Sessions/** Pux,
   audit /opt/** Pux,
@@ -75,11 +78,6 @@ profile thunar /usr/bin/{Thunar,thunar} flags=(complain) {
   owner @{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
   owner @{HOME}/.local/share/gvfs-metadata/ rw,
   owner @{HOME}/.local/share/gvfs-metadata/** rw,
-  
-  # FIX ME!
-  # we need x permission in order to launch users scripts and binary
-  audit owner @{PROG_FOLDERS}@{PROG_FILE} ix,
-  audit owner @{PROG_FOLDERS}@{PROG_DIR}/@{PROG_FILE} ix,
   
 }
 

@@ -22,7 +22,6 @@ profile firefox /usr/{bin,lib,lib64}/{firefox,firefox/bin**}{,/firefox,/firefox-
   #include <abstractions/nameservice>
   #include <abstractions/p11-kit>
   #include <abstractions/nvidia>
-  #include <abstractions/browsers-plugins-common>
   #include <abstractions/user-tmp>
   #include <abstractions/user-download>
   #include <abstractions/user-upload>
@@ -62,6 +61,7 @@ profile firefox /usr/{bin,lib,lib64}/{firefox,firefox/bin**}{,/firefox,/firefox-
   owner @{HOME}/.local/share/gvfs-metadata/home r,
   
   /usr/bin/firefox r,
+  /bin/bash r,
   /sbin/killall5 ixr,
   /bin/which ixr,
   /usr/bin/tr ixr,

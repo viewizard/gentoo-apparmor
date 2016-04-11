@@ -21,7 +21,6 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   #include <abstractions/user-tmp>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/browsers-plugins-common>
   #include <abstractions/user-download>
   #include <abstractions/user-upload>
   #include <abstractions/xdg-open>
@@ -84,6 +83,7 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   /sys/devices/virtual/block/**/size r,
 
 
+  /bin/bash r,
   /bin/ps Uxr,
   /usr/bin/xdg-settings Cxr -> xdgsettings,
   /usr/bin/lsb_release Cxr -> lsb_release,

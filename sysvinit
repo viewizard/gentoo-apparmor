@@ -41,7 +41,8 @@ profile sysvinit.shutdown /sbin/shutdown flags=(complain) {
 profile sysvinit.init /sbin/init flags=(complain) {
   #include <abstractions/base>
   
-  /dev/initctl w,
+  /dev/initctl rw,
+  /dev/console r,
   
   /sbin/init r,
   

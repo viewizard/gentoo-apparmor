@@ -63,14 +63,15 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon flags=(compla
   @{PROC}/tty/drivers r,
   @{PROC}/@{pid}/environ r,
   @{PROC}/@{pid}/sessionid r,
-  /dev/tty* rw,
+  /dev/tty rw,
+  /dev/tty[0-9]* rw,
   /sys/devices/virtual/tty/tty*/active r,
   /sys/power/state r,
   
   /usr/lib64/ConsoleKit/** Pix,
   /usr/bin/pm-is-supported ixr,
   /bin/grep ix,
-  /bin/bash ixr,
+  /bin/bash r,
   /bin/tr ix,
   /bin/cut ix,
   /usr/bin/getent ix,
@@ -105,6 +106,5 @@ profile consolekit.udev-acl /usr/{lib,lib32,lib64}/ConsoleKit/udev-acl flags=(co
   /sys/devices/**/uevent r,
   
   /run/ConsoleKit/database r,
-  
   
 }
