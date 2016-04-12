@@ -16,6 +16,17 @@ profile xautolock /usr/bin/xautolock flags=(complain) {
   /dev/pts/[0-9]* w,
   
   /usr/bin/xautolock r,
-  /bin/bash Pux, # FIX ME!
+  /bin/bash Cx -> shell,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /usr/bin/mate-screensaver-command Px,
+    
+  }
   
 }

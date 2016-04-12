@@ -9,10 +9,11 @@
 # ------------------------------------------------------------------
 
 
-# Px - only programs with profile
+# Px - only programs with profile except shell, in our case - /bin/bash
+# this is ugly solution, while {*^} and {**^} not available in AppArmor.
 
 /opt/** Px,
-/bin/** Px,
+/bin/{[^b]**,basename,bb,bunzip2,busybox,bzcat,bzip2} Px,
 /sbin/** Px,
 /usr/bin/** Px,
 /usr/sbin/** Px,

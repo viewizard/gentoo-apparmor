@@ -9,16 +9,12 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile coreutils.env /bin/env flags=(complain) {
+profile iceauth /usr/bin/iceauth flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/executable-binary-strict>
-
-  /dev/pts/[0-9]* rw,
-
-  /bin/env r,
+  #include <abstractions/user-tmp>
   
-  # FIX ME!
-  audit /bin/bash Pux,
-  audit /usr/lib64/portage/python2.7/ebuild-helpers/prepallstrip Pux,
+  /usr/bin/iceauth r,
+  
+  owner @{HOME}/.ICEauthority* rwl,
   
 }

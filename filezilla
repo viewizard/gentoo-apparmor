@@ -29,7 +29,7 @@ profile filezilla /usr/bin/filezilla {
   #include <abstractions/xdg-open>
 
 
-  /bin/bash Pux, # FIX ME!
+  /bin/bash Cx -> shell,
   /usr/bin/fzsftp ix,
 
   /usr/bin/filezilla r,
@@ -39,5 +39,31 @@ profile filezilla /usr/bin/filezilla {
   @{HOMEDIRS}/ r,
   owner @{HOME}/.filezilla/ rw,
   owner @{HOME}/.filezilla/** rw,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/user-tmp>
+    #include <abstractions/program-work-with-disk-rwk>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /bin/uname ix,
+    /bin/head ix,
+    /bin/sed ix,
+    /bin/tr ix,
+    /bin/ls ix,
+    /usr/bin/lsb_release ixr,
+    /usr/bin/getopt ix,
+    /usr/bin/find ix,
+    
+    /bin/ps Px,
+    
+    /etc/lsb-release r,
+    /etc/os-release r,
+    
+  }
   
 }

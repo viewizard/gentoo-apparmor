@@ -17,26 +17,55 @@ profile conky /usr/bin/conky {
 
   
   /dev/tty rw,
+  
   @{PROC}/@{pid}/net/dev r,
   @{PROC}/@{pid}/mounts r,
-  /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq r,
   /sys/class/hwmon/ r,
-  /sys/devices/platform/coretemp.*/hwmon/hwmon*/ r,
-  /sys/devices/platform/coretemp.*/hwmon/hwmon*/name r,
-  /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor r,
-  /sys/devices/system/cpu/cpufreq/policy*/scaling_{cur_freq,max_freq} r,
   /sys/class/i2c-adapter/ r,
   /sys/devices/pci**/i2c-*/name r,
-  /sys/devices/platform/*/ r,
-  /sys/devices/platform/*/name r,
+  /sys/devices/platform/** r,
+  /sys/devices/system/cpu/cpu*/cpufreq/** r,
+  /sys/devices/system/cpu/cpufreq/** r,
 
 
-  /bin/bash Pux, # FIX ME!
+  /bin/bash Cxr -> shell,
   /usr/bin/conky r,
   
   /etc/sensors3.conf r,
+  /etc/sensors.d/ r,
   /etc/terminfo/l/linux r,
   
   owner @{HOME}/.conkyrc r,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /sys/class/hwmon/ r,
+    /sys/class/i2c-adapter/ r,
+    /sys/devices/pci**/i2c-*/name r,
+    /sys/devices/platform/** r,
+    /sys/devices/system/cpu/cpufreq/** r,
+    
+    /bin/bash r,
+    /usr/bin/cal ix,
+    /bin/tail ix,
+    /bin/head ix,
+    /bin/date ix,
+    /bin/sed ix,
+    /bin/cat ix,
+    /bin/cut ix,
+    /bin/grep ix,
+    /usr/bin/cal ix,
+    /usr/bin/sensors ix,
+    
+    /etc/terminfo/l/linux r,
+    /etc/sensors3.conf r,
+    /etc/sensors.d/ r,
+    /usr/portage/metadata/timestamp r,
+    
+  }
   
 }

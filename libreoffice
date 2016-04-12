@@ -15,13 +15,11 @@
 @{PROG_FILE}="{[^.]*,.~*}"
 @{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
-profile libreoffice /usr/{bin,lib64/libreoffice/program}/soffice {
+profile libreoffice /usr/{bin,lib64/libreoffice/program}/soffice flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
 
   /dev/tty rw,
-  
-  owner @{HOME}/.Xauthority r,
   
   /bin/dirname ix,
   /bin/basename ix,
@@ -30,10 +28,27 @@ profile libreoffice /usr/{bin,lib64/libreoffice/program}/soffice {
   /bin/ls ix,
   /bin/sed ix,
   /bin/bash r,
-  /usr/lib64/libreoffice/program/oosplash ix,
-  /usr/lib64/libreoffice/program/javaldx ix,
-  /usr/lib64/libreoffice/program/soffice.bin Px,
+  /usr/lib64/libreoffice/program/oosplash Px,
+  
+}
 
+
+profile libreoffice.oosplash /usr/lib64/libreoffice/program/oosplash flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  owner @{HOME}/.Xauthority r,
+  
+  /usr/lib64/libreoffice/program/javaldx Px,
+  /usr/lib64/libreoffice/program/soffice.bin Px,
+  
+}
+
+
+profile libreoffice.javaldx /usr/lib64/libreoffice/program/javaldx flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
   owner @{HOME}/.config/libreoffice/ rw,
   owner @{HOME}/.config/libreoffice/** rwk,
   
@@ -58,14 +73,10 @@ profile libreoffice.bin /usr/lib64/libreoffice/program/soffice.bin {
   #include <abstractions/nameservice>
 
 
-  /dev/tty rw,
   /dev/pts/[0-9]* rw,
   /sys/devices/system/cpu/ r,
   
-  /bin/sed ix,
-  /bin/grep ix,
-  /bin/bash ixr,
-  /usr/lib64/libreoffice/program/open-url ix,
+  /bin/bash Cxr -> shell,
   
   /usr/lib64/libreoffice/ r,
   /usr/lib64/libreoffice/** r,
@@ -84,5 +95,19 @@ profile libreoffice.bin /usr/lib64/libreoffice/program/soffice.bin {
   deny @{HOMEDIRS}/* w,
   deny @{HOMEDIRS}/*/ w,
   deny /usr/lib64/libreoffice/share/uno_packages/cache/* w,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/xdg-open>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /bin/sed ix,
+    /bin/grep ix,
+    /usr/lib64/libreoffice/program/open-url ix,
+    
+  }
   
 }

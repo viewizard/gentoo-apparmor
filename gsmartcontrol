@@ -48,13 +48,20 @@ profile gsmartcontrol /usr/bin/gsmartcontrol flags=(complain) {
 profile gsmartcontrol-root /usr/bin/gsmartcontrol-root flags=(complain) {
   #include <abstractions/base>
   
-  /dev/tty rw,
-
-  /usr/bin/gsmartcontrol-root r,
-  /bin/bash ix,
+  /bin/bash Cx -> shell,
   /bin/env r,
-  /usr/bin/which ix,
-  /usr/bin/sudo Px,
-  /usr{,/local}/bin/gksu ixr,
+
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /usr/bin/gsmartcontrol-root r,
+    /usr/bin/which ix,
+    /usr/bin/sudo Px,
+    /usr/bin/gksu Px,
+    
+  }
   
 }

@@ -38,28 +38,26 @@ profile mate-screensaver /usr/bin/mate-screensaver flags=(complain) {
 
 profile mate-screensaver.sh /usr/bin/mate-screensaver.sh flags=(complain) {
   #include <abstractions/base>
-
+  #include <abstractions/freedesktop.org>	# gsettings
+  #include <abstractions/gtk>			# gsettings
+  #include <abstractions/dconf>			# gsettings
+  #include <abstractions/nameservice>		# killall
+  
   /dev/tty rw,
 
   /bin/bash r,
   /usr/bin/mate-screensaver.sh r,
+  /bin/grep ix,
+  /bin/sleep ix,
+  
+  /bin/ps Px,
   /usr/bin/mate-screensaver Px,
   /usr/bin/xautolock Px,
+  
   # FIX ME!
   /usr/bin/pamusb-agent Pux,
-  /bin/grep Pux,
-  /bin/ps Pux,
   /usr/bin/gsettings Pux,
-  /bin/sleep Pux,
   /usr/bin/killall Pux,
-  
-  # killall
-  #include <abstractions/nameservice>
-  
-  # gsettings
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/gtk>
-  #include <abstractions/dconf>
   
 }
 
@@ -146,7 +144,7 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog flags=(comp
   #include <abstractions/authentication>
 
   /usr/libexec/mate-screensaver-dialog r,
-  /bin/bash Pux, # FIX ME!
+  /bin/bash Cx -> shell,
   # FIX ME!
   /sbin/unix_chkpwd Pux,
   
@@ -156,6 +154,19 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog flags=(comp
   /run/utmp rk,
   
   owner @{HOME}/.face r,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    # FIX ME!
+    /usr/bin/pmount Pux,
+    /usr/bin/pumount Pux,
+    
+  }
   
 }
 

@@ -46,7 +46,7 @@ profile thunar /usr/bin/{Thunar,thunar} flags=(complain) {
 
   /usr/bin/thunar mr,
   
-  /bin/bash Pux, # FIX ME!
+  /bin/bash Cx -> shell,
   # FIX ME!
   # we need x permission in order to launch users scripts and binary
   audit owner @{PROG_FOLDERS}@{PROG_FILE} ix,
@@ -56,7 +56,7 @@ profile thunar /usr/bin/{Thunar,thunar} flags=(complain) {
   # FIX ME!
   audit /etc/X11/Sessions/** Pux,
   audit /opt/** Pux,
-  audit /bin/** Pux,
+  audit /bin/{[^b]**,basename,bb,bunzip2,busybox,bzcat,bzip2} Pux,
   audit /sbin/** Pux,
   audit /usr/bin/** Pux,
   audit /usr/sbin/** Pux,
@@ -79,6 +79,17 @@ profile thunar /usr/bin/{Thunar,thunar} flags=(complain) {
   owner @{HOME}/.local/share/gvfs-metadata/ rw,
   owner @{HOME}/.local/share/gvfs-metadata/** rw,
   
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/executable-binary-strict>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    
+  }
+  
 }
 
 
@@ -92,6 +103,7 @@ profile thunar-settings /usr/bin/thunar-settings flags=(complain) {
   /bin/bash r,
   
 }
+
 
 profile thunar-ThunarBulkRename /usr/lib64/Thunar/ThunarBulkRename flags=(complain) {
   #include <abstractions/base>

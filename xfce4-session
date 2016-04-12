@@ -22,11 +22,10 @@ profile xfce4-session /usr/bin/xfce4-session flags=(complain) {
   #include <abstractions/executable-binary-strict>
 
 
-  /dev/tty rw,
   @{PROC}/@{pid}/fd/ r,
 
   /usr/bin/xfce4-session rm,
-  /bin/bash Pux, # FIX ME!
+  /bin/bash Cx -> shell,
 
   owner @{HOME}/.ICEauthority* w,
   
@@ -45,6 +44,17 @@ profile xfce4-session /usr/bin/xfce4-session flags=(complain) {
   owner @{HOME_CACHE}/sessions/thumbs*/ rw,
   owner @{HOME_CACHE}/sessions/thumbs*/*.png rw,
   owner @{HOME_CACHE}/gpg-agent-info rw,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /usr/bin/iceauth Px,
+    
+  }
   
 }
 

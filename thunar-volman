@@ -15,11 +15,14 @@ profile thunar-volman /usr/bin/thunar-volman flags=(complain) {
   #include <abstractions/fonts>
   #include <abstractions/X>
   #include <abstractions/gtk>
+  #include <abstractions/dbus-session>
   
   @{PROC}/@{pid}/fd/ r,
   
   /usr/bin/thunar-volman r,
   /usr/bin/thunar-volman-settings Px,
+  
+  /etc/udev/udev.conf r,
   
 }
 

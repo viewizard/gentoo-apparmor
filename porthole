@@ -21,17 +21,15 @@ profile porthole /usr/lib64/python-exec/python2.[4-9]/porthole flags=(complain) 
   #include <abstractions/xdg-open>
 
 
-  /dev/tty rw,
+  /dev/pts/[0-9]* rw,
+  /dev/ptmx rw,
 
-  /bin/bash ix,
-  /bin/uname ix,
-  /usr/lib64/portage/python2.7/ebuild.sh ix,
+  /bin/bash cx -> shell,
   
   /usr/bin/sandbox ixr,
   /etc/sandbox.conf r,
   /etc/sandbox.d/ r,
   /etc/sandbox.d/* r,
-  /usr/share/sandbox/* r,
 
   /usr/portage/** r,
   /usr/local/portage/** r,
@@ -52,5 +50,21 @@ profile porthole /usr/lib64/python-exec/python2.[4-9]/porthole flags=(complain) 
   
   # Noisy
   deny /usr/lib64/python2.7/site-packages/cairo/__init__.pyc w,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /bin/uname ix,
+    /usr/lib64/portage/python2.[4-9]/ebuild.sh ix,
+
+    /usr/portage/** r,
+    /usr/local/portage/** r,
+    /usr/share/sandbox/* r,
+    
+  }
   
 }

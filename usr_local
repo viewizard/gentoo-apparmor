@@ -20,17 +20,12 @@ profile usr_local.bin /usr/local/bin/* flags=(complain) {
   /bin/bash r,
   
   # FIX ME! - <abstractions/executable-binary-strict>
-  /bin/ln Pux,
-  /bin/sleep Pux,
+  audit /bin/ln Pux,
+  audit /bin/sleep Pux,
   /usr/bin/cairo-clock Px,
-  /usr/bin/killall Pux,
+  audit /usr/bin/killall Pux,
+  /usr/bin/grive Px,
   /usr/bin/conky Px,
-  
-  # FIX ME!
-  audit /opt/** Pux,
-  audit /bin/** Pux,
-  audit /usr/bin/** Pux,
-  audit /usr/local/bin/** Pux,
   
 }
 
@@ -46,20 +41,11 @@ profile usr_local.sbin /usr/local/sbin/* flags=(complain) {
   /bin/bash r,
   
   # FIX ME! - <abstractions/executable-binary-strict>
-  /usr/sbin/gdisk Pux,
-  /bin/grep Pux,
-  /bin/dd Pux,
+  audit /usr/sbin/gdisk Pux,
+  audit /bin/grep Pux,
+  audit /bin/dd Pux,
   /bin/mount Px,
   /bin/umount Px,
-  /usr/sbin/aideinit Pux,
-
-  # FIX ME!
-  audit /opt/** Pux,
-  audit /bin/** Pux,
-  audit /sbin/** Pux,
-  audit /usr/bin/** Pux,
-  audit /usr/sbin/** Pux,
-  audit /usr/local/bin/** Pux,
-  audit /usr/local/sbin/** Pux,
+  audit /usr/sbin/aideinit Pux,
   
 }
