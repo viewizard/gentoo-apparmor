@@ -9,27 +9,12 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile usr_local.bin /usr/local/bin/* flags=(complain) {
+profile pam.unix_chkpwd /sbin/unix_chkpwd {
   #include <abstractions/base>
-  #include <local/usr_local.bin>
-
-  /dev/tty rw,
-  /dev/pts/[0-9]* rw,
-
-  /usr/local/bin/* r,
-  /bin/bash r,
+  #include <abstractions/nameservice>
   
-}
-
-
-profile usr_local.sbin /usr/local/sbin/* flags=(complain) {
-  #include <abstractions/base>
-  #include <local/usr_local.sbin>
-
-  /dev/tty rw,
-  /dev/pts/[0-9]* rw,
+  /sbin/unix_chkpwd r,
   
-  /usr/local/sbin/* r,
-  /bin/bash r,
+  /etc/shadow r,
   
 }

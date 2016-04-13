@@ -13,8 +13,20 @@ profile coreutils.env /bin/env flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/executable-binary-strict>
 
+
   /dev/pts/[0-9]* rw,
 
   /bin/env r,
+  /bin/bash Cx -> shell,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    
+  }
   
 }

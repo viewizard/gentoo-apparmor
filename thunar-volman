@@ -16,13 +16,21 @@ profile thunar-volman /usr/bin/thunar-volman flags=(complain) {
   #include <abstractions/X>
   #include <abstractions/gtk>
   #include <abstractions/dbus-session>
+  #include <abstractions/nameservice>
   
+  /sys/devices/pci**/usb*/**/uevent r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/uevent r,
+  /sys/devices/virtual/block/dm-*/uevent r,
   @{PROC}/@{pid}/fd/ r,
   
   /usr/bin/thunar-volman r,
   /usr/bin/thunar-volman-settings Px,
+  /usr/bin/thunar Px,
   
+  /etc/fstab r,
   /etc/udev/udev.conf r,
+  
+  /run/udev/data/* r,
   
 }
 

@@ -1,0 +1,67 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile pmount /usr/bin/pmount flags=(complain) {
+  #include <abstractions/base>
+  
+  capability setuid,
+  capability setgid,
+  
+  /dev/sd[a-z] r,
+  /dev/sd[a-z][1-9]* r,
+  /sys/class/block/ r,
+  /sys/devices/virtual/block/md*/dev r,
+  /sys/devices/pci**/ata*/**/block/sd[a-z]/ r,
+  /sys/devices/pci**/ata*/**/block/sd[a-z]/dev r,
+  /sys/devices/pci**/ata*/**/block/sd[a-z]/sd[a-z][1-9]*/dev r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/ r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/dev r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/removable r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/sd[a-z][1-9]*/ r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/sd[a-z][1-9]*/dev r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/sd[a-z][1-9]*/size r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/sd[a-z][1-9]*/start r,
+  @{PROC}/@{pid}/mounts r,
+  
+  /usr/bin/pmount r,
+  /bin/mount Px,
+  /sbin/cryptsetup Px,
+  
+  /etc/pmount.conf r,
+  /etc/pmount.allow r,
+  /etc/fstab r,
+  
+  /media/pam_usb*/ rw,
+  /media/pam_usb*/** rw,
+  
+  /run/lock/pmount__media_pam_usb* rwk,
+  
+}
+
+
+profile pmount.pumount /usr/bin/pumount flags=(complain) {
+  #include <abstractions/base>
+  
+  capability setuid,
+  
+  @{PROC}/@{pid}/mounts r,
+  
+  /usr/bin/pumount r,
+  /bin/umount Px,
+  /sbin/cryptsetup Px,
+  
+  /etc/pmount.conf r,
+  /etc/fstab r,
+  
+  /media/pam_usb*/ rw,
+  /media/pam_usb*/** rw,
+  
+}

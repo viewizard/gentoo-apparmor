@@ -16,6 +16,7 @@ profile procps.ps /bin/ps {
   capability sys_ptrace,
   
   /dev/tty r,
+  /dev/pts/[0-9]* rw,
   
   @{PROC}/ r,
   @{PROC}/uptime r,
@@ -25,6 +26,7 @@ profile procps.ps /bin/ps {
   @{PROC}/@{pid}/status r,
   @{PROC}/@{pid}/cmdline r,
   @{PROC}/@{pid}/task/ r,
+  @{PROC}/@{pid}/task/** r,
 
   /bin/ps r,
   

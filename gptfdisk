@@ -9,27 +9,13 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile usr_local.bin /usr/local/bin/* flags=(complain) {
+profile gptfdisk.gdisk /usr/sbin/gdisk flags=(complain) {
   #include <abstractions/base>
-  #include <local/usr_local.bin>
-
-  /dev/tty rw,
-  /dev/pts/[0-9]* rw,
-
-  /usr/local/bin/* r,
-  /bin/bash r,
   
-}
-
-
-profile usr_local.sbin /usr/local/sbin/* flags=(complain) {
-  #include <abstractions/base>
-  #include <local/usr_local.sbin>
-
-  /dev/tty rw,
+  /dev/sd[a-z] rw,
+  
   /dev/pts/[0-9]* rw,
   
-  /usr/local/sbin/* r,
-  /bin/bash r,
+  /usr/sbin/gdisk r,
   
 }

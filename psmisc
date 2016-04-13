@@ -9,27 +9,17 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile usr_local.bin /usr/local/bin/* flags=(complain) {
+profile psmisc.killall /usr/bin/killall flags=(complain) {
   #include <abstractions/base>
-  #include <local/usr_local.bin>
-
-  /dev/tty rw,
-  /dev/pts/[0-9]* rw,
-
-  /usr/local/bin/* r,
-  /bin/bash r,
+  #include <abstractions/nameservice>
   
-}
-
-
-profile usr_local.sbin /usr/local/sbin/* flags=(complain) {
-  #include <abstractions/base>
-  #include <local/usr_local.sbin>
-
-  /dev/tty rw,
-  /dev/pts/[0-9]* rw,
+  capability sys_ptrace,
   
-  /usr/local/sbin/* r,
-  /bin/bash r,
+  @{PROC}/ r,
+  @{PROC}/@{pid}/stat r,
+  @{PROC}/@{pid}/status r,
+  @{PROC}/@{pid}/cmdline r,
+  
+  /usr/bin/killall r,
   
 }

@@ -46,7 +46,7 @@ profile thunar /usr/bin/{Thunar,thunar} flags=(complain) {
 
   /usr/bin/thunar mr,
   
-  /bin/bash Cx -> shell,
+  /bin/bash Cxr -> shell,
   # FIX ME!
   # we need x permission in order to launch users scripts and binary
   audit owner @{PROG_FOLDERS}@{PROG_FILE} ix,
@@ -82,7 +82,7 @@ profile thunar /usr/bin/{Thunar,thunar} flags=(complain) {
   
   profile shell flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/executable-binary-strict>
+    #include <local/thunar-custom-actions>
     
     /dev/tty rw,
     

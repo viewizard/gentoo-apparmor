@@ -88,7 +88,7 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd flags=(complain) {
   /sys/devices/pci**/ata*/**/block/sd[a-z]/sd[a-z][0-9]*/ r,
   /sys/devices/pci**/ata*/**/block/sd[a-z]/sd[a-z][0-9]*/** r,
   /sys/devices/pci**/usb*/**/uevent r,
-  /sys/devices/pci**/usb*/**/remove r,
+  /sys/devices/pci**/usb*/**/remove rw,
   
   @{PROC}/@{pid}/mountinfo r,
   @{PROC}/swaps r,
@@ -97,6 +97,7 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd flags=(complain) {
   /usr/libexec/udisks2/udisksd r,
   /bin/mount Px,
   /bin/umount Px,
+  /sbin/cryptsetup Px,
   
   /etc/udev/udev.conf r,
   /etc/fstab r,
@@ -104,6 +105,7 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd flags=(complain) {
   
   /run/udisks2/ rw,
   /run/udisks2/mounted-fs* rw,
+  /run/udisks2/unlocked-luks* rw,
   /run/udev/data/* r,
   
 }

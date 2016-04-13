@@ -21,6 +21,7 @@ profile xfdesktop /usr/bin/xfdesktop flags=(complain) {
   @{PROC}/@{pid}/fd/ r,
   
   /usr/bin/xfdesktop r,
+  /bin/bash Cx -> shell,
   
   /usr/lib64/thunarx-2/*.so m,
   
@@ -51,6 +52,17 @@ profile xfdesktop /usr/bin/xfdesktop flags=(complain) {
   owner @{HOME}/.config/menus/applications-merged/ r,
   owner @{HOME}/.local/share/desktop-directories/ r,
   owner @{HOME}/.local/share/desktop-directories/*.directory r,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /usr/bin/{gksu,gksudo} Px,
+    
+  }
   
 }
 

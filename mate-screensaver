@@ -38,26 +38,20 @@ profile mate-screensaver /usr/bin/mate-screensaver flags=(complain) {
 
 profile mate-screensaver.sh /usr/bin/mate-screensaver.sh flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>	# gsettings
-  #include <abstractions/gtk>			# gsettings
-  #include <abstractions/dconf>			# gsettings
-  #include <abstractions/nameservice>		# killall
   
   /dev/tty rw,
 
   /bin/bash r,
   /usr/bin/mate-screensaver.sh r,
   /bin/grep ix,
-  /bin/sleep ix,
+  /bin/sleep ixr,
   
   /bin/ps Px,
   /usr/bin/mate-screensaver Px,
   /usr/bin/xautolock Px,
-  
-  # FIX ME!
-  /usr/bin/pamusb-agent Pux,
-  /usr/bin/gsettings Pux,
-  /usr/bin/killall Pux,
+  /usr/bin/pamusb-agent Px,
+  /usr/bin/killall Px,
+  /usr/bin/gsettings Px,
   
 }
 
@@ -145,8 +139,7 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog flags=(comp
 
   /usr/libexec/mate-screensaver-dialog r,
   /bin/bash Cx -> shell,
-  # FIX ME!
-  /sbin/unix_chkpwd Pux,
+  /sbin/unix_chkpwd Px,
   
   /etc/environment r,
   /usr/share/mate-screensaver/ r,
@@ -162,9 +155,8 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog flags=(comp
     /dev/tty rw,
     
     /bin/bash r,
-    # FIX ME!
-    /usr/bin/pmount Pux,
-    /usr/bin/pumount Pux,
+    /usr/bin/pmount Px,
+    /usr/bin/pumount Px,
     
   }
   

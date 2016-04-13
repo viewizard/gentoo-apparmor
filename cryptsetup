@@ -9,27 +9,25 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile usr_local.bin /usr/local/bin/* flags=(complain) {
+profile cryptsetup /sbin/cryptsetup flags=(complain) {
   #include <abstractions/base>
-  #include <local/usr_local.bin>
-
-  /dev/tty rw,
-  /dev/pts/[0-9]* rw,
-
-  /usr/local/bin/* r,
-  /bin/bash r,
   
-}
-
-
-profile usr_local.sbin /usr/local/sbin/* flags=(complain) {
-  #include <abstractions/base>
-  #include <local/usr_local.sbin>
-
-  /dev/tty rw,
   /dev/pts/[0-9]* rw,
+  /sys/devices/virtual/bdi/*/read_ahead_kb r,
   
-  /usr/local/sbin/* r,
-  /bin/bash r,
+  capability ipc_lock,
+  capability sys_nice,
+  capability sys_admin,
+  
+  /dev/mapper/ r,
+  /dev/mapper/control rw,
+  /dev/sd[a-z][1-9]* rw,
+  /dev/dm-[1-9]* rw,
+  /dev/md[0-9]* rw,
+  @{PROC}/devices r,
+  
+  /etc/udev/udev.conf r,
+  
+  /run/openrc/dm-crypt-remdev.*/enc.key r,
   
 }
