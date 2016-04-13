@@ -78,12 +78,12 @@ profile bash /bin/{bash,rbash,sh} flags=(complain) {
   # FIX ME!
   audit /etc/X11/Sessions/** Pux,
   audit /opt/** Pux,
-  audit /bin/** pux,
-  audit /sbin/** pux,
-  audit /usr/bin/** pux,
-  audit /usr/sbin/** pux,
+  audit /bin/** Pux,
+  audit /sbin/** Pux,
+  audit /usr/bin/** Pux,
+  audit /usr/sbin/** Pux,
   audit /usr/libexec/** Pux,
-  audit /usr/lib{,32,64}/** pux,  
+  audit /usr/lib{,32,64}/** Pux,  
  
   
   /etc/profile.env r,

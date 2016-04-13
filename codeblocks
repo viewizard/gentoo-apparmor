@@ -26,36 +26,21 @@ profile codeblocks /usr/bin/codeblocks flags=(complain) {
   #include <abstractions/X>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
-
-
-  /dev/tty rw,
-
-  # FIX ME!
-  /bin/bash ix,
-
+  #include <local/codeblocks-custom-settings>
+  
+  
   /usr/bin/codeblocks r,
+  /bin/bash Cxr -> shell,
   /usr/bin/gcc ix,
-  /usr/x86_64-pc-linux-gnu/gcc-bin/[4-9].[0-9].[0-9]/x86_64-pc-linux-gnu-gcc ix,
   /usr/bin/g++ ix,
-  /usr/x86_64-pc-linux-gnu/gcc-bin/[4-9].[0-9].[0-9]/x86_64-pc-linux-gnu-g++ ix,
-  /usr/bin/gfortran ix,
-  /usr/x86_64-pc-linux-gnu/gcc-bin/[4-9].[0-9].[0-9]/x86_64-pc-linux-gnu-gfortran ix,
   /usr/bin/llvm-ar ix,
-  /usr/libexec/gcc/x86_64-pc-linux-gnu/[4-9].[0-9].[0-9]/cc1plus ix,
-  /usr/libexec/gcc/x86_64-pc-linux-gnu/[4-9].[0-9].[0-9]/collect2 ix,
-  /usr/x86_64-pc-linux-gnu/binutils-bin/*/as ix,
-  /usr/x86_64-pc-linux-gnu/binutils-bin/*/ld ix,
+  /usr/bin/gfortran ix,
+  /usr/x86_64-pc-linux-gnu/gcc-bin/*/x86_64-pc-linux-gnu-gcc ix,
+  /usr/x86_64-pc-linux-gnu/gcc-bin/*/x86_64-pc-linux-gnu-g++ ix,
+  /usr/libexec/gcc/x86_64-pc-linux-gnu/*/cc1plus ix,
   
-  # FIX ME!
-  /usr/bin/gcc-config Puxr,
-  
-  /etc/env.d/gcc/** r,
-  /usr/include/ r,
+  /etc/env.d/gcc/x86_64-pc-linux-gnu-* r,
   /usr/include/** r,
-  /etc/ld.so.conf r,
-  /etc/ld.so.conf.d/ r,
-  /etc/ld.so.conf.d/* r,
-  /usr/libexec/gcc/x86_64-pc-linux-gnu/[4-9].[0-9].[0-9]/*.so* rm,
   
   /usr/share/codeblocks/ r,
   /usr/share/codeblocks/** r,
@@ -66,9 +51,33 @@ profile codeblocks /usr/bin/codeblocks flags=(complain) {
   owner @{HOME}/.local/share/codeblocks/** rw,
   
   
-  # FIX ME!
-  # we need x permission in order to launch compilled binary
-  audit owner @{PROG_FOLDERS}@{PROG_FILE} ix,
-  audit owner @{PROG_FOLDERS}@{PROG_DIR}/@{PROG_FILE} ix,
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/user-tmp>
+    #include <abstractions/program-work-with-disk-rwk>
+    
+    /dev/tty rw,
+    
+    /bin/** ixr,
+    /sbin/** ixr,
+    /usr/bin/** ixr,
+    /usr/sbin/** ixr,
+    /usr/lib{,32,64}/** ixr,
+    /usr/libexec/** ixr,
+    /usr/x86_64-pc-linux-gnu/** ixr,
+    
+    /etc/profile.env r,
+    /etc/env.d/** r,
+    /etc/ld.so.conf r,
+    /etc/ld.so.conf.d/ r,
+    /etc/ld.so.conf.d/* r,
+    /etc/portage/** r,
+    /usr/portage/** r,
+    /usr/local/portage/** r,
+    /usr/share/portage/config/* r,
+    /usr/include/** r,
+    
+  }
   
 }

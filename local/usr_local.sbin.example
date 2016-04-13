@@ -1,0 +1,29 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+
+/usr/sbin/gdisk Px,
+/bin/grep ix,
+/bin/dd Cx -> dd,
+/bin/mount Px,
+/bin/umount Px,
+/usr/sbin/aideinit Px,
+
+profile dd flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/pts/[0-9]* rw,
+  
+  /dev/sda r,
+  
+  /bin/dd r,
+  /var/lib/aide/* w,
+  
+}
