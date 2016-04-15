@@ -1,0 +1,45 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile nullmailer.sendmail /usr/sbin/sendmail flags=(complain) {
+  #include <abstractions/base>
+  
+  /usr/sbin/sendmail r,
+  /usr/bin/nullmailer-inject Px,
+  
+}
+
+
+profile nullmailer-inject /usr/bin/nullmailer-inject flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/user-tmp>
+  
+  /usr/bin/nullmailer-inject r,
+  /usr/sbin/nullmailer-queue Px,
+  
+  /etc/nullmailer/ r,
+  /etc/nullmailer/* r,
+  
+}
+
+
+profile nullmailer-queue /usr/sbin/nullmailer-queue flags=(complain) {
+  #include <abstractions/base>
+  
+  /usr/sbin/nullmailer-queue r,
+  
+  /etc/nullmailer/ r,
+  /etc/nullmailer/* r,
+  
+  /var/nullmailer/ r,
+  /var/nullmailer/** rwl,
+  
+}

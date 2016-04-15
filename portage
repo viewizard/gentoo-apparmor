@@ -33,24 +33,27 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python*/emerge flags=(compla
   /usr/bin/id ix,
   /usr/bin/install-info ix,
   /usr/bin/wget ix,
+  /usr/bin/desktop-file-validate ix,
   
   / r,
   /bin/ r,
   /bin/** rw,
   /etc/ r,
+  deny /etc/ w,
   /etc/** rw,
   /lib{,32,64}/ r,
-  /lib{,32,64}/** r,
+  /lib{,32,64}/** rw,
   /opt/ r,
   /opt/** rw,
   /sbin/ r,
   /sbin/** rw,
   /usr/ r,
-  /usr/** rw,
+  deny /usr/ w,
+  /usr/** rw, # FIX ME! exclude "/usr/local" with {*^}/{**^}, when this features will be available
   /usr/portage/distfiles/** rwk,
   /usr/portage/packages/** rwk,
   /var/ rw,
-  /var/** rwk,
+  /var/** rwk, # FIX ME! exclude "/var/log" (allow only subfolder creation and .keep* files) with {*^}/{**^}, when this features will be available
   /tmp/* rw,
   
   # Noisy
@@ -72,12 +75,16 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python*/emerge flags=(compla
     /dev/tty rw,
     /dev/pts/[0-9]* rw,
     
+    /usr/sbin/useradd Px,
+    
     /etc/portage/bin/** ixr,
     /bin/** ixr,
     /sbin/** ixr,
     /usr/bin/** ixr,
     /usr/sbin/** ixr,
     /usr/lib{,32,64}/** ixr,
+    /usr/libexec/** ixr,
+    /usr/x86_64-pc-linux-gnu/** ixr,
     
     /lib{,32,64}/ r,
     /etc/ld.so.cache* rw,
@@ -87,10 +94,13 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python*/emerge flags=(compla
     /etc/ld.so.conf r,
     /etc/ld.so.conf.d/ r,
     /etc/ld.so.conf.d/* r,
+    /etc/conf.d/* r,
     /etc/env.d/python/** r,
     /etc/portage/** r,
     /usr/** r,
     /usr/portage/** rw,
+    /usr/share/applications/** rw,
+    /usr/share/icons/hicolor/** rw,
     /var/db/pkg/ r,
     /var/db/pkg/** rw,
     
@@ -98,6 +108,8 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python*/emerge flags=(compla
     /var/tmp/portage/** rwk,
     /var/cache/ldconfig/aux-cache* rw,
     /var/lib/gentoo/gkeys/keyrings/gentoo/** rw,
+    /var/lib/*/ w,
+    /var/lib/*/.keep* w,
     
   }
   
@@ -130,6 +142,8 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python*/emerge flags=(compla
     /etc/ld.so.conf r,
     /etc/ld.so.conf.d/ r,
     /etc/ld.so.conf.d/* r,
+    /etc/portage/patches/ r,
+    /etc/portage/patches/** r,
     /usr/** r,
     
     /var/tmp/portage/ rw,

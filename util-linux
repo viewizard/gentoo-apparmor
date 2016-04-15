@@ -50,3 +50,29 @@ profile util-linux.umount /bin/umount flags=(complain) {
   /run/mount/utab.* rwk,
   
 }
+
+profile util-linux.lsblk /bin/lsblk flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/pts/[0-9]* w,
+  /sys/block/ r,
+  /sys/devices/virtual/block/md[0-9]*/ r,
+  /sys/devices/virtual/block/md[0-9]*/** r,
+  /sys/devices/pci**/ata*/**/type r,
+  /sys/devices/pci**/ata*/**/block/sd[a-z]/ r,
+  /sys/devices/pci**/ata*/**/block/sd[a-z]/** r,
+  /sys/devices/pci**/usb*/**/type r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/ r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/** r,
+  /sys/devices/virtual/block/dm-[0-9]*/ r,
+  /sys/devices/virtual/block/dm-[0-9]*/** r,
+  /sys/devices/virtual/block/zd[0-9]*/ r,
+  /sys/devices/virtual/block/zd[0-9]*/** r,
+  /sys/devices/virtual/block/loop[0-9]*/ r,
+  /sys/devices/virtual/block/loop[0-9]*/** r,
+  @{PROC}/swaps r,
+  @{PROC}/@{pid}/mountinfo r,
+  
+  /bin/lsblk r,
+  
+}

@@ -1,0 +1,44 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile smartmontools.smartd /usr/sbin/smartd flags=(complain) {
+  #include <abstractions/base>
+  
+  capability sys_rawio,
+  
+  /dev/ r,
+  /dev/sd[a-z] r,
+  /sys/devices/pci**/usb*/**/idVendor r,
+  /sys/devices/pci**/usb*/**/idProduct r,
+  /sys/devices/pci**/usb*/**/bcdDevice r,
+  @{PROC}/devices r,
+  
+  /etc/smartd.conf r,
+  /usr/share/smartmontools/** r,
+  
+  /run/smartd.pid rwk,
+  
+}
+
+
+profile smartmontools.smartctl /usr/sbin/smartctl flags=(complain) {
+  #include <abstractions/base>
+  
+  capability sys_rawio,
+  
+  /dev/pts/[0-9]* rw,
+  /dev/sd[a-z] r,
+  
+  /usr/sbin/smartctl r,
+  
+  /usr/share/smartmontools/** r,
+  
+}

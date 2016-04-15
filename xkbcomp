@@ -9,28 +9,12 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile procps.ps /bin/ps {
+profile xkbcomp /usr/bin/xkbcomp flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/nameservice>
   #include <abstractions/user-tmp>
   
-  capability sys_ptrace,
+  /usr/bin/xkbcomp r,
   
-  /dev/tty r,
-  /dev/pts/[0-9]* rw,
+  /usr/share/X11/xkb/** r,
   
-  @{PROC}/ r,
-  @{PROC}/uptime r,
-  @{PROC}/sys/kernel/pid_max r,
-  @{PROC}/tty/drivers r,
-  @{PROC}/@{pid}/stat r,
-  @{PROC}/@{pid}/status r,
-  @{PROC}/@{pid}/cmdline r,
-  @{PROC}/@{pid}/task/ r,
-  @{PROC}/@{pid}/task/** r,
-
-  /bin/ps r,
-  
-  /usr/src/linux-*-{hardened,gentoo}*/System.map r,
-    
 }

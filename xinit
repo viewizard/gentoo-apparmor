@@ -9,15 +9,13 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile coreutils.env /bin/env flags=(complain) {
+profile xinit /usr/bin/xinit flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/executable-binary-strict>
-
-
-  /dev/pts/[0-9]* rw,
-
-  /bin/env r,
+  #include <abstractions/X>
+  
+  /usr/bin/xinit r,
   /bin/bash Cx -> shell,
+  /etc/X11/xinit/xserverrc Px,
   
   
   profile shell flags=(complain) {
@@ -26,8 +24,27 @@ profile coreutils.env /bin/env flags=(complain) {
     /dev/tty rw,
     
     /bin/bash r,
-    /bin/date ix,
+    /bin/cat ix,
+    /usr/bin/which ix,
+    /usr/bin/xrdb Px,
+    /usr/bin/xfce4-session Px,
+    /usr/bin/xdg-user-dirs-update Px,
+    
+    /etc/xdg/xfce4/xinitrc r,
+    /etc/xdg/xfce4/Xft.xrdb r,
     
   }
+  
+}
+
+
+profile xinit.xserverrc /etc/X11/xinit/xserverrc flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/tty rw,
+  
+  /bin/bash r,
+  /etc/X11/xinit/xserverrc r,
+  /usr/bin/Xorg Px,
   
 }

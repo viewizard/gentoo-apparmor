@@ -1,0 +1,56 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile mdadm /sbin/mdadm flags=(complain) {
+  #include <abstractions/base>
+  
+  capability sys_admin,
+  capability sys_rawio,
+  
+  /dev/ r,
+  /dev/** r,
+  /dev/pts/[0-9]* rw,
+  /sys/bus/pci/drivers/ahci/ r,
+  /sys/devices/pci**/vendor r,
+  /sys/devices/pci**/device r,
+  /sys/devices/virtual/block/md[0-9]*/md/ r,
+  /sys/devices/virtual/block/md[0-9]*/md/component_size r,
+  /sys/devices/virtual/block/md[0-9]*/md/metadata_version r,
+  /sys/devices/virtual/block/md[0-9]*/md/dev-sd[a-z][0-9]*/slot r,
+  /sys/devices/pci**/ata*/**/block/sd[a-z]/sd[a-z][0-9]*/dev r,
+  /proc/mdstat r,
+  /proc/devices r,
+  
+  /etc/mdadm.conf r,
+  
+  owner /run/mdadm.pid rw,
+  owner /run/mdadm/* rwk,
+  
+}
+
+
+profile mdadm.checkarray /usr/sbin/checkarray flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/tty rw,
+  /dev/pts/[0-9]* w,
+  /sys/block/ r,
+  /sys/devices/virtual/block/md[0-9]*/ r,
+  /sys/devices/virtual/block/md[0-9]*/** r,
+  
+  /bin/bash r,
+  /usr/sbin/checkarray r,
+  /bin/ls ix,
+  /bin/egrep ixr,
+  /bin/grep ix,
+  /usr/bin/getopt ix,
+  
+}

@@ -9,25 +9,18 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile coreutils.env /bin/env flags=(complain) {
+profile kmod /bin/kmod flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/executable-binary-strict>
-
-
-  /dev/pts/[0-9]* rw,
-
-  /bin/env r,
-  /bin/bash Cx -> shell,
   
+  capability sys_module,
   
-  profile shell flags=(complain) {
-    #include <abstractions/base>
-    
-    /dev/tty rw,
-    
-    /bin/bash r,
-    /bin/date ix,
-    
-  }
+  /sys/module/** r,
+  @{PROC}/cmdline r,
+  @{PROC}/modules r,
+  
+  /bin/kmod r,
+  
+  /etc/modprobe.d/ r,
+  /etc/modprobe.d/* r,
   
 }

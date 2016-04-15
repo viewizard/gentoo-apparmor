@@ -11,6 +11,7 @@
 
 # Px - only programs with profile except shell, in our case - /bin/bash
 # this is ugly solution, while {*^} and {**^} not available in AppArmor.
+# FIX ME! exclude "/bin/bash" with {*^}/{**^}, when this features will be available
 
 /opt/** Px,
 /bin/{[^b]**,basename,bb,bunzip2,busybox,bzcat,bzip2} Px,

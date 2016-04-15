@@ -9,28 +9,16 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile procps.ps /bin/ps {
+profile mailx /usr/bin/{mail,Mail,mailx} flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/nameservice>
   #include <abstractions/user-tmp>
   
-  capability sys_ptrace,
+  capability setuid,
+  capability setgid,
   
-  /dev/tty r,
-  /dev/pts/[0-9]* rw,
+  /usr/bin/mail r,
+  /usr/sbin/sendmail Px,
   
-  @{PROC}/ r,
-  @{PROC}/uptime r,
-  @{PROC}/sys/kernel/pid_max r,
-  @{PROC}/tty/drivers r,
-  @{PROC}/@{pid}/stat r,
-  @{PROC}/@{pid}/status r,
-  @{PROC}/@{pid}/cmdline r,
-  @{PROC}/@{pid}/task/ r,
-  @{PROC}/@{pid}/task/** r,
-
-  /bin/ps r,
+  /etc/mail.rc r,
   
-  /usr/src/linux-*-{hardened,gentoo}*/System.map r,
-    
 }

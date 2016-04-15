@@ -19,6 +19,7 @@ profile xfdesktop /usr/bin/xfdesktop flags=(complain) {
   #include <abstractions/executable-binary-strict>
   
   @{PROC}/@{pid}/fd/ r,
+  owner @{PROC}/@{pid}/mountinfo r,
   
   /usr/bin/xfdesktop r,
   /bin/bash Cx -> shell,

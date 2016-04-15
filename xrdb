@@ -9,25 +9,11 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile coreutils.env /bin/env flags=(complain) {
+profile xrdb /usr/bin/xrdb flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/executable-binary-strict>
-
-
-  /dev/pts/[0-9]* rw,
-
-  /bin/env r,
-  /bin/bash Cx -> shell,
   
+  /usr/bin/xrdb r,
   
-  profile shell flags=(complain) {
-    #include <abstractions/base>
-    
-    /dev/tty rw,
-    
-    /bin/bash r,
-    /bin/date ix,
-    
-  }
+  owner @{HOME}/.Xauthority r,
   
 }

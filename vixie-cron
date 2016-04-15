@@ -9,15 +9,25 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile coreutils.env /bin/env flags=(complain) {
+profile vixie-cron.cron /usr/sbin/cron flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/executable-binary-strict>
-
-
-  /dev/pts/[0-9]* rw,
-
-  /bin/env r,
+  #include <abstractions/nameservice>
+  #include <abstractions/authentication>
+  
+  capability setuid,
+  capability setgid,
+  
   /bin/bash Cx -> shell,
+  
+  /etc/crontab r,
+  /etc/cron.d/ r,
+  /etc/cron.d/* r,
+  /etc/security/limits.d/ r,
+  /etc/security/limits.d/* r,
+  
+  /run/cron.pid rwk,
+  /var/spool/cron/ rw,
+  /var/spool/cron/** rw,
   
   
   profile shell flags=(complain) {
@@ -26,7 +36,11 @@ profile coreutils.env /bin/env flags=(complain) {
     /dev/tty rw,
     
     /bin/bash r,
-    /bin/date ix,
+    /bin/rm ix,
+    /usr/sbin/run-crons Px,
+    
+    /var/spool/cron/lastrun/ rw,
+    /var/spool/cron/lastrun/* rw,
     
   }
   

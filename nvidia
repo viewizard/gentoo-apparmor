@@ -82,7 +82,7 @@ profile nvidia-smi /opt/bin/nvidia-smi flags=(complain) {
   capability sys_admin,
 
   /dev/nvidiactl rw,
-  /dev/nvidia0 rw,
+  /dev/nvidia[0-9]* rw,
   @{PROC}/driver/nvidia/params r,
 
 }

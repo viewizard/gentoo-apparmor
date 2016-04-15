@@ -102,3 +102,16 @@ profile xfce4-session.xflock4 /usr/bin/xflock4 flags=(complain) {
   /usr/bin/mate-screensaver-command Px,
   
 }
+
+
+profile xfce4-session.startxfce4 /usr/bin/startxfce4 flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/X>
+  
+  /dev/tty rw,
+  
+  /usr/bin/startxfce4 r,
+  /bin/bash r,
+  /usr/bin/xinit Px,
+  
+}

@@ -1,0 +1,323 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+
+# Make sure, that all cron scripts have profile here!
+# /etc/cron.hourly/*
+# /etc/cron.daily/*
+# /etc/cron.weekly/*
+# /etc/cron.monthly/*
+
+#
+# In order to update scripts profiles, use:
+# apparmor_parser -r /etc/apparmor.d/cronbase
+#
+
+
+profile cron.hourly/logcheck.cron /etc/cron.hourly/logcheck.cron flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  capability chown,
+  
+  /dev/tty rw,
+  
+  /bin/bash r,
+  /etc/cron.hourly/logcheck.cron r,
+  /bin/mkdir ix,
+  /bin/chown ix,
+  /bin/su Px,
+  /bin/bash ix,
+  
+  # FIX ME!
+  /usr/sbin/logcheck Pux,
+  
+  /var/lock/logcheck/ rw,
+  /run/lock/logcheck/ rw,
+  
+}
+
+profile cron.daily/00_update_portage /etc/cron.daily/00_update_portage flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/user-tmp>
+  
+  /dev/tty rw,
+  
+  /bin/bash r,
+  /etc/cron.daily/00_update_portage r,
+  /bin/mktemp ix,
+  /bin/rm ix,
+  /bin/cat ix,
+  /bin/env Px,
+  /usr/bin/mail Px,
+  /usr/lib64/python-exec/python-exec2 Px,
+  # FIX ME!
+  /sbin/openrc Pux,
+  
+}
+
+profile cron.daily/aide /etc/cron.daily/aide flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/user-tmp>
+  #include <abstractions/nameservice>
+  
+  /dev/tty rw,
+  /dev/sda r,
+  
+  /bin/bash r,
+  /etc/cron.daily/aide r,
+  /bin/mktemp ix,
+  /bin/cat ix,
+  /bin/rm ix,
+  /bin/dd ix,
+  /bin/grep ix,
+  /bin/sed ix,
+  /bin/mount Px,
+  /bin/umount Px,
+  /usr/bin/stat ix,
+  /usr/bin/mail Px,
+  /usr/bin/aide Px,
+  /usr/bin/md5sum ix,
+  /usr/bin/sha1sum ix,
+  /usr/bin/sha512sum ix,
+  /usr/sbin/gdisk Px,
+  
+  /var/lib/aide/ r,
+  /var/lib/aide/* r,
+  
+}
+
+profile cron.daily/chkrootkit /etc/cron.daily/chkrootkit flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/user-tmp>
+  
+  /dev/tty rw,
+  
+  /bin/bash r,
+  /etc/cron.daily/chkrootkit r,
+  /bin/mktemp ix,
+  /bin/cat ix,
+  /bin/rm ix,
+  /usr/bin/mail Px,
+  # FIX ME!
+  /usr/sbin/chkrootkit Pux,
+  
+}
+
+profile cron.daily/daily_backup.sh /etc/cron.daily/daily_backup.sh flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/user-tmp>
+  
+  capability sys_admin,
+  
+  /dev/tty rw,
+  /dev/NULL w,
+  @{PROC}/@{pid}/fd/ r,
+  
+  /bin/bash r,
+  /bin/chmod ix,
+  /bin/date ix,
+  /bin/tar ix,
+  /bin/rm ix,
+  /bin/cat ix,
+  /bin/mktemp ix,
+  /bin/lsblk Px,
+  /sbin/cryptsetup Px,
+  /usr/bin/find ix,
+  /usr/bin/mail Px,
+  
+  /home/ r,
+  /home/** r,
+  /etc/** r,
+  /usr/** r,
+  /var/lib/** r,
+  /media/sdb1/Gentoo_Backup/ r,
+  /media/sdb1/Gentoo_Backup/* rw,
+  
+}
+
+profile cron.daily/glsa /etc/cron.daily/glsa flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/user-tmp>
+  
+  /dev/tty rw,
+  
+  /bin/bash r,
+  /etc/cron.daily/glsa r,
+  /bin/mktemp ix,
+  /bin/cat ix,
+  /bin/rm ix,
+  /usr/bin/mail Px,
+  /usr/lib64/python-exec/python-exec2 Px,
+  
+}
+
+profile cron.daily/hosts.sh /etc/cron.daily/hosts.sh flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/user-tmp>
+  #include <abstractions/nameservice>
+  
+  capability sys_admin,
+  
+  /dev/tty rw,
+  
+  /bin/bash r,
+  /etc/cron.daily/hosts.sh r,
+  /bin/date ix,
+  /bin/mv ix,
+  /bin/chmod ix,
+  /usr/bin/wget ix,
+  /usr/bin/stat ix,
+  
+  /etc/wgetrc r,
+  /etc/hosts w,
+  
+  /var/log/hosts.log w,
+  
+}
+
+profile cron.daily/logrotate /etc/cron.daily/logrotate flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/tty rw,
+  
+  /bin/bash r,
+  /etc/cron.daily/logrotate r,
+  # FIX ME!
+  /usr/sbin/logrotate Pux,
+  
+}
+
+profile cron.daily/lynis /etc/cron.daily/lynis flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/user-tmp>
+  
+  /dev/tty rw,
+  
+  /bin/bash r,
+  /etc/cron.daily/lynis r,
+  /bin/mktemp ix,
+  /bin/cat ix,
+  /bin/rm ix,
+  /usr/bin/mail Px,
+  # FIX ME!
+  /usr/sbin/lynis Pux,
+  
+}
+
+profile cron.daily/man-db /etc/cron.daily/man-db flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/tty rw,
+  
+  /bin/bash r,
+  /etc/cron.daily/man-db r,
+  /usr/bin/nice ix,
+  
+}
+
+profile cron.daily/oinkmaster /etc/cron.daily/oinkmaster flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/user-tmp>
+  
+  /dev/tty rw,
+  
+  /bin/bash r,
+  /etc/cron.daily/oinkmaster r,
+  /bin/mktemp ix,
+  /bin/cat ix,
+  /bin/rm ix,
+  /usr/bin/mail Px,
+  # FIX ME!
+  /usr/bin/oinkmaster.pl Pux,
+  /etc/init.d/suricata Pux,
+  
+}
+
+profile cron.weekly/mdadm /etc/cron.weekly/mdadm flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/tty rw,
+  
+  /bin/bash r,
+  /etc/cron.weekly/mdadm r,
+  /bin/date ix,
+  /usr/sbin/checkarray Px,
+  
+}
+
+profile cron.weekly/weekly_backup.sh /etc/cron.weekly/weekly_backup.sh flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/user-tmp>
+  
+  capability sys_admin,
+  
+  /dev/tty rw,
+  /dev/NULL w,
+  @{PROC}/@{pid}/fd/ r,
+  
+  /bin/bash r,
+  /bin/chmod ix,
+  /bin/date ix,
+  /bin/tar ix,
+  /bin/rm ix,
+  /bin/cat ix,
+  /bin/mktemp ix,
+  /bin/lsblk Px,
+  /sbin/cryptsetup Px,
+  /usr/bin/find ix,
+  /usr/bin/mail Px,
+  
+  /home/ r,
+  /home/** r,
+  /etc/** r,
+  /usr/** r,
+  /var/lib/** r,
+  /media/sdb1/Gentoo_Backup/ r,
+  /media/sdb1/Gentoo_Backup/* rw,
+  
+}
+
+profile cron.monthly/monthly_backup.sh /etc/cron.monthly/monthly_backup.sh flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/user-tmp>
+  
+  capability sys_admin,
+  
+  /dev/tty rw,
+  /dev/NULL w,
+  @{PROC}/@{pid}/fd/ r,
+  
+  /bin/bash r,
+  /bin/chmod ix,
+  /bin/date ix,
+  /bin/tar ix,
+  /bin/rm ix,
+  /bin/cat ix,
+  /bin/mktemp ix,
+  /usr/bin/find ix,
+  /usr/bin/mail Px,
+  
+  / r,
+  /*/ r,
+  /bin/** r,
+  /bin/** r,
+  /boot/** r,
+  /etc/** r,
+  /lib{,32,64}/** r,
+  /opt/** r,
+  /root/** r,
+  /sbin/** r,
+  /usr/** r,
+  /var/** r,
+  /media/sdb1/Gentoo_Backup/ r,
+  /media/sdb1/Gentoo_Backup/* rw,
+  
+}

@@ -9,28 +9,14 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile procps.ps /bin/ps {
+profile xdg-user-dirs-update /usr/bin/xdg-user-dirs-update flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-  #include <abstractions/user-tmp>
   
-  capability sys_ptrace,
+  /usr/bin/xdg-user-dirs-update r,
   
-  /dev/tty r,
-  /dev/pts/[0-9]* rw,
+  /etc/xdg/user-dirs.conf r,
+  /etc/xdg/user-dirs.defaults r,
+  owner @{HOME}/.config/user-dirs.dirs r,
   
-  @{PROC}/ r,
-  @{PROC}/uptime r,
-  @{PROC}/sys/kernel/pid_max r,
-  @{PROC}/tty/drivers r,
-  @{PROC}/@{pid}/stat r,
-  @{PROC}/@{pid}/status r,
-  @{PROC}/@{pid}/cmdline r,
-  @{PROC}/@{pid}/task/ r,
-  @{PROC}/@{pid}/task/** r,
-
-  /bin/ps r,
-  
-  /usr/src/linux-*-{hardened,gentoo}*/System.map r,
-    
 }
