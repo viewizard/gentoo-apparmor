@@ -35,9 +35,7 @@ profile cron.hourly/logcheck.cron /etc/cron.hourly/logcheck.cron flags=(complain
   /bin/chown ix,
   /bin/su Px,
   /bin/bash ix,
-  
-  # FIX ME!
-  /usr/sbin/logcheck Pux,
+  /usr/sbin/logcheck Px,
   
   /var/lock/logcheck/ rw,
   /run/lock/logcheck/ rw,
@@ -58,8 +56,7 @@ profile cron.daily/00_update_portage /etc/cron.daily/00_update_portage flags=(co
   /bin/env Px,
   /usr/bin/mail Px,
   /usr/lib64/python-exec/python-exec2 Px,
-  # FIX ME!
-  /sbin/openrc Pux,
+  /sbin/openrc Px,
   
 }
 
@@ -106,8 +103,7 @@ profile cron.daily/chkrootkit /etc/cron.daily/chkrootkit flags=(complain) {
   /bin/cat ix,
   /bin/rm ix,
   /usr/bin/mail Px,
-  # FIX ME!
-  /usr/sbin/chkrootkit Pux,
+  /usr/sbin/chkrootkit Px,
   
 }
 
@@ -190,8 +186,7 @@ profile cron.daily/logrotate /etc/cron.daily/logrotate flags=(complain) {
   
   /bin/bash r,
   /etc/cron.daily/logrotate r,
-  # FIX ME!
-  /usr/sbin/logrotate Pux,
+  /usr/sbin/logrotate Px,
   
 }
 
@@ -207,8 +202,7 @@ profile cron.daily/lynis /etc/cron.daily/lynis flags=(complain) {
   /bin/cat ix,
   /bin/rm ix,
   /usr/bin/mail Px,
-  # FIX ME!
-  /usr/sbin/lynis Pux,
+  /usr/sbin/lynis Px,
   
 }
 
@@ -236,9 +230,8 @@ profile cron.daily/oinkmaster /etc/cron.daily/oinkmaster flags=(complain) {
   /bin/cat ix,
   /bin/rm ix,
   /usr/bin/mail Px,
-  # FIX ME!
-  /usr/bin/oinkmaster.pl Pux,
-  /etc/init.d/suricata Pux,
+  /usr/bin/oinkmaster.pl Px,
+  /etc/init.d/suricata Px,
   
 }
 

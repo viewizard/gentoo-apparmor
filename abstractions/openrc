@@ -1,0 +1,39 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+
+capability kill,
+capability sys_ptrace,
+capability dac_override,
+capability sys_tty_config,
+
+/dev/tty rw,
+/dev/console rw,
+/dev/pts/[0-9]* w,
+/sys/fs/cgroup/ r,
+/sys/fs/cgroup/*/tasks w,
+/sys/fs/cgroup/openrc/*/ w,
+/sys/fs/cgroup/openrc/*/tasks w,
+@{PROC}/ r,
+@{PROC}/cmdline r,
+@{PROC}/@{pid}/environ r,
+@{PROC}/@{pid}/stat r,
+
+/sbin/openrc ixr,
+/lib64/rc/sh/openrc-run.sh ixr,
+
+/etc/rc.conf r,
+/etc/profile.env r,
+/etc/init.d/ r,
+/etc/conf.d/ r,
+/etc/terminfo/x/xterm r,
+/etc/terminfo/l/linux r,
+
+/run/openrc/** rwk,

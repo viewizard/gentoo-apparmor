@@ -1,0 +1,67 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile chkrootkit /usr/sbin/chkrootkit flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/user-tmp>
+  
+  capability sys_ptrace,
+  
+  /dev/ r,
+  /dev/** r,
+  /dev/tty rw,
+  @{PROC}/@{pid}/net/* r,
+  
+  /bin/bash Cxr -> shell,
+  /bin/sed ix,
+  /bin/uname ix,
+  /bin/ps Px,
+  /bin/cut ix,
+  /bin/egrep ix,
+  /bin/grep ix,
+  /bin/basename ix,
+  /bin/ls ix,
+  /bin/head ix,
+  /bin/echo ix,
+  /bin/tr ix,
+  /bin/wc ix,
+  /bin/cat ix,
+  /bin/netstat ix,
+  /usr/bin/id ix,
+  /usr/bin/crontab ix,
+  /usr/bin/gawk ix,
+  /usr/bin/find ix,
+  /usr/sbin/chkdirs ix,
+  /usr/sbin/strings-static ix,
+  /usr/sbin/chkproc ix,
+  /usr/sbin/ifpromisc ix,
+  /usr/sbin/chkwtmp ix,
+  /usr/sbin/chklastlog ix,
+  /usr/sbin/chkutmp ix,
+  
+  / r,
+  /** r,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /bin/ps Px,
+    /bin/tr ix,
+    /bin/cut ix,
+    
+  }
+  
+}

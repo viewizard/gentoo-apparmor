@@ -25,8 +25,9 @@ profile suricata /usr/bin/suricata {
   capability net_raw,
   
   /sys/devices/system/cpu/ r,
-  
   @{PROC}/@{pid}/net/dev r,
+  
+  /usr/bin/suricata r,
 
   /etc/suricata/ r,
   /etc/suricata/** r,
@@ -34,5 +35,23 @@ profile suricata /usr/bin/suricata {
   
   /var/lib/suricata/** rwk,
   /run/suricata.pid rw,
+  
+}
+
+
+profile suricata.init.d /etc/init.d/suricata flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /bin/mkdir ix,
+  /usr/sbin/ethtool Pux, # FIX ME!
+  /usr/bin/suricata Px,
+  
+  /etc/suricata/ r,
+  /etc/suricata/** r,
+  /etc/init.d/suricata r,
+  
+  /run/suricata.pid rwk,
   
 }

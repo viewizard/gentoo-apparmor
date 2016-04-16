@@ -9,21 +9,21 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile dnsmasq /usr/sbin/dnsmasq {
+profile oinkmaster.pl /usr/bin/oinkmaster.pl flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/perl>
   #include <abstractions/nameservice>
-
-  capability setgid,
-  capability setuid,
-  capability net_bind_service,
+  #include <abstractions/user-tmp>
   
-  /usr/sbin/dnsmasq r,
+  /usr/bin/oinkmaster.pl r,
+  /bin/gzip ix,
+  /bin/tar ix,
+  /usr/bin/wget ix,
   
-  /etc/dnsmasq.conf r,
-  /usr/share/dnsmasq/ r,
-  /usr/share/dnsmasq/* r,
+  /etc/oinkmaster.conf r,
+  /etc/suricata/rules/ r,
+  /etc/suricata/rules/** rw,
   
-  /run/dnsmasq.pid rw,
-  /var/lib/misc/dnsmasq.leases rw,
+  /etc/wgetrc r,
   
 }

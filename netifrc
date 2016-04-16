@@ -1,0 +1,53 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile net.init.d /etc/init.d/net.* flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  capability net_admin,
+  capability sys_admin,
+  capability sys_module,
+  
+  /dev/net/tun rw,
+  /sys/devices/virtual/net/tap*/ r,
+  /sys/devices/virtual/net/tap*/** r,
+  /sys/devices/virtual/net/br*/ r,
+  /sys/devices/virtual/net/br*/** rw,
+  /sys/devices/pci**/net/eth[0-9]*/ r,
+  /sys/devices/pci**/net/eth[0-9]*/** r,
+  @{PROC}/@{pid}/mounts r,
+  @{PROC}/@{pid}/net/dev r,
+  @{PROC}/sys/net/ipv4/route/flush w,
+  
+  /etc/init.d/* Pxr,
+  /bin/mkdir ix,
+  /bin/ip ix,
+  /bin/cat ix,
+  /bin/grep ix,
+  /bin/sed ix,
+  /bin/chmod ix,
+  /bin/tr ix,
+  /sbin/dhcpcd  Px,
+  /sbin/brctl Pux, # FIX ME!
+  /sbin/iptunnel Pux, # FIX ME!
+  /sbin/iwconfig Pux, # FIX ME!
+  
+  /etc/fstab r,
+  /etc/resolv.conf w,
+  /etc/conf.d/net r,
+  /etc/iproute2/ r,
+  /etc/iproute2/* r,
+  
+  /run/dhcpcd-*.pid rwk,
+  
+}

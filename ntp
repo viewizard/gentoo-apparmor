@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile ntpd /usr/sbin/ntpd flags=(attach_disconnected) {
+profile ntp.ntpd /usr/sbin/ntpd flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
 
@@ -67,9 +67,26 @@ profile ntpd /usr/sbin/ntpd flags=(attach_disconnected) {
   # noise
   deny /bin/ r,
   deny /sbin/ r,
+  deny /opt/bin/ r,
   deny /usr/bin/ r,
   deny /usr/sbin/ r,
   deny /usr/local/bin/ r,
   deny /usr/local/sbin/ r,
 
+}
+
+
+profile ntp.init.d /etc/init.d/ntpd flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /bin/mkdir ix,
+  /usr/sbin/ntpd Px,
+  
+  /etc/init.d/ntpd r,
+  /etc/conf.d/ntpd r,
+  
+  /run/ntpd.pid rwk,
+  
 }

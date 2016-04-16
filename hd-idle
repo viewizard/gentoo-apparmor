@@ -9,21 +9,15 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile dnsmasq /usr/sbin/dnsmasq {
+profile hd-idle.init.d /etc/init.d/hd-idle flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-
-  capability setgid,
-  capability setuid,
-  capability net_bind_service,
+  #include <abstractions/openrc>
   
-  /usr/sbin/dnsmasq r,
+  /usr/sbin/hd-idle Pux, # FIX ME!
+  /bin/mkdir ix,
   
-  /etc/dnsmasq.conf r,
-  /usr/share/dnsmasq/ r,
-  /usr/share/dnsmasq/* r,
-  
-  /run/dnsmasq.pid rw,
-  /var/lib/misc/dnsmasq.leases rw,
+  /etc/init.d/hd-idle r,
+  /etc/conf.d/hd-idle r,
   
 }

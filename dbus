@@ -70,3 +70,20 @@ profile dbus-daemon-launch-helper /usr/libexec/dbus-daemon-launch-helper flags=(
   /usr/share/dbus-1/** r,
   
 }
+
+profile dbus.init.d /etc/init.d/dbus flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /etc/init.d/* Pxr,
+  /bin/mkdir ix,
+  /bin/rm ix,
+  /usr/bin/dbus-uuidgen Px,
+  /usr/bin/dbus-daemon Px,
+  
+  /run/dbus.pid rwk,
+  /run/dbus/ w,
+  /run/dbus/system_bus_socket rwk,
+  
+}

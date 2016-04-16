@@ -20,7 +20,9 @@ profile tor /usr/bin/tor {
   /dev/pts/[0-9]* rw,
   @{PROC}/sys/kernel/random/uuid r,
   /sys/devices/system/cpu/ r,
-
+  
+  /usr/bin/tor r,
+  
   /etc/tor/ r,
   /etc/tor/* r,
   
@@ -28,5 +30,25 @@ profile tor /usr/bin/tor {
   /var/lib/tor/** rwk,
   /run/tor/ rw,
   /run/tor/tor.pid rw,
+  
+}
+
+profile tor.init.d /etc/init.d/tor flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  capability fowner,
+  capability fsetid,
+  capability sys_resource,
+  
+  /usr/bin/tor Px,
+  /bin/mkdir ix,
+  
+  /etc/init.d/tor r,
+  /etc/conf.d/tor r,
+  
+  /run/tor/ w,
+  /run/tor/tor.pid rwk,
   
 }

@@ -9,21 +9,22 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile dnsmasq /usr/sbin/dnsmasq {
+profile logrotate /usr/sbin/logrotate flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-
-  capability setgid,
+  
   capability setuid,
-  capability net_bind_service,
+  capability setgid,
   
-  /usr/sbin/dnsmasq r,
+  /usr/sbin/logrotate r,
   
-  /etc/dnsmasq.conf r,
-  /usr/share/dnsmasq/ r,
-  /usr/share/dnsmasq/* r,
+  /etc/logrotate.conf rk,
+  /etc/logrotate.d/ r,
+  /etc/logrotate.d/* rk,
   
-  /run/dnsmasq.pid rw,
-  /var/lib/misc/dnsmasq.leases rw,
+  /var/lib/logrotate* rw,
+  
+  # Noisy
+  deny @{HOME}/ r,
   
 }

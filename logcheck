@@ -1,0 +1,60 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile logcheck /usr/sbin/logcheck flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/perl>
+  #include <abstractions/user-tmp>
+  #include <abstractions/nameservice>
+  
+  /dev/tty rw,
+  
+  /bin/bash r,
+  /usr/sbin/logcheck r,
+  /bin/egrep r,
+  /bin/grep ix,
+  /bin/date ix,
+  /bin/hostname ix,
+  /bin/basename ix,
+  /bin/expr ix,
+  /bin/mktemp ix,
+  /bin/mkdir ix,
+  /bin/run-parts ix,
+  /bin/mv ix,
+  /bin/egrep ix,
+  /bin/cat ix,
+  /bin/tr ix,
+  /bin/sed ix,
+  /bin/ls ix,
+  /bin/sort ix,
+  /bin/rm ix,
+  /bin/cp ix,
+  /bin/wc ix,
+  /usr/bin/id ix,
+  /usr/bin/lockfile-create ix,
+  /usr/bin/mime-construct ixr,
+  /usr/sbin/logtail2 ixr,
+  /usr/sbin/sendmail Px,
+  
+  /etc/logcheck/ r,
+  /etc/logcheck/** r,
+  /usr/share/logtail/ r,
+  /usr/share/logtail/** r,
+  
+  /var/log/ r,
+  /var/log/messages_logcheck r,
+  /var/lib/logcheck/ r,
+  /var/lib/logcheck/* rw,
+  
+  /run/lock/logcheck/ rw,
+  /run/lock/logcheck/* rwl,
+  
+}

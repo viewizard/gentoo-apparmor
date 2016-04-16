@@ -1,0 +1,123 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile lynis /usr/sbin/lynis flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/perl>
+  #include <abstractions/nameservice>
+  #include <abstractions/user-tmp>
+  
+  capability sys_ptrace,
+  
+  /dev/tty rw,
+  
+  /bin/bash Cx -> shell,
+  /bin/date ix,
+  /bin/expr ix,
+  /bin/ls ix,
+  /bin/egrep ix,
+  /bin/grep ix,
+  /bin/cut ix,
+  /bin/wc ix,
+  /bin/sed ix,
+  /bin/tr ix,
+  /bin/chmod ix,
+  /bin/ps Px,
+  /bin/uname ix,
+  /bin/head ix,
+  /bin/cat ix,
+  /bin/echo ix,
+  /bin/kmod ix,
+  /bin/sort ix,
+  /bin/sleep ix,
+  /bin/ifconfig ix,
+  /bin/hostname ix,
+  /bin/readlink ix,
+  /bin/mktemp ix,
+  /bin/passwd Px,
+  /bin/rm ix,
+  /bin/mount Px,
+  /bin/netstat ix,
+  /sbin/sysctl ix,
+  /sbin/lvm ix,
+  /sbin/tune2fs ix,
+  /sbin/rpcinfo ix,
+  /usr/bin/aide Px,
+  /usr/bin/id ix,
+  /usr/bin/wget ix,
+  /usr/bin/gawk ix,
+  /usr/bin/find ix,
+  /usr/bin/nmap ix,
+  /usr/bin/openssl ix,
+  /usr/bin/xargs ix,
+  /usr/bin/uniq ix,
+  /usr/bin/which ix,
+  /usr/bin/dig ix,
+  /usr/bin/ntpq ix,
+  /usr/bin/shasum-*-perl-* ix,
+  /usr/sbin/smbd Cx -> smbd,
+  /usr/sbin/sshd Cx -> sshd,
+  /usr/sbin/syslog-ng Px,
+  /usr/sbin/logrotate Px,
+  /usr/sbin/grpck ix,
+  /usr/sbin/pwck ix,
+  /usr/lib64/python-exec/python-exec2 Px,
+  
+  / r,
+  /** r,
+  deny /* w,
+  
+  /run/lynis.pid rw,
+  /var/log/lynis.log rw,
+  /var/log/lynis-report.dat rw,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/user-tmp>
+    
+    /dev/tty rw,
+    
+    /bin/bash ixr,
+    /bin/grep ix,
+    /bin/env Px,
+    /bin/rm ix,
+    /bin/cat ix,
+    
+  }
+  
+  profile smbd flags=(complain) {
+    #include <abstractions/base>
+    
+    /usr/sbin/smbd r,
+    
+    /usr/share/samba/ r,
+    /usr/share/samba/** r,
+    
+  }
+  
+  profile sshd flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    capability setuid,
+    capability setgid,
+    
+    @{PROC}/@{pid}/fd/ r,
+    
+    /usr/sbin/sshd r,
+    
+    /etc/ssl/openssl.cnf r,
+    /etc/ssh/sshd_config r,
+    
+  }
+  
+}

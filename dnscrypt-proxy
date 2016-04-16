@@ -20,11 +20,13 @@ profile dnscrypt-proxy /usr/sbin/dnscrypt-proxy {
   capability net_bind_service,
   capability dac_override,
   
-  /run/dnscrypt-proxy/dnscrypt-proxy.pid rwl,
-  /var/log/dnscrypt-proxy.log rw,
-
+  /usr/sbin/dnscrypt-proxy r,
+  
   /usr/share/dnscrypt-proxy/ r,
   /usr/share/dnscrypt-proxy/* r,
+  
+  /run/dnscrypt-proxy/dnscrypt-proxy.pid rwl,
+  /var/log/dnscrypt-proxy.log rw,
   
 }
 
