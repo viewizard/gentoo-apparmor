@@ -26,6 +26,7 @@ profile bash /bin/{bash,rbash,sh} flags=(complain) {
 
   capability setuid,
   capability sys_tty_config,
+  capability kill,
 
   /bin/** r,
   /sbin/** r,

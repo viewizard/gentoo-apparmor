@@ -1,0 +1,28 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile man-db.mandb /usr/bin/mandb flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  capability setuid,
+  capability setgid,
+  
+  /usr/bin/mandb r,
+  
+  /etc/man_db.conf r,
+  /usr/share/man/ r,
+  /usr/share/man/** r,
+  
+  /var/cache/man/ r,
+  /var/cache/man/** rwk,
+  
+}

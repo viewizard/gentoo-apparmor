@@ -118,7 +118,7 @@ profile cron.daily/daily_backup.sh /etc/cron.daily/daily_backup.sh flags=(compla
   capability sys_admin,
   
   /dev/tty rw,
-  /dev/NULL w,
+  /dev/null w,
   @{PROC}/@{pid}/fd/ r,
   
   /bin/bash r,
@@ -220,6 +220,7 @@ profile cron.daily/man-db /etc/cron.daily/man-db flags=(complain) {
   /bin/bash r,
   /etc/cron.daily/man-db r,
   /usr/bin/nice ix,
+  /usr/bin/mandb Px,
   
 }
 
@@ -260,7 +261,7 @@ profile cron.weekly/weekly_backup.sh /etc/cron.weekly/weekly_backup.sh flags=(co
   capability sys_admin,
   
   /dev/tty rw,
-  /dev/NULL w,
+  /dev/null w,
   @{PROC}/@{pid}/fd/ r,
   
   /bin/bash r,
@@ -292,7 +293,6 @@ profile cron.monthly/monthly_backup.sh /etc/cron.monthly/monthly_backup.sh flags
   capability sys_admin,
   
   /dev/tty rw,
-  /dev/NULL w,
   @{PROC}/@{pid}/fd/ r,
   
   /bin/bash r,
