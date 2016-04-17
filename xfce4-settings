@@ -72,6 +72,7 @@ profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd {
   #include <abstractions/nameservice>
 
   /dev/tty rw,
+  /dev/tty[0-9]* w,
   owner @{PROC}/@{pid}/fd/ r,
   
   /usr/bin/xfsettingsd r,

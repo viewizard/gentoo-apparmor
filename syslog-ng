@@ -58,3 +58,31 @@ profile syslog-ng /usr/sbin/syslog-ng {
   /{var/,}run/syslog-ng/additional-log-sockets.conf r,
 
 }
+
+
+profile syslog-ng.init.d /etc/init.d/syslog-ng flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/authentication>
+  #include <abstractions/openrc>
+  
+  capability audit_control,
+  capability setuid,
+  capability setgid,
+  
+  @{PROC}/@{pid}/uid_map r,
+  @{PROC}/@{pid}/loginuid wr,
+  
+  /usr/sbin/syslog-ng Px,
+  /bin/sleep ix,
+  
+  /etc/environment r,
+  /etc/init.d/syslog-ng r,
+  /etc/conf.d/syslog-ng r,
+  /etc/security/limits.d/ r,
+  /etc/security/limits.d/* r,
+  
+  /run/syslog-ng.pid rwk,
+  /run/utmp rk,
+  
+}

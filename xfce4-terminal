@@ -19,8 +19,10 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
   #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
-
-
+  
+  
+  /dev/tty[0-9]* w,
+  
   /bin/bash Pux,
   /usr/bin/htop Cx,
   /usr/libexec/gnome-pty-helper Cx,

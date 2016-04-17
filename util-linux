@@ -76,3 +76,24 @@ profile util-linux.lsblk /bin/lsblk flags=(complain) {
   /bin/lsblk r,
   
 }
+
+profile util-linux.agetty /sbin/agetty flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  capability sys_admin,
+  capability sys_tty_config,
+  capability fsetid,
+  capability chown,
+  
+  /dev/tty[0-9]* rw,
+  
+  /bin/login Px,
+  
+  /etc/issue r,
+  
+  /run/utmp rwk,
+  /run/agetty.reload rw,
+  /var/log/wtmp wk,
+  
+}

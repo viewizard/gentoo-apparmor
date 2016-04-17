@@ -82,3 +82,16 @@ profile acpid.kacpimon /usr/sbin/kacpimon flags=(complain) {
   /dev/input/event* r,
   
 }
+
+
+profile acpid.init.d /etc/init.d/acpid flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /usr/sbin/acpid Px,
+  
+  /etc/init.d/acpid r,
+  /etc/conf.d/acpid r,
+  
+}

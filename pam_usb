@@ -14,6 +14,8 @@ profile pam_usb.pamusb-agent /usr/bin/pamusb-agent flags=(complain) {
   #include <abstractions/python>
   #include <abstractions/nameservice>
   
+  /dev/tty[0-9]* w,
+  
   /bin/env Pxr,
   /usr/bin/pamusb-agent r,
   /bin/bash Cx -> shell,

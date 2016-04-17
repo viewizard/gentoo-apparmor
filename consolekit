@@ -109,3 +109,17 @@ profile consolekit.udev-acl /usr/{lib,lib32,lib64}/ConsoleKit/udev-acl flags=(co
   /run/ConsoleKit/database r,
   
 }
+
+
+profile consolekit.init.d /etc/init.d/consolekit flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /usr/sbin/console-kit-daemon Px,
+  
+  /etc/init.d/consolekit r,
+  
+  /run/ConsoleKit/ w,
+  /run/ConsoleKit/pid rwk,
+}

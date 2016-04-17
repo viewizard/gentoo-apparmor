@@ -9,18 +9,19 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile psmisc.killall /usr/bin/killall flags=(complain) {
+profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  #include <abstractions/openrc>
   
-  capability sys_ptrace,
+  /sbin/zpool Pux, # FIX ME!
+  /sbin/zed Pux, # FIX ME!
+  /bin/rm ix,
   
-  /dev/tty[0-9]* w,
-  @{PROC}/ r,
-  @{PROC}/@{pid}/stat r,
-  @{PROC}/@{pid}/status r,
-  @{PROC}/@{pid}/cmdline r,
+  /etc/init.d/zfs-zed r,
+  /etc/conf.d/zfs r,
+  /etc/zfs/zfs-functions r,
   
-  /usr/bin/killall r,
+  /var/lib/run/zed.pid r,
   
 }

@@ -1,0 +1,288 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile openrc /sbin/openrc flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/authentication>
+  #include <abstractions/user-tmp>
+  
+  
+  capability kill,
+  capability chown,
+  capability fsetid,
+  capability fowner,
+  capability setgid,
+  capability setuid,
+  capability sys_ptrace,
+  capability sys_tty_config,
+  capability dac_override,
+  
+  /dev/tty rw,
+  /dev/pts/[0-9]* rw,
+  /dev/ptmx rw,
+  /dev/console rw,
+  /sys/fs/cgroup/ r,
+  /sys/fs/cgroup/*/tasks w,
+  /sys/fs/cgroup/openrc/*/tasks w,
+  /sys/fs/cgroup/openrc/*/ w,
+  @{PROC}/ r,
+  @{PROC}/cmdline r,
+  @{PROC}/@{pid}/mounts r,
+  @{PROC}/@{pid}/environ r,
+  @{PROC}/@{pid}/cmdline r,
+  @{PROC}/@{pid}/stat r,
+  @{PROC}/@{pid}/uid_map r,
+  @{PROC}/@{pid}/loginuid wr,
+  
+  /sbin/openrc r,
+  
+  /etc/environment r,
+  /etc/rc.conf r,
+  /etc/fstab r,
+  /etc/profile.env r,
+  /etc/init.d/ r,
+  /etc/init.d/* r,
+  /etc/conf.d/ r,
+  /etc/conf.d/* r,
+  /etc/runlevels/ r,
+  /etc/runlevels/** r,
+  /etc/security/limits.d/ r,
+  /etc/security/limits.d/* r,
+  /etc/terminfo/x/xterm r,
+  /etc/terminfo/l/linux r,
+  
+  /run/utmp rwk,
+  /run/**{,.}pid rw,
+  /run/openrc/** rwk,
+  /run/**/ rw,
+  /var/**/ rw,
+  /var/lib/run/*.pid rwk,
+  /var/log/rc.log w,
+  
+  # FIX ME!
+  /usr/bin/suricata Px,
+  /usr/sbin/ntpd Px,
+  /usr/bin/tor Px,
+  /etc/init.d/* Px,
+  
+   /etc/X11/Sessions/** Pux,
+   /opt/** Pux,
+   /bin/** Pux,
+   /sbin/** Pux,
+   /usr/bin/** Pux,
+   /usr/sbin/** Pux,
+   /usr/libexec/** Pux,
+   /usr/lib{,32,64}/** Pux,
+   /lib64/rc/sh/**.sh Pux,
+  
+}
+
+
+profile openrc.init.d /etc/init.d/* flags=(complain) {
+  #include <abstractions/base>
+  
+  
+  capability sys_ptrace,
+  
+  /dev/pts/[0-9]* w,
+  @{PROC}/cmdline r,
+  @{PROC}/@{pid}/environ r,
+  
+  /sbin/openrc r,
+  /lib64/rc/sh/openrc-run.sh Px,
+  
+  /etc/rc.conf r,
+  /etc/profile.env r,
+  /etc/init.d/ r,
+  /etc/conf.d/ r,
+  /etc/terminfo/x/xterm r,
+  
+  /run/openrc/** rwk,
+  
+}
+
+
+
+
+profile openrc-run.sh /lib64/rc/sh/openrc-run.sh flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/user-tmp>
+  
+  
+  capability dac_override,
+  capability sys_resource,
+  
+  /dev/tty rw,
+  /dev/console rw,
+  /dev/pts/[0-9]* w,
+  /sys/fs/cgroup/ r,
+  /sys/fs/cgroup/*/tasks w,
+  /sys/fs/cgroup/openrc/*/tasks w,
+  /sys/fs/cgroup/openrc/*/ w,
+  
+  /bin/bash r,
+  /sbin/openrc Px,
+  
+  /etc/rc.conf r,
+  /etc/init.d/ r,
+  /etc/init.d/* r,
+  /etc/conf.d/ r,
+  /etc/conf.d/* r,
+  
+  /run/utmp rwk,
+  /run/**/ rw,
+  /run/openrc/** rwk,
+  
+  # FIX ME!
+  #include <abstractions/nameservice>
+  
+  capability net_admin,
+  capability sys_admin,
+  capability mac_admin,
+  capability sys_module,
+  capability chown,
+  capability fsetid,
+  capability syslog,
+  capability sys_tty_config,
+  
+  /dev/urandom rw,
+  /dev/kmsg r,
+  /dev/tty[0-9]* rw,
+  /dev/net/tun rw,
+  /sys/devices/virtual/net/tap*/ r,
+  /sys/devices/virtual/net/tap*/** r,
+  /sys/devices/virtual/net/br*/ r,
+  /sys/devices/virtual/net/br*/** rw,
+  /sys/devices/pci**/net/eth[0-9]*/ r,
+  /sys/devices/pci**/net/eth[0-9]*/** r,
+  @{PROC}/sys/net/ipv4/route/flush w,
+  @{PROC}/devices r,
+  @{PROC}/misc r,
+  @{PROC}/devices r,
+  @{PROC}/cmdline r,
+  @{PROC}/swaps r,
+  @{PROC}/sys/kernel/random/poolsize r,
+  @{PROC}/@{pid}/mounts r,
+  
+  / r,
+  /etc/mtab rw,
+  /etc/fstab r,
+  /etc/resolv.conf rw,
+  /etc/iproute2/ r,
+  /etc/iproute2/* r,
+  /etc/zfs/zfs-functions r,
+  
+  /lib64/rc/console/* rw,
+  /var/log/dmesg w,
+  /var/cache/cups/ w,
+  /var/lib/misc/random-seed rw,
+  
+  /bin/mkdir ix,
+  /bin/rmdir ix,
+  /bin/egrep ixr,
+  /bin/grep ix,
+  /bin/cat ix,
+  /bin/ip ix,
+  /bin/sed ix,
+  /bin/tr ix,
+  /bin/rm ix,
+  /bin/ln ix,
+  /bin/dmesg ix,
+  /bin/chown ix,
+  /bin/chmod ix,
+  /bin/uname ix,
+  /bin/mount Px,
+  /bin/umount Px,
+  /bin/kmod Px,
+  /bin/readlink ix,
+  /bin/mktemp ix,
+  /bin/chgrp ix,
+  /bin/dd ix,
+  /bin/sort ix,
+  /bin/hostname ix,
+  /bin/udevadm Pux, # FIX ME!
+  /sbin/zpool Pux, # FIX ME!
+  /sbin/mkswap Pux, # FIX ME!
+  /sbin/swapon Pux, # FIX ME!
+  /sbin/cryptsetup Px,
+  /sbin/brctl ix,
+  /sbin/mdadm Px,
+  /sbin/sysctl Pux,# FIX ME!
+  /sbin/fsck Pux, # FIX ME!
+  /sbin/lvm Pux, # FIX ME!
+  /sbin/dhcpcd Px,
+  /usr/bin/sensors Pux, # FIX ME!
+  /usr/bin/tor Px,
+  /usr/bin/kbd_mode Pux, # FIX ME!
+  /usr/bin/loadkeys Pux, # FIX ME!
+  /usr/bin/dumpkeys Pux, # FIX ME!
+  /usr/bin/setfont Pux, # FIX ME!
+  /usr/bin/dbus-uuidgen Px,
+  /usr/sbin/ethtool Pux, # FIX ME!
+  /usr/sbin/syslog-ng Px,
+  
+  /lib64/rc/sh/tmpfiles.sh Pux, # FIX ME!
+  
+  /etc/local.d/ r,
+  /etc/local.d/* Pux, # FIX ME!
+  
+  
+}
+
+
+
+
+
+
+
+
+profile openrc.netmount.init.d /etc/init.d/netmount flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  @{PROC}/@{pid}/mounts r,
+  
+  /bin/mount Px,
+  /bin/umount Px,
+  
+  /etc/fstab r,
+  /etc/init.d/netmount r,
+  /etc/conf.d/netmount r,
+  
+}
+
+
+profile openrc.consolefont.init.d /etc/init.d/consolefont flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /usr/bin/setfont Pux, # FIX ME!
+  
+  /etc/init.d/consolefont r,
+  /etc/conf.d/consolefont r,
+  
+}
+
+
+profile openrc.local.init.d /etc/init.d/local flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  #include <local/openrc-local-scripts>
+  
+  /etc/init.d/local r,
+  /etc/local.d/ r,
+  /etc/local.d/* r,
+  
+}

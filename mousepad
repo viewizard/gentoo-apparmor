@@ -27,10 +27,11 @@ profile mousepad /usr/bin/mousepad {
   #include <abstractions/X>
   #include <abstractions/user-systemwide-files>
   #include <abstractions/program-work-with-disk-rwk>
-
-
+  
+  
   capability dac_override,
-
+  
+  /dev/tty[0-9]* w,
   /dev/pts/[0-9]* rw,
 
   /usr/bin/mousepad r,

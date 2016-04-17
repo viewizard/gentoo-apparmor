@@ -98,3 +98,22 @@ profile cups /usr/sbin/cupsd {
   /var/cache/cups/** rw,
   
 }
+
+
+profile cups.init.d /etc/init.d/cupsd flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  capability fsetid,
+  capability chown,
+  
+  /usr/sbin/cupsd Px,
+  
+  /etc/init.d/cupsd r,
+  
+  /var/cache/cups/ w,
+  /run/cups/ w,
+  /run/cups/certs/ w,
+  
+}

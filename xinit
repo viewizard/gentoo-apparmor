@@ -13,6 +13,8 @@ profile xinit /usr/bin/xinit flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/X>
   
+  /dev/tty[0-9]* w,
+  
   /usr/bin/xinit r,
   /bin/bash Cx -> shell,
   /etc/X11/xinit/xserverrc Px,

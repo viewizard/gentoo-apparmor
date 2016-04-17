@@ -18,8 +18,9 @@ profile xfwm4 /usr/bin/xfwm4 {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/nameservice>
-
-
+  
+  
+  /dev/tty[0-9]* w,
   owner @{PROC}/@{pid}/fd/ r,
 
   /usr/bin/xfwm4 rm,

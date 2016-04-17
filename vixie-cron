@@ -46,3 +46,17 @@ profile vixie-cron.cron /usr/sbin/cron flags=(complain) {
   }
   
 }
+
+
+profile vixie-cron.init.d /etc/init.d/vixie-cron flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /usr/sbin/cron Px,
+  
+  /etc/init.d/vixie-cron r,
+  
+  /run/cron.pid rwk,
+  
+}

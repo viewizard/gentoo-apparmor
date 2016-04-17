@@ -65,7 +65,8 @@ profile wine-preloader /usr/bin/wine-preloader {
   #include <abstractions/nvidia>
   #include <abstractions/user-tmp>
   #include <local/wine-custom-locations>
-
+  
+  /dev/tty[0-9]* w,
   /dev/pts/[0-9]* rw,
 
   /sys/devices/system/cpu/cpu*/cpufreq/* r,

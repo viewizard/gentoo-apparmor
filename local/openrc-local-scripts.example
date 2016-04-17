@@ -8,19 +8,21 @@
 #
 # ------------------------------------------------------------------
 
-#include <tunables/global>
-profile psmisc.killall /usr/bin/killall flags=(complain) {
+/etc/local.d/firewall.start Cx -> firewall,
+
+profile firewall flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/nameservice>
   
-  capability sys_ptrace,
+  capability sys_tty_config,
   
-  /dev/tty[0-9]* w,
-  @{PROC}/ r,
-  @{PROC}/@{pid}/stat r,
-  @{PROC}/@{pid}/status r,
-  @{PROC}/@{pid}/cmdline r,
+  /dev/tty rw,
+  /dev/console rw,
   
-  /usr/bin/killall r,
+  /bin/bash r,
+  /etc/local.d/firewall.start r,
+  /sbin/xtables-multi Pux, # FIX ME!
   
 }
+
+
+

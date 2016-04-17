@@ -9,18 +9,17 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile psmisc.killall /usr/bin/killall flags=(complain) {
+profile lvm2.lvmetad.init.d /etc/init.d/lvmetad flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  #include <abstractions/openrc>
   
-  capability sys_ptrace,
+  /etc/init.d/lvm Pux, # FIX ME!
+  /sbin/lvmetad Pux, # FIX ME!
   
-  /dev/tty[0-9]* w,
-  @{PROC}/ r,
-  @{PROC}/@{pid}/stat r,
-  @{PROC}/@{pid}/status r,
-  @{PROC}/@{pid}/cmdline r,
+  /etc/init.d/lvmetad r,
   
-  /usr/bin/killall r,
+  /run/lvm/ w,
+  /run/lvmetad.pid rwk,
   
 }

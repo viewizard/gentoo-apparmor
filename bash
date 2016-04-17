@@ -72,6 +72,7 @@ profile bash /bin/{bash,rbash,sh} flags=(complain) {
   /usr/sbin/smartctl Px,
   /usr/sbin/useradd Px,
   /usr/sbin/userdel Px,
+  /usr/sbin/lspci Px,
   /usr/local/bin/** Px,
   /usr/local/sbin/** Px,
   

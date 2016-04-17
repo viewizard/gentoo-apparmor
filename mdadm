@@ -54,3 +54,18 @@ profile mdadm.checkarray /usr/sbin/checkarray flags=(complain) {
   /usr/bin/getopt ix,
   
 }
+
+
+profile mdadm.init.d /etc/init.d/mdadm flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /sbin/mdadm Px,
+  /bin/rm ix,
+  
+  /etc/init.d/mdadm r,
+  /etc/conf.d/mdadm r,
+  
+  /run/mdadm.pid rwk,
+}

@@ -27,3 +27,18 @@ profile dnsmasq /usr/sbin/dnsmasq {
   /var/lib/misc/dnsmasq.leases rw,
   
 }
+
+
+profile dnsmasq.init.d /etc/init.d/dnsmasq flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /usr/sbin/dnsmasq Px,
+  
+  /etc/init.d/dnsmasq r,
+  /etc/conf.d/dnsmasq r,
+  
+  /run/dnsmasq.pid rwk,
+  
+}

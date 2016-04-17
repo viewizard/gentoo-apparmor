@@ -43,3 +43,29 @@ profile nullmailer-queue /usr/sbin/nullmailer-queue flags=(complain) {
   /var/nullmailer/** rwl,
   
 }
+
+
+profile nullmailer.init.d /etc/init.d/nullmailer flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/authentication>
+  #include <abstractions/openrc>
+  
+  capability audit_control,
+  capability setuid,
+  capability setgid,
+  
+  @{PROC}/@{pid}/uid_map r,
+  @{PROC}/@{pid}/loginuid wr,
+  
+  /usr/sbin/nullmailer-send Pux, # FIX ME!
+  
+  /etc/environment r,
+  /etc/init.d/nullmailer r,
+  /etc/security/limits.d/ r,
+  /etc/security/limits.d/* r,
+  
+  /run/nullmailer.pid rwk,
+  /run/utmp rk,
+  
+}

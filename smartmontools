@@ -44,3 +44,18 @@ profile smartmontools.smartctl /usr/sbin/smartctl flags=(complain) {
   /usr/share/smartmontools/** r,
   
 }
+
+
+profile smartmontools.init.d /etc/init.d/smartd flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /usr/sbin/smartd Px,
+  
+  /etc/init.d/smartd r,
+  /etc/conf.d/smartd r,
+  
+  /run/smartd.pid rwk,
+  
+}

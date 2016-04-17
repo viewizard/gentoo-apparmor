@@ -17,6 +17,7 @@ profile mate-screensaver /usr/bin/mate-screensaver flags=(complain) {
   #include <abstractions/gtk>
   #include <abstractions/dconf>
   
+  /dev/tty[0-9]* w,
   owner @{PROC}/@{pid}/fd/ r,
   
   /usr/bin/mate-screensaver r,

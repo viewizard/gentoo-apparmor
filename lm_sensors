@@ -9,18 +9,17 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile psmisc.killall /usr/bin/killall flags=(complain) {
+profile lm_sensors.init.d /etc/init.d/lm_sensors flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  #include <abstractions/openrc>
   
-  capability sys_ptrace,
+  /usr/bin/sensors Pux, # FIX ME!
+  /bin/kmod Px,
+  /bin/mount Px,
+  /bin/grep ix,
   
-  /dev/tty[0-9]* w,
-  @{PROC}/ r,
-  @{PROC}/@{pid}/stat r,
-  @{PROC}/@{pid}/status r,
-  @{PROC}/@{pid}/cmdline r,
-  
-  /usr/bin/killall r,
+  /etc/init.d/lm_sensors r,
+  /etc/conf.d/lm_sensors r,
   
 }

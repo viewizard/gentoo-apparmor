@@ -39,3 +39,21 @@ profile dnscrypt-proxy.hostip /usr/bin/hostip {
   @{PROC}/sys/kernel/random/uuid r,
   
 }
+
+
+profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  capability chown,
+  
+  /usr/sbin/dnscrypt-proxy Px,
+  /bin/chown ix,
+  
+  /etc/init.d/dnscrypt-proxy r,
+  /etc/conf.d/dnscrypt-proxy r,
+  
+  /run/dnscrypt-proxy/ rw,
+  
+}

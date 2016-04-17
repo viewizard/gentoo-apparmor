@@ -9,25 +9,27 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile logrotate /usr/sbin/logrotate flags=(complain) {
+profile pciutils.lspci /usr/sbin/lspci flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/nameservice>
   
-  capability setuid,
-  capability setgid,
   
-  /usr/sbin/logrotate r,
+  capability sys_admin,
   
-  /etc/logrotate.conf rk,
-  /etc/logrotate.d/ r,
-  /etc/logrotate.d/* rk,
+  /dev/pts/[0-9]* w,
   
-  /var/log/ r,
-  /var/log/** rw,
-  /var/lib/logrotate* rw,
+  /sys/bus/pci/devices/ r,
+  /sys/bus/pci/slots/ r,
+  /sys/devices/pci*/**/resource r,
+  /sys/devices/pci*/**/irq r,
+  /sys/devices/pci*/**/vendor r,
+  /sys/devices/pci*/**/device r,
+  /sys/devices/pci*/**/class r,
+  /sys/devices/pci*/**/config r,
   
-  # Noisy
-  deny / r,
-  deny @{HOME}/ r,
+  /usr/sbin/lspci r,
+  
+  /etc/udev/udev.conf r,
+  /etc/udev/hwdb.bin r,
+  /usr/share/misc/pci.ids.gz r,
   
 }
