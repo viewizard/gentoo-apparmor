@@ -35,3 +35,21 @@ profile procps.ps /bin/ps {
   /usr/src/linux-*-{hardened,gentoo}*/System.map r,
     
 }
+
+
+profile procps.sysctl /sbin/sysctl flags=(complain) {
+  #include <abstractions/base>
+  
+  capability sys_admin,
+  capability net_admin,
+  
+  /dev/pts/[0-9]* rw,
+  @{PROC}/sys/** rw,
+  
+  /sbin/sysctl r,
+  
+  /etc/sysctl.conf r,
+  /etc/sysctl.d/ r,
+  /etc/sysctl.d/* r,
+  
+}

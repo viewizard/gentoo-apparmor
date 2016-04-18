@@ -11,9 +11,12 @@
 #include <tunables/global>
 profile acpid /usr/sbin/acpid flags=(complain) {
   #include <abstractions/base>
-
+  
+  capability sys_tty_config,
+  
   owner @{PROC}/@{pid}/fd/ r,
-
+  
+  /dev/console w,
   /dev/input/ r,
   /dev/input/by-id/ r,
   /dev/input/by-path/ r,

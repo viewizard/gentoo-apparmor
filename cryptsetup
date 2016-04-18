@@ -41,3 +41,19 @@ profile cryptsetup /sbin/cryptsetup flags=(complain) {
   /run/openrc/dm-crypt-remdev.*/enc.key r,
   
 }
+
+
+profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /bin/rmdir ix,
+  /bin/egrep ixr,
+  /bin/grep ix,
+  /bin/mount Px,
+  /bin/umount Px,
+  /sbin/mkswap Px,
+  /sbin/cryptsetup Px,
+  
+}

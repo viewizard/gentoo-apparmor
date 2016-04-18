@@ -45,6 +45,33 @@ profile nullmailer-queue /usr/sbin/nullmailer-queue flags=(complain) {
 }
 
 
+profile nullmailer.smtp /usr/libexec/nullmailer/smtp flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/ssl_certs>
+  
+  /usr/libexec/nullmailer/smtp r,
+  
+  /var/nullmailer/queue/** rw,
+  
+}
+
+
+profile nullmailer-send /usr/sbin/nullmailer-send flags=(complain) {
+  #include <abstractions/base>
+  
+  /usr/sbin/nullmailer-send r,
+  /usr/libexec/nullmailer/smtp Px,
+  
+  /etc/nullmailer/** r,
+  
+  /var/nullmailer/ r,
+  /var/nullmailer/** r,
+  /var/nullmailer/queue/** rw,
+  
+}
+
+
 profile nullmailer.init.d /etc/init.d/nullmailer flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
@@ -58,7 +85,8 @@ profile nullmailer.init.d /etc/init.d/nullmailer flags=(complain) {
   @{PROC}/@{pid}/uid_map r,
   @{PROC}/@{pid}/loginuid wr,
   
-  /usr/sbin/nullmailer-send Pux, # FIX ME!
+  /usr/sbin/nullmailer-send Px,
+  /bin/bash Cxr -> shell,
   
   /etc/environment r,
   /etc/init.d/nullmailer r,
@@ -67,5 +95,15 @@ profile nullmailer.init.d /etc/init.d/nullmailer flags=(complain) {
   
   /run/nullmailer.pid rwk,
   /run/utmp rk,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    
+  }
   
 }

@@ -28,8 +28,9 @@ profile keepassx /usr/bin/keepassx {
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
-
-
+  
+  
+  /dev/tty[0-9]* w,
   @{PROC}/@{pid}/cmdline r,
   @{PROC}/@{pid}/status r,
   @{PROC}/@{pid}/task/ r,

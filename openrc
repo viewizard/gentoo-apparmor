@@ -12,237 +12,32 @@
 profile openrc /sbin/openrc flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-  #include <abstractions/authentication>
-  #include <abstractions/user-tmp>
   
-  
-  capability kill,
-  capability chown,
-  capability fsetid,
-  capability fowner,
-  capability setgid,
-  capability setuid,
   capability sys_ptrace,
   capability sys_tty_config,
-  capability dac_override,
   
-  /dev/tty rw,
-  /dev/pts/[0-9]* rw,
   /dev/ptmx rw,
-  /dev/console rw,
-  /sys/fs/cgroup/ r,
-  /sys/fs/cgroup/*/tasks w,
-  /sys/fs/cgroup/openrc/*/tasks w,
-  /sys/fs/cgroup/openrc/*/ w,
+  /dev/pts/[0-9]* rw,
   @{PROC}/ r,
   @{PROC}/cmdline r,
-  @{PROC}/@{pid}/mounts r,
   @{PROC}/@{pid}/environ r,
-  @{PROC}/@{pid}/cmdline r,
   @{PROC}/@{pid}/stat r,
-  @{PROC}/@{pid}/uid_map r,
-  @{PROC}/@{pid}/loginuid wr,
   
   /sbin/openrc r,
-  
-  /etc/environment r,
-  /etc/rc.conf r,
-  /etc/fstab r,
-  /etc/profile.env r,
-  /etc/init.d/ r,
-  /etc/init.d/* r,
-  /etc/conf.d/ r,
-  /etc/conf.d/* r,
-  /etc/runlevels/ r,
-  /etc/runlevels/** r,
-  /etc/security/limits.d/ r,
-  /etc/security/limits.d/* r,
-  /etc/terminfo/x/xterm r,
-  /etc/terminfo/l/linux r,
-  
-  /run/utmp rwk,
-  /run/**{,.}pid rw,
-  /run/openrc/** rwk,
-  /run/**/ rw,
-  /var/**/ rw,
-  /var/lib/run/*.pid rwk,
-  /var/log/rc.log w,
-  
-  # FIX ME!
-  /usr/bin/suricata Px,
-  /usr/sbin/ntpd Px,
-  /usr/bin/tor Px,
+  # All scripts from "boot" and "default" runlevels must have profiles!
   /etc/init.d/* Px,
   
-   /etc/X11/Sessions/** Pux,
-   /opt/** Pux,
-   /bin/** Pux,
-   /sbin/** Pux,
-   /usr/bin/** Pux,
-   /usr/sbin/** Pux,
-   /usr/libexec/** Pux,
-   /usr/lib{,32,64}/** Pux,
-   /lib64/rc/sh/**.sh Pux,
-  
-}
-
-
-profile openrc.init.d /etc/init.d/* flags=(complain) {
-  #include <abstractions/base>
-  
-  
-  capability sys_ptrace,
-  
-  /dev/pts/[0-9]* w,
-  @{PROC}/cmdline r,
-  @{PROC}/@{pid}/environ r,
-  
-  /sbin/openrc r,
-  /lib64/rc/sh/openrc-run.sh Px,
-  
   /etc/rc.conf r,
   /etc/profile.env r,
   /etc/init.d/ r,
   /etc/conf.d/ r,
-  /etc/terminfo/x/xterm r,
+  /etc/runlevels/** r,
   
+  /var/log/rc.log w,
+  /run/**{,.}pid rw,
   /run/openrc/** rwk,
   
 }
-
-
-
-
-profile openrc-run.sh /lib64/rc/sh/openrc-run.sh flags=(complain) {
-  #include <abstractions/base>
-  #include <abstractions/user-tmp>
-  
-  
-  capability dac_override,
-  capability sys_resource,
-  
-  /dev/tty rw,
-  /dev/console rw,
-  /dev/pts/[0-9]* w,
-  /sys/fs/cgroup/ r,
-  /sys/fs/cgroup/*/tasks w,
-  /sys/fs/cgroup/openrc/*/tasks w,
-  /sys/fs/cgroup/openrc/*/ w,
-  
-  /bin/bash r,
-  /sbin/openrc Px,
-  
-  /etc/rc.conf r,
-  /etc/init.d/ r,
-  /etc/init.d/* r,
-  /etc/conf.d/ r,
-  /etc/conf.d/* r,
-  
-  /run/utmp rwk,
-  /run/**/ rw,
-  /run/openrc/** rwk,
-  
-  # FIX ME!
-  #include <abstractions/nameservice>
-  
-  capability net_admin,
-  capability sys_admin,
-  capability mac_admin,
-  capability sys_module,
-  capability chown,
-  capability fsetid,
-  capability syslog,
-  capability sys_tty_config,
-  
-  /dev/urandom rw,
-  /dev/kmsg r,
-  /dev/tty[0-9]* rw,
-  /dev/net/tun rw,
-  /sys/devices/virtual/net/tap*/ r,
-  /sys/devices/virtual/net/tap*/** r,
-  /sys/devices/virtual/net/br*/ r,
-  /sys/devices/virtual/net/br*/** rw,
-  /sys/devices/pci**/net/eth[0-9]*/ r,
-  /sys/devices/pci**/net/eth[0-9]*/** r,
-  @{PROC}/sys/net/ipv4/route/flush w,
-  @{PROC}/devices r,
-  @{PROC}/misc r,
-  @{PROC}/devices r,
-  @{PROC}/cmdline r,
-  @{PROC}/swaps r,
-  @{PROC}/sys/kernel/random/poolsize r,
-  @{PROC}/@{pid}/mounts r,
-  
-  / r,
-  /etc/mtab rw,
-  /etc/fstab r,
-  /etc/resolv.conf rw,
-  /etc/iproute2/ r,
-  /etc/iproute2/* r,
-  /etc/zfs/zfs-functions r,
-  
-  /lib64/rc/console/* rw,
-  /var/log/dmesg w,
-  /var/cache/cups/ w,
-  /var/lib/misc/random-seed rw,
-  
-  /bin/mkdir ix,
-  /bin/rmdir ix,
-  /bin/egrep ixr,
-  /bin/grep ix,
-  /bin/cat ix,
-  /bin/ip ix,
-  /bin/sed ix,
-  /bin/tr ix,
-  /bin/rm ix,
-  /bin/ln ix,
-  /bin/dmesg ix,
-  /bin/chown ix,
-  /bin/chmod ix,
-  /bin/uname ix,
-  /bin/mount Px,
-  /bin/umount Px,
-  /bin/kmod Px,
-  /bin/readlink ix,
-  /bin/mktemp ix,
-  /bin/chgrp ix,
-  /bin/dd ix,
-  /bin/sort ix,
-  /bin/hostname ix,
-  /bin/udevadm Pux, # FIX ME!
-  /sbin/zpool Pux, # FIX ME!
-  /sbin/mkswap Pux, # FIX ME!
-  /sbin/swapon Pux, # FIX ME!
-  /sbin/cryptsetup Px,
-  /sbin/brctl ix,
-  /sbin/mdadm Px,
-  /sbin/sysctl Pux,# FIX ME!
-  /sbin/fsck Pux, # FIX ME!
-  /sbin/lvm Pux, # FIX ME!
-  /sbin/dhcpcd Px,
-  /usr/bin/sensors Pux, # FIX ME!
-  /usr/bin/tor Px,
-  /usr/bin/kbd_mode Pux, # FIX ME!
-  /usr/bin/loadkeys Pux, # FIX ME!
-  /usr/bin/dumpkeys Pux, # FIX ME!
-  /usr/bin/setfont Pux, # FIX ME!
-  /usr/bin/dbus-uuidgen Px,
-  /usr/sbin/ethtool Pux, # FIX ME!
-  /usr/sbin/syslog-ng Px,
-  
-  /lib64/rc/sh/tmpfiles.sh Pux, # FIX ME!
-  
-  /etc/local.d/ r,
-  /etc/local.d/* Pux, # FIX ME!
-  
-  
-}
-
-
-
-
-
-
 
 
 profile openrc.netmount.init.d /etc/init.d/netmount flags=(complain) {
@@ -267,10 +62,35 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont flags=(complain) {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /usr/bin/setfont Pux, # FIX ME!
+  /dev/tty[0-9]* rw,
+  /dev/pts/[0-9]* r,
   
+  /usr/bin/setfont ix,
+  /bin/bash Cx -> shell,
+  
+  / r,
   /etc/init.d/consolefont r,
   /etc/conf.d/consolefont r,
+  /usr/share/consolefonts/ r,
+  /usr/share/consolefonts/** r,
+  /lib64/rc/console/font rw,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    capability sys_tty_config,
+    
+    /dev/tty rw,
+    /dev/console rw,
+    
+    /bin/bash r,
+    /bin/gzip ix,
+    
+    /usr/share/consolefonts/ r,
+    /usr/share/consolefonts/** r,
+    
+  }
   
 }
 
@@ -284,5 +104,326 @@ profile openrc.local.init.d /etc/init.d/local flags=(complain) {
   /etc/init.d/local r,
   /etc/local.d/ r,
   /etc/local.d/* r,
+  
+}
+
+
+profile openrc.hwclock.init.d /etc/init.d/hwclock flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /dev/ r,
+  @{PROC}/devices r,
+  
+  /bin/uname ix,
+  /bin/grep ix,
+  /sbin/hwclock Px,
+  
+  /etc/init.d/hwclock r,
+  /etc/conf.d/hwclock r,
+  
+}
+
+
+profile openrc.swap.init.d /etc/init.d/swap flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /bin/umount Px,
+  /sbin/swapon Px,
+  /sbin/swapoff Px,
+  
+  /etc/init.d/swap r,
+  
+}
+
+
+profile openrc.modules.init.d /etc/init.d/modules flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /etc/init.d/root-ro Px,
+  /bin/uname ix,
+  
+  /etc/init.d/modules r,
+  /etc/conf.d/modules r,
+  
+}
+
+
+profile openrc.fsck.init.d /etc/init.d/fsck flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /etc/init.d/* Px,
+  /bin/cat ix,
+  /sbin/fsck Px,
+  
+  /etc/init.d/fsck r,
+  /etc/conf.d/fsck r,
+  
+}
+
+
+profile openrc.root.init.d /etc/init.d/root flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  @{PROC}/@{pid}/mounts r,
+  
+  /etc/init.d/mtab Px,
+  /bin/rm ix,
+  /bin/mount Px,
+  
+  /etc/fstab r,
+  /etc/init.d/root r,
+  
+}
+
+
+profile openrc.root-ro.init.d /etc/init.d/root-ro flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /bin/cat ix,
+  
+  /etc/init.d/root-ro r,
+  
+}
+
+
+profile openrc.mtab.init.d /etc/init.d/mtab flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /bin/ln ix,
+  
+  /etc/mtab w,
+  /etc/init.d/mtab r,
+  /etc/conf.d/mtab r,
+  
+}
+
+
+profile openrc.localmount.init.d /etc/init.d/localmount flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  @{PROC}/@{pid}/mounts r,
+  
+  /etc/init.d/* Px,
+  /bin/mount Px,
+  /bin/umount Px,
+  
+  /etc/fstab r,
+  /etc/init.d/localmount r,
+  /etc/conf.d/localmount r,
+  
+}
+
+
+profile openrc.sysctl.init.d /etc/init.d/sysctl flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /sbin/sysctl Px,
+  
+  /etc/init.d/sysctl r,
+  
+}
+
+
+profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  #include <abstractions/user-tmp>
+  
+  capability fsetid,
+  capability syslog,
+  capability chown,
+  
+  /dev/kmsg r,
+  @{PROC}/@{pid}/mounts r,
+  
+  /bin/rm ix,
+  /bin/readlink ix,
+  /bin/mktemp ix,
+  /bin/rmdir ix,
+  /bin/chgrp ix,
+  /bin/chmod ix,
+  /bin/dmesg ix,
+  /bin/mount Px,
+  /bin/umount Px,
+  
+  /etc/fstab r,
+  /etc/init.d/bootmisc r,
+  /etc/conf.d/bootmisc r,
+  /lib64/rc/console/font w,
+  /lib64/rc/console/keymap w,
+  /lib64/rc/console/unicode w,
+  
+  /var/log/dmesg w,
+  /run/utmp w,
+}
+
+
+profile openrc.hostname.init.d /etc/init.d/hostname flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  capability sys_admin,
+  
+  /etc/init.d/syslog-ng Px,
+  /bin/hostname ix,
+  
+  /etc/init.d/hostname r,
+  /etc/conf.d/hostname r,
+  
+}
+
+
+profile openrc.tmpfiles.init.d /etc/init.d/tmpfiles.setup flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  capability chown,
+  
+  /lib64/rc/sh/tmpfiles.sh ix,
+  /bin/sort ix,
+  /usr/bin/find ix,
+  
+  /etc/init.d/tmpfiles.setup r,
+  /etc/conf.d/tmpfiles r,
+  
+  / r,
+  /run/**/ rw,
+  /run/tmpfiles.d/kmod.conf r,
+  
+}
+
+
+profile openrc.termencoding.init.d /etc/init.d/termencoding flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /dev/tty[0-9]* w,
+  
+  /etc/init.d/keymaps Px,
+  /etc/init.d/consolefont Px,
+  
+  /etc/init.d/termencoding r,
+  
+  /lib64/rc/console/unicode w,
+  
+}
+
+
+profile openrc.swapfiles.init.d /etc/init.d/swapfiles flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  @{PROC}/swaps r,
+  
+  /sbin/swapon Px,
+  /sbin/swapoff Px,
+  
+  /etc/init.d/swapfiles r,
+  
+}
+
+
+profile openrc.keymaps.init.d /etc/init.d/keymaps flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /dev/tty[0-9]* rw,
+  /dev/pts/[0-9]* r,
+  
+  /bin/bash Cxr -> shell,
+  /usr/bin/kbd_mode ix,
+  /usr/bin/loadkeys ix,
+  /usr/bin/dumpkeys ix,
+  
+  / r,
+  /etc/init.d/keymaps r,
+  /etc/conf.d/keymaps r,
+  /usr/share/keymaps/ r,
+  /usr/share/keymaps/** r,
+  
+  /lib64/rc/console/keymap w,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /bin/gzip ix,
+    
+    /usr/share/keymaps/ r,
+    /usr/share/keymaps/** r,
+    
+  }
+  
+}
+
+
+profile openrc.urandom.init.d /etc/init.d/urandom flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /dev/urandom w,
+  @{PROC}/sys/kernel/random/poolsize r,
+  
+  /bin/cat ix,
+  /bin/dd ix,
+  /bin/rm ix,
+  
+  /etc/init.d/urandom r,
+  /etc/conf.d/urandom r,
+  
+  /var/lib/misc/random-seed rw,
+  
+}
+
+
+profile openrc.loopback.init.d /etc/init.d/loopback flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  capability net_admin,
+  
+  /bin/ip ix,
+  
+  /etc/init.d/loopback r,
+  /etc/iproute2/rt_scopes r,
+  
+}
+
+
+profile openrc.procfs.init.d /etc/init.d/procfs flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /etc/init.d/procfs r,
   
 }

@@ -36,6 +36,7 @@ profile util-linux.mount /bin/mount flags=(complain) {
   
 }
 
+
 profile util-linux.umount /bin/umount flags=(complain) {
   #include <abstractions/base>
   
@@ -50,6 +51,47 @@ profile util-linux.umount /bin/umount flags=(complain) {
   /run/mount/utab.* rwk,
   
 }
+
+
+profile util-linux.mkswap /sbin/mkswap flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/pts/[0-9]* w,
+  /dev/dm-[0-9]* rw,
+  /dev/md[0-9]* rw,
+  /dev/loop[0-9]* rw,
+  /dev/sd[a-z][0-9]* rw,
+  /dev/zd[0-9]* rw,
+  /sys/devices/virtual/block/dm-[0-9]*/ r,
+  /sys/devices/virtual/block/dm-[0-9]*/dm/uuid r,
+  
+  @{PROC}/swaps r,
+  @{PROC}/@{pid}/mounts r,
+  
+  /sbin/mkswap r,
+  
+}
+
+
+profile util-linux.swapon /sbin/swap{on,off} flags=(complain) {
+  #include <abstractions/base>
+  
+  capability sys_admin,
+  
+  /dev/dm-[0-9]* rw,
+  /dev/md[0-9]* rw,
+  /dev/loop[0-9]* rw,
+  /dev/sd[a-z][0-9]* rw,
+  /dev/zd[0-9]* rw,
+  /sys/devices/virtual/block/dm-[0-9]*/dm/name r,
+  @{PROC}/swaps r,
+  
+  /sbin/swap{on,off} r,
+  
+  /etc/fstab r,
+  
+}
+
 
 profile util-linux.lsblk /bin/lsblk flags=(complain) {
   #include <abstractions/base>
@@ -77,6 +119,7 @@ profile util-linux.lsblk /bin/lsblk flags=(complain) {
   
 }
 
+
 profile util-linux.agetty /sbin/agetty flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
@@ -95,5 +138,36 @@ profile util-linux.agetty /sbin/agetty flags=(complain) {
   /run/utmp rwk,
   /run/agetty.reload rw,
   /var/log/wtmp wk,
+  
+}
+
+
+profile util-linux.fsck /sbin/fsck flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/pts/[0-9]* w,
+  /sys/devices/virtual/block/dm-[0-9]*/ r,
+  /sys/devices/virtual/block/dm-[0-9]*/** r,
+  /sys/devices/pci**/ata*/**/block/sd[a-z]/ r,
+  /sys/devices/pci**/ata*/**/block/sd[a-z]/** r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/ r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/** r,
+  
+  /sbin/fsck r,
+  /sbin/e2fsck Px,
+  
+  /etc/fstab r,
+  
+}
+
+
+profile util-linux.hwclock /sbin/hwclock flags=(complain) {
+  #include <abstractions/base>
+  
+  capability sys_time,
+  
+  /dev/rtc0 rw,
+  
+  /sbin/hwclock r,
   
 }

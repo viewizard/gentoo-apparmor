@@ -18,10 +18,29 @@ profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed flags=(complain) {
   /sbin/zed Pux, # FIX ME!
   /bin/rm ix,
   
+  / r,
   /etc/init.d/zfs-zed r,
   /etc/conf.d/zfs r,
   /etc/zfs/zfs-functions r,
   
   /var/lib/run/zed.pid r,
+  
+}
+
+
+profile zfs.zfs-import.init.d /etc/init.d/zfs-import flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /bin/grep ix,
+  /bin/uname ix,
+  /bin/udevadm Pux, # FIX ME!
+  /sbin/zpool Pux, # FIX ME!
+  
+  / r,
+  /etc/conf.d/zfs r,
+  /etc/zfs/zfs-functions r,
+  /etc/init.d/zfs-import r,
   
 }

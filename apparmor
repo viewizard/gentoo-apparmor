@@ -9,34 +9,22 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile lvm2.lvmetad.init.d /etc/init.d/lvmetad flags=(complain) {
+profile openrc.apparmor.init.d /etc/init.d/apparmor flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /etc/init.d/lvm Px,
-  /sbin/lvmetad Pux, # FIX ME!
+  capability mac_admin,
   
-  /etc/init.d/lvmetad r,
+  /sys/kernel/security/apparmor/* wr,
+  @{PROC}/@{pid}/mounts r,
   
-  /run/lvm/ w,
-  /run/lvmetad.pid rwk,
-  
-}
-
-
-profile lvm2.lvm.init.d /etc/init.d/lvm flags=(complain) {
-  #include <abstractions/base>
-  #include <abstractions/nameservice>
-  #include <abstractions/openrc>
-  
-  @{PROC}/misc r,
-  @{PROC}/devices r,
-  
-  /sbin/lvm Pux, # FIX ME!
   /bin/grep ix,
+  /bin/sed ix,
+  /bin/sort ix,
   
-  /etc/init.d/lvm r,
-  /etc/conf.d/lvm r,
+  /etc/fstab r,
+  /etc/init.d/apparmor r,
+  /usr/libexec/rc.apparmor.functions r,
   
 }
