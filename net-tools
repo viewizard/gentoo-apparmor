@@ -9,21 +9,11 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile oinkmaster.pl /usr/bin/oinkmaster.pl {
+profile net-tools.iptunnel /sbin/iptunnel flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/perl>
-  #include <abstractions/nameservice>
-  #include <abstractions/user-tmp>
   
-  /usr/bin/oinkmaster.pl r,
-  /bin/gzip ix,
-  /bin/tar ix,
-  /usr/bin/wget ix,
+  @{PROC}/@{pid}/net/dev r,
   
-  /etc/oinkmaster.conf r,
-  /etc/suricata/rules/ r,
-  /etc/suricata/rules/** rw,
-  
-  /etc/wgetrc r,
+  /sbin/iptunnel r,
   
 }

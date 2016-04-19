@@ -9,21 +9,9 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile oinkmaster.pl /usr/bin/oinkmaster.pl {
+profile wireless-tools.iwconfig /sbin/iwconfig flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/perl>
-  #include <abstractions/nameservice>
-  #include <abstractions/user-tmp>
   
-  /usr/bin/oinkmaster.pl r,
-  /bin/gzip ix,
-  /bin/tar ix,
-  /usr/bin/wget ix,
-  
-  /etc/oinkmaster.conf r,
-  /etc/suricata/rules/ r,
-  /etc/suricata/rules/** rw,
-  
-  /etc/wgetrc r,
+  /sbin/iwconfig r,
   
 }

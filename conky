@@ -39,10 +39,11 @@ profile conky /usr/bin/conky {
   owner @{HOME}/.conkyrc r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     
     /dev/tty rw,
+    /dev/tty[0-9]* w,
     
     /sys/class/hwmon/ r,
     /sys/class/i2c-adapter/ r,

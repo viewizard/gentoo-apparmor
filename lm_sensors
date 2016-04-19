@@ -9,12 +9,30 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+profile lm_sensors.sensors /usr/bin/sensors flags=(complain) {
+  #include <abstractions/base>
+  
+  /sys/class/hwmon/ r,
+  /sys/class/i2c-adapter/ r,
+  /sys/devices/pci**/i2c-*/name r,
+  /sys/devices/platform/**/ r,
+  /sys/devices/platform/**/name r,
+  
+  /usr/bin/sensors r,
+  
+  /etc/sensors3.conf r,
+  /etc/sensors.d/ r,
+  /etc/sensors.d/* r,
+  
+}
+
+
 profile lm_sensors.init.d /etc/init.d/lm_sensors flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /usr/bin/sensors Pux, # FIX ME!
+  /usr/bin/sensors Px,
   /bin/kmod Px,
   /bin/mount Px,
   /bin/grep ix,

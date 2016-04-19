@@ -9,13 +9,66 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+profile zfs.zpool /sbin/zpool flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  /dev/zfs rw,
+  /dev/pts/[0-9]* w,
+  /sys/module/spl/parameters/spl_hostid r,
+  @{PROC}/@{pid}/mounts r,
+  
+  /sbin/zpool r,
+  /usr/libexec/zfs/zed.d/all-syslog.sh Px,
+  
+  /etc/dfs/sharetab r,
+  /etc/zfs/zpool.cache rw,
+  
+}
+
+
+profile zfs.zed /sbin/zed flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/zfs rw,
+  @{PROC}/@{pid}/mounts r,
+  
+  /sbin/zed r,
+  /usr/libexec/zfs/zed.d/all-syslog.sh Px,
+  
+  /etc/dfs/sharetab r,
+  /etc/zfs/zed.d/ r,
+  /etc/zfs/zed.d/* r,
+  
+  /var/lib/run/zed.pid rwk,
+  /var/lib/run/zed.state rwk,
+  
+}
+
+
+profile zfs.zed.d /usr/libexec/zfs/zed.d/*.sh flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  /dev/tty rw,
+  
+  /usr/libexec/zfs/zed.d/*.sh r,
+  /bin/bash r,
+  /usr/bin/logger ix,
+  
+  /etc/zfs/zed.d/zed-functions.sh r,
+  /etc/zfs/zed.d/zed.rc r,
+  
+}
+
+
 profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /sbin/zpool Pux, # FIX ME!
-  /sbin/zed Pux, # FIX ME!
+  /sbin/zpool Px,
+  /sbin/zed Px,
   /bin/rm ix,
   
   / r,
@@ -35,8 +88,8 @@ profile zfs.zfs-import.init.d /etc/init.d/zfs-import flags=(complain) {
   
   /bin/grep ix,
   /bin/uname ix,
-  /bin/udevadm Pux, # FIX ME!
-  /sbin/zpool Pux, # FIX ME!
+  /bin/udevadm Px,
+  /sbin/zpool Px,
   
   / r,
   /etc/conf.d/zfs r,

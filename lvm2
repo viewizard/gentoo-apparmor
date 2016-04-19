@@ -9,13 +9,65 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+profile lvm2.lvmetad /sbin/lvmetad flags=(complain) {
+  #include <abstractions/base>
+  
+  /sbin/lvmetad r,
+  
+  /run/lvmetad.pid rwk,
+  /run/lvm/lvmetad.socket w,
+  
+}
+
+
+profile lvm2.lvm /sbin/lvm flags=(complain) {
+  #include <abstractions/base>
+  
+  capability sys_admin,
+  
+  /dev/loop[0-9]* r,
+  /dev/sd[a-z] r,
+  /dev/sd[a-z][0-9]* r,
+  /dev/md[0-9]* r,
+  /dev/zd[0-9]* r,
+  /dev/dm-[0-9]* r,
+  /dev/mapper/ r,
+  /dev/mapper/control rw,
+  /sys/bus/ r,
+  /sys/class/ r,
+  /sys/class/block/ r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/{uevent,dev,holders/} r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/sd[a-z][0-9]*/{uevent,dev} r,
+  /sys/devices/pci**/ata*/**/block/sd[a-z]/{uevent,dev,holders/} r,
+  /sys/devices/pci**/ata*/**/block/sd[a-z]/sd[a-z][0-9]*/{uevent,dev} r,
+  /sys/devices/virtual/block/loop[0-9]*/{uevent,dev} r,
+  /sys/devices/virtual/block/zd[0-9]*/{uevent,dev} r,
+  /sys/devices/virtual/block/zd[0-9]*/zd[0-9]*/{uevent,dev} r,
+  /sys/devices/virtual/block/dm-[0-9]*/{uevent,dev} r,
+  /sys/devices/virtual/block/md[0-9]*/{uevent,dev} r,
+  @{PROC}/devices r,
+  @{PROC}/@{pid}/fd/ r,
+  @{PROC}/@{pid}/mounts r,
+  
+  /sbin/lvm r,
+  
+  /etc/udev/udev.conf r,
+  /etc/lvm/lvm.conf r,
+  
+  /run/udev/data/* r,
+  /run/lock/lvm/ w,
+  /run/lock/lvm/P_global* rwk,
+  
+}
+
+
 profile lvm2.lvmetad.init.d /etc/init.d/lvmetad flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
   /etc/init.d/lvm Px,
-  /sbin/lvmetad Pux, # FIX ME!
+  /sbin/lvmetad Px,
   
   /etc/init.d/lvmetad r,
   
@@ -33,7 +85,7 @@ profile lvm2.lvm.init.d /etc/init.d/lvm flags=(complain) {
   @{PROC}/misc r,
   @{PROC}/devices r,
   
-  /sbin/lvm Pux, # FIX ME!
+  /sbin/lvm Px,
   /bin/grep ix,
   
   /etc/init.d/lvm r,

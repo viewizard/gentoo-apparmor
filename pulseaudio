@@ -49,7 +49,7 @@ profile pulseaudio /usr/bin/pulseaudio {
   
 }
 
-profile pulseaudio.start-pulseaudio-x11 /usr/bin/start-pulseaudio-x11 flags=(complain) {
+profile pulseaudio.start-pulseaudio-x11 /usr/bin/start-pulseaudio-x11 {
   #include <abstractions/base>
   
   /dev/tty rw,
@@ -60,7 +60,7 @@ profile pulseaudio.start-pulseaudio-x11 /usr/bin/start-pulseaudio-x11 flags=(com
   
 }
 
-profile pulseaudio.pactl /usr/bin/pactl flags=(complain) {
+profile pulseaudio.pactl /usr/bin/pactl {
   #include <abstractions/base>
   #include <abstractions/audio>
   #include <abstractions/X>

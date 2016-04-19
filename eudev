@@ -9,21 +9,21 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile oinkmaster.pl /usr/bin/oinkmaster.pl {
+profile eudev.udevadm /bin/udevadm flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/perl>
-  #include <abstractions/nameservice>
-  #include <abstractions/user-tmp>
   
-  /usr/bin/oinkmaster.pl r,
-  /bin/gzip ix,
-  /bin/tar ix,
-  /usr/bin/wget ix,
+  /sys/bus/ r,
+  /sys/class/ r,
+  /sys/class/block/ r,
+  /sys/devices/pci**/usb*/**0/block/sd[a-z]/** rw,
+  /sys/devices/pci**/ata*/**0/block/sd[a-z]/** rw,
+  /sys/devices/virtual/block/loop[0-9]*/** rw,
+  /sys/devices/virtual/block/zd[0-9]*/** rw,
+  /sys/devices/virtual/block/dm-[0-9]*/** rw,
+  /sys/devices/virtual/block/md[0-9]*/** rw,
   
-  /etc/oinkmaster.conf r,
-  /etc/suricata/rules/ r,
-  /etc/suricata/rules/** rw,
+  /bin/udevadm r,
   
-  /etc/wgetrc r,
+  /etc/udev/udev.conf r,
   
 }

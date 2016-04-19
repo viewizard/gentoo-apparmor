@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile lynis /usr/sbin/lynis flags=(complain) {
+profile lynis /usr/sbin/lynis {
   #include <abstractions/base>
   #include <abstractions/perl>
   #include <abstractions/nameservice>
@@ -80,7 +80,7 @@ profile lynis /usr/sbin/lynis flags=(complain) {
   /var/log/lynis-report.dat rw,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/user-tmp>
     
@@ -94,7 +94,7 @@ profile lynis /usr/sbin/lynis flags=(complain) {
     
   }
   
-  profile smbd flags=(complain) {
+  profile smbd {
     #include <abstractions/base>
     
     /usr/sbin/smbd r,
@@ -104,7 +104,7 @@ profile lynis /usr/sbin/lynis flags=(complain) {
     
   }
   
-  profile sshd flags=(complain) {
+  profile sshd {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     

@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile udisks-daemon /usr/lib{,32,64}/udisks/udisks-daemon flags=(complain) {
+profile udisks-daemon /usr/lib{,32,64}/udisks/udisks-daemon {
   #include <abstractions/base>
   
   /dev/sd[a-z] r,
@@ -56,7 +56,7 @@ profile udisks-daemon /usr/lib{,32,64}/udisks/udisks-daemon flags=(complain) {
   
 }
 
-profile udisks.udisksd /usr/libexec/udisks2/udisksd flags=(complain) {
+profile udisks.udisksd /usr/libexec/udisks2/udisksd {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
