@@ -9,23 +9,13 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile oinkmaster.pl /usr/bin/oinkmaster.pl {
+profile ethtool /usr/sbin/ethtool flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/perl>
-  #include <abstractions/nameservice>
-  #include <abstractions/user-tmp>
   
-  capability dac_read_search,
+  capability net_admin,
   
-  /usr/bin/oinkmaster.pl r,
-  /bin/gzip ix,
-  /bin/tar ix,
-  /usr/bin/wget ix,
+  /dev/pts/[0-9]* w,
   
-  /etc/oinkmaster.conf r,
-  /etc/suricata/rules/ r,
-  /etc/suricata/rules/** rw,
-  
-  /etc/wgetrc r,
+  /usr/sbin/ethtool r,
   
 }

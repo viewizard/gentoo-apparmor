@@ -18,9 +18,10 @@ profile xfce4-taskmanager /usr/bin/xfce4-taskmanager {
   #include <abstractions/X>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
-
+  
   capability sys_ptrace,
-
+  
+  /dev/tty[0-9]* w,
   @{PROC}/ r,
   @{PROC}/@{pid}/cmdline r,
   @{PROC}/@{pid}/stat r,

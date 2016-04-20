@@ -18,6 +18,7 @@ profile xfce4-panel /usr/bin/xfce4-panel flags=(complain) {
   #include <abstractions/X>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-strict>
+  #include <local/xfce4-panel-custom>
   
   
   /dev/tty[0-9]* w,
@@ -25,15 +26,15 @@ profile xfce4-panel /usr/bin/xfce4-panel flags=(complain) {
 
   /usr/bin/xfce4-panel r,
   
-  # FIX ME!
-  audit /media/** Pux,
-  audit /mnt/** Pux,
-
+  /etc/xdg/menus/**.menu r,
+  /etc/xdg/menus/applications-merged/ r,
   /usr/share/xfce4/panel/plugins/ r,
   /usr/share/xfce4/panel/plugins/*.desktop r,
   /usr/share/xfce4/panel-plugins/ r,
   /usr/share/xfce4/panel-plugins/*.desktop r,
   owner @{HOME}/.config/xfce4/panel/launcher-**.desktop r,
+  owner @{HOME}/.config/menus/**.menu rw,
+  owner @{HOME}/.config/menus/applications-merged/ r,
   
 }
 
@@ -45,6 +46,7 @@ profile xfce4-panel.wrapper-1.0 /usr/lib64/xfce4/panel/wrapper-1.0 flags=(compla
   #include <abstractions/gtk>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-strict>
+  #include <local/xfce4-panel-custom>
   
   /dev/tty[0-9]* w,
   @{PROC}/@{pid}/fd/ r,

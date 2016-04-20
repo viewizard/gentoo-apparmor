@@ -92,3 +92,39 @@ profile exo-preferred-applications /usr/bin/exo-preferred-applications {
   /usr/lib64/xfce4/exo-1/exo-helper-1 Px,
 
 }
+
+
+profile exo-desktop-item-edit /usr/bin/exo-desktop-item-edit {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/X>
+  #include <abstractions/gtk>
+
+  /dev/tty rw,
+  /dev/tty[0-9]* w,
+
+  /usr/bin/exo-desktop-item-edit r,
+  
+  / r,
+  /bin/ r,
+  /bin/* r,
+  /sbin/ r,
+  /sbin/* r,
+  /usr/ r,
+  /usr/bin/ r,
+  /usr/bin/* r,
+  /usr/sbin/ r,
+  /usr/sbin/* r,
+  /usr/local/ r,
+  /usr/local/bin/ r,
+  /usr/local/bin/* r,
+  /opt/ r,
+  /opt/bin/ r,
+  /opt/bin/* r,
+  deny /usr/x86_64-pc-linux-gnu/** r,
+  deny /usr/libexec/** r,
+  
+  owner @{HOME}/.config/xfce4/panel/** rw,
+  
+}

@@ -173,6 +173,8 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python*/emerge flags=(compla
     /etc/portage/patches/** r,
     /etc/dpkg/dpkg.cfg.d/ r,
     /etc/dpkg/dpkg.cfg.d/* r,
+    /etc/xdg/qtchooser/ r,
+    /etc/xdg/qtchooser/* r,
     /usr/** r,
     /usr/src/linux-*-hardened/tools/gcc/**.so m,
     
@@ -185,4 +187,52 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python*/emerge flags=(compla
     deny / r,
   }
   
+}
+
+
+profile portage.env-update /usr/lib{,32,64}/python-exec/python*/env-update flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/python>
+  #include <abstractions/nameservice>
+  
+  /dev/pts/[0-9]* w,
+  
+  /bin/bash Cxr -> shell,
+  
+  / r,
+  /etc/ld.so.conf r,
+  /etc/csh.env* rw,
+  /etc/profile.env* rw,
+  /etc/env.d/ r,
+  /etc/env.d/* r,
+  /etc/portage/** r,
+  /usr/portage/** r,
+  /usr/ r,
+  /usr/local/portage/** r,
+  /usr/share/portage/config/* r,
+  
+  /var/cache/edb/mtimedb r,
+  /var/lib/portage/config rwk,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /bin/uname ix,
+    /sbin/ldconfig ix,
+    
+    /etc/ld.so.conf r,
+    /etc/ld.so.cache* rw,
+    /etc/ld.so.conf.d/ r,
+    /etc/ld.so.conf.d/* r,
+    /lib{,32,64}/ r,
+    /usr/lib{,32,64}/ r,
+    /usr/local/lib{,32,64}/ r,
+    
+    /var/cache/ldconfig/aux-cache* rw,
+    
+  }
 }

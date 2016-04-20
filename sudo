@@ -13,8 +13,9 @@ profile sudo /usr/bin/sudo {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
+  #include <local/sudo-custom>
   
-
+  
   capability setuid,
   capability setgid,
   capability sys_resource,
@@ -32,10 +33,6 @@ profile sudo /usr/bin/sudo {
   
   /usr/bin/sudo r,
   /bin/bash Pux,
-  
-  # FIX ME!
-  audit /media/** Pux,
-  audit /mnt/** Pux,
   
   /usr/sbin/pmvarrun Px,
   /usr/bin/thunar Px,

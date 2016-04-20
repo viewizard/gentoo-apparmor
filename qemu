@@ -9,13 +9,6 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-
-# FIX ME!
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*.{raw,vmdk,qcow,qcow2,vdi,dmg,vhdx,qed}"
-@{PROG_FOLDERS}="{/mnt/,/media/}"
-
 profile qemu /usr/bin/qemu-system-x86_64 flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -24,9 +17,11 @@ profile qemu /usr/bin/qemu-system-x86_64 flags=(complain) {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/user-tmp>
+  #include <local/qemu-custom>
   
+  
+  /dev/tty[0-9]* w,
   
   /dev/kvm rw,
   /dev/net/tun rw,
@@ -40,10 +35,5 @@ profile qemu /usr/bin/qemu-system-x86_64 flags=(complain) {
   /usr/share/qemu/** r,
   /usr/share/vgabios/ r,
   /usr/share/vgabios/* r,
-  
-  # FIX ME!
-  /media/sdb1/VM_SERVERS/boot/kernel-x86_64* r,
-  @{HOME}/**/shared/ r,
-  @{HOME}/**/shared/** rw,
   
 }
