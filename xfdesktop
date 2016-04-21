@@ -18,6 +18,7 @@ profile xfdesktop /usr/bin/xfdesktop flags=(complain) {
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-strict>
   
+  /dev/tty[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
   owner @{PROC}/@{pid}/mountinfo r,
   
@@ -57,6 +58,7 @@ profile xfdesktop /usr/bin/xfdesktop flags=(complain) {
   
   profile shell flags=(complain) {
     #include <abstractions/base>
+    #include <local/thunar-custom-actions>  # Must be the same as thunar custom actions!
     
     /dev/tty rw,
     

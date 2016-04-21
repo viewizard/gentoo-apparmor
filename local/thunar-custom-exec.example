@@ -9,18 +9,24 @@
 # ------------------------------------------------------------------
 
 
-/bin/ln Cx -> ln,
-/bin/sleep ix,
-/usr/bin/cairo-clock Px,
-/usr/bin/killall Px,
-/usr/bin/grive Px,
-/usr/bin/conky Px,
-  
-profile ln flags=(complain) {
+owner @{HOME}/.wine_eve/start_eve* Cx -> eveonline,
+
+
+profile eveonline flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/X>
   
-  /bin/ln r,
+  /dev/tty rw,
+  /dev/tty[0-9]* w,
   
-  owner @{HOME}/@{XDG_DESKTOP_DIR}/* w,
+  /bin/bash r,
+  owner @{HOME}/.wine_eve/start_eve* r,
+  /usr/bin/xwininfo ix,
+  /bin/grep ix,
+  /bin/mkdir ix,
+  /usr/bin/wine Px,
+  
+  owner @{HOME_CACHE}/eve*/ rw,
+  owner @{HOME_CACHE}/eve*/** rw,
   
 }

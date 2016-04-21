@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile apparmor.aa-status /usr/lib{,32,64}/python-exec/python*/aa-status flags=(complain) {
+profile apparmor.aa-status /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/aa-status flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   
@@ -26,7 +26,7 @@ profile apparmor.aa-status /usr/lib{,32,64}/python-exec/python*/aa-status flags=
 }
 
 
-profile apparmor.aa-unconfined /usr/lib{,32,64}/python-exec/python*/aa-unconfined flags=(complain) {
+profile apparmor.aa-unconfined /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/aa-unconfined flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/user-tmp>

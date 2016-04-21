@@ -26,11 +26,12 @@ profile openshot /usr/lib{,32,64}/python-exec/python2.[0-9]*/openshot flags=(com
   #include <abstractions/X>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
-
-
+  
+  
   /dev/tty rw,
+  /dev/tty[0-9]* rw,
   /etc/machine-id r,
-
+  
   /bin/bash ix,
   /sbin/ldconfig ix,
   
@@ -43,4 +44,12 @@ profile openshot /usr/lib{,32,64}/python-exec/python2.[0-9]*/openshot flags=(com
   
   # Noisy
   deny /usr/lib64/python2.7/site-packages/cairo/__init__.pyc w,
+  
+}
+
+
+profile openshot-render /usr/lib{,32,64}/python-exec/python2.[0-9]*/openshot-render flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/python>
+  
 }
