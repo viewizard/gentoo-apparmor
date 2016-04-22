@@ -74,3 +74,16 @@ profile xarchiver /usr/bin/xarchiver {
   }
   
 }
+
+
+profile xarchiver.tap /usr/libexec/thunar-archive-plugin/xarchiver.tap flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/tty rw,
+  /dev/tty[0-9]* w,
+  
+  /bin/bash r,
+  /usr/libexec/thunar-archive-plugin/xarchiver.tap r,
+  /usr/bin/xarchiver Px,
+  
+}

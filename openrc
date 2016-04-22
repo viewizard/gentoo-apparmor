@@ -16,15 +16,18 @@ profile openrc /sbin/openrc flags=(complain) {
   capability sys_ptrace,
   capability sys_tty_config,
   capability dac_override,
+  capability kill,
   
   /dev/ptmx rw,
   /dev/pts/[0-9]* rw,
   @{PROC}/ r,
   @{PROC}/cmdline r,
+  @{PROC}/@{pid}/cmdline r,
   @{PROC}/@{pid}/environ r,
   @{PROC}/@{pid}/stat r,
   
   /sbin/openrc r,
+  /bin/bash Cx -> shell,
   # All scripts from "boot" and "default" runlevels must have profiles!
   /etc/init.d/* Px,
   
@@ -32,12 +35,24 @@ profile openrc /sbin/openrc flags=(complain) {
   /etc/profile.env r,
   /etc/init.d/ r,
   /etc/conf.d/ r,
+  /etc/runlevels/ r,
   /etc/runlevels/** r,
   /etc/terminfo/l/linux r,
+  /etc/terminfo/x/xterm r,
   
   /var/log/rc.log w,
   /run/**{,.}pid rw,
   /run/openrc/** rwk,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    
+  }
   
 }
 

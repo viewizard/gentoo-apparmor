@@ -18,9 +18,10 @@ profile sudo /usr/bin/sudo {
   
   capability setuid,
   capability setgid,
-  capability sys_resource,
   capability chown,
   capability fowner,
+  capability sys_resource,
+  capability dac_read_search,
   capability dac_override,
   
   /dev/ r,
@@ -32,14 +33,7 @@ profile sudo /usr/bin/sudo {
   owner @{PROC}/@{pid}/stat r,
   
   /usr/bin/sudo r,
-  /bin/bash Pux,
-  
-  /usr/sbin/pmvarrun Px,
-  /usr/bin/thunar Px,
-  /usr/bin/dbus-daemon Px,
   /usr/bin/gksu_askpass.sh Px,
-  /usr/bin/gsmartcontrol Px,
-  /usr/bin/exo-open Px,
   
   /usr/lib64/sudo/sudoers.so m,
   /usr/libexec/sudo/libsudo_util.so* mr,
@@ -55,6 +49,102 @@ profile sudo /usr/bin/sudo {
   /run/sudo/ rw,
   /run/sudo/ts/ rw,
   /run/sudo/ts/* rwk,
+  
+  
+###################################################
+# MAC (without PAM)
+###################################################
+
+#  @{PROC}/@{pid}/mountinfo r,
+  
+#  /bin/bash Pux,
+#  /usr/sbin/pmvarrun Px,
+#  /usr/bin/ofl Px,
+#  /bin/mount Px,
+#  /bin/umount Px,
+#  /usr/bin/thunar Px,
+#  /usr/bin/dbus-daemon Px,
+#  /usr/bin/gsmartcontrol Px,
+
+###################################################
+# RBAC (with PAM)
+###################################################
+
+  @{PROC}/@{pid}/attr/current w,
+  
+  /bin/bash Cxr -> shell,
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    capability setuid,
+    capability setgid,
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /usr/bin/pmount Px,
+    /usr/bin/pumount Px,
+    
+  }
+  
+  ^DEFAULT flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/authentication>
+    #include <local/sudo-custom>
+    
+    capability dac_override,
+    capability sys_resource,
+    capability setuid,
+    capability setgid,
+    capability fsetid,
+    
+    @{PROC}/@{pid}/fd/ r,
+    @{PROC}/@{pid}/mountinfo r,
+    
+    /bin/bash Pux -> bash_default,
+    /usr/sbin/pmvarrun Px,
+    /usr/bin/ofl Px,
+    /bin/mount Px,
+    /bin/umount Px,
+    /usr/bin/thunar Px,
+    /usr/bin/dbus-daemon Px,
+    /usr/bin/gksu_askpass.sh Px,
+    /usr/bin/gsmartcontrol Px,
+    
+    /etc/environment r,
+    
+  }
+  
+  ^root flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/authentication>
+    #include <local/sudo-custom>
+    
+    capability dac_override,
+    capability sys_resource,
+    capability setuid,
+    capability setgid,
+    capability fsetid,
+    
+    @{PROC}/@{pid}/fd/ r,
+    @{PROC}/@{pid}/mountinfo r,
+    
+    /bin/bash Pux -> bash_root,
+    /usr/sbin/pmvarrun Px,
+    /usr/bin/ofl Px,
+    /bin/mount Px,
+    /bin/umount Px,
+    /usr/bin/thunar Px,
+    /usr/bin/dbus-daemon Px,
+    /usr/bin/gksu_askpass.sh Px,
+    /usr/bin/gsmartcontrol Px,
+    
+    /etc/environment r,
+    
+  }
   
 }
 

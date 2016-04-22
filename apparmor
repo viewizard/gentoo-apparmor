@@ -9,6 +9,28 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+profile apparmor_parser /sbin/apparmor_parser flags=(complain) {
+  #include <abstractions/base>
+  
+  capability mac_admin,
+  
+  /dev/tty[0-9]* w,
+  /dev/pts/[0-9]* w,
+  /sys/kernel/security/apparmor/ r,
+  /sys/kernel/security/apparmor/** r,
+  /sys/kernel/security/apparmor/{.load,.replace,.remove} w,
+  @{PROC}/@{pid}/mounts r,
+  @{PROC}/sys/kernel/osrelease r,
+  
+  /sbin/apparmor_parser r,
+  
+  /etc/apparmor.d/ r,
+  /etc/apparmor.d/** r,
+  /etc/apparmor/parser.conf r,
+  
+}
+
+
 profile apparmor.aa-status /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/aa-status flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>

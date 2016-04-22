@@ -15,33 +15,38 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
   #include <abstractions/fonts>
   #include <abstractions/gtk>
   #include <abstractions/X>
+  #include <abstractions/dbus-session>
   #include <abstractions/nvidia>
   #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
   
-  
+  /dev/ptmx rw,
   /dev/tty[0-9]* w,
+  /dev/pts/[0-9]* rw,
+  owner @{PROC}/@{pid}/fd/ r,
   
-  /bin/bash Pux,
+  /usr/bin/xfce4-terminal rm,
+  /bin/bash Pux,  # Must be bash_default only by default.
+  /usr/bin/sudo Px,
   /usr/bin/htop Cx,
   /usr/libexec/gnome-pty-helper Cx,
   /usr/bin/passwd.sh Px,
-
-  owner @{PROC}/@{pid}/fd/ r,
-  /dev/pts/[0-9]* rw,
-  /dev/ptmx rw,
+  /usr/bin/dbus-daemon Px,
   
-  /usr/bin/xfce4-terminal rm,
   /etc/terminfo/x/xterm r,
+  /usr/share/ r,
+  /usr/share/xfce4/ r,
+  /usr/share/xfce4/terminal/ r,
+  /usr/share/xfce4/terminal/** r,
   /usr/share/vte/termcap-0.0/xterm r,
   
+  owner @{HOME}/.local/share/ r,
+  owner @{HOME}/.local/share/xfce4/ r,
+  owner @{HOME}/.local/share/xfce4/terminal/ r,
+  owner @{HOME}/.local/share/xfce4/terminal/** r,
   owner @{HOME}/.config/xfce4/terminal/* rw,
   owner @{HOME}/.config/xfce4/help.rc* rw,
-  
-  
-  #include <abstractions/dbus-session>  
-  /usr/bin/dbus-daemon Px,
   owner @{HOME}/.dbus/ rw,
   owner @{HOME}/.dbus/** rw,
 
@@ -56,13 +61,12 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
     capability setgid,
     capability fsetid,
 
-    /dev/pts/ r,
     /dev/pts/[0-9]* rw,
     /dev/ptmx rw,
-    /run/utmp rw,
-    deny /run/utmp k,
-    /var/log/wtmp w,
+    
     /usr/libexec/gnome-pty-helper r,
+    
+    /run/utmp rwk,
     /var/log/wtmp wk,
   }
   
@@ -74,11 +78,7 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
     
     capability sys_ptrace,
     
-    /dev/pts/[0-9]* rw,
-    
-    /usr/bin/htop r,
-    /etc/terminfo/x/xterm r,
-    
+    /dev/pts/[0-9]* rw,    
     @{PROC}/sys/kernel/pid_max r,
     @{PROC}/ r,
     @{PROC}/loadavg r,
@@ -90,6 +90,10 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
     @{PROC}/@{pid}/task/@{pid}/statm r,
     @{PROC}/@{pid}/task/@{pid}/stat r,
     @{PROC}/@{pid}/task/@{pid}/cmdline r,
+    
+    /usr/bin/htop r,
+    
+    /etc/terminfo/x/xterm r,
     
     owner @{HOME}/.config/htop/htoprc rw,
   }

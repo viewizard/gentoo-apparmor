@@ -13,6 +13,7 @@ profile gentoolkit.glsa-check /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/gl
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
+  #include <abstractions/user-tmp>
   
   /dev/pts/[0-9]* w,
   
@@ -110,5 +111,58 @@ profile gentoolkit.eclean /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/eclean
     /bin/uname ix,
     
   }
+  
+}
+
+
+profile gentoolkit.revdep-rebuild /usr/bin/revdep-rebuild{,.sh} flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/python>
+  #include <abstractions/nameservice>
+  #include <abstractions/user-tmp>
+  
+  
+  capability fsetid,
+  capability chown,
+  
+  /dev/tty rw,
+  /dev/pts/[0-9]* w,
+  
+  /usr/lib64/python-exec/python-exec2 Px,  # portageq
+  
+  / r,
+  /bin/ r,
+  /bin/* ixmr,
+  /sbin/ r,
+  /sbin/* ixmr,
+  /usr/ r,
+  /usr/bin/ r,
+  /usr/bin/* ixmr,
+  /usr/sbin/ r,
+  /usr/sbin/* ixmr,
+  /usr/libexec/ r,
+  /usr/libexec/** ixmr,
+  /usr/lib{,32,64}/ r,
+  /usr/lib{,32,64}/** ixmr,
+  /usr/local/lib{,32,64}/ r,
+  /usr/local/lib{,32,64}/** ixmr,
+  /lib{,32,64}/ r,
+  /lib{,32,64}/** ixmr,
+  /opt/ r,
+  /opt/** ixmr,
+  /usr/x86_64-pc-linux-gnu/ r,
+  /usr/x86_64-pc-linux-gnu/** ixmr,
+  
+  /etc/profile.env r,
+  /etc/ld.so.conf r,
+  /etc/ld.so.conf.d/ r,
+  /etc/ld.so.conf.d/* r,
+  /etc/revdep-rebuild/ r,
+  /etc/revdep-rebuild/* r,
+  /etc/env.d/python/config r,
+  /etc/terminfo/x/xterm r,
+  
+  /var/cache/revdep-rebuild/ r,
+  /var/cache/revdep-rebuild/* rw,
   
 }

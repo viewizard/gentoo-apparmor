@@ -31,3 +31,14 @@ profile coreutils.env /bin/env flags=(complain) {
   }
   
 }
+
+
+profile coreutils.df /bin/df flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/pts/[0-9]* w,
+  @{PROC}/@{pid}/mounts r,
+  
+  /bin/df r,
+  
+}
