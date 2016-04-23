@@ -39,6 +39,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   capability sys_admin,
 
   /dev/tty rw,
+  /dev/tty[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
   owner @{PROC}/@{pid}/mountinfo r,
 
@@ -102,6 +103,7 @@ profile thunar_root {
   capability sys_admin,
 
   /dev/tty rw,
+  /dev/tty[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
   owner @{PROC}/@{pid}/mountinfo r,
 

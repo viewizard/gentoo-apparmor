@@ -40,7 +40,7 @@ profile apparmor.aa-status /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/aa-st
   /dev/pts/[0-9]* w,
   /sys/kernel/security/apparmor/* r,
   @{PROC}/ r,
-  @{PROC}/@{pid}/attr/current r,
+  @{PROC}/@{pid}/attr/{current,prev,exec} r,
   @{PROC}/@{pid}/mounts r,
   
   /bin/env Pxr,
@@ -57,7 +57,7 @@ profile apparmor.aa-unconfined /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/a
   
   /dev/pts/[0-9]* w,
   @{PROC}/@{pid}/mounts r,
-  @{PROC}/@{pid}/attr/current r,
+  @{PROC}/@{pid}/attr/{current,prev,exec} r,
   
   /bin/env r,
   /bin/bash Cx -> shell,

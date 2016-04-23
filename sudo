@@ -57,7 +57,7 @@ profile sudo /usr/bin/sudo {
 
 #  @{PROC}/@{pid}/mountinfo r,
   
-#  /bin/bash Pux,
+#  /bin/bash Pux -> bash_root,
 #  /usr/sbin/pmvarrun Px,
 #  /usr/bin/ofl Px,
 #  /bin/mount Px,
@@ -70,7 +70,8 @@ profile sudo /usr/bin/sudo {
 # RBAC (with PAM)
 ###################################################
 
-  @{PROC}/@{pid}/attr/current w,
+  @{PROC}/@{pid}/attr/{current,exec} w,
+  @{PROC}/@{pid}/attr/{current,prev,exec} r,
   
   /bin/bash Cxr -> shell,
   

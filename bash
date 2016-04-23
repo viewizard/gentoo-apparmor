@@ -68,13 +68,13 @@ profile bash_users {
 }
 
 
-profile bash_root flags=(complain) {
+profile bash_root {
   #include <abstractions/base>
   #include <abstractions/bash>
   #include <abstractions/consoles>
   #include <abstractions/nameservice>
-  #include <abstractions/user-systemwide-files>
   #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/user-systemwide-files>
   
   capability setuid,
   capability sys_tty_config,
@@ -108,7 +108,6 @@ profile bash_root flags=(complain) {
   /sbin/apparmor_parser Pxr,
   /usr/bin/pmount Pxr,
   /usr/bin/pumount Pxr,
-  /usr/bin/startxfce4 Pxr,
   /usr/bin/which ixr,
   /usr/bin/git Px -> git_root,
   /usr/bin/exo-open Pxr,
@@ -118,6 +117,7 @@ profile bash_root flags=(complain) {
   /usr/bin/revdep-rebuild{,.sh} Pxr,
   /usr/bin/whoami ixr,
   /usr/bin/id ixr,
+  /usr/bin/startxfce4 Pxr,
   /usr/sbin/logcheck Puxr,
   /usr/sbin/aideinit Pxr,
   /usr/sbin/gdisk Pxr,
@@ -126,33 +126,10 @@ profile bash_root flags=(complain) {
   /usr/sbin/userdel Pxr,
   /usr/sbin/lspci Pxr,
   /usr/sbin/etc-update Pxr,
+  /usr/lib64/python-exec/python-exec2 Pxr,
   /usr/local/bin/** Pxr,
   /usr/local/sbin/** Pxr,
-
-
-
-  # FIX ME!
-#  audit /etc/init.d/** Puxr,
-#  audit /etc/X11/Sessions/** Puxr,
-#  audit /opt/** Puxr,
-#  audit /bin/** Puxr,
-#  audit /sbin/** Puxr,
-#  audit /usr/bin/** Puxr,
-#  audit /usr/sbin/** Puxr,
-#  audit /usr/libexec/** Puxr,
-#  audit /usr/lib{,32,64}/** Puxr,
-#  audit /lib64/rc/sh/**.sh Puxr,
-
-  /etc/init.d/** Puxr,
-  /etc/X11/Sessions/** Puxr,
-  /opt/** Puxr,
-  /bin/** Puxr,
-  /sbin/** Puxr,
-  /usr/bin/** Puxr,
-  /usr/sbin/** Puxr,
-  /usr/libexec/** Puxr,
-  /usr/lib{,32,64}/** Puxr,
-  /lib64/rc/sh/**.sh Puxr,
+  /etc/init.d/* Px,
   
   /etc/profile.env r,
   /etc/terminfo/l/linux r,

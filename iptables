@@ -8,21 +8,14 @@
 #
 # ------------------------------------------------------------------
 
-/etc/local.d/firewall.start Cx -> firewall,
-
-profile firewall flags=(complain) {
+#include <tunables/global>
+profile iptables.xtables-multi /sbin/xtables-multi flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/nameservice>
   
-  capability sys_tty_config,
+  capability net_raw,
+  capability net_admin,
   
-  /dev/tty rw,
-  /dev/console rw,
-  
-  /bin/bash r,
-  /etc/local.d/firewall.start r,
-  /sbin/xtables-multi Px,
+  /sbin/xtables-multi r,
   
 }
-
-
-
