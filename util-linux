@@ -16,7 +16,7 @@ profile util-linux.mount /bin/mount flags=(complain) {
   capability dac_override,
   capability chown,
   
-  @{PROC}/@{pid}/mountinfo r,
+  /dev/tty[0-9]* w,
   /dev/sd[a-z] r,
   /dev/sd[a-z]* r,
   /sys/devices/pci**/block/sd[a-z]/ r,
@@ -25,6 +25,7 @@ profile util-linux.mount /bin/mount flags=(complain) {
   /sys/devices/pci**/block/sd[a-z]/sd[a-z]*/size r,
   /sys/devices/pci**/block/sd[a-z]/sd[a-z]*/start r,
   /sys/devices/virtual/block/dm-*/dm/name r,
+  @{PROC}/@{pid}/mountinfo r,
   
   /bin/mount r,
   
@@ -43,6 +44,7 @@ profile util-linux.umount /bin/umount flags=(complain) {
   capability sys_admin,
   capability chown,
   
+  /dev/tty[0-9]* w,
   @{PROC}/@{pid}/mountinfo r,
   
   /bin/umount r,

@@ -15,13 +15,33 @@
 @{PROG_FILE}="[^.]*"
 @{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
-profile git /usr/bin/git flags=(complain) {
+profile git /usr/bin/git {
   #include <abstractions/base>
-  #include <abstractions/user-systemwide-files>
   #include <abstractions/program-work-with-disk-rwkl>
   #include <abstractions/nameservice>
   #include <abstractions/ssl_certs>
+  
+  capability dac_override,
+  capability fowner,
+  
+  /dev/tty rw,
+  /dev/pts/[0-9]* rw,
 
+  /usr/bin/git r,
+  /usr/libexec/git-core/git ix,
+  /usr/libexec/git-core/git-remote-http ix,
+  /usr/libexec/git-core/git-remote-https ix,
+  
+}
+
+
+profile git_root {
+  #include <abstractions/base>
+  #include <abstractions/program-work-with-disk-rwkl>
+  #include <abstractions/nameservice>
+  #include <abstractions/ssl_certs>
+  #include <abstractions/user-systemwide-files>
+  
   capability dac_override,
   capability fowner,
   

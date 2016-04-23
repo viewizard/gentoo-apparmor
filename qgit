@@ -15,7 +15,7 @@
 @{PROG_FILE}="[^.]*"
 @{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
-profile qgit /usr/bin/qgit4 flags=(complain) {
+profile qgit /usr/bin/qgit4 {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -25,7 +25,6 @@ profile qgit /usr/bin/qgit4 flags=(complain) {
   #include <abstractions/nvidia>
   #include <abstractions/user-tmp>
   #include <abstractions/X>
-  #include <abstractions/user-systemwide-files>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
 
@@ -33,12 +32,42 @@ profile qgit /usr/bin/qgit4 flags=(complain) {
   capability fowner,
   
   /dev/tty[0-9]* w,
-
+  
   /usr/bin/qgit4 r,
   /usr/bin/git ix,
   /bin/cat ix,
   /usr/bin/meld Px,
+  
+  owner @{HOME}/.config/qgit/ rw,
+  owner @{HOME}/.config/qgit/** rwk,
+  
+}
 
+
+profile qgit_root {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/dbus-session>
+  #include <abstractions/gtk>
+  #include <abstractions/qt>
+  #include <abstractions/nvidia>
+  #include <abstractions/user-tmp>
+  #include <abstractions/X>
+  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/nameservice>
+  #include <abstractions/user-systemwide-files>
+  
+  capability dac_override,
+  capability fowner,
+  
+  /dev/tty[0-9]* w,
+  
+  /usr/bin/qgit4 r,
+  /usr/bin/git ix,
+  /bin/cat ix,
+  /usr/bin/meld Px -> meld_root,
+  
   owner @{HOME}/.config/qgit/ rw,
   owner @{HOME}/.config/qgit/** rwk,
   

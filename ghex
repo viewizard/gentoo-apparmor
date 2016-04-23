@@ -22,13 +22,31 @@ profile ghex /usr/bin/ghex {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/user-systemwide-files>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/executable-binary-helper>
   #include <abstractions/cups-client>
   #include <abstractions/nameservice>
+  #include <abstractions/dbus-session>
+  
+  /usr/bin/ghex r,
+  
+}
 
 
+profile ghex_root {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+  #include <abstractions/nvidia>
+  #include <abstractions/X>
+  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/executable-binary-helper>
+  #include <abstractions/cups-client>
+  #include <abstractions/nameservice>
+  #include <abstractions/dbus-session>
+  #include <abstractions/user-systemwide-files>
+  
   /usr/bin/ghex r,
   
 }

@@ -16,7 +16,7 @@
 @{PROG_FILE}="**"
 @{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
-profile thunar /usr/bin/{Thunar,thunar} flags=(complain) {
+profile thunar /usr/bin/{Thunar,thunar} {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -27,7 +27,6 @@ profile thunar /usr/bin/{Thunar,thunar} flags=(complain) {
   #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/nameservice>
-  #include <abstractions/user-systemwide-files>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/executable-binary-strict>
   #include <local/thunar-custom-exec>
@@ -40,6 +39,8 @@ profile thunar /usr/bin/{Thunar,thunar} flags=(complain) {
   capability sys_admin,
 
   /dev/tty rw,
+  @{PROC}/@{pid}/fd/ r,
+  owner @{PROC}/@{pid}/mountinfo r,
 
   /sys/devices/pci**/uevent r,
   /sys/devices/virtual/block/md*/uevent r,
@@ -67,6 +68,69 @@ profile thunar /usr/bin/{Thunar,thunar} flags=(complain) {
   profile shell flags=(complain) {
     #include <abstractions/base>
     #include <local/thunar-custom-actions>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    
+  }
+  
+}
+
+
+profile thunar_root {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/dbus-session>
+  #include <abstractions/audio>
+  #include <abstractions/gtk>
+  #include <abstractions/nvidia>
+  #include <abstractions/user-tmp>
+  #include <abstractions/X>
+  #include <abstractions/nameservice>
+  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/executable-binary-strict_root>
+  #include <local/thunar_root-custom-exec>
+  #include <abstractions/user-systemwide-files>
+  
+  
+  capability dac_override,
+  capability sys_resource,
+  capability fowner,
+  capability fsetid,
+  capability sys_admin,
+
+  /dev/tty rw,
+  @{PROC}/@{pid}/fd/ r,
+  owner @{PROC}/@{pid}/mountinfo r,
+
+  /sys/devices/pci**/uevent r,
+  /sys/devices/virtual/block/md*/uevent r,
+  /run/udev/data/* r,
+
+  /usr/bin/thunar mr,
+  
+  /bin/bash Cxr -> shell,
+  
+  /etc/udev/udev.conf r,
+  /usr/lib64/thunarx-2/* m,
+  /usr/share/ r,
+  /usr/local/share/ r,
+  /usr/share/Thunar/ r,
+  /usr/share/Thunar/sendto/ r,
+  /usr/share/Thunar/sendto/*.desktop r,
+ 
+  owner @{HOME}/.config/Thunar/ rw,
+  owner @{HOME}/.config/Thunar/** rwk,
+  owner @{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
+  owner @{HOME}/.local/share/gvfs-metadata/ rw,
+  owner @{HOME}/.local/share/gvfs-metadata/** rw,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    #include <local/thunar_root-custom-actions>
     
     /dev/tty rw,
     

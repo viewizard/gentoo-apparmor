@@ -15,6 +15,7 @@ profile pmount /usr/bin/pmount flags=(complain) {
   capability setuid,
   capability setgid,
   
+  /dev/tty[0-9]* w,
   /dev/sd[a-z] r,
   /dev/sd[a-z][1-9]* r,
   /sys/class/block/ r,
@@ -52,6 +53,7 @@ profile pmount.pumount /usr/bin/pumount flags=(complain) {
   
   capability setuid,
   
+  /dev/tty[0-9]* w,
   @{PROC}/@{pid}/mounts r,
   
   /usr/bin/pumount r,

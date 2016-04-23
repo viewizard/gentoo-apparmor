@@ -88,7 +88,7 @@ profile sudo /usr/bin/sudo {
     
   }
   
-  ^DEFAULT flags=(complain) {
+  ^DEFAULT {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/authentication>
@@ -100,10 +100,11 @@ profile sudo /usr/bin/sudo {
     capability setgid,
     capability fsetid,
     
+    /dev/pts/[0-9]* w,
     @{PROC}/@{pid}/fd/ r,
     @{PROC}/@{pid}/mountinfo r,
     
-    /bin/bash Pux -> bash_default,
+    /bin/bash Pux -> bash_users,
     /usr/sbin/pmvarrun Px,
     /usr/bin/ofl Px,
     /bin/mount Px,
@@ -117,7 +118,7 @@ profile sudo /usr/bin/sudo {
     
   }
   
-  ^root flags=(complain) {
+  ^root {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/authentication>
@@ -129,6 +130,7 @@ profile sudo /usr/bin/sudo {
     capability setgid,
     capability fsetid,
     
+    /dev/pts/[0-9]* w,
     @{PROC}/@{pid}/fd/ r,
     @{PROC}/@{pid}/mountinfo r,
     
@@ -137,7 +139,7 @@ profile sudo /usr/bin/sudo {
     /usr/bin/ofl Px,
     /bin/mount Px,
     /bin/umount Px,
-    /usr/bin/thunar Px,
+    /usr/bin/thunar Px -> thunar_root,
     /usr/bin/dbus-daemon Px,
     /usr/bin/gksu_askpass.sh Px,
     /usr/bin/gsmartcontrol Px,
@@ -158,7 +160,7 @@ profile sudo.askpass /usr/bin/gksu_askpass.sh {
   
   /dev/tty rw,
   /dev/tty[0-9]* w,
-
+  
   /usr/bin/gksu_askpass.sh r,
   /usr/bin/zenity ixr,
   /bin/bash ixr,

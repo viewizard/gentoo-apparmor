@@ -27,7 +27,7 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
   owner @{PROC}/@{pid}/fd/ r,
   
   /usr/bin/xfce4-terminal rm,
-  /bin/bash Pux,  # Must be bash_default only by default.
+  /bin/bash Pux -> bash_users,  # Must be bash_users only by default.
   /usr/bin/sudo Px,
   /usr/bin/htop Cx,
   /usr/libexec/gnome-pty-helper Cx,

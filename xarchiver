@@ -23,20 +23,19 @@ profile xarchiver /usr/bin/xarchiver {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/nameservice>
-  #include <abstractions/user-systemwide-files>
   #include <abstractions/user-tmp>
   #include <abstractions/program-work-with-disk-rwkl>
   #include <abstractions/xdg-open>
-
-
+  
   capability dac_override,
   capability dac_read_search,
   capability chown,
   capability fowner,
   
   /dev/tty rw,
+  /dev/tty[0-9]* w,
   /sys/devices/system/cpu/ r,
-
+  
   /usr/bin/xarchiver rm,
   
   /bin/bash ix,
@@ -58,13 +57,16 @@ profile xarchiver /usr/bin/xarchiver {
   /usr/bin/7za ixr,
   /usr/lib64/p7zip/7za ix,
   
+  /etc/fstab r,
+  owner @{HOME}/.config/xarchiver/ rw,
+  owner @{HOME}/.config/xarchiver/** rw,
+  
   /tmp/** rw,
   
   profile rar /opt/rar/rar {
     #include <abstractions/base>
-    #include <abstractions/user-systemwide-files>
     #include <abstractions/program-work-with-disk-rwkl>
-  
+    
     /opt/rar/rar r,
     
     # Noisy
@@ -76,7 +78,72 @@ profile xarchiver /usr/bin/xarchiver {
 }
 
 
-profile xarchiver.tap /usr/libexec/thunar-archive-plugin/xarchiver.tap flags=(complain) {
+profile xarchiver_root {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+  #include <abstractions/nvidia>
+  #include <abstractions/X>
+  #include <abstractions/nameservice>
+  #include <abstractions/user-tmp>
+  #include <abstractions/program-work-with-disk-rwkl>
+  #include <abstractions/xdg-open>
+  #include <abstractions/user-systemwide-files>
+  
+  capability dac_override,
+  capability dac_read_search,
+  capability chown,
+  capability fowner,
+  
+  /dev/tty rw,
+  /dev/tty[0-9]* w,
+  /sys/devices/system/cpu/ r,
+  
+  /usr/bin/xarchiver rm,
+  
+  /bin/bash ix,
+  /bin/mv ix,
+  /bin/rm ix,
+  /bin/cp ix,
+  /bin/dd ix,
+  /bin/cpio ixr,
+  /usr/x86_64-pc-linux-gnu/binutils-bin/*/ar ix,
+  
+  /opt/rar/rar Cx,
+  /bin/bzip2 ix,
+  /bin/gzip ix,
+  /usr/bin/xz ix,
+  /bin/tar ix,
+  /bin/gunzip ix,
+  /usr/bin/zip ix,
+  /usr/bin/unzip ix,
+  /usr/bin/7za ixr,
+  /usr/lib64/p7zip/7za ix,
+  
+  /etc/fstab r,
+  owner @{HOME}/.config/xarchiver/ rw,
+  owner @{HOME}/.config/xarchiver/** rw,
+  
+  /tmp/** rw,
+  
+  profile rar /opt/rar/rar {
+    #include <abstractions/base>
+    #include <abstractions/program-work-with-disk-rwkl>
+    #include <abstractions/user-systemwide-files>
+    
+    /opt/rar/rar r,
+    
+    # Noisy
+    deny /etc/ r,
+    deny /usr/lib64/ r,
+    deny /usr/local/lib64/ r,
+  }
+  
+}
+
+
+profile xarchiver_tap /usr/libexec/thunar-archive-plugin/xarchiver.tap {
   #include <abstractions/base>
   
   /dev/tty rw,
@@ -85,5 +152,18 @@ profile xarchiver.tap /usr/libexec/thunar-archive-plugin/xarchiver.tap flags=(co
   /bin/bash r,
   /usr/libexec/thunar-archive-plugin/xarchiver.tap r,
   /usr/bin/xarchiver Px,
+  
+}
+
+
+profile xarchiver_tap_root {
+  #include <abstractions/base>
+  
+  /dev/tty rw,
+  /dev/tty[0-9]* w,
+  
+  /bin/bash r,
+  /usr/libexec/thunar-archive-plugin/xarchiver.tap r,
+  /usr/bin/xarchiver Px -> xarchiver_root,
   
 }

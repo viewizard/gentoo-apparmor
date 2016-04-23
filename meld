@@ -23,27 +23,79 @@ profile meld /usr/bin/meld {
   #include <abstractions/python>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/user-systemwide-files>
+  #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/executable-binary-helper>
   #include <abstractions/cups-client>
-  #include <abstractions/user-tmp>
   #include <abstractions/dbus-session>
-
-
+  
   capability dac_override,
   capability dac_read_search,
   capability fowner,
-
+  
+  /dev/tty[0-9]* w,
+  /dev/pts/[0-9]* rw,
+  /dev/shm/* rwl,
+  @{PROC}/@{pid}/fd/ r,
+  
   /usr/bin/meld r,
   /bin/env r,
-  
-  /dev/pts/[0-9]* rw,
-  /dev/shm/* l,
+  /usr/bin/which ix,
   
   /usr/share/meld/** r,
   /usr/share/gtksourceview-2.0/ r,
   /usr/share/gtksourceview-2.0/** r,
+  
+  owner @{HOME}/.config/meld/ rw,
+  owner @{HOME}/.config/meld/** rw,
+  owner @{HOME}/.local/share/meld/ rw,
+  owner @{HOME}/.local/share/meld/** rw,
+  
+  /tmp/ rw,
+  /tmp/** rwkl,
+  
+  # Noisy
+  deny /usr/lib64/python2.[0-9]*/site-packages/cairo/__init__.pyc w,
+  
+}
+
+
+profile meld_root {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+  #include <abstractions/python>
+  #include <abstractions/nvidia>
+  #include <abstractions/X>
+  #include <abstractions/nameservice>
+  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/executable-binary-helper>
+  #include <abstractions/cups-client>
+  #include <abstractions/dbus-session>
+  #include <abstractions/user-systemwide-files>
+  
+  capability dac_override,
+  capability dac_read_search,
+  capability fowner,
+  
+  /dev/tty[0-9]* w,
+  /dev/pts/[0-9]* rw,
+  /dev/shm/* rwl,
+  @{PROC}/@{pid}/fd/ r,
+  
+  /usr/bin/meld r,
+  /bin/env r,
+  /usr/bin/which ix,
+  
+  /usr/share/meld/** r,
+  /usr/share/gtksourceview-2.0/ r,
+  /usr/share/gtksourceview-2.0/** r,
+  
+  owner @{HOME}/.config/meld/ rw,
+  owner @{HOME}/.config/meld/** rw,
+  owner @{HOME}/.local/share/meld/ rw,
+  owner @{HOME}/.local/share/meld/** rw,
   
   /tmp/ rw,
   /tmp/** rwkl,
