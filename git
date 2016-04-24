@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile git /usr/bin/git {
   #include <abstractions/base>
@@ -26,7 +25,7 @@ profile git /usr/bin/git {
   
   /dev/tty rw,
   /dev/pts/[0-9]* rw,
-
+  
   /usr/bin/git r,
   /usr/libexec/git-core/git ix,
   /usr/libexec/git-core/git-remote-http ix,
@@ -47,7 +46,7 @@ profile git_root {
   
   /dev/tty rw,
   /dev/pts/[0-9]* rw,
-
+  
   /usr/bin/git r,
   /usr/libexec/git-core/git ix,
   /usr/libexec/git-core/git-remote-http ix,

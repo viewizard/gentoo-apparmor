@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile tumbler /usr/lib64/tumbler-1/tumblerd {
   #include <abstractions/base>
@@ -22,10 +21,10 @@ profile tumbler /usr/lib64/tumbler-1/tumblerd {
   #include <abstractions/nvidia>
   #include <abstractions/user-tmp>
   #include <abstractions/program-work-with-disk-rk>
-
+  
   capability dac_override,
   capability dac_read_search,
-
+  
   /usr/lib64/tumbler-1/plugins/** m,
   /etc/xdg/tumbler/tumbler.rc r,
   /etc/udev/udev.conf r,
@@ -36,5 +35,5 @@ profile tumbler /usr/lib64/tumbler-1/tumblerd {
   owner @{HOME_CACHE}/sessions/thumbs*/*.png r,
   owner @{HOME}/.local/share/gvfs-metadata/* r,
   owner @{HOME}/.face* r,
-
+  
 }

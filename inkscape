@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile inkscape /usr/bin/inkscape {
   #include <abstractions/base>
@@ -31,17 +30,16 @@ profile inkscape /usr/bin/inkscape {
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
   
-  
   /sys/devices/system/cpu/ r,
   
   /usr/bin/inkscape r,
   
   /usr/share/inkscape/ r,
   /usr/share/inkscape/** r,
-
+  
   owner @{HOME_CACHE}/inkscape/ rw,
   owner @{HOME_CACHE}/inkscape/** rw,
   owner @{HOME}/.config/inkscape/ rw,
   owner @{HOME}/.config/inkscape/** rw,
-
+  
 }

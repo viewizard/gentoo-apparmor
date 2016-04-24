@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*.{mpeg,vob,ogg,asf,wav,wmv,wma,mov,mp3,mp4,avi,mkv,mka,webm,vivo,ts,ogm,aac,h264,3p2,3gp,3ga,flv,ass,smi,srt,sub,txt,mdv,ssa,sup,tt,smil,gif}"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile vlc /usr/bin/vlc {
   #include <abstractions/base>
@@ -28,19 +27,18 @@ profile vlc /usr/bin/vlc {
   #include <abstractions/X>
   #include <abstractions/program-work-with-disk-rk>
   #include <abstractions/nameservice>
-
-
+  
   /usr/bin/vlc r,
+  /usr/bin/xdg-screensaver Pxr,
+  
   /usr/lib64/vlc/ r,
   /usr/lib64/vlc/** r,
-  
-  /usr/bin/xdg-screensaver Pxr,
   
   owner @{HOME}/.config/vlc/ rw,
   owner @{HOME}/.config/vlc/** rwk,
   owner @{HOME}/.local/share/vlc/ rw,
   owner @{HOME}/.local/share/vlc/** rw,
-
+  
   # Noisy
   deny /usr/lib64/vlc/** w,
   

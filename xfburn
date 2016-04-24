@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile xfburn /usr/bin/xfburn flags=(complain) {
   #include <abstractions/base>
@@ -25,10 +24,8 @@ profile xfburn /usr/bin/xfburn flags=(complain) {
   #include <abstractions/program-work-with-disk-rk>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
-
-
+  
   /dev/sr[0-9] rwk,
-
   /sys/bus/ r,
   /sys/class/ r,
   /sys/class/block/ r,
@@ -40,16 +37,16 @@ profile xfburn /usr/bin/xfburn flags=(complain) {
   /sys/devices/virtual/block/zd*/uevent r,
   /sys/devices/virtual/block/zd*/zd*/uevent r,
   /sys/devices/virtual/block/loop*/uevent r,
-  /run/udev/data/* r,
-  /etc/udev/udev.conf r,
-
   owner @{PROC}/@{pid}/fd/ r,
   @{PROC}/sys/dev/cdrom/info r,
-
+  
   /usr/bin/xfburn r,
+  
+  /etc/udev/udev.conf r,
   /usr/share/xfburn/ r,
   /usr/share/xfburn/** r,
-
+  /run/udev/data/* r,
+  
   owner @{HOME}/.config/xfburn/ rw,
   owner @{HOME}/.config/xfburn/* rw,
   

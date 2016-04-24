@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*.png"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile alacarte /usr/lib{,32,64}/python-exec/python2.[0-9]*/alacarte {
   #include <abstractions/base>
@@ -26,8 +25,7 @@ profile alacarte /usr/lib{,32,64}/python-exec/python2.[0-9]*/alacarte {
   #include <abstractions/X>
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rk>
-
-
+  
   /usr/share/alacarte/* r,
   /etc/xdg/menus/**.menu r,
   /etc/xdg/menus/applications-merged/ r,

@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="**"
 @{PROG_FILE}="{*.kdbx,.*.kdbx.lock,*.csv}"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile keepassx /usr/bin/keepassx {
   #include <abstractions/base>
@@ -29,12 +28,11 @@ profile keepassx /usr/bin/keepassx {
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   
-  
   /dev/tty[0-9]* w,
   @{PROC}/@{pid}/cmdline r,
   @{PROC}/@{pid}/status r,
   @{PROC}/@{pid}/task/ r,
-
+  
   /usr/bin/ r,
   /usr/bin/keepassx r,
   /usr/share/keepassx/ r,
@@ -42,5 +40,5 @@ profile keepassx /usr/bin/keepassx {
   
   owner @{HOME}/.config/keepassx/ rw,
   owner @{HOME}/.config/keepassx/** rwk,
-    
+  
 }

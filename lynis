@@ -85,13 +85,17 @@ profile lynis /usr/sbin/lynis {
     #include <abstractions/base>
     #include <abstractions/user-tmp>
     
+    capability dac_read_search,
+    capability dac_override,
+    
     /dev/tty rw,
     
     /bin/bash ixr,
     /bin/grep ix,
-    /bin/env Px,
+    /bin/env ix,
     /bin/rm ix,
     /bin/cat ix,
+    /bin/date ix,
     
   }
   

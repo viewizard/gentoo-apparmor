@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*.{jpg,jpeg,tif,tiff,png,pnm,ps,pdf,rgba,txt}"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile xsane /usr/bin/xsane flags=(complain) {
   #include <abstractions/base>
@@ -25,18 +24,17 @@ profile xsane /usr/bin/xsane flags=(complain) {
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
-
-
-  /sys/bus/ r,
+  
   /dev/bus/usb/ r,
+  /sys/bus/ r,
   /sys/bus/usb/devices/ r,
   /sys/bus/scsi/devices/ r,
   /sys/class/ r,
   /sys/devices/pci**/usb*/** r,
   /sys/devices/pci**/ata*/** r,
-
+  
   /usr/bin/xsane r,
-
+  
   /etc/udev/udev.conf r,
   /etc/sane.d/ r,
   /etc/sane.d/** r,

@@ -198,8 +198,7 @@ profile gvfsd-trash /usr/libexec/gvfsd-trash flags=(complain) {
   
   # we must be able create and read all files
   # DAC will care about access permissions
-  @{HOME}/** rw,
-  /mnt/** rw,
+  owner @{HOME}/** rw,
   /media/** rw,
   
   /usr/share/mime/mime.cache r,

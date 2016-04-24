@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="{[^.]*,.~*}"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   #include <abstractions/base>
@@ -29,22 +28,21 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   #include <abstractions/xdg-open>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
-
-
+  
   /dev/tty rw,
   /dev/shm/* rwl,
   owner @{PROC}/@{pid}/auxv r,
   
   /bin/dirname ix,
   /bin/bash Cxr -> shell,
+  /usr/bin/et r,
+  /usr/bin/wpp r,
+  /usr/bin/wps r,
   /opt/kingsoft/wps-office/office6/et ix,
   /opt/kingsoft/wps-office/office6/wpp ix,
   /opt/kingsoft/wps-office/office6/wps ix,
   
   /etc/os-release r,
-  /usr/bin/et r,
-  /usr/bin/wpp r,
-  /usr/bin/wps r,
   /opt/kingsoft/wps-office/office6/ r,
   /opt/kingsoft/wps-office/office6/** rmk,
   
@@ -56,12 +54,12 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   owner @{HOME}/.kingsoft/office6/** rwk,
   owner @{HOME}/.local/share/data/Kingsoft/ rw,
   owner @{HOME}/.local/share/data/Kingsoft/** rwk,
-
+  
   # Noisy
   deny /opt/kingsoft/wps-office/office6/startup/ w,
   deny /etc/xdg/kingsoft.conf w,
-
-
+  
+  
   profile shell flags=(complain) {
     #include <abstractions/base>
     

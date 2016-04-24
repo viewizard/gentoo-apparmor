@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*.{po,po.*,pot,mo}"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile poedit /usr/bin/poedit flags=(complain) {
   #include <abstractions/base>
@@ -25,10 +24,9 @@ profile poedit /usr/bin/poedit flags=(complain) {
   #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/program-work-with-disk-rwk>
-
-
+  
   /dev/tty rw,
-
+  
   /usr/bin/poedit r,
   /bin/bash ix,
   /bin/uname ix,

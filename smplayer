@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*.{mpeg,vob,ogg,asf,wav,wmv,wma,mov,mp3,mp4,avi,mkv,mka,webm,vivo,ts,ogm,aac,h264,3p2,3gp,3ga,flv,ass,smi,srt,sub,txt,mdv,ssa,sup,tt,smil,gif}"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile smplayer /usr/bin/smplayer {
   #include <abstractions/base>
@@ -28,10 +27,9 @@ profile smplayer /usr/bin/smplayer {
   #include <abstractions/X>
   #include <abstractions/program-work-with-disk-rk>
   #include <abstractions/nameservice>
-
-
+  
   /dev/ r,
-
+  
   /usr/bin/smplayer r,
   /usr/bin/mplayer ix,
   /usr/bin/aplay ix,
@@ -43,14 +41,14 @@ profile smplayer /usr/bin/smplayer {
   /etc/terminfo/l/linux r,
   /usr/share/terminfo/u/unknown r,
   owner /tmp/.* m,
-
+  
   owner @{HOME}/.config/smplayer/ rw,
   owner @{HOME}/.config/smplayer/** rwk,
   owner @{HOME}/mplayer.log rw,
   owner @{HOME}/.mplayer/ rw,
   owner @{HOME}/.mplayer/config rw,
   
-   # Noisy
+  # Noisy
   deny @{HOMEDIRS}/* w,
   deny @{HOMEDIRS}/*/ w,
   

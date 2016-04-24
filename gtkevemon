@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*.{emp,xml}"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile gtkevemon /usr/bin/gtkevemon {
   #include <abstractions/base>
@@ -26,12 +25,12 @@ profile gtkevemon /usr/bin/gtkevemon {
   #include <abstractions/dconf>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
-
-
+  
   /usr/bin/gtkevemon rm,
+  
   /etc/ssl/openssl.cnf r,
   
   owner @{HOME}/.gtkevemon/ rw,
   owner @{HOME}/.gtkevemon/** rwk,
-    
+  
 }

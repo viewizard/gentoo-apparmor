@@ -18,6 +18,7 @@ profile thunar-volman /usr/bin/thunar-volman flags=(complain) {
   #include <abstractions/dbus-session>
   #include <abstractions/nameservice>
   
+  /dev/tty[0-9]* w,
   /sys/devices/pci**/usb*/**/uevent r,
   /sys/devices/pci**/usb*/**/block/sd[a-z]/uevent r,
   /sys/devices/virtual/block/dm-*/uevent r,

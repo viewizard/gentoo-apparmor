@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile openshot /usr/lib{,32,64}/python-exec/python2.[0-9]*/openshot flags=(complain) {
   #include <abstractions/base>
@@ -27,14 +26,13 @@ profile openshot /usr/lib{,32,64}/python-exec/python2.[0-9]*/openshot flags=(com
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
   
-  
   /dev/tty rw,
   /dev/tty[0-9]* rw,
-  /etc/machine-id r,
   
   /bin/bash ix,
   /sbin/ldconfig ix,
   
+  /etc/machine-id r,
   /usr/lib64/ r,
   /usr/lib64/frei0r-1/*.so m,
   /usr/share/mlt/** r,

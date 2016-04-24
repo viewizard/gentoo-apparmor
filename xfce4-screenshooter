@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*.png"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile xfce4-screenshooter /usr/bin/xfce4-screenshooter {
   #include <abstractions/base>
@@ -26,10 +25,9 @@ profile xfce4-screenshooter /usr/bin/xfce4-screenshooter {
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk>
   
-
   /usr/bin/xfce4-screenshooter r,
   /usr/bin/exo-open Px,
-
+  
   owner @{HOME}/.config/xfce4/xfce4-screenshooter* rw,
   owner @{HOME}/.config/xfce4/help.rc r,
   

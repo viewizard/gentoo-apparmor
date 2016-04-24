@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*.{ogg,mp3,mp4,wma,s3m,stm,wav,m3u}"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile audacious /usr/bin/audacious {
   #include <abstractions/base>
@@ -31,12 +30,13 @@ profile audacious /usr/bin/audacious {
   /dev/tty[0-9]* w,
   
   /usr/bin/audacious r,
+  
   /usr/lib64/audacious/ r,
   /usr/lib64/audacious/*/ r,
   /usr/lib64/audacious/*/* mr,
   /usr/share/audacious/ r,
   /usr/share/audacious/** r,
-
+  
   owner @{HOME}/.config/audacious/ rw,
   owner @{HOME}/.config/audacious/** rwk,
   

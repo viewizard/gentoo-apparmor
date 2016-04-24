@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*.{mpeg,vob,ogg,asf,wav,wmv,wma,mov,mp3,mp4,avi,mkv,mka,webm,vivo,ts,ogm,aac,h264,3p2,3gp,3ga,flv,ass,smi,srt,sub,txt,mdv,ssa,sup,tt,smil,gif}"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile mpv /usr/bin/mpv {
   #include <abstractions/base>
@@ -25,13 +24,12 @@ profile mpv /usr/bin/mpv {
   #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/program-work-with-disk-rk>
-
-
+  
   /usr/bin/mpv r, 
   /usr/bin/xdg-screensaver Pxr,
-
-  /tmp/.* m,
-
+  
+  owner /tmp/.* m,
+  
   # Noisy
   deny @{HOMEDIRS}/* w,
   deny @{HOMEDIRS}/*/ w,

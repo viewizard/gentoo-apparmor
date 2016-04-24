@@ -19,15 +19,25 @@ profile xfce4-session /usr/bin/xfce4-session flags=(complain) {
   #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
   #include <abstractions/dbus-session>
-  #include <abstractions/executable-binary-strict>
+  #include <abstractions/executable-binary-helper>
+  #include <local/xfce4-session-custom-exec>
   
   
   /dev/tty[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
-
-  /usr/bin/xfce4-session rm,
+  
+  /usr/bin/xfce4-session rmPx,
   /bin/bash Cx -> shell,
-
+  /bin/env Cx -> env,
+  /usr/bin/dbus-daemon Px,
+  /usr/bin/ssh-agent Px,
+  /usr/bin/gpg-agent Px,
+  /usr/bin/xfsettingsd Px,
+  /usr/bin/xdg-user-dirs-gtk-update Px,
+  /usr/bin/start-pulseaudio-x11 Px,
+  /usr/libexec/polkit-gnome-authentication-agent-1 Px,
+  /usr/bin/mate-screensaver{,.sh} Px,
+  
   owner @{HOME}/.ICEauthority* w,
   
   /etc/xdg/ r,
@@ -57,6 +67,21 @@ profile xfce4-session /usr/bin/xfce4-session flags=(complain) {
     
   }
   
+  profile env flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty[0-9]* w,
+    /dev/pts/[0-9]* rw,
+    
+    /bin/env r,
+    /usr/bin/xfwm4 Px,
+    /usr/bin/xfsettingsd Px,
+    /usr/bin/xfce4-panel Px,
+    /usr/bin/thunar Px,
+    /usr/bin/xfdesktop Px,
+    
+  }
+  
 }
 
 
@@ -65,7 +90,7 @@ profile xfce4-session-logout /usr/bin/xfce4-session-logout flags=(complain) {
   #include <abstractions/freedesktop.org>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-
+  
   /dev/pts/[0-9]* rw,
   /usr/bin/xfce4-session-logout r,
   
@@ -80,12 +105,12 @@ profile xfce4-session-settings /usr/bin/xfce4-session-settings flags=(complain) 
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/nameservice>
-
+  
   /usr/bin/xfce4-session-settings r,
   /etc/xdg/ r,
   /etc/xdg/autostart/ r,
   /etc/xdg/autostart/* r,
-
+  
   owner @{HOME}/.config/ r,
   owner @{HOME}/.config/autostart/ r,
   owner @{HOME}/.config/autostart/* rw,

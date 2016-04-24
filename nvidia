@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/,/etc/X11/}"
 
 profile nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(complain) {
   #include <abstractions/base>
@@ -25,8 +24,7 @@ profile nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(complain) {
   #include <abstractions/user-tmp>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
-
-
+  
   /{usr,opt}/bin/nvidia-settings r,
   /bin/bash Cx -> shell,
   
@@ -71,18 +69,19 @@ profile nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(complain) {
 profile nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nvidia>
-
+  
 }
 
 
 profile nvidia-smi /opt/bin/nvidia-smi flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nvidia>
-
+  
   capability sys_admin,
-
+  
+  @{PROC}/driver/nvidia/params r,
+  
   /dev/nvidiactl rw,
   /dev/nvidia[0-9]* rw,
-  @{PROC}/driver/nvidia/params r,
-
+  
 }

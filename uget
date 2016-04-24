@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="**"
 @{PROG_FILE}="*"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile uget-gtk /usr/bin/uget-gtk {
   #include <abstractions/base>
@@ -26,10 +25,9 @@ profile uget-gtk /usr/bin/uget-gtk {
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
-
-
+  
   owner @{PROC}/@{pid}/fd/ r,
-
+  
   /usr/bin/uget-gtk r,
   /etc/ssl/openssl.cnf r,
   
@@ -45,7 +43,7 @@ profile uget-cmd /usr/bin/uget-cmd {
   #include <abstractions/user-tmp>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
-
+  
   /dev/pts/[0-9]* rw,
   
   /etc/ssl/openssl.cnf r,

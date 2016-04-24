@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="{[^.]*.pdf,[^.]*.xps,qt_temp.*}"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile masterpdfeditor /opt/master-pdf-editor-3/masterpdfeditor3 {
   #include <abstractions/base>
@@ -30,7 +29,6 @@ profile masterpdfeditor /opt/master-pdf-editor-3/masterpdfeditor3 {
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
   
-
   /opt/master-pdf-editor-3/ r,
   /opt/master-pdf-editor-3/** r,
   owner "@{HOME}/.config/Code Industry/" rw,

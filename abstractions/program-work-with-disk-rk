@@ -12,14 +12,17 @@
 # Don't forget, provide configuration in profile, like:
 # @{PROG_DIR}="[^.]**"
 # @{PROG_FILE}="{[^.]*.pdf,[^.]*.xps,qt_temp.*}"
-# @{PROG_FOLDERS}="{@{HOME},/mnt/,/media/}"
 
 / r,
-@{HOMEDIRS} r,
-@{PROG_FOLDERS} r,
-@{PROG_FOLDERS}@{PROG_DIR}/ r,
-@{PROG_FOLDERS}@{PROG_FILE} rk,
-@{PROG_FOLDERS}@{PROG_DIR}/@{PROG_FILE} rk,
+@{HOMEDIRS}/ r,
+owner @{HOME}/{,.gvfs/} r,
+owner @{HOME}/{,.gvfs/}@{PROG_DIR}/ r,
+owner @{HOME}/{,.gvfs/}@{PROG_FILE} rk,
+owner @{HOME}/{,.gvfs/}@{PROG_DIR}/@{PROG_FILE} rk,
+/media/ r,
+/media/@{PROG_DIR}/ r,
+/media/@{PROG_FILE} rk,
+/media/@{PROG_DIR}/@{PROG_FILE} rk,
 
 # program-related places for xdg-open:
 owner @{HOME}/.claws-mail/mimetmp/ r,

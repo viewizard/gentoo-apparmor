@@ -14,7 +14,6 @@
 @{PROG_DIR}="**"
 # we could download folders with files, not just files...
 @{PROG_FILE}="**"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile filezilla /usr/bin/filezilla {
   #include <abstractions/base>
@@ -27,16 +26,15 @@ profile filezilla /usr/bin/filezilla {
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
-
-
+  
   /bin/bash Cx -> shell,
   /usr/bin/fzsftp ix,
-
+  
   /usr/bin/filezilla r,
+  
   /usr/share/filezilla/ r,
   /usr/share/filezilla/** r,
   
-  @{HOMEDIRS}/ r,
   owner @{HOME}/.filezilla/ rw,
   owner @{HOME}/.filezilla/** rw,
   
@@ -58,7 +56,6 @@ profile filezilla /usr/bin/filezilla {
     /usr/bin/lsb_release ixr,
     /usr/bin/getopt ix,
     /usr/bin/find ix,
-    
     /bin/ps Px,
     
     /etc/lsb-release r,

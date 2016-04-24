@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   #include <abstractions/base>
@@ -29,13 +28,12 @@ profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
   
-
   owner @{PROC}/@{pid}/fd/ rw,
-
+  
   /usr/bin/gimp-* rm,
   /usr/bin/gimp-console-* r,
   /usr/lib64/gimp/[0-9].[0-9]/plug-ins/* ix,
-
+  
   /etc/gimp/ r,
   /etc/gimp/** r,
   /usr/lib64/gimp/ r,

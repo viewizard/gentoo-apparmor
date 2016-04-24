@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="{qt_temp.*,[^.]*.mkv,[^.]*.avi,[^.]*.gif}"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile vokoscreen /usr/bin/vokoscreen flags=(complain) {
   #include <abstractions/base>
@@ -29,10 +28,9 @@ profile vokoscreen /usr/bin/vokoscreen flags=(complain) {
   #include <abstractions/executable-binary-helper>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
-
-
+  
   /dev/ r,
-
+  
   /usr/bin/vokoscreen r,
   /usr/bin/ffmpeg ixr,
   /usr/bin/pactl ix,

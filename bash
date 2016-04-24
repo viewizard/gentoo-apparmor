@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="**"
 @{PROG_FILE}="**"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 
 profile bash_default /bin/{bash,rbash,sh} flags=(complain) {
@@ -24,6 +23,7 @@ profile bash_default /bin/{bash,rbash,sh} flags=(complain) {
   
   /bin/bash r,
   /bin/sed ixr,
+  /bin/uname ixr,
   /sbin/mdadm Pxr,
   /usr/sbin/logcheck Puxr,
   
@@ -92,7 +92,7 @@ profile bash_root {
   /bin/tr ixr,
   /bin/grep ixr,
   /bin/ps Pxr,
-  /bin/env Pxr,
+  /bin/env ixr,
   /bin/sed ixr,
   /bin/gzip ixr,
   /bin/mount Pxr,
@@ -100,6 +100,8 @@ profile bash_root {
   /bin/sleep ixr,
   /bin/passwd Pxr,
   /bin/uname ixr,
+  /bin/cp ixr,
+  /bin/mv ixr,
   /sbin/mdadm Pxr,
   /sbin/shutdown Pxr,
   /sbin/{halt,poweroff,reboot} Pxr,
@@ -130,6 +132,13 @@ profile bash_root {
   /usr/local/bin/** Pxr,
   /usr/local/sbin/** Pxr,
   /etc/init.d/* Px,
+  
+  # FIX ME!
+  /usr/bin/mc Puxr,
+  /bin/nano Puxr,
+  /usr/sbin/migrate-pax Puxr,
+  /usr/sbin/paxctl-ng Puxr,
+  /sbin/paxctl Puxr,
   
   /etc/profile.env r,
   /etc/terminfo/l/linux r,

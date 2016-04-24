@@ -13,12 +13,11 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="{[^.]*,.~*}"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile libreoffice /usr/{bin,lib64/libreoffice/program}/soffice {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-
+  
   /dev/tty rw,
   
   /bin/dirname ix,
@@ -37,10 +36,10 @@ profile libreoffice.oosplash /usr/lib64/libreoffice/program/oosplash {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
-  owner @{HOME}/.Xauthority r,
-  
   /usr/lib64/libreoffice/program/javaldx Px,
   /usr/lib64/libreoffice/program/soffice.bin Px,
+  
+  owner @{HOME}/.Xauthority r,
   
 }
 
@@ -72,7 +71,6 @@ profile libreoffice.bin /usr/lib64/libreoffice/program/soffice.bin {
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
   
-  
   /dev/tty[0-9]* w,
   /dev/pts/[0-9]* rw,
   /sys/devices/system/cpu/ r,
@@ -90,8 +88,7 @@ profile libreoffice.bin /usr/lib64/libreoffice/program/soffice.bin {
   owner @{HOME}/.config/libreoffice/ rw,
   owner @{HOME}/.config/libreoffice/** rwk,
   owner @{HOME}/.languagetool-ooo.cfg rw,
-
-
+  
   # Noisy
   deny @{HOMEDIRS}/* w,
   deny @{HOMEDIRS}/*/ w,

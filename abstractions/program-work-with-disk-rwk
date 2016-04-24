@@ -12,16 +12,19 @@
 # Don't forget, provide configuration in profile, like:
 # @{PROG_DIR}="[^.]**"
 # @{PROG_FILE}="{[^.]*.pdf,[^.]*.xps,qt_temp.*}"
-# @{PROG_FOLDERS}="{@{HOME},/mnt/,/media/}"
 # Example for folder downloads (torrent, etc):
 # @{PROG_FILE}="**"
 
 / r,
-@{HOMEDIRS} r,
-@{PROG_FOLDERS} r,
-@{PROG_FOLDERS}@{PROG_DIR}/ r,
-@{PROG_FOLDERS}@{PROG_FILE} rwk,
-@{PROG_FOLDERS}@{PROG_DIR}/@{PROG_FILE} rwk,
+@{HOMEDIRS}/ r,
+owner @{HOME}/{,.gvfs/} r,
+owner @{HOME}/{,.gvfs/}@{PROG_DIR}/ r,
+owner @{HOME}/{,.gvfs/}@{PROG_FILE} rwk,
+owner @{HOME}/{,.gvfs/}@{PROG_DIR}/@{PROG_FILE} rwk,
+/media/ r,
+/media/@{PROG_DIR}/ r,
+/media/@{PROG_FILE} rwk,
+/media/@{PROG_DIR}/@{PROG_FILE} rwk,
 
 # program-related places for xdg-open:
 owner @{HOME}/.claws-mail/mimetmp/ r,

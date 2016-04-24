@@ -13,7 +13,6 @@
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*.{pdf,ps,eps,djvu,djv}"
-@{PROG_FOLDERS}="{@{HOME},/mnt/,/media/,@{HOME}/.gvfs/}"
 
 profile qpdfview /usr/bin/qpdfview {
   #include <abstractions/base>
@@ -29,8 +28,8 @@ profile qpdfview /usr/bin/qpdfview {
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
   
-
   /usr/bin/qpdfview mr,
+  
   /usr/share/qpdfview/* r,
   /usr/share/misc/magic.mgc r,
   

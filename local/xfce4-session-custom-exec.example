@@ -8,13 +8,6 @@
 #
 # ------------------------------------------------------------------
 
-#include <tunables/global>
-profile coreutils.df /bin/df flags=(complain) {
-  #include <abstractions/base>
-  
-  /dev/pts/[0-9]* w,
-  @{PROC}/@{pid}/mounts r,
-  
-  /bin/df r,
-  
-}
+
+/usr/local/bin/conky_start Px,
+/usr/local/bin/cairo_clock_start Px,
