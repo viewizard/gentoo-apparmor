@@ -19,13 +19,13 @@ profile linphone /usr/bin/linphone{,c,csh} {
   #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
   #include <abstractions/audio>
-
-
-  /etc/machine-id r,
-  /etc/udev/udev.conf r,
+  
+  /dev/tty[0-9]* w,
   
   /usr/bin/linphone r,
-
+  
+  /etc/machine-id r,
+  /etc/udev/udev.conf r,
   /usr/share/linphone/ r,
   /usr/share/linphone/** r,
   /usr/share/sounds/linphone/ r,

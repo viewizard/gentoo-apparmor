@@ -16,7 +16,7 @@ profile xfdesktop /usr/bin/xfdesktop flags=(complain) {
   #include <abstractions/X>
   #include <abstractions/gtk>
   #include <abstractions/nameservice>
-  #include <abstractions/executable-binary-strict>
+  #include <abstractions/executable-binary-programs>
   
   /dev/tty[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
@@ -24,6 +24,7 @@ profile xfdesktop /usr/bin/xfdesktop flags=(complain) {
   
   /usr/bin/xfdesktop r,
   /bin/bash Cx -> shell,
+  /usr/lib64/xfce4/exo-1/exo-helper-1 Px,
   
   /usr/lib64/thunarx-2/*.so m,
   

@@ -30,6 +30,7 @@ profile gparted /usr/{bin,sbin}/{gpartedbin,gparted-pkexec} flags=(complain) {
   
   /dev/ r,
   /dev/tty rw,
+  /dev/tty[0-9]* w,
   /dev/sd[a-z] rw,
   /dev/sd[a-z]* rwk,
   /dev/zd* r,
@@ -48,6 +49,7 @@ profile gparted /usr/{bin,sbin}/{gpartedbin,gparted-pkexec} flags=(complain) {
   @{PROC}/@{pid}/stat r,
   @{PROC}/@{pid}/status r,
   @{PROC}/sys/kernel/pid_max r,
+  @{PROC}/@{pid}/attr/current w,
   /run/blkid/ rw,
   /run/blkid/blkid.tab* rwl,
   /run/mount/utab* rwk,

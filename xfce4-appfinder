@@ -16,17 +16,17 @@ profile xfce4-appfinder /usr/bin/{xfrun4,xfce4-appfinder} flags=(complain) {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/gtk>
-  #include <abstractions/executable-binary-strict>
-
-
+  #include <abstractions/executable-binary-programs>
+  
   @{PROC}/@{pid}/fd/ r,
+  
   /usr/bin/xfce4-appfinder r,
-  /usr/lib64/pango/*/modules/* m,
   
   /etc/xdg/menus/ r,
   /etc/xdg/menus/** r,
   /usr/share/desktop-directories/ r,
   /usr/share/desktop-directories/* r,
+  /usr/lib64/pango/*/modules/* m,
   /opt/**.png r,
   
   owner @{HOME}/.local/share/mime/mime.cache r,

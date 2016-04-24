@@ -27,7 +27,7 @@ profile thunar /usr/bin/{Thunar,thunar} flags=(complain) {
   #include <abstractions/X>
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk>
-  #include <abstractions/executable-binary-strict>
+  #include <abstractions/executable-binary-programs>
   #include <local/thunar-custom-exec>
   
   capability dac_override,
@@ -47,6 +47,9 @@ profile thunar /usr/bin/{Thunar,thunar} flags=(complain) {
   
   /usr/bin/thunar mr,
   /bin/bash Cxr -> shell,
+  /bin/env Cx -> env,
+  /usr/libexec/thunar-archive-plugin/xarchiver.tap Px,
+  /usr/bin/dbus-daemon Px,
   
   /etc/udev/udev.conf r,
   /usr/lib64/thunarx-2/* m,
@@ -73,6 +76,17 @@ profile thunar /usr/bin/{Thunar,thunar} flags=(complain) {
     
   }
   
+  profile env flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty[0-9]* w,
+    /dev/pts/[0-9]* rw,
+    
+    /bin/env r,
+    /usr/bin/wine Px,
+    
+  }
+  
 }
 
 
@@ -88,7 +102,7 @@ profile thunar_root flags=(complain) {
   #include <abstractions/X>
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk>
-  #include <abstractions/executable-binary-strict_root>
+  #include <abstractions/executable-binary-programs_root>
   #include <local/thunar_root-custom-exec>
   #include <abstractions/user-systemwide-files>
   
@@ -109,6 +123,9 @@ profile thunar_root flags=(complain) {
 
   /usr/bin/thunar mr,
   /bin/bash Cxr -> shell,
+  /bin/env Cx -> env,
+  /usr/libexec/thunar-archive-plugin/xarchiver.tap Px -> xarchiver_tap_root,
+  /usr/bin/dbus-daemon Px,
   
   /etc/udev/udev.conf r,
   /usr/lib64/thunarx-2/* m,
@@ -132,6 +149,17 @@ profile thunar_root flags=(complain) {
     /dev/tty rw,
     
     /bin/bash r,
+    
+  }
+  
+  profile env flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty[0-9]* w,
+    /dev/pts/[0-9]* rw,
+    
+    /bin/env r,
+    /usr/bin/wine Px,
     
   }
   

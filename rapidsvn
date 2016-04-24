@@ -26,12 +26,15 @@ profile rapidsvn /usr/bin/rapidsvn flags=(complain) {
   #include <abstractions/nameservice>
   
   /dev/tty rw,
+  /dev/tty[0-9]* w,
   
   /usr/bin/rapidsvn r,
   /usr/bin/meld Px,
   /bin/bash ix,
   /bin/uname ix,
   
-  owner @{HOME}/.RapidSVN rw,
+  owner @{HOME}/.subversion/ rw,
+  owner @{HOME}/.subversion/** rw,
+  owner @{HOME}/.RapidSVN* rw,
   
 }

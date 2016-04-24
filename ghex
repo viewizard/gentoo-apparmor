@@ -21,11 +21,14 @@ profile ghex /usr/bin/ghex {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dconf>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/executable-binary-helper>
   #include <abstractions/cups-client>
   #include <abstractions/nameservice>
   #include <abstractions/dbus-session>
+  
+  /dev/tty[0-9]* w,
   
   /usr/bin/ghex r,
   
@@ -39,12 +42,15 @@ profile ghex_root {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dconf>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/executable-binary-helper>
   #include <abstractions/cups-client>
   #include <abstractions/nameservice>
   #include <abstractions/dbus-session>
   #include <abstractions/user-systemwide-files>
+  
+  /dev/tty[0-9]* w,
   
   /usr/bin/ghex r,
   

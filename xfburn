@@ -25,17 +25,21 @@ profile xfburn /usr/bin/xfburn flags=(complain) {
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
   
+  /dev/tty[0-9]* w,
   /dev/sr[0-9] rwk,
   /sys/bus/ r,
   /sys/class/ r,
   /sys/class/block/ r,
   /sys/devices/pci**/ata*/**/block/sd[a-z]/uevent r,
-  /sys/devices/pci**/ata*/**/block/sd[a-z]/sd[a-z]*/uevent r,
+  /sys/devices/pci**/ata*/**/block/sd[a-z]/sd[a-z][0-9]*/uevent r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/uevent r,
+  /sys/devices/pci**/usb*/**/block/sd[a-z]/sd[a-z][0-9]*/uevent r,
   /sys/devices/pci**/usb*/**/block/sr*/uevent r,
   /sys/devices/pci**/usb*/**/vendor r,
   /sys/devices/pci**/usb*/**/model r,
   /sys/devices/virtual/block/zd*/uevent r,
   /sys/devices/virtual/block/zd*/zd*/uevent r,
+  /sys/devices/virtual/block/dm-[0-9]*/uevent r,
   /sys/devices/virtual/block/loop*/uevent r,
   owner @{PROC}/@{pid}/fd/ r,
   @{PROC}/sys/dev/cdrom/info r,

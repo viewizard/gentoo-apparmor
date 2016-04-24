@@ -27,6 +27,8 @@ profile filezilla /usr/bin/filezilla {
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   
+  /dev/tty[0-9]* w,
+  
   /bin/bash Cx -> shell,
   /usr/bin/fzsftp ix,
   
@@ -61,6 +63,8 @@ profile filezilla /usr/bin/filezilla {
     /etc/lsb-release r,
     /etc/os-release r,
     
+    # Noisy
+    deny /etc/ r,
   }
   
 }

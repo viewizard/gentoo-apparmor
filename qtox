@@ -22,12 +22,14 @@ profile qtox /usr/bin/qtox flags=(complain) {
   #include <abstractions/user-upload>
   #include <abstractions/nameservice>
   #include <abstractions/audio>
-
+  
   /dev/ r,
-  /etc/machine-id r,
+  /dev/tty[0-9]* w,
   
   /usr/bin/qtox r,
-
+  
+  /etc/machine-id r,
+  
   owner @{HOME}/.config/tox/ rw,
   owner @{HOME}/.config/tox/** rwk,
   

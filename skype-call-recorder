@@ -28,6 +28,8 @@ profile skype-call-recorder /usr/bin/skype-call-recorder {
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   
+  /dev/tty[0-9]* w,
+  
   /usr/bin/skype-call-recorder r,
   
   owner @{HOME}/.skypecallrecorder.lock rwk,

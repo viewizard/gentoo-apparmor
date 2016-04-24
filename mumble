@@ -20,9 +20,9 @@ profile mumble /usr/bin/mumble {
   #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
   #include <abstractions/audio>
-
-
+  
   /dev/tty rw,
+  /dev/tty[0-9]* w,
   /dev/shm/MumbleLink.* rw,
   
   /etc/machine-id r,
@@ -35,10 +35,9 @@ profile mumble /usr/bin/mumble {
   /usr/bin/find ix,
   /bin/head ix,
   /bin/sed ix,
-
+  
   owner @{HOME}/.local/share/data/Mumble/ rw,
   owner @{HOME}/.local/share/data/Mumble/** rwk,
-
   owner @{HOME}/.config/Mumble/ rw,
   owner @{HOME}/.config/Mumble/** rwk,
   owner @{HOME}/.MumbleSocket rw,
