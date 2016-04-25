@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile mate-screensaver /usr/bin/mate-screensaver flags=(complain) {
+profile mate-screensaver /usr/bin/mate-screensaver {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -37,7 +37,7 @@ profile mate-screensaver /usr/bin/mate-screensaver flags=(complain) {
   
 }
 
-profile mate-screensaver.sh /usr/bin/mate-screensaver.sh flags=(complain) {
+profile mate-screensaver.sh /usr/bin/mate-screensaver.sh {
   #include <abstractions/base>
   
   /dev/tty rw,
@@ -56,7 +56,7 @@ profile mate-screensaver.sh /usr/bin/mate-screensaver.sh flags=(complain) {
   
 }
 
-profile mate-screensaver-preferences /usr/bin/mate-screensaver-preferences flags=(complain) {
+profile mate-screensaver-preferences /usr/bin/mate-screensaver-preferences {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -82,7 +82,7 @@ profile mate-screensaver-preferences /usr/bin/mate-screensaver-preferences flags
   
 }
 
-profile mate-screensaver.popsquares /usr/libexec/mate-screensaver/popsquares flags=(complain) {
+profile mate-screensaver.popsquares /usr/libexec/mate-screensaver/popsquares {
   #include <abstractions/base>
   #include <abstractions/X>
   #include <abstractions/gtk>
@@ -91,7 +91,7 @@ profile mate-screensaver.popsquares /usr/libexec/mate-screensaver/popsquares fla
   
 }
 
-profile mate-screensaver.floaters /usr/libexec/mate-screensaver/floaters flags=(complain) {
+profile mate-screensaver.floaters /usr/libexec/mate-screensaver/floaters {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/X>
@@ -104,7 +104,7 @@ profile mate-screensaver.floaters /usr/libexec/mate-screensaver/floaters flags=(
   
 }
 
-profile mate-screensaver.slideshow /usr/libexec/mate-screensaver/slideshow flags=(complain) {
+profile mate-screensaver.slideshow /usr/libexec/mate-screensaver/slideshow {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/X>
@@ -119,7 +119,7 @@ profile mate-screensaver.slideshow /usr/libexec/mate-screensaver/slideshow flags
   
 }
 
-profile mate-screensaver-gl-helper /usr/libexec/mate-screensaver-gl-helper flags=(complain) {
+profile mate-screensaver-gl-helper /usr/libexec/mate-screensaver-gl-helper {
   #include <abstractions/base>
   #include <abstractions/X>
   #include <abstractions/nvidia>
@@ -128,7 +128,7 @@ profile mate-screensaver-gl-helper /usr/libexec/mate-screensaver-gl-helper flags
   
 }
 
-profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog flags=(complain) {
+profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -150,7 +150,7 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog flags=(comp
   owner @{HOME}/.face r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     
     /dev/tty rw,
@@ -163,7 +163,7 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog flags=(comp
   
 }
 
-profile mate-screensaver-command /usr/bin/mate-screensaver-command flags=(complain) {
+profile mate-screensaver-command /usr/bin/mate-screensaver-command {
   #include <abstractions/base>
   
   /dev/pts/[0-9]* rw,

@@ -46,7 +46,7 @@ profile zfs.zed /sbin/zed flags=(complain) {
 }
 
 
-profile zfs.zed.d /usr/libexec/zfs/zed.d/*.sh flags=(complain) {
+profile zfs.zed.d /usr/libexec/zfs/zed.d/*.sh {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -62,7 +62,7 @@ profile zfs.zed.d /usr/libexec/zfs/zed.d/*.sh flags=(complain) {
 }
 
 
-profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed flags=(complain) {
+profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -81,7 +81,7 @@ profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed flags=(complain) {
 }
 
 
-profile zfs.zfs-import.init.d /etc/init.d/zfs-import flags=(complain) {
+profile zfs.zfs-import.init.d /etc/init.d/zfs-import {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>

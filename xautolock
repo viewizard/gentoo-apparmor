@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile xautolock /usr/bin/xautolock flags=(complain) {
+profile xautolock /usr/bin/xautolock {
   #include <abstractions/base>
   #include <abstractions/X>
   
@@ -19,7 +19,7 @@ profile xautolock /usr/bin/xautolock flags=(complain) {
   /bin/bash Cx -> shell,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     
     /dev/tty rw,

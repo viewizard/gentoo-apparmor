@@ -25,6 +25,7 @@ profile openrc /sbin/openrc flags=(complain) {
   @{PROC}/@{pid}/cmdline r,
   @{PROC}/@{pid}/environ r,
   @{PROC}/@{pid}/stat r,
+  @{PROC}/@{pid}/mounts r,
   
   /sbin/openrc r,
   /bin/bash Cx -> shell,
@@ -33,6 +34,7 @@ profile openrc /sbin/openrc flags=(complain) {
   
   /etc/rc.conf r,
   /etc/profile.env r,
+  /etc/fstab r,
   /etc/init.d/ r,
   /etc/conf.d/ r,
   /etc/runlevels/ r,
@@ -57,7 +59,35 @@ profile openrc /sbin/openrc flags=(complain) {
 }
 
 
-profile openrc.netmount.init.d /etc/init.d/netmount flags=(complain) {
+profile openrc.gendepends.sh /lib64/rc/sh/gendepends.sh {
+  #include <abstractions/base>
+  
+  /dev/tty rw,
+  
+  /bin/bash r,
+  /lib64/rc/sh/gendepends.sh r,
+  /bin/sed ixr,
+  /bin/grep ixr,
+  /sbin/openrc Px,
+  /usr/bin/gawk ixr,
+  
+  /etc/rc.conf r,
+  /etc/fstab r,
+  /etc/exports r,
+  /etc/ssh/sshd_config r,
+  /etc/zfs/zfs-functions r,
+  /etc/init.d/ r,
+  /etc/init.d/* r,
+  /etc/conf.d/ r,
+  /etc/conf.d/* r,
+  /etc/exports.d/ r,
+  /etc/exports.d/* r,
+  /usr/libexec/rc.apparmor.functions r,
+  
+}
+
+
+profile openrc.netmount.init.d /etc/init.d/netmount {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -74,7 +104,7 @@ profile openrc.netmount.init.d /etc/init.d/netmount flags=(complain) {
 }
 
 
-profile openrc.consolefont.init.d /etc/init.d/consolefont flags=(complain) {
+profile openrc.consolefont.init.d /etc/init.d/consolefont {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -93,7 +123,7 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont flags=(complain) {
   /lib64/rc/console/font rw,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     
     capability sys_tty_config,
@@ -103,7 +133,7 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont flags=(complain) {
     
     /bin/bash r,
     /bin/gzip ix,
-    
+    /lib64/rc/sh/gendepends.sh Px,
     /usr/share/consolefonts/ r,
     /usr/share/consolefonts/** r,
     
@@ -112,7 +142,7 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont flags=(complain) {
 }
 
 
-profile openrc.local.init.d /etc/init.d/local flags=(complain) {
+profile openrc.local.init.d /etc/init.d/local {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -125,7 +155,7 @@ profile openrc.local.init.d /etc/init.d/local flags=(complain) {
 }
 
 
-profile openrc.hwclock.init.d /etc/init.d/hwclock flags=(complain) {
+profile openrc.hwclock.init.d /etc/init.d/hwclock {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -143,21 +173,33 @@ profile openrc.hwclock.init.d /etc/init.d/hwclock flags=(complain) {
 }
 
 
-profile openrc.swap.init.d /etc/init.d/swap flags=(complain) {
+profile openrc.swap.init.d /etc/init.d/swap {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  /bin/bash Cx -> shell,
   /bin/umount Px,
   /sbin/swapon Px,
   /sbin/swapoff Px,
   
   /etc/init.d/swap r,
   
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
+  
 }
 
 
-profile openrc.modules.init.d /etc/init.d/modules flags=(complain) {
+profile openrc.modules.init.d /etc/init.d/modules {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -171,7 +213,7 @@ profile openrc.modules.init.d /etc/init.d/modules flags=(complain) {
 }
 
 
-profile openrc.fsck.init.d /etc/init.d/fsck flags=(complain) {
+profile openrc.fsck.init.d /etc/init.d/fsck {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -186,7 +228,7 @@ profile openrc.fsck.init.d /etc/init.d/fsck flags=(complain) {
 }
 
 
-profile openrc.root.init.d /etc/init.d/root flags=(complain) {
+profile openrc.root.init.d /etc/init.d/root {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -196,9 +238,21 @@ profile openrc.root.init.d /etc/init.d/root flags=(complain) {
   /etc/init.d/mtab Px,
   /bin/rm ix,
   /bin/mount Px,
+  /bin/bash Cx -> shell,
   
   /etc/fstab r,
   /etc/init.d/root r,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }
 
@@ -208,34 +262,66 @@ profile openrc.root-ro.init.d /etc/init.d/root-ro flags=(complain) {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  capability chown,
+  capability fsetid,
+  capability fowner,
+  
   /bin/cat ix,
+  /bin/mkdir ix,
+  /bin/sed ix,
+  /bin/rm ix,
+  /bin/mount Px,
+  /usr/bin/rsync ix,
   
   /etc/init.d/root-ro r,
+  /etc/ r,
+  /etc/** rw,
+  /lib64/rc/ r,
+  /lib64/rc/** r,
+  /root/ r,
+  /root/** r,
+  /media/ r,
+  /media/** rw,
+  /mnt/ r,
+  /mnt/** rw,
   
 }
 
 
-profile openrc.mtab.init.d /etc/init.d/mtab flags=(complain) {
+profile openrc.mtab.init.d /etc/init.d/mtab {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
   /bin/ln ix,
+  /bin/bash Cx -> shell,
   
   /etc/mtab w,
   /etc/init.d/mtab r,
   /etc/conf.d/mtab r,
   
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
+  
 }
 
 
-profile openrc.localmount.init.d /etc/init.d/localmount flags=(complain) {
+profile openrc.localmount.init.d /etc/init.d/localmount {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
   @{PROC}/@{pid}/mounts r,
   
+  /bin/bash Cx -> shell,
   /etc/init.d/* Px,
   /bin/mount Px,
   /bin/umount Px,
@@ -244,22 +330,45 @@ profile openrc.localmount.init.d /etc/init.d/localmount flags=(complain) {
   /etc/init.d/localmount r,
   /etc/conf.d/localmount r,
   
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
+  
 }
 
 
-profile openrc.sysctl.init.d /etc/init.d/sysctl flags=(complain) {
+profile openrc.sysctl.init.d /etc/init.d/sysctl {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  /bin/bash Cx -> shell,
   /sbin/sysctl Px,
   
   /etc/init.d/sysctl r,
   
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
+  
 }
 
 
-profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(complain) {
+profile openrc.bootmisc.init.d /etc/init.d/bootmisc {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -272,6 +381,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(complain) {
   /dev/kmsg r,
   @{PROC}/@{pid}/mounts r,
   
+  /bin/bash Cx -> shell,
   /bin/rm ix,
   /bin/readlink ix,
   /bin/mktemp ix,
@@ -291,26 +401,50 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(complain) {
   
   /var/log/dmesg w,
   /run/utmp w,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
+  
 }
 
 
-profile openrc.hostname.init.d /etc/init.d/hostname flags=(complain) {
+profile openrc.hostname.init.d /etc/init.d/hostname {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
   capability sys_admin,
   
+  /bin/bash Cx -> shell,
   /etc/init.d/syslog-ng Px,
   /bin/hostname ix,
   
   /etc/init.d/hostname r,
   /etc/conf.d/hostname r,
   
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
+  
 }
 
 
-profile openrc.tmpfiles.init.d /etc/init.d/tmpfiles.setup flags=(complain) {
+profile openrc.tmpfiles.init.d /etc/init.d/tmpfiles.setup {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -331,13 +465,14 @@ profile openrc.tmpfiles.init.d /etc/init.d/tmpfiles.setup flags=(complain) {
 }
 
 
-profile openrc.termencoding.init.d /etc/init.d/termencoding flags=(complain) {
+profile openrc.termencoding.init.d /etc/init.d/termencoding {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
   /dev/tty[0-9]* w,
   
+  /bin/bash Cx -> shell,
   /etc/init.d/keymaps Px,
   /etc/init.d/consolefont Px,
   
@@ -345,10 +480,21 @@ profile openrc.termencoding.init.d /etc/init.d/termencoding flags=(complain) {
   
   /lib64/rc/console/unicode w,
   
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
+  
 }
 
 
-profile openrc.swapfiles.init.d /etc/init.d/swapfiles flags=(complain) {
+profile openrc.swapfiles.init.d /etc/init.d/swapfiles {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -363,7 +509,7 @@ profile openrc.swapfiles.init.d /etc/init.d/swapfiles flags=(complain) {
 }
 
 
-profile openrc.keymaps.init.d /etc/init.d/keymaps flags=(complain) {
+profile openrc.keymaps.init.d /etc/init.d/keymaps {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -385,13 +531,14 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps flags=(complain) {
   /lib64/rc/console/keymap w,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     
     /dev/tty rw,
     
     /bin/bash r,
     /bin/gzip ix,
+    /lib64/rc/sh/gendepends.sh Px,
     
     /usr/share/keymaps/ r,
     /usr/share/keymaps/** r,
@@ -401,7 +548,7 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps flags=(complain) {
 }
 
 
-profile openrc.urandom.init.d /etc/init.d/urandom flags=(complain) {
+profile openrc.urandom.init.d /etc/init.d/urandom {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -421,22 +568,34 @@ profile openrc.urandom.init.d /etc/init.d/urandom flags=(complain) {
 }
 
 
-profile openrc.loopback.init.d /etc/init.d/loopback flags=(complain) {
+profile openrc.loopback.init.d /etc/init.d/loopback {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
   capability net_admin,
   
+  /bin/bash Cx -> shell,
   /bin/ip ix,
   
   /etc/init.d/loopback r,
   /etc/iproute2/rt_scopes r,
   
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
+  
 }
 
 
-profile openrc.procfs.init.d /etc/init.d/procfs flags=(complain) {
+profile openrc.procfs.init.d /etc/init.d/procfs {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>

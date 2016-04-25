@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile hd-idle /usr/sbin/hd-idle flags=(complain) {
+profile hd-idle /usr/sbin/hd-idle {
   #include <abstractions/base>
   
   capability sys_rawio,
@@ -22,7 +22,7 @@ profile hd-idle /usr/sbin/hd-idle flags=(complain) {
 }
 
 
-profile hd-idle.init.d /etc/init.d/hd-idle flags=(complain) {
+profile hd-idle.init.d /etc/init.d/hd-idle {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>

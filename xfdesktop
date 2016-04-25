@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile xfdesktop /usr/bin/xfdesktop flags=(complain) {
+profile xfdesktop /usr/bin/xfdesktop {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -57,7 +57,7 @@ profile xfdesktop /usr/bin/xfdesktop flags=(complain) {
   owner @{HOME}/.local/share/desktop-directories/*.directory r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <local/thunar-custom-actions>  # Must be the same as thunar custom actions!
     
@@ -70,7 +70,7 @@ profile xfdesktop /usr/bin/xfdesktop flags=(complain) {
   
 }
 
-profile xfdesktop-settings /usr/bin/xfdesktop-settings flags=(complain) {
+profile xfdesktop-settings /usr/bin/xfdesktop-settings {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>

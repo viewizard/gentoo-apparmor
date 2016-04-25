@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile sysvinit.halt /sbin/{halt,poweroff,reboot} flags=(complain) {
+profile sysvinit.halt /sbin/{halt,poweroff,reboot} {
   #include <abstractions/base>
   
   /sbin/{halt,poweroff,reboot} r,
@@ -19,7 +19,7 @@ profile sysvinit.halt /sbin/{halt,poweroff,reboot} flags=(complain) {
   
 }
 
-profile sysvinit.shutdown /sbin/shutdown flags=(complain) {
+profile sysvinit.shutdown /sbin/shutdown {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -38,7 +38,7 @@ profile sysvinit.shutdown /sbin/shutdown flags=(complain) {
   
 }
 
-profile sysvinit.init /sbin/init flags=(complain) {
+profile sysvinit.init /sbin/init {
   #include <abstractions/base>
   
   /dev/initctl rw,

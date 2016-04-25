@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile vixie-cron.cron /usr/sbin/cron flags=(complain) {
+profile vixie-cron.cron /usr/sbin/cron {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
@@ -31,7 +31,7 @@ profile vixie-cron.cron /usr/sbin/cron flags=(complain) {
   /var/spool/cron/** rw,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     
     /dev/tty rw,
@@ -48,7 +48,7 @@ profile vixie-cron.cron /usr/sbin/cron flags=(complain) {
 }
 
 
-profile vixie-cron.init.d /etc/init.d/vixie-cron flags=(complain) {
+profile vixie-cron.init.d /etc/init.d/vixie-cron {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>

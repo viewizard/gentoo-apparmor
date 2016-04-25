@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile nullmailer.sendmail /usr/sbin/sendmail flags=(complain) {
+profile nullmailer.sendmail /usr/sbin/sendmail {
   #include <abstractions/base>
   
   /usr/sbin/sendmail r,
@@ -18,7 +18,7 @@ profile nullmailer.sendmail /usr/sbin/sendmail flags=(complain) {
 }
 
 
-profile nullmailer-inject /usr/bin/nullmailer-inject flags=(complain) {
+profile nullmailer-inject /usr/bin/nullmailer-inject {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
   
@@ -31,7 +31,7 @@ profile nullmailer-inject /usr/bin/nullmailer-inject flags=(complain) {
 }
 
 
-profile nullmailer-queue /usr/sbin/nullmailer-queue flags=(complain) {
+profile nullmailer-queue /usr/sbin/nullmailer-queue {
   #include <abstractions/base>
   
   /usr/sbin/nullmailer-queue r,
@@ -45,7 +45,7 @@ profile nullmailer-queue /usr/sbin/nullmailer-queue flags=(complain) {
 }
 
 
-profile nullmailer.smtp /usr/libexec/nullmailer/smtp flags=(complain) {
+profile nullmailer.smtp /usr/libexec/nullmailer/smtp {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ssl_certs>
@@ -57,7 +57,7 @@ profile nullmailer.smtp /usr/libexec/nullmailer/smtp flags=(complain) {
 }
 
 
-profile nullmailer-send /usr/sbin/nullmailer-send flags=(complain) {
+profile nullmailer-send /usr/sbin/nullmailer-send {
   #include <abstractions/base>
   
   /usr/sbin/nullmailer-send r,
@@ -72,7 +72,7 @@ profile nullmailer-send /usr/sbin/nullmailer-send flags=(complain) {
 }
 
 
-profile nullmailer.init.d /etc/init.d/nullmailer flags=(complain) {
+profile nullmailer.init.d /etc/init.d/nullmailer {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
@@ -97,7 +97,7 @@ profile nullmailer.init.d /etc/init.d/nullmailer flags=(complain) {
   /run/utmp rk,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     
     /dev/tty rw,

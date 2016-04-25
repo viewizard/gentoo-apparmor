@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile xfce4-appfinder /usr/bin/{xfrun4,xfce4-appfinder} flags=(complain) {
+profile xfce4-appfinder /usr/bin/{xfrun4,xfce4-appfinder} {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -21,6 +21,7 @@ profile xfce4-appfinder /usr/bin/{xfrun4,xfce4-appfinder} flags=(complain) {
   @{PROC}/@{pid}/fd/ r,
   
   /usr/bin/xfce4-appfinder r,
+  /bin/env Cx -> env,
   
   /etc/xdg/menus/ r,
   /etc/xdg/menus/** r,
@@ -34,5 +35,17 @@ profile xfce4-appfinder /usr/bin/{xfrun4,xfce4-appfinder} flags=(complain) {
   owner @{HOME}/.config/menus/** r,
   owner @{HOME}/.local/share/desktop-directories/ r,
   owner @{HOME}/.local/share/desktop-directories/* r,
+  
+  
+  profile env {
+    #include <abstractions/base>
+    
+    /dev/tty[0-9]* w,
+    /dev/pts/[0-9]* rw,
+    
+    /bin/env r,
+    /usr/bin/wine Px,
+    
+  }
   
 }

@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile lm_sensors.sensors /usr/bin/sensors flags=(complain) {
+profile lm_sensors.sensors /usr/bin/sensors {
   #include <abstractions/base>
   
   /sys/class/hwmon/ r,
@@ -27,7 +27,7 @@ profile lm_sensors.sensors /usr/bin/sensors flags=(complain) {
 }
 
 
-profile lm_sensors.init.d /etc/init.d/lm_sensors flags=(complain) {
+profile lm_sensors.init.d /etc/init.d/lm_sensors {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>

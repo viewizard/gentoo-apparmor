@@ -15,7 +15,7 @@
 @{PROG_FILE}="**"
 
 
-profile bash_default /bin/{bash,rbash,sh} flags=(complain) {
+profile bash_default /bin/{bash,rbash,sh} {
   #include <abstractions/base>
   #include <abstractions/bash>
   #include <abstractions/consoles>
@@ -77,6 +77,10 @@ profile bash_root {
   #include <abstractions/user-systemwide-files>
   
   capability setuid,
+  capability setgid,
+  capability chown,
+  capability fsetid,
+  capability fowner,
   capability sys_tty_config,
   capability kill,
   capability dac_read_search,
@@ -102,6 +106,8 @@ profile bash_root {
   /bin/uname ixr,
   /bin/cp ixr,
   /bin/mv ixr,
+  /bin/chown ixr,
+  /bin/chmod ixr,
   /sbin/mdadm Pxr,
   /sbin/shutdown Pxr,
   /sbin/{halt,poweroff,reboot} Pxr,
@@ -120,6 +126,7 @@ profile bash_root {
   /usr/bin/whoami ixr,
   /usr/bin/id ixr,
   /usr/bin/startxfce4 Pxr,
+  /usr/bin/rsync ix,
   /usr/sbin/logcheck Puxr,
   /usr/sbin/aideinit Pxr,
   /usr/sbin/gdisk Pxr,

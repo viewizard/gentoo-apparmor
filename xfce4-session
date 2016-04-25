@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile xfce4-session /usr/bin/xfce4-session flags=(complain) {
+profile xfce4-session /usr/bin/xfce4-session {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -57,7 +57,7 @@ profile xfce4-session /usr/bin/xfce4-session flags=(complain) {
   owner @{HOME_CACHE}/gpg-agent-info rw,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     
     /dev/tty rw,
@@ -67,7 +67,7 @@ profile xfce4-session /usr/bin/xfce4-session flags=(complain) {
     
   }
   
-  profile env flags=(complain) {
+  profile env {
     #include <abstractions/base>
     
     /dev/tty[0-9]* w,
@@ -85,7 +85,7 @@ profile xfce4-session /usr/bin/xfce4-session flags=(complain) {
 }
 
 
-profile xfce4-session-logout /usr/bin/xfce4-session-logout flags=(complain) {
+profile xfce4-session-logout /usr/bin/xfce4-session-logout {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/nvidia>
@@ -97,7 +97,7 @@ profile xfce4-session-logout /usr/bin/xfce4-session-logout flags=(complain) {
 }
 
 
-profile xfce4-session-settings /usr/bin/xfce4-session-settings flags=(complain) {
+profile xfce4-session-settings /usr/bin/xfce4-session-settings {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -118,7 +118,7 @@ profile xfce4-session-settings /usr/bin/xfce4-session-settings flags=(complain) 
 }
 
 
-profile xfce4-session.xflock4 /usr/bin/xflock4 flags=(complain) {
+profile xfce4-session.xflock4 /usr/bin/xflock4 {
   #include <abstractions/base>
   
   /dev/tty rw,
@@ -130,7 +130,7 @@ profile xfce4-session.xflock4 /usr/bin/xflock4 flags=(complain) {
 }
 
 
-profile xfce4-session.startxfce4 /usr/bin/startxfce4 flags=(complain) {
+profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
   #include <abstractions/base>
   #include <abstractions/X>
   

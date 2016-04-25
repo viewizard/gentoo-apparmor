@@ -47,7 +47,7 @@ profile consolekit.ck-log-system-stop /usr/sbin/ck-log-system-stop flags=(compla
   
 }
 
-profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon flags=(complain) {
+profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -57,7 +57,9 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon flags=(compla
   capability chown,
   capability setgid,
   capability setuid,
-
+  capability dac_read_search,
+  capability dac_override,
+  
   @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/stat r,
   @{PROC}/tty/drivers r,
@@ -98,7 +100,7 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon flags=(compla
   
 }
 
-profile consolekit.udev-acl /usr/{lib,lib32,lib64}/ConsoleKit/udev-acl flags=(complain) {
+profile consolekit.udev-acl /usr/{lib,lib32,lib64}/ConsoleKit/udev-acl {
   #include <abstractions/base>
   
   
@@ -111,7 +113,7 @@ profile consolekit.udev-acl /usr/{lib,lib32,lib64}/ConsoleKit/udev-acl flags=(co
 }
 
 
-profile consolekit.init.d /etc/init.d/consolekit flags=(complain) {
+profile consolekit.init.d /etc/init.d/consolekit {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>

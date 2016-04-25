@@ -39,12 +39,16 @@ profile suricata /usr/bin/suricata {
 }
 
 
-profile suricata.init.d /etc/init.d/suricata flags=(complain) {
+profile suricata.init.d /etc/init.d/suricata {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   #include <abstractions/user-tmp>
   
+  /bin/sed ixr,
+  /bin/cat ixr,
+  /bin/ps Pxr,
+  /bin/sleep ixr,
   /usr/sbin/ethtool Px,
   /usr/bin/suricata Px,
   
@@ -53,5 +57,6 @@ profile suricata.init.d /etc/init.d/suricata flags=(complain) {
   /etc/init.d/suricata r,
   
   /run/suricata.pid rwk,
+  /run/sed* rw,
   
 }
