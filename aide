@@ -29,6 +29,8 @@ profile aide /usr/bin/aide {
 profile aide.aideinit /usr/sbin/aideinit {
   #include <abstractions/base>
   
+  capability dac_read_search,
+  
   /dev/tty rw,
   /dev/pts/[0-9]* rw,
   

@@ -145,6 +145,7 @@ profile bash_root {
   /bin/nano Puxr,
   /usr/sbin/migrate-pax Puxr,
   /usr/sbin/paxctl-ng Puxr,
+  /usr/bin/eselect Puxr,
   /sbin/paxctl Puxr,
   
   /etc/profile.env r,

@@ -74,6 +74,7 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
     capability chown,
     capability fowner,
     capability fsetid,
+    capability setfcap,
     
     /dev/tty rw,
     /dev/pts/[0-9]* rw,
@@ -108,6 +109,7 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
     /etc/profile.env* rw,
     /etc/csh.env* rw,
     /etc/wgetrc r,
+    /etc/udev/udev.conf r,
     /etc/java-config-2/build/ r,
     /etc/java-config-2/build/* r,
     /etc/env.d/* rw,
@@ -124,6 +126,9 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
     /usr/share/applications/** rw,
     /usr/share/icons/hicolor/** rw,
     /usr/lib64/opengl/nvidia/** rw,
+    /usr/lib64/qt5/mkspecs/** rw,
+    /usr/libexec/qemu-bridge-helper rw,
+    /usr/include/qt5/Gentoo/gentoo-qconfig.h rw,
     /lib64/modules/*-hardened/modules.* rw,
     /var/db/pkg/ r,
     /var/db/pkg/** rw,
@@ -171,6 +176,8 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
     /sbin/** ixr,
     /opt/ r,
     /opt/** ixr,
+    /lib{,32,64}/ r,
+    /lib{,32,64}/** r,
     /usr/bin/ r,
     /usr/bin/** ixr,
     /usr/sbin/ r,
@@ -210,6 +217,7 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
     /var/tmp/ r,
     /var/tmp/portage/ rw,
     /var/tmp/portage/** rwklix,
+    /var/log/sandbox/sandbox-*.log w,
     
     # Noisy
     deny / r,
@@ -340,11 +348,13 @@ profile portage.repoman /usr/lib64/python-exec/python[2-3]*.[0-9]*/repoman flags
   capability setgid,
   capability chown,
   capability fowner,
+  capability fsetid,
   
   /dev/pts/[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
   
   /bin/bash Cxr -> shell,
+  /usr/bin/sandbox cx -> sandboxed_shell,
   /usr/bin/git ix,
   /usr/bin/id ix,
   /usr/bin/wget ix,
@@ -377,6 +387,31 @@ profile portage.repoman /usr/lib64/python-exec/python[2-3]*.[0-9]*/repoman flags
     /bin/rm ix,
     
     /usr/portage/distfiles/* w,
+    
+  }
+  
+  profile sandboxed_shell flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /usr/bin/sandbox r,
+    /bin/bash ixr,
+    /usr/lib64/portage/python2.7/ebuild.sh ix,
+    
+    /etc/sandbox.conf r,
+    /etc/sandbox.d/ r,
+    /etc/sandbox.d/* r,
+    /usr/share/sandbox/ r,
+    /usr/share/sandbox/** r,
+    /etc/portage/ r,
+    /etc/portage/** r,
+    /usr/portage/ r,
+    /usr/portage/** r,
+    /usr/local/portage/ r,
+    /usr/local/portage/** r,
+    
+    /var/log/sandbox/sandbox-*.log w,
     
   }
   
