@@ -29,7 +29,7 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
   /usr/bin/xfce4-terminal rm,
   /bin/bash Pux -> bash_users,  # Must be bash_users only by default.
   /usr/bin/sudo Px,
-  /usr/bin/htop Cx,
+  /usr/bin/htop Px,
   /usr/libexec/gnome-pty-helper Cx,
   /usr/bin/passwd.sh Px,
   /usr/bin/dbus-daemon Px,
@@ -68,34 +68,6 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
     
     /run/utmp rwk,
     /var/log/wtmp wk,
-  }
-  
-  profile htop /usr/bin/htop {
-    #include <abstractions/base>
-    #include <abstractions/freedesktop.org>
-    #include <abstractions/fonts>
-    #include <abstractions/nameservice>
-    
-    capability sys_ptrace,
-    
-    /dev/pts/[0-9]* rw,    
-    @{PROC}/sys/kernel/pid_max r,
-    @{PROC}/ r,
-    @{PROC}/loadavg r,
-    @{PROC}/uptime r,
-    @{PROC}/@{pid}/task/ r,
-    @{PROC}/@{pid}/statm r,
-    @{PROC}/@{pid}/stat r,
-    @{PROC}/@{pid}/cmdline r,
-    @{PROC}/@{pid}/task/@{pid}/statm r,
-    @{PROC}/@{pid}/task/@{pid}/stat r,
-    @{PROC}/@{pid}/task/@{pid}/cmdline r,
-    
-    /usr/bin/htop r,
-    
-    /etc/terminfo/x/xterm r,
-    
-    owner @{HOME}/.config/htop/htoprc rw,
   }
   
 }

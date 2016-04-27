@@ -1,0 +1,67 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+# /usr/sbin/migrate-pax for root RBAC role only, should be used with Px->profile only
+profile elfix_migrate_pax_root flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/python>
+  #include <abstractions/nameservice>
+  
+  /dev/pts/[0-9]* w,
+  
+  /usr/sbin/migrate-pax r,
+  /bin/env r,
+  /usr/bin/python-wrapper ix,
+  /bin/bash Cxr -> shell,
+  
+  /bin/** rw,
+  /sbin/** rw,
+  /opt/** rw,
+  /lib{,32,64}/** rw,
+  /usr/bin/** rw,
+  /usr/sbin/** rw,
+  /usr/lib{,32,64}/** rw,
+  /usr/libexec/** rw,
+  /usr/x86_64-pc-linux-gnu/** rw,
+  
+  /etc/env.d/python/config r,
+  /etc/profile.env r,
+  /etc/portage/ r,
+  /etc/portage/** r,
+  /usr/portage/ r,
+  /usr/portage/** r,
+  /usr/share/portage/ r,
+  /usr/share/portage/** r,
+  /usr/local/portage/ r,
+  /usr/local/portage/** r,
+  /var/db/pkg/ r,
+  /var/db/pkg/** r,
+  /var/cache/edb/ r,
+  /var/cache/edb/** r,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    #include <local/thunar-custom-actions>
+    
+    capability dac_read_search,
+    capability dac_override,
+    
+    /dev/tty rw,
+    /dev/pts/[0-9]* w,
+    
+    /bin/bash r,
+    /bin/uname ixr,
+    
+  }
+  
+}

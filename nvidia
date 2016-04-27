@@ -14,7 +14,7 @@
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*"
 
-profile nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(complain) {
+profile nvidia-settings /{usr,opt}/bin/nvidia-settings {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -41,7 +41,7 @@ profile nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(complain) {
   @{HOMEDIRS}/*/ w,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     
     capability sys_ptrace,
@@ -73,7 +73,7 @@ profile nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe flags=(complain) {
 }
 
 
-profile nvidia-smi /opt/bin/nvidia-smi flags=(complain) {
+profile nvidia-smi /opt/bin/nvidia-smi {
   #include <abstractions/base>
   #include <abstractions/nvidia>
   

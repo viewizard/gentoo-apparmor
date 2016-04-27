@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile pam_usb.pamusb-agent /usr/bin/pamusb-agent flags=(complain) {
+profile pam_usb.pamusb-agent /usr/bin/pamusb-agent {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -23,7 +23,7 @@ profile pam_usb.pamusb-agent /usr/bin/pamusb-agent flags=(complain) {
   /etc/pamusb.conf r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     
     /dev/tty rw,
@@ -37,7 +37,7 @@ profile pam_usb.pamusb-agent /usr/bin/pamusb-agent flags=(complain) {
 }
 
 
-profile pam_usb.pamusb-check /usr/bin/pamusb-check flags=(complain) {
+profile pam_usb.pamusb-check /usr/bin/pamusb-check {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   

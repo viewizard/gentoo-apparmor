@@ -9,12 +9,20 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile openssh.ssh-agent /usr/bin/ssh-agent {
+
+# /usr/bin/eselect for root RBAC role only, should be used with Px->profile only
+profile eselect_root flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/user-tmp>
-
-  /usr/bin/ssh-agent r,
-
-  /etc/ssl/openssl.cnf r,
+  #include <abstractions/user-systemwide-files>
+  
+  /dev/pts/[0-9]* w,
+  
+  /bin/readlink ix,
+  /bin/ln ix,
+  /bin/mv ix,
+  /bin/sed ix,
+  /bin/sort ix,
+  /usr/bin/tput ix,
+  /usr/lib64/python-exec/python-exec2 Px,
   
 }

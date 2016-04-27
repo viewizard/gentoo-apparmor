@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile xorg-server.Xorg /usr/bin/Xorg flags=(complain) {
+profile xorg-server.Xorg /usr/bin/Xorg {
   #include <abstractions/base>
   #include <abstractions/fonts>
   #include <abstractions/user-tmp>
@@ -69,7 +69,7 @@ profile xorg-server.Xorg /usr/bin/Xorg flags=(complain) {
   /run/udev/data/* r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     
     /dev/tty rw,

@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile porthole /usr/lib{,32,64}/python-exec/python2.[0-9]*/porthole flags=(complain) {
+profile porthole /usr/lib{,32,64}/python-exec/python2.[0-9]*/porthole {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -53,7 +53,7 @@ profile porthole /usr/lib{,32,64}/python-exec/python2.[0-9]*/porthole flags=(com
   deny /usr/lib64/python2.7/site-packages/cairo/__init__.pyc w,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     
     /dev/tty rw,

@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile smartmontools.smartd /usr/sbin/smartd flags=(complain) {
+profile smartmontools.smartd /usr/sbin/smartd {
   #include <abstractions/base>
   
   capability sys_rawio,
@@ -31,7 +31,7 @@ profile smartmontools.smartd /usr/sbin/smartd flags=(complain) {
 }
 
 
-profile smartmontools.smartctl /usr/sbin/smartctl flags=(complain) {
+profile smartmontools.smartctl /usr/sbin/smartctl {
   #include <abstractions/base>
   
   capability sys_rawio,

@@ -33,7 +33,9 @@ profile xfce4-panel /usr/bin/xfce4-panel {
   /usr/share/xfce4/panel/plugins/*.desktop r,
   /usr/share/xfce4/panel-plugins/ r,
   /usr/share/xfce4/panel-plugins/*.desktop r,
+  owner @{HOME}/.config/xfce4/panel/ rw,
   owner @{HOME}/.config/xfce4/panel/launcher-**.desktop r,
+  owner @{HOME}/.config/xfce4/panel/*.rc* rw,
   owner @{HOME}/.config/menus/**.menu rw,
   owner @{HOME}/.config/menus/applications-merged/ r,
   
@@ -117,7 +119,7 @@ profile xfce4-panel.wrapper-2.0 /usr/lib64/xfce4/panel/wrapper-2.0 {
   
 }
 
-profile xfce4-panel.xfce4-xkb-plugin /usr/lib64/xfce4/panel-plugins/xfce4-xkb-plugin flags=(complain) {
+profile xfce4-panel.xfce4-xkb-plugin /usr/lib64/xfce4/panel-plugins/xfce4-xkb-plugin {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -131,15 +133,19 @@ profile xfce4-panel.xfce4-xkb-plugin /usr/lib64/xfce4/panel-plugins/xfce4-xkb-pl
   
 }
 
-profile xfce4-panel.xfce4-kbdleds-plugin /usr/lib64/xfce4/panel-plugins/xfce4-kbdleds-plugin flags=(complain) {
+profile xfce4-panel.xfce4-kbdleds-plugin /usr/lib64/xfce4/panel-plugins/xfce4-kbdleds-plugin {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/X>
   #include <abstractions/gtk>
+  
+  owner @{HOME}/.config/xfce4/panel/ rw,
+  owner @{HOME}/.config/xfce4/panel/*.rc* rw,
+  
 }
 
-profile xfce4-panel.xfce4-sensors-plugin /usr/lib64/xfce4/panel-plugins/xfce4-sensors-plugin flags=(complain) {
+profile xfce4-panel.xfce4-sensors-plugin /usr/lib64/xfce4/panel-plugins/xfce4-sensors-plugin {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>

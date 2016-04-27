@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monitor flags=(complain) {
+profile gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monitor {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -33,7 +33,7 @@ profile gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monitor fla
 }
 
 
-profile gvfsd /usr/libexec/gvfsd flags=(complain) {
+profile gvfsd /usr/libexec/gvfsd {
   #include <abstractions/base>
   
   owner @{PROC}/@{pid}/fd/ rw,
@@ -81,7 +81,7 @@ profile gvfsd-ftp /usr/libexec/gvfsd-ftp flags=(complain) {
   
 }
 
-profile gvfsd-fuse /usr/libexec/gvfsd-fuse flags=(complain) {
+profile gvfsd-fuse /usr/libexec/gvfsd-fuse {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -118,7 +118,7 @@ profile gvfsd-localtest /usr/libexec/gvfsd-localtest flags=(complain) {
   
 }
 
-profile gvfsd-metadata /usr/libexec/gvfsd-metadata flags=(complain) {
+profile gvfsd-metadata /usr/libexec/gvfsd-metadata {
   #include <abstractions/base>
   
   /etc/udev/udev.conf r,
@@ -155,7 +155,7 @@ profile gvfsd-sftp /usr/libexec/gvfsd-sftp flags=(complain) {
   
 }
 
-profile gvfsd-smb /usr/libexec/gvfsd-smb flags=(complain) {
+profile gvfsd-smb /usr/libexec/gvfsd-smb {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/dconf>
@@ -172,7 +172,7 @@ profile gvfsd-smb /usr/libexec/gvfsd-smb flags=(complain) {
   
 }
 
-profile gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse flags=(complain) {
+profile gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse {
   #include <abstractions/base>
   #include <abstractions/dconf>
   #include <abstractions/gtk>
@@ -188,7 +188,7 @@ profile gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse flags=(complain) {
   
 }
 
-profile gvfsd-trash /usr/libexec/gvfsd-trash flags=(complain) {
+profile gvfsd-trash /usr/libexec/gvfsd-trash {
   #include <abstractions/base>
   
   @{PROC}/@{pid}/mounts r,
