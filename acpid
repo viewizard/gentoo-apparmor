@@ -12,59 +12,39 @@
 profile acpid /usr/sbin/acpid {
   #include <abstractions/base>
   
-  capability sys_tty_config,
-  
-  owner @{PROC}/@{pid}/fd/ r,
-  
   /dev/console w,
   /dev/input/ r,
   /dev/input/by-id/ r,
   /dev/input/by-path/ r,
   /dev/input/event* r,
   /dev/input/mouse* r,
+  owner @{PROC}/@{pid}/fd/ r,
   
   /usr/sbin/acpid r,
   /bin/bash Cxr -> shell,
   
-  /etc/acpi/ r,
-  /etc/acpi/** r,
-  
+  /etc/acpi/{,**} r,
   /run/acpid.pid rwl,
   /run/acpid.socket rw,
   
   
-  profile shell {
+  profile shell flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/nameservice>
     
     capability sys_tty_config,
-    capability sys_ptrace,
-    capability dac_read_search,
-    capability dac_override,
     
-    /dev/tty rw,
-    /dev/tty[0-9]* rw,
-    
-    @{PROC}/ r,
-    @{PROC}/@{pid}/loginuid r,
-    @{PROC}/@{pid}/stat r,
-    @{PROC}/@{pid}/status r,
-    @{PROC}/@{pid}/cmdline r,
-    owner @{PROC}/uptime r,
-    owner @{PROC}/sys/kernel/pid_max r,
-    @{PROC}/tty/drivers r,
+    /dev/tty{,[0-9]*} rw,
     
     /bin/bash r,
-    /usr/bin/logger ix,
-    /usr/bin/pinky ix,
-    /usr/bin/pgrep ix,
-    /bin/ps ix,
-    /usr/bin/gawk ix,
+    /bin/ps Px,
     /bin/sed ix,
-    /usr/bin/fgconsole ix,
-    /bin/pidof ix,
+    /bin/pidof Px,
     /sbin/shutdown Px,
-    
+    /usr/bin/fgconsole ix,
+    /usr/bin/gawk ix,
+    /usr/bin/logger Px,
+    /usr/bin/pinky ix,
+    /usr/bin/pgrep Px,
     /etc/acpi/default.sh ixr,
     /etc/acpi/actions/powerbtn.sh ixr,
     
@@ -83,8 +63,7 @@ profile acpid.kacpimon /usr/sbin/kacpimon {
   #include <abstractions/base>
   
   /dev/pts/[0-9]* rw,
-  /dev/input/ r,
-  /dev/input/event* r,
+  /dev/input/{,event*} r,
   
 }
 
@@ -96,7 +75,6 @@ profile acpid.init.d /etc/init.d/acpid {
   
   /usr/sbin/acpid Px,
   
-  /etc/init.d/acpid r,
-  /etc/conf.d/acpid r,
+  /etc/{conf,init}.d/acpid r,
   
 }

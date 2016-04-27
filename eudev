@@ -15,12 +15,8 @@ profile eudev.udevadm /bin/udevadm flags=(complain) {
   /sys/bus/ r,
   /sys/class/ r,
   /sys/class/block/ r,
-  /sys/devices/pci**/usb*/**0/block/sd[a-z]/** rw,
-  /sys/devices/pci**/ata*/**0/block/sd[a-z]/** rw,
-  /sys/devices/virtual/block/loop[0-9]*/** rw,
-  /sys/devices/virtual/block/zd[0-9]*/** rw,
-  /sys/devices/virtual/block/dm-[0-9]*/** rw,
-  /sys/devices/virtual/block/md[0-9]*/** rw,
+  /sys/devices/pci**/{ata,usb}[0-9]*/**/block/sd[a-z]/** rw,
+  /sys/devices/virtual/block/{dm-,md,loop,zd}[0-9]*/** rw,
   
   /bin/udevadm r,
   

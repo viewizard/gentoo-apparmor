@@ -37,6 +37,35 @@ profile procps.ps /bin/ps {
 }
 
 
+profile procps.pidof /bin/pidof flags=(complain) {
+  #include <abstractions/base>
+  
+  capability sys_ptrace,
+  
+  @{PROC}/ r,
+  @{PROC}/@{pid}/stat r,
+  @{PROC}/@{pid}/cmdline r,
+
+  /bin/pidof r,
+    
+}
+
+
+profile procps.pgrep /usr/bin/pgrep flags=(complain) {
+  #include <abstractions/base>
+  
+  capability sys_ptrace,
+  
+  @{PROC}/ r,
+  @{PROC}/@{pid}/stat r,
+  @{PROC}/@{pid}/loginuid r,
+  @{PROC}/@{pid}/cmdline r,
+
+  /usr/bin/pgrep r,
+    
+}
+
+
 profile procps.sysctl /sbin/sysctl flags=(complain) {
   #include <abstractions/base>
   

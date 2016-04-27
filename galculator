@@ -17,13 +17,11 @@ profile galculator /usr/bin/galculator {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/executable-binary-helper>
-
-
-  /usr/bin/galculator rm,
-  /usr/share/galculator/ r,
-  /usr/share/galculator/** r,
   
-  owner @{HOME}/.config/galculator/ rw,
-  owner @{HOME}/.config/galculator/** rwk,
+  /usr/bin/galculator rm,
+  
+  /usr/share/galculator/{,**} r,
+  
+  owner @{HOME}/.config/galculator/{,**} rwk,
   
 }

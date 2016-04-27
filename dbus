@@ -18,13 +18,13 @@ profile dbus /usr/bin/dbus-{cleanup-sockets,daemon,launch,run-session,send,uuidg
   #include <abstractions/dbus>
   #include <abstractions/dbus-accessibility>
   #include <abstractions/dbus-session>
-
+  
   capability sys_resource,
   capability setgid,
   capability setuid,
   capability dac_read_search,
   capability dac_override,
-
+  
   @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/cmdline r,
   
@@ -41,15 +41,13 @@ profile dbus /usr/bin/dbus-{cleanup-sockets,daemon,launch,run-session,send,uuidg
   /usr/libexec/dbus-daemon-launch-helper Px,
   /usr/bin/gnome-keyring-daemon Px,
   
+  /etc/machine-id* rw,
   /etc/dbus-1/** r,
+  /etc/at-spi2/accessibility.conf r,
   /usr/share/dbus-1/** r,
   /run/dbus.pid rw,
-  /etc/machine-id* rw,
-
-  /etc/at-spi2/accessibility.conf r,
   
-  owner @{HOME}/.dbus/ rw,
-  owner @{HOME}/.dbus/** rw,
+  owner @{HOME}/.dbus/{,**} rw,
   
 }
 

@@ -22,10 +22,8 @@ profile gsmartcontrol /usr/bin/gsmartcontrol {
   
   /dev/tty[0-9]* w,
   /dev/sd[a-z] r,
-  /dev/zd* r,
-  /sys/devices/pci**/usb*/*/idVendor r,
-  /sys/devices/pci**/usb*/*/idProduct r,
-  /sys/devices/pci**/usb*/*/bcdDevice r,
+  /dev/zd[0-9]* r,
+  /sys/devices/pci**/usb[0-9]*/*/{idVendor,idProduct,bcdDevice} r,
   
   @{PROC}/@{pid}/fd/ r,
   @{PROC}/partitions r,
@@ -37,11 +35,9 @@ profile gsmartcontrol /usr/bin/gsmartcontrol {
   /usr/bin/exo-open Px,
   
   /etc/fstab r,
-  /usr/share/smartmontools/ r,
-  /usr/share/smartmontools/** r,
+  /usr/share/smartmontools/{,**} r,
   
-  owner @{HOME}/.config/gsmartcontrol/ rw,
-  owner @{HOME}/.config/gsmartcontrol/gsmartcontrol.conf rw,
+  owner @{HOME}/.config/gsmartcontrol/{,gsmartcontrol.conf} rw,
   
 }
 
@@ -51,7 +47,8 @@ profile gsmartcontrol-root /usr/bin/gsmartcontrol-root {
   
   /bin/bash Cx -> shell,
   /bin/env r,
-
+  
+  
   profile shell {
     #include <abstractions/base>
     

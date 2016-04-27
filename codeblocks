@@ -40,13 +40,10 @@ profile codeblocks /usr/bin/codeblocks flags=(complain) {
   /etc/env.d/gcc/x86_64-pc-linux-gnu-* r,
   /usr/include/** r,
   
-  /usr/share/codeblocks/ r,
-  /usr/share/codeblocks/** r,
+  /usr/share/codeblocks/{,**} r,
   
-  owner @{HOME}/.config/codeblocks/ rw,
-  owner @{HOME}/.config/codeblocks/* rw,
-  owner @{HOME}/.local/share/codeblocks/ rw,
-  owner @{HOME}/.local/share/codeblocks/** rw,
+  owner @{HOME}/.config/codeblocks/{,*} rw,
+  owner @{HOME}/.local/share/codeblocks/{,**} rw,
   
   
   profile shell flags=(complain) {
@@ -57,22 +54,15 @@ profile codeblocks /usr/bin/codeblocks flags=(complain) {
     
     /dev/tty rw,
     
-    /bin/** ixr,
-    /sbin/** ixr,
-    /usr/bin/** ixr,
-    /usr/sbin/** ixr,
-    /usr/lib{,32,64}/** ixr,
-    /usr/libexec/** ixr,
-    /usr/x86_64-pc-linux-gnu/** ixr,
+    /{bin,sbin}/** ixr,
+    /usr/{bin,sbin}/** ixr,
+    /usr/{lib,lib32,lib64,libexec,x86_64-pc-linux-gnu}/** ixr,
     
     /etc/profile.env r,
     /etc/env.d/** r,
     /etc/ld.so.conf r,
-    /etc/ld.so.conf.d/ r,
-    /etc/ld.so.conf.d/* r,
-    /etc/portage/** r,
-    /usr/portage/** r,
-    /usr/local/portage/** r,
+    /etc/ld.so.conf.d/{,*} r,
+    /{etc,usr,usr/local}/portage/** r,
     /usr/share/portage/config/* r,
     /usr/include/** r,
     

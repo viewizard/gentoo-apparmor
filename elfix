@@ -23,35 +23,18 @@ profile elfix_migrate_pax_root flags=(complain) {
   /usr/bin/python-wrapper ix,
   /bin/bash Cxr -> shell,
   
-  /bin/** rw,
-  /sbin/** rw,
-  /opt/** rw,
-  /lib{,32,64}/** rw,
-  /usr/bin/** rw,
-  /usr/sbin/** rw,
-  /usr/lib{,32,64}/** rw,
-  /usr/libexec/** rw,
-  /usr/x86_64-pc-linux-gnu/** rw,
+  /{bin,sbin,opt,lib,lib32,lib64}/** rw,
+  /usr/{bin,sbin,lib,lib32,lib64,libexec,x86_64-pc-linux-gnu}/** rw,
   
-  /etc/env.d/python/config r,
   /etc/profile.env r,
-  /etc/portage/ r,
-  /etc/portage/** r,
-  /usr/portage/ r,
-  /usr/portage/** r,
-  /usr/share/portage/ r,
-  /usr/share/portage/** r,
-  /usr/local/portage/ r,
-  /usr/local/portage/** r,
-  /var/db/pkg/ r,
-  /var/db/pkg/** r,
-  /var/cache/edb/ r,
-  /var/cache/edb/** r,
+  /etc/env.d/python/config r,
+  /{etc,usr,usr/local,usr/share}/portage/{,**} r,
+  /var/db/pkg/{,**} r,
+  /var/cache/edb/{,**} r,
   
   
   profile shell flags=(complain) {
     #include <abstractions/base>
-    #include <local/thunar-custom-actions>
     
     capability dac_read_search,
     capability dac_override,

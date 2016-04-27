@@ -29,16 +29,13 @@ profile filezilla /usr/bin/filezilla {
   
   /dev/tty[0-9]* w,
   
+  /usr/bin/filezilla r,
   /bin/bash Cx -> shell,
   /usr/bin/fzsftp ix,
   
-  /usr/bin/filezilla r,
+  /usr/share/filezilla/{,**} r,
   
-  /usr/share/filezilla/ r,
-  /usr/share/filezilla/** r,
-  
-  owner @{HOME}/.filezilla/ rw,
-  owner @{HOME}/.filezilla/** rw,
+  owner @{HOME}/.filezilla/{,**} rw,
   
   
   profile shell {
@@ -60,8 +57,7 @@ profile filezilla /usr/bin/filezilla {
     /usr/bin/find ix,
     /bin/ps Px,
     
-    /etc/lsb-release r,
-    /etc/os-release r,
+    /etc/{os,lsb}-release r,
     
     # Noisy
     deny /etc/ r,

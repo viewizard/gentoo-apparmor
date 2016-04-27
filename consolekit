@@ -12,11 +12,11 @@
 profile consolekit.ck-history /usr/bin/ck-history flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-
+  
   /dev/pts/[0-9]* rw,
-
+  
   /var/log/ConsoleKit/history r,
-    
+  
 }
 
 profile consolekit.ck-launch-session /usr/bin/ck-launch-session flags=(complain) {
@@ -60,15 +60,14 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   capability dac_read_search,
   capability dac_override,
   
+  /dev/tty{,[0-9]*} rw,
+  /sys/power/state r,
+  /sys/devices/virtual/tty/tty*/active r,
   @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/stat r,
   @{PROC}/tty/drivers r,
   @{PROC}/@{pid}/environ r,
   @{PROC}/@{pid}/sessionid r,
-  /dev/tty rw,
-  /dev/tty[0-9]* rw,
-  /sys/devices/virtual/tty/tty*/active r,
-  /sys/power/state r,
   
   /usr/sbin/console-kit-daemon r,
   /usr/lib64/ConsoleKit/** Pix,
@@ -83,17 +82,12 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   /bin/rm ix,
   /sbin/shutdown Pxr,
   
-  /etc/ConsoleKit/ r,
-  /etc/ConsoleKit/** r,
-  /etc/pm/config.d/ r,
-  /etc/pm/config.d/** r,
+  /etc/ConsoleKit/{,**} r,
+  /etc/pm/config.d/{,**} r,
   
-  /run/ConsoleKit/ rw,
-  /run/ConsoleKit/* rw,
-  /run/user/ rw,
-  /run/user/** rw,
-  /run/console/ rw,
-  /run/console/* rw,
+  /run/ConsoleKit/{,*} rw,
+  /run/user/{,**} rw,
+  /run/console/{,*} rw,
   
   /var/log/ConsoleKit/ r,
   /var/log/ConsoleKit/** rw,
@@ -102,7 +96,6 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
 
 profile consolekit.udev-acl /usr/{lib,lib32,lib64}/ConsoleKit/udev-acl {
   #include <abstractions/base>
-  
   
   /etc/udev/udev.conf r,
   /run/udev/tags/udev-acl/ r,

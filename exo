@@ -20,19 +20,16 @@ profile exo-open /usr/bin/exo-open {
   #include <abstractions/user-tmp>
   #include <abstractions/executable-binary-helper>
   #include <abstractions/nameservice>
-
-
+  
   owner @{PROC}/@{pid}/fd/ r,
-
+  
   /usr/bin/exo-open r,
   /usr/lib64/xfce4/exo-1/exo-helper-1 Px,
   
   /etc/machine-id r,
-  /usr/share/gvfs/remote-volume-monitors/ r,
-  /usr/share/gvfs/remote-volume-monitors/udisks2.monitor r,
+  /usr/share/gvfs/remote-volume-monitors/{,udisks2.monitor} r,
   
-  /usr/portage/licenses/ r,
-  /usr/portage/licenses/* r,
+  /usr/portage/licenses/{,*} r,
   
 }
 
@@ -55,25 +52,22 @@ profile exo-helper /usr/lib64/xfce4/exo-1/exo-helper-1 {
   /usr/share/ r,
   /usr/local/share/ r,
   /usr/share/xfce4/ r,
-  /usr/share/xfce4/helpers/ r,
-  /usr/share/xfce4/helpers/* r,
+  /usr/share/xfce4/helpers/{,*} r,
   /etc/xdg/xfce4/helpers.rc r,
   owner @{HOME}/.config/xfce4/helpers.rc* rw,
   owner @{HOME}/.config/mimeapps.list* rw,
   owner @{HOME}/.local/share/ r,
   owner @{HOME}/.local/share/xfce4/ r,
-  owner @{HOME}/.local/share/xfce4/helpers/ r,
-  owner @{HOME}/.local/share/xfce4/helpers/* r,
-  owner @{HOME}/.local/share/applications/ r,
-  owner @{HOME}/.local/share/applications/** r,
-
+  owner @{HOME}/.local/share/xfce4/helpers/{,*} r,
+  owner @{HOME}/.local/share/applications/{,**} r,
+  
 }
 
 
 profile exo-compose-mail /usr/lib64/xfce4/exo-1/exo-compose-mail-1 {
   #include <abstractions/base>
   #include <abstractions/executable-binary-helper>
-   
+  
   /usr/lib64/xfce4/exo-1/exo-compose-mail-1 r,
   
   /bin/env r,
@@ -85,13 +79,13 @@ profile exo-compose-mail /usr/lib64/xfce4/exo-1/exo-compose-mail-1 {
 profile exo-preferred-applications /usr/bin/exo-preferred-applications {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
-
+  
   /dev/tty rw,
-
+  
   /bin/bash r,
   /usr/bin/exo-preferred-applications r,
   /usr/lib64/xfce4/exo-1/exo-helper-1 Px,
-
+  
 }
 
 
@@ -101,28 +95,19 @@ profile exo-desktop-item-edit /usr/bin/exo-desktop-item-edit {
   #include <abstractions/fonts>
   #include <abstractions/X>
   #include <abstractions/gtk>
-
+  
   /dev/tty rw,
   /dev/tty[0-9]* w,
-
+  
   /usr/bin/exo-desktop-item-edit r,
   
   / r,
-  /bin/ r,
-  /bin/* r,
-  /sbin/ r,
-  /sbin/* r,
-  /usr/ r,
-  /usr/bin/ r,
-  /usr/bin/* r,
-  /usr/sbin/ r,
-  /usr/sbin/* r,
-  /usr/local/ r,
-  /usr/local/bin/ r,
-  /usr/local/bin/* r,
-  /opt/ r,
-  /opt/bin/ r,
-  /opt/bin/* r,
+  /{bin,sbin,usr,opt}/ r,
+  /{bin,sbin}/* r,
+  /usr/{bin,sbin,local}/ r,
+  /usr/{bin,sbin}/* r,
+  /opt/bin/{,*} r,
+  /usr/local/bin/{,*} r,
   deny /usr/x86_64-pc-linux-gnu/** r,
   deny /usr/libexec/** r,
   

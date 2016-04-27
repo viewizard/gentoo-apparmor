@@ -12,7 +12,7 @@
 profile dnscrypt-proxy /usr/sbin/dnscrypt-proxy {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-
+  
   capability setgid,
   capability setuid,
   capability sys_chroot,
@@ -22,8 +22,7 @@ profile dnscrypt-proxy /usr/sbin/dnscrypt-proxy {
   
   /usr/sbin/dnscrypt-proxy r,
   
-  /usr/share/dnscrypt-proxy/ r,
-  /usr/share/dnscrypt-proxy/* r,
+  /usr/share/dnscrypt-proxy/{,*} r,
   
   /run/dnscrypt-proxy/dnscrypt-proxy.pid rwl,
   /var/log/dnscrypt-proxy.log rw,
@@ -34,7 +33,7 @@ profile dnscrypt-proxy /usr/sbin/dnscrypt-proxy {
 profile dnscrypt-proxy.hostip /usr/bin/hostip {
   #include <abstractions/base>
   #include <abstractions/nameservice>
- 
+  
   /dev/pts/[0-9]* rw,
   @{PROC}/sys/kernel/random/uuid r,
   
@@ -51,8 +50,7 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy {
   /usr/sbin/dnscrypt-proxy Px,
   /bin/chown ix,
   
-  /etc/init.d/dnscrypt-proxy r,
-  /etc/conf.d/dnscrypt-proxy r,
+  /etc/{conf,init}.d/dnscrypt-proxy r,
   
   /run/dnscrypt-proxy/ rw,
   

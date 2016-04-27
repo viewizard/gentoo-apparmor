@@ -26,15 +26,14 @@ profile cronbase.run-crons /usr/sbin/run-crons {
   /bin/touch ix,
   /usr/bin/find ix,
   /usr/bin/whoami ix,
-  /usr/bin/logger ix,
+  /usr/bin/logger Px,
   
   # Make sure, that all cron scripts have profile in "local/cron-scripts-profiles"!
   /etc/cron.*/ r,
   /etc/cron.*/* Pxr,
   
   /run/lock/cron.* rw,
-  /var/spool/cron/lastrun/ rw,
-  /var/spool/cron/lastrun/* rw,
+  /var/spool/cron/lastrun/{,*} rw,
   
   # Noisy
   deny / r,

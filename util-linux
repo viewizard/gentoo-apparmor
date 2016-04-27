@@ -173,3 +173,14 @@ profile util-linux.hwclock /sbin/hwclock flags=(complain) {
   /sbin/hwclock r,
   
 }
+
+
+profile util-linux.logger /usr/bin/logger flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  @{PROC}/@{pid}/loginuid r,
+  
+  /usr/bin/logger r,
+  
+}

@@ -13,11 +13,7 @@ profile e2fsprogs.e2fsck /sbin/e2fsck flags=(complain) {
   #include <abstractions/base>
   
   /dev/pts/[0-9]* w,
-  /dev/dm-[0-9]* rw,
-  /dev/md[0-9]* rw,
-  /dev/loop[0-9]* rw,
-  /dev/sd[a-z][0-9]* rw,
-  /dev/zd[0-9]* rw,
+  /dev/{dm-,loop,md,sd[a-z],zd}[0-9]* rw,
   @{PROC}/swaps r,
   @{PROC}/@{pid}/mounts r,
   

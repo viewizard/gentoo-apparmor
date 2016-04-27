@@ -20,38 +20,25 @@ profile gnome-nettool /usr/bin/gnome-nettool {
   #include <abstractions/dconf>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
-
-
+  
   /dev/tty rw,
-
+  
+  /sys/devices/{virtual,pci**}/net/*/statistics/* r,
   owner @{PROC}/@{pid}/fd/ r,
-  @{PROC}/@{pid}/net/dev r,
-  /sys/devices/virtual/net/*/statistics/* r,
-  /sys/devices/pci**/net/*/statistics/* r,
-
-
+  @{PROC}/@{pid}/net/{dev,tcp,udp,udplite,raw,igmp} r,
+  
   /usr/bin/gnome-nettool r,
   /bin/ping Px,
   /usr/sbin/tracepath ix,
   /usr/bin/finger ix,
-  
-  /usr/share/nmap/* r,
   /usr/bin/nmap ix,
-  
-  /etc/ssl/openssl.cnf r,
   /usr/bin/dig ix,
-    
-  /etc/whois.conf r,
   /usr/bin/whois ix,
-  
-  @{PROC}/@{pid}/net/tcp r,
-  @{PROC}/@{pid}/net/udp r,
-  @{PROC}/@{pid}/net/udplite r,
-  @{PROC}/@{pid}/net/raw r,
-  @{PROC}/@{pid}/net/igmp r,
   /bin/netstat ix,
   
-  /usr/share/gnome-nettool/ r,
-  /usr/share/gnome-nettool/** r,
+  /etc/whois.conf r,
+  /etc/ssl/openssl.cnf r,
+  /usr/share/nmap/* r,
+  /usr/share/gnome-nettool/{,**} r,
   
 }

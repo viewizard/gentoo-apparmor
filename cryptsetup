@@ -24,12 +24,9 @@ profile cryptsetup /sbin/cryptsetup flags=(complain) {
   capability sys_admin,
   
   /dev/pts/[0-9]* rw,
-  /dev/NULL w,
-  /dev/sd[a-z] rw,
-  /dev/sd[a-z][1-9]* rw,
-  /dev/dm-[0-9]* rw,
-  /dev/md[0-9]* rw,
-  /dev/zd[0-9]* rw,
+  /dev/null rw,
+  /dev/sd[a-z]{,[0-9]*} rw,
+  /dev/{dm-,md,zd}[0-9]* rw,
   /dev/mapper/ r,
   /dev/mapper/control rw,
   /sys/devices/virtual/bdi/*/read_ahead_kb r,
@@ -56,7 +53,6 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
   /sbin/mkswap Px,
   /sbin/cryptsetup Px,
   
-  /etc/init.d/dmcrypt r,
-  /etc/conf.d/dmcrypt r,
+  /etc/{conf,init}.d/dmcrypt r,
   
 }

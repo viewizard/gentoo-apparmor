@@ -30,18 +30,18 @@ profile claws-mail /usr/bin/claws-mail {
   /dev/tty[0-9]* w,
   
   /usr/bin/claws-mail mr,
-  /usr/lib64/claws-mail/plugins/* m,
+  
+  /usr/lib64/claws-mail/plugins/*.so m,
+  /usr/lib64/libproxy/**.so m,
   /usr/share/claws-mail/** r,
-  /usr/lib64/libproxy/** m,
-
-  owner @{HOME}/.claws-mail/ rw,
-  owner @{HOME}/.claws-mail/** rw,
+  
+  owner @{HOME}/.claws-mail/{,**} rw,
   owner @{HOME}/Mail/ rw,
   owner @{HOME}/Mail/** rwl,
   owner @{HOME_CACHE}/webkit/ rw,
   owner @{HOME_CACHE}/webkit/** rwk,
-
-  # noise
+  
+  # Noisy
   deny / r,
   deny owner @{HOME}/* r,
   

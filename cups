@@ -17,7 +17,7 @@ profile cups /usr/sbin/cupsd {
   #include <abstractions/nameservice>
   #include <abstractions/perl>
   #include <abstractions/authentication>
-
+  
   capability chown,
   capability dac_override,
   capability fowner,
@@ -26,13 +26,13 @@ profile cups /usr/sbin/cupsd {
   capability setgid,
   capability setuid,
   capability kill,
-
+  
   /bin/bash ixr, # FIX ME!
   /bin/cat ix,
-
+  
   /usr/bin/foomatic-rip ixr,
   /etc/foomatic/** r,
-
+  
   /usr/bin/gs ix,
   /usr/bin/pdftops ix,
   /usr/lib/ghostscript/** m,
@@ -57,7 +57,7 @@ profile cups /usr/sbin/cupsd {
   /sys/class/ r,
   /sys/devices/pci**/usb**/ r,
   /sys/devices/pci**/usb**/* r,
-
+  
   /dev/lp0 rw,
   /dev/tty rw,
   /dev/ttyS? w,

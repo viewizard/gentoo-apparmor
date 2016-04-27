@@ -31,11 +31,9 @@ profile audacious /usr/bin/audacious {
   
   /usr/bin/audacious r,
   
-  /usr/lib64/audacious/ r,
-  /usr/lib64/audacious/*/ r,
-  /usr/lib64/audacious/*/* mr,
-  /usr/share/audacious/ r,
-  /usr/share/audacious/** r,
+  /usr/lib64/audacious/{,*/} r,
+  /usr/lib64/audacious/*/*.so mr,
+  /usr/share/audacious/{,**} r,
   
   owner @{HOME}/.config/audacious/ rw,
   owner @{HOME}/.config/audacious/** rwk,
