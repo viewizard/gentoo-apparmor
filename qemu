@@ -20,7 +20,6 @@ profile qemu /usr/bin/qemu-system-x86_64 flags=(complain) {
   #include <abstractions/user-tmp>
   #include <local/qemu-custom>
   
-  
   /dev/tty[0-9]* w,
   
   /dev/kvm rw,
@@ -31,9 +30,7 @@ profile qemu /usr/bin/qemu-system-x86_64 flags=(complain) {
   /dev/zd* rw,
   
   /etc/machine-id r,
-  /usr/share/qemu/ r,
-  /usr/share/qemu/** r,
-  /usr/share/vgabios/ r,
-  /usr/share/vgabios/* r,
+  /usr/share/qemu/{,**} r,
+  /usr/share/vgabios/{,*} r,
   
 }

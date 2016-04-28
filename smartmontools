@@ -16,9 +16,7 @@ profile smartmontools.smartd /usr/sbin/smartd {
   
   /dev/ r,
   /dev/sd[a-z] r,
-  /sys/devices/pci**/usb*/**/idVendor r,
-  /sys/devices/pci**/usb*/**/idProduct r,
-  /sys/devices/pci**/usb*/**/bcdDevice r,
+  /sys/devices/pci**/usb[0-9]*/**/{idVendor,idProduct,bcdDevice} r,
   @{PROC}/devices r,
   
   /usr/sbin/smartd r,
@@ -53,8 +51,7 @@ profile smartmontools.init.d /etc/init.d/smartd {
   
   /usr/sbin/smartd Px,
   
-  /etc/init.d/smartd r,
-  /etc/conf.d/smartd r,
+  /etc/{conf,init}.d/smartd r,
   
   /run/smartd.pid rwk,
   

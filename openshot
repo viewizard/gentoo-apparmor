@@ -27,7 +27,7 @@ profile openshot /usr/lib{,32,64}/python-exec/python2.[0-9]*/openshot flags=(com
   #include <abstractions/nameservice>
   
   /dev/tty rw,
-  /dev/tty[0-9]* rw,
+  /dev/tty[0-9]* w,
   
   /bin/bash ix,
   /sbin/ldconfig ix,
@@ -37,8 +37,7 @@ profile openshot /usr/lib{,32,64}/python-exec/python2.[0-9]*/openshot flags=(com
   /usr/lib64/frei0r-1/*.so m,
   /usr/share/mlt/** r,
   
-  owner @{HOME}/.openshot/ rw,
-  owner @{HOME}/.openshot/** rw,
+  owner @{HOME}/.openshot/{,**} rw,
   
   # Noisy
   deny /usr/lib64/python2.7/site-packages/cairo/__init__.pyc w,

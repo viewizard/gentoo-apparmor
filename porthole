@@ -20,22 +20,19 @@ profile porthole /usr/lib{,32,64}/python-exec/python2.[0-9]*/porthole {
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   
-  
   /dev/tty[0-9]* w,
   /dev/pts/[0-9]* rw,
   /dev/ptmx rw,
-
+  
   /bin/bash cx -> shell,
   
   /usr/bin/sandbox ixr,
   /etc/sandbox.conf r,
-  /etc/sandbox.d/ r,
-  /etc/sandbox.d/* r,
-
+  /etc/sandbox.d/{,*} r,
+  
   /usr/portage/** r,
   /usr/local/portage/** r,
-  /var/db/pkg/ r,
-  /var/db/pkg/** r,  
+  /var/db/pkg/{,**} r,  
   /etc/portage/** r,
   /etc/profile.env r,
   /usr/share/portage/** r,
@@ -46,8 +43,7 @@ profile porthole /usr/lib{,32,64}/python-exec/python2.[0-9]*/porthole {
   /usr/share/gtksourceview-2.0/** r,
   /usr/share/porthole/** r,
   
-  owner @{HOME}/.porthole/ rw,
-  owner @{HOME}/.porthole/prefs.xml rw,
+  owner @{HOME}/.porthole/{,prefs.xml} rw,
   
   # Noisy
   deny /usr/lib64/python2.7/site-packages/cairo/__init__.pyc w,

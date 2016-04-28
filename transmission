@@ -33,9 +33,7 @@ profile transmission /usr/bin/transmission-* {
   
   /etc/ssl/openssl.cnf r,
   
-  owner @{HOME_CACHE}/transmission/ rw,
-  owner @{HOME_CACHE}/transmission/** rw,
-  owner @{HOME}/.config/transmission/ rw,
-  owner @{HOME}/.config/transmission/** rw,
+  owner @{HOME_CACHE}/transmission/{,**} rw,
+  owner @{HOME}/.config/transmission/{,**} rw,
   
 }

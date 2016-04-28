@@ -33,13 +33,11 @@ profile vlc /usr/bin/vlc {
   /usr/bin/vlc r,
   /usr/bin/xdg-screensaver Pxr,
   
-  /usr/lib64/vlc/ r,
-  /usr/lib64/vlc/** r,
+  /usr/lib64/vlc/{,**} r,
   
   owner @{HOME}/.config/vlc/ rw,
   owner @{HOME}/.config/vlc/** rwk,
-  owner @{HOME}/.local/share/vlc/ rw,
-  owner @{HOME}/.local/share/vlc/** rw,
+  owner @{HOME}/.local/share/vlc/{,**} rw,
   
   # Noisy
   deny /usr/lib64/vlc/** w,

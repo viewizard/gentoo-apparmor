@@ -22,17 +22,17 @@ profile teamspeak /usr/bin/teamspeak3 {
   #include <abstractions/ssl_certs>
   #include <abstractions/user-tmp>
   #include <abstractions/X>
-
+  
   /dev/tty rw,
   /dev/tty[0-9]* w,
   owner @{PROC}/@{pid}/auxv r,
-
+  
   /bin/bash r,
   /usr/bin/teamspeak3 r,
   /opt/teamspeak3-client/ r,
   /opt/teamspeak3-client/** rkix,
   deny /opt/teamspeak3-client/** w,
-
+  
   owner @{HOME}/.ts3client/ rw,
   owner @{HOME}/.ts3client/** rwk,
   

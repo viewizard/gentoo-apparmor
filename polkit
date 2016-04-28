@@ -15,12 +15,10 @@ profile polkit.polkitd /usr/lib{,32,64}/polkit-1/polkitd {
   
   capability setgid,
   capability setuid,
-
-  /etc/polkit-1/ r,
-  /etc/polkit-1/** r,
-
-  /usr/share/polkit-1/ r,
-  /usr/share/polkit-1/** r,
+  
+  /etc/polkit-1/{,**} r,
+  
+  /usr/share/polkit-1/{,**} r,
   
   /run/ConsoleKit/database r,
   

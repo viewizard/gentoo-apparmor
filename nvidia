@@ -28,8 +28,7 @@ profile nvidia-settings /{usr,opt}/bin/nvidia-settings {
   /{usr,opt}/bin/nvidia-settings r,
   /bin/bash Cx -> shell,
   
-  /usr/share/nvidia/ r,
-  /usr/share/nvidia/** r,
+  /usr/share/nvidia/{,**} r,
   
   /etc/conf.d/gpm r,
   owner /tmp/.* m,
@@ -38,7 +37,7 @@ profile nvidia-settings /{usr,opt}/bin/nvidia-settings {
   
   # Noisy
   deny @{HOMEDIRS}/* w,
-  @{HOMEDIRS}/*/ w,
+  deny @{HOMEDIRS}/*/ w,
   
   
   profile shell {

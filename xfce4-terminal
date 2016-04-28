@@ -37,19 +37,17 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
   /etc/terminfo/x/xterm r,
   /usr/share/ r,
   /usr/share/xfce4/ r,
-  /usr/share/xfce4/terminal/ r,
-  /usr/share/xfce4/terminal/** r,
+  /usr/share/xfce4/terminal/{,**} r,
   /usr/share/vte/termcap-0.0/xterm r,
   
   owner @{HOME}/.local/share/ r,
   owner @{HOME}/.local/share/xfce4/ r,
-  owner @{HOME}/.local/share/xfce4/terminal/ r,
-  owner @{HOME}/.local/share/xfce4/terminal/** r,
+  owner @{HOME}/.local/share/xfce4/terminal/{,**} r,
   owner @{HOME}/.config/xfce4/terminal/* rw,
   owner @{HOME}/.config/xfce4/help.rc* rw,
   owner @{HOME}/.dbus/ rw,
   owner @{HOME}/.dbus/** rw,
-
+  
   
   profile gnome-pty-helper /usr/libexec/gnome-pty-helper {
     #include <abstractions/base>
@@ -60,7 +58,7 @@ profile xfce4-terminal /usr/bin/xfce4-terminal flags=(complain) {
     capability setuid,
     capability setgid,
     capability fsetid,
-
+    
     /dev/pts/[0-9]* rw,
     /dev/ptmx rw,
     

@@ -30,19 +30,15 @@ profile xsane /usr/bin/xsane flags=(complain) {
   /sys/bus/usb/devices/ r,
   /sys/bus/scsi/devices/ r,
   /sys/class/ r,
-  /sys/devices/pci**/usb*/** r,
-  /sys/devices/pci**/ata*/** r,
+  /sys/devices/pci**/{ata,usb}[0-9]*/** r,
   
   /usr/bin/xsane r,
   
   /etc/udev/udev.conf r,
-  /etc/sane.d/ r,
-  /etc/sane.d/** r,
+  /etc/sane.d/{,**} r,
 
-  /usr/share/sane/xsane/ r,
-  /usr/share/sane/xsane/** r,
+  /usr/share/sane/xsane/{,**} r,
   
-  owner @{HOME}/.sane/ rw,
-  owner @{HOME}/.sane/** rw,
+  owner @{HOME}/.sane/{,**} rw,
   
 }

@@ -38,12 +38,10 @@ profile thunar /usr/bin/{Thunar,thunar} {
   
   /dev/tty rw,
   /dev/tty[0-9]* w,
+  /sys/devices/pci**/uevent r,
+  /sys/devices/virtual/block/md[0-9]*/uevent r,
   @{PROC}/@{pid}/fd/ r,
   owner @{PROC}/@{pid}/mountinfo r,
-  
-  /sys/devices/pci**/uevent r,
-  /sys/devices/virtual/block/md*/uevent r,
-  /run/udev/data/* r,
   
   /usr/bin/thunar mr,
   /bin/bash Cxr -> shell,
@@ -52,18 +50,19 @@ profile thunar /usr/bin/{Thunar,thunar} {
   /usr/bin/dbus-daemon Px,
   
   /etc/udev/udev.conf r,
-  /usr/lib64/thunarx-2/* m,
+  /usr/lib64/thunarx-2/*.so m,
   /usr/share/ r,
   /usr/local/share/ r,
   /usr/share/Thunar/ r,
   /usr/share/Thunar/sendto/ r,
   /usr/share/Thunar/sendto/*.desktop r,
   
+  /run/udev/data/* r,
+  
   owner @{HOME}/.config/Thunar/ rw,
   owner @{HOME}/.config/Thunar/** rwk,
   owner @{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
-  owner @{HOME}/.local/share/gvfs-metadata/ rw,
-  owner @{HOME}/.local/share/gvfs-metadata/** rw,
+  owner @{HOME}/.local/share/gvfs-metadata/{,**} rw,
   
   
   profile shell {
@@ -114,13 +113,11 @@ profile thunar_root {
   
   /dev/tty rw,
   /dev/tty[0-9]* w,
+  /sys/devices/pci**/uevent r,
+  /sys/devices/virtual/block/md[0-9]*/uevent r,
   @{PROC}/@{pid}/fd/ r,
   owner @{PROC}/@{pid}/mountinfo r,
   
-  /sys/devices/pci**/uevent r,
-  /sys/devices/virtual/block/md*/uevent r,
-  /run/udev/data/* r,
-
   /usr/bin/thunar mr,
   /bin/bash Cxr -> shell,
   /bin/env Cx -> env,
@@ -128,18 +125,19 @@ profile thunar_root {
   /usr/bin/dbus-daemon Px,
   
   /etc/udev/udev.conf r,
-  /usr/lib64/thunarx-2/* m,
+  /usr/lib64/thunarx-2/*.so m,
   /usr/share/ r,
   /usr/local/share/ r,
   /usr/share/Thunar/ r,
   /usr/share/Thunar/sendto/ r,
   /usr/share/Thunar/sendto/*.desktop r,
   
+  /run/udev/data/* r,
+  
   owner @{HOME}/.config/Thunar/ rw,
   owner @{HOME}/.config/Thunar/** rwk,
   owner @{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
-  owner @{HOME}/.local/share/gvfs-metadata/ rw,
-  owner @{HOME}/.local/share/gvfs-metadata/** rw,
+  owner @{HOME}/.local/share/gvfs-metadata/{,**} rw,
   
   
   profile shell {

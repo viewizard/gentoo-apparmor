@@ -34,8 +34,7 @@ profile smplayer /usr/bin/smplayer {
   /usr/bin/mplayer ix,
   /usr/bin/aplay ix,
   
-  /usr/share/smplayer/ r,
-  /usr/share/smplayer/** r,
+  /usr/share/smplayer/{,**} r,
   # mplayer
   /etc/mplayer/mplayer.conf r,
   /etc/terminfo/l/linux r,
@@ -45,8 +44,7 @@ profile smplayer /usr/bin/smplayer {
   owner @{HOME}/.config/smplayer/ rw,
   owner @{HOME}/.config/smplayer/** rwk,
   owner @{HOME}/mplayer.log rw,
-  owner @{HOME}/.mplayer/ rw,
-  owner @{HOME}/.mplayer/config rw,
+  owner @{HOME}/.mplayer/{,config} rw,
   
   # Noisy
   deny @{HOMEDIRS}/* w,

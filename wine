@@ -23,15 +23,15 @@ profile wine /usr/bin/wine {
   
   capability sys_ptrace,
   
-  /usr/bin/ntlm_auth rPx,
-  /usr/bin/wine mr,
-  /usr/bin/wine-preloader Px,
-  /usr/bin/wineserver rPx,
-  
   @{PROC}/cpuinfo r,
   @{PROC}/meminfo r,
   @{PROC}/scsi/scsi r,
   owner @{PROC}/@{pid}/mem r,
+  
+  /usr/bin/ntlm_auth rPx,
+  /usr/bin/wine mr,
+  /usr/bin/wine-preloader Px,
+  /usr/bin/wineserver rPx,
   
   /usr/share/wine/** rk,
   

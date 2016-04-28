@@ -12,24 +12,22 @@
 profile tor /usr/bin/tor {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-
+  
   capability setgid,
   capability setuid,
   capability net_bind_service,
   
   /dev/pts/[0-9]* rw,
-  @{PROC}/sys/kernel/random/uuid r,
   /sys/devices/system/cpu/ r,
+  @{PROC}/sys/kernel/random/uuid r,
   
   /usr/bin/tor r,
   
-  /etc/tor/ r,
-  /etc/tor/* r,
+  /etc/tor/{,*} r,
   
   /usr/share/tor/** r,
   /var/lib/tor/** rwk,
-  /run/tor/ rw,
-  /run/tor/tor.pid rw,
+  /run/tor/{,tor.pid} rw,
   
 }
 
@@ -44,8 +42,7 @@ profile tor.init.d /etc/init.d/tor {
   
   /usr/bin/tor Px,
   
-  /etc/init.d/tor r,
-  /etc/conf.d/tor r,
+  /etc/{conf,init}.d/tor r,
   
   /run/tor/ w,
   /run/tor/tor.pid rwk,

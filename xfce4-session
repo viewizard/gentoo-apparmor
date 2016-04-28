@@ -22,13 +22,13 @@ profile xfce4-session /usr/bin/xfce4-session {
   #include <abstractions/executable-binary-programs>
   #include <local/xfce4-session-custom-exec>
   
-  
   /dev/tty[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
   
   /usr/bin/xfce4-session rmPx,
   /bin/bash Cx -> shell,
   /bin/env Cx -> env,
+  /bin/true ix,
   /usr/bin/dbus-daemon Px,
   /usr/bin/ssh-agent Px,
   /usr/bin/gpg-agent Px,
@@ -41,19 +41,14 @@ profile xfce4-session /usr/bin/xfce4-session {
   owner @{HOME}/.ICEauthority* w,
   
   /etc/xdg/ r,
-  /etc/xdg/autostart/ r,
-  /etc/xdg/autostart/* r,
+  /etc/xdg/autostart/{,*} r,
   
   owner @{HOME}/.xfce4-session.verbose-log* rw,
   owner @{HOME}/.config/ r,
-  owner @{HOME}/.config/autostart/ r,
-  owner @{HOME}/.config/autostart/* r,
-  owner @{HOME}/.dbus/session-bus/ rw,
-  owner @{HOME}/.dbus/session-bus/* rw,
-
+  owner @{HOME}/.config/autostart/{,*} r,
+  owner @{HOME}/.dbus/session-bus/{,*} rw,
   owner @{HOME_CACHE}/sessions/ rw,
-  owner @{HOME_CACHE}/sessions/thumbs*/ rw,
-  owner @{HOME_CACHE}/sessions/thumbs*/*.png rw,
+  owner @{HOME_CACHE}/sessions/thumbs*/{,*.png} rw,
   owner @{HOME_CACHE}/gpg-agent-info rw,
   
   
@@ -108,8 +103,7 @@ profile xfce4-session-settings /usr/bin/xfce4-session-settings {
   
   /usr/bin/xfce4-session-settings r,
   /etc/xdg/ r,
-  /etc/xdg/autostart/ r,
-  /etc/xdg/autostart/* r,
+  /etc/xdg/autostart/{,*} r,
   
   owner @{HOME}/.config/ r,
   owner @{HOME}/.config/autostart/ r,

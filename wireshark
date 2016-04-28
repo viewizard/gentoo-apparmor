@@ -42,11 +42,9 @@ profile wireshark /usr/bin/{tshark,wireshark} {
   /usr/bin/dumpcap ix,
 
   /etc/libnl/classid r,
-  /usr/share/wireshark/ r,
-  /usr/share/wireshark/** r,
-  /usr/lib64/wireshark/plugins/** m,
+  /usr/share/wireshark/{,**} r,
+  /usr/lib64/wireshark/plugins/**{la,so} m,
   
-  owner @{HOME}/.wireshark/ rw,
-  owner @{HOME}/.wireshark/** rw,
+  owner @{HOME}/.wireshark/{,**} rw,
   
 }

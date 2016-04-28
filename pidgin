@@ -42,11 +42,7 @@ profile pidgin /usr/bin/pidgin {
   /usr/lib64/libvisual-*/**.so rm,
   /usr/lib64/pidgin/*.so rm,
   /usr/lib64/purple*/*.so rm,
-  /usr/share/purple/ca-certs/ r,
-  /usr/share/purple/ca-certs/** r,
-  
-  owner /tmp/orbit-*/* w,
-  owner /tmp/pulse-*/* w,
+  /usr/share/purple/ca-certs/{,**} r,
   
   owner @{HOME}/.purple/ rw,
   owner @{HOME}/.purple/** rwkm,

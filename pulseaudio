@@ -16,31 +16,27 @@ profile pulseaudio /usr/bin/pulseaudio {
   #include <abstractions/user-tmp>
   #include <abstractions/X>
   
-
   /sys/bus/ r,
   /sys/class/ r,
   /sys/class/sound/ r,
   /sys/devices/pci**/sound/card*/uevent r,
   /sys/devices/pci**/sound/card*/pcm*/pcm_class r,
-  /run/udev/data/+sound:card* r,
-  /run/user/*/pulse/autospawn.lock rwk,
   /sys/devices/system/cpu/ r,
-  /sys/devices/virtual/dmi/id/sys_vendor r,
-  /sys/devices/virtual/dmi/id/board_vendor r,
-  /sys/devices/virtual/dmi/id/bios_vendor r,
+  /sys/devices/virtual/dmi/id/{sys_vendor,board_vendor,bios_vendor} r,
   owner @{PROC}/@{pid}/fd/ r,
   owner @{PROC}/@{pid}/stat r,
-
+  
   /usr/bin/pulseaudio ixr,
   /usr/libexec/pulse/gconf-helper ix,
   
   /etc/udev/udev.conf r,
-  /usr/lib64/pulseaudio/ r,
-  /usr/lib64/pulseaudio/** r,
+  /usr/lib64/pulseaudio/{,**} r,
   /usr/lib64/pulse-*/modules/** m,
   /usr/share/pulseaudio/** r,
-  /usr/share/applications/ r,
-  /usr/share/applications/* r,
+  /usr/share/applications/{,*} r,
+  
+  /run/udev/data/+sound:card* r,
+  /run/user/*/pulse/autospawn.lock rwk,
   
   owner @{HOME}/.config/pulse/ rw,
   owner @{HOME}/.config/pulse/** rwk,

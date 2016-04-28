@@ -27,48 +27,44 @@ profile skype /opt/bin/skype {
   #include <abstractions/X>
   #include <abstractions/xdg-open>
   
-  @{PROC}/sys/kernel/{ostype,osrelease} r,
-  @{PROC}/@{pid}/net/arp r,
-  @{PROC}/@{pid}/net/dev r,
-  owner @{PROC}/@{pid}/auxv r,
-  owner @{PROC}/@{pid}/task/ r,
-  owner @{PROC}/@{pid}/task/@{pid}/stat r,
-
+  /dev/ r,
+  owner /{dev,run}/shm/pulse-shm* m,
+  /dev/snd/* m,
+  /dev/video* m,
   /sys/devices/**/power_supply/**/online r,
   /sys/class/power_supply/ r,
   /sys/devices/system/cpu/ r,
   /sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_{cur_freq,max_freq} r,
   /sys/devices/system/cpu/cpufreq/policy*/scaling_{cur_freq,max_freq} r,
-  /sys/devices/pci**/net/*/flags r,
-  /sys/devices/virtual/net/*/flags r,
-  /sys/devices/pci**/usb*/**/idVendor r,
-  /sys/devices/pci**/usb*/**/idProduct r,
-
-  /dev/ r,
-  owner /{dev,run}/shm/pulse-shm* m,
-  /dev/snd/* m,
-  /dev/video* m,
-
+  /sys/devices/{pci**,virtual}/net/*/flags r,
+  /sys/devices/pci**/usb*/**/{idVendor,idProduct} r,
+  @{PROC}/sys/kernel/{ostype,osrelease} r,
+  @{PROC}/@{pid}/net/{arp,dev} r,
+  owner @{PROC}/@{pid}/auxv r,
+  owner @{PROC}/@{pid}/task/ r,
+  owner @{PROC}/@{pid}/task/@{pid}/stat r,
+  
   /opt/bin/skype mr,
-  /usr/share/skype/** kr,
+  
+  /usr/share/skype/** rk,
   /usr/share/skype/**/*.qm mr,
-  /usr/share/skype/sounds/*.wav kr,
-
-  owner @{HOME}/.Skype/   rw,
-  owner @{HOME}/.Skype/** krw,
-  owner @{HOME}/.config/               r,
+  /usr/share/skype/sounds/*.wav rk,
+  
+  owner @{HOME}/.Skype/ rw,
+  owner @{HOME}/.Skype/** rwk,
+  owner @{HOME}/.config/ r,
   owner @{HOME}/.config/Skype/Skype.conf rwk,
-  owner @{HOME}/.config/Trolltech.conf kr,
-
+  owner @{HOME}/.config/Trolltech.conf rk,
+  
 #  # Skype traverses the .mozilla directory and needs access to prefs.js
 #  owner @{HOME}/.mozilla/ r,
 #  owner @{HOME}/.mozilla/**/ r,
 #  owner @{HOME}/.mozilla/*/*/prefs.js r,
   deny @{HOME}/.mozilla/ r,
-
+  
   # Skype also looks around in these directories
   /{,usr/,usr/local/}lib/ r,
-
+  
   # Recent skype builds have an executable stack, so it tries to mmap certain
   # files. Let's deny them for now.
   deny /etc/passwd m,

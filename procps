@@ -24,16 +24,13 @@ profile procps.ps /bin/ps {
   @{PROC}/uptime r,
   @{PROC}/sys/kernel/pid_max r,
   @{PROC}/tty/drivers r,
-  @{PROC}/@{pid}/stat r,
-  @{PROC}/@{pid}/status r,
-  @{PROC}/@{pid}/cmdline r,
-  @{PROC}/@{pid}/task/ r,
-  @{PROC}/@{pid}/task/** r,
-
+  @{PROC}/@{pid}/{stat,status,cmdline} r,
+  @{PROC}/@{pid}/task/{,**} r,
+  
   /bin/ps r,
   
   /usr/src/linux-*-{hardened,gentoo}*/System.map r,
-    
+  
 }
 
 
@@ -43,11 +40,10 @@ profile procps.pidof /bin/pidof flags=(complain) {
   capability sys_ptrace,
   
   @{PROC}/ r,
-  @{PROC}/@{pid}/stat r,
-  @{PROC}/@{pid}/cmdline r,
-
+  @{PROC}/@{pid}/{stat,cmdline} r,
+  
   /bin/pidof r,
-    
+  
 }
 
 
@@ -57,12 +53,10 @@ profile procps.pgrep /usr/bin/pgrep flags=(complain) {
   capability sys_ptrace,
   
   @{PROC}/ r,
-  @{PROC}/@{pid}/stat r,
-  @{PROC}/@{pid}/loginuid r,
-  @{PROC}/@{pid}/cmdline r,
-
+  @{PROC}/@{pid}/{stat,cmdline,loginuid} r,
+  
   /usr/bin/pgrep r,
-    
+  
 }
 
 
@@ -78,7 +72,6 @@ profile procps.sysctl /sbin/sysctl flags=(complain) {
   /sbin/sysctl r,
   
   /etc/sysctl.conf r,
-  /etc/sysctl.d/ r,
-  /etc/sysctl.d/* r,
+  /etc/sysctl.d/{,*} r,
   
 }

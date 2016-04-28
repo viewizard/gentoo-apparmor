@@ -13,7 +13,7 @@ profile suricata /usr/bin/suricata {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/user-tmp>
-
+  
   capability setgid,
   capability setuid,
   capability setpcap,
@@ -28,9 +28,8 @@ profile suricata /usr/bin/suricata {
   @{PROC}/@{pid}/net/dev r,
   
   /usr/bin/suricata r,
-
-  /etc/suricata/ r,
-  /etc/suricata/** r,
+  
+  /etc/suricata/{,**} r,
   /usr/share/misc/magic.mgc r,
   
   /var/lib/suricata/** rwk,
@@ -52,8 +51,7 @@ profile suricata.init.d /etc/init.d/suricata {
   /usr/sbin/ethtool Px,
   /usr/bin/suricata Px,
   
-  /etc/suricata/ r,
-  /etc/suricata/** r,
+  /etc/suricata/{,**} r,
   /etc/init.d/suricata r,
   
   /run/suricata.pid rwk,

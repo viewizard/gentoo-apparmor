@@ -19,19 +19,16 @@ profile xfwm4 /usr/bin/xfwm4 {
   #include <abstractions/X>
   #include <abstractions/nameservice>
   
-  
   /dev/tty[0-9]* w,
   owner @{PROC}/@{pid}/fd/ r,
-
+  
   /usr/bin/xfwm4 rm,
   /usr/lib64/xfce4/xfwm4/helper-dialog ix,
-
+  
   /etc/machine-id r,  
-  /usr/share/xfwm4/ r,
-  /usr/share/xfwm4/** r,
-
-  owner @{HOME_CACHE}/sessions/ rw,
-  owner @{HOME_CACHE}/sessions/xfwm4-*.state rw,
+  /usr/share/xfwm4/{,**} r,
+  
+  owner @{HOME_CACHE}/sessions/{,xfwm4-*.state} rw,
   
 }
 
@@ -43,8 +40,7 @@ profile xfwm4-settings /usr/bin/xfwm4{,-tweaks,-workspace}-settings {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-
   
   /usr/bin/xfwm4{,-tweaks,-workspace}-settings r,
-
+  
 }

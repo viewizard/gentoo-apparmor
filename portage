@@ -15,7 +15,6 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
   #include <abstractions/nameservice>
   #include <abstractions/user-tmp>
   
-  
   capability dac_override,
   capability chown,
   capability fsetid,
@@ -112,13 +111,11 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
     /etc/csh.env* rw,
     /etc/wgetrc r,
     /etc/udev/udev.conf r,
-    /etc/java-config-2/build/ r,
-    /etc/java-config-2/build/* r,
+    /etc/java-config-2/build/{,*} r,
     /etc/env.d/* rw,
     /etc/X11/xorg.conf.d/* rw,
     /etc/ld.so.conf r,
-    /etc/ld.so.conf.d/ r,
-    /etc/ld.so.conf.d/* r,
+    /etc/ld.so.conf.d/{,*} r,
     /etc/conf.d/* r,
     /etc/env.d/python/** r,
     /etc/terminfo/x/xterm r,
@@ -196,22 +193,16 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
     /etc/env.d/** r,
     /etc/nvidia/nvidia-application-profiles-rc r,
     /etc/sandbox.conf r,
-    /etc/sandbox.d/ r,
-    /etc/sandbox.d/* r,
+    /etc/sandbox.d/{,*} r,
     /etc/ld.so.conf r,
-    /etc/ld.so.conf.d/ r,
-    /etc/ld.so.conf.d/* r,
+    /etc/ld.so.conf.d/{,*} r,
     /etc/xml/catalog r,
     /etc/xml/docbook r,
     /etc/terminfo/x/xterm r,
-    /etc/portage/env/ r,
-    /etc/portage/env/** r,
-    /etc/portage/patches/ r,
-    /etc/portage/patches/** r,
-    /etc/dpkg/dpkg.cfg.d/ r,
-    /etc/dpkg/dpkg.cfg.d/* r,
-    /etc/xdg/qtchooser/ r,
-    /etc/xdg/qtchooser/* r,
+    /etc/portage/env/{,**} r,
+    /etc/portage/patches/{,**} r,
+    /etc/dpkg/dpkg.cfg.d/{,*} r,
+    /etc/xdg/qtchooser/{,*} r,
     /usr/** r,
     /usr/src/linux-*-hardened/tools/gcc/**.so m,
     
@@ -241,8 +232,7 @@ profile portage.env-update /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/env-u
   /etc/ld.so.conf r,
   /etc/csh.env* rw,
   /etc/profile.env* rw,
-  /etc/env.d/ r,
-  /etc/env.d/* r,
+  /etc/env.d/{,*} r,
   /etc/portage/** r,
   /usr/portage/** r,
   /usr/ r,
@@ -264,8 +254,7 @@ profile portage.env-update /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/env-u
     
     /etc/ld.so.conf r,
     /etc/ld.so.cache* rw,
-    /etc/ld.so.conf.d/ r,
-    /etc/ld.so.conf.d/* r,
+    /etc/ld.so.conf.d/{,*} r,
     /lib{,32,64}/ r,
     /usr/lib{,32,64}/ r,
     /usr/local/lib{,32,64}/ r,
@@ -297,8 +286,7 @@ profile portage.dispatch-conf /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/di
   /usr/local/portage/** r,
   /usr/share/portage/** r,
   
-  /etc/ rw,
-  /etc/** rw,
+  /etc/{,**} rw,
   
   
   profile shell flags=(complain) {
@@ -313,8 +301,7 @@ profile portage.dispatch-conf /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/di
     /bin/uname ix,
     /usr/bin/find ix,
     
-    /etc/ r,
-    /etc/** r,
+    /etc/{,**} r,
     
   }
   
@@ -329,14 +316,10 @@ profile portage.portageq /usr/lib64/python-exec/python[2-3]*.[0-9]*/portageq fla
   /bin/bash Cxr -> shell,
   
   /etc/profile.env r,
-  /etc/portage/ r,
-  /etc/portage/** r,
-  /usr/portage/ r,
-  /usr/portage/** r,
-  /usr/local/portage/ r,
-  /usr/local/portage/** r,
-  /usr/share/portage/ r,
-  /usr/share/portage/** r,
+  /etc/portage/{,**} r,
+  /usr/portage/{,**} r,
+  /usr/local/portage/{,**} r,
+  /usr/share/portage/{,**} r,
   
   
   profile shell flags=(complain) {
@@ -376,16 +359,12 @@ profile portage.repoman /usr/lib64/python-exec/python[2-3]*.[0-9]*/repoman flags
   /etc/profile.env r,
   /etc/wgetrc r,
   /etc/terminfo/x/xterm r,
-  /etc/portage/ r,
-  /etc/portage/** r,
-  /usr/portage/ r,
-  /usr/portage/** r,
+  /etc/portage/{,**} r,
+  /usr/portage/{,**} r,
   /usr/portage/distfiles/* wk,
-  /usr/local/portage/ r,
-  /usr/local/portage/** r,
+  /usr/local/portage/{,**} r,
   /usr/local/portage/**/Manifest* rw,
-  /usr/share/portage/ r,
-  /usr/share/portage/** r,
+  /usr/share/portage/{,**} r,
   /var/cache/edb/dep/usr/local/portage/** rw,
   
   owner @{HOME}/.gitconfig r,
@@ -414,16 +393,11 @@ profile portage.repoman /usr/lib64/python-exec/python[2-3]*.[0-9]*/repoman flags
     /usr/lib64/portage/python2.7/ebuild.sh ix,
     
     /etc/sandbox.conf r,
-    /etc/sandbox.d/ r,
-    /etc/sandbox.d/* r,
-    /usr/share/sandbox/ r,
-    /usr/share/sandbox/** r,
-    /etc/portage/ r,
-    /etc/portage/** r,
-    /usr/portage/ r,
-    /usr/portage/** r,
-    /usr/local/portage/ r,
-    /usr/local/portage/** r,
+    /etc/sandbox.d/{,*} r,
+    /usr/share/sandbox/{,**} r,
+    /etc/portage/{,**} r,
+    /usr/portage/{,**} r,
+    /usr/local/portage/{,**} r,
     
     /var/log/sandbox/sandbox-*.log w,
     

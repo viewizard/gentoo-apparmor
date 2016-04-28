@@ -22,24 +22,22 @@ profile xfce4-panel /usr/bin/xfce4-panel {
   
   /dev/tty[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
-
+  
   /usr/bin/xfce4-panel r,
   /usr/lib64/xfce4/panel/wrapper-[1-2].0 Px,
   /usr/lib64/xfce4/panel-plugins/xfce4-*-plugin Px,
   
   /etc/xdg/menus/**.menu r,
   /etc/xdg/menus/applications-merged/ r,
-  /usr/share/xfce4/panel/plugins/ r,
-  /usr/share/xfce4/panel/plugins/*.desktop r,
-  /usr/share/xfce4/panel-plugins/ r,
-  /usr/share/xfce4/panel-plugins/*.desktop r,
-  owner @{HOME}/.config/xfce4/panel/ rw,
+  /usr/share/xfce4/panel/plugins/{,*.desktop} r,
+  /usr/share/xfce4/panel-plugins/{,*.desktop} r,
+  owner @{HOME}/.config/xfce4/panel/{,*.rc*} rw,
   owner @{HOME}/.config/xfce4/panel/launcher-**.desktop r,
-  owner @{HOME}/.config/xfce4/panel/*.rc* rw,
   owner @{HOME}/.config/menus/**.menu rw,
   owner @{HOME}/.config/menus/applications-merged/ r,
   
 }
+
 
 profile xfce4-panel.wrapper-1.0 /usr/lib64/xfce4/panel/wrapper-1.0 {
   #include <abstractions/base>
@@ -62,31 +60,24 @@ profile xfce4-panel.wrapper-1.0 /usr/lib64/xfce4/panel/wrapper-1.0 {
   /usr/share/alacarte/* r,
   /etc/xdg/menus/**.menu r,
   /etc/xdg/menus/applications-merged/ r,
-  /usr/share/desktop-directories/ r,
-  /usr/share/desktop-directories/*.directory r,
+  /usr/share/desktop-directories/{,*.directory} r,
   /opt/**.png r,
   
-  /usr/share/xfce4/weather/icons/**.info r,
-  /usr/share/xfce4/weather/icons/**.png r,
+  /usr/share/xfce4/weather/icons/**.{info,png} r,
   /usr/share/xfce4-notes-plugin/** r,
   
   owner @{HOME}/.face r,
   owner @{HOME}/@{XDG_DESKTOP_DIR}/*.desktop rw,
   owner @{HOME}/.config/menus/**.menu rw,
   owner @{HOME}/.config/menus/applications-merged/ r,
-  owner @{HOME}/.config/xfce4/panel/ rw,
-  owner @{HOME}/.config/xfce4/panel/** rw,
+  owner @{HOME}/.config/xfce4/panel/{,**} rw,
   owner @{HOME}/.config/xfce4/xfce4-notes.gtkrc* rw,
   owner @{HOME_CACHE}/xfce4/ rw,
-  owner @{HOME_CACHE}/xfce4/clipman/ rw,
-  owner @{HOME_CACHE}/xfce4/clipman/* rw,
-  owner @{HOME_CACHE}/xfce4/weather/ rw,
-  owner @{HOME_CACHE}/xfce4/weather/* rw,
+  owner @{HOME_CACHE}/xfce4/clipman/{,*} rw,
+  owner @{HOME_CACHE}/xfce4/weather/{,*} rw,
   owner @{HOME}/.local/share/applications/**.desktop rw,
-  owner @{HOME}/.local/share/desktop-directories/ r,
-  owner @{HOME}/.local/share/desktop-directories/*.directory r,
-  owner @{HOME}/.local/share/notes/ rw,
-  owner @{HOME}/.local/share/notes/** rw,
+  owner @{HOME}/.local/share/desktop-directories/{,*.directory} r,
+  owner @{HOME}/.local/share/notes/{,**} rw,
   
   
   profile env {
@@ -101,6 +92,7 @@ profile xfce4-panel.wrapper-1.0 /usr/lib64/xfce4/panel/wrapper-1.0 {
   }
   
 }
+
 
 profile xfce4-panel.wrapper-2.0 /usr/lib64/xfce4/panel/wrapper-2.0 {
   #include <abstractions/base>
@@ -119,6 +111,7 @@ profile xfce4-panel.wrapper-2.0 /usr/lib64/xfce4/panel/wrapper-2.0 {
   
 }
 
+
 profile xfce4-panel.xfce4-xkb-plugin /usr/lib64/xfce4/panel-plugins/xfce4-xkb-plugin {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -128,10 +121,10 @@ profile xfce4-panel.xfce4-xkb-plugin /usr/lib64/xfce4/panel-plugins/xfce4-xkb-pl
   
   /usr/share/xfce4/xkb/flags/*.svg r,
   
-  owner @{HOME}/.config/xfce4/panel/ rw,
-  owner @{HOME}/.config/xfce4/panel/*.rc* rw,
+  owner @{HOME}/.config/xfce4/panel/{,*.rc*} rw,
   
 }
+
 
 profile xfce4-panel.xfce4-kbdleds-plugin /usr/lib64/xfce4/panel-plugins/xfce4-kbdleds-plugin {
   #include <abstractions/base>
@@ -140,10 +133,10 @@ profile xfce4-panel.xfce4-kbdleds-plugin /usr/lib64/xfce4/panel-plugins/xfce4-kb
   #include <abstractions/X>
   #include <abstractions/gtk>
   
-  owner @{HOME}/.config/xfce4/panel/ rw,
-  owner @{HOME}/.config/xfce4/panel/*.rc* rw,
+  owner @{HOME}/.config/xfce4/panel/{,*.rc*} rw,
   
 }
+
 
 profile xfce4-panel.xfce4-sensors-plugin /usr/lib64/xfce4/panel-plugins/xfce4-sensors-plugin {
   #include <abstractions/base>
@@ -157,14 +150,12 @@ profile xfce4-panel.xfce4-sensors-plugin /usr/lib64/xfce4/panel-plugins/xfce4-se
   /sys/class/power_supply/ r,
   /sys/class/thermal/ r,
   /sys/devices/pci**/i2c-*/name r,
-  /sys/devices/platform/*/ r,
-  /sys/devices/platform/*/** r,
+  /sys/devices/platform/*/{,**} r,
   /sys/module/acpi/parameters/acpica_version r,
   
   /etc/sensors3.conf r,
   /etc/sensors.d/ r,
   
-  owner @{HOME}/.config/xfce4/panel/ rw,
-  owner @{HOME}/.config/xfce4/panel/*.rc* rw,
+  owner @{HOME}/.config/xfce4/panel/{,*.rc*} rw,
   
 }

@@ -34,10 +34,8 @@ profile poedit /usr/bin/poedit flags=(complain) {
   /usr/bin/msgfmt ix,
   /usr/bin/msgcat ix,
   
-  /usr/share/poedit/ r,
-  /usr/share/poedit/** r,
+  /usr/share/poedit/{,**} r,
   
-  owner @{HOME}/.poedit/ rw,
-  owner @{HOME}/.poedit/* rw,
+  owner @{HOME}/.poedit/{,*} rw,
   
 }

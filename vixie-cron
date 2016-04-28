@@ -22,14 +22,11 @@ profile vixie-cron.cron /usr/sbin/cron {
   /usr/sbin/sendmail Px,
   
   /etc/crontab r,
-  /etc/cron.d/ r,
-  /etc/cron.d/* r,
-  /etc/security/limits.d/ r,
-  /etc/security/limits.d/* r,
+  /etc/cron.d/{,*} r,
+  /etc/security/limits.d/{,*} r,
   
   /run/cron.pid rwk,
-  /var/spool/cron/ rw,
-  /var/spool/cron/** rw,
+  /var/spool/cron/{,**} rw,
   
   
   profile shell {
@@ -41,8 +38,7 @@ profile vixie-cron.cron /usr/sbin/cron {
     /bin/rm ix,
     /usr/sbin/run-crons Px,
     
-    /var/spool/cron/lastrun/ rw,
-    /var/spool/cron/lastrun/* rw,
+    /var/spool/cron/lastrun/{,*} rw,
     
   }
   

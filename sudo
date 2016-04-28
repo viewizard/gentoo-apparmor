@@ -15,7 +15,6 @@ profile sudo /usr/bin/sudo {
   #include <abstractions/authentication>
   #include <local/sudo-custom>
   
-  
   capability setuid,
   capability setgid,
   capability chown,
@@ -39,11 +38,9 @@ profile sudo /usr/bin/sudo {
   /usr/libexec/sudo/libsudo_util.so* mr,
   
   /etc/sudoers r,
-  /etc/sudoers.d/ r,
-  /etc/sudoers.d/* r,
+  /etc/sudoers.d/{,*} r,
   /etc/environment r,
-  /etc/security/limits.d/ r,
-  /etc/security/limits.d/* r,
+  /etc/security/limits.d/{,*} r,
   
   /run/utmp rk,
   /run/sudo/ rw,
@@ -151,6 +148,7 @@ profile sudo /usr/bin/sudo {
   
 }
 
+
 profile sudo.askpass /usr/bin/gksu_askpass.sh {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -167,6 +165,7 @@ profile sudo.askpass /usr/bin/gksu_askpass.sh {
   /bin/bash ixr,
   
 }
+
 
 profile sudo.gksudo /usr/bin/{gksu,gksudo} {
   #include <abstractions/base>

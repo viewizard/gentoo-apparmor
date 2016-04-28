@@ -35,10 +35,8 @@ profile openrc /sbin/openrc flags=(complain) {
   /etc/rc.conf r,
   /etc/profile.env r,
   /etc/fstab r,
-  /etc/init.d/ r,
-  /etc/conf.d/ r,
-  /etc/runlevels/ r,
-  /etc/runlevels/** r,
+  /etc/{conf,init}.d/ r,
+  /etc/runlevels/{,**} r,
   /etc/terminfo/l/linux r,
   /etc/terminfo/x/xterm r,
   
@@ -80,12 +78,8 @@ profile openrc.gendepends.sh /lib64/rc/sh/gendepends.sh {
   /etc/exports r,
   /etc/ssh/sshd_config r,
   /etc/zfs/zfs-functions r,
-  /etc/init.d/ r,
-  /etc/init.d/* r,
-  /etc/conf.d/ r,
-  /etc/conf.d/* r,
-  /etc/exports.d/ r,
-  /etc/exports.d/* r,
+  /etc/{conf,init}.d/{,*} r,
+  /etc/exports.d/{,*} r,
   /usr/libexec/rc.apparmor.functions r,
   
 }
@@ -102,8 +96,7 @@ profile openrc.netmount.init.d /etc/init.d/netmount {
   /bin/umount Px,
   
   /etc/fstab r,
-  /etc/init.d/netmount r,
-  /etc/conf.d/netmount r,
+  /etc/{conf,init}.d/netmount r,
   
 }
 
@@ -120,10 +113,8 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont {
   /bin/bash Cx -> shell,
   
   / r,
-  /etc/init.d/consolefont r,
-  /etc/conf.d/consolefont r,
-  /usr/share/consolefonts/ r,
-  /usr/share/consolefonts/** r,
+  /etc/{conf,init}.d/consolefont r,
+  /usr/share/consolefonts/{,**} r,
   /lib64/rc/console/font rw,
   
   
@@ -138,8 +129,7 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont {
     /bin/bash r,
     /bin/gzip ix,
     /lib64/rc/sh/gendepends.sh Px,
-    /usr/share/consolefonts/ r,
-    /usr/share/consolefonts/** r,
+    /usr/share/consolefonts/{,**} r,
     
   }
   
@@ -153,8 +143,7 @@ profile openrc.local.init.d /etc/init.d/local {
   #include <local/openrc-local-scripts>
   
   /etc/init.d/local r,
-  /etc/local.d/ r,
-  /etc/local.d/* r,
+  /etc/local.d/{,*} r,
   
 }
 
@@ -171,8 +160,7 @@ profile openrc.hwclock.init.d /etc/init.d/hwclock {
   /bin/grep ix,
   /sbin/hwclock Px,
   
-  /etc/init.d/hwclock r,
-  /etc/conf.d/hwclock r,
+  /etc/{conf,init}.d/hwclock r,
   
 }
 
@@ -211,8 +199,7 @@ profile openrc.modules.init.d /etc/init.d/modules {
   /etc/init.d/root-ro Px,
   /bin/uname ix,
   
-  /etc/init.d/modules r,
-  /etc/conf.d/modules r,
+  /etc/{conf,init}.d/modules r,
   
 }
 
@@ -226,8 +213,7 @@ profile openrc.fsck.init.d /etc/init.d/fsck {
   /bin/cat ix,
   /sbin/fsck Px,
   
-  /etc/init.d/fsck r,
-  /etc/conf.d/fsck r,
+  /etc/{conf,init}.d/fsck r,
   
 }
 
@@ -278,16 +264,10 @@ profile openrc.root-ro.init.d /etc/init.d/root-ro flags=(complain) {
   /usr/bin/rsync ix,
   
   /etc/init.d/root-ro r,
-  /etc/ r,
-  /etc/** rw,
-  /lib64/rc/ r,
-  /lib64/rc/** r,
-  /root/ r,
-  /root/** r,
-  /media/ r,
-  /media/** rw,
-  /mnt/ r,
-  /mnt/** rw,
+  /{etc,media,mnt}/ r,
+  /{etc,media,mnt}/** rw,
+  /lib64/rc/{,**} r,
+  /root/{,**} r,
   
 }
 
@@ -301,8 +281,7 @@ profile openrc.mtab.init.d /etc/init.d/mtab {
   /bin/bash Cx -> shell,
   
   /etc/mtab w,
-  /etc/init.d/mtab r,
-  /etc/conf.d/mtab r,
+  /etc/{conf,init}.d/mtab r,
   
   
   profile shell {
@@ -331,8 +310,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount {
   /bin/umount Px,
   
   /etc/fstab r,
-  /etc/init.d/localmount r,
-  /etc/conf.d/localmount r,
+  /etc/{conf,init}.d/localmount r,
   
   
   profile shell {
@@ -397,11 +375,8 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc {
   /bin/umount Px,
   
   /etc/fstab r,
-  /etc/init.d/bootmisc r,
-  /etc/conf.d/bootmisc r,
-  /lib64/rc/console/font w,
-  /lib64/rc/console/keymap w,
-  /lib64/rc/console/unicode w,
+  /etc/{conf,init}.d/bootmisc r,
+  /lib64/rc/console/{font,keymap,unicode} w,
   
   /var/log/dmesg w,
   /run/utmp w,
@@ -431,8 +406,7 @@ profile openrc.hostname.init.d /etc/init.d/hostname {
   /etc/init.d/syslog-ng Px,
   /bin/hostname ix,
   
-  /etc/init.d/hostname r,
-  /etc/conf.d/hostname r,
+  /etc/{conf,init}.d/hostname r,
   
   
   profile shell {
@@ -527,10 +501,8 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps {
   /usr/bin/dumpkeys ix,
   
   / r,
-  /etc/init.d/keymaps r,
-  /etc/conf.d/keymaps r,
-  /usr/share/keymaps/ r,
-  /usr/share/keymaps/** r,
+  /etc/{conf,init}.d/keymaps r,
+  /usr/share/keymaps/{,**} r,
   
   /lib64/rc/console/keymap w,
   
@@ -544,8 +516,7 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps {
     /bin/gzip ix,
     /lib64/rc/sh/gendepends.sh Px,
     
-    /usr/share/keymaps/ r,
-    /usr/share/keymaps/** r,
+    /usr/share/keymaps/{,**} r,
     
   }
   
@@ -564,8 +535,7 @@ profile openrc.urandom.init.d /etc/init.d/urandom {
   /bin/dd ix,
   /bin/rm ix,
   
-  /etc/init.d/urandom r,
-  /etc/conf.d/urandom r,
+  /etc/{conf,init}.d/urandom r,
   
   /var/lib/misc/random-seed rw,
   

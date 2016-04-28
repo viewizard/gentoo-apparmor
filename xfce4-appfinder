@@ -23,18 +23,14 @@ profile xfce4-appfinder /usr/bin/{xfrun4,xfce4-appfinder} {
   /usr/bin/xfce4-appfinder r,
   /bin/env Cx -> env,
   
-  /etc/xdg/menus/ r,
-  /etc/xdg/menus/** r,
-  /usr/share/desktop-directories/ r,
-  /usr/share/desktop-directories/* r,
+  /etc/xdg/menus/{,**} r,
+  /usr/share/desktop-directories/{,*} r,
   /usr/lib64/pango/*/modules/* m,
   /opt/**.png r,
   
+  owner @{HOME}/.config/menus/{,**} r,
   owner @{HOME}/.local/share/mime/mime.cache r,
-  owner @{HOME}/.config/menus/ r,
-  owner @{HOME}/.config/menus/** r,
-  owner @{HOME}/.local/share/desktop-directories/ r,
-  owner @{HOME}/.local/share/desktop-directories/* r,
+  owner @{HOME}/.local/share/desktop-directories/{,*} r,
   
   
   profile env {

@@ -17,13 +17,9 @@ profile util-linux.mount /bin/mount flags=(complain) {
   capability chown,
   
   /dev/tty[0-9]* w,
-  /dev/sd[a-z] r,
-  /dev/sd[a-z]* r,
-  /sys/devices/pci**/block/sd[a-z]/ r,
-  /sys/devices/pci**/block/sd[a-z]/dev r,
-  /sys/devices/pci**/block/sd[a-z]/sd[a-z]*/ r,
-  /sys/devices/pci**/block/sd[a-z]/sd[a-z]*/size r,
-  /sys/devices/pci**/block/sd[a-z]/sd[a-z]*/start r,
+  /dev/sd[a-z]{,[0-9]*} r,
+  /sys/devices/pci**/block/sd[a-z]/{,dev} r,
+  /sys/devices/pci**/block/sd[a-z]/sd[a-z][0-9]*/{,size,start} r,
   /sys/devices/virtual/block/dm-*/dm/name r,
   @{PROC}/@{pid}/mountinfo r,
   
@@ -59,11 +55,7 @@ profile util-linux.mkswap /sbin/mkswap flags=(complain) {
   #include <abstractions/base>
   
   /dev/pts/[0-9]* w,
-  /dev/dm-[0-9]* rw,
-  /dev/md[0-9]* rw,
-  /dev/loop[0-9]* rw,
-  /dev/sd[a-z][0-9]* rw,
-  /dev/zd[0-9]* rw,
+  /dev/{dm-,loop,md,sd[a-z],zd}[0-9]* rw,
   /sys/devices/virtual/block/dm-[0-9]*/ r,
   /sys/devices/virtual/block/dm-[0-9]*/dm/uuid r,
   
@@ -80,11 +72,7 @@ profile util-linux.swapon /sbin/swap{on,off} flags=(complain) {
   
   capability sys_admin,
   
-  /dev/dm-[0-9]* rw,
-  /dev/md[0-9]* rw,
-  /dev/loop[0-9]* rw,
-  /dev/sd[a-z][0-9]* rw,
-  /dev/zd[0-9]* rw,
+  /dev/{dm-,loop,md,sd[a-z],zd}[0-9]* rw,
   /sys/devices/virtual/block/dm-[0-9]*/dm/name r,
   @{PROC}/swaps r,
   
@@ -100,20 +88,10 @@ profile util-linux.lsblk /bin/lsblk flags=(complain) {
   
   /dev/pts/[0-9]* w,
   /sys/block/ r,
-  /sys/devices/virtual/block/md[0-9]*/ r,
-  /sys/devices/virtual/block/md[0-9]*/** r,
-  /sys/devices/pci**/ata*/**/type r,
-  /sys/devices/pci**/ata*/**/block/sd[a-z]/ r,
-  /sys/devices/pci**/ata*/**/block/sd[a-z]/** r,
-  /sys/devices/pci**/usb*/**/type r,
-  /sys/devices/pci**/usb*/**/block/sd[a-z]/ r,
-  /sys/devices/pci**/usb*/**/block/sd[a-z]/** r,
-  /sys/devices/virtual/block/dm-[0-9]*/ r,
-  /sys/devices/virtual/block/dm-[0-9]*/** r,
-  /sys/devices/virtual/block/zd[0-9]*/ r,
-  /sys/devices/virtual/block/zd[0-9]*/** r,
-  /sys/devices/virtual/block/loop[0-9]*/ r,
-  /sys/devices/virtual/block/loop[0-9]*/** r,
+  /sys/devices/pci**/{ata,usb}[0-9]*/**/type r,
+  /sys/devices/pci**/{ata,usb}[0-9]*/**/block/sd[a-z]/{,**} r,
+  /sys/devices/virtual/block/md[0-9]*/{,**} r,
+  /sys/devices/virtual/block/{dm-,loop,zd}[0-9]*/{,**} r,
   @{PROC}/swaps r,
   @{PROC}/@{pid}/mountinfo r,
   
@@ -148,12 +126,8 @@ profile util-linux.fsck /sbin/fsck flags=(complain) {
   #include <abstractions/base>
   
   /dev/pts/[0-9]* w,
-  /sys/devices/virtual/block/dm-[0-9]*/ r,
-  /sys/devices/virtual/block/dm-[0-9]*/** r,
-  /sys/devices/pci**/ata*/**/block/sd[a-z]/ r,
-  /sys/devices/pci**/ata*/**/block/sd[a-z]/** r,
-  /sys/devices/pci**/usb*/**/block/sd[a-z]/ r,
-  /sys/devices/pci**/usb*/**/block/sd[a-z]/** r,
+  /sys/devices/virtual/block/dm-[0-9]*/{,**} r,
+  /sys/devices/pci**/{ata,usb}[0-9]*/**/block/sd[a-z]/{,**} r,
   
   /sbin/fsck r,
   /sbin/e2fsck Px,

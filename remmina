@@ -29,16 +29,13 @@ profile remmina /usr/bin/remmina {
   /dev/tty[0-9]* w,
   
   /usr/bin/remmina rm,
-  /usr/lib64/remmina/plugins/** m,
+  /usr/lib64/remmina/plugins/**.so m,
   
   /etc/timezone r,
   /etc/machine-id r,
-  /usr/share/remmina/ r,
-  /usr/share/remmina/** r,
+  /usr/share/remmina/{,**} r,
   
-  owner @{HOME}/.remmina/ rw,
-  owner @{HOME}/.remmina/* rw,
-  owner @{HOME}/.config/freerdp/ rw,
-  owner @{HOME}/.config/freerdp/** rw,
+  owner @{HOME}/.remmina/{,*} rw,
+  owner @{HOME}/.config/freerdp/{,**} rw,
   
 }

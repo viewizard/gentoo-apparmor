@@ -17,9 +17,7 @@ profile psmisc.killall /usr/bin/killall flags=(complain) {
   
   /dev/tty[0-9]* w,
   @{PROC}/ r,
-  @{PROC}/@{pid}/stat r,
-  @{PROC}/@{pid}/status r,
-  @{PROC}/@{pid}/cmdline r,
+  @{PROC}/@{pid}/{stat,status,cmdline} r,
   
   /usr/bin/killall r,
   

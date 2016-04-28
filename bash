@@ -132,7 +132,7 @@ profile bash_root {
   /usr/bin/htop Pxr,
   /usr/bin/mc Pxr -> mc_root,
   /usr/bin/eselect Pxr -> eselect_root,
-  /usr/bin/ntpq Px,
+  /usr/bin/ntpq Pxr,
   /usr/sbin/logcheck Puxr,
   /usr/sbin/aideinit Pxr,
   /usr/sbin/gdisk Pxr,

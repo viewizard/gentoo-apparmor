@@ -16,20 +16,13 @@ profile pmount /usr/bin/pmount flags=(complain) {
   capability setgid,
   
   /dev/tty[0-9]* w,
-  /dev/sd[a-z] r,
-  /dev/sd[a-z][1-9]* r,
+  /dev/sd[a-z]{,[0-9]*} r,
   /sys/class/block/ r,
   /sys/devices/virtual/block/md*/dev r,
-  /sys/devices/pci**/ata*/**/block/sd[a-z]/ r,
-  /sys/devices/pci**/ata*/**/block/sd[a-z]/dev r,
-  /sys/devices/pci**/ata*/**/block/sd[a-z]/sd[a-z][1-9]*/dev r,
-  /sys/devices/pci**/usb*/**/block/sd[a-z]/ r,
-  /sys/devices/pci**/usb*/**/block/sd[a-z]/dev r,
-  /sys/devices/pci**/usb*/**/block/sd[a-z]/removable r,
-  /sys/devices/pci**/usb*/**/block/sd[a-z]/sd[a-z][1-9]*/ r,
-  /sys/devices/pci**/usb*/**/block/sd[a-z]/sd[a-z][1-9]*/dev r,
-  /sys/devices/pci**/usb*/**/block/sd[a-z]/sd[a-z][1-9]*/size r,
-  /sys/devices/pci**/usb*/**/block/sd[a-z]/sd[a-z][1-9]*/start r,
+  /sys/devices/pci**/{ata,usb}[0-9]*/**/block/sd[a-z]/{,dev} r,
+  /sys/devices/pci**/usb[0-9]*/**/block/sd[a-z]/removable r,
+  /sys/devices/pci**/{ata,usb}[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/{,dev} r,
+  /sys/devices/pci**/usb[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/{size,start} r,
   @{PROC}/@{pid}/mounts r,
   
   /usr/bin/pmount r,
@@ -40,8 +33,7 @@ profile pmount /usr/bin/pmount flags=(complain) {
   /etc/pmount.allow r,
   /etc/fstab r,
   
-  /media/pam_usb*/ rw,
-  /media/pam_usb*/** rw,
+  /media/pam_usb*/{,**} rw,
   
   /run/lock/pmount__media_pam_usb* rwk,
   
@@ -63,7 +55,6 @@ profile pmount.pumount /usr/bin/pumount flags=(complain) {
   /etc/pmount.conf r,
   /etc/fstab r,
   
-  /media/pam_usb*/ rw,
-  /media/pam_usb*/** rw,
+  /media/pam_usb*/{,**} rw,
   
 }

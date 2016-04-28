@@ -19,10 +19,10 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
   #include <abstractions/X>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>  # need for CUPS (web browser)
-
+  
   /dev/tty rw,
   owner @{PROC}/@{pid}/fd/ r,
-
+  
   # we can use current profile for binaries:
   /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyboard,-mime,-mouse}-settings{,-editor,-manager} ixr,
   /usr/bin/xfce4-session-settings Pixr,
@@ -46,8 +46,7 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
   /usr/bin/exo-open Px,
 
   /etc/xdg/ r,
-  /etc/xdg/autostart/ r,
-  /etc/xdg/autostart/* r,
+  /etc/xdg/autostart/{,*} r,
   /etc/xdg/menus/xfce-settings-manager.menu r,
   /usr/share/ r,
   /usr/share/mime/ r,
@@ -72,7 +71,7 @@ profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd {
   #include <abstractions/X>
   #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
-
+  
   /dev/tty rw,
   /dev/tty[0-9]* w,
   owner @{PROC}/@{pid}/fd/ r,
@@ -82,5 +81,5 @@ profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd {
   /usr/bin/xflock4 ixr,
   
   /etc/xdg/autostart/xfsettingsd.desktop r,
-
+  
 }
