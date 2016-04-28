@@ -72,8 +72,7 @@ profile lynis /usr/sbin/lynis {
   /usr/sbin/pwck ix,
   /usr/lib64/python-exec/python-exec2 Px,
   
-  / r,
-  /** r,
+  /{,**} r,
   deny /* w,
   
   /run/lynis.pid rw,
@@ -104,8 +103,7 @@ profile lynis /usr/sbin/lynis {
     
     /usr/sbin/smbd r,
     
-    /usr/share/samba/ r,
-    /usr/share/samba/** r,
+    /usr/share/samba/{,**} r,
     
   }
   

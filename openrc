@@ -50,9 +50,13 @@ profile openrc /sbin/openrc flags=(complain) {
   profile shell flags=(complain) {
     #include <abstractions/base>
     
+    capability sys_tty_config,
+    
     /dev/tty rw,
+    /dev/console rw,
     
     /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
     
   }
   

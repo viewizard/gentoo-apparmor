@@ -28,8 +28,7 @@ profile nullmailer-inject /usr/bin/nullmailer-inject {
   /usr/bin/nullmailer-inject r,
   /usr/sbin/nullmailer-queue Px,
   
-  /etc/nullmailer/ r,
-  /etc/nullmailer/* r,
+  /etc/nullmailer/{,*} r,
   
 }
 
@@ -39,8 +38,7 @@ profile nullmailer-queue /usr/sbin/nullmailer-queue {
   
   /usr/sbin/nullmailer-queue r,
   
-  /etc/nullmailer/ r,
-  /etc/nullmailer/* r,
+  /etc/nullmailer/{,*} r,
   
   /var/nullmailer/ r,
   /var/nullmailer/** rwl,
@@ -68,8 +66,7 @@ profile nullmailer-send /usr/sbin/nullmailer-send {
   
   /etc/nullmailer/** r,
   
-  /var/nullmailer/ r,
-  /var/nullmailer/** r,
+  /var/nullmailer/{,**} r,
   /var/nullmailer/queue/** rw,
   
 }
@@ -93,8 +90,7 @@ profile nullmailer.init.d /etc/init.d/nullmailer {
   
   /etc/environment r,
   /etc/init.d/nullmailer r,
-  /etc/security/limits.d/ r,
-  /etc/security/limits.d/* r,
+  /etc/security/limits.d/{,*} r,
   
   /run/nullmailer.pid rwk,
   /run/utmp rk,

@@ -28,12 +28,9 @@ profile mate-screensaver /usr/bin/mate-screensaver {
   /usr/libexec/mate-screensaver/slideshow Px,
   
   /etc/xdg/menus/mate-screensavers.menu r,
-  /usr/share/mate-screensaver/ r,
-  /usr/share/mate-screensaver/** r,
-  /usr/share/{,mate/}desktop-directories/ r,
-  /usr/share/{,mate/}desktop-directories/*.directory r,
-  owner @{HOME}/.local/share/desktop-directories/ r,
-  owner @{HOME}/.local/share/desktop-directories/*.directory r,
+  /usr/share/mate-screensaver/{,**} r,
+  /usr/share/{,mate/}desktop-directories/{,*.directory} r,
+  owner @{HOME}/.local/share/desktop-directories/{,*.directory} r,
   
 }
 
@@ -41,12 +38,11 @@ profile mate-screensaver.sh /usr/bin/mate-screensaver.sh {
   #include <abstractions/base>
   
   /dev/tty rw,
-
+  
   /bin/bash r,
   /usr/bin/mate-screensaver.sh r,
   /bin/grep ix,
   /bin/sleep ixr,
-  
   /bin/ps Px,
   /usr/bin/mate-screensaver Px,
   /usr/bin/xautolock Px,
@@ -63,7 +59,7 @@ profile mate-screensaver-preferences /usr/bin/mate-screensaver-preferences {
   #include <abstractions/X>
   #include <abstractions/gtk>
   #include <abstractions/dconf>
-
+  
   owner @{PROC}/@{pid}/fd/ r,
   
   /usr/bin/mate-screensaver-preferences r,
@@ -73,12 +69,9 @@ profile mate-screensaver-preferences /usr/bin/mate-screensaver-preferences {
   /usr/libexec/mate-screensaver/slideshow Px,
 
   /etc/xdg/menus/mate-screensavers.menu r,
-  /usr/share/mate-screensaver/ r,
-  /usr/share/mate-screensaver/** r,
-  /usr/share/{,mate/}desktop-directories/ r,
-  /usr/share/{,mate/}desktop-directories/*.directory r,
-  owner @{HOME}/.local/share/desktop-directories/ r,
-  owner @{HOME}/.local/share/desktop-directories/*.directory r,
+  /usr/share/mate-screensaver/{,**} r,
+  /usr/share/{,mate/}desktop-directories/{,*.directory} r,
+  owner @{HOME}/.local/share/desktop-directories/{,*.directory} r,
   
 }
 
@@ -113,7 +106,7 @@ profile mate-screensaver.slideshow /usr/libexec/mate-screensaver/slideshow {
   /usr/libexec/mate-screensaver/slideshow r,
   
   /usr/share/backgrounds/cosmos/ r,
-  /usr/local/share/backgrounds/*.{jpg,jpeg,tga,png,bmp} r,
+  /usr/share/backgrounds/cosmos/*.{jpg,jpeg,tga,png,bmp} r,
   /usr/local/share/backgrounds/ r,
   /usr/local/share/backgrounds/*.{jpg,jpeg,tga,png,bmp} r,
   
@@ -123,7 +116,7 @@ profile mate-screensaver-gl-helper /usr/libexec/mate-screensaver-gl-helper {
   #include <abstractions/base>
   #include <abstractions/X>
   #include <abstractions/nvidia>
-
+  
   /usr/libexec/mate-screensaver-gl-helper r,
   
 }
@@ -137,14 +130,13 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
   #include <abstractions/dconf>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
-
+  
   /usr/libexec/mate-screensaver-dialog r,
   /bin/bash Cx -> shell,
   /sbin/unix_chkpwd Px,
   
   /etc/environment r,
-  /usr/share/mate-screensaver/ r,
-  /usr/share/mate-screensaver/** r,
+  /usr/share/mate-screensaver/{,**} r,
   /run/utmp rk,
   
   owner @{HOME}/.face r,

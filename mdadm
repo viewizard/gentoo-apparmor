@@ -21,13 +21,11 @@ profile mdadm /sbin/mdadm flags=(complain) {
   /sys/bus/pci/drivers/ahci/ r,
   /sys/devices/pci**/vendor r,
   /sys/devices/pci**/device r,
-  /sys/devices/virtual/block/md[0-9]*/md/ r,
-  /sys/devices/virtual/block/md[0-9]*/md/component_size r,
-  /sys/devices/virtual/block/md[0-9]*/md/metadata_version r,
+  /sys/devices/virtual/block/md[0-9]*/md/{,component_size,metadata_version} r,
   /sys/devices/virtual/block/md[0-9]*/md/dev-sd[a-z][0-9]*/slot r,
-  /sys/devices/pci**/ata*/**/block/sd[a-z]/sd[a-z][0-9]*/dev r,
-  /proc/mdstat r,
-  /proc/devices r,
+  /sys/devices/pci**/ata[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/dev r,
+  @{PROC}/mdstat r,
+  @{PROC}/devices r,
   
   /etc/mdadm.conf r,
   
@@ -43,8 +41,7 @@ profile mdadm.checkarray /usr/sbin/checkarray flags=(complain) {
   /dev/tty rw,
   /dev/pts/[0-9]* w,
   /sys/block/ r,
-  /sys/devices/virtual/block/md[0-9]*/ r,
-  /sys/devices/virtual/block/md[0-9]*/** r,
+  /sys/devices/virtual/block/md[0-9]*/{,**} r,
   
   /bin/bash r,
   /usr/sbin/checkarray r,
@@ -64,8 +61,7 @@ profile mdadm.init.d /etc/init.d/mdadm {
   /sbin/mdadm Px,
   /bin/rm ix,
   
-  /etc/init.d/mdadm r,
-  /etc/conf.d/mdadm r,
+  /etc/{conf,init}.d/mdadm r,
   
   /run/mdadm.pid rwk,
 }

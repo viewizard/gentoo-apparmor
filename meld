@@ -41,14 +41,11 @@ profile meld /usr/bin/meld {
   /bin/env r,
   /usr/bin/which ix,
   
-  /usr/share/meld/** r,
-  /usr/share/gtksourceview-2.0/ r,
-  /usr/share/gtksourceview-2.0/** r,
+  /usr/share/meld/{,**} r,
+  /usr/share/gtksourceview-2.0/{,**} r,
   
-  owner @{HOME}/.config/meld/ rw,
-  owner @{HOME}/.config/meld/** rw,
-  owner @{HOME}/.local/share/meld/ rw,
-  owner @{HOME}/.local/share/meld/** rw,
+  owner @{HOME}/.config/meld/{,**} rw,
+  owner @{HOME}/.local/share/meld/{,**} rw,
   
   /tmp/ rw,
   /tmp/** rwkl,
@@ -87,14 +84,11 @@ profile meld_root {
   /bin/env r,
   /usr/bin/which ix,
   
-  /usr/share/meld/** r,
-  /usr/share/gtksourceview-2.0/ r,
-  /usr/share/gtksourceview-2.0/** r,
+  /usr/share/meld/{,**} r,
+  /usr/share/gtksourceview-2.0/{,**} r,
   
-  owner @{HOME}/.config/meld/ rw,
-  owner @{HOME}/.config/meld/** rw,
-  owner @{HOME}/.local/share/meld/ rw,
-  owner @{HOME}/.local/share/meld/** rw,
+  owner @{HOME}/.config/meld/{,**} rw,
+  owner @{HOME}/.local/share/meld/{,**} rw,
   
   /tmp/ rw,
   /tmp/** rwkl,

@@ -19,12 +19,10 @@ profile netifrc.init.d /etc/init.d/net.* {
   capability sys_module,
   
   /dev/net/tun rw,
-  /sys/devices/virtual/net/tap*/ r,
-  /sys/devices/virtual/net/tap*/** r,
+  /sys/devices/virtual/net/tap*/{,**} r,
   /sys/devices/virtual/net/br*/ r,
   /sys/devices/virtual/net/br*/** rw,
-  /sys/devices/pci**/net/eth[0-9]*/ r,
-  /sys/devices/pci**/net/eth[0-9]*/** r,
+  /sys/devices/pci**/net/eth[0-9]*/{,**} r,
   @{PROC}/@{pid}/mounts r,
   @{PROC}/@{pid}/net/dev r,
   @{PROC}/sys/net/ipv4/route/flush w,
@@ -45,8 +43,7 @@ profile netifrc.init.d /etc/init.d/net.* {
   /etc/fstab r,
   /etc/resolv.conf w,
   /etc/conf.d/net r,
-  /etc/iproute2/ r,
-  /etc/iproute2/* r,
+  /etc/iproute2/{,*} r,
   
   /run/dhcpcd-*.pid rwk,
   

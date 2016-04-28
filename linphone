@@ -26,13 +26,10 @@ profile linphone /usr/bin/linphone{,c,csh} {
   
   /etc/machine-id r,
   /etc/udev/udev.conf r,
-  /usr/share/linphone/ r,
-  /usr/share/linphone/** r,
-  /usr/share/sounds/linphone/ r,
-  /usr/share/sounds/linphone/** r,
-  /usr/share/pixmaps/linphone/ r,
-  /usr/share/pixmaps/linphone/** r,
-
+  /usr/share/linphone/{,**} r,
+  /usr/share/sounds/linphone/{,**} r,
+  /usr/share/pixmaps/linphone/{,**} r,
+  
   owner @{HOME}/.linphonerc rw,
   owner @{HOME}/.linphone-history.db rwk,
   

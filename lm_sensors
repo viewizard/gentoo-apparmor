@@ -15,14 +15,12 @@ profile lm_sensors.sensors /usr/bin/sensors {
   /sys/class/hwmon/ r,
   /sys/class/i2c-adapter/ r,
   /sys/devices/pci**/i2c-*/name r,
-  /sys/devices/platform/**/ r,
-  /sys/devices/platform/**/name r,
+  /sys/devices/platform/**/{,name} r,
   
   /usr/bin/sensors r,
   
   /etc/sensors3.conf r,
-  /etc/sensors.d/ r,
-  /etc/sensors.d/* r,
+  /etc/sensors.d/{,*} r,
   
 }
 
@@ -37,7 +35,6 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors {
   /bin/mount Px,
   /bin/grep ix,
   
-  /etc/init.d/lm_sensors r,
-  /etc/conf.d/lm_sensors r,
+  /etc/{conf,init}.d/lm_sensors r,
   
 }

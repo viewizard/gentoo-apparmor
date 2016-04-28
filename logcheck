@@ -44,10 +44,8 @@ profile logcheck /usr/sbin/logcheck {
   /usr/sbin/logtail2 ixr,
   /usr/sbin/sendmail Px,
   
-  /etc/logcheck/ r,
-  /etc/logcheck/** r,
-  /usr/share/logtail/ r,
-  /usr/share/logtail/** r,
+  /etc/logcheck/{,**} r,
+  /usr/share/logtail/{,**} r,
   
   /var/log/ r,
   /var/log/messages_logcheck r,

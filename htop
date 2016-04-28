@@ -22,17 +22,14 @@ profile htop /usr/bin/htop {
   @{PROC}/ r,
   @{PROC}/loadavg r,
   @{PROC}/uptime r,
+  @{PROC}/@{pid}/{stat,statm,cmdline} r,
   @{PROC}/@{pid}/task/ r,
-  @{PROC}/@{pid}/statm r,
-  @{PROC}/@{pid}/stat r,
-  @{PROC}/@{pid}/cmdline r,
-  @{PROC}/@{pid}/task/@{pid}/statm r,
-  @{PROC}/@{pid}/task/@{pid}/stat r,
-  @{PROC}/@{pid}/task/@{pid}/cmdline r,
+  @{PROC}/@{pid}/task/@{pid}/{stat,statm,cmdline} r,
   
   /usr/bin/htop r,
   
   /etc/terminfo/x/xterm r,
   
-  owner @{HOME}/.config/htop/htoprc rw,
+  owner @{HOME}/.config/htop/{,htoprc} rw,
+  
 }

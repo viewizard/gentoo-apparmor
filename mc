@@ -30,13 +30,10 @@ profile mc /usr/bin/mc {
   /usr/libexec/mc/cons.saver ix,
   /bin/bash Px -> bash_users,
   
-  /etc/mc/ r,
-  /etc/mc/** r,
+  /etc/mc/{,**} r,
   /etc/terminfo/x/xterm r,
-  /usr/libexec/mc/ r,
-  /usr/libexec/mc/** r,
-  /usr/share/mc/ r,
-  /usr/share/mc/** r,
+  /usr/libexec/mc/{,**} r,
+  /usr/share/mc/{,**} r,
   
 }
 
@@ -58,12 +55,9 @@ profile mc_root flags=(complain) {
   /usr/libexec/mc/cons.saver ix,
   /bin/bash Px -> bash_root,
   
-  /etc/mc/ r,
-  /etc/mc/** r,
+  /etc/mc/{,**} r,
   /etc/terminfo/x/xterm r,
-  /usr/libexec/mc/ r,
-  /usr/libexec/mc/** r,
-  /usr/share/mc/ r,
-  /usr/share/mc/** r,
+  /usr/libexec/mc/{,**} r,
+  /usr/share/mc/{,**} r,
   
 }

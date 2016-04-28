@@ -92,6 +92,8 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
     /sbin/** ixr,
     /opt/ r,
     /opt/** ixr,
+    /lib{,32,64}/ r,
+    /usr/** r,
     /usr/bin/ r,
     /usr/bin/** ixr,
     /usr/sbin/ r,
@@ -103,9 +105,9 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
     /usr/x86_64-pc-linux-gnu/** ixr,
     /usr/src/linux-*-hardened/scripts/** ixr,
     
-    /lib{,32,64}/ r,
-    /etc/ld.so.cache* rw,
+    /usr/bin/dumpcap w,
     
+    /etc/ld.so.cache* rw,
     /etc/profile.env* rw,
     /etc/csh.env* rw,
     /etc/wgetrc r,
@@ -121,8 +123,8 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
     /etc/env.d/python/** r,
     /etc/terminfo/x/xterm r,
     /etc/portage/** r,
-    /usr/** r,
     /usr/portage/** rw,
+    /usr/portage/packages/** rwk,
     /usr/share/applications/** rw,
     /usr/share/icons/hicolor/** rw,
     /usr/lib64/opengl/nvidia/** rw,
@@ -280,7 +282,13 @@ profile portage.dispatch-conf /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/di
   #include <abstractions/nameservice>
   #include <abstractions/user-tmp>
   
+  capability dac_override,
+  
+  /dev/pts/[0-9]* w,
+  @{PROC}/@{pid}/fd/ r,
+  
   /bin/bash Cx -> shell,
+  /usr/bin/diff ix,
   
   /etc/profile.env r,
   /etc/dispatch-conf.conf r,
@@ -289,9 +297,15 @@ profile portage.dispatch-conf /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/di
   /usr/local/portage/** r,
   /usr/share/portage/** r,
   
+  /etc/ rw,
+  /etc/** rw,
+  
   
   profile shell flags=(complain) {
     #include <abstractions/base>
+    
+    capability dac_read_search,
+    capability dac_override,
     
     /dev/tty rw,
     

@@ -16,10 +16,9 @@ profile links /usr/bin/links {
   #include <abstractions/user-download>
   #include <abstractions/user-upload>
   #include <abstractions/user-tmp>
-
+  
   /usr/bin/links r,
-
-  owner @{HOME}/.links/ rw,
-  owner @{HOME}/.links/** rw,
-
+  
+  owner @{HOME}/.links/{,**} rw,
+  
 }
