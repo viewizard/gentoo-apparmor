@@ -64,7 +64,10 @@ profile openrc /sbin/openrc flags=(complain) {
 profile openrc.gendepends.sh /lib64/rc/sh/gendepends.sh {
   #include <abstractions/base>
   
+  capability sys_tty_config,
+  
   /dev/tty rw,
+  /dev/console rw,
   
   /bin/bash r,
   /lib64/rc/sh/gendepends.sh r,

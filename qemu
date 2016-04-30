@@ -23,11 +23,10 @@ profile qemu /usr/bin/qemu-system-x86_64 flags=(complain) {
   /dev/tty[0-9]* w,
   
   /dev/kvm rw,
+  /dev/zd[0-9]* rw,
   /dev/net/tun rw,
   /dev/vhost-net rw,
   /sys/module/vhost/parameters/max_mem_regions r,
-  
-  /dev/zd* rw,
   
   /etc/machine-id r,
   /usr/share/qemu/{,**} r,

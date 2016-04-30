@@ -1,0 +1,97 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile genkernel /usr/bin/genkernel flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  capability mknod,
+  capability sys_chroot,
+  
+  /dev/tty rw,
+  /dev/pts/[0-9]* w,
+  @{PROC}/@{pid}/fd/ r,
+  @{PROC}/@{pid}/mounts r,
+  
+  /usr/bin/genkernel r,
+  /bin/bash r,
+  /bin/uname ix,
+  /bin/sed ix,
+  /bin/mv ix,
+  /bin/cp ix,
+  /bin/grep ix,
+  /bin/egrep ixr,
+  /bin/fgrep ixr,
+  /bin/cat ix,
+  /bin/cut ix,
+  /bin/mkdir ix,
+  /bin/ln ix,
+  /bin/wc ix,
+  /bin/rm ix,
+  /bin/tr ix,
+  /bin/sort ix,
+  /bin/tar ix,
+  /bin/bzip2 ix,
+  /bin/cpio ix,
+  /bin/readlink ix,
+  /bin/mknod ix,
+  /bin/chmod ix,
+  /bin/date ix,
+  /bin/dirname ix,
+  /bin/basename ix,
+  /bin/udevadm Pxr,
+  /bin/echo ix,
+  /sbin/udevd r,
+  /sbin/pdata_tools r,
+  /sbin/dmsetup r,
+  /sbin/cryptsetup r,
+  /sbin/mdadm r,
+  /sbin/mdmon r,
+  /sbin/mdassemble r,
+  /sbin/blkid r,
+  /sbin/lvm r,
+  /sbin/ldconfig ixr,
+  /usr/bin/gawk ix,
+  /usr/bin/md5sum ix,
+  /usr/bin/file ix,
+  /usr/bin/find ix,
+  /usr/bin/pkg-config ix,
+  /usr/bin/realpath ix,
+  /usr/bin/lddtree ixr,
+  /usr/bin/scanelf ix,
+  /usr/bin/uniq ix,
+  /usr/bin/q ix,
+  /usr/bin/id ix,
+  /usr/bin/xargs ix,
+  /usr/bin/xz ix,
+  /usr/x86_64-pc-linux-gnu/binutils-bin/*/strings ix,
+  
+  /etc/genkernel.conf r,
+  /etc/mdadm.conf r,
+  /etc/lvm/lvm.conf r,
+  /etc/udev/udev.conf r,
+  /etc/ld.so.conf r,
+  /etc/ld.so.conf.d/{,*} r,
+  /etc/portage/{,**} r,
+  /usr/portage/profiles/{,**} r,
+  /usr/share/portage/{,**} r,
+  /usr/src/linux-*-{hardened,gentoo}*/{,**} r,
+  /usr/share/genkernel/{,**} r,
+  /usr/share/pkgconfig/{,**} r,
+  /usr/share/misc/magic.mgc r,
+  /boot/initramfs-genkernel-*-{hardened,gentoo}* w,
+  
+  /var/db/pkg/{,**} r,
+  /var/tmp/portage/genkernel/{,**} rw,
+  /var/cache/genkernel/{,**} rw,
+  /var/log/genkernel.log w,
+  
+}

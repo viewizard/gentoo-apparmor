@@ -9,6 +9,11 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
+# config for abstractions/program-work-with-disk-** (**-rk,rwk)
+@{PROG_DIR}="[^.]**"
+@{PROG_FILE}="[^.]*.png"  # xfce4-screenshooter
+
 profile xfce4-panel /usr/bin/xfce4-panel {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -47,6 +52,7 @@ profile xfce4-panel.wrapper-1.0 /usr/lib64/xfce4/panel/wrapper-1.0 {
   #include <abstractions/gtk>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-programs>
+  #include <abstractions/program-work-with-disk-rwk>  # xfce4-screenshooter
   #include <local/xfce4-panel-custom>
   
   /dev/tty[0-9]* w,

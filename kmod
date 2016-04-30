@@ -11,9 +11,11 @@
 #include <tunables/global>
 profile kmod /bin/kmod {
   #include <abstractions/base>
+  #include <abstractions/user-tmp>
   
   capability sys_module,
   
+  /dev/pts/[0-9]* w,
   /sys/module/** r,
   @{PROC}/cmdline r,
   @{PROC}/modules r,
@@ -21,5 +23,7 @@ profile kmod /bin/kmod {
   /bin/kmod r,
   
   /etc/modprobe.d/{,*} r,
+  /lib64/modules/*/modules.* rw,
+  /usr/src/linux-*-{hardened,gentoo}*/System.map r,
   
 }

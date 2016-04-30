@@ -25,7 +25,7 @@ profile bash_default /bin/{bash,rbash,sh} {
   /bin/sed ixr,
   /bin/uname ixr,
   /sbin/mdadm Pxr,
-  /usr/sbin/logcheck Puxr,
+  /usr/sbin/logcheck Pxr,
   
 }
 
@@ -133,7 +133,9 @@ profile bash_root {
   /usr/bin/mc Pxr -> mc_root,
   /usr/bin/eselect Pxr -> eselect_root,
   /usr/bin/ntpq Pxr,
-  /usr/sbin/logcheck Puxr,
+  /usr/bin/genkernel Pxr,
+  /usr/bin/{,g}make Pxr,
+  /usr/sbin/logcheck Pxr,
   /usr/sbin/aideinit Pxr,
   /usr/sbin/gdisk Pxr,
   /usr/sbin/smartctl Pxr,
