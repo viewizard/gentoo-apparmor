@@ -9,14 +9,16 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile logrotate /usr/sbin/logrotate {
+profile logrotate /usr/sbin/logrotate flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
   capability setuid,
   capability setgid,
+  capability chown,
   
   /usr/sbin/logrotate r,
+  /bin/bash Cx -> shell,
   /usr/bin/xz ix,
   
   /etc/logrotate.conf rk,
@@ -30,5 +32,15 @@ profile logrotate /usr/sbin/logrotate {
   # Noisy
   deny / r,
   deny @{HOME}/ r,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    
+  }
   
 }

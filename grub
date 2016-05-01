@@ -1,0 +1,69 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile grub.grub2-mkconfig /usr/sbin/grub2-mkconfig flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/user-tmp>
+  
+  /dev/tty rw,
+  /dev/pts/[0-9]* w,
+  @{PROC}/@{pid}/mountinfo r,
+  
+  /usr/sbin/grub2-mkconfig r,
+  /bin/bash r,
+  /bin/basename ix,
+  /bin/dirname ix,
+  /bin/rm ix,
+  /bin/cat ix,
+  /bin/cut ix,
+  /bin/sed ix,
+  /bin/tr ix,
+  /bin/sort ix,
+  /bin/head ix,
+  /bin/grep ix,
+  /bin/fgrep ixr,
+  /bin/tail ix,
+  /bin/mv ix,
+  /bin/uname ix,
+  /usr/bin/which ix,
+  /usr/bin/gettext ix,
+  /usr/bin/grub2-script-check ix,
+  /usr/bin/grub2-mkrelpath ix,
+  /usr/sbin/grub2-probe Px,
+  /etc/grub.d/{,*} rix,
+  
+  / r,
+  /boot/ r,
+  /boot/grub/grub.cfg* wr,
+  /etc/default/grub r,
+  /usr/share/grub/{,**} r,
+  
+}
+
+
+profile grub.grub2-probe /usr/sbin/grub2-probe flags=(complain) {
+  #include <abstractions/base>
+  
+  capability sys_admin,
+  
+  /dev/{,**/} r,
+  /dev/sd[a-z]{,[0-9]*} r,
+  /dev/dm-[0-9]* r,
+  /dev/mapper/control rw,
+  /sys/devices/pci**/ata[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/start r,
+  /sys/devices/pci**/ata[0-9]*/**/vendor r,
+  @{PROC}/devices r,
+  @{PROC}/@{pid}/mountinfo r,
+  
+  /usr/sbin/grub2-probe r,
+  /bin/udevadm Px,
+  
+}

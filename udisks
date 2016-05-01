@@ -12,6 +12,8 @@
 profile udisks-daemon /usr/lib{,32,64}/udisks/udisks-daemon {
   #include <abstractions/base>
   
+  capability sys_rawio,
+  
   /dev/sd[a-z] r,
   /dev/{dm-,loop,md,zd}[0-9]* r,
   /sys/bus/ r,
@@ -27,10 +29,13 @@ profile udisks-daemon /usr/lib{,32,64}/udisks/udisks-daemon {
   /sys/devices/pci**/{ata,usb}[0-9]*/**/block/sd[a-z]/{,**} r,
   /sys/devices/pci**/{ata,usb}[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/{,**} r,
   @{PROC}/mdstat r,
+  @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/mountinfo r,
   
   /etc/udev/udev.conf r,
   /etc/fstab r,
+  
+  /usr/lib64/udisks/* ix,
   
   /run/udisks/ rw,
   /run/udev/data/* r,
