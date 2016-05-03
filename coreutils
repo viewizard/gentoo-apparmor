@@ -18,3 +18,14 @@ profile coreutils.df /bin/df {
   /bin/df r,
   
 }
+
+
+profile coreutils.stat /usr/bin/stat flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  /dev/pts/[0-9]* w,
+  
+  /usr/bin/stat r,
+  
+}

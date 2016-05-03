@@ -24,6 +24,11 @@ profile xfce4-screenshooter /usr/bin/xfce4-screenshooter {
   #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/executable-binary-helper>
+  #include <abstractions/user-tmp>
+  
+  /dev/tty[0-9]* w,
+  @{PROC}/@{pid}/fd/ r,
   
   /usr/bin/xfce4-screenshooter r,
   /usr/bin/exo-open Px,

@@ -135,6 +135,7 @@ profile bash_root {
   /usr/bin/ntpq Pxr,
   /usr/bin/genkernel Pxr,
   /usr/bin/{,g}make Pxr,
+  /usr/bin/stat Pxr,
   /usr/sbin/logcheck Pxr,
   /usr/sbin/aideinit Pxr,
   /usr/sbin/gdisk Pxr,

@@ -337,8 +337,10 @@ profile portage.repoman /usr/lib64/python-exec/python[2-3]*.[0-9]*/repoman flags
     /bin/bash r,
     /bin/uname ix,
     /bin/rm ix,
+    /sbin/ldconfig ix,
     
     /usr/portage/distfiles/* w,
+    /var/cache/ldconfig/aux-cache* rw,
     
   }
   
@@ -346,6 +348,7 @@ profile portage.repoman /usr/lib64/python-exec/python[2-3]*.[0-9]*/repoman flags
     #include <abstractions/base>
     
     /dev/tty rw,
+    /dev/pts/[0-9]* w,
     
     /usr/bin/sandbox r,
     /bin/bash ixr,
@@ -358,6 +361,7 @@ profile portage.repoman /usr/lib64/python-exec/python[2-3]*.[0-9]*/repoman flags
     /usr/portage/{,**} r,
     /usr/local/portage/{,**} r,
     
+    /var/tmp/portage/**/temp/{,**} w,
     /var/log/sandbox/sandbox-*.log w,
     
   }
