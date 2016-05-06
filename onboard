@@ -1,0 +1,66 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile onboard /usr/bin/onboard {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/python>
+  #include <abstractions/gtk>
+  #include <abstractions/X>
+  #include <abstractions/dconf>
+  
+  /dev/tty[0-9]* w,
+  @{PROC}/@{pid}/fd/ r,
+  
+  /usr/bin/onboard r,
+  /usr/bin/tput ix,
+  
+  /etc/terminfo/l/linux r,
+  /usr/bin/ r,
+  /usr/share/onboard/{,**} r,
+  /usr/share/xml/iso-codes/{,*} r,
+  
+  owner @{HOME}/.local/share/onboard/{,**} rw,
+  
+  # Noisy
+  deny @{HOME}/ r,
+  deny /usr/lib64/python3.4/site-packages/cairo/__pycache__/ w,
+  deny /usr/share/onboard/scripts/__pycache__/ w,
+  
+}
+
+
+profile onboard-settings /usr/bin/onboard-settings {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/python>
+  #include <abstractions/gtk>
+  #include <abstractions/X>
+  #include <abstractions/dconf>
+  
+  /dev/tty[0-9]* w,
+  @{PROC}/@{pid}/fd/ r,
+  
+  /usr/bin/onboard-settings r,
+  /usr/bin/tput ix,
+  
+  /etc/terminfo/l/linux r,
+  /usr/bin/ r,
+  /usr/share/onboard/{,**} r,
+  
+  owner @{HOME}/.local/share/onboard/{,**} rw,
+  
+  # Noisy
+  deny /usr/lib64/python3.4/site-packages/cairo/__pycache__/ w,
+  
+}

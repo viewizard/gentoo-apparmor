@@ -25,12 +25,14 @@ profile mousepad /usr/bin/mousepad {
   #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/dconf>
+  #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk>
   
   capability dac_override,
   
   /dev/tty[0-9]* w,
   /dev/pts/[0-9]* rw,
+  @{PROC}/@{pid}/fd/ r,
   
   /usr/bin/mousepad r,
   /usr/bin/dbus-daemon Px,
@@ -54,6 +56,7 @@ profile mousepad_root {
   #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/dconf>
+  #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/user-systemwide-files>
   
@@ -61,6 +64,7 @@ profile mousepad_root {
   
   /dev/tty[0-9]* w,
   /dev/pts/[0-9]* rw,
+  @{PROC}/@{pid}/fd/ r,
   
   /usr/bin/mousepad r,
   /usr/bin/dbus-daemon Px,
