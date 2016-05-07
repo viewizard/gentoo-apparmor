@@ -46,6 +46,7 @@ profile pmount.pumount /usr/bin/pumount flags=(complain) {
   capability setuid,
   
   /dev/tty[0-9]* w,
+  /dev/pts/[0-9]* w,
   @{PROC}/@{pid}/mounts r,
   
   /usr/bin/pumount r,

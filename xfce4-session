@@ -29,7 +29,7 @@ profile xfce4-session /usr/bin/xfce4-session {
   /bin/bash Cx -> shell,
   /bin/env Cx -> env,
   /bin/true ix,
-  /bin/rm ix,
+  /bin/rm ixr,
   /usr/bin/dbus-daemon Px,
   /usr/bin/ssh-agent Px,
   /usr/bin/gpg-agent Px,
@@ -49,7 +49,7 @@ profile xfce4-session /usr/bin/xfce4-session {
   owner @{HOME}/.config/ r,
   owner @{HOME}/.config/autostart/{,*} r,
   owner @{HOME}/.dbus/session-bus/{,*} rw,
-  owner @{HOME_CACHE}/sessions/ rw,
+  owner @{HOME_CACHE}/sessions/{,*} rw,
   owner @{HOME_CACHE}/sessions/thumbs*/{,*.png} rw,
   owner @{HOME_CACHE}/gpg-agent-info rw,
   
