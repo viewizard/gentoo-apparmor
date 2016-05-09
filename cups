@@ -29,6 +29,8 @@ profile cups /usr/sbin/cupsd {
   
   /bin/bash ixr, # FIX ME!
   /bin/cat ix,
+  /usr/bin/pmount Px,
+  /usr/bin/pumount Px,
   
   /usr/bin/foomatic-rip ixr,
   /etc/foomatic/** r,
@@ -38,7 +40,9 @@ profile cups /usr/sbin/cupsd {
   /usr/lib/ghostscript/** m,
   /usr/lib64/ghostscript/** m,
   /usr/share/ghostscript/** r,
+  /usr/share/ppd/{,**} r,
   /usr/libexec/cups/notifier/ r,
+  /usr/libexec/cups/driver/ r,
   /usr/libexec/cups/daemon/* ix,
   /usr/libexec/cups/cgi-bin/* ix,
   /usr/libexec/cups/filter/* ix,

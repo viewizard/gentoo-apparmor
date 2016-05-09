@@ -60,6 +60,7 @@ profile libreoffice.bin /usr/lib64/libreoffice/program/soffice.bin {
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/dbus-session>
+  #include <abstractions/dconf>
   #include <abstractions/enchant>
   #include <abstractions/gtk>
   #include <abstractions/qt>
@@ -75,6 +76,7 @@ profile libreoffice.bin /usr/lib64/libreoffice/program/soffice.bin {
   /dev/tty[0-9]* w,
   /dev/pts/[0-9]* rw,
   /sys/devices/system/cpu/ r,
+  @{PROC}/version r,
   
   /bin/bash Cxr -> shell,
   
