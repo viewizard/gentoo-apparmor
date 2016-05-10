@@ -28,6 +28,7 @@ profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
   
+  /dev/tty[0-9]* w,
   owner @{PROC}/@{pid}/fd/ rw,
   
   /usr/bin/gimp-* rm,

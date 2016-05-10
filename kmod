@@ -9,12 +9,13 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile kmod /bin/kmod {
+profile kmod /{bin/kmod,sbin/modprobe,sbin/modeinfo} {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
   
   capability sys_module,
   
+  /dev/tty[0-9]* w,
   /dev/pts/[0-9]* w,
   /sys/module/** r,
   @{PROC}/cmdline r,

@@ -69,6 +69,12 @@ profile nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nvidia>
   
+  capability sys_admin,
+  
+  @{PROC}/sys/kernel/modprobe r,
+  
+  /bin/kmod Px,
+  
 }
 
 
