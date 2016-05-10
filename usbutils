@@ -9,33 +9,20 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile qemu /usr/bin/qemu-system-x86_64 flags=(complain) {
+profile usbutils.lsusb /usr/bin/lsusb {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/audio>
-  #include <abstractions/gtk>
-  #include <abstractions/nvidia>
-  #include <abstractions/X>
-  #include <abstractions/user-tmp>
-  #include <local/qemu-custom>
   
-  /dev/tty[0-9]* w,
+  /dev/pts/[0-9]* w,
   
-  /dev/kvm rw,
-  /dev/zd[0-9]* rw,
-  /dev/net/tun rw,
-  /dev/vhost-net rw,
   /dev/bus/usb/ r,
   /sys/bus/ r,
   /sys/bus/usb/devices/ r,
   /sys/class/ r,
   /sys/devices/pci**/usb[0-9]*/** r,
-  /sys/module/vhost/parameters/max_mem_regions r,
   
-  /etc/machine-id r,
+  /usr/bin/lsusb r,
+  
   /etc/udev/udev.conf r,
-  /usr/share/qemu/{,**} r,
-  /usr/share/vgabios/{,*} r,
+  /etc/udev/hwdb.bin r,
   
 }

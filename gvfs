@@ -14,6 +14,7 @@ profile gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monitor {
   #include <abstractions/nameservice>
   
   capability dac_override,
+  capability dac_read_search,
   
   @{PROC}/@{pid}/mounts r,
   /sys/devices/pci**/block/sd[a-z]/sd[a-z][0-9]*/uevent r,

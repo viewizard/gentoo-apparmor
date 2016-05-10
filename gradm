@@ -1,0 +1,47 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile gradm /sbin/gradm flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  /dev/ r,
+  /dev/grsec w,
+  /dev/pts/[0-9]* rw,
+  @{PROC}/@{pid}/mounts r,
+  
+  /sbin/gradm r,
+  /sbin/grlearn Px,
+  
+  / r,
+  /etc/grsec/* r,
+  /etc/grsec/pw rw,
+  /etc/grsec/.grlearn.pipe rw,
+  
+}
+
+
+profile gradm.grlearn /sbin/grlearn flags=(complain) {
+  #include <abstractions/base>
+  
+  capability ipc_lock,
+  capability sys_nice,
+  
+  /dev/grsec r,
+  
+  /sbin/grlearn r,
+  
+  /etc/grsec/* r,
+  /etc/grsec/grlearn.log w,
+  /etc/grsec/.grlearn.pid rw,
+  /etc/grsec/.grlearn.pipe rw,
+  
+}
