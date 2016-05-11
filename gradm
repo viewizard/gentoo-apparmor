@@ -22,9 +22,8 @@ profile gradm /sbin/gradm flags=(complain) {
   /sbin/grlearn Px,
   
   / r,
-  /etc/grsec/* r,
-  /etc/grsec/pw rw,
-  /etc/grsec/.grlearn.pipe rw,
+  /etc/grsec/ r,
+  /etc/grsec/* rw,
   
 }
 
@@ -39,9 +38,7 @@ profile gradm.grlearn /sbin/grlearn flags=(complain) {
   
   /sbin/grlearn r,
   
-  /etc/grsec/* r,
-  /etc/grsec/grlearn.log w,
-  /etc/grsec/.grlearn.pid rw,
-  /etc/grsec/.grlearn.pipe rw,
+  /etc/grsec/ r,
+  /etc/grsec/* rw,
   
 }
