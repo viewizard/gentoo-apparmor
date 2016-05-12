@@ -112,6 +112,8 @@ profile cron.daily/daily_backup.sh /etc/cron.daily/daily_backup.sh flags=(compla
   #include <abstractions/user-tmp>
   
   capability sys_admin,
+  capability dac_override,
+  capability dac_read_search,
   
   /dev/tty rw,
   /dev/null w,
@@ -210,6 +212,9 @@ profile cron.daily/lynis /etc/cron.daily/lynis flags=(complain) {
 
 profile cron.daily/man-db /etc/cron.daily/man-db flags=(complain) {
   #include <abstractions/base>
+  
+  capability dac_override,
+  capability dac_read_search,
   
   /dev/tty rw,
   

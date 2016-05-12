@@ -44,6 +44,9 @@ profile suricata.init.d /etc/init.d/suricata {
   #include <abstractions/openrc>
   #include <abstractions/user-tmp>
   
+  capability dac_override,
+  capability dac_read_search,
+  
   /bin/sed ixr,
   /bin/cat ixr,
   /bin/ps Pxr,

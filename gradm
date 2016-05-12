@@ -33,12 +33,37 @@ profile gradm.grlearn /sbin/grlearn flags=(complain) {
   
   capability ipc_lock,
   capability sys_nice,
+  capability sys_ptrace,
   
   /dev/grsec r,
+  /dev/pts/[0-9]* w,
   
   /sbin/grlearn r,
   
   /etc/grsec/ r,
   /etc/grsec/* rw,
+  
+}
+
+
+profile gradm.init.d /etc/init.d/gradm flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /bin/bash Cx -> shell,
+  /sbin/gradm Px,
+  
+  /etc/init.d/gradm r,
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }

@@ -46,6 +46,8 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy {
   #include <abstractions/openrc>
   
   capability chown,
+  capability dac_override,
+  capability dac_read_search,
   
   /usr/sbin/dnscrypt-proxy Px,
   /bin/chown ix,

@@ -65,6 +65,9 @@ profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  capability dac_override,
+  capability dac_read_search,
+  
   /sbin/zpool Px,
   /sbin/zed Px,
   /bin/rm ix,

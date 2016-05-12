@@ -27,6 +27,9 @@ profile hd-idle.init.d /etc/init.d/hd-idle {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  capability dac_override,
+  capability dac_read_search,
+  
   /usr/sbin/hd-idle Px,
   
   /etc/{conf,init}.d/hd-idle r,

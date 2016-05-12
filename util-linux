@@ -14,6 +14,7 @@ profile util-linux.mount /bin/mount flags=(complain) {
   
   capability sys_admin,
   capability dac_override,
+  capability dac_read_search,
   capability chown,
   
   /dev/tty[0-9]* w,
@@ -110,6 +111,7 @@ profile util-linux.agetty /sbin/agetty {
   capability fsetid,
   capability chown,
   capability dac_override,
+  capability dac_read_search,
   
   /dev/tty[0-9]* rw,
   

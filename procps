@@ -15,6 +15,7 @@ profile procps.ps /bin/ps {
   #include <abstractions/user-tmp>
   
   capability sys_ptrace,
+  capability dac_override,
   capability dac_read_search,
   
   /dev/tty r,
@@ -38,6 +39,8 @@ profile procps.pidof /bin/pidof flags=(complain) {
   #include <abstractions/base>
   
   capability sys_ptrace,
+  capability dac_override,
+  capability dac_read_search,
   
   @{PROC}/ r,
   @{PROC}/@{pid}/{stat,cmdline} r,
@@ -51,6 +54,8 @@ profile procps.pgrep /usr/bin/pgrep flags=(complain) {
   #include <abstractions/base>
   
   capability sys_ptrace,
+  capability dac_override,
+  capability dac_read_search,
   
   @{PROC}/ r,
   @{PROC}/@{pid}/{stat,cmdline,loginuid} r,
