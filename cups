@@ -20,6 +20,7 @@ profile cups /usr/sbin/cupsd {
   
   capability chown,
   capability dac_override,
+  capability dac_read_search,
   capability fowner,
   capability fsetid,
   capability net_bind_service,
@@ -41,8 +42,10 @@ profile cups /usr/sbin/cupsd {
   /usr/lib64/ghostscript/** m,
   /usr/share/ghostscript/** r,
   /usr/share/ppd/{,**} r,
+  /usr/share/gutenprint/{,**} r,
   /usr/libexec/cups/notifier/ r,
   /usr/libexec/cups/driver/ r,
+  /usr/libexec/cups/driver/* ix,
   /usr/libexec/cups/daemon/* ix,
   /usr/libexec/cups/cgi-bin/* ix,
   /usr/libexec/cups/filter/* ix,
@@ -71,7 +74,7 @@ profile cups /usr/sbin/cupsd {
   /etc/cups/certs w,
   /etc/cups/certs/* w,
   /etc/cups/*.conf* rw,
-  /etc/cups/ppd rw,
+  /etc/cups/ppd/{,**} rw,
   /etc/papersize r,
   /etc/printcap rw,
   /etc/cups/printcap rw,
@@ -86,6 +89,7 @@ profile cups /usr/sbin/cupsd {
   /usr/bin/smbspool ixr,
   /usr/lib/cups/backend/* ixr,
   /usr/lib/cups/filter/* ixr,
+  /usr/lib64/gutenprint/**.so m,
   /usr/sbin/cupsd mixr,
   /usr/share/cups/** r,
   /var/log/cups/ rw,
@@ -99,7 +103,7 @@ profile cups /usr/sbin/cupsd {
   /{,var/}run/cups/ rw,
   /{,var/}run/cups/** rw,
   /var/cache/cups/ rw,
-  /var/cache/cups/** rw,
+  /var/cache/cups/** rwk,
   
 }
 

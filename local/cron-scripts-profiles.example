@@ -259,6 +259,8 @@ profile cron.weekly/weekly_backup.sh /etc/cron.weekly/weekly_backup.sh flags=(co
   #include <abstractions/user-tmp>
   
   capability sys_admin,
+  capability dac_override,
+  capability dac_read_search,
   
   /dev/tty rw,
   /dev/null w,
@@ -291,6 +293,8 @@ profile cron.monthly/monthly_backup.sh /etc/cron.monthly/monthly_backup.sh flags
   #include <abstractions/user-tmp>
   
   capability sys_admin,
+  capability dac_override,
+  capability dac_read_search,
   
   /dev/tty rw,
   @{PROC}/@{pid}/fd/ r,
