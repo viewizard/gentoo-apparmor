@@ -29,6 +29,7 @@ profile mousepad /usr/bin/mousepad {
   #include <abstractions/program-work-with-disk-rwk>
   
   capability dac_override,
+  capability dac_read_search,
   
   /dev/tty[0-9]* w,
   /dev/pts/[0-9]* rw,
@@ -61,6 +62,7 @@ profile mousepad_root {
   #include <abstractions/user-systemwide-files>
   
   capability dac_override,
+  capability dac_read_search,
   
   /dev/tty[0-9]* w,
   /dev/pts/[0-9]* rw,

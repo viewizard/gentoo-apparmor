@@ -117,7 +117,7 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
     
     /var/tmp/portage/ rw,
     /var/tmp/portage/** rwkix,
-    /var/cache/** rw,
+    /var/cache/** rwl,
     /var/lib/*/ rw,
     /var/lib/*/** rwk,
     
@@ -234,7 +234,7 @@ profile portage.dispatch-conf /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/di
   
   capability dac_override,
   
-  /dev/pts/[0-9]* w,
+  /dev/pts/[0-9]* rw,
   @{PROC}/@{pid}/fd/ r,
   
   /bin/bash Cx -> shell,
@@ -252,11 +252,13 @@ profile portage.dispatch-conf /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/di
   
   profile shell flags=(complain) {
     #include <abstractions/base>
+    #include <abstractions/user-tmp>
     
-    capability dac_read_search,
     capability dac_override,
+    capability dac_read_search,
     
     /dev/tty rw,
+    /dev/pts/[0-9]* rw,
     
     /bin/bash r,
     /bin/uname ix,
