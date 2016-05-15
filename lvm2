@@ -59,12 +59,24 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad flags=(complain) {
   #include <abstractions/openrc>
   
   /etc/init.d/lvm Px,
+  /bin/bash Cx -> shell,
   /sbin/lvmetad Px,
   
   /etc/init.d/lvmetad r,
   
   /run/lvm/ w,
   /run/lvmetad.pid rwk,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }
 
@@ -78,8 +90,20 @@ profile lvm2.lvm.init.d /etc/init.d/lvm {
   @{PROC}/devices r,
   
   /sbin/lvm Px,
+  /bin/bash Cx -> shell,
   /bin/grep ix,
   
   /etc/{conf,init}.d/lvm r,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }

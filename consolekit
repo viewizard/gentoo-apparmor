@@ -112,9 +112,22 @@ profile consolekit.init.d /etc/init.d/consolekit {
   #include <abstractions/openrc>
   
   /usr/sbin/console-kit-daemon Px,
+  /bin/bash Cx -> shell,
   
   /etc/init.d/consolekit r,
   
   /run/ConsoleKit/ w,
   /run/ConsoleKit/pid rwk,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
+  
 }

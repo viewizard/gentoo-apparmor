@@ -51,9 +51,21 @@ profile vixie-cron.init.d /etc/init.d/vixie-cron {
   #include <abstractions/openrc>
   
   /usr/sbin/cron Px,
+  /bin/bash Cx -> shell,
   
   /etc/init.d/vixie-cron r,
   
   /run/cron.pid rwk,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }

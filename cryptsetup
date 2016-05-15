@@ -44,6 +44,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  /bin/bash Cx -> shell,
   /bin/rmdir ix,
   /bin/egrep ixr,
   /bin/grep ix,
@@ -54,5 +55,16 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
   /sbin/cryptsetup Px,
   
   /etc/{conf,init}.d/dmcrypt r,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }

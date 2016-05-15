@@ -34,9 +34,21 @@ profile dnsmasq.init.d /etc/init.d/dnsmasq {
   #include <abstractions/openrc>
   
   /usr/sbin/dnsmasq Px,
+  /bin/bash Cx -> shell,
   
   /etc/{conf,init}.d/dnsmasq r,
   
   /run/dnsmasq.pid rwk,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }

@@ -95,6 +95,7 @@ profile apparmor.init.d /etc/init.d/apparmor {
   /sys/kernel/security/apparmor/* wr,
   @{PROC}/@{pid}/mounts r,
   
+  /bin/bash Cx -> shell,
   /bin/grep ix,
   /bin/sed ix,
   /bin/sort ix,
@@ -102,5 +103,16 @@ profile apparmor.init.d /etc/init.d/apparmor {
   /etc/fstab r,
   /etc/init.d/apparmor r,
   /usr/libexec/rc.apparmor.functions r,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }

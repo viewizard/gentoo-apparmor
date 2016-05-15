@@ -47,6 +47,7 @@ profile suricata.init.d /etc/init.d/suricata {
   capability dac_override,
   capability dac_read_search,
   
+  /bin/bash Cx -> shell,
   /bin/sed ixr,
   /bin/cat ixr,
   /bin/ps Pxr,
@@ -59,5 +60,16 @@ profile suricata.init.d /etc/init.d/suricata {
   
   /run/suricata.pid rwk,
   /run/sed* rw,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }

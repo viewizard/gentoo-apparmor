@@ -50,9 +50,21 @@ profile smartmontools.init.d /etc/init.d/smartd {
   #include <abstractions/openrc>
   
   /usr/sbin/smartd Px,
+  /bin/bash Cx -> shell,
   
   /etc/{conf,init}.d/smartd r,
   
   /run/smartd.pid rwk,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }

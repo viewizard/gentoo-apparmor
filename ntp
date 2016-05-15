@@ -67,9 +67,21 @@ profile ntp.init.d /etc/init.d/ntpd {
   #include <abstractions/openrc>
   
   /usr/sbin/ntpd Px,
+  /bin/bash Cx -> shell,
   
   /etc/{conf,init}.d/ntpd r,
   
   /run/ntpd.pid rwk,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }

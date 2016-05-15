@@ -69,6 +69,7 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng {
   @{PROC}/@{pid}/loginuid wr,
   
   /usr/sbin/syslog-ng Px,
+  /bin/bash Cx -> shell,
   /bin/sleep ix,
   
   /etc/environment r,
@@ -77,5 +78,16 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng {
   
   /run/syslog-ng.pid rwk,
   /run/utmp rk,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }

@@ -74,7 +74,19 @@ profile acpid.init.d /etc/init.d/acpid {
   #include <abstractions/openrc>
   
   /usr/sbin/acpid Px,
+  /bin/bash Cx -> shell,
   
   /etc/{conf,init}.d/acpid r,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }

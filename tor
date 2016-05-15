@@ -41,10 +41,22 @@ profile tor.init.d /etc/init.d/tor {
   capability sys_resource,
   
   /usr/bin/tor Px,
+  /bin/bash Cx -> shell,
   
   /etc/{conf,init}.d/tor r,
   
   /run/tor/ w,
   /run/tor/tor.pid rwk,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }

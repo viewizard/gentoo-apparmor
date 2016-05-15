@@ -31,7 +31,19 @@ profile hd-idle.init.d /etc/init.d/hd-idle {
   capability dac_read_search,
   
   /usr/sbin/hd-idle Px,
+  /bin/bash Cx -> shell,
   
   /etc/{conf,init}.d/hd-idle r,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }

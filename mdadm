@@ -59,9 +59,22 @@ profile mdadm.init.d /etc/init.d/mdadm {
   #include <abstractions/openrc>
   
   /sbin/mdadm Px,
+  /bin/bash Cx -> shell,
   /bin/rm ix,
   
   /etc/{conf,init}.d/mdadm r,
   
   /run/mdadm.pid rwk,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
+  
 }

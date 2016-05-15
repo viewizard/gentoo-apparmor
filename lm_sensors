@@ -31,10 +31,22 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors {
   #include <abstractions/openrc>
   
   /usr/bin/sensors Px,
+  /bin/bash Cx -> shell,
   /bin/kmod Px,
   /bin/mount Px,
   /bin/grep ix,
   
   /etc/{conf,init}.d/lm_sensors r,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }

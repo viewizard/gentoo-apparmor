@@ -119,11 +119,23 @@ profile cups.init.d /etc/init.d/cupsd {
   capability dac_read_search,
   
   /usr/sbin/cupsd Px,
+  /bin/bash Cx -> shell,
   
   /etc/init.d/cupsd r,
   
   /var/cache/cups/ w,
   /run/cups/ w,
   /run/cups/certs/ w,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }

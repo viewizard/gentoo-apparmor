@@ -28,6 +28,7 @@ profile netifrc.init.d /etc/init.d/net.* {
   @{PROC}/sys/net/ipv4/route/flush w,
   
   /etc/init.d/* Pxr,
+  /bin/bash Cx -> shell,
   /bin/ip ix,
   /bin/cat ix,
   /bin/grep ix,
@@ -46,5 +47,16 @@ profile netifrc.init.d /etc/init.d/net.* {
   /etc/iproute2/{,*} r,
   
   /run/dhcpcd-*.pid rwk,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }

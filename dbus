@@ -76,6 +76,7 @@ profile dbus.init.d /etc/init.d/dbus {
   #include <abstractions/openrc>
   
   /etc/init.d/* Pxr,
+  /bin/bash Cx -> shell,
   /bin/rm ix,
   /usr/bin/dbus-uuidgen Px,
   /usr/bin/dbus-daemon Px,
@@ -83,5 +84,16 @@ profile dbus.init.d /etc/init.d/dbus {
   /run/dbus.pid rwk,
   /run/dbus/ w,
   /run/dbus/system_bus_socket rwk,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }
