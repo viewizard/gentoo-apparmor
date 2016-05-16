@@ -52,10 +52,9 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
   /sbin/** rw,
   /usr/ r,
   deny /usr/ w,
-  /usr/** rw, # FIX ME! exclude "/usr/local" with {*^}/{**^}, when this features will be available
+  /usr/** rwl, # FIX ME! exclude "/usr/local" with {*^}/{**^}, when this features will be available
   /usr/portage/distfiles/** rwk,
   /usr/portage/packages/** rwk,
-  /usr/share/zoneinfo/** l,
   /var/ rw,
   /var/** rwk, # FIX ME! exclude "/var/log" (allow only subfolder creation and .keep* files) with {*^}/{**^}, when this features will be available
   /tmp/* rw,

@@ -36,7 +36,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   /sys/class/input/ r,
   /sys/bus/pci/devices/ r,
   /sys/devices/**/{id,uevent,name} r,
-  /sys/devices/pci**/{config,resource,boot_vga} r,
+  /sys/devices/pci**/{,config,resource,boot_vga} r,
   @{PROC}/mtrr rw,
   @{PROC}/cmdline r,
   @{PROC}/modules r,
@@ -49,6 +49,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   /bin/kmod Px,
   
   /usr/lib64/xorg/modules/**.so m,
+  /usr/lib64/mesa/**.so m,
   
   /etc/udev/udev.conf r,
   /etc/X11/xorg.conf r,
