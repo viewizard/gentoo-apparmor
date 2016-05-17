@@ -33,6 +33,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   /sys/bus/ r,
   /sys/class/ r,
   /sys/class/tty/ r,
+  /sys/class/drm/ r,
   /sys/class/input/ r,
   /sys/bus/pci/devices/ r,
   /sys/devices/**/{id,uevent,name} r,
@@ -51,6 +52,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   /usr/lib64/xorg/modules/**.so m,
   /usr/lib64/mesa/**.so m,
   
+  /etc/drirc r,
   /etc/udev/udev.conf r,
   /etc/X11/xorg.conf r,
   /etc/X11/xorg.conf.d/{,*} r,

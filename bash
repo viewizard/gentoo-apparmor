@@ -149,6 +149,7 @@ profile bash_root {
   /usr/bin/lsusb Pxr,
   /usr/sbin/etc-update Pxr,
   /usr/sbin/migrate-pax Pxr -> elfix_migrate_pax_root,
+  /usr/sbin/revdep-pax Pxr -> elfix_revdep_pax_root,
   /usr/sbin/paxctl-ng ixr,
   /usr/sbin/grub2-mkconfig Pxr,
   /usr/lib64/python-exec/python-exec2 Pxr,

@@ -151,6 +151,8 @@ profile xfce4-panel.xfce4-kbdleds-plugin /usr/lib64/xfce4/panel-plugins/xfce4-kb
   #include <abstractions/X>
   #include <abstractions/gtk>
   
+  /dev/tty[0-9]* w,
+  
   owner @{HOME}/.config/xfce4/panel/{,*.rc*} rw,
   
 }
@@ -162,17 +164,12 @@ profile xfce4-panel.xfce4-sensors-plugin /usr/lib64/xfce4/panel-plugins/xfce4-se
   #include <abstractions/fonts>
   #include <abstractions/X>
   #include <abstractions/gtk>
+  #include <abstractions/sensors>
   
-  /sys/class/hwmon/ r,
-  /sys/class/i2c-adapter/ r,
-  /sys/class/power_supply/ r,
-  /sys/class/thermal/ r,
-  /sys/devices/pci**/i2c-*/name r,
-  /sys/devices/platform/*/{,**} r,
-  /sys/module/acpi/parameters/acpica_version r,
+  /dev/tty[0-9]* w,
+  @{PROC}/@{pid}/fd/ r,
   
-  /etc/sensors3.conf r,
-  /etc/sensors.d/ r,
+  /usr/bin/xfce4-sensors Px,
   
   owner @{HOME}/.config/xfce4/panel/{,*.rc*} rw,
   

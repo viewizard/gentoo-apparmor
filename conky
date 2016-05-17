@@ -14,24 +14,17 @@ profile conky /usr/bin/conky {
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/X>
+  #include <abstractions/sensors>
   
   /dev/tty rw,
   /dev/tty[0-9]* w,
   
   @{PROC}/@{pid}/net/dev r,
   @{PROC}/@{pid}/mounts r,
-  /sys/class/hwmon/ r,
-  /sys/class/i2c-adapter/ r,
-  /sys/devices/pci**/i2c-*/name r,
-  /sys/devices/platform/** r,
-  /sys/devices/system/cpu/cpu*/cpufreq/** r,
-  /sys/devices/system/cpu/cpufreq/** r,
   
   /bin/bash Cxr -> shell,
   /usr/bin/conky r,
   
-  /etc/sensors3.conf r,
-  /etc/sensors.d/ r,
   /etc/conky/{,*} r,
   /etc/terminfo/l/linux r,
   
@@ -40,15 +33,10 @@ profile conky /usr/bin/conky {
   
   profile shell {
     #include <abstractions/base>
+    #include <abstractions/sensors>
     
     /dev/tty rw,
     /dev/tty[0-9]* w,
-    
-    /sys/class/hwmon/ r,
-    /sys/class/i2c-adapter/ r,
-    /sys/devices/pci**/i2c-*/name r,
-    /sys/devices/platform/** r,
-    /sys/devices/system/cpu/cpufreq/** r,
     
     /bin/bash r,
     /bin/tail ix,
@@ -63,8 +51,6 @@ profile conky /usr/bin/conky {
     /usr/bin/sensors ix,
     
     /etc/terminfo/l/linux r,
-    /etc/sensors3.conf r,
-    /etc/sensors.d/ r,
     /usr/portage/metadata/timestamp r,
     
   }

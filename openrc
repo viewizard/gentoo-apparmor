@@ -99,11 +99,23 @@ profile openrc.netmount.init.d /etc/init.d/netmount {
   
   @{PROC}/@{pid}/mounts r,
   
+  /bin/bash Cx -> shell,
   /bin/mount Px,
   /bin/umount Px,
   
   /etc/fstab r,
   /etc/{conf,init}.d/netmount r,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }
 
@@ -149,8 +161,21 @@ profile openrc.local.init.d /etc/init.d/local {
   #include <abstractions/openrc>
   #include <local/openrc-local-scripts>
   
+  /bin/bash Cx -> shell,
+  
   /etc/init.d/local r,
   /etc/local.d/{,*} r,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }
 
@@ -163,11 +188,23 @@ profile openrc.hwclock.init.d /etc/init.d/hwclock {
   /dev/ r,
   @{PROC}/devices r,
   
+  /bin/bash Cx -> shell,
   /bin/uname ix,
   /bin/grep ix,
   /sbin/hwclock Px,
   
   /etc/{conf,init}.d/hwclock r,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }
 
@@ -204,9 +241,22 @@ profile openrc.modules.init.d /etc/init.d/modules {
   #include <abstractions/openrc>
   
   /etc/init.d/root-ro Px,
+  /bin/bash Cx -> shell,
   /bin/uname ix,
+  /bin/kmod Px,
   
   /etc/{conf,init}.d/modules r,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }
 
@@ -216,11 +266,23 @@ profile openrc.fsck.init.d /etc/init.d/fsck {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  /bin/bash Cx -> shell,
   /etc/init.d/* Px,
   /bin/cat ix,
   /sbin/fsck Px,
   
   /etc/{conf,init}.d/fsck r,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }
 
@@ -276,6 +338,7 @@ profile openrc.root-ro.init.d /etc/init.d/root-ro flags=(complain) {
   /{etc,media,mnt}/** rw,
   /lib64/rc/{,**} r,
   /root/{,**} r,
+  
   
   profile shell {
     #include <abstractions/base>
@@ -448,6 +511,7 @@ profile openrc.tmpfiles.init.d /etc/init.d/tmpfiles.setup {
   
   capability chown,
   
+  /bin/bash Cx -> shell,
   /lib64/rc/sh/tmpfiles.sh ix,
   /bin/sort ix,
   /usr/bin/find ix,
@@ -458,6 +522,17 @@ profile openrc.tmpfiles.init.d /etc/init.d/tmpfiles.setup {
   / r,
   /run/**/ rw,
   /run/tmpfiles.d/kmod.conf r,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }
 
@@ -498,10 +573,22 @@ profile openrc.swapfiles.init.d /etc/init.d/swapfiles {
   
   @{PROC}/swaps r,
   
+  /bin/bash Cx -> shell,
   /sbin/swapon Px,
   /sbin/swapoff Px,
   
   /etc/init.d/swapfiles r,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }
 
@@ -550,6 +637,7 @@ profile openrc.urandom.init.d /etc/init.d/urandom {
   /dev/urandom w,
   @{PROC}/sys/kernel/random/poolsize r,
   
+  /bin/bash Cx -> shell,
   /bin/cat ix,
   /bin/dd ix,
   /bin/rm ix,
@@ -557,6 +645,17 @@ profile openrc.urandom.init.d /etc/init.d/urandom {
   /etc/{conf,init}.d/urandom r,
   
   /var/lib/misc/random-seed rw,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }
 
@@ -593,6 +692,19 @@ profile openrc.procfs.init.d /etc/init.d/procfs {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  /bin/bash Cx -> shell,
+  
   /etc/init.d/procfs r,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /lib64/rc/sh/gendepends.sh Px,
+    
+  }
   
 }
