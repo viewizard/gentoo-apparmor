@@ -110,6 +110,7 @@ profile bash_root {
   /bin/chmod ixr,
   /bin/nano ixr,
   /bin/kmod Pxr,
+  /bin/cat ixr,
   /sbin/mdadm Pxr,
   /sbin/shutdown Pxr,
   /sbin/{halt,poweroff,reboot} Pxr,
