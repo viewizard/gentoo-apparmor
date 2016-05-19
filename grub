@@ -60,10 +60,52 @@ profile grub.grub2-probe /usr/sbin/grub2-probe flags=(complain) {
   /dev/mapper/control rw,
   /sys/devices/pci**/ata[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/start r,
   /sys/devices/pci**/ata[0-9]*/**/vendor r,
+  /sys/devices/pci**/usb[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/start r,
   @{PROC}/devices r,
   @{PROC}/@{pid}/mountinfo r,
   
   /usr/sbin/grub2-probe r,
   /bin/udevadm Px,
+  
+}
+
+
+profile grub.grub2-install /usr/sbin/grub2-install flags=(complain) {
+  #include <abstractions/base>
+  
+  capability sys_admin,
+  
+  /dev/sd[a-z] rw,
+  /dev/sd[a-z][0-9]* r,
+  /dev/pts/[0-9]* w,
+  /dev/mapper/control rw,
+  /sys/devices/pci**/ata[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/start r,
+  /sys/devices/pci**/usb[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/start r,
+  @{PROC}/devices r,
+  @{PROC}/@{pid}/mountinfo r,
+  
+  /usr/sbin/grub2-install r,
+  /bin/bash Cxr -> shell,
+  /bin/kmod Px,
+  /bin/udevadm Px,
+  
+  /boot/grub/{,**} rw,
+  /usr/share/grub/{,**} r,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    capability dac_override,
+    capability dac_read_search,
+    
+    /dev/tty rw,
+    /dev/pts/[0-9]* w,
+    
+    /bin/bash r,
+    
+    /etc/default/grub r,
+    
+  }
   
 }

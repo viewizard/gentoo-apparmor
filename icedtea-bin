@@ -1,0 +1,29 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile icedtea-bin.java /opt/icedtea-bin-*/{,jre/}bin/java {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/user-tmp>
+  
+  /sys/devices/system/cpu/ r,
+  
+  /opt/icedtea-bin-*/bin/java ix,
+  /opt/icedtea-bin-*/jre/bin/java ix,
+  
+  /opt/icedtea-bin-*/** r,
+  /opt/icedtea-bin-*/lib/**.so rm,
+  /opt/icedtea-bin-*/jre/lib/**.so rm,
+  
+  # Noisy
+  deny @{HOME}/ r,
+  
+}

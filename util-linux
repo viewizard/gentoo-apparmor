@@ -45,6 +45,7 @@ profile util-linux.umount /bin/umount flags=(complain) {
   
   /dev/tty[0-9]* w,
   /dev/pts/[0-9]* w,
+  /sys/devices/virtual/block/dm-*/dm/name r,
   @{PROC}/@{pid}/mountinfo r,
   
   /bin/umount r,

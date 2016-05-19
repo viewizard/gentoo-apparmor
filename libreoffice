@@ -37,6 +37,8 @@ profile libreoffice.oosplash /usr/lib64/libreoffice/program/oosplash {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  /dev/tty[0-9]* w,
+  
   /usr/lib64/libreoffice/program/javaldx Px,
   /usr/lib64/libreoffice/program/soffice.bin Px,
   
@@ -48,6 +50,11 @@ profile libreoffice.oosplash /usr/lib64/libreoffice/program/oosplash {
 profile libreoffice.javaldx /usr/lib64/libreoffice/program/javaldx {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  
+  /dev/tty[0-9]* w,
+  
+  /opt/icedtea-bin-*/bin/java Px,
+  /opt/icedtea-bin-*/jre/bin/java Px,
   
   owner @{HOME}/.config/libreoffice/ rw,
   owner @{HOME}/.config/libreoffice/** rwk,
@@ -79,17 +86,25 @@ profile libreoffice.bin /usr/lib64/libreoffice/program/soffice.bin {
   @{PROC}/version r,
   
   /bin/bash Cxr -> shell,
+  /opt/icedtea-bin-*/bin/java Px,
+  /opt/icedtea-bin-*/jre/bin/java Px,
   
   /etc/OpenCL/vendors/{,*} r,
   /usr/lib64/libreoffice/{,**} r,
   /usr/share/liblangtag/** r,
   /usr/share/libexttextcat/{,*} r,
-  /opt/icedtea-bin-*/jre/lib/** rm,
-  /tmp/.* m,  
+  /tmp/.* m,
   
   owner @{HOME}/.config/libreoffice/ rw,
   owner @{HOME}/.config/libreoffice/** rwk,
   owner @{HOME}/.languagetool-ooo.cfg rw,
+  
+  # jre
+  /opt/icedtea-bin-*/{,**} r,
+  /opt/icedtea-bin-*/jre/lib/**.so rm,
+  /usr/ r,
+  /usr/lib{,32,64}/ r,
+  /usr/lib{,32,64}/jvm/{,**} r,
   
   # Noisy
   deny @{HOMEDIRS}/* w,
