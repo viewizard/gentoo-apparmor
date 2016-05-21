@@ -165,3 +165,34 @@ profile util-linux.logger /usr/bin/logger flags=(complain) {
   /usr/bin/logger r,
   
 }
+
+
+profile util-linux.fdisk /sbin/{,c}fdisk flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/pts/[0-9]* rw,
+  /dev/dm-[0-9]* rw,
+  /sys/devices/virtual/block/dm-[0-9]*/ r,
+  /sys/devices/virtual/block/dm-[0-9]*/dm/uuid r,
+  
+  /sbin/{,c}fdisk r,
+  
+  /etc/terminfo/x/xterm r,  
+  
+}
+
+
+profile util-linux.eject /usr/bin/eject flags=(complain) {
+  #include <abstractions/base>
+  
+  capability sys_rawio,
+  capability sys_admin,
+  
+  /dev/sd[a-z] rw,
+  /sys/devices/virtual/block/dm-[0-9]*/dm/name r,
+  /sys/devices/pci**/usb[0-9]*/**/block/sd[a-z]/{,removable} r,
+  @{PROC}/@{pid}/mountinfo r,
+  
+  /usr/bin/eject r,
+  
+}

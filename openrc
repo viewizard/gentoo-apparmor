@@ -616,7 +616,10 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps {
   profile shell {
     #include <abstractions/base>
     
+    capability sys_tty_config,
+    
     /dev/tty rw,
+    /dev/console rw,
     
     /bin/bash r,
     /bin/gzip ix,
