@@ -43,6 +43,8 @@ profile bash_users {
   capability dac_read_search,
   capability dac_override,
   
+  /dev/tty[0-9]* rw,
+  
   /bin/bash ixr,
   /bin/ls ixr,
   /bin/ln ixr,
@@ -60,8 +62,10 @@ profile bash_users {
   /usr/bin/whoami ixr,
   /usr/bin/id ixr,
   /usr/bin/startxfce4 Pxr,
+  /usr/bin/clear ixr,
   
   /etc/profile.env r,
+  /etc/bash/bash_logout r,
   /etc/terminfo/l/linux r,
   /etc/terminfo/x/xterm r,
   
@@ -122,6 +126,8 @@ profile bash_root {
   /sbin/gradm Pxr,
   /sbin/{,c}fdisk Pxr,
   /sbin/lvm Pxr,
+  /sbin/mke2fs Pxr,
+  /sbin/mkswap Pxr,
   /usr/bin/pmount Pxr,
   /usr/bin/pumount Pxr,
   /usr/bin/which ixr,

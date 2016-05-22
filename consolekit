@@ -97,6 +97,9 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
 profile consolekit.udev-acl /usr/{lib,lib32,lib64}/ConsoleKit/udev-acl {
   #include <abstractions/base>
   
+  capability dac_override,
+  capability dac_read_search,
+  
   /etc/udev/udev.conf r,
   /run/udev/tags/udev-acl/ r,
   /sys/devices/**/uevent r,

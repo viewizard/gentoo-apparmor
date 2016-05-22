@@ -13,6 +13,8 @@ profile udisks-daemon /usr/lib{,32,64}/udisks/udisks-daemon {
   #include <abstractions/base>
   
   capability sys_rawio,
+  capability dac_override,
+  capability dac_read_search,
   
   /dev/sd[a-z] r,
   /dev/{dm-,loop,md,zd}[0-9]* r,
@@ -74,6 +76,7 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {
   /etc/udev/udev.conf r,
   /etc/fstab r,
   /media/*/ w,
+  /usr/share/gvfs/remote-volume-monitors/{,*} r,
   
   /run/udisks2/{,mounted-fs*,unlocked-luks*} rw,
   /run/udev/data/* r,

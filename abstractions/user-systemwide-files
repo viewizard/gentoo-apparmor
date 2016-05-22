@@ -23,6 +23,7 @@ owner /** rwl,
 # For root - allow files owned by system-users,
 # for regular users - DAC take care about this.
 /var/log/** r,
+/usr/share/polkit-1/** r,
 /usr/portage/ r,
 /usr/portage/** r,
 /usr/portage/distfiles/** rwl,
@@ -41,3 +42,9 @@ owner /** rwl,
 /var/log/** rwl,
 /var/tmp/portage/ r,
 /var/tmp/portage/** rwl,
+
+# need for rsync
+/usr/bin/mailq r,
+/usr/bin/man r,
+/usr/bin/mandb r,
+/usr/sbin/nullmailer-queue r,

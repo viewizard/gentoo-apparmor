@@ -12,6 +12,9 @@
 profile coreutils.df /bin/df {
   #include <abstractions/base>
   
+  capability dac_override,
+  capability dac_read_search,
+  
   /dev/pts/[0-9]* w,
   @{PROC}/@{pid}/mounts r,
   

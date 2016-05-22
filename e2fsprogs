@@ -24,3 +24,22 @@ profile e2fsprogs.e2fsck /sbin/e2fsck flags=(complain) {
   /run/blkid/blkid.tab r,
   
 }
+
+
+profile e2fsprogs.mke2fs /sbin/mke2fs flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/pts/[0-9]* w,
+  /dev/dm-[0-9]* rw,
+  /sys/devices/virtual/block/dm-[0-9]*/ r,
+  /sys/devices/virtual/block/dm-[0-9]*/dm/uuid r,
+  @{PROC}/swaps r,
+  @{PROC}/@{pid}/mounts r,
+  
+  /sbin/mke2fs r,
+  
+  /etc/mke2fs.conf r,
+  
+  /run/blkid/blkid.tab* rwl,
+  
+}
