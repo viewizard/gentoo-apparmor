@@ -19,8 +19,7 @@ profile thunar-volman /usr/bin/thunar-volman flags=(complain) {
   #include <abstractions/nameservice>
   
   /dev/tty[0-9]* w,
-  /sys/devices/pci**/usb*/**/uevent r,
-  /sys/devices/pci**/usb*/**/block/sd[a-z]/uevent r,
+  /sys/devices/pci**/{ata,usb}[0-9]*/**/uevent r,
   /sys/devices/virtual/block/dm-[0-9]*/uevent r,
   @{PROC}/@{pid}/fd/ r,
   

@@ -60,8 +60,7 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {
   /sys/devices/virtual/block/zd[0-9]*/zd[0-9]*/{,**} r,
   /sys/devices/pci**/{ata,usb}[0-9]*/**/block/sd[a-z]/{,**} r,
   /sys/devices/pci**/{ata,usb}[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/{,**} r,
-  /sys/devices/pci**/usb[0-9]*/**/uevent r,
-  /sys/devices/pci**/usb[0-9]*/**/remove rw,
+  /sys/devices/pci**/usb[0-9]*/**/{remove,uevent} rw,
   
   @{PROC}/@{pid}/mountinfo r,
   @{PROC}/swaps r,
