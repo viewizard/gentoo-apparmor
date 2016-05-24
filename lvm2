@@ -20,10 +20,34 @@ profile lvm2.lvmetad /sbin/lvmetad flags=(complain) {
 }
 
 
+profile lvm2.dmeventd /sbin/dmeventd flags=(complain) {
+  #include <abstractions/base>
+  
+  capability sys_admin,
+  capability sys_resource,
+  capability ipc_lock,
+  
+  /dev/mapper/control rw,
+  @{PROC}/devices r,
+  @{PROC}/@{pid}/mounts r,
+  @{PROC}/@{pid}/oom_score_adj w,
+  
+  /sbin/dmeventd r,
+  
+  /etc/lvm/lvm.conf r,
+  /etc/udev/udev.conf r,
+  
+  /run/dmeventd.pid rwk,
+  /run/dmeventd-{client,server} rwk,
+  
+}
+
+
 profile lvm2.lvm /sbin/lvm flags=(complain) {
   #include <abstractions/base>
   
   capability sys_admin,
+  capability sys_rawio,
   capability ipc_lock,
   capability sys_nice,
   
@@ -37,24 +61,29 @@ profile lvm2.lvm /sbin/lvm flags=(complain) {
   /sys/class/ r,
   /sys/class/block/ r,
   /sys/devices/pci**/{ata,usb}[0-9]*/**/block/sd[a-z]/{uevent,dev,holders/} r,
-  /sys/devices/pci**/{ata,usb}[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/{uevent,dev} r,
-  /sys/devices/virtual/block/{dm-,loop,md,zd,}[0-9]*/{uevent,dev} r,
-  /sys/devices/virtual/block/zd[0-9]*/zd[0-9]*/{uevent,dev} r,
+  /sys/devices/pci**/{ata,usb}[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/{uevent,dev,holders/} r,
+  /sys/devices/virtual/block/{dm-,loop,md,zd,}[0-9]*/{uevent,dev,holders/} r,
+  /sys/devices/virtual/block/zd[0-9]*/zd[0-9]*/{uevent,dev,holders/} r,
   /sys/devices/virtual/bdi/*/read_ahead_kb r,
   @{PROC}/devices r,
   @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/mounts r,
+  @{PROC}/@{pid}/mountinfo r,
   
   /sbin/lvm r,
+  /sbin/dmeventd Px,
   
   /etc/udev/udev.conf r,
   /etc/lvm/lvm.conf r,
-  /etc/lvm/archive/{,*} rw,
-  /etc/lvm/backup/{,*} rw,
+  /etc/lvm/archive/ rw,
+  /etc/lvm/archive/* rwkl,
+  /etc/lvm/backup/ rw,
+  /etc/lvm/backup/* rwkl,
   
   /run/udev/data/* r,
   /run/lock/lvm/ w,
   /run/lock/lvm/* rwk,
+  /run/dmeventd-{client,server} rwk,
   
 }
 

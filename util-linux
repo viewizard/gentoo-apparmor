@@ -19,9 +19,11 @@ profile util-linux.mount /bin/mount flags=(complain) {
   
   /dev/tty[0-9]* w,
   /dev/sd[a-z]{,[0-9]*} r,
+  /dev/dm-[0-9]* r,
   /sys/devices/pci**/block/sd[a-z]/{,dev} r,
   /sys/devices/pci**/block/sd[a-z]/sd[a-z][0-9]*/{,size,start} r,
-  /sys/devices/virtual/block/dm-*/dm/name r,
+  /sys/devices/virtual/block/dm-[0-9]*/ r,
+  /sys/devices/virtual/block/dm-[0-9]*/dm/{name,uuid} r,
   @{PROC}/@{pid}/mountinfo r,
   
   /bin/mount r,
