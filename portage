@@ -143,8 +143,10 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
     /sys/bus/pci/devices/ r,
     /sys/devices/pci**/config r,
     /sys/devices/system/cpu/ r,
+    @{PROC}/ r,
     @{PROC}/@{pid}/fd/ r,
     @{PROC}/cmdline r,
+    @{PROC}/@{pid}/stat r,
     @{PROC}/@{pid}/mounts r,
     @{PROC}/sys/net/ipv4/ip_local_port_range r,
     
@@ -383,7 +385,7 @@ profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
   #include <abstractions/user-tmp>
   
   /dev/tty rw,
-  /dev/pts/[0-9]* w,
+  /dev/pts/[0-9]* rw,
   
   /bin/bash r,
   /usr/sbin/etc-update r,
