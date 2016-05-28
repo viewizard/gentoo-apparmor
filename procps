@@ -24,6 +24,7 @@ profile procps.ps /bin/ps {
   @{PROC}/ r,
   @{PROC}/uptime r,
   @{PROC}/sys/kernel/pid_max r,
+  @{PROC}/sys/kernel/osrelease r,
   @{PROC}/tty/drivers r,
   @{PROC}/@{pid}/{stat,status,cmdline} r,
   @{PROC}/@{pid}/task/{,**} r,
@@ -65,7 +66,7 @@ profile procps.pgrep /usr/bin/pgrep flags=(complain) {
 }
 
 
-profile procps.sysctl /sbin/sysctl flags=(complain) {
+profile procps.sysctl /{,usr/}sbin/sysctl flags=(complain) {
   #include <abstractions/base>
   
   capability sys_admin,
@@ -74,7 +75,7 @@ profile procps.sysctl /sbin/sysctl flags=(complain) {
   /dev/pts/[0-9]* rw,
   @{PROC}/sys/** rw,
   
-  /sbin/sysctl r,
+  /{,usr/}sbin/sysctl r,
   
   /etc/sysctl.conf r,
   /etc/sysctl.d/{,*} r,

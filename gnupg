@@ -23,13 +23,13 @@ profile gnupg.gpg-agent /usr/bin/gpg-agent flags=(complain) {
 }
 
 
-profile gnupg.gpg2 /usr/bin/gpg2 flags=(complain) {
+profile gnupg.gpg /usr/bin/gpg{,2,-static} flags=(complain) {
   #include <abstractions/base>
   
   /dev/tty rw,
   /dev/pts/[0-9]* rw,
   
-  /usr/bin/gpg2 r,
+  /usr/bin/gpg{,2,-static} r,
   /usr/bin/gpg-agent Px,
   
   /etc/inputrc r,

@@ -150,7 +150,7 @@ profile bash_root {
   /usr/bin/stat Pxr,
   /usr/bin/file ixr,
   /usr/bin/lsusb Pxr,
-  /usr/bin/gpg2 Pxr,
+  /usr/bin/gpg{,2,-static} Pxr,
   /usr/sbin/logcheck Pxr,
   /usr/sbin/aideinit Pxr,
   /usr/sbin/gdisk Pxr,
