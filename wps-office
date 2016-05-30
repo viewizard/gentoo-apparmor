@@ -30,6 +30,7 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   #include <abstractions/nameservice>
   
   /dev/tty rw,
+  /dev/tty[0-9]* w,
   /dev/shm/* rwl,
   owner @{PROC}/@{pid}/auxv r,
   

@@ -151,6 +151,7 @@ profile bash_root {
   /usr/bin/file ixr,
   /usr/bin/lsusb Pxr,
   /usr/bin/gpg{,2,-static} Pxr,
+  /usr/bin/find ixr,
   /usr/sbin/logcheck Pxr,
   /usr/sbin/aideinit Pxr,
   /usr/sbin/gdisk Pxr,

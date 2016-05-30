@@ -164,7 +164,7 @@ profile cron.daily/glsa /etc/cron.daily/glsa flags=(complain) {
   
 }
 
-profile cron.daily/hosts.sh /etc/cron.daily/hosts.sh flags=(complain) {
+profile cron.daily/hosts.sh /etc/cron.daily/hosts.sh {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
@@ -186,7 +186,8 @@ profile cron.daily/hosts.sh /etc/cron.daily/hosts.sh flags=(complain) {
   
   /var/log/hosts.log w,
   
-  deny /.wget-hsts rw,
+  # Noisy
+  deny /.wget-hsts rwk,
   
 }
 
