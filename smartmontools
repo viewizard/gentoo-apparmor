@@ -20,11 +20,22 @@ profile smartmontools.smartd /usr/sbin/smartd {
   @{PROC}/devices r,
   
   /usr/sbin/smartd r,
+  /bin/bash Cx -> shell,
   
   /etc/smartd.conf r,
   /usr/share/smartmontools/** r,
   
   /run/smartd.pid rwk,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    
+  }
   
 }
 

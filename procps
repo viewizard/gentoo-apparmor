@@ -73,6 +73,7 @@ profile procps.sysctl /{,usr/}sbin/sysctl flags=(complain) {
   capability net_admin,
   
   /dev/pts/[0-9]* rw,
+  @{PROC}/sys/ r,
   @{PROC}/sys/** rw,
   
   /{,usr/}sbin/sysctl r,
