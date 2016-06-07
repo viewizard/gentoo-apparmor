@@ -57,6 +57,8 @@ profile gparted /usr/{bin,sbin}/{gpartedbin,gparted-pkexec} flags=(complain) {
   @{PROC}/@{pid}/status r,
   @{PROC}/sys/kernel/pid_max r,
   @{PROC}/@{pid}/attr/current w,
+  @{PROC}/sys/kernel/osrelease r,
+  @{PROC}/@{pid}/attr/current w,
   
   /bin/bash r,
   /usr/sbin/gpartedbin ixr,
