@@ -80,6 +80,7 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
     
     /dev/tty rw,
     /dev/pts/[0-9]* rw,
+    /dev/initctl w,
     @{PROC}/cmdline r,
     @{PROC}/@{pid}/fd/ r,
     @{PROC}/@{pid}/mounts r,
@@ -173,6 +174,7 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
     /var/tmp/portage/ rw,
     /var/tmp/portage/** rwklix,
     /var/log/sandbox/sandbox-*.log w,
+    /var/db/pkg/{,**} r,
     
     # Noisy
     deny / r,

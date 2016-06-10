@@ -63,6 +63,7 @@ profile bash_users {
   /usr/bin/id ixr,
   /usr/bin/startxfce4 Pxr,
   /usr/bin/clear ixr,
+  /usr/bin/winecfg Pxr,
   
   /etc/profile.env r,
   /etc/bash/bash_logout r,
