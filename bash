@@ -130,6 +130,8 @@ profile bash_root {
   /sbin/lvm Pxr,
   /sbin/mke2fs Pxr,
   /sbin/mkswap Pxr,
+  /sbin/zpool Pxr,
+  /sbin/zfs Pxr,
   /usr/bin/pmount Pxr,
   /usr/bin/pumount Pxr,
   /usr/bin/which ixr,

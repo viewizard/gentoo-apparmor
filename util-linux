@@ -16,6 +16,8 @@ profile util-linux.mount /bin/mount flags=(complain) {
   capability dac_override,
   capability dac_read_search,
   capability chown,
+  capability setgid,
+  capability setuid,
   
   /dev/tty[0-9]* w,
   /dev/sd[a-z]{,[0-9]*} r,
@@ -27,6 +29,7 @@ profile util-linux.mount /bin/mount flags=(complain) {
   @{PROC}/@{pid}/mountinfo r,
   
   /bin/mount r,
+  /sbin/mount.zfs Px,
   
   /etc/fstab r,
   

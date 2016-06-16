@@ -18,11 +18,13 @@ profile cryptsetup /sbin/cryptsetup flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/user-tmp>
+  #include <local/cryptsetup-custom>
   
   capability ipc_lock,
   capability sys_nice,
   capability sys_admin,
   
+  /dev/tty rw,
   /dev/pts/[0-9]* rw,
   /dev/null rw,
   /dev/sd[a-z]{,[0-9]*} rw,

@@ -9,6 +9,34 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+profile zfs /sbin/zfs flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  capability sys_resource,
+  
+  /dev/zfs rw,
+  /dev/pts/[0-9]* w,
+  @{PROC}/@{pid}/mounts r,
+  @{PROC}/sys/fs/pipe-max-size r,
+  
+  /sbin/zfs r,
+  /bin/mount Px,
+  
+  /etc/dfs/sharetab r,
+  
+  owner @{HOME}/.session.log w,
+  
+}
+
+
+profile zfs.mount /sbin/mount.zfs flags=(complain) {
+  #include <abstractions/base>
+  
+  /sbin/mount.zfs r,
+  
+}
+
 profile zfs.zpool /sbin/zpool flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
@@ -19,6 +47,7 @@ profile zfs.zpool /sbin/zpool flags=(complain) {
   @{PROC}/@{pid}/mounts r,
   
   /sbin/zpool r,
+  /bin/umount Px,
   /usr/libexec/zfs/zed.d/all-syslog.sh Px,
   
   /etc/dfs/sharetab r,
