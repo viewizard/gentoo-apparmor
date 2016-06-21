@@ -118,6 +118,8 @@ profile bash_root {
   /bin/kmod Pxr,
   /bin/cat ixr,
   /bin/dd ixr,
+  /bin/ping Pxr,
+  /bin/ifconfig Pxr,
   /sbin/mdadm Pxr,
   /sbin/shutdown Pxr,
   /sbin/{halt,poweroff,reboot} Pxr,
@@ -173,6 +175,8 @@ profile bash_root {
   /usr/local/bin/** Pxr,
   /usr/local/sbin/** Pxr,
   /etc/init.d/* Pxr,
+  
+  /etc/local.d/firewall.start Uxr,
   
   /etc/profile.env r,
   /etc/terminfo/l/linux r,

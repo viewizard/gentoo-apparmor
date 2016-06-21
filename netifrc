@@ -23,6 +23,7 @@ profile netifrc.init.d /etc/init.d/net.* {
   /sys/devices/virtual/net/br*/ r,
   /sys/devices/virtual/net/br*/** rw,
   /sys/devices/pci**/net/eth[0-9]*/{,**} r,
+  /sys/devices/pci**/usb[0-9]*/**/net/usb[0-9]*/ifindex r,
   @{PROC}/@{pid}/mounts r,
   @{PROC}/@{pid}/net/dev r,
   @{PROC}/sys/net/ipv4/route/flush w,
