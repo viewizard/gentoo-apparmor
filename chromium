@@ -25,7 +25,7 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   #include <abstractions/user-upload>
   #include <abstractions/xdg-open>
   #include <abstractions/dconf>
-
+  
   capability sys_admin,
   capability sys_chroot,
   ptrace (trace) peer=@{profile_name},
@@ -37,7 +37,7 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   /dev/video[0-9]* r,
   /sys/devices/pci**/usb*/**/idVendor r,
   /sys/devices/pci**/usb*/**/idProduct r,
-
+  
   @{PROC}/ r,
   @{PROC}/filesystems r,
   @{PROC}/sys/kernel/shmmax r,
@@ -54,11 +54,11 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   @{PROC}/@{pid}/net/if_inet6 r,
   @{PROC}/@{pid}/net/ipv6_route r,
   @{PROC}/sys/net/ipv4/tcp_fastopen r,
-
+  
   # Should maybe be in abstractions
   /etc/mime.types r,
   /etc/mtab r,
-
+  
   # Needed for the crash reporter
   owner @{PROC}/@{pid}/auxv r,
   @{PROC}/@{pid}/setgroups rw,
@@ -82,14 +82,14 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   /sys/devices/virtual/block/**/removable r,
   /sys/devices/virtual/block/**/uevent r,
   /sys/devices/virtual/block/**/size r,
-
-
+  
+  
   /bin/bash r,
   /bin/ps Pxr,
   /usr/bin/xdg-settings Cxr -> xdgsettings,
   /usr/bin/lsb_release Cxr -> lsb_release,
   /bin/readlink ixr,
-
+  
   # Allow transitions to ourself and our sandbox
   /usr/bin/chromium-browser Pxr,
   /usr/lib64/chromium-browser/chrome ix,
@@ -98,7 +98,7 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   # Helpers
   /usr/bin/gvfs-open ixr,
   
-
+  
   # chromium mmaps all kinds of things for speed.
   /etc/passwd m,
   /usr/share/fonts/truetype/**/*.tt[cf] m,
@@ -110,8 +110,8 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   owner /{dev,run}/shm/pulse-shm* m,
   owner @{HOME}/.local/share/mime/mime.cache m,
   owner /tmp/** m,
-
-
+  
+  
 #  # Importing firefox settings
 #  @{PROC}/@{pid}/oom_{,score_}adj w,
 #  /etc/firefox/profile/bookmarks.html r,
@@ -121,7 +121,7 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
 #  owner @{HOME}/.mozilla/firefox/*/prefs.js r,
   deny owner @{HOME}/.mozilla/firefox/profiles.ini r,
   deny owner @{HOME}/.mozilla/firefox/*/prefs.js r,
-
+  
   # Chromium configuration
   /etc/chromium/ r,
   /etc/chromium/** r,
@@ -134,23 +134,23 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   owner @{HOME}/.config/chromium/**/Cache/* mr,
   owner @{HOME}/.config/chromium/Dictionaries/*.bdic mr,
   owner @{HOME}/.config/chromium/**/Dictionaries/*.bdic mr,
-
+  
   # Noisy
   deny /dev/bus/usb/ r,
   deny /run/udev/data/** r,
   deny /usr/lib64/chromium-browser/** w,
   deny owner @{HOME}/* r,
   
-
+  
   profile xdgsettings {
     #include <abstractions/base>
     #include <abstractions/freedesktop.org>
     #include <abstractions/fonts>
     #include <abstractions/bash>
     #include <abstractions/gtk>
-
+    
     /usr/bin/xdg-settings r,
-
+    
     # Checking default browser
     /bin/grep ixr,
     /bin/readlink ixr,
@@ -159,7 +159,7 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
     /usr/bin/basename ixr,
     /usr/bin/cut ixr,
     deny /bin/bash xr,
-
+    
     # Setting the default browser
     /bin/mkdir ixr,
     /bin/mv ixr,
@@ -191,8 +191,8 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
 
     /usr/bin/ r,
   }
-
-
+  
+  
   profile sandbox {
     # Be fanatical since it is setuid root and don't use an abstraction
     /lib/libgcc_s.so* mr,
@@ -202,12 +202,12 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
     /lib{,32,64}/libld-*.so* mr,
     /lib{,32,64}/ld-*.so* mr,
     /etc/ld.so.cache r,
-
+    
     # Required for dropping into PID namespace. Keep in mind that until the
     # process drops this capability it can escape confinement, but once it
     # drops CAP_SYS_ADMIN we are ok.
     capability sys_admin,
-
+    
     # All of these are for sanely dropping from root and chrooting
     capability chown,
     capability fsetid,
@@ -215,10 +215,10 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
     capability setuid,
     capability dac_override,
     capability sys_chroot,
-
+    
     capability sys_ptrace,
     ptrace (read, readby),
-
+    
     @{PROC}/ r,
     @{PROC}/@{pid}/ r,
     @{PROC}/@{pid}/fd/ r,
@@ -226,14 +226,14 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
     owner @{PROC}/@{pid}/oom_score_adj w,
     @{PROC}/@{pid}/status r,
     @{PROC}/@{pid}/task/@{pid}/stat r,
-
+    
     /usr/bin/chromium-browser r,
     /usrbin/chromium r,
     /usr/lib64/chromium-browser/chrome Px,
     /usr/lib64/chromium-browser/chrome-sandbox r,
-
+    
     /dev/null rw,
-
+    
     owner /tmp/** rw,
   }
 }

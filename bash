@@ -82,6 +82,8 @@ profile bash_root {
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/user-systemwide-files>
   
+  #include <local/openrc-local-scripts>
+  
   capability setuid,
   capability setgid,
   capability chown,
@@ -175,8 +177,6 @@ profile bash_root {
   /usr/local/bin/** Pxr,
   /usr/local/sbin/** Pxr,
   /etc/init.d/* Pxr,
-  
-  /etc/local.d/firewall.start Uxr,
   
   /etc/profile.env r,
   /etc/terminfo/l/linux r,
