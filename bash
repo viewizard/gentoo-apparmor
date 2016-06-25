@@ -178,6 +178,9 @@ profile bash_root {
   /usr/local/sbin/** Pxr,
   /etc/init.d/* Pxr,
   
+  # don't use by default
+  #/usr/sbin/sysctl Pxr,
+  
   /etc/profile.env r,
   /etc/terminfo/l/linux r,
   /etc/terminfo/x/xterm r,

@@ -78,6 +78,7 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
     capability fowner,
     capability fsetid,
     capability setfcap,
+    capability sys_admin,
     
     /dev/tty rw,
     /dev/pts/[0-9]* rw,
@@ -112,6 +113,7 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
     /usr/** rw, # FIX ME! exclude "/usr/local" with {*^}/{**^}, when this features will be available
     /usr/portage/packages/** rwk,
     /lib{,32,64}/ r,
+    /lib{,32,64}/* rwl,
     /lib{,32,64}/modules/*-{hardened,gentoo}*/modules.* rw,
     /var/db/pkg/ r,
     /var/db/pkg/** rw,
@@ -153,6 +155,7 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
     @{PROC}/@{pid}/stat r,
     @{PROC}/@{pid}/mounts r,
     @{PROC}/sys/net/ipv4/ip_local_port_range r,
+    @{PROC}/sys/kernel/randomize_va_space r,
     
     /bin/ r,
     /bin/** ixr,
