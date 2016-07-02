@@ -21,6 +21,9 @@ deny @{HOME}/.*.swp mrwkl,
 deny @{HOME}/.*~1~ mrwkl,
 deny @{HOME}/.*.bak mrwkl,
 
+# special attention to keepassx passwords file
+audit deny /**.kdbx rw,
+
 # special attention to (potentially) executable files
 audit deny @{HOME}/.local/bin/** wl,
 audit deny @{HOME}/.local/sbin/** wl,

@@ -29,6 +29,7 @@ profile juffed /usr/bin/juffed {
   #include <abstractions/nameservice>
   
   capability dac_override,
+  capability fowner,
   
   /dev/tty[0-9]* w,
   /dev/pts/[0-9]* rw,
@@ -62,6 +63,7 @@ profile juffed_root {
   #include <abstractions/user-systemwide-files>
   
   capability dac_override,
+  capability fowner,
   
   /dev/tty[0-9]* w,
   /dev/pts/[0-9]* rw,

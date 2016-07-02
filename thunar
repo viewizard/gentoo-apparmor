@@ -71,6 +71,9 @@ profile thunar /usr/bin/{Thunar,thunar} {
     #include <abstractions/base>
     #include <local/thunar-custom-actions>
     
+    capability dac_override,
+    capability dac_read_search,
+    
     /dev/tty rw,
     /dev/tty[0-9]* w,
     
@@ -157,6 +160,9 @@ profile thunar_root {
   
   profile env {
     #include <abstractions/base>
+    
+    capability dac_override,
+    capability dac_read_search,
     
     /dev/tty[0-9]* w,
     /dev/pts/[0-9]* rw,
