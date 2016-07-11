@@ -15,6 +15,7 @@ profile chkrootkit /usr/sbin/chkrootkit {
   #include <abstractions/user-tmp>
   
   capability sys_ptrace,
+  capability dac_override,
   capability dac_read_search,
   
   /dev/{,**} r,
@@ -53,6 +54,9 @@ profile chkrootkit /usr/sbin/chkrootkit {
   
   profile shell {
     #include <abstractions/base>
+    
+    capability dac_override,
+    capability dac_read_search,
     
     /dev/tty rw,
     

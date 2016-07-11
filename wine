@@ -96,6 +96,9 @@ profile wine-preloader /usr/bin/wine-preloader {
   /usr/share/icons/** r,
   /tmp/* m,
   
+  owner @{HOME_CACHE}/winetricks/ r,
+  owner @{HOME_CACHE}/winetricks/** rw,
+  
   # Noisy
   deny / r,
   deny /etc/fstab r,
@@ -127,6 +130,8 @@ profile wineserver /usr/bin/wineserver {
   owner /tmp/.wine-*/** rwlk,
   
   owner @{HOME}/.local/share/icons/hicolor/** w,
+  owner @{HOME_CACHE}/winetricks/ r,
+  owner @{HOME_CACHE}/winetricks/** rw,
   
   # Noisy
   deny / r,

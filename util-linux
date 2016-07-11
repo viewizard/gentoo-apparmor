@@ -20,6 +20,7 @@ profile util-linux.mount /bin/mount flags=(complain) {
   capability setuid,
   
   /dev/tty[0-9]* w,
+  /dev/pts/[0-9]* w,
   /dev/sd[a-z]{,[0-9]*} r,
   /dev/dm-[0-9]* r,
   /sys/devices/pci**/block/sd[a-z]/{,dev} r,

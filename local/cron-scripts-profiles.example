@@ -21,7 +21,7 @@
 #
 
 
-profile cron.hourly/logcheck.cron /etc/cron.hourly/logcheck.cron flags=(complain) {
+profile cron.hourly/logcheck.cron /etc/cron.hourly/logcheck.cron {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -42,7 +42,7 @@ profile cron.hourly/logcheck.cron /etc/cron.hourly/logcheck.cron flags=(complain
   
 }
 
-profile cron.daily/00_update_portage /etc/cron.daily/00_update_portage flags=(complain) {
+profile cron.daily/00_update_portage /etc/cron.daily/00_update_portage {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
   
@@ -60,7 +60,7 @@ profile cron.daily/00_update_portage /etc/cron.daily/00_update_portage flags=(co
   
 }
 
-profile cron.daily/aide /etc/cron.daily/aide flags=(complain) {
+profile cron.daily/aide /etc/cron.daily/aide {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
@@ -91,9 +91,12 @@ profile cron.daily/aide /etc/cron.daily/aide flags=(complain) {
   
 }
 
-profile cron.daily/chkrootkit /etc/cron.daily/chkrootkit flags=(complain) {
+profile cron.daily/chkrootkit /etc/cron.daily/chkrootkit {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
+  
+  capability dac_override,
+  capability dac_read_search,
   
   /dev/tty rw,
   
@@ -107,7 +110,7 @@ profile cron.daily/chkrootkit /etc/cron.daily/chkrootkit flags=(complain) {
   
 }
 
-profile cron.daily/daily_backup.sh /etc/cron.daily/daily_backup.sh flags=(complain) {
+profile cron.daily/daily_backup.sh /etc/cron.daily/daily_backup.sh {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
   
@@ -148,7 +151,7 @@ profile cron.daily/daily_backup.sh /etc/cron.daily/daily_backup.sh flags=(compla
   
 }
 
-profile cron.daily/glsa /etc/cron.daily/glsa flags=(complain) {
+profile cron.daily/glsa /etc/cron.daily/glsa {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
   
@@ -191,7 +194,7 @@ profile cron.daily/hosts.sh /etc/cron.daily/hosts.sh {
   
 }
 
-profile cron.daily/logrotate /etc/cron.daily/logrotate flags=(complain) {
+profile cron.daily/logrotate /etc/cron.daily/logrotate {
   #include <abstractions/base>
   
   /dev/tty rw,
@@ -204,7 +207,7 @@ profile cron.daily/logrotate /etc/cron.daily/logrotate flags=(complain) {
   
 }
 
-profile cron.daily/lynis /etc/cron.daily/lynis flags=(complain) {
+profile cron.daily/lynis /etc/cron.daily/lynis {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
   
@@ -220,7 +223,7 @@ profile cron.daily/lynis /etc/cron.daily/lynis flags=(complain) {
   
 }
 
-profile cron.daily/man-db /etc/cron.daily/man-db flags=(complain) {
+profile cron.daily/man-db /etc/cron.daily/man-db {
   #include <abstractions/base>
   
   capability dac_override,
@@ -235,7 +238,7 @@ profile cron.daily/man-db /etc/cron.daily/man-db flags=(complain) {
   
 }
 
-profile cron.daily/oinkmaster /etc/cron.daily/oinkmaster flags=(complain) {
+profile cron.daily/oinkmaster /etc/cron.daily/oinkmaster {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
   
@@ -252,7 +255,7 @@ profile cron.daily/oinkmaster /etc/cron.daily/oinkmaster flags=(complain) {
   
 }
 
-profile cron.weekly/mdadm /etc/cron.weekly/mdadm flags=(complain) {
+profile cron.weekly/mdadm /etc/cron.weekly/mdadm {
   #include <abstractions/base>
   
   /dev/tty rw,
@@ -264,7 +267,7 @@ profile cron.weekly/mdadm /etc/cron.weekly/mdadm flags=(complain) {
   
 }
 
-profile cron.weekly/weekly_backup.sh /etc/cron.weekly/weekly_backup.sh flags=(complain) {
+profile cron.weekly/weekly_backup.sh /etc/cron.weekly/weekly_backup.sh {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
   
@@ -305,7 +308,7 @@ profile cron.weekly/weekly_backup.sh /etc/cron.weekly/weekly_backup.sh flags=(co
   
 }
 
-profile cron.monthly/monthly_backup.sh /etc/cron.monthly/monthly_backup.sh flags=(complain) {
+profile cron.monthly/monthly_backup.sh /etc/cron.monthly/monthly_backup.sh {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
   

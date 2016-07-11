@@ -36,7 +36,7 @@ profile procps.ps /bin/ps {
 }
 
 
-profile procps.pidof /usr/bin/pidof flags=(complain) {
+profile procps.pidof /usr/bin/pidof {
   #include <abstractions/base>
   
   capability sys_ptrace,
@@ -52,7 +52,7 @@ profile procps.pidof /usr/bin/pidof flags=(complain) {
 }
 
 
-profile procps.pgrep /usr/bin/pgrep flags=(complain) {
+profile procps.pgrep /usr/bin/pgrep {
   #include <abstractions/base>
   
   capability sys_ptrace,
@@ -68,7 +68,7 @@ profile procps.pgrep /usr/bin/pgrep flags=(complain) {
 }
 
 
-profile procps.sysctl /usr/sbin/sysctl flags=(complain) {
+profile procps.sysctl /usr/sbin/sysctl {
   #include <abstractions/base>
   
   capability sys_admin,
