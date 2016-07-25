@@ -27,7 +27,7 @@ profile syslog-ng /usr/sbin/syslog-ng {
   unix (receive) type=dgram,
   unix (receive) type=stream,
   
-  /dev/tty{10,12} w,
+  /dev/tty[0-9]* w,
   /dev/kmsg r,
   /dev/log w,
   /dev/syslog w,
@@ -67,6 +67,8 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng {
   
   @{PROC}/@{pid}/uid_map r,
   @{PROC}/@{pid}/loginuid wr,
+  
+  /dev/tty[0-9]* w,
   
   /usr/sbin/syslog-ng Px,
   /bin/bash Cx -> shell,

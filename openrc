@@ -9,6 +9,11 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
+# FIX ME!
+# доделать скрипты "shutdown" runlevels, при завершении работы в init.d/apparmor НЕ выгружать правила, иначе не работает.
+# пока НЕ убирать flags=(complain) !
+
 profile openrc /sbin/openrc flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
@@ -18,7 +23,9 @@ profile openrc /sbin/openrc flags=(complain) {
   capability dac_override,
   capability kill,
   
+  /dev/tty rw,
   /dev/tty[0-9]* w,
+  /dev/console rw,
   /dev/ptmx rw,
   /dev/pts/[0-9]* rw,
   @{PROC}/ r,
@@ -27,11 +34,18 @@ profile openrc /sbin/openrc flags=(complain) {
   @{PROC}/@{pid}/environ r,
   @{PROC}/@{pid}/stat r,
   @{PROC}/@{pid}/mounts r,
+  /sys/fs/cgroup/ r,
+  /sys/fs/cgroup/** rwkl,
   
   /sbin/openrc r,
   /bin/bash Cx -> shell,
   # All scripts from "boot" and "default" runlevels must have profiles!
-  /etc/init.d/* Px,
+  /etc/init.d/* Pxr,
+  /etc/conf.d/* r,
+  # FIX ME! All scripts from "shutdown" runlevels must have profiles!
+  /etc/init.d/killprocs Uxr,
+  /etc/init.d/mount-ro Uxr,
+  /etc/init.d/savecache Uxr,
   
   /etc/rc.conf r,
   /etc/profile.env r,
@@ -46,7 +60,7 @@ profile openrc /sbin/openrc flags=(complain) {
   /run/openrc/** rwk,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     
     capability sys_tty_config,

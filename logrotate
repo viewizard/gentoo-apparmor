@@ -26,12 +26,12 @@ profile logrotate /usr/sbin/logrotate {
   /etc/logrotate.d/ r,
   /etc/logrotate.d/* rk,
   
+  / r,
   /var/log/ r,
   /var/log/** rw,
   /var/lib/logrotate* rw,
   
   # Noisy
-  deny / r,
   deny @{HOME}/ r,
   
   
