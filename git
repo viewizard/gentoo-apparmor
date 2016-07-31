@@ -12,7 +12,7 @@
 
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*"
+@{PROG_FILE}="[^.]**"
 
 profile git /usr/bin/git {
   #include <abstractions/base>
@@ -30,6 +30,10 @@ profile git /usr/bin/git {
   /usr/libexec/git-core/git ix,
   /usr/libexec/git-core/git-remote-http ix,
   /usr/libexec/git-core/git-remote-https ix,
+  
+  /usr/share/git-core/** r,
+  
+  owner @{HOME}/.gitconfig rw,
   
 }
 
@@ -51,5 +55,9 @@ profile git_root {
   /usr/libexec/git-core/git ix,
   /usr/libexec/git-core/git-remote-http ix,
   /usr/libexec/git-core/git-remote-https ix,
+  
+  /usr/share/git-core/** r,
+  
+  owner @{HOME}/.gitconfig rw,
   
 }
