@@ -53,8 +53,8 @@ profile libreoffice.javaldx /usr/lib64/libreoffice/program/javaldx {
   
   /dev/tty[0-9]* w,
   
-  /opt/icedtea-bin-*/bin/java Px,
-  /opt/icedtea-bin-*/jre/bin/java Px,
+  /opt/{oracle-jdk,icedtea}-bin-*/bin/java Px,
+  /opt/{oracle-jdk,icedtea}-bin-*/jre/bin/java Px,
   
   owner @{HOME}/.config/libreoffice/ rw,
   owner @{HOME}/.config/libreoffice/** rwk,
@@ -86,8 +86,8 @@ profile libreoffice.bin /usr/lib64/libreoffice/program/soffice.bin {
   @{PROC}/version r,
   
   /bin/bash Cxr -> shell,
-  /opt/icedtea-bin-*/bin/java Px,
-  /opt/icedtea-bin-*/jre/bin/java Px,
+  /opt/{oracle-jdk,icedtea}-bin-*/bin/java Px,
+  /opt/{oracle-jdk,icedtea}-bin-*/jre/bin/java Px,
   
   /etc/OpenCL/vendors/{,*} r,
   /usr/lib64/libreoffice/{,**} r,
@@ -100,8 +100,8 @@ profile libreoffice.bin /usr/lib64/libreoffice/program/soffice.bin {
   owner @{HOME}/.languagetool-ooo.cfg rw,
   
   # jre
-  /opt/icedtea-bin-*/{,**} r,
-  /opt/icedtea-bin-*/jre/lib/**.so rm,
+  /opt/{oracle-jdk,icedtea}-bin-*/{,**} r,
+  /opt/{oracle-jdk,icedtea}-bin-*/jre/lib/**.so rm,
   /usr/ r,
   /usr/lib{,32,64}/ r,
   /usr/lib{,32,64}/jvm/{,**} r,

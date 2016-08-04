@@ -14,7 +14,7 @@
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*"
 
-profile codeblocks /usr/bin/codeblocks flags=(complain) {
+profile codeblocks /usr/bin/codeblocks {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -41,6 +41,8 @@ profile codeblocks /usr/bin/codeblocks flags=(complain) {
   /usr/libexec/gcc/x86_64-pc-linux-gnu/*/cc1plus ix,
   
   /etc/lsb-release r,
+  /etc/mime.types r,
+  /usr/share/mime-info/{,*.mime,*.keys} r,
   /etc/env.d/gcc/x86_64-pc-linux-gnu-* r,
   /etc/env.d/gcc/config-x86_64-pc-linux-gnu r,
   /usr/include/** r,

@@ -9,34 +9,21 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile psmisc.killall /usr/bin/killall {
+profile oracle-jdk-bin.java /opt/oracle-jdk-bin-*/{,jre/}bin/java {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  #include <abstractions/user-tmp>
   
-  capability sys_ptrace,
+  /sys/devices/system/cpu/ r,
   
-  /dev/tty[0-9]* w,
-  @{PROC}/ r,
-  @{PROC}/@{pid}/{stat,status,cmdline} r,
+  /opt/oracle-jdk-bin-*/bin/java ix,
+  /opt/oracle-jdk-bin-*/jre/bin/java ix,
   
-  /usr/bin/killall r,
+  /opt/oracle-jdk-bin-*/** r,
+  /opt/oracle-jdk-bin-*/lib/**.so rm,
+  /opt/oracle-jdk-bin-*/jre/lib/**.so rm,
   
-}
-
-
-profile psmisc.fuser /bin/fuser flags=(complain) {
-  #include <abstractions/base>
-  
-  capability sys_ptrace,
-  capability kill,
-  
-  @{PROC}/ r,
-  @{PROC}/swaps r,
-  @{PROC}/@{pid}/fd/ r,
-  @{PROC}/@{pid}/{mounts,mountinfo,stat} r,
-  @{PROC}/@{pid}/net/unix r,
-  @{PROC}/fs/nfs/exports r,
-  
-  /bin/fuser r,
+  # Noisy
+  deny @{HOME}/ r,
   
 }

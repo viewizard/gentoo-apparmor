@@ -1,0 +1,22 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile java-config /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/java-config-2 flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/python>
+  
+  /dev/pts/[0-9]* w,
+  
+  /etc/java-config-2/current-system-vm w,
+  
+  /usr/share/java-config-2/vm/{,**} r,
+  
+}

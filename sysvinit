@@ -17,6 +17,8 @@ profile sysvinit.halt /sbin/{halt,poweroff,reboot} {
   
   /run/utmp rk,
   
+  /var/log/wtmp wk,
+  
 }
 
 profile sysvinit.shutdown /sbin/shutdown {
@@ -45,5 +47,19 @@ profile sysvinit.init /sbin/init {
   /dev/console rw,
   
   /sbin/init r,
+  
+}
+
+profile sysvinit.killall5 /sbin/killall5 flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  capability sys_ptrace,
+  
+  /dev/tty[0-9]* w,
+  @{PROC}/ r,
+  @{PROC}/@{pid}/{stat,status,cmdline} r,
+  
+  /sbin/killall5 r,
   
 }
