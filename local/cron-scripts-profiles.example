@@ -26,6 +26,8 @@ profile cron.hourly/logcheck.cron /etc/cron.hourly/logcheck.cron {
   #include <abstractions/nameservice>
   
   capability chown,
+  capability dac_read_search,
+  capability dac_override,
   
   /dev/tty rw,
   

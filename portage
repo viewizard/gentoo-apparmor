@@ -141,6 +141,8 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
     capability fsetid,
     capability sys_admin,
     capability setfcap,
+    capability setuid,
+    capability setgid,
     
     /dev/tty rw,
     /dev/null k,
@@ -149,12 +151,13 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
     /dev/shm/* rwl,
     /sys/bus/pci/devices/ r,
     /sys/devices/pci**/config r,
-    /sys/devices/system/cpu/ r,
+    /sys/devices/system/cpu/{,**} r,
     @{PROC}/ r,
     @{PROC}/@{pid}/fd/ r,
     @{PROC}/cmdline r,
     @{PROC}/@{pid}/stat r,
     @{PROC}/@{pid}/mounts r,
+    @{PROC}/@{pid}/task/@{pid}/stat r,
     @{PROC}/sys/net/ipv4/ip_local_port_range r,
     @{PROC}/sys/kernel/randomize_va_space r,
     
