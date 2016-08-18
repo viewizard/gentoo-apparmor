@@ -22,7 +22,7 @@ profile hd-idle /usr/sbin/hd-idle {
 }
 
 
-profile hd-idle.init.d /etc/init.d/hd-idle {
+profile hd-idle.init.d /etc/init.d/hd-idle flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -36,13 +36,9 @@ profile hd-idle.init.d /etc/init.d/hd-idle {
   /etc/{conf,init}.d/hd-idle r,
   
   
-  profile shell {
+  profile shell flags=(complain) {
     #include <abstractions/base>
-    
-    /dev/tty rw,
-    
-    /bin/bash r,
-    /lib64/rc/sh/gendepends.sh Px,
+    #include <abstractions/openrc_shell>
     
   }
   

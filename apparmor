@@ -87,7 +87,7 @@ profile apparmor.aa-unconfined /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/a
 }
 
 
-profile apparmor.init.d /etc/init.d/apparmor {
+profile apparmor.init.d /etc/init.d/apparmor flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -107,13 +107,9 @@ profile apparmor.init.d /etc/init.d/apparmor {
   /usr/libexec/rc.apparmor.functions r,
   
   
-  profile shell {
+  profile shell flags=(complain) {
     #include <abstractions/base>
-    
-    /dev/tty rw,
-    
-    /bin/bash r,
-    /lib64/rc/sh/gendepends.sh Px,
+    #include <abstractions/openrc_shell>
     
   }
   

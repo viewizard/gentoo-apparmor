@@ -105,20 +105,16 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad flags=(complain) {
   /run/lvmetad.pid rwk,
   
   
-  profile shell {
+  profile shell flags=(complain) {
     #include <abstractions/base>
-    
-    /dev/tty rw,
-    
-    /bin/bash r,
-    /lib64/rc/sh/gendepends.sh Px,
+    #include <abstractions/openrc_shell>
     
   }
   
 }
 
 
-profile lvm2.lvm.init.d /etc/init.d/lvm {
+profile lvm2.lvm.init.d /etc/init.d/lvm flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -133,13 +129,9 @@ profile lvm2.lvm.init.d /etc/init.d/lvm {
   /etc/{conf,init}.d/lvm r,
   
   
-  profile shell {
+  profile shell flags=(complain) {
     #include <abstractions/base>
-    
-    /dev/tty rw,
-    
-    /bin/bash r,
-    /lib64/rc/sh/gendepends.sh Px,
+    #include <abstractions/openrc_shell>
     
   }
   

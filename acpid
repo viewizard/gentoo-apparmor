@@ -32,6 +32,7 @@ profile acpid /usr/sbin/acpid {
   
   profile shell flags=(complain) {
     #include <abstractions/base>
+    #include <abstractions/nameservice>
     
     capability sys_tty_config,
     
@@ -70,7 +71,7 @@ profile acpid.kacpimon /usr/sbin/kacpimon {
 }
 
 
-profile acpid.init.d /etc/init.d/acpid {
+profile acpid.init.d /etc/init.d/acpid flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -81,13 +82,9 @@ profile acpid.init.d /etc/init.d/acpid {
   /etc/{conf,init}.d/acpid r,
   
   
-  profile shell {
+  profile shell flags=(complain) {
     #include <abstractions/base>
-    
-    /dev/tty rw,
-    
-    /bin/bash r,
-    /lib64/rc/sh/gendepends.sh Px,
+    #include <abstractions/openrc_shell>
     
   }
   

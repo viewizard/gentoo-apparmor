@@ -19,6 +19,7 @@ profile ntp.ntpd /usr/sbin/ntpd flags=(attach_disconnected,complain) {
   capability dac_override,
   
   /usr/sbin/ntpd r,
+  /usr/x86_64-pc-linux-gnu/gcc-bin/[0-9]*.[0-9]*.[0-9]*/ r,
   
   /etc/ntp.conf r,
   
@@ -61,7 +62,7 @@ profile ntp.ntpq /usr/bin/ntpq {
 }
 
 
-profile ntp.init.d /etc/init.d/ntpd {
+profile ntp.init.d /etc/init.d/ntpd flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -74,13 +75,9 @@ profile ntp.init.d /etc/init.d/ntpd {
   /run/ntpd.pid rwk,
   
   
-  profile shell {
+  profile shell flags=(complain) {
     #include <abstractions/base>
-    
-    /dev/tty rw,
-    
-    /bin/bash r,
-    /lib64/rc/sh/gendepends.sh Px,
+    #include <abstractions/openrc_shell>
     
   }
   

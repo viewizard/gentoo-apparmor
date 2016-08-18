@@ -45,7 +45,7 @@ profile vixie-cron.cron /usr/sbin/cron {
 }
 
 
-profile vixie-cron.init.d /etc/init.d/vixie-cron {
+profile vixie-cron.init.d /etc/init.d/vixie-cron flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -58,13 +58,9 @@ profile vixie-cron.init.d /etc/init.d/vixie-cron {
   /run/cron.pid rwk,
   
   
-  profile shell {
+  profile shell flags=(complain) {
     #include <abstractions/base>
-    
-    /dev/tty rw,
-    
-    /bin/bash r,
-    /lib64/rc/sh/gendepends.sh Px,
+    #include <abstractions/openrc_shell>
     
   }
   

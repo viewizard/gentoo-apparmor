@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile grub.grub2-mkconfig /usr/sbin/grub2-mkconfig flags=(complain) {
+profile grub.grub-mkconfig /usr/sbin/grub{,2}-mkconfig flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
   
@@ -17,7 +17,7 @@ profile grub.grub2-mkconfig /usr/sbin/grub2-mkconfig flags=(complain) {
   /dev/pts/[0-9]* w,
   @{PROC}/@{pid}/mountinfo r,
   
-  /usr/sbin/grub2-mkconfig r,
+  /usr/sbin/grub{,2}-mkconfig r,
   /bin/bash r,
   /bin/basename ix,
   /bin/dirname ix,
@@ -35,9 +35,9 @@ profile grub.grub2-mkconfig /usr/sbin/grub2-mkconfig flags=(complain) {
   /bin/uname ix,
   /usr/bin/which ix,
   /usr/bin/gettext ix,
-  /usr/bin/grub2-script-check ix,
-  /usr/bin/grub2-mkrelpath ix,
-  /usr/sbin/grub2-probe Px,
+  /usr/bin/grub{,2}-script-check ix,
+  /usr/bin/grub{,2}-mkrelpath ix,
+  /usr/sbin/grub{,2}-probe Px,
   /etc/grub.d/{,*} rix,
   
   / r,
@@ -49,7 +49,7 @@ profile grub.grub2-mkconfig /usr/sbin/grub2-mkconfig flags=(complain) {
 }
 
 
-profile grub.grub2-probe /usr/sbin/grub2-probe flags=(complain) {
+profile grub.grub-probe /usr/sbin/grub{,2}-probe flags=(complain) {
   #include <abstractions/base>
   
   capability sys_admin,
@@ -64,14 +64,14 @@ profile grub.grub2-probe /usr/sbin/grub2-probe flags=(complain) {
   @{PROC}/devices r,
   @{PROC}/@{pid}/mountinfo r,
   
-  /usr/sbin/grub2-probe r,
+  /usr/sbin/grub{,2}-probe r,
   /bin/udevadm Px,
   /sbin/lvm Px,
   
 }
 
 
-profile grub.grub2-install /usr/sbin/grub2-install flags=(complain) {
+profile grub.grub-install /usr/sbin/grub{,2}-install flags=(complain) {
   #include <abstractions/base>
   
   capability sys_admin,
@@ -85,7 +85,7 @@ profile grub.grub2-install /usr/sbin/grub2-install flags=(complain) {
   @{PROC}/devices r,
   @{PROC}/@{pid}/mountinfo r,
   
-  /usr/sbin/grub2-install r,
+  /usr/sbin/grub{,2}-install r,
   /bin/bash Cxr -> shell,
   /bin/kmod Px,
   /bin/udevadm Px,

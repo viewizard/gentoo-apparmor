@@ -33,10 +33,12 @@ profile teamspeak /usr/bin/teamspeak3 {
   /opt/teamspeak3-client/ r,
   /opt/teamspeak3-client/** rkix,
   
-  deny /* w,
-  deny /opt/teamspeak3-client/** w,
-  
   owner @{HOME}/.ts3client/ rw,
   owner @{HOME}/.ts3client/** rwk,
+  owner @{HOME}/.cache/qt_compose_cache_little_endian_* rw,
+  
+  # Noisy
+  deny /* w,
+  deny /opt/teamspeak3-client/** w,
   
 }

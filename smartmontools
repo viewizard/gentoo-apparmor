@@ -55,7 +55,7 @@ profile smartmontools.smartctl /usr/sbin/smartctl {
 }
 
 
-profile smartmontools.init.d /etc/init.d/smartd {
+profile smartmontools.init.d /etc/init.d/smartd flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -68,13 +68,9 @@ profile smartmontools.init.d /etc/init.d/smartd {
   /run/smartd.pid rwk,
   
   
-  profile shell {
+  profile shell flags=(complain) {
     #include <abstractions/base>
-    
-    /dev/tty rw,
-    
-    /bin/bash r,
-    /lib64/rc/sh/gendepends.sh Px,
+    #include <abstractions/openrc_shell>
     
   }
   

@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile netifrc.init.d /etc/init.d/net.* {
+profile netifrc.init.d /etc/init.d/net.* flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -50,13 +50,9 @@ profile netifrc.init.d /etc/init.d/net.* {
   /run/dhcpcd-*.pid rwk,
   
   
-  profile shell {
+  profile shell flags=(complain) {
     #include <abstractions/base>
-    
-    /dev/tty rw,
-    
-    /bin/bash r,
-    /lib64/rc/sh/gendepends.sh Px,
+    #include <abstractions/openrc_shell>
     
   }
   

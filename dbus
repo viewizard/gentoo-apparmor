@@ -70,7 +70,7 @@ profile dbus-daemon-launch-helper /usr/libexec/dbus-daemon-launch-helper {
   
 }
 
-profile dbus.init.d /etc/init.d/dbus {
+profile dbus.init.d /etc/init.d/dbus flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -86,13 +86,9 @@ profile dbus.init.d /etc/init.d/dbus {
   /run/dbus/system_bus_socket rwk,
   
   
-  profile shell {
+  profile shell flags=(complain) {
     #include <abstractions/base>
-    
-    /dev/tty rw,
-    
-    /bin/bash r,
-    /lib64/rc/sh/gendepends.sh Px,
+    #include <abstractions/openrc_shell>
     
   }
   

@@ -57,13 +57,10 @@ profile gradm.init.d /etc/init.d/gradm flags=(complain) {
   
   /etc/init.d/gradm r,
   
-  profile shell {
+  
+  profile shell flags=(complain) {
     #include <abstractions/base>
-    
-    /dev/tty rw,
-    
-    /bin/bash r,
-    /lib64/rc/sh/gendepends.sh Px,
+    #include <abstractions/openrc_shell>
     
   }
   

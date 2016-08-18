@@ -109,7 +109,7 @@ profile consolekit.udev-acl /usr/{lib,lib32,lib64}/ConsoleKit/udev-acl {
 }
 
 
-profile consolekit.init.d /etc/init.d/consolekit {
+profile consolekit.init.d /etc/init.d/consolekit flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -123,13 +123,9 @@ profile consolekit.init.d /etc/init.d/consolekit {
   /run/ConsoleKit/pid rwk,
   
   
-  profile shell {
+  profile shell flags=(complain) {
     #include <abstractions/base>
-    
-    /dev/tty rw,
-    
-    /bin/bash r,
-    /lib64/rc/sh/gendepends.sh Px,
+    #include <abstractions/openrc_shell>
     
   }
   

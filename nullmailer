@@ -72,7 +72,7 @@ profile nullmailer-send /usr/sbin/nullmailer-send {
 }
 
 
-profile nullmailer.init.d /etc/init.d/nullmailer {
+profile nullmailer.init.d /etc/init.d/nullmailer flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
@@ -96,13 +96,9 @@ profile nullmailer.init.d /etc/init.d/nullmailer {
   /run/utmp rk,
   
   
-  profile shell {
+  profile shell flags=(complain) {
     #include <abstractions/base>
-    
-    /dev/tty rw,
-    
-    /bin/bash r,
-    /lib64/rc/sh/gendepends.sh Px,
+    #include <abstractions/openrc_shell>
     
   }
   

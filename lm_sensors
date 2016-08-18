@@ -18,7 +18,7 @@ profile lm_sensors.sensors /usr/bin/sensors {
 }
 
 
-profile lm_sensors.init.d /etc/init.d/lm_sensors {
+profile lm_sensors.init.d /etc/init.d/lm_sensors flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -32,13 +32,9 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors {
   /etc/{conf,init}.d/lm_sensors r,
   
   
-  profile shell {
+  profile shell flags=(complain) {
     #include <abstractions/base>
-    
-    /dev/tty rw,
-    
-    /bin/bash r,
-    /lib64/rc/sh/gendepends.sh Px,
+    #include <abstractions/openrc_shell>
     
   }
   

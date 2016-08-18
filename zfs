@@ -89,7 +89,7 @@ profile zfs.zed.d /usr/libexec/zfs/zed.d/*.sh {
 }
 
 
-profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed {
+profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -111,20 +111,16 @@ profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed {
   /var/lib/run/zed.pid r,
   
   
-  profile shell {
+  profile shell flags=(complain) {
     #include <abstractions/base>
-    
-    /dev/tty rw,
-    
-    /bin/bash r,
-    /lib64/rc/sh/gendepends.sh Px,
+    #include <abstractions/openrc_shell>
     
   }
   
 }
 
 
-profile zfs.zfs-import.init.d /etc/init.d/zfs-import {
+profile zfs.zfs-import.init.d /etc/init.d/zfs-import flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -142,13 +138,9 @@ profile zfs.zfs-import.init.d /etc/init.d/zfs-import {
   /etc/init.d/zfs-import r,
   
   
-  profile shell {
+  profile shell flags=(complain) {
     #include <abstractions/base>
-    
-    /dev/tty rw,
-    
-    /bin/bash r,
-    /lib64/rc/sh/gendepends.sh Px,
+    #include <abstractions/openrc_shell>
     
   }
   

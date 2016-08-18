@@ -38,7 +38,7 @@ profile suricata /usr/bin/suricata {
 }
 
 
-profile suricata.init.d /etc/init.d/suricata {
+profile suricata.init.d /etc/init.d/suricata flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -62,13 +62,9 @@ profile suricata.init.d /etc/init.d/suricata {
   /run/sed* rw,
   
   
-  profile shell {
+  profile shell flags=(complain) {
     #include <abstractions/base>
-    
-    /dev/tty rw,
-    
-    /bin/bash r,
-    /lib64/rc/sh/gendepends.sh Px,
+    #include <abstractions/openrc_shell>
     
   }
   

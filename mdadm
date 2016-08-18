@@ -54,7 +54,7 @@ profile mdadm.checkarray /usr/sbin/checkarray flags=(complain) {
 }
 
 
-profile mdadm.init.d /etc/init.d/mdadm {
+profile mdadm.init.d /etc/init.d/mdadm flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -68,13 +68,9 @@ profile mdadm.init.d /etc/init.d/mdadm {
   /run/mdadm.pid rwk,
   
   
-  profile shell {
+  profile shell flags=(complain) {
     #include <abstractions/base>
-    
-    /dev/tty rw,
-    
-    /bin/bash r,
-    /lib64/rc/sh/gendepends.sh Px,
+    #include <abstractions/openrc_shell>
     
   }
   
