@@ -17,6 +17,7 @@ profile genkernel /usr/bin/genkernel flags=(complain) {
   capability sys_chroot,
   capability dac_override,
   capability dac_read_search,
+  capability sys_admin,
   
   /dev/tty rw,
   /dev/pts/[0-9]* w,
@@ -74,7 +75,7 @@ profile genkernel /usr/bin/genkernel flags=(complain) {
   /usr/bin/id ix,
   /usr/bin/xargs ix,
   /usr/bin/xz ix,
-  /usr/bin/gpg2 r,
+  /usr/bin/gpg{,2,-static} r,
   /usr/x86_64-pc-linux-gnu/binutils-bin/*/strings ix,
   
   /etc/genkernel.conf r,
