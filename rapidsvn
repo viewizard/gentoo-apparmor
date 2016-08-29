@@ -30,10 +30,32 @@ profile rapidsvn /usr/bin/rapidsvn flags=(complain) {
   
   /usr/bin/rapidsvn r,
   /usr/bin/meld Px,
+  /usr/bin/lsb_release Cxr -> lsb_release,
   /bin/bash ix,
   /bin/uname ix,
   
   owner @{HOME}/.subversion/{,**} rw,
   owner @{HOME}/.RapidSVN* rw,
   
+  
+  profile lsb_release {
+    #include <abstractions/base>
+    #include <abstractions/python>
+    
+    /dev/tty rw,
+    
+    /usr/bin/lsb_release r,
+    /bin/sed ixr,
+    /bin/head ixr,
+    /bin/tr ixr,
+    /bin/bash ixr,
+    /usr/bin/getopt ixr,
+    /usr/bin/dpkg-query ixr,
+    deny /usr/bin/find xr,
+    
+    /etc/lsb-release r,
+    /usr/bin/ r,
+    
+    /var/lib/dpkg/** r,
+  }
 }

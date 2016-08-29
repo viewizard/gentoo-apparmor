@@ -107,8 +107,14 @@ profile gvfsd-fuse /usr/libexec/gvfsd-fuse {
 
 profile gvfsd-http /usr/libexec/gvfsd-http flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/gtk>
+  #include <abstractions/dconf>
+  #include <abstractions/ssl_certs>
   
   /usr/libexec/gvfsd-http r,
+  
+  /usr/lib{,32,64}/libproxy/[0-9]*.[0-9]*.[0-9]*/modules/*.so m,
   
 }
 
