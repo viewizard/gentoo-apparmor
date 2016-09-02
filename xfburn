@@ -33,17 +33,20 @@ profile xfburn /usr/bin/xfburn flags=(complain) {
   /sys/devices/pci**/{ata,usb}[0-9]*/**/block/sd[a-z]/uevent r,
   /sys/devices/pci**/{ata,usb}[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/uevent r,
   /sys/devices/pci**/usb[0-9]*/**/{vendor,model} r,
-  /sys/devices/virtual/block/{dm-,loop,zd}[0-9]*/uevent r,
+  /sys/devices/virtual/block/{dm-,md,loop,zd}[0-9]*/uevent r,
   /sys/devices/virtual/block/zd[0-9]*/zd[0-9]*/uevent r,
   owner @{PROC}/@{pid}/fd/ r,
   @{PROC}/sys/dev/cdrom/info r,
   
   /usr/bin/xfburn r,
+  /usr/libexec/gvfsd-burn r,
   
   /etc/udev/udev.conf r,
   /usr/share/xfburn/{,**} r,
   /run/udev/data/* r,
   
   owner @{HOME}/.config/xfburn/{,**} rw,
+  
+  owner /run/user/*/gvfs-burn/ rw,
   
 }

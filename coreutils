@@ -32,3 +32,13 @@ profile coreutils.stat /usr/bin/stat flags=(complain) {
   /usr/bin/stat r,
   
 }
+
+
+profile coreutils.date /bin/date flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/pts/[0-9]* w,
+  
+  /bin/date r,
+  
+}

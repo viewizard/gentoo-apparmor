@@ -31,6 +31,7 @@ profile util-linux.mount /bin/mount flags=(complain) {
   
   /bin/mount r,
   /sbin/mount.zfs Px,
+  /usr/bin/ntfs-3g Px,
   
   /etc/fstab r,
   
@@ -100,7 +101,7 @@ profile util-linux.lsblk /bin/lsblk flags=(complain) {
   /dev/pts/[0-9]* w,
   /sys/block/ r,
   /sys/devices/pci**/{ata,usb}[0-9]*/**/type r,
-  /sys/devices/pci**/{ata,usb}[0-9]*/**/block/sd[a-z]/{,**} r,
+  /sys/devices/pci**/{ata,usb}[0-9]*/**/block/{sd[a-z],sr[0-9]*}/{,**} r,
   /sys/devices/virtual/block/md[0-9]*/{,**} r,
   /sys/devices/virtual/block/{dm-,loop,zd}[0-9]*/{,**} r,
   @{PROC}/swaps r,

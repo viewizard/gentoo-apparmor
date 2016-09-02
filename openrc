@@ -61,6 +61,7 @@ profile openrc /sbin/openrc flags=(complain) {
   
   profile shell flags=(complain) {
     #include <abstractions/base>
+    #include <abstractions/nameservice>
     
     capability sys_tty_config,
     capability dac_override,
@@ -77,8 +78,42 @@ profile openrc /sbin/openrc flags=(complain) {
 }
 
 
+profile openrc.rc-update /sbin/rc-update flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/pts/[0-9]* w,
+  
+  /sbin/rc-update r,
+  
+  /etc/init.d/ r,
+  /etc/runlevels/{,**} r,
+  /etc/terminfo/x/xterm r,
+  
+  /run/openrc/** rw,
+  
+}
+
+
+profile openrc.rc-status /bin/rc-status flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/pts/[0-9]* w,
+  
+  /bin/rc-status r,
+  
+  /etc/init.d/ r,
+  /etc/conf.d/ r,
+  /etc/runlevels/{,**} r,
+  /etc/terminfo/x/xterm r,
+  
+  /run/openrc/** r,
+  
+}
+
+
 profile openrc.gendepends.sh /lib64/rc/sh/gendepends.sh flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/nameservice>
   
   capability sys_tty_config,
   capability dac_override,
@@ -89,6 +124,7 @@ profile openrc.gendepends.sh /lib64/rc/sh/gendepends.sh flags=(complain) {
   
   /bin/bash r,
   /lib64/rc/sh/gendepends.sh r,
+  /lib64/rc/bin/shell_var ixr,
   /bin/sed ixr,
   /bin/grep ixr,
   /sbin/openrc Px,

@@ -9,14 +9,16 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile ethtool /usr/sbin/ethtool flags=(complain) {
+profile ntfs3g /usr/bin/ntfs-3g flags=(complain) {
   #include <abstractions/base>
   
-  capability net_admin,
-  capability sys_module,
+  capability sys_admin,
   
-  /dev/pts/[0-9]* w,
+  /dev/fuse rw,
+  /dev/sd[a-z][0-9]* rwk,
+  /sys/devices/virtual/block/dm-[0-9]*/dm/name r,
+  @{PROC}/@{pid}/mounts r,
   
-  /usr/sbin/ethtool r,
+  /usr/bin/ntfs-3g r,
   
 }
