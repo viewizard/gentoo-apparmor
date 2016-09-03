@@ -124,6 +124,7 @@ profile bash_root {
   /bin/ifconfig Pxr,
   /bin/rc-status Pxr,
   /bin/date Pxr,
+  /bin/tail ixr,
   /sbin/mdadm Pxr,
   /sbin/shutdown Pxr,
   /sbin/{halt,poweroff,reboot} Pxr,
