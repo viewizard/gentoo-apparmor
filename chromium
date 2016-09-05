@@ -35,8 +35,9 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   /dev/tty[0-9]* w,
   /dev/pts/[0-9]* rw,
   /dev/video[0-9]* r,
-  /sys/devices/pci**/usb*/**/idVendor r,
-  /sys/devices/pci**/usb*/**/idProduct r,
+  /sys/bus/{,**} r,
+  /sys/class/{,**} r,
+  /sys/devices/pci**/usb*/** r,
   
   @{PROC}/ r,
   @{PROC}/filesystems r,
@@ -179,16 +180,19 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
     
     /dev/tty rw,
     
-    /usr/bin/getopt ixr,
+    /usr/bin/lsb_release r,
     /bin/sed ixr,
     /bin/head ixr,
-    /usr/bin/lsb_release r,
     /bin/bash ixr,
+    /usr/bin/getopt ixr,
     /usr/bin/dpkg-query ixr,
-    /etc/lsb-release r,
-    /var/lib/dpkg/** r,
     deny /usr/bin/find xr,
+    
+    /etc/lsb-release r,
     /usr/bin/ r,
+    
+    /var/lib/dpkg/** r,
+    
   }
   
   

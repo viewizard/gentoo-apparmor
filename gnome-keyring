@@ -12,6 +12,7 @@
 profile gnome-keyring-daemon /usr/bin/gnome-keyring-daemon {
   #include <abstractions/base>
   
+  /dev/tty[0-9]* w,
   @{PROC}/@{pid}/status r,
   
   /usr/bin/gnome-keyring-daemon r,
@@ -21,5 +22,9 @@ profile gnome-keyring-daemon /usr/bin/gnome-keyring-daemon {
   owner @{HOME}/.local/share/keyrings/ rw,
   owner @{HOME}/.local/share/keyrings/* rwl,
   owner @{HOME}/.cache/keyring-*/{,*} rw,
+  owner @{HOME}/.ssh/ r,
+  owner @{HOME}/.session.log w,
+  
+  owner /run/user/*/keyring/pkcs11 w,
   
 }

@@ -37,11 +37,26 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} flags=(complain) {
   
   /run/openrc/dm-crypt-remdev.*/* r,
   
-  owner @{HOME}/.gnupg/gpg.conf r,
-  owner @{HOME}/.gnupg/{pubring,secring}.gpg r,
-  owner @{HOME}/.gnupg/random_seed rwk,
+  owner @{HOME}/.gnupg/ rw,
+  owner @{HOME}/.gnupg/** rwk,
     
   # Noisy
   deny /.gnupg/{,**} r,
+  
+}
+
+
+profile gnupg.gpgconf /usr/bin/gpgconf flags=(complain) {
+  #include <abstractions/base>
+  
+  /usr/bin/gpgconf r,
+  
+}
+
+
+profile gnupg.gpgsm /usr/bin/gpgsm flags=(complain) {
+  #include <abstractions/base>
+  
+  /usr/bin/gpgsm r,
   
 }

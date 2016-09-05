@@ -1,0 +1,40 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+profile seahorse /usr/bin/seahorse flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+  #include <abstractions/nvidia>
+  #include <abstractions/X>
+  #include <abstractions/user-tmp>
+  #include <abstractions/dconf>
+  #include <abstractions/ssl_certs>
+  
+  /dev/tty[0-9]* w,
+  @{PROC}/@{pid}/fd/ r,
+  
+  /usr/bin/seahorse r,
+  /usr/bin/gpgconf Px,
+  /usr/bin/gpg2 Px,
+  /usr/bin/gpgsm Px,
+  
+  /usr/share/seahorse/{,**} r,
+  /usr/share/p11-kit/modules/{,*.module} r,
+  /usr/lib64/pkcs11/*.so m,
+  /etc/ssl/certs/ca-certificates.crt r,
+  
+  owner @{HOME}/.gnupg/{,**} r,
+  owner @{HOME}/.ssh/{,**} r,
+  
+}
