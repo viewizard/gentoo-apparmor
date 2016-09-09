@@ -17,14 +17,12 @@ profile gnome-keyring-daemon /usr/bin/gnome-keyring-daemon {
   
   /usr/bin/gnome-keyring-daemon r,
   
-  owner /run/user/*/keyring/{,control} rw,
-  
   owner @{HOME}/.local/share/keyrings/ rw,
   owner @{HOME}/.local/share/keyrings/* rwl,
-  owner @{HOME}/.cache/keyring-*/{,*} rw,
+  owner @{HOME_CACHE}/keyring-*/{,*} rw,
   owner @{HOME}/.ssh/ r,
   owner @{HOME}/.session.log w,
   
-  owner /run/user/*/keyring/pkcs11 w,
+  owner /run/user/*/keyring/{,control,pkcs11,ssh} rw,
   
 }

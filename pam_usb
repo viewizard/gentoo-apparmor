@@ -27,9 +27,11 @@ profile pam_usb.pamusb-agent /usr/bin/pamusb-agent {
     #include <abstractions/base>
     
     /dev/tty rw,
+    /dev/tty[0-9]* w,
     
     /bin/bash r,
     /usr/bin/mate-screensaver-command Px,
+    /usr/bin/alock Px,
     /usr/bin/pamusb-check Px,
     
   }

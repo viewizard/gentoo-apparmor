@@ -22,11 +22,14 @@ profile ristretto /usr/bin/ristretto {
   #include <abstractions/cups-client>
   #include <abstractions/nvidia>
   #include <abstractions/user-tmp>
+  #include <abstractions/dbus-session>
   #include <abstractions/X>
   #include <abstractions/executable-binary-helper>
   #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/nameservice>
   
   /dev/tty[0-9]* w,
+  @{PROC}/@{pid}/fd/ r,
   
   /usr/bin/ristretto r,
   
@@ -34,5 +37,6 @@ profile ristretto /usr/bin/ristretto {
   owner @{HOME}/.config/xfce4/help.rc.*.tmp rw,
   owner @{HOME}/.config/ristretto/ rw,
   owner @{HOME}/.config/ristretto/* rwk,
+  owner @{HOME}/.local/share/ristretto/{,**} rw,
   
 }

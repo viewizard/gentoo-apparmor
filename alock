@@ -1,0 +1,50 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+# config for abstractions/program-work-with-disk-** (**-rk,rwk)
+@{PROG_DIR}="[^.]**"
+@{PROG_FILE}="[^.]*.{xpm,tiff,tga,pnm,jpeg,jpg,gif}"
+
+profile alock /usr/bin/alock {
+  #include <abstractions/base>
+  #include <abstractions/X>
+  #include <abstractions/nameservice>
+  #include <abstractions/authentication>
+  #include <abstractions/program-work-with-disk-rk>
+  
+  /dev/pts/[0-9]* w,
+  /dev/tty[0-9]* w,
+  
+  /usr/bin/alock r,
+  /bin/bash cx -> shell,
+  /sbin/unix_chkpwd Px,
+  
+  /etc/shells r,
+  /usr/lib64/imlib2/loaders/*.so m,
+  /usr/local/share/backgrounds/**{xpm,tiff,tga,pnm,jpeg,jpg,gif} r,
+  /run/utmp rk,
+  
+  owner @{HOME}/.session.log w,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /usr/bin/pmount Px,
+    /usr/bin/pumount Px,
+    
+  }
+  
+}
