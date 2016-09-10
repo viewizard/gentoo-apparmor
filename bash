@@ -65,6 +65,7 @@ profile bash_users {
   /usr/bin/clear ixr,
   /usr/bin/wine Pxr,
   /usr/bin/winecfg Pxr,
+  /usr/bin/pamusb-agent Pxr,
   
   /etc/profile.env r,
   /etc/bash/bash_logout r,
@@ -139,6 +140,7 @@ profile bash_root {
   /sbin/zpool Pxr,
   /sbin/zfs Pxr,
   /sbin/rc-update Pxr,
+  /sbin/fsck Pxr,
   /usr/bin/pmount Pxr,
   /usr/bin/pumount Pxr,
   /usr/bin/which ixr,
@@ -163,6 +165,7 @@ profile bash_root {
   /usr/bin/lsusb Pxr,
   /usr/bin/gpg{,2,-static} Pxr,
   /usr/bin/find ixr,
+  /usr/bin/pamusb-agent Px,
   /usr/sbin/logcheck Pxr,
   /usr/sbin/aideinit Pxr,
   /usr/sbin/gdisk Pxr,

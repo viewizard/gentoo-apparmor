@@ -140,11 +140,13 @@ profile util-linux.fsck /sbin/fsck flags=(complain) {
   #include <abstractions/base>
   
   /dev/pts/[0-9]* w,
+  /dev/sd{[a-z],[a-z][0-9]*} r,
   /sys/devices/virtual/block/dm-[0-9]*/{,**} r,
   /sys/devices/pci**/{ata,usb}[0-9]*/**/block/sd[a-z]/{,**} r,
   
   /sbin/fsck r,
   /sbin/e2fsck Px,
+  /usr/sbin/fsck.fat Px,
   
   /etc/fstab r,
   

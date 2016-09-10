@@ -8,23 +8,13 @@
 #
 # ------------------------------------------------------------------
 
-/etc/local.d/firewall.start Cx -> firewall,
-
-profile firewall {
+#include <tunables/global>
+profile dosfstools.fsck.fat /usr/sbin/fsck.fat flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/nameservice>
-  
-  capability sys_tty_config,
-  capability dac_override,
-  capability dac_read_search,
   
   /dev/pts/[0-9]* w,
+  /dev/sd[a-z][0-9]* rw,
   
-  /dev/tty rw,
-  /dev/console rw,
-  
-  /bin/bash r,
-  /etc/local.d/firewall.start r,
-  /sbin/xtables-multi Px,
+  /usr/sbin/fsck.fat r,
   
 }
