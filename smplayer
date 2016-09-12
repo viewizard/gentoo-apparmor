@@ -32,7 +32,8 @@ profile smplayer /usr/bin/smplayer {
   
   /usr/bin/smplayer r,
   /usr/bin/mplayer ix,
-  /usr/bin/aplay ix,
+  deny /usr/bin/mpv x, # have issues with smplayer (sound freez, pulseaudio), but work fine as stand alone player
+  /usr/bin/aplay Px,
   
   /usr/share/smplayer/{,**} r,
   # mplayer
