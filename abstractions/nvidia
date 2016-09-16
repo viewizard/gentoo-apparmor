@@ -36,9 +36,9 @@ owner @{HOME}/.nv/GLCache/ rw,
 owner @{HOME}/.nv/GLCache/** rwk,
 owner @{HOME}/.nv/ComputeCache/ rw,
 owner @{HOME}/.nv/ComputeCache/** rwk,
-# don't allow folders creation in "home"
-deny @{HOMEDIRS}/*.nv/ rw,
-deny @{HOMEDIRS}/*.nv/.gl* rw,
+owner @{HOMEDIRS}/*.nv/ rw,
+owner @{HOMEDIRS}/*.nv/** rwk,
+owner @{HOMEDIRS}/*.nv/.gl* m,
 
 # nouveau
 /sys/devices/pci**/uevent r,

@@ -179,6 +179,7 @@ profile bash_root {
   /usr/sbin/paxctl-ng ixr,
   /usr/sbin/grub{,2}-mkconfig Pxr,
   /usr/sbin/grub{,2}-install Pxr,
+  /usr/sbin/perl-cleaner Pxr,
   /usr/lib64/python-exec/python-exec2 Pxr,
   /usr/local/bin/** Pxr,
   /usr/local/sbin/** Pxr,
