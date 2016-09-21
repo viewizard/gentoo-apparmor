@@ -97,7 +97,11 @@ profile openrc.rc-update /sbin/rc-update flags=(complain) {
 profile openrc.rc-status /bin/rc-status flags=(complain) {
   #include <abstractions/base>
   
+  capability kill,
+  
   /dev/pts/[0-9]* w,
+  @{PROC}/ r,
+  @{PROC}/@{pid}/cmdline r,
   
   /bin/rc-status r,
   
@@ -107,6 +111,7 @@ profile openrc.rc-status /bin/rc-status flags=(complain) {
   /etc/terminfo/x/xterm r,
   
   /run/openrc/** r,
+  /run/*.pid r,
   
 }
 
@@ -127,6 +132,7 @@ profile openrc.gendepends.sh /lib64/rc/sh/gendepends.sh flags=(complain) {
   /lib64/rc/bin/shell_var ixr,
   /lib64/rc/bin/service_started ixr,
   /lib64/rc/bin/service_get_value ixr,
+  /lib64/rc/bin/fstabinfo ixr,
   /bin/sed ixr,
   /bin/grep ixr,
   /sbin/openrc Px,
@@ -140,6 +146,7 @@ profile openrc.gendepends.sh /lib64/rc/sh/gendepends.sh flags=(complain) {
   /etc/{conf,init}.d/{,*} r,
   /etc/exports.d/{,*} r,
   /usr/libexec/rc.apparmor.functions r,
+  /run/openrc/options/lvm/need r,
   
 }
 
@@ -857,6 +864,25 @@ profile openrc.udev.init.d /etc/init.d/udev flags=(complain) {
   /bin/bash Cx -> shell,
   
   /etc/init.d/udev r,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/openrc_shell>
+    
+  }
+  
+}
+
+
+profile openrc.modules-load.init.d /etc/init.d/modules-load flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /bin/bash Cx -> shell,
+  
+  /etc/init.d/modules-load r,
   
   
   profile shell flags=(complain) {
