@@ -23,7 +23,7 @@ profile gsmartcontrol /usr/bin/gsmartcontrol {
   /dev/tty[0-9]* w,
   /dev/sd[a-z] r,
   /dev/zd[0-9]* r,
-  /sys/devices/pci**/usb[0-9]*/*/{idVendor,idProduct,bcdDevice} r,
+  /sys/devices/pci[0-9]*/**/usb[0-9]*/*/{idVendor,idProduct,bcdDevice} r,
   
   @{PROC}/@{pid}/fd/ r,
   @{PROC}/partitions r,

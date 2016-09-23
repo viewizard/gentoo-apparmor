@@ -1,0 +1,121 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile evelauncher.sh /home/*/evelauncher/evelauncher.sh flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/tty rw,
+  
+  owner @{HOME}/evelauncher/evelauncher.sh r,
+  owner @{HOME}/evelauncher/evelauncher px,
+  /bin/bash r,
+  /bin/sed ix,
+  /bin/basename ix,
+  /bin/dirname ix,
+  
+}
+
+
+profile evelauncher /home/*/evelauncher/evelauncher flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/audio>
+  #include <abstractions/dbus-session>
+  #include <abstractions/gtk>
+  #include <abstractions/qt>
+  #include <abstractions/nvidia>
+  #include <abstractions/X>
+  #include <abstractions/user-tmp>
+  #include <abstractions/nameservice>
+  #include <abstractions/xdg-open>
+  #include <abstractions/ssl_certs>
+  
+  /dev/tty rw,
+  /dev/tty[0-9]* w,
+  
+  /dev/disk/by-label/ r,
+  /dev/shm/.org.chromium.Chromium.* rw,
+  @{PROC}/sys/kernel/shmmax r,
+  owner @{PROC}/@{pid}/oom_score_adj rw,
+  /sys/bus/pci/devices/ r,
+  /sys/devices/system/cpu/ r,
+  /sys/devices/pci[0-9]*/**/{resource,irq,vendor,device,class,config} r,
+  
+  owner @{HOME}/evelauncher/evelauncher r,
+  /usr/bin/wine Px,
+  owner @{HOME}/{.eve,evelauncher}/updater px,
+  owner @{HOME}/evelauncher/QtWebEngineProcess ix,
+  owner @{HOME}/evelauncher/LogLite px,
+  
+  /etc/os-release r,
+  
+  / r,
+  /home/ r,
+  owner @{HOME}/ r,
+  owner @{HOME}/evelauncher/{,**} r,
+  owner @{HOME}/evelauncher/**.so{,.[0-9]*} m,
+  owner @{HOME}/.eve/{,**} rw,
+  owner @{HOME}/.config/CCP/{,**} rwk,
+  owner @{HOME}/.local/share/CCP/{,**} rwk,
+  owner @{HOME}/.pki/nssdb/{,**} rwk,
+  owner @{HOME_CACHE}/CCP/{,**} rw,
+  owner @{HOME_CACHE}/qt_compose_cache_little_endian_* rw,
+  /tmp/.gl* m,
+  
+}
+
+
+profile evelauncher.updater /home/*/{.eve,evelauncher}/updater flags=(complain) {
+  #include <abstractions/base>
+  
+  owner @{HOME}/{.eve,evelauncher}/updater r,
+  
+  owner @{HOME}/evelauncher/{,**} rw,
+  owner @{HOME}/.eve/{,**} rw,
+  
+}
+
+
+profile evelauncher.LogLite.sh /home/*/evelauncher/LogLite.sh flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/tty rw,
+  
+  owner @{HOME}/evelauncher/LogLite px,
+  /bin/bash r,
+  /bin/sed ix,
+  /bin/basename ix,
+  /bin/dirname ix,
+  
+}
+
+
+profile evelauncher.LogLite /home/*/evelauncher/LogLite flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/X>
+  #include <abstractions/gtk>
+  #include <abstractions/qt>
+  #include <abstractions/nvidia>
+  #include <abstractions/nameservice>
+  
+  /dev/tty rw,
+  /dev/tty[0-9]* w,
+  
+  owner @{HOME}/evelauncher/LogLite r,
+  
+  owner @{HOME}/evelauncher/{,**} r,
+  owner @{HOME}/evelauncher/**.so{,.[0-9]*} m,
+  owner @{HOME}/.config/CCP/{,**} rwk,
+  
+}

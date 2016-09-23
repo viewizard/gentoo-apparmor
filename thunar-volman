@@ -19,7 +19,7 @@ profile thunar-volman /usr/bin/thunar-volman {
   #include <abstractions/nameservice>
   
   /dev/tty[0-9]* w,
-  /sys/devices/pci**/{ata,usb}[0-9]*/**/uevent r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/uevent r,
   /sys/devices/virtual/block/{dm-,zd}[0-9]*/{,uevent} r,
   /sys/devices/virtual/block/zd[0-9]*/zd[0-9]*/uevent r,
   @{PROC}/@{pid}/fd/ r,

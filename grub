@@ -58,9 +58,9 @@ profile grub.grub-probe /usr/sbin/grub{,2}-probe flags=(complain) {
   /dev/sd[a-z]{,[0-9]*} r,
   /dev/dm-[0-9]* r,
   /dev/mapper/control rw,
-  /sys/devices/pci**/ata[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/start r,
-  /sys/devices/pci**/ata[0-9]*/**/vendor r,
-  /sys/devices/pci**/usb[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/start r,
+  /sys/devices/pci[0-9]*/**/ata[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/start r,
+  /sys/devices/pci[0-9]*/**/ata[0-9]*/**/vendor r,
+  /sys/devices/pci[0-9]*/**/usb[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/start r,
   @{PROC}/devices r,
   @{PROC}/@{pid}/mountinfo r,
   
@@ -80,8 +80,8 @@ profile grub.grub-install /usr/sbin/grub{,2}-install flags=(complain) {
   /dev/sd[a-z][0-9]* r,
   /dev/pts/[0-9]* w,
   /dev/mapper/control rw,
-  /sys/devices/pci**/ata[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/start r,
-  /sys/devices/pci**/usb[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/start r,
+  /sys/devices/pci[0-9]*/**/ata[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/start r,
+  /sys/devices/pci[0-9]*/**/usb[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/start r,
   @{PROC}/devices r,
   @{PROC}/@{pid}/mountinfo r,
   

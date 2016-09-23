@@ -16,9 +16,9 @@ profile gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monitor {
   capability dac_override,
   capability dac_read_search,
   
-  /sys/devices/pci**/block/sd[a-z]/sd[a-z][0-9]*/uevent r,
+  /sys/devices/pci[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/uevent r,
   /sys/devices/virtual/block/{dm-,md,zd}[0-9]*/uevent r,
-  /sys/devices/pci**/usb[0-9]*/**/block/sr[0-9]*/uevent r,
+  /sys/devices/pci[0-9]*/**/usb[0-9]*/**/block/sr[0-9]*/uevent r,
   @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/mounts r,
   
@@ -128,9 +128,9 @@ profile gvfsd-metadata /usr/libexec/gvfsd-metadata {
   #include <abstractions/base>
   
   /etc/udev/udev.conf r,
-  /sys/devices/pci**/block/sd[a-z]/sd[a-z][0-9]*/uevent r,
+  /sys/devices/pci[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/uevent r,
   /sys/devices/virtual/block/{dm-,md,zd}[0-9]*/uevent r,
-  /sys/devices/pci**/usb[0-9]*/**/block/sd[a-z]/uevent r,
+  /sys/devices/pci[0-9]*/**/usb[0-9]*/**/block/sd[a-z]/uevent r,
   /run/udev/data/* r,
     
   /usr/libexec/gvfsd-metadata r,

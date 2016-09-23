@@ -39,7 +39,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   
   /dev/tty rw,
   /dev/tty[0-9]* w,
-  /sys/devices/pci**/uevent r,
+  /sys/devices/pci[0-9]*/**/uevent r,
   /sys/devices/virtual/block/md[0-9]*/uevent r,
   @{PROC}/@{pid}/fd/ r,
   owner @{PROC}/@{pid}/mountinfo r,
@@ -120,7 +120,7 @@ profile thunar_root {
   
   /dev/tty rw,
   /dev/tty[0-9]* w,
-  /sys/devices/pci**/uevent r,
+  /sys/devices/pci[0-9]*/**/uevent r,
   /sys/devices/virtual/block/md[0-9]*/uevent r,
   @{PROC}/@{pid}/fd/ r,
   owner @{PROC}/@{pid}/mountinfo r,

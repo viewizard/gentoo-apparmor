@@ -35,61 +35,44 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   /dev/tty[0-9]* w,
   /dev/pts/[0-9]* rw,
   /dev/video[0-9]* r,
+  owner /{dev,run}/shm/{,.}org.chromium.* mrw,
   /sys/bus/{,**} r,
   /sys/class/{,**} r,
-  /sys/devices/pci**/usb*/** r,
-  
+  /sys/devices/pci[0-9]*/**/usb[0-9]*/** r,
+  /sys/bus/pci/** r,
+  /sys/devices/system/cpu/ r,
+  /sys/devices/system/cpu/cpu*/cpufreq/cpuinfo_max_freq r,
+  /sys/devices/system/cpu/cpufreq/policy*/cpuinfo_max_freq r,
+  /sys/devices/pci[0-9]*/**/{class,device,irq,resource,vendor,removable,uevent} r,
+  /sys/devices/pci[0-9]*/**/block/**/size r,
+  /sys/devices/virtual/block/**/{removable,uevent,size} r,
   @{PROC}/ r,
   @{PROC}/filesystems r,
   @{PROC}/sys/kernel/shmmax r,
-  @{PROC}/@{pid}/sched r,
-  @{PROC}/@{pid}/smaps r,
-  @{PROC}/@{pid}/statm r,
-  @{PROC}/@{pid}/stat r,
+  @{PROC}/@{pid}/{sched,smaps,statm,stat} r,
   @{PROC}/@{pid}/task/ r,
   @{PROC}/@{pid}/task/@{pid}/stat r,
   owner @{PROC}/@{pid}/io r,
   owner @{PROC}/@{pid}/oom_{,score_}adj w,
-  owner /{dev,run}/shm/{,.}org.chromium.* mrw,
   # Networking
   @{PROC}/@{pid}/net/if_inet6 r,
   @{PROC}/@{pid}/net/ipv6_route r,
   @{PROC}/sys/net/ipv4/tcp_fastopen r,
-  
-  # Should maybe be in abstractions
-  /etc/mime.types r,
-  /etc/mtab r,
-  
   # Needed for the crash reporter
   owner @{PROC}/@{pid}/auxv r,
   @{PROC}/@{pid}/setgroups rw,
   @{PROC}/@{pid}/uid_map rw,
   @{PROC}/@{pid}/gid_map rw,
   
-  # Newer chromium needs these now
-  /etc/udev/udev.conf r,
-  /sys/bus/pci/** r,
-  /sys/devices/system/cpu/ r,
-  /sys/devices/system/cpu/cpu*/cpufreq/cpuinfo_max_freq r,
-  /sys/devices/system/cpu/cpufreq/policy*/cpuinfo_max_freq r,
-  /sys/devices/pci[0-9]*/**/class r,
-  /sys/devices/pci[0-9]*/**/device r,
-  /sys/devices/pci[0-9]*/**/irq r,
-  /sys/devices/pci[0-9]*/**/resource r,
-  /sys/devices/pci[0-9]*/**/vendor r,
-  /sys/devices/pci[0-9]*/**/removable r,
-  /sys/devices/pci[0-9]*/**/uevent r,
-  /sys/devices/pci[0-9]*/**/block/**/size r,
-  /sys/devices/virtual/block/**/removable r,
-  /sys/devices/virtual/block/**/uevent r,
-  /sys/devices/virtual/block/**/size r,
-  
-  
   /bin/bash r,
   /bin/ps Pxr,
   /usr/bin/xdg-settings Cxr -> xdgsettings,
   /usr/bin/lsb_release Cxr -> lsb_release,
   /bin/readlink ixr,
+  
+  /etc/udev/udev.conf r,
+  /etc/mime.types r,
+  /etc/mtab r,
   
   # Allow transitions to ourself and our sandbox
   /usr/bin/chromium-browser Pxr,
@@ -120,21 +103,18 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
 #  # For migration
 #  owner @{HOME}/.mozilla/firefox/profiles.ini r,
 #  owner @{HOME}/.mozilla/firefox/*/prefs.js r,
-  deny owner @{HOME}/.mozilla/firefox/profiles.ini r,
-  deny owner @{HOME}/.mozilla/firefox/*/prefs.js r,
+  deny owner @{HOME}/.mozilla/{,**} r,
   
   # Chromium configuration
-  /etc/chromium/ r,
-  /etc/chromium/** r,
+  /etc/chromium/{,**} r,
   owner @{HOME}/.pki/nssdb/* rwk,
-  owner @{HOME_CACHE}/chromium/ rw,
-  owner @{HOME_CACHE}/chromium/** rw,
-  owner @{HOME_CACHE}/chromium/Cache/* mr,
+  owner @{HOME_CACHE}/chromium/{,**} rw,
+  owner @{HOME_CACHE}/chromium/Cache/* m,
   owner @{HOME}/.config/chromium/ rw,
   owner @{HOME}/.config/chromium/** rwk,
-  owner @{HOME}/.config/chromium/**/Cache/* mr,
-  owner @{HOME}/.config/chromium/Dictionaries/*.bdic mr,
-  owner @{HOME}/.config/chromium/**/Dictionaries/*.bdic mr,
+  owner @{HOME}/.config/chromium/**/Cache/* m,
+  owner @{HOME}/.config/chromium/Dictionaries/*.bdic m,
+  owner @{HOME}/.config/chromium/**/Dictionaries/*.bdic m,
   
   # Noisy
   deny /dev/bus/usb/ r,
@@ -172,6 +152,7 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
     
     owner @{HOME}/.local/share/applications/ w,
     owner @{HOME}/.local/share/applications/mimeapps.list* rw,
+    
   }
 
   profile lsb_release {
@@ -238,5 +219,6 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
     /dev/null rw,
     
     owner /tmp/** rw,
+    
   }
 }

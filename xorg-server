@@ -37,7 +37,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   /sys/class/input/ r,
   /sys/bus/pci/devices/ r,
   /sys/devices/**/{id,uevent,name} r,
-  /sys/devices/pci**/{,config,resource,boot_vga} r,
+  /sys/devices/pci[0-9]*/**/{,config,resource,boot_vga} r,
   @{PROC}/mtrr rw,
   @{PROC}/cmdline r,
   @{PROC}/modules r,
