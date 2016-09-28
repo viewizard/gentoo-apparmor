@@ -53,6 +53,7 @@ profile grub.grub-probe /usr/sbin/grub{,2}-probe flags=(complain) {
   #include <abstractions/base>
   
   capability sys_admin,
+  capability sys_rawio,
   
   /dev/{,**/} r,
   /dev/sd[a-z]{,[0-9]*} r,
@@ -75,6 +76,7 @@ profile grub.grub-install /usr/sbin/grub{,2}-install flags=(complain) {
   #include <abstractions/base>
   
   capability sys_admin,
+  capability sys_rawio,
   
   /dev/sd[a-z] rw,
   /dev/sd[a-z][0-9]* r,

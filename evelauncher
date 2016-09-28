@@ -50,7 +50,7 @@ profile evelauncher /home/*/evelauncher/evelauncher flags=(complain) {
   /sys/devices/system/cpu/ r,
   /sys/devices/pci[0-9]*/**/{resource,irq,vendor,device,class,config} r,
   
-  owner @{HOME}/evelauncher/evelauncher r,
+  owner @{HOME}/evelauncher/evelauncher ixr,
   /usr/bin/wine Px,
   owner @{HOME}/{.eve,evelauncher}/updater px,
   owner @{HOME}/evelauncher/QtWebEngineProcess ix,
@@ -76,6 +76,7 @@ profile evelauncher /home/*/evelauncher/evelauncher flags=(complain) {
 
 profile evelauncher.updater /home/*/{.eve,evelauncher}/updater flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/nameservice>
   
   owner @{HOME}/{.eve,evelauncher}/updater r,
   

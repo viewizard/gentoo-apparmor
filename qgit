@@ -14,7 +14,7 @@
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*"
 
-profile qgit /usr/bin/qgit4 {
+profile qgit /usr/bin/qgit {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -30,13 +30,16 @@ profile qgit /usr/bin/qgit4 {
   capability dac_override,
   capability fowner,
   
+  /dev/tty r,
   /dev/tty[0-9]* w,
   
-  /usr/bin/qgit4 r,
+  /usr/bin/qgit r,
   /usr/bin/git ix,
   /bin/cat ix,
   /usr/bin/meld Px,
   
+  owner @{HOME}/**/.gitignore r,
+  owner @{HOME}/.gitconfig r,
   owner @{HOME}/.config/qgit/ rw,
   owner @{HOME}/.config/qgit/** rwk,
   
@@ -60,13 +63,16 @@ profile qgit_root {
   capability dac_override,
   capability fowner,
   
+  /dev/tty r,
   /dev/tty[0-9]* w,
   
-  /usr/bin/qgit4 r,
+  /usr/bin/qgit r,
   /usr/bin/git ix,
   /bin/cat ix,
   /usr/bin/meld Px -> meld_root,
   
+  owner @{HOME}/**/.gitignore r,
+  owner @{HOME}/.gitconfig r,
   owner @{HOME}/.config/qgit/ rw,
   owner @{HOME}/.config/qgit/** rwk,
   
