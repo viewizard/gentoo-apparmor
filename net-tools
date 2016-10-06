@@ -28,3 +28,19 @@ profile net-tools.ifconfig /bin/ifconfig flags=(complain) {
   /bin/ifconfig r,
   
 }
+
+
+profile net-tools.netstat /bin/netstat flags=(complain) {
+  #include <abstractions/base>
+  
+  capability sys_ptrace,
+  
+  /dev/pts/[0-9]* w,
+  @{PROC}/ r,
+  @{PROC}/@{pid}/fd/ r,
+  @{PROC}/@{pid}/cmdline r,
+  @{PROC}/@{pid}/net/{tcp,udp} r,
+  
+  /bin/netstat r,
+  
+}
