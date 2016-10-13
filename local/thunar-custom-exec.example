@@ -10,24 +10,3 @@
 
 
 /usr/local/bin/* Px,
-owner @{HOME}/.wine_eve/start_eve* Cx -> eveonline,
-
-
-profile eveonline flags=(complain) {
-  #include <abstractions/base>
-  #include <abstractions/X>
-  
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
-  
-  /bin/bash r,
-  owner @{HOME}/.wine_eve/start_eve* r,
-  /usr/bin/xwininfo ix,
-  /bin/grep ix,
-  /bin/mkdir ix,
-  /usr/bin/wine Px,
-  
-  owner @{HOME_CACHE}/eve*/ rw,
-  owner @{HOME_CACHE}/eve*/** rw,
-  
-}

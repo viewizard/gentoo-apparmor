@@ -83,8 +83,6 @@ profile bash_root {
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/user-systemwide-files>
   
-  #include <local/openrc-local-scripts>
-  
   capability setuid,
   capability setgid,
   capability chown,
@@ -142,6 +140,8 @@ profile bash_root {
   /sbin/zfs Pxr,
   /sbin/rc-update Pxr,
   /sbin/fsck Pxr,
+  /sbin/rc-service Pxr,
+  /sbin/xtables-multi Pxr,
   /usr/bin/pmount Pxr,
   /usr/bin/pumount Pxr,
   /usr/bin/which ixr,
@@ -179,8 +179,8 @@ profile bash_root {
   /usr/sbin/migrate-pax Pxr -> elfix_migrate_pax_root,
   /usr/sbin/revdep-pax Pxr -> elfix_revdep_pax_root,
   /usr/sbin/paxctl-ng ixr,
-  /usr/sbin/grub{,2}-mkconfig Pxr,
-  /usr/sbin/grub{,2}-install Pxr,
+  /usr/sbin/grub-mkconfig Pxr,
+  /usr/sbin/grub-install Pxr,
   /usr/sbin/perl-cleaner Pxr,
   /usr/lib64/python-exec/python-exec2 Pxr,
   /usr/local/bin/** Pxr,

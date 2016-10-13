@@ -8,23 +8,3 @@
 #
 # ------------------------------------------------------------------
 
-/etc/local.d/firewall.start Cx -> firewall,
-
-profile firewall {
-  #include <abstractions/base>
-  #include <abstractions/nameservice>
-  
-  capability sys_tty_config,
-  capability dac_override,
-  capability dac_read_search,
-  
-  /dev/pts/[0-9]* w,
-  
-  /dev/tty rw,
-  /dev/console rw,
-  
-  /bin/bash r,
-  /etc/local.d/firewall.start r,
-  /sbin/xtables-multi Px,
-  
-}

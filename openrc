@@ -78,6 +78,17 @@ profile openrc /sbin/openrc flags=(complain) {
 }
 
 
+profile openrc.rc-service /sbin/rc-service flags=(complain) {
+  #include <abstractions/base>
+  
+  /sbin/rc-service r,
+  /etc/init.d/* Px,
+  
+  /run/openrc/scheduled/ r,
+  
+}
+
+
 profile openrc.rc-update /sbin/rc-update flags=(complain) {
   #include <abstractions/base>
   
@@ -86,7 +97,7 @@ profile openrc.rc-update /sbin/rc-update flags=(complain) {
   /sbin/rc-update r,
   
   /etc/init.d/ r,
-  /etc/runlevels/{,**} r,
+  /etc/runlevels/{,**} rw,
   /etc/terminfo/x/xterm r,
   
   /run/openrc/** rw,
@@ -111,7 +122,7 @@ profile openrc.rc-status /bin/rc-status flags=(complain) {
   /etc/terminfo/x/xterm r,
   
   /run/openrc/** r,
-  /run/*.pid r,
+  /run/{*.,*/,*/*.}pid r,
   
 }
 
@@ -126,6 +137,7 @@ profile openrc.gendepends.sh /lib64/rc/sh/gendepends.sh flags=(complain) {
   
   /dev/tty rw,
   /dev/console rw,
+  @{PROC}/@{pid}/mounts r,
   
   /bin/bash r,
   /lib64/rc/sh/gendepends.sh r,
@@ -148,6 +160,7 @@ profile openrc.gendepends.sh /lib64/rc/sh/gendepends.sh flags=(complain) {
   /etc/{conf,init}.d/{,*} r,
   /etc/exports.d/{,*} r,
   /etc/terminfo/l/linux r,
+  /etc/terminfo/x/xterm r,
   /usr/libexec/rc.apparmor.functions r,
   /run/openrc/options/lvm/need r,
   

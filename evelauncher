@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile evelauncher.sh /home/*/evelauncher/evelauncher.sh flags=(complain) {
+profile evelauncher.sh /home/*/evelauncher/evelauncher.sh {
   #include <abstractions/base>
   
   /dev/tty rw,
@@ -24,7 +24,7 @@ profile evelauncher.sh /home/*/evelauncher/evelauncher.sh flags=(complain) {
 }
 
 
-profile evelauncher /home/*/evelauncher/evelauncher flags=(complain) {
+profile evelauncher /home/*/evelauncher/evelauncher {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -74,7 +74,7 @@ profile evelauncher /home/*/evelauncher/evelauncher flags=(complain) {
 }
 
 
-profile evelauncher.updater /home/*/{.eve,evelauncher}/updater flags=(complain) {
+profile evelauncher.updater /home/*/{.eve,evelauncher}/updater {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -86,7 +86,7 @@ profile evelauncher.updater /home/*/{.eve,evelauncher}/updater flags=(complain) 
 }
 
 
-profile evelauncher.LogLite.sh /home/*/evelauncher/LogLite.sh flags=(complain) {
+profile evelauncher.LogLite.sh /home/*/evelauncher/LogLite.sh {
   #include <abstractions/base>
   
   /dev/tty rw,
@@ -100,7 +100,7 @@ profile evelauncher.LogLite.sh /home/*/evelauncher/LogLite.sh flags=(complain) {
 }
 
 
-profile evelauncher.LogLite /home/*/evelauncher/LogLite flags=(complain) {
+profile evelauncher.LogLite /home/*/evelauncher/LogLite {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>

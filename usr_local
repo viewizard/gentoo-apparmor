@@ -22,14 +22,4 @@ profile usr_local.bin /usr/local/bin/* {
 }
 
 
-profile usr_local.sbin /usr/local/sbin/* {
-  #include <abstractions/base>
-  #include <local/usr_local.sbin>
-  
-  /dev/tty rw,
-  /dev/pts/[0-9]* rw,
-  
-  /usr/local/sbin/* r,
-  /bin/bash r,
-  
-}
+#include <local/usr_local.sbin>

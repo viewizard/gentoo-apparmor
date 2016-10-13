@@ -168,6 +168,7 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
     @{PROC}/@{pid}/mounts r,
     @{PROC}/@{pid}/loginuid r,
     @{PROC}/@{pid}/task/@{pid}/stat r,
+    @{PROC}/@{pid}/net/arp r,
     @{PROC}/sys/net/ipv4/ip_local_port_range r,
     @{PROC}/sys/kernel/randomize_va_space r,
     @{PROC}/sys/kernel/osrelease r,
@@ -337,6 +338,8 @@ profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/user-tmp>
+  
+  capability dac_override,
   
   /dev/tty rw,
   /dev/pts/[0-9]* rw,

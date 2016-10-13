@@ -8,24 +8,57 @@
 #
 # ------------------------------------------------------------------
 
-capability dac_override,
-capability dac_read_search,
 
-/usr/sbin/gdisk Px,
-/bin/grep ix,
-/bin/dd Cx -> dd,
-/bin/mount Px,
-/bin/umount Px,
-/usr/sbin/aideinit Px,
 
-profile dd flags=(complain) {
+profile usr_local.sbin.aideinit_boot /usr/local/sbin/aideinit_boot {
   #include <abstractions/base>
   
+  capability dac_override,
+  capability dac_read_search,
+  
+  /dev/tty rw,
   /dev/pts/[0-9]* rw,
   
-  /dev/sda r,
+  /usr/local/sbin/aideinit_boot r,
+  /bin/bash r,
+  /usr/sbin/gdisk Px,
+  /bin/grep ix,
+  /bin/dd Cx -> dd,
+  /bin/mount Px,
+  /bin/umount Px,
+  /usr/sbin/aideinit Px,
   
-  /bin/dd r,
-  /var/lib/aide/* w,
+  
+  profile dd flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/pts/[0-9]* rw,
+    
+    /dev/sda r,
+    
+    /bin/dd r,
+    /var/lib/aide/* w,
+    
+  }
+}
+
+
+profile usr_local.sbin.firewall /usr/local/sbin/firewall.sh {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  capability sys_tty_config,
+  capability dac_override,
+  capability dac_read_search,
+  
+  /dev/pts/[0-9]* w,
+  
+  /dev/tty rw,
+  /dev/console rw,
+  
+  /usr/local/sbin/firewall.sh r,
+  /bin/bash r,
+  /sbin/xtables-multi Px,
+  /etc/init.d/iptables Px,
   
 }
