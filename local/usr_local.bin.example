@@ -8,23 +8,66 @@
 #
 # ------------------------------------------------------------------
 
-capability dac_override,
-capability dac_read_search,
 
-/bin/ln Cx -> ln,
-/bin/sleep ix,
-/usr/bin/cairo-clock Px,
-/usr/bin/killall Px,
-/usr/bin/grive Px,
-/usr/bin/conky Px,
-  
-profile ln {
+
+profile usr_local.bin.cairo_clock_start /usr/local/bin/cairo_clock_start flags=(complain) {
   #include <abstractions/base>
   
-  /dev/tty[0-9]* w,
+  /dev/tty rw,
   
-  /bin/ln r,
+  /usr/local/bin/cairo_clock_start r,
+  /bin/bash r,
+  /bin/sleep ix,
+  /usr/bin/cairo-clock Px,
   
-  owner @{HOME}/@{XDG_DESKTOP_DIR}/* w,
+}
+
+
+profile usr_local.bin.conky_start /usr/local/bin/conky_start flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/tty rw,
+  
+  /usr/local/bin/conky_start r,
+  /bin/bash r,
+  /bin/sleep ix,
+  /usr/bin/killall Px,
+  /usr/bin/conky Px,
+  
+}
+
+
+profile usr_local.bin.symlink_ondesktop /usr/local/bin/symlink_ondesktop.sh flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/tty rw,
+  
+  /usr/local/bin/symlink_ondesktop.sh r,
+  /bin/bash r,
+  /bin/ln Cx -> ln,
+  
+  
+  profile ln {
+   #include <abstractions/base>
+    
+    /dev/tty[0-9]* w,
+    
+    /bin/ln r,
+    
+    owner @{HOME}/@{XDG_DESKTOP_DIR}/* w,
+    
+  }
+}
+
+
+profile usr_local.bin.sync_googledrive /usr/local/bin/sync_googledrive.sh flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/tty rw,
+  /dev/tty[0-9] w,
+  
+  /usr/local/bin/sync_googledrive.sh r,
+  /bin/bash r,
+  /usr/bin/grive Px,
   
 }
