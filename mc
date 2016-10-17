@@ -18,10 +18,12 @@ profile mc /usr/bin/mc {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/user-tmp>
   
   capability setuid,
   
   /dev/tty rw,
+  /dev/tty[0-9] w,
   /dev/ptmx rw,
   /dev/pts/[0-9]* rw,
   owner @{PROC}/@{pid}/mountinfo r,
@@ -32,6 +34,7 @@ profile mc /usr/bin/mc {
   
   /etc/mc/{,**} r,
   /etc/terminfo/x/xterm r,
+  /etc/terminfo/l/linux r,
   /usr/libexec/mc/{,**} r,
   /usr/share/mc/{,**} r,
   
@@ -43,10 +46,12 @@ profile mc_root flags=(complain) {
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/user-systemwide-files>
+  #include <abstractions/user-tmp>
   
   capability setuid,
   
   /dev/tty rw,
+  /dev/tty[0-9] w,
   /dev/ptmx rw,
   /dev/pts/[0-9]* rw,
   owner @{PROC}/@{pid}/mountinfo r,
@@ -57,6 +62,7 @@ profile mc_root flags=(complain) {
   
   /etc/mc/{,**} r,
   /etc/terminfo/x/xterm r,
+  /etc/terminfo/l/linux r,
   /usr/libexec/mc/{,**} r,
   /usr/share/mc/{,**} r,
   

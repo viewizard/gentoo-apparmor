@@ -24,7 +24,7 @@ profile exo-open /usr/bin/exo-open {
   owner @{PROC}/@{pid}/fd/ r,
   
   /usr/bin/exo-open r,
-  /usr/lib64/xfce4/exo-1/exo-helper-1 Px,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 Px,
   
   /etc/machine-id r,
   /usr/share/gvfs/remote-volume-monitors/{,udisks2.monitor} r,
@@ -34,7 +34,7 @@ profile exo-open /usr/bin/exo-open {
 }
 
 
-profile exo-helper /usr/lib64/xfce4/exo-1/exo-helper-1 {
+profile exo-helper /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/nvidia>
@@ -45,8 +45,8 @@ profile exo-helper /usr/lib64/xfce4/exo-1/exo-helper-1 {
   
   owner @{PROC}/@{pid}/fd/ r,
   
-  /usr/lib64/xfce4/exo-1/exo-helper-1 r,
-  /usr/lib64/xfce4/exo-1/exo-compose-mail-1 Px,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 r,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 Px,
   
   # helpers
   /usr/share/ r,
@@ -64,14 +64,14 @@ profile exo-helper /usr/lib64/xfce4/exo-1/exo-helper-1 {
 }
 
 
-profile exo-compose-mail /usr/lib64/xfce4/exo-1/exo-compose-mail-1 {
+profile exo-compose-mail /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 {
   #include <abstractions/base>
   #include <abstractions/perl>
   #include <abstractions/executable-binary-helper>
   
   /dev/tty[0-9]* w,
   
-  /usr/lib64/xfce4/exo-1/exo-compose-mail-1 r,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 r,
   
   /bin/env r,
   /usr/bin/perl ix,
@@ -87,7 +87,7 @@ profile exo-preferred-applications /usr/bin/exo-preferred-applications {
   
   /bin/bash r,
   /usr/bin/exo-preferred-applications r,
-  /usr/lib64/xfce4/exo-1/exo-helper-1 Px,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 Px,
   
 }
 

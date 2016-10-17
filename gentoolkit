@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile gentoolkit.glsa-check /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/glsa-check flags=(complain) {
+profile gentoolkit.glsa-check /usr/lib{,32,64}/python-exec/@{PYTHON}/glsa-check flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -43,7 +43,7 @@ profile gentoolkit.glsa-check /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/gl
 }
 
 
-profile gentoolkit.equery /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/equery flags=(complain) {
+profile gentoolkit.equery /usr/lib{,32,64}/python-exec/@{PYTHON}/equery flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -78,7 +78,7 @@ profile gentoolkit.equery /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/equery
 }
 
 
-profile gentoolkit.eclean /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/eclean flags=(complain) {
+profile gentoolkit.eclean /usr/lib{,32,64}/python-exec/@{PYTHON}/eclean flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -128,7 +128,7 @@ profile gentoolkit.revdep-rebuild /usr/bin/revdep-rebuild{,.sh} flags=(complain)
   /dev/tty rw,
   /dev/pts/[0-9]* w,
   
-  /usr/lib64/python-exec/python-exec2 Px,  # portageq
+  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> portageq,
   
   / r,
   /{bin,sbin,usr,opt,lib,lib32,lib64}/ r,
@@ -147,5 +147,17 @@ profile gentoolkit.revdep-rebuild /usr/bin/revdep-rebuild{,.sh} flags=(complain)
   
   /var/cache/revdep-rebuild/ r,
   /var/cache/revdep-rebuild/* rw,
+  
+  
+  profile portageq {
+    #include <abstractions/base>
+    
+    /bin/env r,
+    
+    /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq Px,
+    
+    /etc/env.d/python/config r,
+    
+  }
   
 }

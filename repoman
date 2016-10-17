@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile repoman /usr/lib64/python-exec/python[2-3]*.[0-9]*/repoman flags=(complain) {
+profile repoman /usr/lib{,32,64}/python-exec/@{PYTHON}/repoman flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -69,7 +69,7 @@ profile repoman /usr/lib64/python-exec/python[2-3]*.[0-9]*/repoman flags=(compla
     /usr/bin/sandbox r,
     /bin/bash ixr,
     /bin/sed ixr,
-    /usr/lib64/portage/python2.7/ebuild.sh ix,
+    /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh ix,
     
     /etc/sandbox.conf r,
     /etc/sandbox.d/{,*} r,

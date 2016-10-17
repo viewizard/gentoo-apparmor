@@ -60,8 +60,20 @@ profile cron.daily/00_update_portage /etc/cron.daily/00_update_portage {
   /bin/cat ix,
   /bin/env ix,
   /usr/bin/mail Px,
-  /usr/lib64/python-exec/python-exec2 Px,
+  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> emerge,
   /lib64/rc/bin/checkpath ix,
+  
+  
+  profile emerge {
+    #include <abstractions/base>
+    
+    /bin/env r,
+    
+    /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge Px,
+    
+    /etc/env.d/python/config r,
+    
+  }
   
 }
 
@@ -168,7 +180,19 @@ profile cron.daily/glsa /etc/cron.daily/glsa {
   /bin/cat ix,
   /bin/rm ix,
   /usr/bin/mail Px,
-  /usr/lib64/python-exec/python-exec2 Px,
+  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> glsa_check,
+  
+  
+  profile glsa_check {
+    #include <abstractions/base>
+    
+    /bin/env r,
+    
+    /usr/lib{,32,64}/python-exec/@{PYTHON}/glsa-check Px,
+    
+    /etc/env.d/python/config r,
+    
+  }
   
 }
 

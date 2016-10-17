@@ -14,7 +14,7 @@
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*.*"
 
-profile openshot /usr/lib{,32,64}/python-exec/python2.[0-9]*/openshot flags=(complain) {
+profile openshot /usr/lib{,32,64}/python-exec/@{PYTHON2}/openshot {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -33,19 +33,19 @@ profile openshot /usr/lib{,32,64}/python-exec/python2.[0-9]*/openshot flags=(com
   /sbin/ldconfig ix,
   
   /etc/machine-id r,
-  /usr/lib64/ r,
-  /usr/lib64/frei0r-1/*.so m,
+  /usr/lib{,32,64}/ r,
+  /usr/lib{,32,64}/frei0r-1/*.so m,
   /usr/share/mlt/** r,
   
   owner @{HOME}/.openshot/{,**} rw,
   
   # Noisy
-  deny /usr/lib64/python2.7/site-packages/cairo/__init__.pyc w,
+  deny /usr/lib{,32,64}/@{PYTHON2}/site-packages/cairo/__init__.pyc w,
   
 }
 
 
-profile openshot-render /usr/lib{,32,64}/python-exec/python2.[0-9]*/openshot-render flags=(complain) {
+profile openshot-render /usr/lib{,32,64}/python-exec/@{PYTHON2}/openshot-render flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   

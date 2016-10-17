@@ -28,26 +28,26 @@ profile libreoffice /usr/{bin,lib64/libreoffice/program}/soffice {
   /bin/ls ix,
   /bin/sed ix,
   /bin/bash r,
-  /usr/lib64/libreoffice/program/oosplash Px,
+  /usr/lib{,32,64}/libreoffice/program/oosplash Px,
   
 }
 
 
-profile libreoffice.oosplash /usr/lib64/libreoffice/program/oosplash {
+profile libreoffice.oosplash /usr/lib{,32,64}/libreoffice/program/oosplash {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
   /dev/tty[0-9]* w,
   
-  /usr/lib64/libreoffice/program/javaldx Px,
-  /usr/lib64/libreoffice/program/soffice.bin Px,
+  /usr/lib{,32,64}/libreoffice/program/javaldx Px,
+  /usr/lib{,32,64}/libreoffice/program/soffice.bin Px,
   
   owner @{HOME}/.Xauthority r,
   
 }
 
 
-profile libreoffice.javaldx /usr/lib64/libreoffice/program/javaldx {
+profile libreoffice.javaldx /usr/lib{,32,64}/libreoffice/program/javaldx {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -62,7 +62,7 @@ profile libreoffice.javaldx /usr/lib64/libreoffice/program/javaldx {
 }
 
 
-profile libreoffice.bin /usr/lib64/libreoffice/program/soffice.bin {
+profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -90,7 +90,7 @@ profile libreoffice.bin /usr/lib64/libreoffice/program/soffice.bin {
   /opt/{oracle-jdk,icedtea}-bin-*/jre/bin/java Px,
   
   /etc/OpenCL/vendors/{,*} r,
-  /usr/lib64/libreoffice/{,**} r,
+  /usr/lib{,32,64}/libreoffice/{,**} r,
   /usr/share/liblangtag/** r,
   /usr/share/libexttextcat/{,*} r,
   /tmp/.* m,
@@ -107,7 +107,7 @@ profile libreoffice.bin /usr/lib64/libreoffice/program/soffice.bin {
   /usr/lib{,32,64}/jvm/{,**} r,
   
   # Noisy
-  deny /usr/lib64/libreoffice/share/uno_packages/cache/* w,
+  deny /usr/lib{,32,64}/libreoffice/share/uno_packages/cache/* w,
   
   
   profile shell {
@@ -120,7 +120,7 @@ profile libreoffice.bin /usr/lib64/libreoffice/program/soffice.bin {
     /bin/sed ix,
     /bin/grep ix,
     /usr/bin/paperconf ix,
-    /usr/lib64/libreoffice/program/open-url ix,
+    /usr/lib{,32,64}/libreoffice/program/open-url ix,
     
   }
   

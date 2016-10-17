@@ -182,7 +182,7 @@ profile bash_root {
   /usr/sbin/grub-mkconfig Pxr,
   /usr/sbin/grub-install Pxr,
   /usr/sbin/perl-cleaner Pxr,
-  /usr/lib64/python-exec/python-exec2 Pxr,
+  /usr/lib{,32,64}/python-exec/python-exec2 Pxr -> python_exec_root,
   /usr/local/bin/** Pxr,
   /usr/local/sbin/** Pxr,
   /etc/init.d/* Pxr,

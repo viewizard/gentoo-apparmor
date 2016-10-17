@@ -29,9 +29,9 @@ profile dbus /usr/bin/dbus-{cleanup-sockets,daemon,launch,run-session,send,uuidg
   @{PROC}/@{pid}/cmdline r,
   
   /usr/bin/dbus-{cleanup-sockets,daemon,launch,run-session,send,uuidgen} ixr,
-  /usr/lib64/xfce4/xfconf/xfconfd Px,
-  /usr/lib64/xfce4/notifyd/xfce4-notifyd Px,
-  /usr/lib64/tumbler-1/tumblerd Px,
+  /usr/lib{,32,64}/xfce4/xfconf/xfconfd Px,
+  /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd Px,
+  /usr/lib{,32,64}/tumbler-1/tumblerd Px,
   /usr/libexec/at-spi-bus-launcher Px,
   /usr/libexec/at-spi2-registryd Px,
   /usr/libexec/gvfsd Px,
@@ -62,9 +62,9 @@ profile dbus-daemon-launch-helper /usr/libexec/dbus-daemon-launch-helper {
   capability setuid,
   
   /usr/libexec/dbus-daemon-launch-helper r,
-  /usr/lib64/polkit-1/polkitd Px,
-  /usr/lib64/udisks/udisks-daemon Px,
-  /usr/lib64/upower/upowerd Px,
+  /usr/lib{,32,64}/polkit-1/polkitd Px,
+  /usr/lib{,32,64}/udisks/udisks-daemon Px,
+  /usr/lib{,32,64}/upower/upowerd Px,
   /usr/libexec/udisks2/udisksd Px,
   
   /etc/dbus-1/** r,

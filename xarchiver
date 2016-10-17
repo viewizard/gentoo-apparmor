@@ -52,7 +52,7 @@ profile xarchiver /usr/bin/xarchiver {
   /usr/bin/zip ix,
   /usr/bin/unzip ix,
   /usr/bin/7za ixr,
-  /usr/lib64/p7zip/7za ix,
+  /usr/lib{,32,64}/p7zip/7za ix,
   
   /etc/fstab r,
   owner @{HOME}/.config/xarchiver/{,**} rw,
@@ -67,7 +67,7 @@ profile xarchiver /usr/bin/xarchiver {
     
     # Noisy
     deny /etc/ r,
-    deny /usr/lib64/ r,
+    deny /usr/lib{,32,64}/ r,
     deny /usr/local/lib64/ r,
   }
   
@@ -113,7 +113,7 @@ profile xarchiver_root {
   /usr/bin/zip ix,
   /usr/bin/unzip ix,
   /usr/bin/7za ixr,
-  /usr/lib64/p7zip/7za ix,
+  /usr/lib{,32,64}/p7zip/7za ix,
   
   /etc/fstab r,
   owner @{HOME}/.config/xarchiver/{,**} rw,
@@ -129,7 +129,7 @@ profile xarchiver_root {
     
     # Noisy
     deny /etc/ r,
-    deny /usr/lib64/ r,
+    deny /usr/lib{,32,64}/ r,
     deny /usr/local/lib64/ r,
   }
   

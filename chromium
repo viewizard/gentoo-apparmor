@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chromium-launcher.sh} flags=(attach_disconnected) {
+profile chromium /usr/{bin,lib,lib32,lib64}/{chromium,chromium-browser}{,/chrome,/chromium-launcher.sh} flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -52,7 +52,7 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   @{PROC}/sys/kernel/shmmax r,
   @{PROC}/@{pid}/{sched,smaps,statm,stat} r,
   @{PROC}/@{pid}/task/ r,
-  @{PROC}/@{pid}/task/@{pid}/stat r,
+  @{PROC}/@{pid}/task/@{pid}/{stat,status} r,
   owner @{PROC}/@{pid}/io r,
   owner @{PROC}/@{pid}/oom_{,score_}adj w,
   # Networking
@@ -77,9 +77,9 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   
   # Allow transitions to ourself and our sandbox
   /usr/bin/chromium-browser Pxr,
-  /usr/lib64/chromium-browser/chrome ix,
-  /usr/lib64/chromium-browser/chromium-launcher.sh Px,
-  /usr/lib64/chromium-browser/chrome-sandbox cx -> sandbox,
+  /usr/lib{,32,64}/chromium-browser/chrome ix,
+  /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh Px,
+  /usr/lib{,32,64}/chromium-browser/chrome-sandbox cx -> sandbox,
   # Helpers
   /usr/bin/gvfs-open ixr,
   
@@ -90,8 +90,8 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   /usr/share/fonts/**/*.pfb m,
   /usr/share/mime/mime.cache m,
   /usr/share/icons/**/*.cache m,
-  /usr/lib64/chromium-browser/*.pak mr,
-  /usr/lib64/chromium-browser/locales/* mr,
+  /usr/lib{,32,64}/chromium-browser/*.pak mr,
+  /usr/lib{,32,64}/chromium-browser/locales/* mr,
   owner /{dev,run}/shm/pulse-shm* m,
   owner @{HOME}/.local/share/mime/mime.cache m,
   owner /tmp/** m,
@@ -120,7 +120,7 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
   # Noisy
   deny /dev/bus/usb/ r,
   deny /run/udev/data/** r,
-  deny /usr/lib64/chromium-browser/** w,
+  deny /usr/lib{,32,64}/chromium-browser/** w,
   deny owner @{HOME}/* r,
   
   
@@ -214,8 +214,8 @@ profile chromium /usr/{bin,lib,lib64}/{chromium,chromium-browser}{,/chrome,/chro
     
     /usr/bin/chromium-browser r,
     /usrbin/chromium r,
-    /usr/lib64/chromium-browser/chrome Px,
-    /usr/lib64/chromium-browser/chrome-sandbox r,
+    /usr/lib{,32,64}/chromium-browser/chrome Px,
+    /usr/lib{,32,64}/chromium-browser/chrome-sandbox r,
     
     /dev/null rw,
     

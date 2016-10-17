@@ -20,12 +20,12 @@ profile qtconfig /usr/{,lib/qt4/,lib32/qt4/,lib64/qt4/}bin/{qtconfig,qtchooser} 
   #include <abstractions/nameservice>
   
   /usr/{,lib/qt4/,lib32/qt4/,lib64/qt4/}bin/{qtconfig,qtchooser} ixr,
-  /usr/lib64/qt4/bin/lrelease ix,
+  /usr/lib{,32,64}/qt4/bin/lrelease ix,
   
   # we don't allow this directly via qtconfig,
   # only qt configuration should be available,
   # qmake should be used only via portage (emerge)
-  deny /usr/lib64/qt4/bin/qmake x,
+  deny /usr/lib{,32,64}/qt4/bin/qmake x,
 
   /etc/xdg/qtchooser/{,**} r,
   

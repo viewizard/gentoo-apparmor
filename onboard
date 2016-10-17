@@ -33,7 +33,7 @@ profile onboard /usr/bin/onboard {
   
   # Noisy
   deny @{HOME}/ r,
-  deny /usr/lib64/python3.4/site-packages/cairo/__pycache__/ w,
+  deny /usr/lib{,32,64}/@{PYTHON}/site-packages/cairo/__pycache__/ w,
   deny /usr/share/onboard/scripts/__pycache__/ w,
   
 }
@@ -61,6 +61,6 @@ profile onboard-settings /usr/bin/onboard-settings {
   owner @{HOME}/.local/share/onboard/{,**} rw,
   
   # Noisy
-  deny /usr/lib64/python3.4/site-packages/cairo/__pycache__/ w,
+  deny /usr/lib{,32,64}/@{PYTHON}/site-packages/cairo/__pycache__/ w,
   
 }

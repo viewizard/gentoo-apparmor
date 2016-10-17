@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge flags=(complain) {
+profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -211,7 +211,7 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/emerge fl
 }
 
 
-profile portage.env-update /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/env-update flags=(complain) {
+profile portage.env-update /usr/lib{,32,64}/python-exec/@{PYTHON}/env-update flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -257,7 +257,7 @@ profile portage.env-update /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/env-u
 }
 
 
-profile portage.dispatch-conf /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/dispatch-conf flags=(complain) {
+profile portage.dispatch-conf /usr/lib{,32,64}/python-exec/@{PYTHON}/dispatch-conf flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -307,7 +307,7 @@ profile portage.dispatch-conf /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/di
 }
 
 
-profile portage.portageq /usr/lib64/python-exec/python[2-3]*.[0-9]*/portageq flags=(complain) {
+profile portage.portageq /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -360,11 +360,54 @@ profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
   /bin/mv ix,
   /usr/bin/diff ix,
   /usr/bin/find ix,
-  /usr/lib64/python-exec/python-exec2 Px,
+  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> portageq,
   
   / r,
   /etc/ r,
   /etc/** rw,
   /usr/share/gnupg/ r,
   
+  
+  profile portageq {
+    #include <abstractions/base>
+    
+    /bin/env r,
+    
+    /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq Px,
+    
+    /etc/env.d/python/config r,
+    
+  }
+  
+}
+
+
+profile portage.emaint /usr/lib{,32,64}/python-exec/@{PYTHON}/emaint flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/python>
+  #include <abstractions/nameservice>
+  
+  /dev/pts/[0-9]* w,
+  
+  /bin/bash cx -> shell,
+  
+  /etc/profile.env r,
+  /etc/terminfo/x/xterm r,
+  /etc/portage/{,**} r,
+  /usr/portage/{,**} r,
+  /usr/local/portage/{,**} r,
+  /usr/share/portage/{,**} r,
+  /var/lib/portage/{,**} r,
+  /var/db/pkg/{,**} r,
+  /var/cache/edb/{,**} r,
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /bin/uname ix,
+    
+  }
 }

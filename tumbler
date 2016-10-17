@@ -14,7 +14,7 @@
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*"
 
-profile tumbler /usr/lib64/tumbler-1/tumblerd {
+profile tumbler /usr/lib{,32,64}/tumbler-1/tumblerd {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -25,7 +25,7 @@ profile tumbler /usr/lib64/tumbler-1/tumblerd {
   capability dac_override,
   capability dac_read_search,
   
-  /usr/lib64/tumbler-1/plugins/** m,
+  /usr/lib{,32,64}/tumbler-1/plugins/** m,
   /etc/xdg/tumbler/tumbler.rc r,
   /etc/udev/udev.conf r,
   /usr/share/thumbnailers/ r,

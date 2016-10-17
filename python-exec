@@ -14,7 +14,24 @@ profile python-exec /usr/lib{,32,64}/python-exec/python-exec2 {
   
   /bin/env r,
   
-  /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/* Px,
+  # только программы в enforce mode
+  
+  /usr/lib{,32,64}/python-exec/@{PYTHON}/alacarte Px,
+  /usr/lib{,32,64}/python-exec/@{PYTHON}/openshot Px,
+  /usr/lib{,32,64}/python-exec/@{PYTHON}/porthole Px,
+  /usr/lib{,32,64}/python-exec/@{PYTHON}/pyfa Px,
+  
+  /etc/env.d/python/config r,
+  
+}
+
+
+profile python_exec_root {
+  #include <abstractions/base>
+  
+  /bin/env r,
+  
+  /usr/lib{,32,64}/python-exec/@{PYTHON}/* Px,
   
   /etc/env.d/python/config r,
   

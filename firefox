@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile firefox /usr/{bin,lib,lib64}/{firefox,firefox/bin**}{,/firefox,/firefox-bin} {
+profile firefox /usr/{bin,lib,lib32,lib64}/{firefox,firefox/bin**}{,/firefox,/firefox-bin} {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -72,7 +72,7 @@ profile firefox /usr/{bin,lib,lib64}/{firefox,firefox/bin**}{,/firefox,/firefox-
   /usr/bin/basename ixr,
   /usr/bin/dirname ixr,
   /usr/bin/pwd ixr,
-  /usr/lib64/firefox/** ixr,
+  /usr/lib{,32,64}/firefox/** ixr,
   # Allow 'x' for downloaded extensions, but inherit policy for safety
   owner @{HOME}/.mozilla/**/extensions/** mixr,
   /usr/lib/firefox/browser/extensions/** mixr,

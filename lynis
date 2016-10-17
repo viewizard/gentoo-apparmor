@@ -71,7 +71,7 @@ profile lynis /usr/sbin/lynis {
   /usr/bin/logrotate Px,
   /usr/sbin/grpck ix,
   /usr/sbin/pwck ix,
-  /usr/lib64/python-exec/python-exec2 Px,
+  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> aa_status,
   
   /{,**} r,
   deny /* w,
@@ -121,6 +121,17 @@ profile lynis /usr/sbin/lynis {
     
     /etc/ssl/openssl.cnf r,
     /etc/ssh/sshd_config r,
+    
+  }
+  
+  profile aa_status {
+    #include <abstractions/base>
+    
+    /bin/env r,
+    
+    /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-status Px,
+    
+    /etc/env.d/python/config r,
     
   }
   

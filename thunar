@@ -52,7 +52,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   /usr/bin/dbus-daemon Px,
   
   /etc/udev/udev.conf r,
-  /usr/lib64/thunarx-2/*.so m,
+  /usr/lib{,32,64}/thunarx-2/*.so m,
   /usr/share/ r,
   /usr/local/share/ r,
   /usr/share/Thunar/ r,
@@ -137,7 +137,7 @@ profile thunar_root {
   /usr/bin/dbus-daemon Px,
   
   /etc/udev/udev.conf r,
-  /usr/lib64/thunarx-2/*.so m,
+  /usr/lib{,32,64}/thunarx-2/*.so m,
   /usr/share/ r,
   /usr/local/share/ r,
   /usr/share/Thunar/ r,
@@ -195,7 +195,7 @@ profile thunar-settings /usr/bin/thunar-settings {
 }
 
 
-profile thunar-ThunarBulkRename /usr/lib64/Thunar/ThunarBulkRename {
+profile thunar-ThunarBulkRename /usr/lib{,32,64}/Thunar/ThunarBulkRename {
   #include <abstractions/base>
   
   /dev/tty rw,

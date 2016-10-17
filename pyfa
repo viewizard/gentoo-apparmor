@@ -14,7 +14,7 @@
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*.{emp,xml,txt}"
 
-profile pyfa /usr/lib{,32,64}/python-exec/python2.[0-9]*/pyfa {
+profile pyfa /usr/lib{,32,64}/python-exec/@{PYTHON2}/pyfa {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -41,6 +41,6 @@ profile pyfa /usr/lib{,32,64}/python-exec/python2.[0-9]*/pyfa {
   owner @{HOME}/.pyfa/** rwk,
   
   # Noisy
-  deny /usr/lib64/python2.7/site-packages/wxversion.pyc w,
+  deny /usr/lib{,32,64}/@{PYTHON2}/site-packages/wxversion.pyc w,
   
 }

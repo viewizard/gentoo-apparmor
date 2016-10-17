@@ -29,7 +29,7 @@ profile apparmor_parser /sbin/apparmor_parser flags=(complain) {
 }
 
 
-profile apparmor.aa-status /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/aa-status flags=(complain) {
+profile apparmor.aa-status /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-status flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   
@@ -43,12 +43,12 @@ profile apparmor.aa-status /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/aa-st
   
   /bin/env ixr,
   
-  /usr/lib64/python[2-3].[0-9]*/site-packages/apparmor/*.pyc w,
+  /usr/lib{,32,64}/@{PYTHON}/site-packages/apparmor/*.pyc w,
   
 }
 
 
-profile apparmor.aa-unconfined /usr/lib{,32,64}/python-exec/python[2-3].[0-9]*/aa-unconfined flags=(complain) {
+profile apparmor.aa-unconfined /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-unconfined flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/user-tmp>

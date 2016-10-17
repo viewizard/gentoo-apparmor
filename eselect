@@ -34,6 +34,18 @@ profile eselect_root flags=(complain) {
   /bin/chmod ix,
   /usr/bin/scanelf ix,
   /usr/bin/tput ix,
-  /usr/lib64/python-exec/python-exec2 Px,
+  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> test,
+  
+  
+  profile test {
+    #include <abstractions/base>
+    
+    /bin/env r,
+    
+#    /usr/lib{,32,64}/python-exec/@{PYTHON}/test Px,
+    
+    /etc/env.d/python/config r,
+    
+  }
   
 }
