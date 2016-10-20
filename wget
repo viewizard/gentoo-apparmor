@@ -9,16 +9,12 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile alsa-utils.aplay /usr/bin/aplay {
+profile wget_root {
   #include <abstractions/base>
-  #include <abstractions/audio>
-  #include <abstractions/nameservice>
+  #include <abstractions/user-systemwide-files>
   
-  @{PROC}/@{pid}/fd/ r,
+  /dev/pts/[0-9]* w,
   
-  /usr/bin/aplay r,
-  /usr/bin/pulseaudio Px,
-  
-  /etc/machine-id r,
+  /usr/bin/wget r,
   
 }
