@@ -71,7 +71,7 @@ profile openrc /sbin/openrc flags=(complain) {
     /dev/console rw,
     
     /bin/bash r,
-    /lib64/rc/sh/gendepends.sh Px,
+    /lib{,32,64}/rc/sh/gendepends.sh Px,
     
   }
   
@@ -127,7 +127,7 @@ profile openrc.rc-status /bin/rc-status flags=(complain) {
 }
 
 
-profile openrc.gendepends.sh /lib64/rc/sh/gendepends.sh flags=(complain) {
+profile openrc.gendepends.sh /lib{,32,64}/rc/sh/gendepends.sh flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -140,13 +140,13 @@ profile openrc.gendepends.sh /lib64/rc/sh/gendepends.sh flags=(complain) {
   @{PROC}/@{pid}/mounts r,
   
   /bin/bash r,
-  /lib64/rc/sh/gendepends.sh r,
-  /lib64/rc/bin/shell_var ixr,
-  /lib64/rc/bin/service_started ixr,
-  /lib64/rc/bin/service_get_value ixr,
-  /lib64/rc/bin/fstabinfo ixr,
-  /lib64/rc/bin/eval_ecolors ix,
-  /lib64/rc/bin/mountinfo ix,
+  /lib{,32,64}/rc/sh/gendepends.sh r,
+  /lib{,32,64}/rc/bin/shell_var ixr,
+  /lib{,32,64}/rc/bin/service_started ixr,
+  /lib{,32,64}/rc/bin/service_get_value ixr,
+  /lib{,32,64}/rc/bin/fstabinfo ixr,
+  /lib{,32,64}/rc/bin/eval_ecolors ix,
+  /lib{,32,64}/rc/bin/mountinfo ix,
   /bin/sed ixr,
   /bin/grep ixr,
   /sbin/openrc Px,
@@ -205,7 +205,7 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont flags=(complain) {
   / r,
   /etc/{conf,init}.d/consolefont r,
   /usr/share/consolefonts/{,**} r,
-  /lib64/rc/console/font rw,
+  /lib{,32,64}/rc/console/font rw,
   
   
   profile shell flags=(complain) {
@@ -382,7 +382,7 @@ profile openrc.root-ro.init.d /etc/init.d/root-ro flags=(complain) {
   /etc/init.d/root-ro r,
   /{etc,media,mnt}/ r,
   /{etc,media,mnt}/** rw,
-  /lib64/rc/{,**} r,
+  /lib{,32,64}/rc/{,**} r,
   /root/{,**} r,
   
   
@@ -493,7 +493,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(complain) {
   
   /etc/fstab r,
   /etc/{conf,init}.d/bootmisc r,
-  /lib64/rc/console/{font,keymap,unicode} w,
+  /lib{,32,64}/rc/console/{font,keymap,unicode} w,
   
   /var/log/dmesg w,
   /var/log/wtmp w,
@@ -540,7 +540,7 @@ profile openrc.tmpfiles.init.d /etc/init.d/tmpfiles.setup flags=(complain) {
   capability chown,
   
   /bin/bash Cx -> shell,
-  /lib64/rc/sh/tmpfiles.sh ix,
+  /lib{,32,64}/rc/sh/tmpfiles.sh ix,
   /bin/sort ix,
   /usr/bin/find ix,
   
@@ -574,7 +574,7 @@ profile openrc.termencoding.init.d /etc/init.d/termencoding flags=(complain) {
   
   /etc/init.d/termencoding r,
   
-  /lib64/rc/console/unicode w,
+  /lib{,32,64}/rc/console/unicode w,
   
   
   profile shell flags=(complain) {
@@ -626,7 +626,7 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps flags=(complain) {
   /etc/{conf,init}.d/keymaps r,
   /usr/share/keymaps/{,**} r,
   
-  /lib64/rc/console/keymap w,
+  /lib{,32,64}/rc/console/keymap w,
   
   
   profile shell flags=(complain) {

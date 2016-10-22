@@ -30,7 +30,6 @@ profile xfce4-session /usr/bin/xfce4-session {
   /bin/env Cx -> env,
   /bin/true ix,
   /bin/rm ixr,
-  /usr/bin/dbus-daemon Px,
   /usr/bin/ssh-agent Px,
   /usr/bin/gpg-agent Px,
   /usr/bin/xfsettingsd Px,
@@ -89,6 +88,7 @@ profile xfce4-session-logout /usr/bin/xfce4-session-logout {
   #include <abstractions/freedesktop.org>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/gtk>
   
   /dev/pts/[0-9]* rw,
   /usr/bin/xfce4-session-logout r,
@@ -135,7 +135,38 @@ profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
   /dev/tty rw,
   
   /usr/bin/startxfce4 r,
-  /bin/bash r,
+  /bin/bash Cxr -> shell,
   /usr/bin/xinit Px,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    /dev/tty[0-9]* w,
+    
+    /bin/bash r,
+    /bin/cat ix,
+    /bin/grep ix,
+    /bin/sed ix,
+    /usr/bin/which ix,
+    /usr/bin/gawk ix,
+    /usr/bin/xrdb Px,
+    /usr/bin/xfce4-session Px,
+    /usr/bin/xdg-user-dirs-update Px,
+    
+    /etc/xdg/xfce4/xinitrc r,
+    /etc/xdg/xfce4/Xft.xrdb r,
+    
+  }
+  
+}
+
+
+profile xfce4-session.Xfce4 /etc/X11/Sessions/Xfce4 flags=(complain) {
+  #include <abstractions/base>
+  
+  /etc/X11/Sessions/Xfce4 r,
+  /bin/bash r,
   
 }

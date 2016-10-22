@@ -61,7 +61,7 @@ profile cron.daily/00_update_portage /etc/cron.daily/00_update_portage {
   /bin/env ix,
   /usr/bin/mail Px,
   /usr/lib{,32,64}/python-exec/python-exec2 Cx -> emerge,
-  /lib64/rc/bin/checkpath ix,
+  /lib{,32,64}/rc/bin/checkpath ix,
   
   
   profile emerge {
@@ -81,6 +81,9 @@ profile cron.daily/aide /etc/cron.daily/aide {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
+  
+  capability dac_override,
+  capability dac_read_search,
   
   /dev/tty rw,
   /dev/sda r,

@@ -58,6 +58,8 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   /etc/X11/xorg.conf.d/{,*} r,
   /usr/share/X11/{,**} r,
   
+  owner @{HOME}/.serverauth* r,
+  
   /var/log/Xorg.[0-9]*.log{,.old} rw,
   
   /tmp/server-*.xkm rw,

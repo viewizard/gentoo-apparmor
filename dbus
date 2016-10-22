@@ -9,26 +9,25 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile dbus /usr/bin/dbus-{cleanup-sockets,daemon,launch,run-session,send,uuidgen} {
+profile dbus-cleanup-sockets /usr/bin/dbus-cleanup-sockets flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
+  
+  
+}
+
+profile dbus-daemon /usr/bin/dbus-daemon flags=(complain) {
+  #include <abstractions/base>
   #include <abstractions/nameservice>
-  #include <abstractions/X>
-  #include <abstractions/dconf>
   #include <abstractions/dbus>
-  #include <abstractions/dbus-accessibility>
-  #include <abstractions/dbus-session>
   
   capability sys_resource,
   capability setgid,
   capability setuid,
-  capability dac_read_search,
-  capability dac_override,
   
-  @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/cmdline r,
+  @{PROC}/@{pid}/oom_score_adj w,
   
-  /usr/bin/dbus-{cleanup-sockets,daemon,launch,run-session,send,uuidgen} ixr,
+  /usr/bin/dbus-daemon r,
   /usr/lib{,32,64}/xfce4/xfconf/xfconfd Px,
   /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd Px,
   /usr/lib{,32,64}/tumbler-1/tumblerd Px,
@@ -39,18 +38,61 @@ profile dbus /usr/bin/dbus-{cleanup-sockets,daemon,launch,run-session,send,uuidg
   /usr/libexec/gvfs-udisks2-volume-monitor Px,
   /usr/libexec/dconf-service Px,
   /usr/libexec/dbus-daemon-launch-helper Px,
-  /usr/libexec/gcr-prompter Px,
-  /usr/bin/gnome-keyring-daemon Px,
-  /usr/bin/thunar Px,
   
-  /etc/machine-id* rw,
   /etc/dbus-1/** r,
-  /etc/at-spi2/accessibility.conf r,
   /usr/share/dbus-1/** r,
   /usr/share/defaults/at-spi2/accessibility.conf r,
+  
   /run/dbus.pid rw,
   
+}
+
+profile dbus-launch /usr/bin/dbus-launch flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/X>
+  #include <abstractions/dbus-session>
+  
+  /usr/bin/dbus-launch r,
+  /bin/bash Cx -> shell,
+  /usr/bin/dbus-daemon Px,
+  /usr/bin/xfce4-session Px,
+  
   owner @{HOME}/.dbus/{,**} rw,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /etc/X11/Sessions/Xfce4 r,
+    /usr/bin/startxfce4 Px,
+    
+  }
+  
+}
+
+profile dbus-run-session /usr/bin/dbus-run-session flags=(complain) {
+  #include <abstractions/base>
+  
+  /usr/bin/dbus-run-session r,
+  
+}
+
+profile dbus-send /usr/bin/dbus-send flags=(complain) {
+  #include <abstractions/base>
+  
+  /usr/bin/dbus-send r,
+  
+}
+
+profile dbus-uuidgen /usr/bin/dbus-uuidgen flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/dbus-session-strict>
+  
+  /usr/bin/dbus-uuidgen r,
   
 }
 

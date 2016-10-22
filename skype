@@ -13,7 +13,6 @@ profile skype /opt/bin/skype {
   #include <abstractions/audio>
   #include <abstractions/video>
   #include <abstractions/base>
-  #include <abstractions/dbus-session>
   #include <abstractions/fonts>
   #include <abstractions/freedesktop.org>
   #include <abstractions/gtk>
@@ -60,7 +59,7 @@ profile skype /opt/bin/skype {
 #  owner @{HOME}/.mozilla/ r,
 #  owner @{HOME}/.mozilla/**/ r,
 #  owner @{HOME}/.mozilla/*/*/prefs.js r,
-  deny @{HOME}/.mozilla/ r,
+  deny @{HOME}/.mozilla/{,**} r,
   
   # Skype also looks around in these directories
   /{,usr/,usr/local/}lib/ r,

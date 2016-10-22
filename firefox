@@ -16,9 +16,6 @@ profile firefox /usr/{bin,lib,lib32,lib64}/{firefox,firefox/bin**}{,/firefox,/fi
   #include <abstractions/enchant>
   #include <abstractions/audio>
   #include <abstractions/cups-client>
-  #include <abstractions/dbus>
-  #include <abstractions/dbus-accessibility>
-  #include <abstractions/dbus-session>
   #include <abstractions/gtk>
   #include <abstractions/nameservice>
   #include <abstractions/p11-kit>
@@ -75,7 +72,7 @@ profile firefox /usr/{bin,lib,lib32,lib64}/{firefox,firefox/bin**}{,/firefox,/fi
   /usr/lib{,32,64}/firefox/** ixr,
   # Allow 'x' for downloaded extensions, but inherit policy for safety
   owner @{HOME}/.mozilla/**/extensions/** mixr,
-  /usr/lib/firefox/browser/extensions/** mixr,
+  /usr/lib{,32,64}/firefox/browser/extensions/** mixr,
   
   # Needed for the crash reporter
   owner @{PROC}/@{pid}/environ r,

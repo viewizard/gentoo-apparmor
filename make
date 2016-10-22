@@ -29,7 +29,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
   
   /etc/env.d/gcc/{,**} r,
   /etc/terminfo/x/xterm r,
-  /lib64/modules/{,**} rw,
+  /lib{,32,64}/modules/{,**} rw,
   /usr/src/linux-*-{hardened,gentoo}*/{,**} rwix,
   /usr/src/linux-*-{hardened,gentoo}*/arch/*/boot/bzImage w,
   
@@ -97,7 +97,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /etc/env.d/gcc/{,**} r,
     /usr/libexec/gcc/x86_64-pc-linux-gnu/{,**}.so* rm,
     /usr/include/{,**} r,
-    /lib64/modules/{,**} rw,
+    /lib{,32,64}/modules/{,**} rw,
     /usr/src/linux-*-{hardened,gentoo}*/{,**} rw,
     /usr/src/linux-*-{hardened,gentoo}*/tools/gcc/**.so m,
     /usr/share/pkgconfig/{,**} r,

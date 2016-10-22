@@ -15,12 +15,13 @@ profile cairo-clock /usr/bin/cairo-clock {
   #include <abstractions/fonts>
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
+  #include <abstractions/audio>
   #include <abstractions/X>
   
   /dev/tty[0-9]* w,
   
   /usr/bin/cairo-clock rm,
-
+  
   /usr/share/cairo-clock/{,**} r,
   
   owner @{HOME}/.cairo-clockrc rw,

@@ -21,6 +21,27 @@ profile consolekit.ck-history /usr/bin/ck-history flags=(complain) {
 
 profile consolekit.ck-launch-session /usr/bin/ck-launch-session flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/dbus-session>
+  #include <abstractions/nameservice>
+  
+  /usr/bin/ck-launch-session r,
+  /bin/bash Cx -> shell,
+  
+  /etc/X11/Sessions/{,*} r,
+  
+  owner @{HOME}/.Xauthority r,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    /etc/X11/Sessions/Xfce4 r,
+    /usr/bin/startxfce4 Px,
+    
+  }
   
 }
 
@@ -91,6 +112,8 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   
   /var/log/ConsoleKit/ r,
   /var/log/ConsoleKit/** rw,
+  
+  owner @{HOME}/.Xauthority r,
   
 }
 

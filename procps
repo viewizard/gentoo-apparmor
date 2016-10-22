@@ -19,6 +19,7 @@ profile procps.ps /bin/ps {
   capability dac_read_search,
   
   /dev/tty r,
+  /dev/tty[0-9]* w,
   /dev/pts/[0-9]* rw,
   
   @{PROC}/ r,

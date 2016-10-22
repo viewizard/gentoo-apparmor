@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile xinit /usr/bin/xinit {
+profile xinit /usr/bin/xinit flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/X>
   #include <abstractions/nameservice>
@@ -21,17 +21,28 @@ profile xinit /usr/bin/xinit {
   /etc/X11/xinit/xserverrc Px,
   
   
-  profile shell {
+  profile shell flags=(complain) {
     #include <abstractions/base>
     
     /dev/tty rw,
+    /dev/tty[0-9]* w,
     
     /bin/bash r,
     /bin/cat ix,
+    /bin/grep ix,
+    /bin/sed ix,
     /usr/bin/which ix,
+    /usr/bin/gawk ix,
     /usr/bin/xrdb Px,
+    /usr/bin/dbus-send Px,
+    /usr/bin/nvidia-settings Px,
     /usr/bin/xfce4-session Px,
+    /usr/bin/ck-launch-session Px,
     /usr/bin/xdg-user-dirs-update Px,
+    /etc/X11/xinit/xinitrc r,
+    /etc/X11/chooser.sh ixr,
+    /etc/X11/Sessions/{,*} r,
+    /etc/X11/xinit/xinitrc.d/{,*} r,
     
     /etc/xdg/xfce4/xinitrc r,
     /etc/xdg/xfce4/Xft.xrdb r,
@@ -49,5 +60,31 @@ profile xinit.xserverrc /etc/X11/xinit/xserverrc {
   /bin/bash r,
   /etc/X11/xinit/xserverrc r,
   /usr/bin/Xorg Px,
+  
+}
+
+
+profile xinit.startx /usr/bin/startx flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/user-tmp>
+  
+  /dev/tty rw,
+  /dev/tty[0-9]* rw,
+  
+  /usr/bin/startx r,
+  /bin/bash r,
+  /bin/uname ix,
+  /bin/hostname ix,
+  /bin/grep ix,
+  /bin/sed ix,
+  /bin/rm ix,
+  /usr/bin/mcookie ix,
+  /usr/bin/deallocvt ix,
+  /usr/bin/xauth ix,
+  /usr/bin/xinit Px,
+  
+  owner @{HOME}/.serverauth* rwl,
+  owner @{HOME}/.Xauthority* rwl,
   
 }

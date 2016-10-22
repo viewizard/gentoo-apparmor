@@ -24,6 +24,9 @@ profile nvidia-settings /{usr,opt}/bin/nvidia-settings {
   #include <abstractions/user-tmp>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
+  #include <abstractions/dbus-session>
+  
+  @{PROC}/@{pid}/fd/ r,
   
   /{usr,opt}/bin/nvidia-settings r,
   /bin/bash Cx -> shell,

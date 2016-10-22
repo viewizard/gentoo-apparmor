@@ -89,9 +89,8 @@ profile wine-preloader /usr/bin/wine-preloader {
   /etc/mime.types r,
   /etc/fstab r,
   /etc/printcap r,
-  /etc/machine-id r,
   /etc/terminfo/x/xterm r,
-  /usr/lib32/wine/* m,
+  /usr/lib{,32,64}/wine/* m,
   /usr/share/wine/** rk,
   /usr/share/icons/** r,
   /tmp/* m,
@@ -107,7 +106,7 @@ profile wine-preloader /usr/bin/wine-preloader {
   deny @{HOME}/.* w,
   deny /etc/ r,
   deny /usr/local/ r,
-  deny /usr/local/lib64/ r,
+  deny /usr/local/lib{,32,64}/ r,
   
 }
 

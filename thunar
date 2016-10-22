@@ -49,7 +49,6 @@ profile thunar /usr/bin/{Thunar,thunar} {
   /bin/env Cx -> env,
   /bin/umount Px,
   /usr/libexec/thunar-archive-plugin/xarchiver.tap Px,
-  /usr/bin/dbus-daemon Px,
   
   /etc/udev/udev.conf r,
   /usr/lib{,32,64}/thunarx-2/*.so m,
@@ -134,7 +133,6 @@ profile thunar_root {
   /bin/env Cx -> env,
   /bin/umount Px,
   /usr/libexec/thunar-archive-plugin/xarchiver.tap Px -> xarchiver_tap_root,
-  /usr/bin/dbus-daemon Px,
   
   /etc/udev/udev.conf r,
   /usr/lib{,32,64}/thunarx-2/*.so m,
@@ -188,7 +186,7 @@ profile thunar-settings /usr/bin/thunar-settings {
   
   /dev/tty rw,
   
-  /usr/bin/dbus-send Pixr,
+  /usr/bin/dbus-send Pxr,
   /usr/bin/thunar-settings r,
   /bin/bash r,
   
