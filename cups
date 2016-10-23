@@ -9,103 +9,134 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile cups /usr/sbin/cupsd {
+profile cups.cupsd /usr/sbin/cupsd flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/bash>
-  #include <abstractions/dbus>
-  #include <abstractions/fonts>
   #include <abstractions/nameservice>
-  #include <abstractions/perl>
   #include <abstractions/authentication>
   
-  capability chown,
-  capability dac_override,
-  capability dac_read_search,
-  capability fowner,
   capability fsetid,
   capability net_bind_service,
-  capability setgid,
-  capability setuid,
+  capability dac_read_search,
+  capability dac_override,
+  capability chown,
   capability kill,
   
-  /bin/bash ixr, # FIX ME!
-  /bin/cat ix,
-  /usr/bin/pmount Px,
-  /usr/bin/pumount Px,
+  /usr/sbin/cupsd Pxr,
+  /bin/bash Cx -> shell,
+  /usr/libexec/cups/daemon/* Px,
+  /usr/libexec/cups/driver/* Px,
+  /usr/libexec/cups/cgi-bin/* Px,
+  /usr/libexec/cups/filter/* Px,
+  /usr/libexec/cups/backend/* Px,
   
-  /usr/bin/foomatic-rip ixr,
-  /etc/foomatic/** r,
-  
-  /usr/bin/gs ix,
-  /usr/bin/pdftops ix,
-  /usr/lib{,32,64}/ghostscript/** m,
-  /usr/share/ghostscript/** r,
-  /usr/share/ppd/{,**} r,
-  /usr/share/gutenprint/{,**} r,
-  /usr/libexec/cups/notifier/ r,
-  /usr/libexec/cups/driver/ r,
-  /usr/libexec/cups/driver/* ix,
-  /usr/libexec/cups/daemon/* ix,
-  /usr/libexec/cups/cgi-bin/* ix,
-  /usr/libexec/cups/filter/* ix,
-  /etc/ghostscript/** r,
-  
-  # web-admin part
   /etc/environment r,
-  /usr/libexec/cups/backend/ r,
-  /usr/libexec/cups/backend/* ix,
-  # usb backend
-  /dev/ r,
-  /dev/bus/usb/ r,
-  /etc/udev/udev.conf r,
-  /sys/bus/ r,
-  /sys/bus/usb/devices/ r,
-  /sys/class/ r,
-  /sys/devices/pci[0-9]*/**/usb[0-9]*/ r,
-  /sys/devices/pci[0-9]*/**/usb[0-9]*/* r,
-  
-  /dev/lp0 rw,
-  /dev/tty rw,
-  /dev/ttyS? w,
-  /etc/cups rw,
-  /etc/cups/ r,
-  /etc/cups/** r,
-  /etc/cups/certs w,
-  /etc/cups/certs/* w,
-  /etc/cups/*.conf* rw,
-  /etc/cups/ppd/{,**} rw,
   /etc/papersize r,
   /etc/printcap rw,
-  /etc/cups/printcap rw,
-  /etc/cups/ssl rw,
-  /etc/cups/yes/* rw,
-  /etc/hosts.allow r,
-  /etc/hosts.deny r,
-  @{PROC}/meminfo r,
-  @{PROC}/sys/dev/parport/** r,
-  /sys/class/usb r,
-  /usr/bin/perl ix,
-  /usr/bin/smbspool ixr,
-  /usr/lib{,32,64}/cups/backend/* ixr,
-  /usr/lib{,32,64}/cups/filter/* ixr,
-  /usr/lib{,32,64}/gutenprint/**.so m,
-  /usr/sbin/cupsd mixr,
+  /etc/cups/{,**} r,
+  /etc/cups/*.conf* rw,
+  /etc/cups/ppd/{,**} rw,
+  /usr/libexec/cups/** r,
   /usr/share/cups/** r,
-  /var/log/cups/ rw,
-  /var/log/cups/access_log rw,
-  /var/log/cups/error_log rw,
-  /var/log/cups/page_log rw,
-  /var/spool/cups rw,
-  /var/spool/cups/{,**} rw,
-  /var/spool/cups/tmp w,
-  /var/spool/cups/tmp/ r,
+  
+  /var/log/cups/{,access_log,error_log,page_log} rw,
   /{,var/}run/cups/ rw,
   /{,var/}run/cups/** rw,
   /var/cache/cups/ rw,
   /var/cache/cups/** rwk,
+  /var/spool/cups/{,**} rw,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    #include <abstractions/authentication-pam_usb>
+    
+    /dev/tty rw,
+    
+    /bin/bash r,
+    
+  }
   
 }
 
+profile cups.daemon /usr/libexec/cups/daemon/* flags=(complain) {
+  #include <abstractions/base>
+  
+  capability setgid,
+  capability setuid,
+  
+  /usr/bin/smbspool Px,
+  /usr/libexec/cups/daemon/* Pxr,
+  /usr/libexec/cups/cgi-bin/* Px,
+  /usr/libexec/cups/backend/ r,
+  /usr/libexec/cups/backend/* Px,
+  /usr/libexec/cups/driver/ r,
+  /usr/libexec/cups/driver/* Px,
+  
+  /usr/share/cups/{,**} r,
+  /usr/share/ppd/{,**} r,
+  
+  /var/spool/cups/{,**} r,
+  /var/cache/cups/{,**} r,
+  
+}
+
+profile cups.driver /usr/libexec/cups/driver/* flags=(complain) {
+  #include <abstractions/base>
+  
+  /usr/libexec/cups/driver/* r,
+  
+  /usr/share/gutenprint/{,**} r,
+  /usr/lib{,32,64}/gutenprint/{,**} r,
+  /usr/lib{,32,64}/gutenprint/[0-9]*/modules/*.so m,
+  
+}
+
+profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/user-tmp>
+  
+  /usr/libexec/cups/cgi-bin/* r,
+  
+  /etc/cups/{,**} r,
+  /usr/share/cups/templates/{,**} r,
+  
+  /var/cache/cups/* r,
+  /{,var/}run/cups/certs/{,**} r,
+  /var/spool/cups/{,**} r,
+  
+}
+
+profile cups.filter /usr/libexec/cups/filter/* flags=(complain) {
+  #include <abstractions/base>
+  
+  /usr/libexec/cups/filter/* r,
+  
+}
+
+profile cups.backend /usr/libexec/cups/backend/* flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/bus/usb/ r,
+  /sys/bus/ r,
+  /sys/bus/usb/devices/ r,
+  /sys/class/ r,
+  /sys/devices/pci[0-9]*/**/usb[0-9]*/{,**} r,
+  
+  /usr/libexec/cups/backend/* r,
+  
+  /etc/cups/snmp.conf r,
+  /etc/udev/udev.conf r,
+  /usr/share/cups/{,**} r,
+  
+}
+
+profile cups.smbspool /usr/bin/smbspool flags=(complain) {
+  #include <abstractions/base>
+  
+  /usr/bin/smbspool r,
+  
+}
 
 profile cups.init.d /etc/init.d/cupsd flags=(complain) {
   #include <abstractions/base>

@@ -25,7 +25,7 @@ profile alock /usr/bin/alock {
   /dev/tty[0-9]* w,
   
   /usr/bin/alock r,
-  /bin/bash cx -> shell,
+  /bin/bash Cx -> shell,
   /sbin/unix_chkpwd Px,
   
   /etc/shells r,
@@ -38,12 +38,11 @@ profile alock /usr/bin/alock {
   
   profile shell {
     #include <abstractions/base>
+    #include <abstractions/authentication-pam_usb>
     
     /dev/tty rw,
     
     /bin/bash r,
-    /usr/bin/pmount Px,
-    /usr/bin/pumount Px,
     
   }
   

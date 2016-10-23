@@ -44,6 +44,12 @@ profile pam_usb.pamusb-check /usr/bin/pamusb-check {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  capability dac_read_search,
+  capability dac_override,
+  capability chown,
+  capability fowner,
+  capability fsetid,
+  
   /dev/pts/[0-9]* rw,
   
   /usr/bin/pamusb-check r,
@@ -51,20 +57,19 @@ profile pam_usb.pamusb-check /usr/bin/pamusb-check {
   
   /etc/pamusb.conf r,
   
-  owner @{HOME}/.pamusb/*.pad rw,
-  /media/pam_usb*/.pamusb/*.pad rw,
+  @{HOME}/.pamusb/*.pad rw,
+  /media/*/.pamusb/{,*.pad} rw,
   
   /run/utmp rk,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
+    #include <abstractions/authentication-pam_usb>
     
     /dev/tty rw,
     
     /bin/bash r,
-    /usr/bin/pmount Px,
-    /usr/bin/pumount Px,
     
   }
   

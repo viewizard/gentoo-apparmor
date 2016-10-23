@@ -145,13 +145,12 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
   
   profile shell {
     #include <abstractions/base>
+    #include <abstractions/authentication-pam_usb>
     
     /dev/tty rw,
     
     /bin/bash r,
     /bin/wc ix,
-    /usr/bin/pmount Px,
-    /usr/bin/pumount Px,
     /usr/bin/pidof Px,
     
   }
@@ -161,6 +160,7 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
 profile mate-screensaver-command /usr/bin/mate-screensaver-command {
   #include <abstractions/base>
   
+  /dev/tty[0-9] w,
   /dev/pts/[0-9]* rw,
   
   /usr/bin/mate-screensaver-command r,

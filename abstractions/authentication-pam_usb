@@ -8,16 +8,7 @@
 #
 # ------------------------------------------------------------------
 
-#include <tunables/global>
-profile glib.gsettings /usr/bin/gsettings flags=(complain) {
-  #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/gtk>
-  #include <abstractions/dconf>
-  
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* rw,
-  
-  /usr/bin/gsettings r,
-  
-}
+
+# pam_usb related
+/usr/bin/pmount Pxr,
+/usr/bin/pumount Pxr,

@@ -1,0 +1,67 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile apparmor-utils.aa-status /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-status flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/python>
+  
+  capability sys_ptrace,
+  
+  /dev/pts/[0-9]* w,
+  /sys/kernel/security/apparmor/* r,
+  @{PROC}/ r,
+  @{PROC}/@{pid}/attr/{current,prev,exec} r,
+  @{PROC}/@{pid}/mounts r,
+  
+  /bin/env ixr,
+  
+  /usr/lib{,32,64}/@{PYTHON}/site-packages/apparmor/*.pyc w,
+  
+}
+
+
+profile apparmor-utils.aa-unconfined /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-unconfined flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/python>
+  #include <abstractions/user-tmp>
+  
+  capability sys_ptrace,
+  
+  /dev/pts/[0-9]* w,
+  @{PROC}/@{pid}/mounts r,
+  @{PROC}/@{pid}/attr/{current,prev,exec} r,
+  
+  /bin/env r,
+  /bin/bash Cx -> shell,
+  /bin/cat ix,
+  
+  /etc/apparmor/logprof.conf r,
+  /etc/inputrc r,
+  /etc/terminfo/x/xterm r,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    capability sys_ptrace,
+    
+    /dev/tty rw,
+    @{PROC}/ r,
+    @{PROC}/@{pid}/fd/ r,
+    @{PROC}/@{pid}/cmdline r,
+    @{PROC}/@{pid}/net/* r,
+    
+    /bin/bash r,
+    /bin/netstat ix,
+    
+  }
+  
+}

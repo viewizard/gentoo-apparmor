@@ -74,6 +74,7 @@ profile sudo /usr/bin/sudo {
   
   profile shell {
     #include <abstractions/base>
+    #include <abstractions/authentication-pam_usb>
     
     capability setuid,
     capability setgid,
@@ -81,8 +82,6 @@ profile sudo /usr/bin/sudo {
     /dev/tty rw,
     
     /bin/bash r,
-    /usr/bin/pmount Px,
-    /usr/bin/pumount Px,
     
   }
   

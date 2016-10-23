@@ -82,6 +82,7 @@ profile bash_root {
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/user-systemwide-files>
+  #include <abstractions/authentication-pam_usb>
   
   capability setuid,
   capability setgid,
@@ -142,8 +143,6 @@ profile bash_root {
   /sbin/fsck Pxr,
   /sbin/rc-service Pxr,
   /sbin/xtables-multi Pxr,
-  /usr/bin/pmount Pxr,
-  /usr/bin/pumount Pxr,
   /usr/bin/which ixr,
   /usr/bin/git Px -> git_root,
   /usr/bin/exo-open Pxr,
