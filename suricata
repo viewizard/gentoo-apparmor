@@ -47,6 +47,8 @@ profile suricata.init.d /etc/init.d/suricata flags=(complain) {
   capability dac_override,
   capability dac_read_search,
   
+  @{PROC}/@{pid}/cmdline r,
+  
   /bin/bash Cx -> shell,
   /bin/sed ixr,
   /bin/cat ixr,

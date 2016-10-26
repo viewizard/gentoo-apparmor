@@ -49,7 +49,7 @@ profile evelauncher /home/*/evelauncher/evelauncher {
   /sys/devices/system/cpu/ r,
   /sys/devices/pci[0-9]*/**/{resource,irq,vendor,device,class,config} r,
   
-  owner @{HOME}/evelauncher/evelauncher ixr,
+  owner @{HOME}/evelauncher/evelauncher r,
   /usr/bin/wine Px,
   owner @{HOME}/{.eve,evelauncher}/updater px,
   owner @{HOME}/evelauncher/QtWebEngineProcess ix,
@@ -60,7 +60,8 @@ profile evelauncher /home/*/evelauncher/evelauncher {
   / r,
   /home/ r,
   owner @{HOME}/ r,
-  owner @{HOME}/evelauncher/{,**} r,
+  owner @{HOME}/evelauncher/ r,
+  owner @{HOME}/evelauncher/** rw,
   owner @{HOME}/evelauncher/**.so{,.[0-9]*} m,
   owner @{HOME}/.eve/{,**} rw,
   owner @{HOME}/.config/CCP/{,**} rwk,
@@ -78,6 +79,7 @@ profile evelauncher.updater /home/*/{.eve,evelauncher}/updater {
   #include <abstractions/nameservice>
   
   owner @{HOME}/{.eve,evelauncher}/updater r,
+  owner @{HOME}/evelauncher/evelauncher px,
   
   owner @{HOME}/evelauncher/{,**} rw,
   owner @{HOME}/.eve/{,**} rw,

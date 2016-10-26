@@ -1,0 +1,24 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile poppler.pdftops /usr/bin/pdftops flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/fonts>
+  #include <abstractions/user-tmp>
+  
+  /usr/bin/pdftops r,
+  
+  /etc/fonts/fonts.conf r,
+  /etc/fonts/conf.d/{,*} r,
+  /etc/fonts/conf.avail/{,*} r,
+  /usr/share/poppler/{,**} r,
+  
+}

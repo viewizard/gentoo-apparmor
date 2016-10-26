@@ -71,6 +71,7 @@ profile cups.daemon /usr/libexec/cups/daemon/* flags=(complain) {
   /usr/libexec/cups/backend/* Px,
   /usr/libexec/cups/driver/ r,
   /usr/libexec/cups/driver/* Px,
+  /usr/libexec/cups/filter/* Px,
   
   /usr/share/cups/{,**} r,
   /usr/share/ppd/{,**} r,
@@ -100,6 +101,7 @@ profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* flags=(complain) {
   
   /etc/cups/{,**} r,
   /usr/share/cups/templates/{,**} r,
+  /usr/share/cups/data/{,**} r,
   
   /var/cache/cups/* r,
   /{,var/}run/cups/certs/{,**} r,
@@ -109,8 +111,16 @@ profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* flags=(complain) {
 
 profile cups.filter /usr/libexec/cups/filter/* flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/user-tmp>
   
-  /usr/libexec/cups/filter/* r,
+  /usr/libexec/cups/filter/* Pxr,
+  /usr/bin/pdftops Px,
+  
+  /etc/cups/ppd/*.ppd r,
+  /usr/share/poppler/{,**} r,
+  /usr/share/cups/{,**} r,
+  
+  /var/spool/cups/* r,
   
 }
 
@@ -126,8 +136,11 @@ profile cups.backend /usr/libexec/cups/backend/* flags=(complain) {
   /usr/libexec/cups/backend/* r,
   
   /etc/cups/snmp.conf r,
+  /etc/cups/ppd/*.ppd r,
   /etc/udev/udev.conf r,
   /usr/share/cups/{,**} r,
+  
+  /var/cache/cups/*.snmp r,
   
 }
 
