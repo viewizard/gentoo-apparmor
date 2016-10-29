@@ -54,7 +54,7 @@ profile sudo /usr/bin/sudo {
 
 #  @{PROC}/@{pid}/mountinfo r,
   
-#  /bin/bash Pux -> bash_root,
+#  /bin/bash Px -> bash_root,
 #  /usr/sbin/pmvarrun Px,
 #  /usr/bin/ofl Px,
 #  /bin/mount Px,
@@ -101,7 +101,7 @@ profile sudo /usr/bin/sudo {
     @{PROC}/@{pid}/fd/ r,
     @{PROC}/@{pid}/mountinfo r,
     
-    /bin/bash Pux -> bash_users,
+    /bin/bash Px -> bash_users,
     /usr/sbin/pmvarrun Px,
     /usr/bin/ofl Px,
     /bin/mount Px,
@@ -131,7 +131,7 @@ profile sudo /usr/bin/sudo {
     @{PROC}/@{pid}/fd/ r,
     @{PROC}/@{pid}/mountinfo r,
     
-    /bin/bash Pux -> bash_root,
+    /bin/bash Px -> bash_root,
     /usr/sbin/pmvarrun Px,
     /usr/bin/ofl Px,
     /bin/mount Px,
@@ -140,6 +140,7 @@ profile sudo /usr/bin/sudo {
     /usr/bin/dbus-daemon Px,
     /usr/bin/gksu_askpass.sh Px,
     /usr/bin/gsmartcontrol Px,
+    /sbin/xtables-multi Px,
     
     /etc/environment r,
     

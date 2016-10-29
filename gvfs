@@ -55,30 +55,35 @@ profile gvfsd /usr/libexec/gvfsd {
 profile gvfsd-archive /usr/libexec/gvfsd-archive flags=(complain) {
   #include <abstractions/base>
   
+  /usr/libexec/gvfsd-archive r,
   
 }
 
 profile gvfsd-burn /usr/libexec/gvfsd-burn flags=(complain) {
   #include <abstractions/base>
   
+  /usr/libexec/gvfsd-burn r,
   
 }
 
 profile gvfsd-computer /usr/libexec/gvfsd-computer flags=(complain) {
   #include <abstractions/base>
   
+  /usr/libexec/gvfsd-computer r,
   
 }
 
 profile gvfsd-dav /usr/libexec/gvfsd-dav flags=(complain) {
   #include <abstractions/base>
   
+  /usr/libexec/gvfsd-dav r,
   
 }
 
 profile gvfsd-ftp /usr/libexec/gvfsd-ftp flags=(complain) {
   #include <abstractions/base>
   
+  /usr/libexec/gvfsd-ftp r,
   
 }
 
@@ -121,6 +126,7 @@ profile gvfsd-http /usr/libexec/gvfsd-http flags=(complain) {
 profile gvfsd-localtest /usr/libexec/gvfsd-localtest flags=(complain) {
   #include <abstractions/base>
   
+  /usr/libexec/gvfsd-localtest r,
   
 }
 
@@ -151,12 +157,14 @@ profile gvfsd-network /usr/libexec/gvfsd-network flags=(complain) {
 profile gvfsd-recent /usr/libexec/gvfsd-recent flags=(complain) {
   #include <abstractions/base>
   
+  /usr/libexec/gvfsd-recent r,
   
 }
 
 profile gvfsd-sftp /usr/libexec/gvfsd-sftp flags=(complain) {
   #include <abstractions/base>
   
+  /usr/libexec/gvfsd-sftp r,
   
 }
 
@@ -208,5 +216,12 @@ profile gvfsd-trash /usr/libexec/gvfsd-trash {
   /usr/share/mime/mime.cache r,
   owner @{HOME}/.local/share/mime/mime.cache r,
   owner @{HOME}/.local/share/Trash/{,**} rw,
+  
+}
+
+profile gvfs-open /usr/bin/gvfs-open flags=(complain) {
+  #include <abstractions/base>
+  
+  /usr/bin/gvfs-open r,
   
 }

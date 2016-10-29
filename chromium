@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile chromium /usr/{bin,lib,lib32,lib64}/{chromium,chromium-browser}{,/chrome,/chromium-launcher.sh} flags=(attach_disconnected) {
+profile chromium /usr/{bin/chromium-browser,lib{,32,64}/chromium-browser/{chrome,chromium-launcher.sh}} flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -76,11 +76,11 @@ profile chromium /usr/{bin,lib,lib32,lib64}/{chromium,chromium-browser}{,/chrome
   
   # Allow transitions to ourself and our sandbox
   /usr/bin/chromium-browser Pxr,
-  /usr/lib{,32,64}/chromium-browser/chrome ix,
+  /usr/lib{,32,64}/chromium-browser/chrome Px,
   /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh Px,
   /usr/lib{,32,64}/chromium-browser/chrome-sandbox cx -> sandbox,
   # Helpers
-  /usr/bin/gvfs-open ixr,
+  /usr/bin/gvfs-open Pxr,
   
   
   # chromium mmaps all kinds of things for speed.

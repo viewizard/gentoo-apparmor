@@ -23,6 +23,7 @@ profile xfce4-taskmanager /usr/bin/xfce4-taskmanager {
   
   /dev/tty[0-9]* w,
   @{PROC}/ r,
+  @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/{cmdline,status,stat} r,
 
   /usr/bin/xfce4-taskmanager r,

@@ -10,33 +10,6 @@
 
 
 
-profile usr_local.bin.cairo_clock_start /usr/local/bin/cairo_clock_start flags=(complain) {
-  #include <abstractions/base>
-  
-  /dev/tty rw,
-  
-  /usr/local/bin/cairo_clock_start r,
-  /bin/bash r,
-  /bin/sleep ix,
-  /usr/bin/cairo-clock Px,
-  
-}
-
-
-profile usr_local.bin.conky_start /usr/local/bin/conky_start flags=(complain) {
-  #include <abstractions/base>
-  
-  /dev/tty rw,
-  
-  /usr/local/bin/conky_start r,
-  /bin/bash r,
-  /bin/sleep ix,
-  /usr/bin/killall Px,
-  /usr/bin/conky Px,
-  
-}
-
-
 profile usr_local.bin.symlink_ondesktop /usr/local/bin/symlink_ondesktop.sh flags=(complain) {
   #include <abstractions/base>
   

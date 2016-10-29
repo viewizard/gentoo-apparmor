@@ -34,15 +34,15 @@ profile eselect_root flags=(complain) {
   /bin/chmod ix,
   /usr/bin/scanelf ix,
   /usr/bin/tput ix,
-  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> test,
+  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> portage,
   
   
-  profile test {
+  profile portage {
     #include <abstractions/base>
     
     /bin/env r,
     
-#    /usr/lib{,32,64}/python-exec/@{PYTHON}/test Px,
+    /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq Px,
     
     /etc/env.d/python/config r,
     

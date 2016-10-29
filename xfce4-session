@@ -59,9 +59,13 @@ profile xfce4-session /usr/bin/xfce4-session {
     #include <abstractions/base>
     
     /dev/tty rw,
+    /dev/tty[0-9]* w,
     
     /bin/bash r,
+    /bin/sleep ix,
     /usr/bin/iceauth Px,
+    /usr/bin/cairo-clock Px,
+    /usr/bin/conky Px,
     
   }
   
