@@ -42,18 +42,11 @@ profile nvidia-settings /{usr,opt}/bin/nvidia-settings {
   profile shell {
     #include <abstractions/base>
     
-    capability sys_ptrace,
-    
     /dev/tty rw,
-    @{PROC} r,
     owner @{PROC}/cmdline r,
-    @{PROC}/uptime r,
-    @{PROC}/sys/kernel/pid_max r,
-    @{PROC}/@{pid}/stat r,
-    @{PROC}/@{pid}/status r,
   
     /bin/bash r,
-    /bin/ps ix,
+    /bin/ps Px,
     /usr/bin/Xorg ix,
     /usr/bin/pkg-config ix,
     

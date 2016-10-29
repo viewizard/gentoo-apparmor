@@ -65,7 +65,7 @@ profile firefox /usr/{bin/firefox,lib{,32,64}/firefox/firefox{,-bin}} {
   /sbin/killall5 ixr,
   /bin/which ixr,
   /usr/bin/tr ixr,
-  /bin/ps ixr,
+  /bin/ps Pxr,
   /bin/uname ixr,
   /usr/bin/basename ixr,
   /usr/bin/dirname ixr,
@@ -91,8 +91,5 @@ profile firefox /usr/{bin/firefox,lib{,32,64}/firefox/firefox{,-bin}} {
   owner @{HOME_CACHE}/mozilla/{,firefox/} rw,
   owner @{HOME_CACHE}/mozilla/firefox/** rw,
   owner @{HOME_CACHE}/mozilla/firefox/**/*.sqlite k,
-  
-  # Noisy
-  deny /run/udev/data/** r,
   
 }
