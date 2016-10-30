@@ -12,7 +12,7 @@
 
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*.{po,po.*,pot,mo,PO,PO.*,POT,MO}"
+@{PROG_FILE}="[^.]*.{po,po.*,pot,mo,c,h,cpp,hpp,PO,PO.*,POT,MO,C,H,CPP,HPP}"
 
 profile poedit /usr/bin/poedit flags=(complain) {
   #include <abstractions/base>
@@ -27,6 +27,7 @@ profile poedit /usr/bin/poedit flags=(complain) {
   #include <abstractions/xdg-open>
   
   /dev/tty rw,
+  /sys/devices/system/cpu/ r,
   
   /usr/bin/poedit r,
   /bin/bash ix,

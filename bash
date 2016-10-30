@@ -57,6 +57,7 @@ profile bash_users {
   /bin/uname ixr,
   /bin/su Pxr,
   /bin/rc-status Pxr,
+  /bin/sleep ixr,
   /usr/bin/which ixr,
   /usr/bin/git Pxr,
   /usr/bin/sudo Pxr,
