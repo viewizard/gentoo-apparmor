@@ -1,0 +1,63 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile python-updater /usr/sbin/python-updater flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/python>
+  
+  capability sys_admin,
+  
+  /dev/tty rw,
+  /dev/pts/[0-9]* w,
+  
+  /usr/sbin/python-updater r,
+  /usr/bin/python-wrapper Px,
+  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> portage,
+  /bin/bash r,
+  /bin/grep ix,
+  /bin/sort ix,
+  /bin/sed ix,
+  /bin/bzip2 ix,
+  /bin/stty ix,
+  /bin/cut ix,
+  /bin/readlink ix,
+  /sbin/consoletype ix,
+  /usr/bin/find ix,
+  /usr/bin/tput ix,
+  /usr/bin/scanelf ix,
+  /usr/bin/scanmacho ix,
+  
+  /etc/terminfo/x/xterm r,
+  / r,
+  /etc/{,**} r,
+  /usr/{,**} r,
+  /opt/{,**} r,
+  /bin/{,**} r,
+  /sbin/{,**} r,
+  /var/lib/{,**} r,
+  /var/db/{,**} r,
+  /var/nullmailer/{,**} r,
+  /var/**/.keep* r,
+  
+  
+  profile portage {
+    #include <abstractions/base>
+    
+    /bin/env r,
+    
+    /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge Px,
+    /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq Px,
+    
+    /etc/env.d/python/config r,
+    
+  }
+  
+}
