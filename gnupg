@@ -51,7 +51,14 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} flags=(complain) {
 profile gnupg.gpgconf /usr/bin/gpgconf flags=(complain) {
   #include <abstractions/base>
   
+  @{PROC}/@{pid}/fd/ r,
+  
   /usr/bin/gpgconf r,
+  
+  /run/user/*/gnupg/{,**} w,
+  
+  owner @{HOME}/.gnupg/ rw,
+  owner @{HOME}/.gnupg/** rwl,
   
 }
 
