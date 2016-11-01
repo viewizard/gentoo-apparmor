@@ -41,6 +41,8 @@ profile netifrc.init.d /etc/init.d/net.* flags=(complain) {
   /sbin/brctl Px,
   /sbin/iptunnel Px,
   /sbin/iwconfig Px,
+  /usr/sbin/ifplugd Px,
+  /lib64/rc/sbin/mark_service_inactive ix,
   
   /etc/fstab r,
   /etc/resolv.conf w,
@@ -48,11 +50,13 @@ profile netifrc.init.d /etc/init.d/net.* flags=(complain) {
   /etc/iproute2/{,*} r,
   
   /run/dhcpcd-*.pid rwk,
+  /run/ifplugd.*.pid rwk,
   
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/openrc_shell>
+    #include <abstractions/nameservice>
     
   }
   

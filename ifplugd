@@ -1,0 +1,47 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile ifplugd /usr/sbin/ifplugd {
+  #include <abstractions/base>
+  
+  capability dac_override,
+  capability sys_tty_config,
+  
+  /dev/tty[0-9]* w,
+  
+  /usr/sbin/ifplugd r,
+  /etc/ifplugd/ifplugd.action Px,
+  
+  /run/ifplugd.*.pid rwk,
+  
+}
+
+
+profile ifplugd.action /etc/ifplugd/ifplugd.action {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  /dev/tty rw,
+  
+  /etc/ifplugd/ifplugd.action r,
+  /bin/bash r,
+  /bin/grep ix,
+  /etc/init.d/net.lo Px,
+  
+}
+
+
+profile ifplugd.ifplugstatus /usr/sbin/ifplugstatus flags=(complain) {
+  #include <abstractions/base>
+  
+  /usr/sbin/ifplugstatus r,
+  
+}
