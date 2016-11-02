@@ -193,6 +193,7 @@ profile bash_root {
   # don't use by default
   #/usr/sbin/sysctl Pxr,
   
+  
   /etc/profile.env r,
   /etc/terminfo/l/linux r,
   /etc/terminfo/x/xterm r,
