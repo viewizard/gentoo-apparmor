@@ -128,6 +128,7 @@ profile bash_root {
   /bin/date Pxr,
   /bin/tail ixr,
   /bin/netstat Pxr,
+  /bin/getfacl Pxr,
   /sbin/mdadm Pxr,
   /sbin/shutdown Pxr,
   /sbin/{halt,poweroff,reboot} Pxr,
