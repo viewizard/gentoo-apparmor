@@ -26,6 +26,7 @@ profile nvidia-settings /{usr,opt}/bin/nvidia-settings {
   #include <abstractions/nameservice>
   #include <abstractions/dbus-session>
   
+  /dev/tty[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
   
   /{usr,opt}/bin/nvidia-settings r,

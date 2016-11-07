@@ -31,6 +31,7 @@ profile firefox /usr/{bin/firefox,lib{,32,64}/firefox/firefox{,-bin}} {
   /dev/tty[0-9]* w,
   
   @{PROC}/ r,
+  @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/mountinfo r,
   @{PROC}/@{pid}/stat r,
   @{PROC}/@{pid}/net/arp r,
@@ -73,6 +74,9 @@ profile firefox /usr/{bin/firefox,lib{,32,64}/firefox/firefox{,-bin}} {
   # Allow 'x' for downloaded extensions, but inherit policy for safety
   owner @{HOME}/.mozilla/**/extensions/** mixr,
   /usr/lib{,32,64}/firefox/browser/extensions/** mixr,
+  # FIX ME!
+  # plugin-container for flash, that must be moved to separate profile!
+  audit deny /usr/lib{,32,64}/firefox/plugin-container x,
   
   # Needed for the crash reporter
   owner @{PROC}/@{pid}/environ r,

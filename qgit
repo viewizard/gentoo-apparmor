@@ -12,7 +12,7 @@
 
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*"
+@{PROG_FILE}="[^.]**"
 
 profile qgit /usr/bin/qgit {
   #include <abstractions/base>
@@ -24,7 +24,7 @@ profile qgit /usr/bin/qgit {
   #include <abstractions/nvidia>
   #include <abstractions/user-tmp>
   #include <abstractions/X>
-  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/program-work-with-disk-rwkl>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   
@@ -39,6 +39,9 @@ profile qgit /usr/bin/qgit {
   /usr/bin/git ix,
   /bin/cat ix,
   /usr/bin/meld Px,
+  /usr/libexec/git-core/git ix,
+  /usr/libexec/git-core/git-remote-http ix,
+  /usr/libexec/git-core/git-remote-https ix,
   
   owner @{HOME}/**/.gitignore r,
   owner @{HOME}/.gitconfig r,
@@ -73,6 +76,9 @@ profile qgit_root {
   /usr/bin/git ix,
   /bin/cat ix,
   /usr/bin/meld Px -> meld_root,
+  /usr/libexec/git-core/git ix,
+  /usr/libexec/git-core/git-remote-http ix,
+  /usr/libexec/git-core/git-remote-https ix,
   
   owner @{HOME}/**/.gitignore r,
   owner @{HOME}/.gitconfig r,
