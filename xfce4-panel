@@ -66,6 +66,7 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   
   /dev/tty[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
+  /sys/devices/system/cpu/cpufreq/policy[0-9]*/scaling_* r,
   
   /usr/bin/xfce4-session-logout Px,
   /bin/env Cx -> env,
