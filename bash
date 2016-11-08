@@ -171,6 +171,8 @@ profile bash_root {
   /usr/bin/pamusb-agent Pxr,
   /usr/bin/nmap Pxr,
   /usr/bin/wget Pxr -> wget_root,
+  /usr/bin/man Pxr,
+  /usr/bin/locale ix,
   /usr/sbin/logcheck Pxr,
   /usr/sbin/aideinit Pxr,
   /usr/sbin/gdisk Pxr,
@@ -195,7 +197,6 @@ profile bash_root {
   
   # don't use by default
   #/usr/sbin/sysctl Pxr,
-  
   
   /etc/profile.env r,
   /etc/terminfo/l/linux r,

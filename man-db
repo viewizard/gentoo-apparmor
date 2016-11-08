@@ -29,3 +29,36 @@ profile man-db.mandb /usr/bin/mandb {
   /var/cache/man/** rwk,
   
 }
+
+profile man-db.man /usr/bin/man flags=(complain) {
+  #include <abstractions/base>
+  
+  capability setuid,
+  capability setgid,
+  
+  /dev/tty rw,
+  /dev/pts/[0-9]* w,
+  
+  /usr/bin/man r,
+  /bin/bzip2 ix,
+  /bin/gzip ix,
+  /usr/bin/less ix,
+  /usr/bin/preconv ix,
+  /usr/bin/neqn ix,
+  /usr/bin/nroff ixr,
+  /usr/bin/groff ix,
+  /usr/bin/troff ix,
+  /usr/bin/grotty ix,
+  /usr/bin/tbl ix,
+  /usr/bin/locale ix,
+  /usr/libexec/man-db/manconv ix,
+  
+  /etc/man_db.conf r,
+  /etc/terminfo/x/xterm r,
+  /usr/share/groff/{,**} r,
+  /usr/share/man/{,**} r,
+  
+  /var/cache/man/ r,
+  /var/cache/man/** rwk,
+  
+}
