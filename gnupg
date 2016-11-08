@@ -13,12 +13,17 @@ profile gnupg.gpg-agent /usr/bin/gpg-agent flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
   
+  /dev/tty[0-9]* w,
   /dev/pts/[0-9]* w,
+  @{PROC}/@{pid}/fd/ r,
   
   /usr/bin/gpg-agent r,
   /usr/bin/pinentry-* Px,
   
+  owner /run/user/*/gnupg/{,**} rw,
+  
   owner @{HOME_CACHE}/gpg-agent-info rw,
+  owner @{HOME}/.gnupg/private-keys-*/{,**} w,
   
 }
 

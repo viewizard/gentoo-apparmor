@@ -41,6 +41,13 @@ profile meld /usr/bin/meld {
   /usr/bin/meld r,
   /bin/env r,
   /usr/bin/which ix,
+  # Usage:
+  #    meld <file|folder>                Start a version control comparison
+  # In the same time, "meld <file>" and git close meld with message:
+  # Error: Git: Path <our file> is invalid or not present
+  # Error: Path not in repository
+  #/usr/bin/git Px,
+  deny /usr/bin/git x,
   
   /usr/share/meld/{,**} r,
   /usr/share/gtksourceview-[2-9]*/{,**} r,
@@ -85,6 +92,13 @@ profile meld_root {
   /usr/bin/meld r,
   /bin/env r,
   /usr/bin/which ix,
+  # Usage:
+  #    meld <file|folder>                Start a version control comparison
+  # In the same time, "meld <file>" and git close meld with message:
+  # Error: Git: Path <our file> is invalid or not present
+  # Error: Path not in repository
+  #/usr/bin/git Px -> git_root,
+  deny /usr/bin/git x,
   
   /usr/share/meld/{,**} r,
   /usr/share/gtksourceview-[2-9]*/{,**} r,
