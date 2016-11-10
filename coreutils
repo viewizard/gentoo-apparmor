@@ -18,7 +18,7 @@ profile coreutils.df /bin/df {
   /dev/pts/[0-9]* w,
   @{PROC}/@{pid}/mounts r,
   
-  /bin/df r,
+  /bin/df mr,
   
 }
 
@@ -29,7 +29,7 @@ profile coreutils.stat /usr/bin/stat flags=(complain) {
   
   /dev/pts/[0-9]* w,
   
-  /usr/bin/stat r,
+  /usr/bin/stat mr,
   
 }
 
@@ -39,6 +39,6 @@ profile coreutils.date /bin/date flags=(complain) {
   
   /dev/pts/[0-9]* w,
   
-  /bin/date r,
+  /bin/date mr,
   
 }

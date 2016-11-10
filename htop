@@ -17,7 +17,7 @@ profile htop /usr/bin/htop {
   
   capability sys_ptrace,
   
-  /dev/pts/[0-9]* rw,    
+  /dev/pts/[0-9]* rw,
   @{PROC}/sys/kernel/pid_max r,
   @{PROC}/ r,
   @{PROC}/loadavg r,
@@ -26,7 +26,7 @@ profile htop /usr/bin/htop {
   @{PROC}/@{pid}/task/ r,
   @{PROC}/@{pid}/task/@{pid}/{stat,statm,cmdline} r,
   
-  /usr/bin/htop r,
+  /usr/bin/htop mr,
   
   /etc/terminfo/x/xterm r,
   

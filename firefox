@@ -60,9 +60,9 @@ profile firefox /usr/{bin/firefox,lib{,32,64}/firefox/firefox{,-bin}} {
   owner @{HOME}/.macromedia/** rw,
   owner @{HOME}/.local/share/gvfs-metadata/home r,
   
-  /usr/bin/firefox r,
-  /usr/lib{,32,64}/firefox/firefox{,-bin} r,
-  /bin/bash r,
+  /usr/bin/firefox mr,
+  /usr/lib{,32,64}/firefox/firefox{,-bin} mr,
+  /bin/bash mr,
   /sbin/killall5 ixr,
   /bin/which ixr,
   /usr/bin/tr ixr,
@@ -72,8 +72,8 @@ profile firefox /usr/{bin/firefox,lib{,32,64}/firefox/firefox{,-bin}} {
   /usr/bin/dirname ixr,
   /usr/bin/pwd ixr,
   # Allow 'x' for downloaded extensions, but inherit policy for safety
-  owner @{HOME}/.mozilla/**/extensions/** mixr,
-  /usr/lib{,32,64}/firefox/browser/extensions/** mixr,
+  owner @{HOME}/.mozilla/**/extensions/** ixmr,
+  /usr/lib{,32,64}/firefox/browser/extensions/** ixmr,
   # FIX ME!
   # plugin-container for flash, that must be moved to separate profile!
   audit deny /usr/lib{,32,64}/firefox/plugin-container x,
@@ -90,8 +90,8 @@ profile firefox /usr/{bin/firefox,lib{,32,64}/firefox/firefox{,-bin}} {
   owner @{HOME}/.{firefox,mozilla}/ rw,
   owner @{HOME}/.{firefox,mozilla}/** rw,
   owner @{HOME}/.{firefox,mozilla}/**/*.{db,parentlock,sqlite}* k,
-  owner @{HOME}/.{firefox,mozilla}/plugins/** rm,
-  owner @{HOME}/.{firefox,mozilla}/**/plugins/** rm,
+  owner @{HOME}/.{firefox,mozilla}/plugins/** mr,
+  owner @{HOME}/.{firefox,mozilla}/**/plugins/** mr,
   owner @{HOME_CACHE}/mozilla/{,firefox/} rw,
   owner @{HOME_CACHE}/mozilla/firefox/** rw,
   owner @{HOME_CACHE}/mozilla/firefox/**/*.sqlite k,

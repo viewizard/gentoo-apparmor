@@ -19,7 +19,7 @@ profile smartmontools.smartd /usr/sbin/smartd {
   /sys/devices/pci[0-9]*/**/usb[0-9]*/**/{idVendor,idProduct,bcdDevice} r,
   @{PROC}/devices r,
   
-  /usr/sbin/smartd r,
+  /usr/sbin/smartd mr,
   /bin/bash Cx -> shell,
   
   /etc/smartd.conf r,
@@ -33,7 +33,7 @@ profile smartmontools.smartd /usr/sbin/smartd {
     
     /dev/tty rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     
   }
   
@@ -48,7 +48,7 @@ profile smartmontools.smartctl /usr/sbin/smartctl {
   /dev/pts/[0-9]* rw,
   /dev/sd[a-z] r,
   
-  /usr/sbin/smartctl r,
+  /usr/sbin/smartctl mr,
   
   /usr/share/smartmontools/** r,
   

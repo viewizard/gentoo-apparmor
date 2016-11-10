@@ -13,6 +13,8 @@ profile dconf /usr/bin/dconf {
   #include <abstractions/base>
   #include <abstractions/dconf>
   
+  /usr/bin/dconf mr,
+  
 }
 
 
@@ -22,7 +24,7 @@ profile dconf-service /usr/libexec/dconf-service {
   
   @{PROC}/cmdline r,
   
-  /usr/libexec/dconf-service r,
+  /usr/libexec/dconf-service mr,
   
   owner @{HOME}/.config/dconf/user* rw,
   

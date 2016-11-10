@@ -19,7 +19,7 @@ profile logrotate /usr/bin/logrotate {
   capability chown,
   capability fowner,
   
-  /usr/bin/logrotate r,
+  /usr/bin/logrotate mr,
   /bin/bash Cx -> shell,
   /usr/bin/xz ix,
   
@@ -41,7 +41,7 @@ profile logrotate /usr/bin/logrotate {
     
     /dev/tty rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     /bin/su Px,
     
   }

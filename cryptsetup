@@ -34,6 +34,8 @@ profile cryptsetup /sbin/cryptsetup flags=(complain) {
   /sys/devices/virtual/bdi/*/read_ahead_kb r,
   @{PROC}/devices r,
   
+  /sbin/cryptsetup mr,
+  
   /etc/udev/udev.conf r,
   
   /run/openrc/dm-crypt-remdev.*/enc.key r,

@@ -24,7 +24,7 @@ profile thunar-volman /usr/bin/thunar-volman {
   /sys/devices/virtual/block/zd[0-9]*/zd[0-9]*/uevent r,
   @{PROC}/@{pid}/fd/ r,
   
-  /usr/bin/thunar-volman r,
+  /usr/bin/thunar-volman mr,
   /usr/bin/thunar-volman-settings Px,
   /usr/bin/thunar Px,
   
@@ -43,6 +43,6 @@ profile thunar-volman-settings /usr/bin/thunar-volman-settings {
   #include <abstractions/X>
   #include <abstractions/gtk>
   
-  /usr/bin/thunar-volman-settings r,
+  /usr/bin/thunar-volman-settings mr,
   
 }

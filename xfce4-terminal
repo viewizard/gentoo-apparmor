@@ -26,7 +26,7 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
   /dev/pts/[0-9]* rw,
   owner @{PROC}/@{pid}/fd/ r,
   
-  /usr/bin/xfce4-terminal rm,
+  /usr/bin/xfce4-terminal mr,
   /bin/bash Px -> bash_users,  # Must be bash_users only by default.
   /usr/bin/sudo Px,
   /usr/bin/htop Px,
@@ -62,7 +62,7 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
     /dev/pts/[0-9]* rw,
     /dev/ptmx rw,
     
-    /usr/libexec/gnome-pty-helper r,
+    /usr/libexec/gnome-pty-helper mr,
     
     /run/utmp rwk,
     /var/log/wtmp wk,

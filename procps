@@ -30,7 +30,7 @@ profile procps.ps /bin/ps {
   @{PROC}/@{pid}/{stat,status,cmdline} r,
   @{PROC}/@{pid}/task/{,**} r,
   
-  /bin/ps r,
+  /bin/ps mr,
   
   /usr/src/linux-*-{hardened,gentoo}*/System.map r,
   
@@ -48,7 +48,7 @@ profile procps.pidof /usr/bin/pidof {
   @{PROC}/@{pid}/{stat,cmdline} r,
   @{PROC}/sys/kernel/osrelease r,
   
-  /usr/bin/pidof r,
+  /usr/bin/pidof mr,
   
 }
 
@@ -64,7 +64,7 @@ profile procps.pgrep /usr/bin/pgrep {
   @{PROC}/@{pid}/{stat,cmdline,loginuid} r,
   @{PROC}/sys/kernel/osrelease r,
   
-  /usr/bin/pgrep r,
+  /usr/bin/pgrep mr,
   
 }
 
@@ -79,7 +79,7 @@ profile procps.sysctl /usr/sbin/sysctl {
   @{PROC}/sys/ r,
   @{PROC}/sys/** rw,
   
-  /usr/sbin/sysctl r,
+  /usr/sbin/sysctl mr,
   
   /etc/sysctl.conf r,
   /etc/sysctl.d/{,*} r,

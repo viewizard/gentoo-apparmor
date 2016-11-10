@@ -12,7 +12,7 @@
 profile sysvinit.halt /sbin/{halt,poweroff,reboot} {
   #include <abstractions/base>
   
-  /sbin/{halt,poweroff,reboot} r,
+  /sbin/{halt,poweroff,reboot} mr,
   /sbin/shutdown Px,
   
   /run/utmp rk,
@@ -32,7 +32,7 @@ profile sysvinit.shutdown /sbin/shutdown {
   /dev/tty[0-9]* w,
   /dev/initctl w,
   
-  /sbin/shutdown r,
+  /sbin/shutdown mr,
   /sbin/init Px,
   
   /run/shutdown.pid w,
@@ -46,7 +46,7 @@ profile sysvinit.init /sbin/init {
   /dev/initctl rw,
   /dev/console rw,
   
-  /sbin/init r,
+  /sbin/init mr,
   
 }
 
@@ -60,6 +60,6 @@ profile sysvinit.killall5 /sbin/killall5 flags=(complain) {
   @{PROC}/ r,
   @{PROC}/@{pid}/{stat,status,cmdline} r,
   
-  /sbin/killall5 r,
+  /sbin/killall5 mr,
   
 }

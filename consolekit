@@ -15,6 +15,8 @@ profile consolekit.ck-history /usr/bin/ck-history flags=(complain) {
   
   /dev/pts/[0-9]* rw,
   
+  /usr/bin/ck-history mr,
+  
   /var/log/ConsoleKit/history r,
   
 }
@@ -24,7 +26,7 @@ profile consolekit.ck-launch-session /usr/bin/ck-launch-session flags=(complain)
   #include <abstractions/dbus-session>
   #include <abstractions/nameservice>
   
-  /usr/bin/ck-launch-session r,
+  /usr/bin/ck-launch-session mr,
   /bin/bash Cx -> shell,
   
   /etc/X11/Sessions/{,*} r,
@@ -37,7 +39,7 @@ profile consolekit.ck-launch-session /usr/bin/ck-launch-session flags=(complain)
     
     /dev/tty rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     /etc/X11/Sessions/Xfce4 r,
     /usr/bin/startxfce4 Px,
     
@@ -51,21 +53,28 @@ profile consolekit.ck-list-sessions /usr/bin/ck-list-sessions flags=(complain) {
   
   /dev/pts/[0-9]* rw,
   
+  /usr/bin/ck-list-sessions mr,
+  
 }
 
 profile consolekit.ck-log-system-restart /usr/sbin/ck-log-system-restart flags=(complain) {
   #include <abstractions/base>
+  
+  /usr/sbin/ck-log-system-restart mr,
   
 }
 
 profile consolekit.ck-log-system-start /usr/sbin/ck-log-system-start flags=(complain) {
   #include <abstractions/base>
   
+  /usr/sbin/ck-log-system-start mr,
+  
 }
 
 profile consolekit.ck-log-system-stop /usr/sbin/ck-log-system-stop flags=(complain) {
   #include <abstractions/base>
   
+  /usr/sbin/ck-log-system-stop mr,
 }
 
 profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
@@ -90,7 +99,7 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   @{PROC}/@{pid}/environ r,
   @{PROC}/@{pid}/sessionid r,
   
-  /usr/sbin/console-kit-daemon r,
+  /usr/sbin/console-kit-daemon mr,
   /usr/lib{,32,64}/ConsoleKit/** Pix,
   /usr/bin/pm-is-supported ixr,
   /bin/grep ix,
@@ -117,16 +126,18 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   
 }
 
-profile consolekit.udev-acl /usr/{lib,lib32,lib64}/ConsoleKit/udev-acl {
+profile consolekit.udev-acl /usr/lib{,32,64}/ConsoleKit/udev-acl {
   #include <abstractions/base>
   
   capability dac_override,
   capability dac_read_search,
   
-  /etc/udev/udev.conf r,
-  /run/udev/tags/udev-acl/ r,
   /sys/devices/**/uevent r,
   
+  /usr/lib{,32,64}/ConsoleKit/udev-acl m,
+  
+  /etc/udev/udev.conf r,
+  /run/udev/tags/udev-acl/ r,
   /run/ConsoleKit/database r,
   
 }

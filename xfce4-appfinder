@@ -20,7 +20,7 @@ profile xfce4-appfinder /usr/bin/{xfrun4,xfce4-appfinder} {
   
   @{PROC}/@{pid}/fd/ r,
   
-  /usr/bin/xfce4-appfinder r,
+  /usr/bin/{xfrun4,xfce4-appfinder} mr,
   /bin/env Cx -> env,
   
   /etc/xdg/menus/{,**} r,
@@ -39,7 +39,7 @@ profile xfce4-appfinder /usr/bin/{xfrun4,xfce4-appfinder} {
     /dev/tty[0-9]* w,
     /dev/pts/[0-9]* rw,
     
-    /bin/env r,
+    /bin/env mr,
     /usr/bin/wine Px,
     
   }

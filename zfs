@@ -20,7 +20,7 @@ profile zfs /sbin/zfs flags=(complain) {
   @{PROC}/@{pid}/mounts r,
   @{PROC}/sys/fs/pipe-max-size r,
   
-  /sbin/zfs r,
+  /sbin/zfs mr,
   /bin/mount Px,
   
   /etc/dfs/sharetab r,
@@ -33,7 +33,7 @@ profile zfs /sbin/zfs flags=(complain) {
 profile zfs.mount /sbin/mount.zfs flags=(complain) {
   #include <abstractions/base>
   
-  /sbin/mount.zfs r,
+  /sbin/mount.zfs mr,
   
 }
 
@@ -46,7 +46,7 @@ profile zfs.zpool /sbin/zpool flags=(complain) {
   /sys/module/spl/parameters/spl_hostid r,
   @{PROC}/@{pid}/mounts r,
   
-  /sbin/zpool r,
+  /sbin/zpool mr,
   /bin/umount Px,
   /usr/libexec/zfs/zed.d/all-syslog.sh Px,
   
@@ -62,7 +62,7 @@ profile zfs.zed /sbin/zed flags=(complain) {
   /dev/zfs rw,
   @{PROC}/@{pid}/mounts r,
   
-  /sbin/zed r,
+  /sbin/zed mr,
   /usr/libexec/zfs/zed.d/all-syslog.sh Px,
   
   /etc/dfs/sharetab r,
@@ -80,7 +80,7 @@ profile zfs.zed.d /usr/libexec/zfs/zed.d/*.sh {
   /dev/tty rw,
   
   /usr/libexec/zfs/zed.d/*.sh r,
-  /bin/bash r,
+  /bin/bash mr,
   /usr/bin/logger Px,
   
   /etc/zfs/zed.d/zed-functions.sh r,

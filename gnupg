@@ -17,7 +17,7 @@ profile gnupg.gpg-agent /usr/bin/gpg-agent flags=(complain) {
   /dev/pts/[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
   
-  /usr/bin/gpg-agent r,
+  /usr/bin/gpg-agent mr,
   /usr/bin/pinentry-* Px,
   
   owner /run/user/*/gnupg/{,**} rw,
@@ -34,7 +34,7 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} flags=(complain) {
   /dev/tty rw,
   /dev/pts/[0-9]* rw,
   
-  /usr/bin/gpg{,2,-static} r,
+  /usr/bin/gpg{,2,-static} mr,
   /usr/bin/gpg-agent Px,
   
   /etc/inputrc r,
@@ -58,7 +58,7 @@ profile gnupg.gpgconf /usr/bin/gpgconf flags=(complain) {
   
   @{PROC}/@{pid}/fd/ r,
   
-  /usr/bin/gpgconf r,
+  /usr/bin/gpgconf mr,
   
   /run/user/*/gnupg/{,**} w,
   
@@ -71,6 +71,6 @@ profile gnupg.gpgconf /usr/bin/gpgconf flags=(complain) {
 profile gnupg.gpgsm /usr/bin/gpgsm flags=(complain) {
   #include <abstractions/base>
   
-  /usr/bin/gpgsm r,
+  /usr/bin/gpgsm mr,
   
 }

@@ -27,7 +27,7 @@ profile pmount /usr/bin/pmount flags=(complain) {
   /sys/devices/pci[0-9]*/**/usb[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/{size,start} r,
   @{PROC}/@{pid}/mounts r,
   
-  /usr/bin/pmount r,
+  /usr/bin/pmount mr,
   /bin/mount Px,
   /sbin/cryptsetup Px,
   
@@ -53,7 +53,7 @@ profile pmount.pumount /usr/bin/pumount flags=(complain) {
   /dev/pts/[0-9]* w,
   @{PROC}/@{pid}/mounts r,
   
-  /usr/bin/pumount r,
+  /usr/bin/pumount mr,
   /bin/umount Px,
   /sbin/cryptsetup Px,
   

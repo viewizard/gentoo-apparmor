@@ -16,7 +16,7 @@ profile usr_local.bin.symlink_ondesktop /usr/local/bin/symlink_ondesktop.sh flag
   /dev/tty rw,
   
   /usr/local/bin/symlink_ondesktop.sh r,
-  /bin/bash r,
+  /bin/bash mr,
   /bin/ln Cx -> ln,
   
   
@@ -25,7 +25,7 @@ profile usr_local.bin.symlink_ondesktop /usr/local/bin/symlink_ondesktop.sh flag
     
     /dev/tty[0-9]* w,
     
-    /bin/ln r,
+    /bin/ln mr,
     
     owner @{HOME}/@{XDG_DESKTOP_DIR}/* w,
     
@@ -40,7 +40,7 @@ profile usr_local.bin.sync_googledrive /usr/local/bin/sync_googledrive.sh flags=
   /dev/tty[0-9] w,
   
   /usr/local/bin/sync_googledrive.sh r,
-  /bin/bash r,
+  /bin/bash mr,
   /usr/bin/grive Px,
   
 }

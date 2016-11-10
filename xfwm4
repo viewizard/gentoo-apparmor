@@ -22,13 +22,13 @@ profile xfwm4 /usr/bin/xfwm4 {
   /dev/tty[0-9]* w,
   owner @{PROC}/@{pid}/fd/ r,
   
-  /usr/bin/xfwm4 rm,
+  /usr/bin/xfwm4 mr,
   /usr/lib{,32,64}/xfce4/xfwm4/helper-dialog ix,
   /usr/bin/pulseaudio Px,
   
   /usr/share/xfwm4/{,**} r,
   
-  owner /tmp/.gl* rwm,
+  owner /tmp/.gl* mrw,
   
   owner @{HOME_CACHE}/sessions/{,xfwm4-*.state} rw,
   
@@ -45,6 +45,6 @@ profile xfwm4-settings /usr/bin/xfwm4{,-tweaks,-workspace}-settings {
   
   /dev/tty[0-9]* w,
   
-  /usr/bin/xfwm4{,-tweaks,-workspace}-settings r,
+  /usr/bin/xfwm4{,-tweaks,-workspace}-settings mr,
   
 }

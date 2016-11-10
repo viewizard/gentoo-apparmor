@@ -29,7 +29,7 @@ profile util-linux.mount /bin/mount flags=(complain) {
   /sys/devices/virtual/block/dm-[0-9]*/dm/{name,uuid} r,
   @{PROC}/@{pid}/mountinfo r,
   
-  /bin/mount r,
+  /bin/mount mr,
   /sbin/mount.zfs Px,
   /usr/bin/ntfs-3g Px,
   
@@ -55,7 +55,7 @@ profile util-linux.umount /bin/umount flags=(complain) {
   /sys/devices/virtual/block/dm-*/dm/name r,
   @{PROC}/@{pid}/mountinfo r,
   
-  /bin/umount r,
+  /bin/umount mr,
   
   /run/mount/utab rw,
   /run/mount/utab.* rwk,
@@ -74,7 +74,7 @@ profile util-linux.mkswap /sbin/mkswap flags=(complain) {
   @{PROC}/swaps r,
   @{PROC}/@{pid}/mounts r,
   
-  /sbin/mkswap r,
+  /sbin/mkswap mr,
   
 }
 
@@ -88,7 +88,7 @@ profile util-linux.swapon /sbin/swap{on,off} flags=(complain) {
   /sys/devices/virtual/block/dm-[0-9]*/dm/name r,
   @{PROC}/swaps r,
   
-  /sbin/swap{on,off} r,
+  /sbin/swap{on,off} mr,
   
   /etc/fstab r,
   
@@ -107,7 +107,7 @@ profile util-linux.lsblk /bin/lsblk flags=(complain) {
   @{PROC}/swaps r,
   @{PROC}/@{pid}/mountinfo r,
   
-  /bin/lsblk r,
+  /bin/lsblk mr,
   
 }
 
@@ -125,6 +125,7 @@ profile util-linux.agetty /sbin/agetty {
   
   /dev/tty[0-9]* rw,
   
+  /sbin/agetty mr,
   /bin/login Px,
   
   /etc/issue r,
@@ -144,7 +145,7 @@ profile util-linux.fsck /sbin/fsck flags=(complain) {
   /sys/devices/virtual/block/dm-[0-9]*/{,**} r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/sd[a-z]/{,**} r,
   
-  /sbin/fsck r,
+  /sbin/fsck mr,
   /sbin/e2fsck Px,
   /usr/sbin/fsck.fat Px,
   
@@ -160,7 +161,7 @@ profile util-linux.hwclock /sbin/hwclock flags=(complain) {
   
   /dev/rtc0 rw,
   
-  /sbin/hwclock r,
+  /sbin/hwclock mr,
   
 }
 
@@ -171,7 +172,7 @@ profile util-linux.logger /usr/bin/logger flags=(complain) {
   
   @{PROC}/@{pid}/loginuid r,
   
-  /usr/bin/logger r,
+  /usr/bin/logger mr,
   
 }
 
@@ -184,9 +185,9 @@ profile util-linux.fdisk /sbin/{,c}fdisk flags=(complain) {
   /sys/devices/virtual/block/dm-[0-9]*/ r,
   /sys/devices/virtual/block/dm-[0-9]*/dm/uuid r,
   
-  /sbin/{,c}fdisk r,
+  /sbin/{,c}fdisk mr,
   
-  /etc/terminfo/x/xterm r,  
+  /etc/terminfo/x/xterm r,
   
 }
 
@@ -202,6 +203,6 @@ profile util-linux.eject /usr/bin/eject flags=(complain) {
   /sys/devices/pci[0-9]*/**/usb[0-9]*/**/block/sd[a-z]/{,removable} r,
   @{PROC}/@{pid}/mountinfo r,
   
-  /usr/bin/eject r,
+  /usr/bin/eject mr,
   
 }

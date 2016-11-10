@@ -28,7 +28,7 @@ profile codeblocks /usr/bin/codeblocks {
   
   /dev/tty[0-9]* w,
   
-  /usr/bin/codeblocks r,
+  /usr/bin/codeblocks mr,
   /bin/bash Cxr -> shell,
   /usr/bin/gcc ix,
   /usr/bin/g++ ix,
@@ -59,6 +59,8 @@ profile codeblocks /usr/bin/codeblocks {
     #include <abstractions/program-work-with-disk-rwk>
     
     /dev/tty rw,
+    
+    /bin/bash mr,
     
     /{bin,sbin}/** ixr,
     /usr/{bin,sbin}/** ixr,

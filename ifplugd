@@ -19,7 +19,7 @@ profile ifplugd /usr/sbin/ifplugd {
   
   /dev/tty[0-9]* w,
   
-  /usr/sbin/ifplugd r,
+  /usr/sbin/ifplugd mr,
   /etc/ifplugd/ifplugd.action Px,
   
   /run/ifplugd.*.pid rwk,
@@ -34,7 +34,7 @@ profile ifplugd.action /etc/ifplugd/ifplugd.action {
   /dev/tty rw,
   
   /etc/ifplugd/ifplugd.action r,
-  /bin/bash r,
+  /bin/bash mr,
   /bin/grep ix,
   /etc/init.d/net.lo Px,
   
@@ -44,6 +44,6 @@ profile ifplugd.action /etc/ifplugd/ifplugd.action {
 profile ifplugd.ifplugstatus /usr/sbin/ifplugstatus flags=(complain) {
   #include <abstractions/base>
   
-  /usr/sbin/ifplugstatus r,
+  /usr/sbin/ifplugstatus mr,
   
 }

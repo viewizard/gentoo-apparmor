@@ -31,7 +31,7 @@ profile cron.hourly/logcheck.cron /etc/cron.hourly/logcheck.cron {
   
   /dev/tty rw,
   
-  /bin/bash r,
+  /bin/bash mr,
   /etc/cron.hourly/logcheck.cron r,
   /bin/mkdir ix,
   /bin/chown ix,
@@ -53,7 +53,7 @@ profile cron.daily/00_update_portage /etc/cron.daily/00_update_portage {
   
   /dev/tty rw,
   
-  /bin/bash r,
+  /bin/bash mr,
   /etc/cron.daily/00_update_portage r,
   /bin/mktemp ix,
   /bin/rm ix,
@@ -67,7 +67,7 @@ profile cron.daily/00_update_portage /etc/cron.daily/00_update_portage {
   profile emerge {
     #include <abstractions/base>
     
-    /bin/env r,
+    /bin/env mr,
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge Px,
     
@@ -88,7 +88,7 @@ profile cron.daily/aide /etc/cron.daily/aide {
   /dev/tty rw,
   /dev/sda r,
   
-  /bin/bash r,
+  /bin/bash mr,
   /etc/cron.daily/aide r,
   /bin/mktemp ix,
   /bin/cat ix,
@@ -120,7 +120,7 @@ profile cron.daily/chkrootkit /etc/cron.daily/chkrootkit {
   
   /dev/tty rw,
   
-  /bin/bash r,
+  /bin/bash mr,
   /etc/cron.daily/chkrootkit r,
   /bin/mktemp ix,
   /bin/cat ix,
@@ -142,7 +142,7 @@ profile cron.daily/daily_backup.sh /etc/cron.daily/daily_backup.sh {
   /dev/null w,
   @{PROC}/@{pid}/fd/ r,
   
-  /bin/bash r,
+  /bin/bash mr,
   /bin/chmod ix,
   /bin/date ix,
   /bin/tar ix,
@@ -177,7 +177,7 @@ profile cron.daily/glsa /etc/cron.daily/glsa {
   
   /dev/tty rw,
   
-  /bin/bash r,
+  /bin/bash mr,
   /etc/cron.daily/glsa r,
   /bin/mktemp ix,
   /bin/cat ix,
@@ -189,7 +189,7 @@ profile cron.daily/glsa /etc/cron.daily/glsa {
   profile glsa_check {
     #include <abstractions/base>
     
-    /bin/env r,
+    /bin/env mr,
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/glsa-check Px,
     
@@ -208,7 +208,7 @@ profile cron.daily/hosts.sh /etc/cron.daily/hosts.sh {
   
   /dev/tty rw,
   
-  /bin/bash r,
+  /bin/bash mr,
   /etc/cron.daily/hosts.sh r,
   /bin/date ix,
   /bin/mv ix,
@@ -231,7 +231,7 @@ profile cron.daily/logrotate /etc/cron.daily/logrotate {
   
   /dev/tty rw,
   
-  /bin/bash r,
+  /bin/bash mr,
   /usr/bin/logger ix,
   
   /etc/cron.daily/logrotate r,
@@ -245,7 +245,7 @@ profile cron.daily/lynis /etc/cron.daily/lynis {
   
   /dev/tty rw,
   
-  /bin/bash r,
+  /bin/bash mr,
   /etc/cron.daily/lynis r,
   /bin/mktemp ix,
   /bin/cat ix,
@@ -263,7 +263,7 @@ profile cron.daily/man-db /etc/cron.daily/man-db {
   
   /dev/tty rw,
   
-  /bin/bash r,
+  /bin/bash mr,
   /etc/cron.daily/man-db r,
   /usr/bin/nice ix,
   /usr/bin/mandb Px,
@@ -276,7 +276,7 @@ profile cron.daily/oinkmaster /etc/cron.daily/oinkmaster {
   
   /dev/tty rw,
   
-  /bin/bash r,
+  /bin/bash mr,
   /etc/cron.daily/oinkmaster r,
   /bin/mktemp ix,
   /bin/cat ix,
@@ -292,7 +292,7 @@ profile cron.weekly/mdadm /etc/cron.weekly/mdadm {
   
   /dev/tty rw,
   
-  /bin/bash r,
+  /bin/bash mr,
   /etc/cron.weekly/mdadm r,
   /bin/date ix,
   /usr/sbin/checkarray Px,
@@ -311,7 +311,7 @@ profile cron.weekly/weekly_backup.sh /etc/cron.weekly/weekly_backup.sh {
   /dev/null w,
   @{PROC}/@{pid}/fd/ r,
   
-  /bin/bash r,
+  /bin/bash mr,
   /bin/chmod ix,
   /bin/date ix,
   /bin/tar ix,
@@ -351,7 +351,7 @@ profile cron.monthly/monthly_backup.sh /etc/cron.monthly/monthly_backup.sh {
   /dev/tty rw,
   @{PROC}/@{pid}/fd/ r,
   
-  /bin/bash r,
+  /bin/bash mr,
   /bin/chmod ix,
   /bin/date ix,
   /bin/tar ix,

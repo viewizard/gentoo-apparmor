@@ -28,7 +28,7 @@ profile uget-gtk /usr/bin/uget-gtk {
   
   owner @{PROC}/@{pid}/fd/ r,
   
-  /usr/bin/uget-gtk r,
+  /usr/bin/uget-gtk mr,
   /etc/ssl/openssl.cnf r,
   
   owner @{HOME}/.config/uGet/{,**} rw,
@@ -44,6 +44,8 @@ profile uget-cmd /usr/bin/uget-cmd {
   #include <abstractions/nameservice>
   
   /dev/pts/[0-9]* rw,
+  
+  /usr/bin/uget-cmd mr,
   
   /etc/ssl/openssl.cnf r,
   

@@ -38,6 +38,7 @@ profile udisks-daemon /usr/lib{,32,64}/udisks/udisks-daemon {
   /etc/udev/udev.conf r,
   /etc/fstab r,
   
+  /usr/lib{,32,64}/udisks/udisks-daemon m,
   /usr/lib{,32,64}/udisks/* ix,
   
   /run/udisks/ rw,
@@ -66,7 +67,7 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {
   @{PROC}/swaps r,
   @{PROC}/@{pid}/fd/ r,
   
-  /usr/libexec/udisks2/udisksd r,
+  /usr/libexec/udisks2/udisksd mr,
   /bin/mount Px,
   /bin/umount Px,
   /sbin/cryptsetup Px,

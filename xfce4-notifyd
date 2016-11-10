@@ -17,8 +17,9 @@ profile xfce4-notifyd /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   
-  /usr/lib{,32,64}/pango/*/modules/* m,
+  /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd mr,
   
+  /usr/lib{,32,64}/pango/*/modules/* m,
   /usr/share/hplip/data/images/32x32/*.png r,
   
   owner @{HOME_CACHE}/xfce4-notifyd-theme.rc* rw,
@@ -36,6 +37,6 @@ profile xfce4-notifyd-config /usr/bin/xfce4-notifyd-config {
   
   /dev/tty[0-9]* w,
   
-  /usr/bin/xfce4-notifyd-config r,
+  /usr/bin/xfce4-notifyd-config mr,
   
 }

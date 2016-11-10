@@ -89,6 +89,7 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
     @{PROC}/@{pid}/fd/ r,
     @{PROC}/@{pid}/mounts r,
     
+    /bin/bash mr,
     /usr/sbin/useradd Px,
     /usr/sbin/lspci Px,
     /lib{,32,64}/rc/sh/migrate-to-run.sh ix,
@@ -177,6 +178,8 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
     @{PROC}/sys/kernel/osrelease r,
     @{PROC}/tty/drivers r,
     
+    /bin/bash mr,
+    
     /bin/ r,
     /bin/** ixr,
     /sbin/ r,
@@ -241,7 +244,7 @@ profile portage.env-update /usr/lib{,32,64}/python-exec/@{PYTHON}/env-update fla
     
     /dev/tty rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     /bin/uname ix,
     /sbin/ldconfig ix,
     
@@ -293,7 +296,7 @@ profile portage.dispatch-conf /usr/lib{,32,64}/python-exec/@{PYTHON}/dispatch-co
     /dev/tty rw,
     /dev/pts/[0-9]* rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     /bin/uname ix,
     /usr/bin/find ix,
     /usr/bin/diff ix,
@@ -329,7 +332,7 @@ profile portage.portageq /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq flags=(
     
     /dev/tty rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     /bin/uname ix,
     
   }
@@ -347,7 +350,7 @@ profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
   /dev/tty rw,
   /dev/pts/[0-9]* rw,
   
-  /bin/bash r,
+  /bin/bash mr,
   /usr/sbin/etc-update r,
   /bin/cat ix,
   /bin/grep ix,
@@ -374,6 +377,8 @@ profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
   profile portageq {
     #include <abstractions/base>
     
+    /usr/lib{,32,64}/python-exec/python-exec2 m,
+    /usr/lib{,32,64}/python-exec/python-exec2-c m,
     /bin/env r,
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq Px,
@@ -409,7 +414,7 @@ profile portage.emaint /usr/lib{,32,64}/python-exec/@{PYTHON}/emaint flags=(comp
     
     /dev/tty rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     /bin/uname ix,
     
   }

@@ -29,7 +29,7 @@ profile nvidia-settings /{usr,opt}/bin/nvidia-settings {
   /dev/tty[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
   
-  /{usr,opt}/bin/nvidia-settings r,
+  /{usr,opt}/bin/nvidia-settings mr,
   /bin/bash Cx -> shell,
   
   /usr/share/nvidia/{,**} r,
@@ -46,7 +46,7 @@ profile nvidia-settings /{usr,opt}/bin/nvidia-settings {
     /dev/tty rw,
     owner @{PROC}/cmdline r,
   
-    /bin/bash r,
+    /bin/bash mr,
     /bin/ps Px,
     /usr/bin/Xorg ix,
     /usr/bin/pkg-config ix,
@@ -66,6 +66,7 @@ profile nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe flags=(complain) {
   
   @{PROC}/sys/kernel/modprobe r,
   
+  /{usr,opt}/bin/nvidia-modprobe mr,
   /bin/kmod Px,
   
 }
@@ -77,9 +78,10 @@ profile nvidia-smi /opt/bin/nvidia-smi {
   
   capability sys_admin,
   
-  @{PROC}/driver/nvidia/params r,
-  
   /dev/nvidiactl rw,
   /dev/nvidia[0-9]* rw,
+  @{PROC}/driver/nvidia/params r,
+  
+  /opt/bin/nvidia-smi m,
   
 }

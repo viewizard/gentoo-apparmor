@@ -14,7 +14,7 @@ profile net-tools.iptunnel /sbin/iptunnel flags=(complain) {
   
   @{PROC}/@{pid}/net/dev r,
   
-  /sbin/iptunnel r,
+  /sbin/iptunnel mr,
   
 }
 
@@ -25,7 +25,7 @@ profile net-tools.ifconfig /bin/ifconfig flags=(complain) {
   /dev/pts/[0-9]* w,
   @{PROC}/@{pid}/net/dev r,
   
-  /bin/ifconfig r,
+  /bin/ifconfig mr,
   
 }
 
@@ -42,6 +42,6 @@ profile net-tools.netstat /bin/netstat flags=(complain) {
   @{PROC}/@{pid}/cmdline r,
   @{PROC}/@{pid}/net/{tcp,udp} r,
   
-  /bin/netstat r,
+  /bin/netstat mr,
   
 }

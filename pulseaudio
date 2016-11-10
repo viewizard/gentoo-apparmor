@@ -27,7 +27,7 @@ profile pulseaudio /usr/bin/pulseaudio {
   owner @{PROC}/@{pid}/fd/ r,
   owner @{PROC}/@{pid}/stat r,
   
-  /usr/bin/pulseaudio ixr,
+  /usr/bin/pulseaudio ixmr,
   /usr/libexec/pulse/gconf-helper ix,
   
   /etc/udev/udev.conf r,
@@ -49,7 +49,7 @@ profile pulseaudio.start-pulseaudio-x11 /usr/bin/start-pulseaudio-x11 {
   
   /dev/tty rw,
   
-  /bin/bash r,
+  /bin/bash mr,
   /usr/bin/start-pulseaudio-x11 r,
   /usr/bin/pactl Px,
   
@@ -63,7 +63,7 @@ profile pulseaudio.pactl /usr/bin/pactl {
   
   owner @{PROC}/@{pid}/fd/ r,
   
-  /usr/bin/pactl r,
+  /usr/bin/pactl mr,
   /usr/bin/pulseaudio Px,
   
 }

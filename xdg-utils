@@ -19,8 +19,8 @@ profile xdg-open /usr/bin/xdg-open {
   /dev/tty rw,
   owner @{PROC}/@{pid}/fd/ r,
   
-  /bin/bash r,
   /usr/bin/xdg-open r,
+  /bin/bash mr,
   /usr/bin/exo-open Px,
   /usr/bin/dbus-send ix,
   /usr/bin/xprop ix,
@@ -34,8 +34,8 @@ profile xdg-email /usr/bin/xdg-email {
   
   /dev/tty rw,
   
-  /bin/bash r,
   /usr/bin/xdg-email r,
+  /bin/bash mr,
   /bin/sed ix,
   /usr/bin/which ix,
   /usr/bin/exo-open Px,
@@ -51,7 +51,7 @@ profile xdg-screensaver /usr/bin/xdg-screensaver {
   /dev/tty rw,
   
   /usr/bin/xdg-screensaver r,
-  /bin/bash r,
+  /bin/bash mr,
   /bin/grep ix,
   /bin/mv ix,
   /bin/sed ix,

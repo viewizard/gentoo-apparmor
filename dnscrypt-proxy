@@ -20,7 +20,7 @@ profile dnscrypt-proxy /usr/sbin/dnscrypt-proxy {
   capability net_bind_service,
   capability dac_override,
   
-  /usr/sbin/dnscrypt-proxy r,
+  /usr/sbin/dnscrypt-proxy mr,
   
   /usr/share/dnscrypt-proxy/{,*} r,
   
@@ -36,6 +36,8 @@ profile dnscrypt-proxy.hostip /usr/bin/hostip {
   
   /dev/pts/[0-9]* rw,
   @{PROC}/sys/kernel/random/uuid r,
+  
+  /usr/bin/hostip mr,
   
 }
 

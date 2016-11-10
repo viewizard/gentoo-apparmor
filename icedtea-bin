@@ -16,12 +16,11 @@ profile icedtea-bin.java /opt/icedtea-bin-*/{,jre/}bin/java {
   
   /sys/devices/system/cpu/ r,
   
-  /opt/icedtea-bin-*/bin/java ix,
-  /opt/icedtea-bin-*/jre/bin/java ix,
+  /opt/icedtea-bin-*/{,jre/}bin/java ixmr,
   
   /opt/icedtea-bin-*/** r,
-  /opt/icedtea-bin-*/lib/**.so rm,
-  /opt/icedtea-bin-*/jre/lib/**.so rm,
+  /opt/icedtea-bin-*/lib/**.so mr,
+  /opt/icedtea-bin-*/jre/lib/**.so mr,
   
   # Noisy
   deny @{HOME}/ r,

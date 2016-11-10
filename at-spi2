@@ -17,7 +17,7 @@ profile at-spi-bus-launcher /usr/libexec/at-spi-bus-launcher {
   
   owner @{PROC}/@{pid}/fd/ r,
   
-  /usr/libexec/at-spi-bus-launcher r,
+  /usr/libexec/at-spi-bus-launcher mr,
   /usr/bin/dbus-daemon Px,
   
   /etc/at-spi2/accessibility.conf r,
@@ -29,7 +29,7 @@ profile at-spi-bus-launcher /usr/libexec/at-spi-bus-launcher {
 profile at-spi2-registryd /usr/libexec/at-spi2-registryd {
   #include <abstractions/base>
   
-  /usr/libexec/at-spi2-registryd r,
+  /usr/libexec/at-spi2-registryd mr,
   
   owner @{HOME}/.session.log w,
   

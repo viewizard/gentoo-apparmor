@@ -28,7 +28,7 @@ profile xfce4-panel /usr/bin/xfce4-panel {
   /dev/tty[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
   
-  /usr/bin/xfce4-panel r,
+  /usr/bin/xfce4-panel mr,
   /usr/lib{,32,64}/xfce4/panel/wrapper-[1-2].0 Px,
   /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-*-plugin Px,
   /usr/bin/exo-desktop-item-edit Px,
@@ -68,6 +68,7 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   @{PROC}/@{pid}/fd/ r,
   /sys/devices/system/cpu/cpufreq/policy[0-9]*/scaling_* r,
   
+  /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 m,
   /usr/bin/xfce4-session-logout Px,
   /bin/env Cx -> env,
   /usr/bin/xflock4 Px,
@@ -105,7 +106,7 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
     /dev/tty[0-9]* w,
     /dev/pts/[0-9]* rw,
     
-    /bin/env r,
+    /bin/env mr,
     /usr/bin/wine Px,
     
   }
@@ -126,6 +127,7 @@ profile xfce4-panel.wrapper-2.0 /usr/lib{,32,64}/xfce4/panel/wrapper-2.0 {
   /dev/tty[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
   
+  /usr/lib{,32,64}/xfce4/panel/wrapper-2.0 m,
   /usr/bin/pulseaudio Px,
   /usr/bin/pavucontrol Px,
   
@@ -142,6 +144,7 @@ profile xfce4-panel.xfce4-xkb-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-
   /dev/tty[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
   
+  /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-xkb-plugin m,
   /usr/bin/xfce4-keyboard-settings Px,
   
   /usr/share/xfce4/xkb/flags/*.svg r,
@@ -160,6 +163,8 @@ profile xfce4-panel.xfce4-kbdleds-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xf
   
   /dev/tty[0-9]* w,
   
+  /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-kbdleds-plugin m,
+  
   owner @{HOME}/.config/xfce4/panel/{,*.rc*} rw,
   
 }
@@ -176,6 +181,7 @@ profile xfce4-panel.xfce4-sensors-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xf
   /dev/tty[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
   
+  /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-sensors-plugin m,
   /usr/bin/xfce4-sensors Px,
   
   owner @{HOME}/.config/xfce4/panel/{,*.rc*} rw,

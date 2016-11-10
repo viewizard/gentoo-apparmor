@@ -58,6 +58,10 @@ profile netifrc.init.d /etc/init.d/net.* flags=(complain) {
     #include <abstractions/openrc_shell>
     #include <abstractions/nameservice>
     
+    capability sys_tty_config,
+    
+    /dev/console rw,
+    
   }
   
 }

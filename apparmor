@@ -21,7 +21,7 @@ profile apparmor_parser /sbin/apparmor_parser flags=(complain) {
   @{PROC}/@{pid}/mounts r,
   @{PROC}/sys/kernel/osrelease r,
   
-  /sbin/apparmor_parser r,
+  /sbin/apparmor_parser mr,
   
   /etc/apparmor.d/{,**} r,
   /etc/apparmor/parser.conf r,

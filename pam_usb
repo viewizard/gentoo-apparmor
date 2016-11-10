@@ -17,8 +17,8 @@ profile pam_usb.pamusb-agent /usr/bin/pamusb-agent {
   /dev/tty[0-9]* w,
   /dev/pts/[0-9]* w,
   
-  /bin/env ixr,
-  /usr/bin/pamusb-agent r,
+  /bin/env ixmr,
+  /usr/bin/pamusb-agent mr,
   /bin/bash Cx -> shell,
   
   /etc/pamusb.conf r,
@@ -30,7 +30,7 @@ profile pam_usb.pamusb-agent /usr/bin/pamusb-agent {
     /dev/tty rw,
     /dev/tty[0-9]* w,
     
-    /bin/bash r,
+    /bin/bash mr,
     /usr/bin/mate-screensaver-command Px,
     /usr/bin/alock Px,
     /usr/bin/pamusb-check Px,
@@ -52,7 +52,7 @@ profile pam_usb.pamusb-check /usr/bin/pamusb-check {
   
   /dev/pts/[0-9]* rw,
   
-  /usr/bin/pamusb-check r,
+  /usr/bin/pamusb-check mr,
   /bin/bash Cx -> shell,
   
   /etc/pamusb.conf r,
@@ -69,7 +69,7 @@ profile pam_usb.pamusb-check /usr/bin/pamusb-check {
     
     /dev/tty rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     
   }
   

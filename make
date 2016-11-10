@@ -14,7 +14,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
   
   /dev/pts/[0-9]* rw,
   
-  /usr/bin/{,g}make rix,
+  /usr/bin/{,g}make ixmr,
   /bin/bash Cx -> shell,
   /bin/uname ix,
   /bin/rm ix,
@@ -30,7 +30,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
   /etc/env.d/gcc/{,**} r,
   /etc/terminfo/x/xterm r,
   /lib{,32,64}/modules/{,**} rw,
-  /usr/src/linux-*-{hardened,gentoo}*/{,**} rwix,
+  /usr/src/linux-*-{hardened,gentoo}*/{,**} ixrw,
   /usr/src/linux-*-{hardened,gentoo}*/arch/*/boot/bzImage w,
   
   # Noisy
@@ -47,7 +47,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /dev/pts/[0-9]* w,
     @{PROC}/@{pid}/fd/ r,
     
-    /bin/bash rix,
+    /bin/bash ixmr,
     /bin/uname ix,
     /bin/sed ix,
     /bin/rm ix,
@@ -95,7 +95,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /etc/ld.so.conf r,
     /etc/ld.so.conf.d/{,*} r,
     /etc/env.d/gcc/{,**} r,
-    /usr/libexec/gcc/x86_64-pc-linux-gnu/{,**}.so* rm,
+    /usr/libexec/gcc/x86_64-pc-linux-gnu/{,**}.so* mr,
     /usr/include/{,**} r,
     /lib{,32,64}/modules/{,**} rw,
     /usr/src/linux-*-{hardened,gentoo}*/{,**} rw,
@@ -103,6 +103,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /usr/share/pkgconfig/{,**} r,
     
     # Noisy
+    deny /.git/{,**} r,
     deny @{HOME}/{,**} r,
   
   }

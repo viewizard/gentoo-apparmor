@@ -31,7 +31,7 @@ profile sudo /usr/bin/sudo {
   @{PROC}/@{pid}/fd/ r,
   owner @{PROC}/@{pid}/stat r,
   
-  /usr/bin/sudo r,
+  /usr/bin/sudo mr,
   /usr/bin/gksu_askpass.sh Px,
   
   /usr/lib{,32,64}/sudo/sudoers.so m,
@@ -52,7 +52,7 @@ profile sudo /usr/bin/sudo {
 # MAC (without PAM)
 ###################################################
 
-#  @{PROC}/@{pid}/mountinfo r,
+#  @{PROC}/@{pid}/{mounts,mountinfo} r,
   
 #  /bin/bash Px -> bash_root,
 #  /usr/sbin/pmvarrun Px,
@@ -81,7 +81,7 @@ profile sudo /usr/bin/sudo {
     
     /dev/tty rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     
   }
   
@@ -162,7 +162,7 @@ profile sudo.askpass /usr/bin/gksu_askpass.sh {
   
   /usr/bin/gksu_askpass.sh r,
   /usr/bin/zenity ixr,
-  /bin/bash ixr,
+  /bin/bash ixmr,
   
 }
 
@@ -171,9 +171,10 @@ profile sudo.gksudo /usr/bin/{gksu,gksudo} {
   #include <abstractions/base>
   
   /dev/tty rw,
+  /dev/tty[0-9]* w,
   
-  /bin/bash r,
-  /usr/bin/{gksu,gksudo} r,
+  /bin/bash mr,
+  /usr/bin/{gksu,gksudo} mr,
   /usr/bin/sudo Px,
   
 }

@@ -19,7 +19,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
   /dev/pts/[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
   
-  /usr/sbin/perl-cleaner r,
+  /usr/sbin/perl-cleaner mr,
   /bin/bash cxr -> shell,
   /bin/grep ix,
   /bin/tr ix,
@@ -52,7 +52,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
     
     /dev/tty rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     /bin/grep ix,
     /usr/bin/gawk ix,
     /usr/bin/x86_64-pc-linux-gnu-gcc ix,
@@ -67,6 +67,8 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
   profile portage {
     #include <abstractions/base>
     
+    /usr/lib{,32,64}/python-exec/python-exec2 m,
+    /usr/lib{,32,64}/python-exec/python-exec2-c m,
     /bin/env r,
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge Px,

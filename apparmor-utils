@@ -39,7 +39,7 @@ profile apparmor-utils.aa-unconfined /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-u
   @{PROC}/@{pid}/mounts r,
   @{PROC}/@{pid}/attr/{current,prev,exec} r,
   
-  /bin/env r,
+  /bin/env mr,
   /bin/bash Cx -> shell,
   /bin/cat ix,
   
@@ -59,7 +59,7 @@ profile apparmor-utils.aa-unconfined /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-u
     @{PROC}/@{pid}/cmdline r,
     @{PROC}/@{pid}/net/* r,
     
-    /bin/bash r,
+    /bin/bash mr,
     /bin/netstat ix,
     
   }

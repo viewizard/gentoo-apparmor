@@ -18,7 +18,7 @@ profile grub.grub-mkconfig /usr/sbin/grub-mkconfig flags=(complain) {
   @{PROC}/@{pid}/mountinfo r,
   
   /usr/sbin/grub-mkconfig r,
-  /bin/bash r,
+  /bin/bash mr,
   /bin/basename ix,
   /bin/dirname ix,
   /bin/rm ix,
@@ -65,7 +65,7 @@ profile grub.grub-probe /usr/sbin/grub-probe flags=(complain) {
   @{PROC}/devices r,
   @{PROC}/@{pid}/mountinfo r,
   
-  /usr/sbin/grub-probe r,
+  /usr/sbin/grub-probe mr,
   /bin/udevadm Px,
   /sbin/lvm Px,
   
@@ -87,7 +87,7 @@ profile grub.grub-install /usr/sbin/grub-install flags=(complain) {
   @{PROC}/devices r,
   @{PROC}/@{pid}/mountinfo r,
   
-  /usr/sbin/grub-install r,
+  /usr/sbin/grub-install mr,
   /bin/bash Cxr -> shell,
   /bin/kmod Px,
   /bin/udevadm Px,
@@ -105,7 +105,7 @@ profile grub.grub-install /usr/sbin/grub-install flags=(complain) {
     /dev/tty rw,
     /dev/pts/[0-9]* w,
     
-    /bin/bash r,
+    /bin/bash mr,
     
     /etc/default/grub r,
     

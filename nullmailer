@@ -12,7 +12,7 @@
 profile nullmailer.sendmail /usr/sbin/sendmail {
   #include <abstractions/base>
   
-  /usr/sbin/sendmail r,
+  /usr/sbin/sendmail mr,
   /usr/bin/nullmailer-inject Px,
   
 }
@@ -25,7 +25,7 @@ profile nullmailer-inject /usr/bin/nullmailer-inject {
   capability dac_read_search,
   capability dac_override,
   
-  /usr/bin/nullmailer-inject r,
+  /usr/bin/nullmailer-inject mr,
   /usr/sbin/nullmailer-queue Px,
   
   /etc/nullmailer/{,*} r,
@@ -36,7 +36,7 @@ profile nullmailer-inject /usr/bin/nullmailer-inject {
 profile nullmailer-queue /usr/sbin/nullmailer-queue {
   #include <abstractions/base>
   
-  /usr/sbin/nullmailer-queue r,
+  /usr/sbin/nullmailer-queue mr,
   
   /etc/nullmailer/{,*} r,
   
@@ -51,7 +51,7 @@ profile nullmailer.smtp /usr/libexec/nullmailer/smtp {
   #include <abstractions/nameservice>
   #include <abstractions/ssl_certs>
   
-  /usr/libexec/nullmailer/smtp r,
+  /usr/libexec/nullmailer/smtp mr,
   
   /var/nullmailer/queue/** rw,
   
@@ -61,7 +61,7 @@ profile nullmailer.smtp /usr/libexec/nullmailer/smtp {
 profile nullmailer-send /usr/sbin/nullmailer-send {
   #include <abstractions/base>
   
-  /usr/sbin/nullmailer-send r,
+  /usr/sbin/nullmailer-send mr,
   /usr/libexec/nullmailer/smtp Px,
   
   /etc/nullmailer/** r,

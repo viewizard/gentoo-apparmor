@@ -22,7 +22,7 @@ profile acpid /usr/sbin/acpid {
   /dev/input/mouse* r,
   owner @{PROC}/@{pid}/fd/ r,
   
-  /usr/sbin/acpid r,
+  /usr/sbin/acpid mr,
   /bin/bash Cxr -> shell,
   
   /etc/acpi/{,**} r,
@@ -38,7 +38,7 @@ profile acpid /usr/sbin/acpid {
     
     /dev/tty{,[0-9]*} rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     /bin/ps Px,
     /bin/sed ix,
     /sbin/shutdown Px,
@@ -60,6 +60,8 @@ profile acpid /usr/sbin/acpid {
 profile acpid.acpi_listen /usr/bin/acpi_listen flags=(complain) {
   #include <abstractions/base>
   
+  /usr/bin/acpi_listen mr,
+  
 }
 
 profile acpid.kacpimon /usr/sbin/kacpimon {
@@ -67,6 +69,8 @@ profile acpid.kacpimon /usr/sbin/kacpimon {
   
   /dev/pts/[0-9]* rw,
   /dev/input/{,event*} r,
+  
+  /usr/sbin/kacpimon mr,
   
 }
 

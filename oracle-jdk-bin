@@ -16,12 +16,11 @@ profile oracle-jdk-bin.java /opt/oracle-jdk-bin-*/{,jre/}bin/java {
   
   /sys/devices/system/cpu/ r,
   
-  /opt/oracle-jdk-bin-*/bin/java ix,
-  /opt/oracle-jdk-bin-*/jre/bin/java ix,
+  /opt/oracle-jdk-bin-*/{,jre/}bin/java ixmr,
   
   /opt/oracle-jdk-bin-*/** r,
-  /opt/oracle-jdk-bin-*/lib/**.so rm,
-  /opt/oracle-jdk-bin-*/jre/lib/**.so rm,
+  /opt/oracle-jdk-bin-*/lib/**.so mr,
+  /opt/oracle-jdk-bin-*/jre/lib/**.so mr,
   
   # Noisy
   deny @{HOME}/ r,

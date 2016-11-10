@@ -27,7 +27,7 @@ profile dbus-daemon /usr/bin/dbus-daemon flags=(complain) {
   @{PROC}/@{pid}/cmdline r,
   @{PROC}/@{pid}/oom_score_adj w,
   
-  /usr/bin/dbus-daemon r,
+  /usr/bin/dbus-daemon mr,
   /usr/lib{,32,64}/xfce4/xfconf/xfconfd Px,
   /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd Px,
   /usr/lib{,32,64}/tumbler-1/tumblerd Px,
@@ -53,7 +53,7 @@ profile dbus-launch /usr/bin/dbus-launch flags=(complain) {
   #include <abstractions/X>
   #include <abstractions/dbus-session>
   
-  /usr/bin/dbus-launch r,
+  /usr/bin/dbus-launch mr,
   /bin/bash Cx -> shell,
   /usr/bin/dbus-daemon Px,
   /usr/bin/xfce4-session Px,
@@ -66,7 +66,7 @@ profile dbus-launch /usr/bin/dbus-launch flags=(complain) {
     
     /dev/tty rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     /etc/X11/Sessions/Xfce4 r,
     /usr/bin/startxfce4 Px,
     
@@ -77,14 +77,14 @@ profile dbus-launch /usr/bin/dbus-launch flags=(complain) {
 profile dbus-run-session /usr/bin/dbus-run-session flags=(complain) {
   #include <abstractions/base>
   
-  /usr/bin/dbus-run-session r,
+  /usr/bin/dbus-run-session mr,
   
 }
 
 profile dbus-send /usr/bin/dbus-send flags=(complain) {
   #include <abstractions/base>
   
-  /usr/bin/dbus-send r,
+  /usr/bin/dbus-send mr,
   
 }
 
@@ -92,7 +92,7 @@ profile dbus-uuidgen /usr/bin/dbus-uuidgen flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/dbus-session-strict>
   
-  /usr/bin/dbus-uuidgen r,
+  /usr/bin/dbus-uuidgen mr,
   
 }
 
@@ -103,7 +103,8 @@ profile dbus-daemon-launch-helper /usr/libexec/dbus-daemon-launch-helper {
   capability setgid,
   capability setuid,
   
-  /usr/libexec/dbus-daemon-launch-helper r,
+  /usr/libexec/dbus-daemon-launch-helper mr,
+  /usr/sbin/console-kit-daemon Px,
   /usr/lib{,32,64}/polkit-1/polkitd Px,
   /usr/lib{,32,64}/udisks/udisks-daemon Px,
   /usr/lib{,32,64}/upower/upowerd Px,

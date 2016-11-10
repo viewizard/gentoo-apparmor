@@ -21,7 +21,7 @@ profile bash_default /bin/{bash,rbash,sh} {
   #include <abstractions/consoles>
   #include <abstractions/nameservice>
   
-  /bin/bash r,
+  /bin/bash mr,
   /bin/sed ixr,
   /bin/uname ixr,
   /sbin/mdadm Pxr,
@@ -45,7 +45,7 @@ profile bash_users {
   
   /dev/tty[0-9]* rw,
   
-  /bin/bash ixr,
+  /bin/bash ixmr,
   /bin/ls ixr,
   /bin/ln ixr,
   /bin/df Pxr,
@@ -96,7 +96,7 @@ profile bash_root {
   capability dac_read_search,
   capability dac_override,
   
-  /bin/bash ixr,
+  /bin/bash ixmr,
   /bin/ls ixr,
   /bin/ln ixr,
   /bin/df Pxr,

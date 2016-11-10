@@ -18,7 +18,7 @@ profile gradm /sbin/gradm flags=(complain) {
   /dev/pts/[0-9]* rw,
   @{PROC}/@{pid}/mounts r,
   
-  /sbin/gradm r,
+  /sbin/gradm mr,
   /sbin/grlearn Px,
   
   / r,
@@ -39,7 +39,7 @@ profile gradm.grlearn /sbin/grlearn flags=(complain) {
   /dev/grsec r,
   /dev/pts/[0-9]* w,
   
-  /sbin/grlearn r,
+  /sbin/grlearn mr,
   
   /etc/grsec/ r,
   /etc/grsec/* rw,

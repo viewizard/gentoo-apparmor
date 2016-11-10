@@ -35,16 +35,16 @@ profile pidgin /usr/bin/pidgin {
   /dev/shm/ r,
   /dev/shm/* rw,
   
-  /usr/bin/gconftool-2 rix,
-  /usr/bin/pidgin rm,
+  /usr/bin/gconftool-2 ixr,
+  /usr/bin/pidgin mr,
   
   /etc/pulse/client.conf r,
-  /usr/lib{,32,64}/libvisual-*/**.so rm,
-  /usr/lib{,32,64}/pidgin/*.so rm,
-  /usr/lib{,32,64}/purple*/*.so rm,
+  /usr/lib{,32,64}/libvisual-*/**.so mr,
+  /usr/lib{,32,64}/pidgin/*.so mr,
+  /usr/lib{,32,64}/purple*/*.so mr,
   /usr/share/purple/ca-certs/{,**} r,
   
   owner @{HOME}/.purple/ rw,
-  owner @{HOME}/.purple/** rwkm,
+  owner @{HOME}/.purple/** mrwk,
   
 }

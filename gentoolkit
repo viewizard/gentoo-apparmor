@@ -35,7 +35,7 @@ profile gentoolkit.glsa-check /usr/lib{,32,64}/python-exec/@{PYTHON}/glsa-check 
     
     /dev/tty rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     /bin/uname ix,
     
   }
@@ -70,7 +70,7 @@ profile gentoolkit.equery /usr/lib{,32,64}/python-exec/@{PYTHON}/equery flags=(c
     
     /dev/tty rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     /bin/uname ix,
     
   }
@@ -107,7 +107,7 @@ profile gentoolkit.eclean /usr/lib{,32,64}/python-exec/@{PYTHON}/eclean flags=(c
     
     /dev/tty rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     /bin/uname ix,
     
   }
@@ -152,6 +152,8 @@ profile gentoolkit.revdep-rebuild /usr/bin/revdep-rebuild{,.sh} flags=(complain)
   profile portageq {
     #include <abstractions/base>
     
+    /usr/lib{,32,64}/python-exec/python-exec2 m,
+    /usr/lib{,32,64}/python-exec/python-exec2-c m,
     /bin/env r,
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq Px,

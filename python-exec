@@ -12,6 +12,8 @@
 profile python-exec /usr/lib{,32,64}/python-exec/python-exec2 {
   #include <abstractions/base>
   
+  /usr/lib{,32,64}/python-exec/python-exec2 m,
+  /usr/lib{,32,64}/python-exec/python-exec2-c m,
   /bin/env r,
   
   # только программы в enforce mode
@@ -29,6 +31,8 @@ profile python-exec /usr/lib{,32,64}/python-exec/python-exec2 {
 profile python_exec_root {
   #include <abstractions/base>
   
+  /usr/lib{,32,64}/python-exec/python-exec2 m,
+  /usr/lib{,32,64}/python-exec/python-exec2-c m,
   /bin/env r,
   
   /usr/lib{,32,64}/python-exec/@{PYTHON}/* Px,

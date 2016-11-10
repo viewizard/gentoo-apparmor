@@ -22,7 +22,7 @@ profile xfdesktop /usr/bin/xfdesktop {
   @{PROC}/@{pid}/fd/ r,
   owner @{PROC}/@{pid}/mountinfo r,
   
-  /usr/bin/xfdesktop r,
+  /usr/bin/xfdesktop mr,
   /bin/bash Cx -> shell,
   /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 Px,
   /usr/bin/exo-desktop-item-edit Px,
@@ -62,7 +62,7 @@ profile xfdesktop /usr/bin/xfdesktop {
     
     /dev/tty rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     /usr/bin/{gksu,gksudo} Px,
     
   }
@@ -79,7 +79,7 @@ profile xfdesktop-settings /usr/bin/xfdesktop-settings {
   
   @{PROC}/@{pid}/mountinfo r,
   
-  /usr/bin/xfdesktop-settings r,
+  /usr/bin/xfdesktop-settings mr,
   
   /opt/**/ r,
   /opt/**.{png,jpg,bmp} r,

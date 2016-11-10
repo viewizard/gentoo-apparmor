@@ -21,13 +21,13 @@ profile libreoffice /usr/{bin,lib64/libreoffice/program}/soffice {
   /dev/tty rw,
   /dev/tty[0-9]* w,
   
+  /bin/bash mr,
   /bin/dirname ix,
   /bin/basename ix,
   /bin/grep ix,
   /bin/uname ix,
   /bin/ls ix,
   /bin/sed ix,
-  /bin/bash r,
   /usr/lib{,32,64}/libreoffice/program/oosplash Px,
   
 }
@@ -39,6 +39,7 @@ profile libreoffice.oosplash /usr/lib{,32,64}/libreoffice/program/oosplash {
   
   /dev/tty[0-9]* w,
   
+  /usr/lib{,32,64}/libreoffice/program/oosplash m,
   /usr/lib{,32,64}/libreoffice/program/javaldx Px,
   /usr/lib{,32,64}/libreoffice/program/soffice.bin Px,
   
@@ -53,6 +54,7 @@ profile libreoffice.javaldx /usr/lib{,32,64}/libreoffice/program/javaldx {
   
   /dev/tty[0-9]* w,
   
+  /usr/lib{,32,64}/libreoffice/program/javaldx m,
   /opt/{oracle-jdk,icedtea}-bin-*/bin/java Px,
   /opt/{oracle-jdk,icedtea}-bin-*/jre/bin/java Px,
   
@@ -84,6 +86,7 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   /sys/devices/system/cpu/ r,
   @{PROC}/version r,
   
+  /usr/lib{,32,64}/libreoffice/program/soffice.bin m,
   /bin/bash Cxr -> shell,
   /opt/{oracle-jdk,icedtea}-bin-*/bin/java Px,
   /opt/{oracle-jdk,icedtea}-bin-*/jre/bin/java Px,
@@ -115,7 +118,7 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
     
     /dev/tty rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     /bin/sed ix,
     /bin/grep ix,
     /usr/bin/paperconf ix,

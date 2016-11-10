@@ -35,7 +35,7 @@ profile xarchiver /usr/bin/xarchiver {
   /dev/tty[0-9]* w,
   /sys/devices/system/cpu/ r,
   
-  /usr/bin/xarchiver rm,
+  /usr/bin/xarchiver mr,
   /bin/bash ix,
   /bin/mv ix,
   /bin/rm ix,
@@ -63,7 +63,7 @@ profile xarchiver /usr/bin/xarchiver {
     #include <abstractions/base>
     #include <abstractions/program-work-with-disk-rwkl>
     
-    /opt/rar/rar r,
+    /opt/rar/rar mr,
     
     # Noisy
     deny /etc/ r,
@@ -96,7 +96,7 @@ profile xarchiver_root {
   /dev/tty[0-9]* w,
   /sys/devices/system/cpu/ r,
   
-  /usr/bin/xarchiver rm,
+  /usr/bin/xarchiver mr,
   /bin/bash ix,
   /bin/mv ix,
   /bin/rm ix,
@@ -125,7 +125,7 @@ profile xarchiver_root {
     #include <abstractions/program-work-with-disk-rwkl>
     #include <abstractions/user-systemwide-files>
     
-    /opt/rar/rar r,
+    /opt/rar/rar mr,
     
     # Noisy
     deny /etc/ r,
@@ -142,8 +142,7 @@ profile xarchiver_tap /usr/libexec/thunar-archive-plugin/xarchiver.tap {
   /dev/tty rw,
   /dev/tty[0-9]* w,
   
-  /bin/bash r,
-  
+  /bin/bash mr,
   /usr/libexec/thunar-archive-plugin/xarchiver.tap r,
   /usr/bin/xarchiver Px,
   
@@ -156,8 +155,7 @@ profile xarchiver_tap_root {
   /dev/tty rw,
   /dev/tty[0-9]* w,
   
-  /bin/bash r,
-  
+  /bin/bash mr,
   /usr/libexec/thunar-archive-plugin/xarchiver.tap r,
   /usr/bin/xarchiver Px -> xarchiver_root,
   

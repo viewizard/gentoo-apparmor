@@ -20,6 +20,7 @@ profile eselect_root flags=(complain) {
   
   /dev/pts/[0-9]* w,
   
+  /bin/bash m,
   /bin/readlink ix,
   /bin/ln ix,
   /bin/mv ix,
@@ -32,6 +33,7 @@ profile eselect_root flags=(complain) {
   /bin/grep ix,
   /bin/chgrp ix,
   /bin/chmod ix,
+  /bin/cat ix,
   /usr/bin/scanelf ix,
   /usr/bin/tput ix,
   /usr/lib{,32,64}/python-exec/python-exec2 Cx -> portage,
@@ -40,6 +42,8 @@ profile eselect_root flags=(complain) {
   profile portage {
     #include <abstractions/base>
     
+    /usr/lib{,32,64}/python-exec/python-exec2 m,
+    /usr/lib{,32,64}/python-exec/python-exec2-c m,
     /bin/env r,
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq Px,

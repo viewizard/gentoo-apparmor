@@ -16,7 +16,7 @@ profile xinit /usr/bin/xinit flags=(complain) {
   
   /dev/tty[0-9]* w,
   
-  /usr/bin/xinit r,
+  /usr/bin/xinit mr,
   /bin/bash Cx -> shell,
   /etc/X11/xinit/xserverrc Px,
   
@@ -27,7 +27,7 @@ profile xinit /usr/bin/xinit flags=(complain) {
     /dev/tty rw,
     /dev/tty[0-9]* w,
     
-    /bin/bash r,
+    /bin/bash mr,
     /bin/cat ix,
     /bin/grep ix,
     /bin/sed ix,
@@ -56,8 +56,9 @@ profile xinit.xserverrc /etc/X11/xinit/xserverrc {
   #include <abstractions/base>
   
   /dev/tty rw,
+  /dev/tty[0-9]* w,
   
-  /bin/bash r,
+  /bin/bash mr,
   /etc/X11/xinit/xserverrc r,
   /usr/bin/Xorg Px,
   
@@ -73,7 +74,7 @@ profile xinit.startx /usr/bin/startx flags=(complain) {
   /dev/tty[0-9]* rw,
   
   /usr/bin/startx r,
-  /bin/bash r,
+  /bin/bash mr,
   /bin/uname ix,
   /bin/hostname ix,
   /bin/grep ix,

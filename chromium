@@ -64,7 +64,7 @@ profile chromium /usr/{bin/chromium-browser,lib{,32,64}/chromium-browser/{chrome
   @{PROC}/@{pid}/uid_map rw,
   @{PROC}/@{pid}/gid_map rw,
   
-  /bin/bash r,
+  /bin/bash mr,
   /bin/ps Pxr,
   /usr/bin/xdg-settings Cxr -> xdgsettings,
   /usr/bin/lsb_release Cxr -> lsb_release,
@@ -76,7 +76,7 @@ profile chromium /usr/{bin/chromium-browser,lib{,32,64}/chromium-browser/{chrome
   
   # Allow transitions to ourself and our sandbox
   /usr/bin/chromium-browser Pxr,
-  /usr/lib{,32,64}/chromium-browser/chrome Px,
+  /usr/lib{,32,64}/chromium-browser/chrome Pxm,
   /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh Px,
   /usr/lib{,32,64}/chromium-browser/chrome-sandbox cx -> sandbox,
   # Helpers
@@ -128,26 +128,32 @@ profile chromium /usr/{bin/chromium-browser,lib{,32,64}/chromium-browser/{chrome
     #include <abstractions/bash>
     #include <abstractions/gtk>
     
-    /usr/bin/xdg-settings r,
+    /dev/tty rw,
+    
+    /usr/bin/xdg-settings mr,
     
     # Checking default browser
+    /bin/bash mr,
     /bin/grep ixr,
     /bin/readlink ixr,
     /bin/sed ixr,
     /bin/which ixr,
     /usr/bin/basename ixr,
     /usr/bin/cut ixr,
-    deny /bin/bash xr,
+    deny /bin/bash x,
     
     # Setting the default browser
-    /bin/mkdir ixr,
-    /bin/mv ixr,
-    /bin/touch ixr,
-    /usr/bin/dirname ixr,
+    /bin/mkdir ix,
+    /bin/mv ix,
+    /bin/touch ix,
+    /bin/cut ix,
+    /usr/bin/dirname ix,
     /usr/bin/gconftool-2 ix,
     /usr/bin/[gm]awk ixr,
     /usr/bin/xdg-mime ixr,
     
+    /etc/xdg/xfce4/helpers.rc r,
+    owner @{HOME}/.config/xfce4/helpers.rc r,
     owner @{HOME}/.local/share/applications/ w,
     owner @{HOME}/.local/share/applications/mimeapps.list* rw,
     
@@ -159,7 +165,7 @@ profile chromium /usr/{bin/chromium-browser,lib{,32,64}/chromium-browser/{chrome
     
     /dev/tty rw,
     
-    /usr/bin/lsb_release r,
+    /usr/bin/lsb_release mr,
     /bin/sed ixr,
     /bin/head ixr,
     /bin/bash ixr,
@@ -209,10 +215,8 @@ profile chromium /usr/{bin/chromium-browser,lib{,32,64}/chromium-browser/{chrome
     @{PROC}/@{pid}/status r,
     @{PROC}/@{pid}/task/@{pid}/stat r,
     
-    /usr/bin/chromium-browser r,
-    /usrbin/chromium r,
     /usr/lib{,32,64}/chromium-browser/chrome Px,
-    /usr/lib{,32,64}/chromium-browser/chrome-sandbox r,
+    /usr/lib{,32,64}/chromium-browser/chrome-sandbox mr,
     
     /dev/null rw,
     

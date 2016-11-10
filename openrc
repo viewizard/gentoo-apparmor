@@ -40,7 +40,7 @@ profile openrc /sbin/openrc flags=(complain) {
   /sys/fs/cgroup/ r,
   /sys/fs/cgroup/** rwkl,
   
-  /sbin/openrc r,
+  /sbin/openrc mr,
   /bin/bash Cx -> shell,
   # All scripts from ALL runlevels must have profiles!
   /etc/init.d/* Pxr,
@@ -70,7 +70,7 @@ profile openrc /sbin/openrc flags=(complain) {
     /dev/tty rw,
     /dev/console rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     /lib{,32,64}/rc/sh/gendepends.sh Px,
     
   }
@@ -81,7 +81,7 @@ profile openrc /sbin/openrc flags=(complain) {
 profile openrc.rc-service /sbin/rc-service flags=(complain) {
   #include <abstractions/base>
   
-  /sbin/rc-service r,
+  /sbin/rc-service mr,
   /etc/init.d/* Px,
   
   /run/openrc/scheduled/ r,
@@ -94,7 +94,7 @@ profile openrc.rc-update /sbin/rc-update flags=(complain) {
   
   /dev/pts/[0-9]* w,
   
-  /sbin/rc-update r,
+  /sbin/rc-update mr,
   
   /etc/init.d/ r,
   /etc/runlevels/{,**} rw,
@@ -114,7 +114,7 @@ profile openrc.rc-status /bin/rc-status {
   @{PROC}/ r,
   @{PROC}/@{pid}/cmdline r,
   
-  /bin/rc-status r,
+  /bin/rc-status mr,
   
   /etc/init.d/ r,
   /etc/conf.d/ r,
@@ -140,7 +140,7 @@ profile openrc.gendepends.sh /lib{,32,64}/rc/sh/gendepends.sh flags=(complain) {
   /dev/console rw,
   @{PROC}/@{pid}/mounts r,
   
-  /bin/bash r,
+  /bin/bash mr,
   /lib{,32,64}/rc/sh/gendepends.sh r,
   /lib{,32,64}/rc/bin/shell_var ixr,
   /lib{,32,64}/rc/bin/service_started ixr,

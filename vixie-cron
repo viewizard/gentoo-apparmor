@@ -17,7 +17,7 @@ profile vixie-cron.cron /usr/sbin/cron {
   capability setuid,
   capability setgid,
   
-  /usr/sbin/cron r,
+  /usr/sbin/cron mr,
   /bin/bash Cx -> shell,
   /usr/sbin/sendmail Px,
   
@@ -34,7 +34,7 @@ profile vixie-cron.cron /usr/sbin/cron {
     
     /dev/tty rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     /bin/rm ix,
     /usr/sbin/run-crons Px,
     

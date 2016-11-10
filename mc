@@ -28,7 +28,7 @@ profile mc /usr/bin/mc {
   /dev/pts/[0-9]* rw,
   owner @{PROC}/@{pid}/mountinfo r,
   
-  /usr/bin/mc r,
+  /usr/bin/mc mr,
   /usr/libexec/mc/cons.saver ix,
   /bin/bash Px -> bash_users,
   
@@ -56,7 +56,7 @@ profile mc_root flags=(complain) {
   /dev/pts/[0-9]* rw,
   owner @{PROC}/@{pid}/mountinfo r,
   
-  /usr/bin/mc r,
+  /usr/bin/mc mr,
   /usr/libexec/mc/cons.saver ix,
   /bin/bash Px -> bash_root,
   

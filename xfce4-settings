@@ -25,15 +25,15 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
   owner @{PROC}/@{pid}/fd/ r,
   
   # we can use current profile for binaries:
-  /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyboard,-mime,-mouse}-settings{,-editor,-manager} ixr,
-  /usr/bin/xfce4-session-settings Pixr,
-  /usr/bin/thunar-volman-settings Pixr,
-  /usr/bin/xfwm4{,-tweaks,-workspace}-settings Pixr,
-  /usr/bin/exo-preferred-applications Pixr,
-  /usr/bin/xfce4-panel Pixr,
-  /usr/bin/xfce4-notifyd-config Pixr,
-  /usr/bin/thunar-settings Pixr,
-  /usr/bin/dbus-send Pixr,
+  /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyboard,-mime,-mouse}-settings{,-editor,-manager} ixmr,
+  /usr/bin/xfce4-session-settings Pixmr,
+  /usr/bin/thunar-volman-settings Pixmr,
+  /usr/bin/xfwm4{,-tweaks,-workspace}-settings Pixmr,
+  /usr/bin/exo-preferred-applications Pixmr,
+  /usr/bin/xfce4-panel Pixmr,
+  /usr/bin/xfce4-notifyd-config Pixmr,
+  /usr/bin/thunar-settings Pixmr,
+  /usr/bin/dbus-send Pixmr,
   
   # rest binaries should use their own profile:
   /usr/bin/qtchooser Px,
@@ -68,6 +68,8 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
   profile alacarte {
     #include <abstractions/base>
     
+    /usr/lib{,32,64}/python-exec/python-exec2 m,
+    /usr/lib{,32,64}/python-exec/python-exec2-c m,
     /bin/env r,
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/alacarte Px,
@@ -92,7 +94,7 @@ profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd {
   /dev/tty[0-9]* w,
   owner @{PROC}/@{pid}/fd/ r,
   
-  /usr/bin/xfsettingsd r,
+  /usr/bin/xfsettingsd mr,
   /usr/bin/xkbcomp ixr,
   /usr/bin/xflock4 Pxr,
   /usr/bin/xfce4-display-settings Px,

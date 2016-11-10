@@ -28,10 +28,10 @@ profile wine /usr/bin/wine {
   @{PROC}/scsi/scsi r,
   owner @{PROC}/@{pid}/mem r,
   
-  /usr/bin/ntlm_auth rPx,
+  /usr/bin/ntlm_auth Pxr,
   /usr/bin/wine mr,
   /usr/bin/wine-preloader Px,
-  /usr/bin/wineserver rPx,
+  /usr/bin/wineserver Pxr,
   
   /usr/share/wine/** rk,
   
@@ -80,9 +80,9 @@ profile wine-preloader /usr/bin/wine-preloader {
   @{PROC}/@{pid}/mounts r,
   @{PROC}/@{pid}/net/dev r,
   
-  /usr/bin/wine rm,
-  /usr/bin/ntlm_auth rPx,
-  /usr/bin/wine-preloader mrPx,
+  /usr/bin/wine mr,
+  /usr/bin/ntlm_auth Pxr,
+  /usr/bin/wine-preloader Pxmr,
   /usr/bin/wineserver Px,
   /usr/bin/xdg-open Px,
   
@@ -148,7 +148,7 @@ profile wine.notepad /usr/bin/notepad {
   
   /dev/tty rw,
   
-  /usr/bin/notepad r,
+  /usr/bin/notepad mr,
   /bin/bash r,
   /bin/basename ix,
   /bin/dirname ix,
@@ -162,7 +162,7 @@ profile wine.winecfg /usr/bin/winecfg {
   
   /dev/tty rw,
   
-  /usr/bin/winecfg r,
+  /usr/bin/winecfg mr,
   /bin/bash r,
   /bin/basename ix,
   /bin/dirname ix,

@@ -25,7 +25,7 @@ profile xfce4-session /usr/bin/xfce4-session {
   /dev/tty[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
   
-  /usr/bin/xfce4-session rmPx,
+  /usr/bin/xfce4-session Pxmr,
   /bin/bash Cx -> shell,
   /bin/env Cx -> env,
   /bin/true ix,
@@ -62,7 +62,7 @@ profile xfce4-session /usr/bin/xfce4-session {
     /dev/tty rw,
     /dev/tty[0-9]* w,
     
-    /bin/bash r,
+    /bin/bash mr,
     /bin/sleep ix,
     /usr/bin/iceauth Px,
     /usr/bin/cairo-clock Px,
@@ -76,7 +76,7 @@ profile xfce4-session /usr/bin/xfce4-session {
     /dev/tty[0-9]* w,
     /dev/pts/[0-9]* rw,
     
-    /bin/env r,
+    /bin/env mr,
     /usr/bin/xfwm4 Px,
     /usr/bin/xfsettingsd Px,
     /usr/bin/xfce4-panel Px,
@@ -96,7 +96,7 @@ profile xfce4-session-logout /usr/bin/xfce4-session-logout {
   #include <abstractions/gtk>
   
   /dev/pts/[0-9]* rw,
-  /usr/bin/xfce4-session-logout r,
+  /usr/bin/xfce4-session-logout mr,
   
 }
 
@@ -110,7 +110,7 @@ profile xfce4-session-settings /usr/bin/xfce4-session-settings {
   #include <abstractions/X>
   #include <abstractions/nameservice>
   
-  /usr/bin/xfce4-session-settings r,
+  /usr/bin/xfce4-session-settings mr,
   /etc/xdg/ r,
   /etc/xdg/autostart/{,*} r,
   
@@ -126,7 +126,7 @@ profile xfce4-session.xflock4 /usr/bin/xflock4 {
   
   /dev/tty rw,
   
-  /usr/bin/xflock4 r,
+  /usr/bin/xflock4 mr,
   /bin/bash r,
   /usr/bin/mate-screensaver-command Px,
   
@@ -139,8 +139,8 @@ profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
   
   /dev/tty rw,
   
-  /usr/bin/startxfce4 r,
-  /bin/bash Cxr -> shell,
+  /usr/bin/startxfce4 mr,
+  /bin/bash Cxmr -> shell,
   /usr/bin/xinit Px,
   
   
@@ -150,7 +150,7 @@ profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
     /dev/tty rw,
     /dev/tty[0-9]* w,
     
-    /bin/bash r,
+    /bin/bash mr,
     /bin/cat ix,
     /bin/grep ix,
     /bin/sed ix,
@@ -172,6 +172,6 @@ profile xfce4-session.Xfce4 /etc/X11/Sessions/Xfce4 flags=(complain) {
   #include <abstractions/base>
   
   /etc/X11/Sessions/Xfce4 r,
-  /bin/bash r,
+  /bin/bash mr,
   
 }

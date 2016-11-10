@@ -80,7 +80,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
     /dev/tty rw,
     /dev/tty[0-9]* w,
     
-    /bin/bash r,
+    /bin/bash mr,
     
   }
   
@@ -90,7 +90,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
     /dev/tty[0-9]* w,
     /dev/pts/[0-9]* rw,
     
-    /bin/env r,
+    /bin/env mr,
     /usr/bin/wine Px,
     
   }
@@ -160,7 +160,7 @@ profile thunar_root {
     
     /dev/tty rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     
   }
   
@@ -173,7 +173,7 @@ profile thunar_root {
     /dev/tty[0-9]* w,
     /dev/pts/[0-9]* rw,
     
-    /bin/env r,
+    /bin/env mr,
     /usr/bin/wine Px,
     
   }
@@ -187,7 +187,7 @@ profile thunar-settings /usr/bin/thunar-settings {
   /dev/tty rw,
   
   /usr/bin/dbus-send Pxr,
-  /usr/bin/thunar-settings r,
+  /usr/bin/thunar-settings mr,
   /bin/bash r,
   
 }
@@ -199,6 +199,6 @@ profile thunar-ThunarBulkRename /usr/lib{,32,64}/Thunar/ThunarBulkRename {
   /dev/tty rw,
   
   /usr/bin/thunar Px,
-  /bin/bash r,
+  /bin/bash mr,
   
 }

@@ -27,6 +27,8 @@ profile mdadm /sbin/mdadm flags=(complain) {
   @{PROC}/mdstat r,
   @{PROC}/devices r,
   
+  /sbin/mdadm mr,
+  
   /etc/mdadm.conf r,
   
   owner /run/mdadm.pid rw,
@@ -44,7 +46,7 @@ profile mdadm.checkarray /usr/sbin/checkarray flags=(complain) {
   /sys/block/ r,
   /sys/devices/virtual/block/md[0-9]*/{,**} r,
   
-  /bin/bash r,
+  /bin/bash mr,
   /usr/sbin/checkarray r,
   /bin/ls ix,
   /bin/egrep ixr,

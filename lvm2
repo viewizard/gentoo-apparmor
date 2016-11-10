@@ -12,7 +12,7 @@
 profile lvm2.lvmetad /sbin/lvmetad flags=(complain) {
   #include <abstractions/base>
   
-  /sbin/lvmetad r,
+  /sbin/lvmetad mr,
   
   /run/lvmetad.pid rwk,
   /run/lvm/lvmetad.socket w,
@@ -32,7 +32,7 @@ profile lvm2.dmeventd /sbin/dmeventd flags=(complain) {
   @{PROC}/@{pid}/mounts r,
   @{PROC}/@{pid}/oom_score_adj w,
   
-  /sbin/dmeventd r,
+  /sbin/dmeventd mr,
   
   /etc/lvm/lvm.conf r,
   /etc/udev/udev.conf r,
@@ -72,7 +72,7 @@ profile lvm2.lvm /sbin/lvm flags=(complain) {
   @{PROC}/@{pid}/mounts r,
   @{PROC}/@{pid}/mountinfo r,
   
-  /sbin/lvm r,
+  /sbin/lvm mr,
   /sbin/dmeventd Px,
   
   /etc/udev/udev.conf r,

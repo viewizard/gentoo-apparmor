@@ -45,7 +45,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   @{PROC}/driver/nvidia/params r,
   @{PROC}/sys/kernel/modprobe r,
   
-  /usr/bin/Xorg r,
+  /usr/bin/Xorg mr,
   /bin/bash Cx -> shell,
   /bin/kmod Px,
   
@@ -71,7 +71,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
     
     /dev/tty rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     /usr/bin/xkbcomp Px,
     
   }

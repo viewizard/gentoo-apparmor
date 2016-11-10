@@ -16,8 +16,9 @@ profile polkit.polkitd /usr/lib{,32,64}/polkit-1/polkitd {
   capability setgid,
   capability setuid,
   
-  /etc/polkit-1/{,**} r,
+  /usr/lib{,32,64}/polkit-1/polkitd m,
   
+  /etc/polkit-1/{,**} r,
   /usr/share/polkit-1/{,**} r,
   /usr/share/gvfs/remote-volume-monitors/{,*} r,
   
@@ -29,24 +30,34 @@ profile polkit.polkitd /usr/lib{,32,64}/polkit-1/polkitd {
 profile polkit.polkit-agent-helper /usr/lib{,32,64}/polkit-1/polkit-agent-helper-1 flags=(complain) {
   #include <abstractions/base>
   
+  /usr/lib{,32,64}/polkit-1/polkit-agent-helper-1 mr,
+  
 }
 
 profile polkit.pkaction /usr/bin/pkaction flags=(complain) {
   #include <abstractions/base>
+  
+  /usr/bin/pkaction mr,
   
 }
 
 profile polkit.pkcheck /usr/bin/pkcheck flags=(complain) {
   #include <abstractions/base>
   
+  /usr/bin/pkcheck mr,
+  
 }
 
 profile polkit.pkexec /usr/bin/pkexec flags=(complain) {
   #include <abstractions/base>
   
+  /usr/bin/pkexec mr,
+  
 }
 
 profile polkit.pkttyagent /usr/bin/pkttyagent flags=(complain) {
   #include <abstractions/base>
+  
+  /usr/bin/pkttyagent mr,
   
 }

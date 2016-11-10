@@ -21,7 +21,7 @@ profile python-updater /usr/sbin/python-updater flags=(complain) {
   /usr/sbin/python-updater r,
   /usr/bin/python-wrapper Px,
   /usr/lib{,32,64}/python-exec/python-exec2 Cx -> portage,
-  /bin/bash r,
+  /bin/bash mr,
   /bin/grep ix,
   /bin/sort ix,
   /bin/sed ix,
@@ -51,6 +51,8 @@ profile python-updater /usr/sbin/python-updater flags=(complain) {
   profile portage {
     #include <abstractions/base>
     
+    /usr/lib{,32,64}/python-exec/python-exec2 m,
+    /usr/lib{,32,64}/python-exec/python-exec2-c m,
     /bin/env r,
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge Px,

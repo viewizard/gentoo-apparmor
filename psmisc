@@ -19,7 +19,7 @@ profile psmisc.killall /usr/bin/killall {
   @{PROC}/ r,
   @{PROC}/@{pid}/{stat,status,cmdline} r,
   
-  /usr/bin/killall r,
+  /usr/bin/killall mr,
   
 }
 
@@ -37,6 +37,6 @@ profile psmisc.fuser /bin/fuser flags=(complain) {
   @{PROC}/@{pid}/net/unix r,
   @{PROC}/fs/nfs/exports r,
   
-  /bin/fuser r,
+  /bin/fuser mr,
   
 }

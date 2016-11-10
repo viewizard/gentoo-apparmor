@@ -20,7 +20,7 @@ profile mate-screensaver /usr/bin/mate-screensaver {
   /dev/tty[0-9]* w,
   owner @{PROC}/@{pid}/fd/ r,
   
-  /usr/bin/mate-screensaver r,
+  /usr/bin/mate-screensaver mr,
   /usr/libexec/mate-screensaver-dialog Px,
   /usr/libexec/mate-screensaver-gl-helper Px,
   /usr/libexec/mate-screensaver/popsquares Px,
@@ -39,7 +39,7 @@ profile mate-screensaver.sh /usr/bin/mate-screensaver.sh {
   
   /dev/tty rw,
   
-  /bin/bash r,
+  /bin/bash mr,
   /usr/bin/mate-screensaver.sh r,
   /bin/grep ix,
   /bin/sleep ixr,
@@ -61,7 +61,7 @@ profile mate-screensaver-preferences /usr/bin/mate-screensaver-preferences {
   
   owner @{PROC}/@{pid}/fd/ r,
   
-  /usr/bin/mate-screensaver-preferences r,
+  /usr/bin/mate-screensaver-preferences mr,
   /usr/libexec/mate-screensaver-gl-helper Px,
   /usr/libexec/mate-screensaver/popsquares Px,
   /usr/libexec/mate-screensaver/floaters Px,
@@ -79,7 +79,7 @@ profile mate-screensaver.popsquares /usr/libexec/mate-screensaver/popsquares {
   #include <abstractions/X>
   #include <abstractions/gtk>
   
-  /usr/libexec/mate-screensaver/popsquares r,
+  /usr/libexec/mate-screensaver/popsquares mr,
   
 }
 
@@ -89,7 +89,7 @@ profile mate-screensaver.floaters /usr/libexec/mate-screensaver/floaters {
   #include <abstractions/X>
   #include <abstractions/gtk>
   
-  /usr/libexec/mate-screensaver/floaters r,
+  /usr/libexec/mate-screensaver/floaters mr,
   
   /usr/share/pixmaps/gnome-logo-white.svg r,
   /usr/share/pixmaps/mate-logo-white.svg r,
@@ -102,7 +102,7 @@ profile mate-screensaver.slideshow /usr/libexec/mate-screensaver/slideshow {
   #include <abstractions/X>
   #include <abstractions/gtk>
   
-  /usr/libexec/mate-screensaver/slideshow r,
+  /usr/libexec/mate-screensaver/slideshow mr,
   
   /usr/share/backgrounds/cosmos/ r,
   /usr/share/backgrounds/cosmos/*.{jpg,jpeg,tga,png,bmp} r,
@@ -116,7 +116,7 @@ profile mate-screensaver-gl-helper /usr/libexec/mate-screensaver-gl-helper {
   #include <abstractions/X>
   #include <abstractions/nvidia>
   
-  /usr/libexec/mate-screensaver-gl-helper r,
+  /usr/libexec/mate-screensaver-gl-helper mr,
   
 }
 
@@ -132,7 +132,7 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
   
   owner @{PROC}/@{pid}/fd/ r,
   
-  /usr/libexec/mate-screensaver-dialog r,
+  /usr/libexec/mate-screensaver-dialog mr,
   /bin/bash Cx -> shell,
   /sbin/unix_chkpwd Px,
   
@@ -149,7 +149,7 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
     
     /dev/tty rw,
     
-    /bin/bash r,
+    /bin/bash mr,
     /bin/wc ix,
     /usr/bin/pidof Px,
     
@@ -163,6 +163,6 @@ profile mate-screensaver-command /usr/bin/mate-screensaver-command {
   /dev/tty[0-9] w,
   /dev/pts/[0-9]* rw,
   
-  /usr/bin/mate-screensaver-command r,
+  /usr/bin/mate-screensaver-command mr,
   
 }

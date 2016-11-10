@@ -15,7 +15,7 @@ profile gnome-keyring-daemon /usr/bin/gnome-keyring-daemon {
   /dev/tty[0-9]* w,
   @{PROC}/@{pid}/status r,
   
-  /usr/bin/gnome-keyring-daemon r,
+  /usr/bin/gnome-keyring-daemon mr,
   
   owner @{HOME}/.local/share/keyrings/ rw,
   owner @{HOME}/.local/share/keyrings/* rwl,

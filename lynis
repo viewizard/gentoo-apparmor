@@ -21,7 +21,7 @@ profile lynis /usr/sbin/lynis {
   /dev/tty rw,
   /dev/mapper/control w,
   
-  /bin/bash Cx -> shell,
+  /bin/bash Cxmr -> shell,
   /bin/date ix,
   /bin/expr ix,
   /bin/ls ix,
@@ -90,7 +90,7 @@ profile lynis /usr/sbin/lynis {
     
     /dev/tty rw,
     
-    /bin/bash ixr,
+    /bin/bash ixmr,
     /bin/grep ix,
     /bin/env ix,
     /bin/rm ix,
@@ -102,7 +102,7 @@ profile lynis /usr/sbin/lynis {
   profile smbd {
     #include <abstractions/base>
     
-    /usr/sbin/smbd r,
+    /usr/sbin/smbd mr,
     
     /usr/share/samba/{,**} r,
     
@@ -117,7 +117,7 @@ profile lynis /usr/sbin/lynis {
     
     @{PROC}/@{pid}/fd/ r,
     
-    /usr/sbin/sshd r,
+    /usr/sbin/sshd mr,
     
     /etc/ssl/openssl.cnf r,
     /etc/ssh/sshd_config r,
@@ -127,6 +127,8 @@ profile lynis /usr/sbin/lynis {
   profile aa_status {
     #include <abstractions/base>
     
+    /usr/lib{,32,64}/python-exec/python-exec2 m,
+    /usr/lib{,32,64}/python-exec/python-exec2-c m,
     /bin/env r,
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-status Px,
