@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile apparmor-utils.aa-status /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-status flags=(complain) {
+profile apparmor-utils.aa-status /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-status {
   #include <abstractions/base>
   #include <abstractions/python>
   
@@ -28,7 +28,7 @@ profile apparmor-utils.aa-status /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-statu
 }
 
 
-profile apparmor-utils.aa-unconfined /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-unconfined flags=(complain) {
+profile apparmor-utils.aa-unconfined /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-unconfined {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/user-tmp>
@@ -46,6 +46,7 @@ profile apparmor-utils.aa-unconfined /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-u
   /etc/apparmor/logprof.conf r,
   /etc/inputrc r,
   /etc/terminfo/x/xterm r,
+  /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/*.pyc w,
   
   
   profile shell flags=(complain) {
@@ -63,5 +64,65 @@ profile apparmor-utils.aa-unconfined /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-u
     /bin/netstat ix,
     
   }
+  
+}
+
+
+profile apparmor-utils.aa-complain /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-complain {
+  #include <abstractions/base>
+  #include <abstractions/python>
+  #include <abstractions/user-tmp>
+  
+  /dev/pts/[0-9]* w,
+  
+  /bin/env mr,
+  /sbin/apparmor_parser Px,
+  
+  /etc/inputrc r,
+  /etc/terminfo/x/xterm r,
+  /etc/apparmor/logprof.conf r,
+  /etc/apparmor.d/{,**} r,
+  /etc/apparmor.d/* w,
+  /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/*.pyc w,
+  
+}
+
+
+profile apparmor-utils.aa-enforce /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-enforce {
+  #include <abstractions/base>
+  #include <abstractions/python>
+  #include <abstractions/user-tmp>
+  
+  /dev/pts/[0-9]* w,
+  
+  /bin/env mr,
+  /sbin/apparmor_parser Px,
+  
+  /etc/inputrc r,
+  /etc/terminfo/x/xterm r,
+  /etc/apparmor/logprof.conf r,
+  /etc/apparmor.d/{,**} r,
+  /etc/apparmor.d/* w,
+  /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/*.pyc w,
+  
+}
+
+
+profile apparmor-utils.aa-disable /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-disable {
+  #include <abstractions/base>
+  #include <abstractions/python>
+  #include <abstractions/user-tmp>
+  
+  /dev/pts/[0-9]* w,
+  
+  /bin/env mr,
+  /sbin/apparmor_parser Px,
+  
+  /etc/inputrc r,
+  /etc/terminfo/x/xterm r,
+  /etc/apparmor/logprof.conf r,
+  /etc/apparmor.d/{,**} r,
+  /etc/apparmor.d/disable/* w,
+  /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/*.pyc w,
   
 }

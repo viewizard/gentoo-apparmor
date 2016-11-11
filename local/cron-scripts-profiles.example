@@ -67,7 +67,9 @@ profile cron.daily/00_update_portage /etc/cron.daily/00_update_portage {
   profile emerge {
     #include <abstractions/base>
     
-    /bin/env mr,
+    /usr/lib{,32,64}/python-exec/python-exec2 m,
+    /usr/lib{,32,64}/python-exec/python-exec2-c m,
+    /bin/env r,
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge Px,
     
@@ -189,7 +191,9 @@ profile cron.daily/glsa /etc/cron.daily/glsa {
   profile glsa_check {
     #include <abstractions/base>
     
-    /bin/env mr,
+    /usr/lib{,32,64}/python-exec/python-exec2 m,
+    /usr/lib{,32,64}/python-exec/python-exec2-c m,
+    /bin/env r,
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/glsa-check Px,
     

@@ -81,6 +81,7 @@ profile grub.grub-install /usr/sbin/grub-install flags=(complain) {
   /dev/sd[a-z] rw,
   /dev/sd[a-z][0-9]* r,
   /dev/pts/[0-9]* w,
+  /dev/{,**} r,
   /dev/mapper/control rw,
   /sys/devices/pci[0-9]*/**/ata[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/start r,
   /sys/devices/pci[0-9]*/**/usb[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/start r,
@@ -88,9 +89,10 @@ profile grub.grub-install /usr/sbin/grub-install flags=(complain) {
   @{PROC}/@{pid}/mountinfo r,
   
   /usr/sbin/grub-install mr,
-  /bin/bash Cxr -> shell,
+  /bin/bash Cx -> shell,
   /bin/kmod Px,
   /bin/udevadm Px,
+  /sbin/lvm Px,
   
   /boot/grub/{,**} rw,
   /usr/share/grub/{,**} r,

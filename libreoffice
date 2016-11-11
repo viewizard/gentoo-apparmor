@@ -85,9 +85,10 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   /dev/pts/[0-9]* rw,
   /sys/devices/system/cpu/ r,
   @{PROC}/version r,
+  @{PROC}/sys/vm/mmap_min_addr r,
   
   /usr/lib{,32,64}/libreoffice/program/soffice.bin m,
-  /bin/bash Cxr -> shell,
+  /bin/bash Cx -> shell,
   /opt/{oracle-jdk,icedtea}-bin-*/bin/java Px,
   /opt/{oracle-jdk,icedtea}-bin-*/jre/bin/java Px,
   

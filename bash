@@ -129,6 +129,7 @@ profile bash_root {
   /bin/tail ixr,
   /bin/netstat Pxr,
   /bin/getfacl Pxr,
+  /bin/tar ixr,
   /sbin/mdadm Pxr,
   /sbin/shutdown Pxr,
   /sbin/{halt,poweroff,reboot} Pxr,

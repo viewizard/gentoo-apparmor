@@ -19,9 +19,9 @@ profile elfix_migrate_pax_root flags=(complain) {
   /dev/pts/[0-9]* w,
   
   /usr/sbin/migrate-pax mr,
-  /bin/env r,
+  /bin/env mr,
   /usr/bin/python-wrapper ix,
-  /bin/bash Cxr -> shell,
+  /bin/bash Cx -> shell,
   
   /{bin,sbin,opt,lib,lib32,lib64}/** rw,
   /usr/{bin,sbin,lib,lib32,lib64,libexec,x86_64-pc-linux-gnu}/** rw,
@@ -57,10 +57,10 @@ profile elfix_revdep_pax_root flags=(complain) {
   
   /dev/pts/[0-9]* w,
   
-  /bin/env r,
+  /bin/env mr,
   /usr/bin/python-wrapper ix,
   /usr/sbin/revdep-pax mr,
-  /bin/bash Cxr -> shell,
+  /bin/bash Cx -> shell,
   
   /{bin,sbin,opt,lib,lib32,lib64}/** rw,
   /usr/{bin,sbin,lib,lib32,lib64,libexec,x86_64-pc-linux-gnu}/** rw,
