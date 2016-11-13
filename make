@@ -30,8 +30,8 @@ profile make /usr/bin/{,g}make flags=(complain) {
   /etc/env.d/gcc/{,**} r,
   /etc/terminfo/x/xterm r,
   /lib{,32,64}/modules/{,**} rw,
-  /usr/src/linux-*-{hardened,gentoo}*/{,**} ixrw,
-  /usr/src/linux-*-{hardened,gentoo}*/arch/*/boot/bzImage w,
+  /usr/src/linux-[0-9]*-{hardened,gentoo}*/{,**} ixrw,
+  /usr/src/linux-[0-9]*-{hardened,gentoo}*/arch/*/boot/bzImage w,
   
   # Noisy
   deny / r,
@@ -73,6 +73,9 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /bin/mktemp ix,
     /bin/hostname ix,
     /bin/touch ix,
+    /bin/head ix,
+    /bin/tar ix,
+    /bin/bzip2 ix,
     /usr/bin/uniq ix,
     /usr/bin/which ix,
     /usr/bin/whoami ix,
@@ -87,10 +90,11 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /usr/bin/gmake Px,
     /usr/bin/gcc ix,
     /usr/bin/g++ ix,
+    /usr/bin/openssl ix,
     /usr/libexec/gcc/x86_64-pc-linux-gnu/*/* ix,
     /usr/x86_64-pc-linux-gnu/gcc-bin/*/* ix,
     /usr/x86_64-pc-linux-gnu/binutils-bin/*/* ix,
-    /usr/src/linux-*-{hardened,gentoo}*/{,**} rix,
+    /usr/src/linux-[0-9]*-{hardened,gentoo}*/{,**} rix,
     
     /etc/ld.so.conf r,
     /etc/ld.so.conf.d/{,*} r,
@@ -98,8 +102,8 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /usr/libexec/gcc/x86_64-pc-linux-gnu/{,**}.so* mr,
     /usr/include/{,**} r,
     /lib{,32,64}/modules/{,**} rw,
-    /usr/src/linux-*-{hardened,gentoo}*/{,**} rw,
-    /usr/src/linux-*-{hardened,gentoo}*/tools/gcc/**.so m,
+    /usr/src/linux-[0-9]*-{hardened,gentoo}*/{,**} rw,
+    /usr/src/linux-[0-9]*-{hardened,gentoo}*/tools/gcc/**.so m,
     /usr/share/pkgconfig/{,**} r,
     
     # Noisy

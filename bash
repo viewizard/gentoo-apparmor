@@ -195,6 +195,7 @@ profile bash_root {
   /usr/local/bin/** Pxr,
   /usr/local/sbin/** Pxr,
   /etc/init.d/* Pxr,
+  /usr/src/linux-[0-9]*-hardened/scripts/sign-file Pxr,
   
   # don't use by default
   #/usr/sbin/sysctl Pxr,

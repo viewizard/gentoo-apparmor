@@ -26,6 +26,7 @@ profile ghex /usr/bin/ghex {
   #include <abstractions/executable-binary-helper>
   #include <abstractions/cups-client>
   #include <abstractions/nameservice>
+  #include <abstractions/dbus-session>
   
   @{PROC}/@{pid}/fd/ r,
   
@@ -49,6 +50,9 @@ profile ghex_root {
   #include <abstractions/cups-client>
   #include <abstractions/nameservice>
   #include <abstractions/user-systemwide-files>
+  #include <abstractions/dbus-session>
+  
+  @{PROC}/@{pid}/fd/ r,
   
   /dev/tty[0-9]* w,
   

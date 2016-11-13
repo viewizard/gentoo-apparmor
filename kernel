@@ -1,0 +1,22 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile kernel.sign-file /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/sign-file flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/pts/[0-9]* w,
+  
+  /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/sign-file mr,
+  
+  /usr/src/linux-[0-9]*-{hardened,gentoo}*/certs/signing_key.{pem,x509} r,
+  /lib{,32,64}/modules/[0-9]*-{hardened,gentoo}*/**.ko rw,
+  
+}
