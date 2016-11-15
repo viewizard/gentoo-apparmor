@@ -61,7 +61,7 @@ profile procps.pgrep /usr/bin/pgrep {
   capability dac_read_search,
   
   @{PROC}/ r,
-  @{PROC}/@{pid}/{stat,cmdline,loginuid} r,
+  @{PROC}/@{pid}/{stat,status,cmdline,loginuid} r,
   @{PROC}/sys/kernel/osrelease r,
   
   /usr/bin/pgrep mr,

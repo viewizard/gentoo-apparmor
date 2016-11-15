@@ -48,10 +48,13 @@ profile cron.daily/00_update_portage /etc/cron.daily/00_update_portage {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
   
+  capability sys_ptrace,
   capability dac_override,
   capability dac_read_search,
   
   /dev/tty rw,
+  /dev/pts/[0-9]* w,
+  @{PROC}/@{pid}/environ r,
   
   /bin/bash mr,
   /etc/cron.daily/00_update_portage r,
@@ -59,6 +62,9 @@ profile cron.daily/00_update_portage /etc/cron.daily/00_update_portage {
   /bin/rm ix,
   /bin/cat ix,
   /bin/env ix,
+  /bin/grep ix,
+  /bin/su Px,
+  /usr/bin/pgrep Px,
   /usr/bin/mail Px,
   /usr/lib{,32,64}/python-exec/python-exec2 Cx -> emerge,
   /lib{,32,64}/rc/bin/checkpath ix,
@@ -84,6 +90,7 @@ profile cron.daily/aide /etc/cron.daily/aide {
   #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
   
+  capability sys_ptrace,
   capability dac_override,
   capability dac_read_search,
   
@@ -100,6 +107,8 @@ profile cron.daily/aide /etc/cron.daily/aide {
   /bin/sed ix,
   /bin/mount Px,
   /bin/umount Px,
+  /bin/su Px,
+  /usr/bin/pgrep Px,
   /usr/bin/stat ix,
   /usr/bin/mail Px,
   /usr/bin/aide Px,
@@ -117,6 +126,7 @@ profile cron.daily/chkrootkit /etc/cron.daily/chkrootkit {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
   
+  capability sys_ptrace,
   capability dac_override,
   capability dac_read_search,
   
@@ -127,6 +137,9 @@ profile cron.daily/chkrootkit /etc/cron.daily/chkrootkit {
   /bin/mktemp ix,
   /bin/cat ix,
   /bin/rm ix,
+  /bin/grep ix,
+  /bin/su Px,
+  /usr/bin/pgrep Px,
   /usr/bin/mail Px,
   /usr/sbin/chkrootkit Px,
   
@@ -137,6 +150,7 @@ profile cron.daily/daily_backup.sh /etc/cron.daily/daily_backup.sh {
   #include <abstractions/user-tmp>
   
   capability sys_admin,
+  capability sys_ptrace,
   capability dac_override,
   capability dac_read_search,
   
@@ -155,6 +169,9 @@ profile cron.daily/daily_backup.sh /etc/cron.daily/daily_backup.sh {
   /bin/sort ix,
   /bin/mount Px,
   /bin/umount Px,
+  /bin/grep ix,
+  /bin/su Px,
+  /usr/bin/pgrep Px,
   /sbin/cryptsetup Px,
   /sbin/lvm Px,
   /usr/bin/find ix,
@@ -177,6 +194,8 @@ profile cron.daily/glsa /etc/cron.daily/glsa {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
   
+  capability sys_ptrace,
+  
   /dev/tty rw,
   
   /bin/bash mr,
@@ -184,6 +203,9 @@ profile cron.daily/glsa /etc/cron.daily/glsa {
   /bin/mktemp ix,
   /bin/cat ix,
   /bin/rm ix,
+  /bin/grep ix,
+  /bin/su Px,
+  /usr/bin/pgrep Px,
   /usr/bin/mail Px,
   /usr/lib{,32,64}/python-exec/python-exec2 Cx -> glsa_check,
   
@@ -209,6 +231,7 @@ profile cron.daily/hosts.sh /etc/cron.daily/hosts.sh {
   #include <abstractions/nameservice>
   
   capability sys_admin,
+  capability sys_ptrace,
   
   /dev/tty rw,
   
@@ -217,6 +240,9 @@ profile cron.daily/hosts.sh /etc/cron.daily/hosts.sh {
   /bin/date ix,
   /bin/mv ix,
   /bin/chmod ix,
+  /bin/grep ix,
+  /bin/su Px,
+  /usr/bin/pgrep Px,
   /usr/bin/wget ix,
   /usr/bin/stat ix,
   
@@ -247,6 +273,8 @@ profile cron.daily/lynis /etc/cron.daily/lynis {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
   
+  capability sys_ptrace,
+  
   /dev/tty rw,
   
   /bin/bash mr,
@@ -254,6 +282,9 @@ profile cron.daily/lynis /etc/cron.daily/lynis {
   /bin/mktemp ix,
   /bin/cat ix,
   /bin/rm ix,
+  /bin/grep ix,
+  /bin/su Px,
+  /usr/bin/pgrep Px,
   /usr/bin/mail Px,
   /usr/sbin/lynis Px,
   
@@ -278,6 +309,8 @@ profile cron.daily/oinkmaster /etc/cron.daily/oinkmaster {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
   
+  capability sys_ptrace,
+  
   /dev/tty rw,
   
   /bin/bash mr,
@@ -285,6 +318,9 @@ profile cron.daily/oinkmaster /etc/cron.daily/oinkmaster {
   /bin/mktemp ix,
   /bin/cat ix,
   /bin/rm ix,
+  /bin/grep ix,
+  /bin/su Px,
+  /usr/bin/pgrep Px,
   /usr/bin/mail Px,
   /usr/bin/oinkmaster.pl Px,
   /etc/init.d/suricata Px,
@@ -308,6 +344,7 @@ profile cron.weekly/weekly_backup.sh /etc/cron.weekly/weekly_backup.sh {
   #include <abstractions/user-tmp>
   
   capability sys_admin,
+  capability sys_ptrace,
   capability dac_override,
   capability dac_read_search,
   
@@ -326,6 +363,9 @@ profile cron.weekly/weekly_backup.sh /etc/cron.weekly/weekly_backup.sh {
   /bin/sort ix,
   /bin/mount Px,
   /bin/umount Px,
+  /bin/grep ix,
+  /bin/su Px,
+  /usr/bin/pgrep Px,
   /sbin/cryptsetup Px,
   /sbin/lvm Px,
   /usr/bin/find ix,
@@ -349,6 +389,7 @@ profile cron.monthly/monthly_backup.sh /etc/cron.monthly/monthly_backup.sh {
   #include <abstractions/user-tmp>
   
   capability sys_admin,
+  capability sys_ptrace,
   capability dac_override,
   capability dac_read_search,
   
@@ -364,7 +405,10 @@ profile cron.monthly/monthly_backup.sh /etc/cron.monthly/monthly_backup.sh {
   /bin/mktemp ix,
   /bin/mount Px,
   /bin/umount Px,
+  /bin/grep ix,
+  /bin/su Px,
   /sbin/lvm Px,
+  /usr/bin/pgrep Px,
   /usr/bin/find ix,
   /usr/bin/mail Px,
   

@@ -1,0 +1,19 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile libnotify-notify-send /usr/bin/libnotify-notify-send flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/pts/[0-9]* w,
+  
+  /usr/bin/libnotify-notify-send mr,
+  
+}

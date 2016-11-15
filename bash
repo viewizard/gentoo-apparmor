@@ -68,6 +68,7 @@ profile bash_users {
   /usr/bin/wine Pxr,
   /usr/bin/winecfg Pxr,
   /usr/bin/pamusb-agent Pxr,
+  /usr/bin/libnotify-notify-send Px,
   
   /etc/profile.env r,
   /etc/bash/bash_logout r,
@@ -199,6 +200,8 @@ profile bash_root {
   
   # don't use by default
   #/usr/sbin/sysctl Pxr,
+  
+  /etc/cron.daily/00_update_portage Pxr,
   
   /etc/profile.env r,
   /etc/terminfo/l/linux r,
