@@ -15,7 +15,7 @@ profile dbus-cleanup-sockets /usr/bin/dbus-cleanup-sockets flags=(complain) {
   
 }
 
-profile dbus-daemon /usr/bin/dbus-daemon flags=(complain) {
+profile dbus-daemon /usr/bin/dbus-daemon {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/dbus>
@@ -47,7 +47,7 @@ profile dbus-daemon /usr/bin/dbus-daemon flags=(complain) {
   
 }
 
-profile dbus-launch /usr/bin/dbus-launch flags=(complain) {
+profile dbus-launch /usr/bin/dbus-launch {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/X>
@@ -61,7 +61,7 @@ profile dbus-launch /usr/bin/dbus-launch flags=(complain) {
   owner @{HOME}/.dbus/{,**} rw,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     
     /dev/tty rw,

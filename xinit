@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile xinit /usr/bin/xinit flags=(complain) {
+profile xinit /usr/bin/xinit {
   #include <abstractions/base>
   #include <abstractions/X>
   #include <abstractions/nameservice>
@@ -21,7 +21,7 @@ profile xinit /usr/bin/xinit flags=(complain) {
   /etc/X11/xinit/xserverrc Px,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     
     /dev/tty rw,
@@ -65,7 +65,7 @@ profile xinit.xserverrc /etc/X11/xinit/xserverrc {
 }
 
 
-profile xinit.startx /usr/bin/startx flags=(complain) {
+profile xinit.startx /usr/bin/startx {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/user-tmp>

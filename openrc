@@ -62,16 +62,13 @@ profile openrc /sbin/openrc flags=(complain) {
   profile shell flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
+    #include <abstractions/openrc_shell>
     
     capability sys_tty_config,
     capability dac_override,
     capability dac_read_search,
     
-    /dev/tty rw,
     /dev/console rw,
-    
-    /bin/bash mr,
-    /lib{,32,64}/rc/sh/gendepends.sh Px,
     
   }
   
@@ -109,21 +106,35 @@ profile openrc.rc-status /bin/rc-status {
   #include <abstractions/base>
   
   capability kill,
+  capability dac_read_search,
+  capability dac_override,
   
   /dev/pts/[0-9]* w,
   @{PROC}/ r,
-  @{PROC}/@{pid}/cmdline r,
+  @{PROC}/cmdline r,
+  @{PROC}/@{pid}/{cmdline,environ} r,
   
   /bin/rc-status mr,
+  /bin/bash Cx -> shell,
   
   /etc/init.d/ r,
   /etc/conf.d/ r,
+  /etc/rc.conf r,
   /etc/runlevels/{,**} r,
   /etc/terminfo/x/xterm r,
   
   /run/openrc/** r,
+  /run/openrc/depconfig w,
   /run/openrc/deptree w,
   /run/{*.,*/,*/*.}pid r,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/openrc_shell>
+    
+  }
   
 }
 
@@ -176,6 +187,7 @@ profile openrc.netmount.init.d /etc/init.d/netmount flags=(complain) {
   @{PROC}/@{pid}/mounts r,
   
   /bin/bash Cx -> shell,
+  /etc/init.d/dnsmasq Px,
   /bin/mount Px,
   /bin/umount Px,
   

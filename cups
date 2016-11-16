@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile cups.cupsd /usr/sbin/cupsd flags=(complain) {
+profile cups.cupsd /usr/sbin/cupsd {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
@@ -59,7 +59,7 @@ profile cups.cupsd /usr/sbin/cupsd flags=(complain) {
   
 }
 
-profile cups.daemon /usr/libexec/cups/daemon/* flags=(complain) {
+profile cups.daemon /usr/libexec/cups/daemon/* {
   #include <abstractions/base>
   
   capability setgid,
@@ -82,7 +82,7 @@ profile cups.daemon /usr/libexec/cups/daemon/* flags=(complain) {
   
 }
 
-profile cups.driver /usr/libexec/cups/driver/* flags=(complain) {
+profile cups.driver /usr/libexec/cups/driver/* {
   #include <abstractions/base>
   
   /usr/libexec/cups/driver/* mr,
@@ -93,7 +93,7 @@ profile cups.driver /usr/libexec/cups/driver/* flags=(complain) {
   
 }
 
-profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* flags=(complain) {
+profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/user-tmp>
@@ -110,7 +110,7 @@ profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* flags=(complain) {
   
 }
 
-profile cups.filter /usr/libexec/cups/filter/* flags=(complain) {
+profile cups.filter /usr/libexec/cups/filter/* {
   #include <abstractions/base>
   #include <abstractions/user-tmp>
   
@@ -125,7 +125,7 @@ profile cups.filter /usr/libexec/cups/filter/* flags=(complain) {
   
 }
 
-profile cups.backend /usr/libexec/cups/backend/* flags=(complain) {
+profile cups.backend /usr/libexec/cups/backend/* {
   #include <abstractions/base>
   
   /dev/bus/usb/ r,

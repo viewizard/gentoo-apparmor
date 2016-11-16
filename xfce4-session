@@ -144,7 +144,7 @@ profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
   /usr/bin/xinit Px,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     
     /dev/tty rw,
@@ -168,7 +168,7 @@ profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
 }
 
 
-profile xfce4-session.Xfce4 /etc/X11/Sessions/Xfce4 flags=(complain) {
+profile xfce4-session.Xfce4 /etc/X11/Sessions/Xfce4 {
   #include <abstractions/base>
   
   /etc/X11/Sessions/Xfce4 r,

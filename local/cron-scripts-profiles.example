@@ -96,6 +96,7 @@ profile cron.daily/aide /etc/cron.daily/aide {
   
   /dev/tty rw,
   /dev/sda r,
+  @{PROC}/@{pid}/environ r,
   
   /bin/bash mr,
   /etc/cron.daily/aide r,
@@ -131,6 +132,7 @@ profile cron.daily/chkrootkit /etc/cron.daily/chkrootkit {
   capability dac_read_search,
   
   /dev/tty rw,
+  @{PROC}/@{pid}/environ r,
   
   /bin/bash mr,
   /etc/cron.daily/chkrootkit r,
@@ -157,6 +159,7 @@ profile cron.daily/daily_backup.sh /etc/cron.daily/daily_backup.sh {
   /dev/tty rw,
   /dev/null w,
   @{PROC}/@{pid}/fd/ r,
+  @{PROC}/@{pid}/environ r,
   
   /bin/bash mr,
   /bin/chmod ix,
@@ -197,6 +200,7 @@ profile cron.daily/glsa /etc/cron.daily/glsa {
   capability sys_ptrace,
   
   /dev/tty rw,
+  @{PROC}/@{pid}/environ r,
   
   /bin/bash mr,
   /etc/cron.daily/glsa r,
@@ -234,6 +238,7 @@ profile cron.daily/hosts.sh /etc/cron.daily/hosts.sh {
   capability sys_ptrace,
   
   /dev/tty rw,
+  @{PROC}/@{pid}/environ r,
   
   /bin/bash mr,
   /etc/cron.daily/hosts.sh r,
@@ -276,6 +281,7 @@ profile cron.daily/lynis /etc/cron.daily/lynis {
   capability sys_ptrace,
   
   /dev/tty rw,
+  @{PROC}/@{pid}/environ r,
   
   /bin/bash mr,
   /etc/cron.daily/lynis r,
@@ -312,6 +318,7 @@ profile cron.daily/oinkmaster /etc/cron.daily/oinkmaster {
   capability sys_ptrace,
   
   /dev/tty rw,
+  @{PROC}/@{pid}/environ r,
   
   /bin/bash mr,
   /etc/cron.daily/oinkmaster r,
@@ -351,6 +358,7 @@ profile cron.weekly/weekly_backup.sh /etc/cron.weekly/weekly_backup.sh {
   /dev/tty rw,
   /dev/null w,
   @{PROC}/@{pid}/fd/ r,
+  @{PROC}/@{pid}/environ r,
   
   /bin/bash mr,
   /bin/chmod ix,
@@ -395,6 +403,7 @@ profile cron.monthly/monthly_backup.sh /etc/cron.monthly/monthly_backup.sh {
   
   /dev/tty rw,
   @{PROC}/@{pid}/fd/ r,
+  @{PROC}/@{pid}/environ r,
   
   /bin/bash mr,
   /bin/chmod ix,
