@@ -16,6 +16,7 @@ profile usr_local.sbin.aideinit_boot /usr/local/sbin/aideinit_boot {
   capability dac_override,
   capability dac_read_search,
   
+  /dev/tty[0-9]* w,
   /dev/tty rw,
   /dev/pts/[0-9]* rw,
   
@@ -32,6 +33,7 @@ profile usr_local.sbin.aideinit_boot /usr/local/sbin/aideinit_boot {
   profile dd flags=(complain) {
     #include <abstractions/base>
     
+    /dev/tty[0-9]* w,
     /dev/pts/[0-9]* rw,
     
     /dev/sda r,

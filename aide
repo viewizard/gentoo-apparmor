@@ -16,6 +16,7 @@ profile aide /usr/bin/aide {
   capability dac_read_search,
   capability dac_override,
   
+  /dev/tty[0-9]* w,
   /dev/pts/[0-9]* rw,
   
   /usr/bin/aide mr,
@@ -34,6 +35,7 @@ profile aide.aideinit /usr/sbin/aideinit {
   capability dac_read_search,
   
   /dev/tty rw,
+  /dev/tty[0-9]* w,
   /dev/pts/[0-9]* rw,
   
   /bin/bash mr,

@@ -20,6 +20,7 @@ profile genkernel /usr/bin/genkernel flags=(complain) {
   capability sys_admin,
   
   /dev/tty rw,
+  /dev/tty[0-9]* w,
   /dev/pts/[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/mounts r,

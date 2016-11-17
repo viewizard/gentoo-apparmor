@@ -198,6 +198,8 @@ profile cron.daily/glsa /etc/cron.daily/glsa {
   #include <abstractions/user-tmp>
   
   capability sys_ptrace,
+  capability dac_override,
+  capability dac_read_search,
   
   /dev/tty rw,
   @{PROC}/@{pid}/environ r,
@@ -236,6 +238,8 @@ profile cron.daily/hosts.sh /etc/cron.daily/hosts.sh {
   
   capability sys_admin,
   capability sys_ptrace,
+  capability dac_override,
+  capability dac_read_search,
   
   /dev/tty rw,
   @{PROC}/@{pid}/environ r,
@@ -279,6 +283,8 @@ profile cron.daily/lynis /etc/cron.daily/lynis {
   #include <abstractions/user-tmp>
   
   capability sys_ptrace,
+  capability dac_override,
+  capability dac_read_search,
   
   /dev/tty rw,
   @{PROC}/@{pid}/environ r,
@@ -316,6 +322,8 @@ profile cron.daily/oinkmaster /etc/cron.daily/oinkmaster {
   #include <abstractions/user-tmp>
   
   capability sys_ptrace,
+  capability dac_override,
+  capability dac_read_search,
   
   /dev/tty rw,
   @{PROC}/@{pid}/environ r,

@@ -12,6 +12,7 @@
 profile make /usr/bin/{,g}make flags=(complain) {
   #include <abstractions/base>
   
+  /dev/tty[0-9]* w,
   /dev/pts/[0-9]* rw,
   
   /usr/bin/{,g}make ixmr,
@@ -44,6 +45,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     #include <abstractions/user-tmp>
     
     /dev/tty rw,
+    /dev/tty[0-9]* w,
     /dev/pts/[0-9]* w,
     @{PROC}/@{pid}/fd/ r,
     
