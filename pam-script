@@ -1,0 +1,41 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile pam-script /etc/security/pam-script/pam_script* flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  capability setuid,
+  
+  /dev/tty rw,
+  
+  /etc/security/pam-script/pam_script* r,
+  /bin/bash mrCx -> shell,
+  /bin/dirname ix,
+  /bin/basename ix,
+  
+  /etc/security/pam-script/pam-script.d/{,**} r,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    /dev/tty rw,
+    /dev/tty[0-9]* w,
+    /dev/pts/[0-9]* w,
+    
+    /etc/security/pam-script/pam-script.d/pam_script* r,
+    /bin/bash mr,
+    
+  }
+  
+}
