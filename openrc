@@ -106,6 +106,7 @@ profile openrc.rc-status /bin/rc-status {
   #include <abstractions/base>
   
   capability kill,
+  capability sys_ptrace,
   capability dac_read_search,
   capability dac_override,
   
@@ -297,7 +298,7 @@ profile openrc.swap.init.d /etc/init.d/swap flags=(complain) {
   /sbin/swapon Px,
   /sbin/swapoff Px,
   
-  /etc/init.d/swap r,
+  /etc/{conf,init}.d/swap r,
   
   
   profile shell flags=(complain) {
@@ -613,18 +614,14 @@ profile openrc.termencoding.init.d /etc/init.d/termencoding flags=(complain) {
 }
 
 
-profile openrc.swapfiles.init.d /etc/init.d/swapfiles flags=(complain) {
+profile openrc.runsvdir.init.d /etc/init.d/runsvdir flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  @{PROC}/swaps r,
-  
   /bin/bash Cx -> shell,
-  /sbin/swapon Px,
-  /sbin/swapoff Px,
   
-  /etc/init.d/swapfiles r,
+  /etc/init.d/runsvdir r,
   
   
   profile shell flags=(complain) {

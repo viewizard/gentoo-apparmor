@@ -27,11 +27,13 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
   /dev/ptmx rw,
   /dev/tty[0-9]* w,
   /dev/pts/[0-9]* rw,
+  /sys/fs/cgroup/portage/{,**} rw,
   @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/mountinfo r,
   
   /bin/bash cx -> shell,
   /bin/stty ix,
+  /bin/mount Px,
   /usr/bin/sandbox cx -> sandboxed_shell,
   /usr/bin/find ix,
   /usr/bin/id ix,
@@ -85,6 +87,7 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
     /dev/tty rw,
     /dev/pts/[0-9]* rw,
     /dev/initctl w,
+    /sys/devices/system/cpu/ r,
     @{PROC}/cmdline r,
     @{PROC}/@{pid}/fd/ r,
     @{PROC}/@{pid}/mounts r,
@@ -199,6 +202,7 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
     /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/** ixr,
     /usr/src/linux-[0-9]*-{hardened,gentoo}*/tools/gcc/**.so m,
     /usr/portage/distfiles/{egit,git3}-src/** rwl,
+    /usr/portage/packages/{,**} rw,
     
     /var/ r,
     /var/tmp/ r,
@@ -315,6 +319,8 @@ profile portage.portageq /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq flags=(
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
+  
+  /dev/pts/[0-9]* w,
   
   /bin/bash Cx -> shell,
   
