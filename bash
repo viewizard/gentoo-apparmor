@@ -68,7 +68,7 @@ profile bash_users {
   /usr/bin/wine Pxr,
   /usr/bin/winecfg Pxr,
   /usr/bin/pamusb-agent Pxr,
-  /usr/bin/libnotify-notify-send Px,
+  /usr/bin/libnotify-notify-send Pxr,
   
   /etc/profile.env r,
   /etc/bash/bash_logout r,

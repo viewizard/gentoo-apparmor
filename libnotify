@@ -17,3 +17,22 @@ profile libnotify-notify-send /usr/bin/libnotify-notify-send {
   /usr/bin/libnotify-notify-send mr,
   
 }
+
+profile libnotify-notify-send-users /usr/bin/libnotify-notify-send-users {
+  #include <abstractions/base>
+  
+  capability sys_ptrace,
+  capability dac_override,
+  capability dac_read_search,
+  
+  /dev/tty rw,
+  /dev/pts/[0-9]* w,
+  @{PROC}/@{pid}/environ r,
+  
+  /usr/bin/libnotify-notify-send-users r,
+  /bin/bash mr,
+  /bin/grep ix,
+  /bin/su Px,
+  /usr/bin/pgrep Px,
+  
+}
