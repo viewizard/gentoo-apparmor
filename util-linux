@@ -210,3 +210,15 @@ profile util-linux.eject /usr/bin/eject flags=(complain) {
   /usr/bin/eject mr,
   
 }
+
+profile util-linux.blkid /sbin/blkid flags=(complain) {
+  #include <abstractions/base>
+  
+  /dev/* r,
+  /sys/devices/virtual/block/** r,
+  
+  /sbin/blkid mr,
+  
+  /run/blkid/blkid.tab* rwl,
+  
+}
