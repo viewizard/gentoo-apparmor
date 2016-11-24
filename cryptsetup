@@ -48,11 +48,15 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(complain) {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  /dev/null w,
+  
   /bin/bash Cx -> shell,
   /bin/rmdir ix,
   /bin/egrep ixr,
   /bin/grep ix,
   /bin/cat ix,
+  /bin/dd ix,
+  /bin/stty ix,
   /bin/mount Px,
   /bin/umount Px,
   /sbin/mkswap Px,

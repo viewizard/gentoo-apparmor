@@ -38,6 +38,7 @@ profile util-linux.mount /bin/mount flags=(complain) {
   /usr/bin/ntfs-3g Px,
   
   /etc/fstab r,
+  /etc/filesystems r,
   
   /run/mount/ w,
   /run/mount/utab rw,
@@ -144,16 +145,22 @@ profile util-linux.agetty /sbin/agetty {
 profile util-linux.fsck /sbin/fsck flags=(complain) {
   #include <abstractions/base>
   
+  /dev/ r,
+  /dev/{dm-,md}[0-9]* r,
   /dev/pts/[0-9]* w,
   /dev/sd{[a-z],[a-z][0-9]*} r,
-  /sys/devices/virtual/block/dm-[0-9]*/{,**} r,
+  /sys/block/ r,
+  /sys/devices/virtual/block/{dm-,md}[0-9]*/{,**} r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/sd[a-z]/{,**} r,
+  @{PROC}/partitions r,
   
   /sbin/fsck mr,
   /sbin/e2fsck Px,
   /usr/sbin/fsck.fat Px,
   
   /etc/fstab r,
+  
+  /run/blkid/blkid.tab* rwl,
   
 }
 

@@ -135,6 +135,7 @@ profile bash_root {
   /bin/head ixr,
   /bin/tail ixr,
   /bin/getfattr ixr,
+  /bin/cpio ixr,
   /sbin/mdadm Pxr,
   /sbin/shutdown Pxr,
   /sbin/{halt,poweroff,reboot} Pxr,
