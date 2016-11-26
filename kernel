@@ -20,3 +20,32 @@ profile kernel.sign-file /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/sign-f
   /lib{,32,64}/modules/[0-9]*-{hardened,gentoo}*/**.ko rw,
   
 }
+
+profile kernel.gen-ima-certs /usr/src/IMA/certs/* flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/user-tmp>
+  
+  /dev/tty rw,
+  
+  /bin/bash mr,
+  /bin/cat ix,
+  /usr/bin/openssl Cx -> openssl,
+  
+  /usr/src/IMA/certs/* rw,
+  
+  
+  profile openssl flags=(complain) {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    /dev/pts/[0-9]* w,
+    
+    /usr/bin/openssl mr,
+    
+    /etc/ssl/openssl.cnf r,
+    /usr/src/IMA/certs/* rw,
+    /root/.rnd rw,
+    
+  }
+  
+}

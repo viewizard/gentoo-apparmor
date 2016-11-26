@@ -136,6 +136,7 @@ profile bash_root {
   /bin/tail ixr,
   /bin/getfattr ixr,
   /bin/cpio ixr,
+  /bin/keyctl ixr,
   /sbin/mdadm Pxr,
   /sbin/shutdown Pxr,
   /sbin/{halt,poweroff,reboot} Pxr,
@@ -182,6 +183,7 @@ profile bash_root {
   /usr/bin/locale ixr,
   /usr/bin/ldd Pxr -> glibc_ldd_root,
   /usr/bin/evmctl Pxr -> ima_evm_utils_evmctl_root,
+  /usr/bin/gawk ixr,
   /usr/sbin/logcheck Pxr,
   /usr/sbin/aideinit Pxr,
   /usr/sbin/gdisk Pxr,
@@ -204,6 +206,7 @@ profile bash_root {
   /usr/local/sbin/** Pxr,
   /etc/init.d/* Pxr,
   /usr/src/linux-[0-9]*-hardened/scripts/sign-file Pxr,
+  /usr/src/IMA/certs/* Pxr,  # в профиле /etc/apparmor.d/kernel
   
   # don't use by default
   #/usr/sbin/sysctl Pxr,
