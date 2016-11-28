@@ -93,7 +93,6 @@ profile wine-preloader /usr/bin/wine-preloader {
   /usr/lib{,32,64}/wine/* m,
   /usr/share/wine/** rk,
   /usr/share/icons/** r,
-  /tmp/* m,
   
   owner @{HOME_CACHE}/winetricks/ r,
   owner @{HOME_CACHE}/winetricks/** rw,
@@ -125,8 +124,7 @@ profile wineserver /usr/bin/wineserver {
   /etc/mime.types r,
   /usr/bin/wineserver mr,
   /usr/share/wine/** rk,
-  /tmp/.wine-*/** m,
-  owner /tmp/.wine-*/** rwlk,
+  owner /tmp/.wine-*/** m,
   
   owner @{HOME}/.local/share/icons/hicolor/** w,
   owner @{HOME_CACHE}/winetricks/ r,

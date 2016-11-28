@@ -18,6 +18,7 @@ profile xfwm4 /usr/bin/xfwm4 {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/nameservice>
+  #include <abstractions/user-tmp>
   
   /dev/tty[0-9]* w,
   owner @{PROC}/@{pid}/fd/ r,
@@ -27,8 +28,6 @@ profile xfwm4 /usr/bin/xfwm4 {
   /usr/bin/pulseaudio Px,
   
   /usr/share/xfwm4/{,**} r,
-  
-  owner /tmp/.gl* mrw,
   
   owner @{HOME_CACHE}/sessions/{,xfwm4-*.state} rw,
   
