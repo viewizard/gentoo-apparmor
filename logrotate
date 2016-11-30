@@ -19,6 +19,8 @@ profile logrotate /usr/bin/logrotate {
   capability chown,
   capability fowner,
   
+  /dev/pts/[0-9]* w,
+  
   /usr/bin/logrotate mr,
   /bin/bash Cx -> shell,
   /usr/bin/xz ix,
@@ -43,6 +45,7 @@ profile logrotate /usr/bin/logrotate {
     
     /bin/bash mr,
     /bin/su Px,
+    /etc/init.d/syslog-ng Px,
     
   }
   

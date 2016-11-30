@@ -49,6 +49,7 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
   /dev/input/event[0-9]* r,
   /dev/snd/** w,
   /dev/{loop,md,dm-,sd[a-z]}{,[0-9]*} rk,
+  /dev/vg[0-9]*{,/*} w,
   /dev/{disk,input}/{,**} w,
   /dev/{block,char,mapper}/{,*} w,
   /dev/bus/usb/** w,
@@ -76,6 +77,7 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
   /lib{,32,64}/udev/net.sh Px,
   /lib{,32,64}/udev/nvidia-udev.sh Px,
   /lib{,32,64}/udev/ata_id Px,
+  /lib{,32,64}/udev/scsi_id Px,
   
   /etc/group r,
   /etc/udev/{,**} r,
@@ -114,6 +116,15 @@ profile eudev.ata_id /lib{,32,64}/udev/ata_id flags=(complain) {
   /dev/sd[a-z] r,
   
   /lib{,32,64}/udev/ata_id mr,
+  
+  /etc/udev/udev.conf r,
+  
+}
+
+profile eudev.scsi_id /lib{,32,64}/udev/scsi_id flags=(complain) {
+  #include <abstractions/base>
+  
+  /lib{,32,64}/udev/scsi_id mr,
   
   /etc/udev/udev.conf r,
   
