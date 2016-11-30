@@ -11,18 +11,22 @@
 #include <tunables/global>
 profile mdadm /sbin/mdadm flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/user-tmp>
   
   capability sys_admin,
   capability sys_rawio,
+  capability mknod,
   
   /dev/ r,
   /dev/** r,
   /dev/pts/[0-9]* rw,
+  /dev/.tmp.md.* w,
   /sys/bus/pci/drivers/ahci/ r,
   /sys/devices/pci[0-9]*/**/vendor r,
   /sys/devices/pci[0-9]*/**/device r,
+  /sys/devices/virtual/block/md[0-9]*/* r,
   /sys/devices/virtual/block/md[0-9]*/md/{,component_size,metadata_version} r,
-  /sys/devices/virtual/block/md[0-9]*/md/dev-sd[a-z][0-9]*/slot r,
+  /sys/devices/virtual/block/md[0-9]*/md/dev-sd[a-z][0-9]*/* r,
   /sys/devices/pci[0-9]*/**/ata[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/dev r,
   @{PROC}/mdstat r,
   @{PROC}/devices r,

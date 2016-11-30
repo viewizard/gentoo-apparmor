@@ -42,6 +42,8 @@ profile openrc /sbin/openrc flags=(complain) {
   
   /sbin/openrc mr,
   /bin/bash Cx -> shell,
+  /lib{,32,64}/rc/sh/init-early.sh Px,
+  /lib{,32,64}/rc/sh/init.sh Px,
   # All scripts from ALL runlevels must have profiles!
   /etc/init.d/* Pxr,
   /etc/conf.d/* r,
@@ -163,6 +165,7 @@ profile openrc.gendepends.sh /lib{,32,64}/rc/sh/gendepends.sh flags=(complain) {
   /bin/sed ixr,
   /bin/grep ixr,
   /sbin/openrc Px,
+  /sbin/lvm Px,
   /usr/bin/gawk ixr,
   
   /etc/rc.conf r,
@@ -175,10 +178,83 @@ profile openrc.gendepends.sh /lib{,32,64}/rc/sh/gendepends.sh flags=(complain) {
   /etc/terminfo/l/linux r,
   /etc/terminfo/x/xterm r,
   /usr/libexec/rc.apparmor.functions r,
+  
+  /run/openrc/scheduled/ r,
   /run/openrc/options/lvm/need r,
   
 }
 
+
+profile openrc.init-early.sh /lib{,32,64}/rc/sh/init-early.sh flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  capability sys_tty_config,
+  
+  /dev/tty rw,
+  /dev/null w,
+  /dev/console rw,
+  
+  /bin/bash mr,
+  /lib{,32,64}/rc/sh/init-early.sh r,
+  /usr/bin/setfont ix,
+  /usr/bin/loadkeys ix,
+  /usr/bin/kbd_mode ix,
+  
+}
+
+
+profile openrc.init.sh /lib{,32,64}/rc/sh/init.sh flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  capability chown,
+  
+  /dev/tty rw,
+  /dev/pts/[0-9]* w,
+  @{PROC}/@{pid}/mounts r,
+  @{PROC}/@{pid}/environ r,
+  
+  /bin/bash mr,
+  /bin/grep ix,
+  /bin/cp ix,
+  /usr/bin/md5sum ix,
+  /sbin/openrc Px,
+  /lib{,32,64}/rc/sh/init.sh r,
+  /lib{,32,64}/rc/bin/checkpath ix,
+  /lib{,32,64}/rc/bin/eval_ecolors ix,
+  /lib{,32,64}/rc/bin/einfo ix,
+  /lib{,32,64}/rc/bin/mountinfo ix,
+  
+  /etc/rc.conf r,
+  /etc/fstab r,
+  /etc/terminfo/l/linux r,
+  
+  /run/lock/ w,
+  /run/openrc/{,*} w,
+  
+}
+
+profile openrc.tmpfiles.sh /lib{,32,64}/rc/sh/tmpfiles.sh flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  capability chown,
+  
+  /dev/tty rw,
+  
+  /bin/bash mr,
+  /lib{,32,64}/rc/sh/tmpfiles.sh r,
+  /bin/sort ix,
+  /bin/mkdir ix,
+  /lib{,32,64}/rc/bin/checkpath ix,
+  
+  /usr/lib{,32,64}/tmpfiles.d/{,*} r,
+  
+  /run/tmpfiles.d/{,*} r,
+  /run/**/ w,
+  
+}
 
 profile openrc.netmount.init.d /etc/init.d/netmount flags=(complain) {
   #include <abstractions/base>
@@ -383,40 +459,6 @@ profile openrc.root.init.d /etc/init.d/root flags=(complain) {
 }
 
 
-profile openrc.root-ro.init.d /etc/init.d/root-ro flags=(complain) {
-  #include <abstractions/base>
-  #include <abstractions/nameservice>
-  #include <abstractions/openrc>
-  
-  capability chown,
-  capability fsetid,
-  capability fowner,
-  
-  /bin/bash Cx -> shell,
-  /bin/cat ix,
-  /bin/mkdir ix,
-  /bin/sed ix,
-  /bin/rm ix,
-  /bin/mount Px,
-  /usr/bin/rsync ix,
-  
-  /etc/init.d/root-ro r,
-  /{etc,media,mnt}/ r,
-  /{etc,media,mnt}/** rw,
-  /lib{,32,64}/rc/{,**} r,
-  /root/{,**} r,
-  
-  
-  profile shell flags=(complain) {
-    #include <abstractions/base>
-    #include <abstractions/nameservice>
-    #include <abstractions/openrc_shell>
-    
-  }
-  
-}
-
-
 profile openrc.mtab.init.d /etc/init.d/mtab flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
@@ -566,16 +608,11 @@ profile openrc.tmpfiles.init.d /etc/init.d/tmpfiles.setup flags=(complain) {
   capability chown,
   
   /bin/bash Cx -> shell,
-  /lib{,32,64}/rc/sh/tmpfiles.sh ix,
-  /bin/sort ix,
+  /lib{,32,64}/rc/sh/tmpfiles.sh Px,
   /usr/bin/find ix,
   
   /etc/init.d/tmpfiles.setup r,
   /etc/conf.d/tmpfiles r,
-  
-  / r,
-  /run/**/ rw,
-  /run/tmpfiles.d/kmod.conf r,
   
   
   profile shell flags=(complain) {
@@ -773,7 +810,7 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro flags=(complain) {
   /bin/bash Cx -> shell,
   
   /etc/init.d/mount-ro r,
-  /bin/sync Px,
+  /bin/sync ix,
   /bin/umount Px,
   
   
@@ -812,9 +849,18 @@ profile openrc.devfs.init.d /etc/init.d/devfs flags=(complain) {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  /dev/mqueue/ rw,
+  @{PROC}/@{pid}/mounts r,
+  
   /bin/bash Cx -> shell,
   
   /etc/init.d/devfs r,
+  /bin/grep ix,
+  /bin/mount Px,
+  /bin/umount Px,
+  
+  /etc/fstab r,
+  /etc/conf.d/devfs r,
   
   
   profile shell flags=(complain) {
@@ -832,9 +878,16 @@ profile openrc.dmesg.init.d /etc/init.d/dmesg flags=(complain) {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  capability syslog,
+  
   /bin/bash Cx -> shell,
   
   /etc/init.d/dmesg r,
+  /bin/dmesg ix,
+  
+  /etc/conf.d/dmesg r,
+  
+  /var/log/dmesg w,
   
   
   profile shell flags=(complain) {
@@ -855,6 +908,9 @@ profile openrc.kmod-static-nodes.init.d /etc/init.d/kmod-static-nodes flags=(com
   /bin/bash Cx -> shell,
   
   /etc/init.d/kmod-static-nodes r,
+  /bin/kmod Px,
+  
+  /run/tmpfiles.d/ w,
   
   
   profile shell flags=(complain) {
@@ -872,9 +928,18 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs flags=(complain) {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  /sys/fs/cgroup/*/{,**} w,
+  @{PROC}/cgroups r,
+  @{PROC}/@{pid}/mounts r,
+  
   /bin/bash Cx -> shell,
   
   /etc/init.d/sysfs r,
+  /bin/grep ix,
+  /bin/mount Px,
+  /bin/umount Px,
+  
+  /etc/fstab r,
   
   
   profile shell flags=(complain) {
@@ -896,6 +961,9 @@ profile openrc.tmpfiles.dev.init.d /etc/init.d/tmpfiles.dev flags=(complain) {
   
   /etc/init.d/tmpfiles.dev r,
   
+  /etc/conf.d/tmpfiles r,
+  /lib{,32,64}/rc/sh/tmpfiles.sh Px,
+  
   
   profile shell flags=(complain) {
     #include <abstractions/base>
@@ -912,9 +980,23 @@ profile openrc.udev.init.d /etc/init.d/udev flags=(complain) {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  capability sys_admin,
+  
+  @{PROC}/@{pid}/mounts r,
+  @{PROC}/sys/kernel/hotplug w,
+  
   /bin/bash Cx -> shell,
   
   /etc/init.d/udev r,
+  /bin/cat ix,
+  /bin/grep ix,
+  /bin/udevadm Px,
+  /sbin/udevd Px,
+  
+  /etc/fstab r,
+  /etc/conf.d/udev r,
+  
+  /run/udev/rules.d/*.rules w,
   
   
   profile shell flags=(complain) {

@@ -229,3 +229,11 @@ profile util-linux.blkid /sbin/blkid flags=(complain) {
   /run/blkid/blkid.tab* rwl,
   
 }
+
+profile util-linux.switch_root /sbin/switch_root flags=(complain) {
+  #include <abstractions/base>
+  
+  /sbin/switch_root mr,
+  /sbin/init Px,
+  
+}

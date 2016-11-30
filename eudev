@@ -12,13 +12,108 @@
 profile eudev.udevadm /bin/udevadm flags=(complain) {
   #include <abstractions/base>
   
+  /dev/input/event[0-9]* r,
+  /dev/snd/** w,
   /sys/bus/ r,
   /sys/class/ r,
-  /sys/class/block/ r,
+  /sys/module/ r,
+  /sys/class/*/ rw,
+  /sys/bus/**/{,uevent} rw,
+  /sys/module/*/uevent rw,
+  /sys/devices/**/uevent rw,
+  /sys/module/block/parameters/events_dfl_poll_msecs rw,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/sd[a-z]/** rw,
   /sys/devices/virtual/block/{dm-,md,loop,zd}[0-9]*/** rw,
   
   /bin/udevadm mr,
+  
+  /etc/udev/udev.conf r,
+  
+  /run/udev/tags/{,**} w,
+  
+}
+
+profile eudev.udevd /sbin/udevd flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  capability sys_admin,
+  capability sys_module,
+  capability sys_resource,
+  capability net_admin,
+  capability dac_override,
+  capability chown,
+  
+  /dev/* w,
+  /dev/pts/[0-9]* r,
+  /dev/input/event[0-9]* r,
+  /dev/snd/** w,
+  /dev/{loop,md,dm-,sd[a-z]}{,[0-9]*} rk,
+  /dev/{disk,input}/{,**} w,
+  /dev/{block,char,mapper}/{,*} w,
+  /dev/bus/usb/** w,
+  /sys/bus/pci/slots/ r,
+  /sys/**/uevent rw,
+  /sys/devices/pci[0-9]**/** r,
+  /sys/devices/virtual/** r,
+  /sys/devices/virtual/block/dm-[0-9]*/queue/scheduler w,
+  /sys/devices/pci[0-9]**/{ata,usb}[0-9]*/**/block/sd[a-z]/queue/scheduler w,
+  /sys/devices/**/input/input[0-9]*/{,capabilities/}* r,
+  /sys/devices/pnp[0-9]*/*/rtc/rtc[0-9]*/hctosys r,
+  /sys/module/block/parameters/events_dfl_poll_msecs rw,
+  @{PROC}/cmdline r,
+  @{PROC}/@{pid}/oom_score_adj rw,
+  
+  
+  /dev/pts/[0-9]* w,
+  
+  /sbin/udevd mr,
+  /bin/bash Cx -> shell,
+  /sbin/dmsetup Px,
+  /sbin/mdadm Px,
+  /sbin/lvm Px,
+  /usr/sbin/alsactl Px,
+  /lib{,32,64}/udev/net.sh Px,
+  /lib{,32,64}/udev/nvidia-udev.sh Px,
+  /lib{,32,64}/udev/ata_id Px,
+  
+  /etc/group r,
+  /etc/udev/{,**} r,
+  /etc/modprobe.d/{,*} r,
+  /lib{,32,64}/udev/rules.d/{,*} r,
+  /lib{,32,64}/modprobe.d/{,*} r,
+  /lib{,32,64}/modules/4.7.10-hardened/modules.{dep,alias,symbols,builtin}.bin r,
+  
+  /run/udev/control w,
+  /run/udev/rules.d/{,*} r,
+  /run/udev/queue rw,
+  /run/udev/tags/{,**} w,
+  /run/udev/{data,watch,links}/** rw,
+  /run/udev/watch{,.old}/{,[0-9]*} rw,
+  
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    /dev/tty rw,
+    
+    /bin/bash mr,
+    /bin/sed ix,
+    /sbin/mdadm Px,
+    
+  }
+  
+}
+
+profile eudev.ata_id /lib{,32,64}/udev/ata_id flags=(complain) {
+  #include <abstractions/base>
+  
+  capability sys_rawio,
+  
+  /dev/sd[a-z] r,
+  
+  /lib{,32,64}/udev/ata_id mr,
   
   /etc/udev/udev.conf r,
   

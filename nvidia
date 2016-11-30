@@ -76,11 +76,28 @@ profile nvidia-smi /opt/bin/nvidia-smi {
   #include <abstractions/nvidia>
   
   capability sys_admin,
+  capability mknod,
+  capability chown,
   
   /dev/nvidiactl rw,
   /dev/nvidia[0-9]* rw,
   @{PROC}/driver/nvidia/params r,
   
-  /opt/bin/nvidia-smi m,
+  /opt/bin/nvidia-smi mr,
+  
+}
+
+profile nvidia.nvidia-udev.sh /lib{,32,64}/udev/nvidia-udev.sh {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  /dev/tty rw,
+  /dev/null w,
+  
+  /lib{,32,64}/udev/nvidia-udev.sh r,
+  /bin/bash mr,
+  /bin/kmod Px,
+  /bin/grep ix,
+  /opt/bin/nvidia-smi Px,
   
 }

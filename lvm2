@@ -19,6 +19,19 @@ profile lvm2.lvmetad /sbin/lvmetad flags=(complain) {
   
 }
 
+profile lvm2.dmsetup /sbin/dmsetup flags=(complain) {
+  #include <abstractions/base>
+  
+  capability sys_admin,
+  
+  /dev/mapper/control rw,
+  @{PROC}/devices r,
+  
+  /sbin/dmsetup mr,
+  
+  /etc/udev/udev.conf r,
+  
+}
 
 profile lvm2.dmeventd /sbin/dmeventd flags=(complain) {
   #include <abstractions/base>

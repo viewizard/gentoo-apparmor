@@ -12,6 +12,8 @@
 profile sysvinit.halt /sbin/{halt,poweroff,reboot} {
   #include <abstractions/base>
   
+  capability sys_boot,
+  
   /sbin/{halt,poweroff,reboot} mr,
   /sbin/shutdown Px,
   
@@ -31,6 +33,7 @@ profile sysvinit.shutdown /sbin/shutdown {
   
   /dev/tty[0-9]* w,
   /dev/initctl w,
+  /dev/pts/[0-9]* w,
   
   /sbin/shutdown mr,
   /sbin/init Px,
@@ -43,10 +46,28 @@ profile sysvinit.shutdown /sbin/shutdown {
 profile sysvinit.init /sbin/init {
   #include <abstractions/base>
   
+  capability sys_boot,
+  capability sys_admin,
+  capability sys_tty_config,
+  capability kill,
+  
+  /dev/tty[0-9]* rw,
   /dev/initctl rw,
   /dev/console rw,
   
   /sbin/init mr,
+  /sbin/openrc Px,
+  /sbin/{halt,poweroff,reboot} Px,
+  /sbin/agetty Px,
+  /sbin/shutdown Px,
+#  /sbin/sulogin Px,
+#  /etc/X11/startDM.sh Px,
+  
+  /etc/inittab r,
+  
+  /run/utmp rwk,
+  
+  /var/log/wtmp wk,
   
 }
 

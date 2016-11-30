@@ -66,3 +66,15 @@ profile netifrc.init.d /etc/init.d/net.* flags=(complain) {
   }
   
 }
+
+profile netifrc.net.sh /lib{,32,64}/udev/net.sh flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  /dev/tty rw,
+  
+  /lib{,32,64}/udev/net.sh r,
+  /bin/bash mr,
+  /etc/init.d/net.* Px,
+  
+}
