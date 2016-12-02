@@ -77,3 +77,31 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   }
   
 }
+
+profile xorg-server.Xephyr /usr/bin/Xephyr flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/fonts>
+  #include <abstractions/user-tmp>
+  
+  /dev/pts/[0-9]* w,
+  
+  /usr/bin/Xephyr mr,
+  /bin/bash Cx -> shell,
+  
+  /usr/lib64/mesa/swrastg_dri.so m,
+  /usr/share/X11/xkb/rules/evdev r,
+  
+  owner @{HOME}/.Xauthority r,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    
+    /bin/bash mr,
+    /usr/bin/xkbcomp Px,
+    
+  }
+  
+}

@@ -21,6 +21,7 @@ profile xfwm4 /usr/bin/xfwm4 {
   #include <abstractions/user-tmp>
   
   /dev/tty[0-9]* w,
+  /dev/pts/[0-9]* w,
   owner @{PROC}/@{pid}/fd/ r,
   
   /usr/bin/xfwm4 mr,
