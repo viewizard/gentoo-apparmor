@@ -90,12 +90,14 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
     capability fsetid,
     capability setfcap,
     capability sys_admin,
+    capability sys_ptrace,
     
     /dev/tty rw,
     /dev/pts/[0-9]* rw,
     /dev/initctl w,
     /sys/devices/system/cpu/ r,
     @{PROC}/cmdline r,
+    @{PROC}/@{pid}/environ r,
     @{PROC}/@{pid}/fd/ r,
     @{PROC}/@{pid}/fd/[0-9]* w,
     @{PROC}/@{pid}/{mounts,mountinfo} r,
@@ -121,6 +123,7 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
     /usr/libexec/** ixr,
     /usr/x86_64-pc-linux-gnu/** ixr,
     /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/** ixr,
+    /lib{,32,64}/rc/sh/gendepends.sh Px,
     
     /usr/bin/dumpcap w,
     
@@ -134,15 +137,19 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
     /lib{,32,64}/* rwl,
     /lib{,32,64}/modules/*-{hardened,gentoo}*/modules.* rw,
     /lib{,32,64}/rc/bin/* ix,
-    /run/mount/utab rw,
+    
     /var/db/pkg/ r,
     /var/db/pkg/** rw,
-    
     /var/tmp/portage/ rw,
     /var/tmp/portage/** rwkix,
     /var/cache/** rwl,
     /var/lib/*/ rw,
     /var/lib/*/** rwkl,
+    
+    /run/mount/utab rw,
+    /run/openrc/* r,
+    /run/openrc/deptree w,
+    /run/openrc/depconfig w,
     
   }
   
@@ -192,6 +199,7 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
     
     /bin/bash mr,
     
+    / r,
     /bin/ r,
     /bin/** ixr,
     /sbin/ r,
@@ -221,8 +229,6 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
     /var/db/pkg/{,**} r,
     /var/cache/{,**} r,
     
-    # Noisy
-    deny / r,
   }
   
 }
