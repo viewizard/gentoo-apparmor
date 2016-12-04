@@ -20,6 +20,7 @@ profile chkrootkit /usr/sbin/chkrootkit {
   
   /dev/{,**} r,
   /dev/tty rw,
+  @{PROC}/@{pid}/fd/* r,
   @{PROC}/@{pid}/net/* r,
   
   /bin/bash Cxmr -> shell,

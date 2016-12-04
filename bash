@@ -185,6 +185,7 @@ profile bash_root {
   /usr/bin/ldd Pxr -> glibc_ldd_root,
   /usr/bin/evmctl Pxr -> ima_evm_utils_evmctl_root,
   /usr/bin/gawk ixr,
+  /usr/bin/patch ixr,
   /usr/sbin/logcheck Pxr,
   /usr/sbin/aideinit Pxr,
   /usr/sbin/gdisk Pxr,

@@ -10,25 +10,22 @@
 
 #include <tunables/global>
 profile skype /opt/bin/skype {
-  #include <abstractions/audio>
-  #include <abstractions/video>
   #include <abstractions/base>
   #include <abstractions/fonts>
   #include <abstractions/freedesktop.org>
   #include <abstractions/gtk>
   #include <abstractions/qt>
+  #include <abstractions/audio-pulseaudio-strict>
+  #include <abstractions/video>
   #include <abstractions/nameservice>
   #include <abstractions/nvidia>
   #include <abstractions/ssl_certs>
-  #include <abstractions/user-tmp>
   #include <abstractions/user-download>
   #include <abstractions/user-upload>
   #include <abstractions/X>
   #include <abstractions/xdg-open>
   
   /dev/ r,
-  owner /{dev,run}/shm/pulse-shm* m,
-  /dev/snd/* m,
   /dev/video* m,
   /sys/devices/**/power_supply/**/online r,
   /sys/class/power_supply/ r,
@@ -47,28 +44,20 @@ profile skype /opt/bin/skype {
   
   /usr/share/skype/** rk,
   /usr/share/skype/**/*.qm mr,
-  /usr/share/skype/sounds/*.wav rk,
   
   owner @{HOME}/.Skype/ rw,
   owner @{HOME}/.Skype/** rwk,
   owner @{HOME}/.config/ r,
-  owner @{HOME}/.config/Skype/Skype.conf rwk,
+  owner @{HOME}/.config/Skype/{,**} rwk,
   owner @{HOME}/.config/Trolltech.conf rk,
   
-#  # Skype traverses the .mozilla directory and needs access to prefs.js
-#  owner @{HOME}/.mozilla/ r,
-#  owner @{HOME}/.mozilla/**/ r,
-#  owner @{HOME}/.mozilla/*/*/prefs.js r,
-  deny @{HOME}/.mozilla/{,**} r,
+  owner /tmp/qtsingleapp-*{,-lockfile} rwk,
+  owner /tmp/skype-*/{,**} rwk,
   
-  # Skype also looks around in these directories
-  /{,usr/,usr/local/}lib/ r,
-  
-  # Recent skype builds have an executable stack, so it tries to mmap certain
-  # files. Let's deny them for now.
   deny /etc/passwd m,
   deny /etc/group m,
   deny /usr/share/fonts/** m,
   deny /etc/fstab r,
+  deny @{HOME}/.mozilla/{,**} r,
   
 }

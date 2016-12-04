@@ -1,0 +1,30 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+
+/dev/shm/ r,
+owner /dev/shm/pulse-shm* rwk,
+
+/etc/machine-id r,
+/etc/pulse/ r,
+/etc/pulse/* r,
+
+owner @{HOME}/.pulse-cookie rwk,
+owner @{HOME}/.config/pulse/cookie rk,
+owner @{HOME}/.pulse/ rw,
+owner @{HOME}/.pulse/* rwk,
+owner @{HOME}/.config/pulse/ rw,
+owner @{HOME}/.config/pulse/* rwk,
+
+owner /{,var/}run/user/*/pulse/  rw,
+owner /{,var/}run/user/*/pulse/{native,pid} rwk,
+
+owner /tmp/pulse-*/ rw,
+owner /tmp/pulse-*/* rw,
