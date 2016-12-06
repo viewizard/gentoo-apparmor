@@ -23,6 +23,8 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
   capability setgid,
   capability fowner,
   capability sys_admin,
+  capability kill,
+  capability setfcap,
   
   /dev/tty rw,
   /dev/ptmx rw,
@@ -75,6 +77,7 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
   # Noisy
   deny /root/ r,
   deny @{HOMEDIRS}/** r,
+  deny /lib64/ w,
   
   
   profile shell flags=(complain) {
