@@ -19,6 +19,8 @@ profile polkit-gnome /usr/libexec/polkit-gnome-authentication-agent-1 {
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
   
+  capability setuid,
+  
   /dev/tty[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
   
