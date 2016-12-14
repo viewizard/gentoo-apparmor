@@ -87,7 +87,6 @@ profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
   
   /dev/tty rw,
@@ -101,5 +100,7 @@ profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd {
   /usr/bin/xfdesktop Px,
   
   /etc/xdg/autostart/xfsettingsd.desktop r,
+  
+  owner /tmp/file* rw,
   
 }
