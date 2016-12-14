@@ -33,7 +33,6 @@ profile evelauncher /home/*/evelauncher/evelauncher {
   #include <abstractions/qt>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   #include <abstractions/ssl_certs>
@@ -68,6 +67,11 @@ profile evelauncher /home/*/evelauncher/evelauncher {
   owner @{HOME}/.local/share/CCP/{,**} rwk,
   owner @{HOME}/.pki/nssdb/{,**} rwk,
   owner @{HOME_CACHE}/CCP/{,**} rw,
+  
+  /tmp/ r,
+  owner /tmp/.gl* rw,
+  /var/tmp/ r,
+  owner /var/tmp/etilqs_* rw,
   
 }
 

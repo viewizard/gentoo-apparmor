@@ -20,7 +20,6 @@ profile codeblocks /usr/bin/codeblocks {
   #include <abstractions/fonts>
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
-  #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
@@ -51,11 +50,14 @@ profile codeblocks /usr/bin/codeblocks {
   owner @{HOME}/.config/codeblocks/{,*} rw,
   owner @{HOME}/.local/share/codeblocks/{,**} rw,
   
+  owner /tmp/wxbf* rw,
+  owner /tmp/CODEBLOCKS*.socket rw,
+  owner /tmp/Code::Blocks-* rwk,
+  
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
-    #include <abstractions/user-tmp>
     #include <abstractions/program-work-with-disk-rwk>
     
     /dev/tty rw,
@@ -73,6 +75,8 @@ profile codeblocks /usr/bin/codeblocks {
     /{etc,usr,usr/local}/portage/** r,
     /usr/share/portage/config/* r,
     /usr/include/** r,
+    
+    owner /tmp/cc*.{s,c,res,o,le,ld} rw,
     
   }
   

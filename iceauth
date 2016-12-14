@@ -9,12 +9,13 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile iceauth /usr/bin/iceauth {
+profile iceauth /usr/bin/iceauth flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/user-tmp>
   
   /usr/bin/iceauth mr,
   
   owner @{HOME}/.ICEauthority* rwl,
+  
+  owner /tmp/.xfsm-ICE-* rw,
   
 }

@@ -21,7 +21,6 @@ profile pidgin /usr/bin/pidgin {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/nameservice>
-  #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/private-files-strict>
   #include <abstractions/ssl_certs>
@@ -46,5 +45,8 @@ profile pidgin /usr/bin/pidgin {
   
   owner @{HOME}/.purple/ rw,
   owner @{HOME}/.purple/** mrwk,
+  
+  /tmp/ r,
+  /var/tmp/ r,
   
 }

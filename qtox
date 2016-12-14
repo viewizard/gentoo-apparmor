@@ -17,7 +17,6 @@ profile qtox /usr/bin/qtox {
   #include <abstractions/qt>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/user-tmp>
   #include <abstractions/user-download>
   #include <abstractions/user-upload>
   #include <abstractions/nameservice>
@@ -33,5 +32,8 @@ profile qtox /usr/bin/qtox {
   owner @{HOME_CACHE}/Tox/qTox/qtox.log w,
   owner @{HOME}/.config/tox/ rw,
   owner @{HOME}/.config/tox/** rwk,
+  
+  owner /tmp/qipc_systemsem_qtox* rw,
+  owner /tmp/qipc_sharedmemory_qtox* rw,
   
 }

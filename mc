@@ -18,7 +18,6 @@ profile mc /usr/bin/mc {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk>
-  #include <abstractions/user-tmp>
   
   capability setuid,
   
@@ -46,7 +45,6 @@ profile mc_root flags=(complain) {
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/user-systemwide-files>
-  #include <abstractions/user-tmp>
   
   capability setuid,
   

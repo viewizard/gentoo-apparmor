@@ -22,7 +22,6 @@ profile mousepad /usr/bin/mousepad {
   #include <abstractions/gtk>
   #include <abstractions/cups-client>
   #include <abstractions/nvidia>
-  #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/dconf>
   #include <abstractions/nameservice>
@@ -39,9 +38,11 @@ profile mousepad /usr/bin/mousepad {
   /usr/bin/mousepad mr,
   
   /usr/share/gtksourceview-2.0/** r,
-  /tmp/libgksu-*/.Xauthority r,
+  
   owner @{HOME}/.config/Mousepad/ rw,
   owner @{HOME}/.config/Mousepad/* rwk,
+  
+  /tmp/libgksu-*/.Xauthority r,
   
 }
 
@@ -54,7 +55,6 @@ profile mousepad_root {
   #include <abstractions/gtk>
   #include <abstractions/cups-client>
   #include <abstractions/nvidia>
-  #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/dconf>
   #include <abstractions/nameservice>
@@ -71,8 +71,10 @@ profile mousepad_root {
   /usr/bin/mousepad mr,
   
   /usr/share/gtksourceview-2.0/** r,
-  /tmp/libgksu-*/.Xauthority r,
+  
   owner @{HOME}/.config/Mousepad/ rw,
   owner @{HOME}/.config/Mousepad/* rwk,
+  
+  /tmp/libgksu-*/.Xauthority r,
   
 }

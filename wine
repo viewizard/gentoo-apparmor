@@ -18,7 +18,6 @@ profile wine /usr/bin/wine {
   #include <abstractions/nameservice>
   #include <abstractions/p11-kit>
   #include <abstractions/private-files-strict>
-  #include <abstractions/user-tmp>
   #include <local/wine-custom-locations>
   
   capability sys_ptrace,
@@ -64,7 +63,6 @@ profile wine-preloader /usr/bin/wine-preloader {
   #include <abstractions/private-files-strict>
   #include <abstractions/X>
   #include <abstractions/nvidia>
-  #include <abstractions/user-tmp>
   #include <local/wine-custom-locations>
   
   /dev/tty[0-9]* w,
@@ -97,6 +95,9 @@ profile wine-preloader /usr/bin/wine-preloader {
   owner @{HOME_CACHE}/winetricks/ r,
   owner @{HOME_CACHE}/winetricks/** rw,
   
+  owner /tmp/.gl* rw,
+  owner /tmp/.wine-[0-9]*/server-*-*/{,lock} r,
+  
   # Noisy
   deny / r,
   deny /etc/fstab r,
@@ -114,21 +115,25 @@ profile wineserver /usr/bin/wineserver {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/private-files-strict>
-  #include <abstractions/user-tmp>
   #include <local/wine-custom-locations>
   
   capability sys_ptrace,
   
+  /dev/tty[0-9]* w,
   owner @{PROC}/@{pid}/mem r,
   
   /etc/mime.types r,
   /usr/bin/wineserver mr,
   /usr/share/wine/** rk,
-  owner /tmp/.wine-*/** m,
   
   owner @{HOME}/.local/share/icons/hicolor/** w,
   owner @{HOME_CACHE}/winetricks/ r,
   owner @{HOME_CACHE}/winetricks/** rw,
+  
+  owner /tmp/.wine-[0-9]*/ rw,
+  owner /tmp/.wine-[0-9]*/server-*-*/ rw,
+  owner /tmp/.wine-[0-9]*/server-*-*/{lock,socket} rwk,
+  owner /tmp/.wine-[0-9]*/server-*-*/anonmap.* mrw,
   
   # Noisy
   deny / r,

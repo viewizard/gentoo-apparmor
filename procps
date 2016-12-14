@@ -9,10 +9,9 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile procps.ps /bin/ps {
+profile procps.ps /bin/ps flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-  #include <abstractions/user-tmp>
   
   capability sys_ptrace,
   capability dac_override,

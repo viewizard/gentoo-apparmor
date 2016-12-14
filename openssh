@@ -9,12 +9,15 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile openssh.ssh-agent /usr/bin/ssh-agent {
+profile openssh.ssh-agent /usr/bin/ssh-agent flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/user-tmp>
+  
+  capability setgid,
   
   /usr/bin/ssh-agent mr,
   
   /etc/ssl/openssl.cnf r,
+  
+  owner /tmp/ssh-*/{,agent.*} rw,
   
 }

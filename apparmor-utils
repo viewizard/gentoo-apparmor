@@ -31,7 +31,6 @@ profile apparmor-utils.aa-status /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-statu
 profile apparmor-utils.aa-unconfined /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-unconfined {
   #include <abstractions/base>
   #include <abstractions/python>
-  #include <abstractions/user-tmp>
   
   capability sys_ptrace,
   
@@ -47,6 +46,8 @@ profile apparmor-utils.aa-unconfined /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-u
   /etc/inputrc r,
   /etc/terminfo/x/xterm r,
   /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/*.pyc w,
+  
+  owner /tmp/{,tmp}?????? rw,
   
   
   profile shell flags=(complain) {
@@ -71,7 +72,6 @@ profile apparmor-utils.aa-unconfined /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-u
 profile apparmor-utils.aa-complain /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-complain {
   #include <abstractions/base>
   #include <abstractions/python>
-  #include <abstractions/user-tmp>
   
   /dev/pts/[0-9]* w,
   
@@ -84,6 +84,8 @@ profile apparmor-utils.aa-complain /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-com
   /etc/apparmor.d/{,**} r,
   /etc/apparmor.d/* w,
   /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/*.pyc w,
+  
+  owner /tmp/{,tmp}?????? rw,
   
 }
 
@@ -91,7 +93,6 @@ profile apparmor-utils.aa-complain /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-com
 profile apparmor-utils.aa-enforce /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-enforce {
   #include <abstractions/base>
   #include <abstractions/python>
-  #include <abstractions/user-tmp>
   
   /dev/pts/[0-9]* w,
   
@@ -105,13 +106,14 @@ profile apparmor-utils.aa-enforce /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-enfo
   /etc/apparmor.d/* w,
   /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/*.pyc w,
   
+  owner /tmp/{,tmp}?????? rw,
+  
 }
 
 
 profile apparmor-utils.aa-disable /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-disable {
   #include <abstractions/base>
   #include <abstractions/python>
-  #include <abstractions/user-tmp>
   
   /dev/pts/[0-9]* w,
   
@@ -124,5 +126,7 @@ profile apparmor-utils.aa-disable /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-disa
   /etc/apparmor.d/{,**} r,
   /etc/apparmor.d/disable/* w,
   /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/*.pyc w,
+  
+  owner /tmp/{,tmp}?????? rw,
   
 }

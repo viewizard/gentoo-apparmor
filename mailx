@@ -9,9 +9,8 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile mailx /usr/bin/{mail,Mail,mailx} {
+profile mailx /usr/bin/{mail,Mail,mailx} flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/user-tmp>
   
   capability setuid,
   capability setgid,

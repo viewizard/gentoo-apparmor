@@ -16,7 +16,6 @@ profile xfce4-session /usr/bin/xfce4-session {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
   #include <abstractions/dbus-session>
   #include <abstractions/executable-binary-programs>
@@ -39,6 +38,8 @@ profile xfce4-session /usr/bin/xfce4-session {
   /usr/bin/pkexec Px,
   /usr/bin/gnome-keyring-daemon Px,
   /usr/bin/xfdesktop Px,
+  /usr/bin/xfwm4 Px,
+  /usr/bin/xfce4-panel Px,
   /usr/libexec/polkit-gnome-authentication-agent-1 Px,
   /usr/libexec/vino-server Px,
   
@@ -54,6 +55,9 @@ profile xfce4-session /usr/bin/xfce4-session {
   owner @{HOME_CACHE}/sessions/{,*} rw,
   owner @{HOME_CACHE}/sessions/thumbs*/{,*.png} rw,
   owner @{HOME_CACHE}/gpg-agent-info rw,
+  
+  owner /tmp/.ICE-unix/* w,
+  owner /tmp/.xfsm-ICE-* rw,
   
   
   profile shell {
@@ -82,6 +86,7 @@ profile xfce4-session /usr/bin/xfce4-session {
     /usr/bin/xfce4-panel Px,
     /usr/bin/thunar Px,
     /usr/bin/xfdesktop Px,
+    /usr/bin/cairo-clock Px,
     
   }
   
@@ -138,6 +143,7 @@ profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
   #include <abstractions/X>
   
   /dev/tty rw,
+  /dev/tty[0-9]* w,
   
   /usr/bin/startxfce4 mr,
   /bin/bash Cxmr -> shell,

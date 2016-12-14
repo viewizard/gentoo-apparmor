@@ -21,11 +21,9 @@ profile xfce4-screenshooter /usr/bin/xfce4-screenshooter {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/executable-binary-helper>
-  #include <abstractions/user-tmp>
   
   /dev/tty[0-9]* w,
   @{PROC}/@{pid}/fd/ r,
@@ -35,5 +33,7 @@ profile xfce4-screenshooter /usr/bin/xfce4-screenshooter {
   
   owner @{HOME}/.config/xfce4/xfce4-screenshooter* rw,
   owner @{HOME}/.config/xfce4/help.rc r,
+  
+  owner /tmp/*_????-??-??_??-??-??.png rw,
   
 }

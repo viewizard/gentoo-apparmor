@@ -9,11 +9,10 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile pulseaudio /usr/bin/pulseaudio {
+profile pulseaudio /usr/bin/pulseaudio flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/audio>
   #include <abstractions/dbus-session>
-  #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/nameservice>
   
@@ -60,6 +59,11 @@ profile pulseaudio.pactl /usr/bin/pactl {
   #include <abstractions/audio>
   #include <abstractions/X>
   #include <abstractions/dbus-session>
+  
+  capability dac_read_search,
+  capability dac_override,
+  
+  /dev/tty[0-9]* w,
   
   owner @{PROC}/@{pid}/fd/ r,
   

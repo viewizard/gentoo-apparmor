@@ -22,7 +22,6 @@ profile qpdfview /usr/bin/qpdfview {
   #include <abstractions/qt>
   #include <abstractions/cups-client>
   #include <abstractions/nvidia>
-  #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/xdg-open>
   #include <abstractions/program-work-with-disk-rwk>
@@ -39,5 +38,7 @@ profile qpdfview /usr/bin/qpdfview {
   owner @{HOME}/.local/share/data/qpdfview/** rwk,
   owner @{HOME}/.config/qpdfview/ rw,
   owner @{HOME}/.config/qpdfview/* rwk,
+  
+  owner /tmp/qt_temp.@{PROG_FILE} rw,
   
 }

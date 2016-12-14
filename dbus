@@ -53,10 +53,13 @@ profile dbus-launch /usr/bin/dbus-launch {
   #include <abstractions/X>
   #include <abstractions/dbus-session>
   
+  /dev/tty[0-9]* w,
+  
   /usr/bin/dbus-launch mr,
   /bin/bash Cx -> shell,
   /usr/bin/dbus-daemon Px,
   /usr/bin/xfce4-session Px,
+  /etc/X11/Sessions/Xfce4 Px,
   
   owner @{HOME}/.dbus/{,**} rw,
   
@@ -83,6 +86,9 @@ profile dbus-run-session /usr/bin/dbus-run-session flags=(complain) {
 
 profile dbus-send /usr/bin/dbus-send flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/dbus-session>
+  
+  owner @{PROC}/@{pid}/fd/ r,
   
   /usr/bin/dbus-send mr,
   

@@ -21,7 +21,6 @@ profile poedit /usr/bin/poedit {
   #include <abstractions/gtk>
   #include <abstractions/enchant>
   #include <abstractions/nvidia>
-  #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/xdg-open>
@@ -39,5 +38,8 @@ profile poedit /usr/bin/poedit {
   /usr/share/poedit/{,**} r,
   
   owner @{HOME}/.poedit/{,*} rw,
+  
+  owner /tmp/poedit*/ w,
+  owner /tmp/poedit*/*validated* rw,
   
 }

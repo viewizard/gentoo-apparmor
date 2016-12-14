@@ -12,7 +12,6 @@
 profile xorg-server.Xorg /usr/bin/Xorg {
   #include <abstractions/base>
   #include <abstractions/fonts>
-  #include <abstractions/user-tmp>
   
   capability sys_admin,
   capability sys_rawio,
@@ -58,13 +57,17 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   /etc/X11/xorg.conf.d/{,*} r,
   /usr/share/X11/{,**} r,
   
-  owner @{HOME}/.serverauth* r,
-  
-  /var/log/Xorg.[0-9]*.log{,.old} rw,
-  
-  /tmp/server-*.xkm rw,
   /run/udev/data/* r,
   
+  owner @{HOME}/.serverauth* r,
+  
+  /var/log/Xorg.[0-9].log{,.old} rw,
+  
+  owner /tmp/.tX[0-9]-lock w,
+  owner /tmp/.X[0-9]-lock wl,
+  owner /tmp/.X11-unix/X[0-9] w,
+  /tmp/server-[0-9].xkm rw,
+  /var/lib/xkb/server-[0-9].xkm rw,
   
   profile shell {
     #include <abstractions/base>
@@ -81,7 +84,6 @@ profile xorg-server.Xorg /usr/bin/Xorg {
 profile xorg-server.Xephyr /usr/bin/Xephyr flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/fonts>
-  #include <abstractions/user-tmp>
   
   /dev/pts/[0-9]* w,
   
@@ -93,6 +95,8 @@ profile xorg-server.Xephyr /usr/bin/Xephyr flags=(complain) {
   
   owner @{HOME}/.Xauthority r,
   
+  # tmp работать только с дисплеями 10 и выше
+  # 0-9 закреплены за xorg-server
   
   profile shell {
     #include <abstractions/base>

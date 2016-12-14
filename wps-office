@@ -22,7 +22,6 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   #include <abstractions/qt>
   #include <abstractions/nvidia>
   #include <abstractions/cups-client>
-  #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/xdg-open>
   #include <abstractions/program-work-with-disk-rwk>
@@ -54,6 +53,15 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   owner @{HOME}/.kingsoft/office6/** rwk,
   owner @{HOME}/.local/share/data/Kingsoft/ rw,
   owner @{HOME}/.local/share/data/Kingsoft/** rwk,
+  
+  owner /tmp/????????????? rw,
+  owner /tmp/qt_temp.* rw,
+  owner /tmp/~wp* rw,
+  owner /tmp/~tmp*.TMP rw,
+  owner /tmp/wps-*/{,*} rw,
+  owner /tmp/renderlog w,
+  owner /tmp/qipc_systemsem_{wps,et,wpp}starupobject{,2d}* rw,
+  owner /tmp/qipc_sharedmemory_{wps,et,wpp}starupobject{,2d}* rw,
   
   # Noisy
   deny /opt/kingsoft/wps-office/office6/startup/ w,

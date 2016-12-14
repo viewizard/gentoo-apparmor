@@ -18,7 +18,9 @@ profile xfwm4 /usr/bin/xfwm4 {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/nameservice>
-  #include <abstractions/user-tmp>
+  
+  capability dac_read_search,
+  capability dac_override,
   
   /dev/tty[0-9]* w,
   /dev/pts/[0-9]* w,
@@ -31,6 +33,9 @@ profile xfwm4 /usr/bin/xfwm4 {
   /usr/share/xfwm4/{,**} r,
   
   owner @{HOME_CACHE}/sessions/{,xfwm4-*.state} rw,
+  owner @{HOME}/.config/xfce4/xfwm4/ rw,
+  
+  owner /tmp/.gl* rw,
   
 }
 

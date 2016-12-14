@@ -22,7 +22,6 @@ profile smplayer /usr/bin/smplayer {
   #include <abstractions/gtk>
   #include <abstractions/qt>
   #include <abstractions/nvidia>
-  #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/program-work-with-disk-rk>
   #include <abstractions/nameservice>
@@ -44,5 +43,7 @@ profile smplayer /usr/bin/smplayer {
   owner @{HOME}/.config/smplayer/** rwk,
   owner @{HOME}/mplayer.log rw,
   owner @{HOME}/.mplayer/{,config} rw,
+  
+  owner /tmp/qtsingleapp-smplay-*-*{,-lockfile} rwk,
   
 }

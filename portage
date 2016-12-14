@@ -13,7 +13,6 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
-  #include <abstractions/user-tmp>
   
   capability dac_override,
   capability dac_read_search,
@@ -84,7 +83,6 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
     #include <abstractions/base>
     #include <abstractions/python>
     #include <abstractions/nameservice>
-    #include <abstractions/user-tmp>
     
     capability dac_override,
     capability dac_read_search,
@@ -161,7 +159,6 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
     #include <abstractions/freedesktop.org>
     #include <abstractions/fonts>
     #include <abstractions/nameservice>
-    #include <abstractions/user-tmp>
     
     capability dac_override,
     capability dac_read_search,
@@ -287,7 +284,6 @@ profile portage.dispatch-conf /usr/lib{,32,64}/python-exec/@{PYTHON}/dispatch-co
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
-  #include <abstractions/user-tmp>
   
   capability dac_override,
   
@@ -307,10 +303,11 @@ profile portage.dispatch-conf /usr/lib{,32,64}/python-exec/@{PYTHON}/dispatch-co
   
   /etc/{,**} rw,
   
+  owner /tmp/dispatch-conf.*/ rw,
+  
   
   profile shell flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/user-tmp>
     
     capability dac_override,
     capability dac_read_search,
@@ -367,7 +364,6 @@ profile portage.portageq /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq flags=(
 profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-  #include <abstractions/user-tmp>
   
   capability dac_override,
   
@@ -396,6 +392,9 @@ profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
   /etc/ r,
   /etc/** rw,
   /usr/share/gnupg/ r,
+  
+  owner /var/tmp/etc-update-*/{,files/} rw,
+  owner /var/tmp/etc-update-*/.diff-test-[0-9]* rw,
   
   
   profile portageq {

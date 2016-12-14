@@ -537,7 +537,6 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
-  #include <abstractions/user-tmp>
   
   capability fsetid,
   capability syslog,
@@ -565,6 +564,11 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(complain) {
   /var/log/dmesg w,
   /var/log/wtmp w,
   /run/utmp w,
+  
+  owner /tmp/tmp.*/ w,
+  owner /tmp/tmp.*/run/ r,
+  owner /tmp/.ICE-unix/ w,
+  owner /tmp/.X11-unix/ w,
   
   
   profile shell flags=(complain) {

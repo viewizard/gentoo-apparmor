@@ -18,9 +18,8 @@ profile nullmailer.sendmail /usr/sbin/sendmail {
 }
 
 
-profile nullmailer-inject /usr/bin/nullmailer-inject {
+profile nullmailer-inject /usr/bin/nullmailer-inject flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/user-tmp>
   
   capability dac_read_search,
   capability dac_override,

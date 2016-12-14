@@ -22,7 +22,6 @@ profile filezilla /usr/bin/filezilla {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/user-tmp>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
@@ -41,7 +40,6 @@ profile filezilla /usr/bin/filezilla {
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
-    #include <abstractions/user-tmp>
     #include <abstractions/program-work-with-disk-rwk>
     
     /dev/tty rw,
@@ -58,6 +56,8 @@ profile filezilla /usr/bin/filezilla {
     /bin/ps Px,
     
     /etc/{os,lsb}-release r,
+    
+    /tmp/ r,
     
     # Noisy
     deny /etc/ r,

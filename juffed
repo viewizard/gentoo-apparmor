@@ -22,7 +22,6 @@ profile juffed /usr/bin/juffed {
   #include <abstractions/qt>
   #include <abstractions/nvidia>
   #include <abstractions/cups-client>
-  #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/dbus-session>
   #include <abstractions/program-work-with-disk-rwk>
@@ -41,6 +40,9 @@ profile juffed /usr/bin/juffed {
   /tmp/libgksu-*/.Xauthority r,
   owner @{HOME}/.config/juff/ rw,
   owner @{HOME}/.config/juff/** rwk,
+  
+  owner /tmp/qtsingleapp-juffed-*-*{,-lockfile} rwk,
+  owner /tmp/xa-*/* r,  # xarchive
   
   # Noisy
   deny @{HOMEDIRS}/ r,
@@ -56,13 +58,12 @@ profile juffed_root {
   #include <abstractions/qt>
   #include <abstractions/nvidia>
   #include <abstractions/cups-client>
-  #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/dbus-session>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
   #include <abstractions/user-systemwide-files>
-  #include <abstractions/xdg-open>
+  #include <abstractions/xdg-open_root>
   
   capability dac_override,
   capability fowner,
@@ -76,6 +77,9 @@ profile juffed_root {
   /tmp/libgksu-*/.Xauthority r,
   owner @{HOME}/.config/juff/ rw,
   owner @{HOME}/.config/juff/** rwk,
+  
+  owner /tmp/qtsingleapp-juffed-*-*{,-lockfile} rwk,
+  /tmp/xa-*/* r,  # xarchive
   
   # Noisy
   deny @{HOMEDIRS}/ r,

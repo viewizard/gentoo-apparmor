@@ -13,7 +13,6 @@ profile gentoolkit.glsa-check /usr/lib{,32,64}/python-exec/@{PYTHON}/glsa-check 
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
-  #include <abstractions/user-tmp>
   
   /dev/pts/[0-9]* w,
   
@@ -119,8 +118,6 @@ profile gentoolkit.revdep-rebuild /usr/bin/revdep-rebuild{,.sh} flags=(complain)
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
-  #include <abstractions/user-tmp>
-  
   
   capability fsetid,
   capability chown,
@@ -147,6 +144,8 @@ profile gentoolkit.revdep-rebuild /usr/bin/revdep-rebuild{,.sh} flags=(complain)
   
   /var/cache/revdep-rebuild/ r,
   /var/cache/revdep-rebuild/* rw,
+  
+  owner /tmp/sh-thd.* rw,
   
   
   profile portageq {

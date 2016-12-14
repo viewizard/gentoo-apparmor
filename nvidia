@@ -14,14 +14,13 @@
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*"
 
-profile nvidia-settings /{usr,opt}/bin/nvidia-settings {
+profile nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/user-tmp>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
   #include <abstractions/dbus-session>

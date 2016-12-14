@@ -93,10 +93,9 @@ profile cups.driver /usr/libexec/cups/driver/* {
   
 }
 
-profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* {
+profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-  #include <abstractions/user-tmp>
   
   /usr/libexec/cups/cgi-bin/* mr,
   
@@ -110,9 +109,8 @@ profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* {
   
 }
 
-profile cups.filter /usr/libexec/cups/filter/* {
+profile cups.filter /usr/libexec/cups/filter/* flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/user-tmp>
   
   /usr/libexec/cups/filter/* Pxmr,
   /usr/bin/pdftops Px,
@@ -122,6 +120,9 @@ profile cups.filter /usr/libexec/cups/filter/* {
   /usr/share/cups/{,**} r,
   
   /var/spool/cups/* r,
+  
+  # будет работать с fsuid=4 ouid=4 (UID lp)
+  owner /tmp/??????* rw,
   
 }
 

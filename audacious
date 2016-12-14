@@ -22,7 +22,6 @@ profile audacious /usr/bin/audacious {
   #include <abstractions/gtk>
   #include <abstractions/qt>
   #include <abstractions/nvidia>
-  #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/program-work-with-disk-rwk>
   
@@ -36,5 +35,8 @@ profile audacious /usr/bin/audacious {
   
   owner @{HOME}/.config/audacious/ rw,
   owner @{HOME}/.config/audacious/** rwk,
+  
+  # Noisy
+  deny @{HOME}/.* r,
   
 }

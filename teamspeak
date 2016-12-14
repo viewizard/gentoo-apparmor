@@ -19,7 +19,6 @@ profile teamspeak /usr/bin/teamspeak3 {
   #include <abstractions/nameservice>
   #include <abstractions/nvidia>
   #include <abstractions/ssl_certs>
-  #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/xdg-open>
   
@@ -34,6 +33,10 @@ profile teamspeak /usr/bin/teamspeak3 {
   
   owner @{HOME}/.ts3client/ rw,
   owner @{HOME}/.ts3client/** rwk,
+  
+  owner /tmp/TS3Client* rw,
+  owner /tmp/qipc_systemsem_tsDatabaseNotifierf* rw,
+  owner /tmp/qipc_sharedmemory_tsDatabaseNotifierf* rw,
   
   # Noisy
   deny /* w,

@@ -17,7 +17,6 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
   #include <abstractions/X>
   #include <abstractions/dbus-session>
   #include <abstractions/nvidia>
-  #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
   
@@ -47,6 +46,8 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
   owner @{HOME}/.config/xfce4/help.rc* rw,
   owner @{HOME}/.dbus/ rw,
   owner @{HOME}/.dbus/** rw,
+  
+  owner /tmp/vte* rw,
   
   
   profile gnome-pty-helper /usr/libexec/gnome-pty-helper {

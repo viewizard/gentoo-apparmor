@@ -11,10 +11,14 @@
 #include <tunables/global>
 profile xkbcomp /usr/bin/xkbcomp {
   #include <abstractions/base>
-  #include <abstractions/user-tmp>
+  
+  /dev/tty[0-9]* w,
   
   /usr/bin/xkbcomp mr,
   
   /usr/share/X11/xkb/** r,
+  
+  /tmp/server-[0-9].xkm w,
+  /var/lib/xkb/server-[0-9].xkm w,
   
 }

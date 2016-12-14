@@ -17,16 +17,18 @@ owner @{HOME}/.ICEauthority r,
 # .Xauthority files required for X connections, per user
 owner @{HOME}/.Xauthority r,
 owner /{,var/}run/gdm{,3}/*/database r,
-owner /{,var/}run/lightdm/authority/[0-9]* r,
+owner /{,var/}run/lightdm/authority/[0-9] r,
 owner /{,var/}run/lightdm/*/xauthority r,
 owner /{,var/}run/user/*/gdm/Xauthority r,
 
 # the unix socket to use to connect to the display
-/tmp/.X11-unix/*           w,
-/tmp/.X*-lock		   r,
+# Важно! xorg-server запускаем только на дисплеях 0-9
+# остальные могут использоваться для изоляции через Xephyr
+/tmp/.X11-unix/X[0-9]		w,
+/tmp/.X[0-9]-lock		r,
 unix (connect, receive, send)
      type=stream
-     peer=(addr="@/tmp/.X11-unix/X[0-9]*"),
+     peer=(addr="@/tmp/.X11-unix/X[0-9]"),
 
 /usr/include/X11/               r,
 /usr/include/X11/**             r,

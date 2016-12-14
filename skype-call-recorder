@@ -23,7 +23,6 @@ profile skype-call-recorder /usr/bin/skype-call-recorder {
   #include <abstractions/gtk>
   #include <abstractions/qt>
   #include <abstractions/nvidia>
-  #include <abstractions/user-tmp>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
@@ -33,5 +32,6 @@ profile skype-call-recorder /usr/bin/skype-call-recorder {
   /usr/bin/skype-call-recorder mr,
   
   owner @{HOME}/.skypecallrecorder.{lock,rc} rwk,
+  owner @{HOME}/SkypeCalls/** rwk,
   
 }

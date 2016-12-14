@@ -14,6 +14,9 @@ profile xinit /usr/bin/xinit {
   #include <abstractions/X>
   #include <abstractions/nameservice>
   
+  capability sys_nice,
+  capability setuid,
+  
   /dev/tty[0-9]* w,
   
   /usr/bin/xinit mr,
@@ -68,7 +71,8 @@ profile xinit.xserverrc /etc/X11/xinit/xserverrc {
 profile xinit.startx /usr/bin/startx {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-  #include <abstractions/user-tmp>
+  
+  capability sys_tty_config,
   
   /dev/tty rw,
   /dev/tty[0-9]* rw,
@@ -79,13 +83,15 @@ profile xinit.startx /usr/bin/startx {
   /bin/hostname ix,
   /bin/grep ix,
   /bin/sed ix,
-  /bin/rm ix,
+  /bin/rm ixr,
   /usr/bin/mcookie ix,
-  /usr/bin/deallocvt ix,
-  /usr/bin/xauth ix,
+  /usr/bin/deallocvt ixr,
+  /usr/bin/xauth ixr,
   /usr/bin/xinit Px,
   
   owner @{HOME}/.serverauth* rwl,
   owner @{HOME}/.Xauthority* rwl,
+  
+  owner /tmp/sh-thd.?????? rw,
   
 }

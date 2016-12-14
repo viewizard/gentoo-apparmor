@@ -16,7 +16,6 @@ profile linphone /usr/bin/linphone{,c,csh} {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
   #include <abstractions/audio>
   
@@ -31,5 +30,7 @@ profile linphone /usr/bin/linphone{,c,csh} {
   
   owner @{HOME}/.linphonerc rw,
   owner @{HOME}/.linphone-history.db rwk,
+  
+  owner /tmp/Linphone-* rw,
   
 }

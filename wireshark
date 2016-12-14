@@ -22,7 +22,6 @@ profile wireshark /usr/bin/{tshark,wireshark} {
   #include <abstractions/qt>
   #include <abstractions/cups-client>
   #include <abstractions/nvidia>
-  #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
@@ -45,5 +44,7 @@ profile wireshark /usr/bin/{tshark,wireshark} {
   /usr/lib{,32,64}/wireshark/plugins/**{la,so} m,
   
   owner @{HOME}/.wireshark/{,**} rw,
+  
+  owner /tmp/wireshark_*_*_*.pcapng rw,
   
 }

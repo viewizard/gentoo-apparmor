@@ -9,10 +9,9 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile logcheck /usr/sbin/logcheck {
+profile logcheck /usr/sbin/logcheck flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/perl>
-  #include <abstractions/user-tmp>
   #include <abstractions/nameservice>
   
   /dev/tty rw,
@@ -54,5 +53,7 @@ profile logcheck /usr/sbin/logcheck {
   
   /run/lock/logcheck/ rw,
   /run/lock/logcheck/* rwl,
+  
+  owner /tmp/logcheck.*/{,**} rw,
   
 }

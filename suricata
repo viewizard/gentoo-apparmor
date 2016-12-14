@@ -9,10 +9,9 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile suricata /usr/bin/suricata {
+profile suricata /usr/bin/suricata flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-  #include <abstractions/user-tmp>
   
   capability setgid,
   capability setuid,
@@ -34,6 +33,9 @@ profile suricata /usr/bin/suricata {
   
   /var/lib/suricata/** rwk,
   /run/suricata.pid rw,
+  
+  /tmp/ r,
+  /var/tmp/ r,
   
 }
 

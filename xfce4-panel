@@ -61,7 +61,6 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-programs>
   #include <abstractions/program-work-with-disk-rwk>  # xfce4-screenshooter
-  #include <abstractions/user-tmp>  # xfce4-screenshooter
   #include <local/xfce4-panel-custom>
   
   /dev/tty[0-9]* w,
@@ -98,6 +97,8 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   owner @{HOME}/.local/share/applications/**.desktop rw,
   owner @{HOME}/.local/share/desktop-directories/{,*.directory} r,
   owner @{HOME}/.local/share/notes/{,**} rw,
+  
+  owner /tmp/*_????-??-??_??-??-??.png rw,  # xfce4-screenshooter
   
   
   profile env {

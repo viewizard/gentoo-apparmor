@@ -42,7 +42,6 @@ profile make /usr/bin/{,g}make flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/perl>
-    #include <abstractions/user-tmp>
     
     /dev/tty rw,
     /dev/tty[0-9]* w,
@@ -108,6 +107,11 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /usr/src/linux-[0-9]*-{hardened,gentoo}*/{,**} rw,
     /usr/src/linux-[0-9]*-{hardened,gentoo}*/tools/gcc/**.so m,
     /usr/share/pkgconfig/{,**} r,
+    /var/tmp/portage/genkernel/initramfs-*-hardened.cpio r,
+    
+    owner /tmp/sh-thd.* rw,
+    owner /tmp/cc*.{s,c,res,o,le,ld} rw,
+    owner /tmp/cpiolist.* rw,
     
     # Noisy
     deny /.git/{,**} r,

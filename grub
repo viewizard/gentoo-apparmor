@@ -11,7 +11,6 @@
 #include <tunables/global>
 profile grub.grub-mkconfig /usr/sbin/grub-mkconfig flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/user-tmp>
   
   /dev/tty rw,
   /dev/pts/[0-9]* w,
@@ -45,6 +44,8 @@ profile grub.grub-mkconfig /usr/sbin/grub-mkconfig flags=(complain) {
   /boot/grub/grub.cfg* wr,
   /etc/default/grub r,
   /usr/share/grub/{,**} r,
+  
+  owner /tmp/sh-thd.* rw,
   
 }
 

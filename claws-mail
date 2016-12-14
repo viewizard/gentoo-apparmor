@@ -21,7 +21,6 @@ profile claws-mail /usr/bin/claws-mail {
   #include <abstractions/gtk>
   #include <abstractions/private-files-strict>
   #include <abstractions/X>
-  #include <abstractions/user-tmp>
   #include <abstractions/user-download>
   #include <abstractions/user-upload>
   #include <abstractions/xdg-open>
@@ -39,6 +38,8 @@ profile claws-mail /usr/bin/claws-mail {
   owner @{HOME}/Mail/** rwl,
   owner @{HOME_CACHE}/webkit/ rw,
   owner @{HOME_CACHE}/webkit/** rwk,
+  
+  owner /tmp/claws-mail-[1-9]*/{,**} rwk,
   
   # Noisy
   deny / r,
