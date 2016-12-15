@@ -185,7 +185,7 @@ profile cron.daily/daily_backup.sh /etc/cron.daily/daily_backup.sh {
   /mnt/backup/Gentoo_Backup/ r,
   /mnt/backup/Gentoo_Backup/* rw,
   
-  owner /tmp/dailyhomebackup.cron.??????{,/,/**} rw,
+  /tmp/dailyhomebackup.cron.??????{,/,/**} rw,
   
 }
 
@@ -330,7 +330,7 @@ profile cron.daily/oinkmaster /etc/cron.daily/oinkmaster {
   /usr/bin/oinkmaster.pl Px,
   /etc/init.d/suricata Px,
   
-  owner /tmp/oinkmaster.cron.?????? rw,
+  owner /tmp/oinkmaster.cron.??????{,/,/**} rw,
   
 }
 
@@ -386,7 +386,7 @@ profile cron.weekly/weekly_backup.sh /etc/cron.weekly/weekly_backup.sh {
   /mnt/backup/Gentoo_Backup/ r,
   /mnt/backup/Gentoo_Backup/* rw,
   
-  owner /tmp/homebackup.cron.??????{,/,/**} rw,
+  /tmp/homebackup.cron.??????{,/,/**} rw,
   
 }
 
@@ -431,6 +431,6 @@ profile cron.monthly/monthly_backup.sh /etc/cron.monthly/monthly_backup.sh {
   /mnt/backup/Gentoo_Backup/ r,
   /mnt/backup/Gentoo_Backup/* rw,
   
-  owner /tmp/rootbackup.cron.??????{,/,/**} rw,
+  /tmp/rootbackup.cron.??????{,/,/**} rw,
   
 }

@@ -65,6 +65,8 @@ profile suricata.init.d /etc/init.d/suricata flags=(complain) {
   /run/suricata.pid rwk,
   /run/sed* rw,
   
+  owner /tmp/oinkmaster.cron.?????? w,
+  
   
   profile shell flags=(complain) {
     #include <abstractions/base>
