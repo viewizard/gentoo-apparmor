@@ -152,6 +152,9 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
     /run/openrc/deptree w,
     /run/openrc/depconfig w,
     
+    owner /tmp/sh-thd.* rw,
+    owner /tmp/portage.cron.* rw,
+    
   }
   
   profile sandboxed_shell flags=(complain) {

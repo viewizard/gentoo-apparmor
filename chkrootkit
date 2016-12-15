@@ -12,7 +12,6 @@
 profile chkrootkit /usr/sbin/chkrootkit {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-  #include <abstractions/user-tmp>
   
   capability sys_ptrace,
   capability dac_override,
@@ -51,6 +50,8 @@ profile chkrootkit /usr/sbin/chkrootkit {
   /usr/sbin/chkutmp ix,
   
   /{,**} r,
+  
+  owner /tmp/chkrootkit.cron.* rw,
   
   
   profile shell {

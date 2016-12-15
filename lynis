@@ -13,7 +13,6 @@ profile lynis /usr/sbin/lynis {
   #include <abstractions/base>
   #include <abstractions/perl>
   #include <abstractions/nameservice>
-  #include <abstractions/user-tmp>
   
   capability sys_ptrace,
   capability dac_read_search,
@@ -83,7 +82,6 @@ profile lynis /usr/sbin/lynis {
   
   profile shell {
     #include <abstractions/base>
-    #include <abstractions/user-tmp>
     
     capability dac_read_search,
     capability dac_override,

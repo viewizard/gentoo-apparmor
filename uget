@@ -21,7 +21,6 @@ profile uget-gtk /usr/bin/uget-gtk {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/user-tmp>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
@@ -29,6 +28,7 @@ profile uget-gtk /usr/bin/uget-gtk {
   owner @{PROC}/@{pid}/fd/ r,
   
   /usr/bin/uget-gtk mr,
+  
   /etc/ssl/openssl.cnf r,
   
   owner @{HOME}/.config/uGet/{,**} rw,
@@ -39,7 +39,6 @@ profile uget-gtk /usr/bin/uget-gtk {
 profile uget-cmd /usr/bin/uget-cmd {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
-  #include <abstractions/user-tmp>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
   
@@ -48,5 +47,7 @@ profile uget-cmd /usr/bin/uget-cmd {
   /usr/bin/uget-cmd mr,
   
   /etc/ssl/openssl.cnf r,
+  
+  owner @{HOME}/.config/uGet/{,**} rw,
   
 }

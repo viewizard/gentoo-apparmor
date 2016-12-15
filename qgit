@@ -22,7 +22,6 @@ profile qgit /usr/bin/qgit {
   #include <abstractions/gtk>
   #include <abstractions/qt>
   #include <abstractions/nvidia>
-  #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/program-work-with-disk-rwkl>
   #include <abstractions/nameservice>
@@ -48,6 +47,9 @@ profile qgit /usr/bin/qgit {
   owner @{HOME}/.config/qgit/ rw,
   owner @{HOME}/.config/qgit/** rwk,
   
+  owner /tmp/qgit4.* rw,
+  owner /tmp/??????_* rw,
+  
 }
 
 
@@ -59,10 +61,10 @@ profile qgit_root {
   #include <abstractions/gtk>
   #include <abstractions/qt>
   #include <abstractions/nvidia>
-  #include <abstractions/user-tmp>
   #include <abstractions/X>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
+  #include <abstractions/xdg-open_root>
   #include <abstractions/user-systemwide-files>
   
   capability dac_override,
@@ -84,5 +86,8 @@ profile qgit_root {
   owner @{HOME}/.gitconfig r,
   owner @{HOME}/.config/qgit/ rw,
   owner @{HOME}/.config/qgit/** rwk,
+  
+  owner /tmp/qgit4.* rw,
+  owner /tmp/??????_* rw,
   
 }
