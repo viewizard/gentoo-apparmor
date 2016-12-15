@@ -17,7 +17,6 @@ profile exo-open /usr/bin/exo-open {
   #include <abstractions/X>
   #include <abstractions/gtk>
   #include <abstractions/dbus-session>
-  #include <abstractions/user-tmp>
   #include <abstractions/executable-binary-helper>
   #include <abstractions/nameservice>
   
@@ -32,7 +31,6 @@ profile exo-open /usr/bin/exo-open {
   /usr/portage/licenses/{,*} r,
   
 }
-
 
 profile exo-helper /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 {
   #include <abstractions/base>
@@ -63,7 +61,6 @@ profile exo-helper /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 {
   
 }
 
-
 profile exo-compose-mail /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 {
   #include <abstractions/base>
   #include <abstractions/perl>
@@ -78,7 +75,6 @@ profile exo-compose-mail /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 {
   
 }
 
-
 profile exo-preferred-applications /usr/bin/exo-preferred-applications {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -90,7 +86,6 @@ profile exo-preferred-applications /usr/bin/exo-preferred-applications {
   /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 Px,
   
 }
-
 
 profile exo-desktop-item-edit /usr/bin/exo-desktop-item-edit {
   #include <abstractions/base>
@@ -116,5 +111,74 @@ profile exo-desktop-item-edit /usr/bin/exo-desktop-item-edit {
   
   owner @{HOME}/.config/xfce4/panel/** rw,
   owner @{HOME}/[^.]*/*.desktop rw,
+  
+}
+
+profile exo_open_root {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/nvidia>
+  #include <abstractions/X>
+  #include <abstractions/gtk>
+  #include <abstractions/dbus-session>
+  #include <abstractions/executable-binary-helper_root>
+  #include <abstractions/nameservice>
+  #include <abstractions/xdg-open_root>
+  
+  capability fowner,
+  
+  owner @{PROC}/@{pid}/fd/ r,
+  
+  /usr/bin/exo-open mr,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 Px -> exo_helper_root,
+  
+  /etc/machine-id r,
+  /usr/share/gvfs/remote-volume-monitors/{,udisks2.monitor} r,
+  
+  /usr/portage/licenses/{,*} r,
+  
+}
+
+profile exo_helper_root {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/nvidia>
+  #include <abstractions/X>
+  #include <abstractions/gtk>
+  #include <abstractions/fonts>
+  #include <abstractions/executable-binary-helper_root>
+  
+  owner @{PROC}/@{pid}/fd/ r,
+  
+  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 mr,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 Px -> exo_compose_mail_root,
+  
+  # helpers
+  /usr/share/ r,
+  /usr/local/share/ r,
+  /usr/share/xfce4/ r,
+  /usr/share/xfce4/helpers/{,*} r,
+  /etc/xdg/xfce4/helpers.rc r,
+  owner @{HOME}/.config/xfce4/helpers.rc* rw,
+  owner @{HOME}/.config/mimeapps.list* rw,
+  owner @{HOME}/.local/share/ r,
+  owner @{HOME}/.local/share/xfce4/ r,
+  owner @{HOME}/.local/share/xfce4/helpers/{,*} r,
+  owner @{HOME}/.local/share/applications/{,**} r,
+  
+}
+
+profile exo_compose_mail_root {
+  #include <abstractions/base>
+  #include <abstractions/perl>
+  #include <abstractions/executable-binary-helper_root>
+  
+  /dev/tty[0-9]* w,
+  
+  /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 mr,
+  
+  /bin/env rm,
+  /usr/bin/perl ix,
   
 }

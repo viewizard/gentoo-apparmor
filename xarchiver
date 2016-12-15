@@ -22,9 +22,9 @@ profile xarchiver /usr/bin/xarchiver {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/nameservice>
-  #include <abstractions/user-tmp>
   #include <abstractions/program-work-with-disk-rwkl>
   #include <abstractions/xdg-open>
+  #include <abstractions/executable-binary-helper>
   
   capability dac_override,
   capability dac_read_search,
@@ -58,7 +58,9 @@ profile xarchiver /usr/bin/xarchiver {
   /etc/fstab r,
   owner @{HOME}/.config/xarchiver/{,**} rw,
   
-  /tmp/** rw,
+  owner /tmp/xarchiver_*_socket rw,
+  owner /tmp/xa-*/** rw,
+  
   
   profile rar /opt/rar/rar {
     #include <abstractions/base>
@@ -83,9 +85,9 @@ profile xarchiver_root {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/nameservice>
-  #include <abstractions/user-tmp>
   #include <abstractions/program-work-with-disk-rwkl>
-  #include <abstractions/xdg-open>
+  #include <abstractions/xdg-open_root>
+  #include <abstractions/executable-binary-helper_root>
   #include <abstractions/user-systemwide-files>
   
   capability dac_override,
@@ -120,7 +122,9 @@ profile xarchiver_root {
   /etc/fstab r,
   owner @{HOME}/.config/xarchiver/{,**} rw,
   
-  /tmp/** rw,
+  owner /tmp/xarchiver_*_socket rw,
+  /tmp/xa-*/** rw,
+  
   
   profile rar /opt/rar/rar {
     #include <abstractions/base>

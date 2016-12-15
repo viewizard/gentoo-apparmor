@@ -10,8 +10,8 @@
 
 
 # execution external programs with xdg-open
-/usr/bin/xdg-open Pxr,
-/usr/bin/xdg-email Pxr,
+/usr/bin/xdg-open Pxr -> xdg_open_root,
+/usr/bin/xdg-email Pxr -> xdg_email_root,
 /usr/bin/xdg-screensaver Pxr,
 owner @{PROC}/@{pid}/fd/ r,
 
@@ -20,4 +20,4 @@ owner @{PROC}/@{pid}/fd/ r,
 /usr/bin/id ixr,
 
 # program-related places for xdg-open:
-#include <abstractions/xdg-open-folders>
+#include <abstractions/xdg-open-folders_root>

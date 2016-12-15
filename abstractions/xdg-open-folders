@@ -9,15 +9,7 @@
 # ------------------------------------------------------------------
 
 
-# execution external programs with xdg-open
-/usr/bin/xdg-open Pxr,
-/usr/bin/xdg-email Pxr,
-/usr/bin/xdg-screensaver Pxr,
-owner @{PROC}/@{pid}/fd/ r,
-
-# sg/newgrp for work with network connection via iptables uid/gid-owner
-/usr/bin/newgrp Px,
-/usr/bin/id ixr,
-
 # program-related places for xdg-open:
-#include <abstractions/xdg-open-folders>
+owner @{HOME}/.claws-mail/mimetmp/ r,
+owner @{HOME}/.claws-mail/mimetmp/* r,
+owner /tmp/xa-*/** r,  # xarchive
