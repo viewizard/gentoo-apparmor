@@ -71,9 +71,11 @@ profile firefox /usr/{bin/firefox,lib{,32,64}/firefox/firefox{,-bin}} {
   # Allow 'x' for downloaded extensions, but inherit policy for safety
   owner @{HOME}/.mozilla/**/extensions/** ixmr,
   /usr/lib{,32,64}/firefox/browser/extensions/** ixmr,
-  # FIX ME!
-  # plugin-container for flash, that must be moved to separate profile!
+  
+  # plugin-container нужен для flash, новые версии flash работают крайне нестабильно!
   audit deny /usr/lib{,32,64}/firefox/plugin-container x,
+  #owner /dev/shm/org.chromium.* rw,
+  #/usr/lib64/firefox/plugin-container Px,
   
   # Needed for the crash reporter
   owner @{PROC}/@{pid}/environ r,
@@ -97,4 +99,42 @@ profile firefox /usr/{bin/firefox,lib{,32,64}/firefox/firefox{,-bin}} {
   owner /tmp/.gl* rw,
   /var/tmp/ r,
   
+}
+
+profile firefoxplugin-container /usr/lib64/firefox/plugin-container {
+  #include <abstractions/base>
+  #include <abstractions/X>
+  #include <abstractions/nameservice>
+  
+  /dev/tty[0-9] w,
+  owner /dev/shm/org.chromium.* rw,
+  
+  owner @{PROC}/@{pid}/stat r,
+  owner @{PROC}/@{pid}/task/@{pid}/stat r,
+  
+  /usr/lib64/firefox/plugin-container m,
+  /bin/bash Cx -> shell,
+  
+  /etc/adobe/mms.cfg r,
+  /etc/ssl/openssl.cnf r,
+  
+  owner @{HOME}/.adobe/Flash_Player/{,**} r,
+  owner @{HOME}/.macromedia/Flash_Player/{,**} rw,
+  owner @{HOME}/.mozilla/firefox/{,**} r,
+  
+  /tmp/ r,
+  /var/tmp/ r,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    
+    /dev/tty rw,
+    /dev/tty[0-9] w,
+    
+    /bin/bash mr,
+    /bin/ps Px,
+    /bin/grep ix,
+    
+  }
 }

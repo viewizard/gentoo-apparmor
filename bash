@@ -135,6 +135,7 @@ profile bash_root {
   /bin/head ixr,
   /bin/tail ixr,
   /bin/getfattr ixr,
+  /bin/setfattr ixr,
   /bin/cpio ixr,
   /bin/keyctl ixr,
   /bin/mkdir ixr,

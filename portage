@@ -398,8 +398,8 @@ profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
   /etc/** rw,
   /usr/share/gnupg/ r,
   
-  owner /var/tmp/etc-update-*/{,files/} rw,
-  owner /var/tmp/etc-update-*/.diff-test-[0-9]* rw,
+  owner /var/tmp/etc-update-*/{,**} rw,
+  owner /tmp/sh-thd.* rw,
   
   
   profile portageq {

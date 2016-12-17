@@ -41,6 +41,10 @@ profile lvm2.dmeventd /sbin/dmeventd flags=(complain) {
   capability ipc_lock,
   
   /dev/mapper/control rw,
+  /sys/bus/ r,
+  /sys/class/ r,
+  /sys/class/block/ r,
+  /sys/devices/**/uevent r,
   @{PROC}/devices r,
   @{PROC}/@{pid}/mounts r,
   @{PROC}/@{pid}/oom_score_adj w,
@@ -53,6 +57,7 @@ profile lvm2.dmeventd /sbin/dmeventd flags=(complain) {
   /run/dmeventd.pid rwk,
   /run/dmeventd-{client,server} rwk,
   /run/lock/lvm/* rwk,
+  /run/udev/data/* r,
   
 }
 
@@ -99,6 +104,8 @@ profile lvm2.lvm /sbin/lvm flags=(complain) {
   /run/lock/lvm/ w,
   /run/lock/lvm/* rwk,
   /run/dmeventd-{client,server} rwk,
+  
+  owner /tmp/{rootbackup,dailyhomebackup,homebackup}.cron.* w,
   
 }
 
