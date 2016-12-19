@@ -80,6 +80,7 @@ profile lynis /usr/sbin/lynis {
   /var/log/lynis-report.dat rw,
   
   owner /tmp/lynis.* rw,
+  owner /tmp/lynis2.* rw,
   owner /tmp/lynis.cron.?????? rw,
   owner /tmp/lynis-shellshock-test.* rw,
   
@@ -99,6 +100,7 @@ profile lynis /usr/sbin/lynis {
     /bin/cat ix,
     /bin/date ix,
     
+    owner /tmp/sh-thd.* rw,
     owner /tmp/lynis-shellshock-test.* rw,
     
   }
