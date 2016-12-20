@@ -188,6 +188,7 @@ profile bash_root {
   /usr/bin/gawk ixr,
   /usr/bin/patch ixr,
   /usr/bin/diff ixr,
+  /usr/bin/gcc-config Pxr,
   /usr/sbin/logcheck Pxr,
   /usr/sbin/aideinit Pxr,
   /usr/sbin/gdisk Pxr,

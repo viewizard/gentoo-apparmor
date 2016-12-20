@@ -12,14 +12,47 @@
 profile gcc-config /usr/bin/gcc-config flags=(complain) {
   #include <abstractions/base>
   
+  capability sys_admin,
+  
   /dev/tty rw,
+  /dev/pts/[0-9]* w,
   
   /usr/bin/gcc-config r,
   /bin/bash mr,
+  /bin/mv ix,
+  /bin/cp ix,
+  /bin/rm ix,
+  /bin/ln ix,
+  /bin/tr ix,
+  /bin/cat ix,
+  /bin/sed ix,
+  /bin/touch ix,
+  /bin/sort ix,
+  /bin/grep ix,
+  /bin/egrep ixr,
+  /usr/bin/find ix,
+  /usr/bin/cmp ix,
+  /usr/bin/gawk ix,
+  /usr/bin/tac ix,
   /usr/bin/python-wrapper Px,
+  /lib64/rc/bin/eval_ecolors ix,
+  /lib64/rc/bin/ebegin ix,
+  /lib64/rc/bin/ewarn ix,
+  /lib64/rc/bin/eend ix,
   /usr/lib{,32,64}/python-exec/python-exec2 Cx -> portageq,
   
-  /etc/env.d/gcc/* r,
+  / r,
+  /lib{,32,64}/ r,
+  /lib{,32,64}/* rwl,
+  /etc/env.d/ r,
+  /etc/env.d/** rw,
+  /etc/ld.so.conf.d/* rw,
+  /etc/terminfo/x/xterm r,
+  /usr/bin/* rw,
+  /usr/x86_64-pc-linux-gnu/gcc-bin/*/{,**} r,
+  
+  owner /tmp/tac* rw,
+  owner /tmp/sh-thd.* rw,
   
   
   profile portageq flags=(complain) {
@@ -30,6 +63,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
     /bin/env r,
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq Px,
+    /usr/lib{,32,64}/python-exec/@{PYTHON}/env-update Px,
     
     /etc/env.d/python/config r,
     

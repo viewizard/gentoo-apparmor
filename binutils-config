@@ -9,43 +9,38 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-
-# /usr/bin/eselect for root RBAC role only, should be used with Px->profile only
-profile eselect_root flags=(complain) {
+profile binutils-config /usr/bin/binutils-config flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/user-systemwide-files>
   
-  capability fsetid,
   capability sys_admin,
-  capability dac_override,
-  capability dac_read_search,
   
+  /dev/tty rw,
   /dev/pts/[0-9]* w,
   
-  /bin/bash m,
-  /bin/readlink ix,
+  /usr/bin/binutils-config r,
+  /bin/bash mr,
+  /bin/stty ix,
+  /bin/tr ix,
   /bin/ln ix,
   /bin/mv ix,
   /bin/rm ix,
-  /bin/sed ix,
-  /bin/sort ix,
-  /bin/head ix,
+  /bin/rmdir ix,
   /bin/mkdir ix,
-  /bin/mktemp ix,
-  /bin/cut ix,
-  /bin/grep ix,
-  /bin/chgrp ix,
-  /bin/chmod ix,
-  /bin/cat ix,
-  /bin/uname ix,
-  /usr/bin/file ix,
-  /usr/bin/scanelf ix,
+  /sbin/consoletype ix,
+  /usr/bin/find ix,
   /usr/bin/tput ix,
-  /usr/bin/binutils-config Px,
-  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> portage,
+  /usr/bin/scanelf ix,
+  /usr/bin/cmp ix,
+  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> portageq,
+  
+  /etc/terminfo/x/xterm r,
+  /etc/env.d/** rw,
+  /usr/bin/* rw,
+  /usr/x86_64-pc-linux-gnu/** rw,
+  /usr/x86_64-pc-linux-gnu/binutils-bin/{,**} r,
   
   
-  profile portage {
+  profile portageq flags=(complain) {
     #include <abstractions/base>
     
     /usr/lib{,32,64}/python-exec/python-exec2 m,
