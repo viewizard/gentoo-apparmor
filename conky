@@ -18,8 +18,9 @@ profile conky /usr/bin/conky {
   
   /dev/tty rw,
   /dev/tty[0-9]* w,
-  
+  /sys/devices/system/cpu/present r,
   @{PROC}/ r,
+  @{PROC}/uptime r,
   @{PROC}/@{pid}/net/dev r,
   @{PROC}/@{pid}/mounts r,
   
