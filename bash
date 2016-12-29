@@ -139,6 +139,7 @@ profile bash_root {
   /bin/cpio ixr,
   /bin/keyctl ixr,
   /bin/mkdir ixr,
+  /bin/touch ixr,
   /sbin/mdadm Pxr,
   /sbin/shutdown Pxr,
   /sbin/{halt,poweroff,reboot} Pxr,

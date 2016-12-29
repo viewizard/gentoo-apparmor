@@ -82,6 +82,7 @@ profile genkernel /usr/bin/genkernel flags=(complain) {
   /usr/bin/gmake Px,
   /usr/bin/gpg{,2,-static} r,
   /usr/bin/test r,
+  /usr/bin/hostid ix,
   /usr/x86_64-pc-linux-gnu/binutils-bin/*/strings ix,
   
   /etc/genkernel.conf r,
@@ -108,6 +109,6 @@ profile genkernel /usr/bin/genkernel flags=(complain) {
   /var/db/pkg/{,**} r,
   /var/tmp/portage/genkernel/{,**} rw,
   /var/cache/genkernel/{,**} rw,
-  /var/log/genkernel.log w,
+  /var/log/genkernel.log rw,
   
 }
