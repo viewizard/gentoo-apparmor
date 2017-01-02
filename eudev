@@ -63,6 +63,7 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
   /sys/devices/**/input/input[0-9]*/{,capabilities/}* r,
   /sys/devices/pnp[0-9]*/*/rtc/rtc[0-9]*/hctosys r,
   /sys/module/block/parameters/events_dfl_poll_msecs rw,
+  /sys/module/coretemp/initstate r,
   @{PROC}/cmdline r,
   @{PROC}/@{pid}/oom_score_adj rw,
   

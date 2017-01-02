@@ -66,7 +66,7 @@ profile chromium /usr/{bin/chromium-browser,lib{,32,64}/chromium-browser/{chrome
   /bin/bash mr,
   /bin/ps Pxr,
   /usr/bin/xdg-settings Cxr -> xdgsettings,
-  /usr/bin/lsb_release Cxr -> lsb_release,
+  /usr/bin/lsb_release Pxr,
   /bin/readlink ixr,
   
   /etc/udev/udev.conf r,
@@ -162,28 +162,6 @@ profile chromium /usr/{bin/chromium-browser,lib{,32,64}/chromium-browser/{chrome
     owner @{HOME}/.local/share/applications/mimeapps.list* rw,
     
   }
-
-  profile lsb_release {
-    #include <abstractions/base>
-    #include <abstractions/python>
-    
-    /dev/tty rw,
-    
-    /usr/bin/lsb_release mr,
-    /bin/sed ixr,
-    /bin/head ixr,
-    /bin/bash ixr,
-    /usr/bin/getopt ixr,
-    /usr/bin/dpkg-query ixr,
-    deny /usr/bin/find xr,
-    
-    /etc/lsb-release r,
-    /usr/bin/ r,
-    
-    /var/lib/dpkg/** r,
-    
-  }
-  
   
   profile sandbox {
     # Be fanatical since it is setuid root and don't use an abstraction

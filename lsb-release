@@ -1,0 +1,32 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile lsb-release /usr/bin/lsb_release {
+  #include <abstractions/base>
+  #include <abstractions/python>
+  
+  /dev/tty rw,
+  
+  /usr/bin/lsb_release r,
+  /bin/bash ixmr,
+  /bin/sed ixr,
+  /bin/head ixr,
+  /bin/tr ixr,
+  /usr/bin/getopt ixr,
+  /usr/bin/dpkg-query ixr,
+  deny /usr/bin/find xr,
+  
+  /etc/{gentoo,os,lsb}-release r,
+  /usr/bin/ r,
+  
+  /var/lib/dpkg/** r,
+  
+}

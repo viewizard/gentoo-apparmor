@@ -28,6 +28,9 @@ profile coreutils.stat /usr/bin/stat {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  capability dac_override,
+  capability dac_read_search,
+  
   /dev/pts/[0-9]* w,
   
   /usr/bin/stat mr,

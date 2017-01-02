@@ -20,18 +20,12 @@ profile mumble /usr/bin/mumble {
   #include <abstractions/nameservice>
   #include <abstractions/audio>
   
-  /dev/tty rw,
+  # /dev/tty rw,
   /dev/tty[0-9]* w,
   /dev/shm/MumbleLink.* rw,
   
-  /etc/{gentoo,lsb}-release r,
-  
   /usr/bin/mumble mr,
-  /usr/bin/lsb_release ixr,
-  /usr/bin/getopt ixr,
-  /usr/bin/find ix,
-  /bin/head ix,
-  /bin/sed ix,
+  /usr/bin/lsb_release Pxr,
   
   owner @{HOME}/.local/share/data/Mumble/ rw,
   owner @{HOME}/.local/share/data/Mumble/** rwk,

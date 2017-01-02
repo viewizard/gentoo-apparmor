@@ -34,10 +34,15 @@ profile poedit /usr/bin/poedit {
   /usr/bin/msgmerge ix,
   /usr/bin/msgfmt ix,
   /usr/bin/msgcat ix,
+  /usr/bin/lsb_release Pxr,
   
   /usr/share/poedit/{,**} r,
   
-  owner @{HOME}/.poedit/{,*} rw,
+  owner @{HOME}/.poedit/{,**} rw,
+  owner @{HOME}/.config/poedit/{,**} rw,
+  owner @{HOME}/.local/share/poedit/{,**} rwk,
+  
+  owner /run/user/*/poedit.* rwk,
   
   owner /tmp/poedit*/ w,
   owner /tmp/poedit*/*validated* rw,
