@@ -55,6 +55,8 @@ profile genkernel /usr/bin/genkernel flags=(complain) {
   /bin/echo ix,
   /bin/mount Px,
   /bin/umount Px,
+  /bin/keyctl r,
+  /bin/head r,
   /sbin/udevd r,
   /sbin/pdata_tools r,
   /sbin/dmsetup r,
@@ -83,6 +85,8 @@ profile genkernel /usr/bin/genkernel flags=(complain) {
   /usr/bin/gpg{,2,-static} r,
   /usr/bin/test r,
   /usr/bin/hostid ix,
+  /usr/bin/gawk r,
+  /usr/bin/find r,
   /usr/x86_64-pc-linux-gnu/binutils-bin/*/strings ix,
   
   /etc/genkernel.conf r,
