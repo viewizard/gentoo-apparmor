@@ -28,6 +28,8 @@ profile gentoolkit.glsa-check /usr/lib{,32,64}/python-exec/@{PYTHON}/glsa-check 
   /var/db/pkg/** r,
   /var/cache/edb/** r,
   
+  owner /tmp/glsa.cron.* w,
+  
   
   profile shell flags=(complain) {
     #include <abstractions/base>
