@@ -44,6 +44,9 @@ profile repoman /usr/lib{,32,64}/python-exec/@{PYTHON}/repoman flags=(complain) 
   
   owner @{HOME}/.gitconfig r,
   
+  owner /var/tmp/portage/tmp*/{,**} rw,
+  owner /var/tmp/portage_tmpfs/tmp*/{,**} rw,
+  
   
   profile shell flags=(complain) {
     #include <abstractions/base>
@@ -69,6 +72,7 @@ profile repoman /usr/lib{,32,64}/python-exec/@{PYTHON}/repoman flags=(complain) 
     /usr/bin/sandbox mr,
     /bin/bash ixr,
     /bin/sed ixr,
+    /bin/basename ixr,
     /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh ix,
     
     /etc/sandbox.conf r,
