@@ -48,7 +48,9 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
   /etc/env.d/** rw,
   /etc/ld.so.conf.d/* rw,
   /etc/terminfo/x/xterm r,
-  /usr/bin/* rw,
+  /usr/bin/* rwl,
+  /usr/lib{,32,64}/misc/gcc-config rwl,
+  /usr/lib{,32,64}/gcc/x86_64-pc-linux-gnu/*/libgcc.a rwl,
   /usr/x86_64-pc-linux-gnu/gcc-bin/*/{,**} r,
   
   owner /tmp/tac* rw,
