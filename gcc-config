@@ -30,6 +30,8 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
   /bin/sort ix,
   /bin/grep ix,
   /bin/egrep ixr,
+  /bin/setfattr ix,
+  /bin/getfattr ix,
   /usr/bin/find ix,
   /usr/bin/cmp ix,
   /usr/bin/gawk ix,
@@ -48,13 +50,14 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
   /etc/env.d/** rw,
   /etc/ld.so.conf.d/* rw,
   /etc/terminfo/x/xterm r,
-  /usr/bin/* rwl,
-  /usr/lib{,32,64}/misc/gcc-config rwl,
-  /usr/lib{,32,64}/gcc/x86_64-pc-linux-gnu/*/libgcc.a rwl,
+  /usr/bin/* rw,
+  /usr/lib64/gcc/x86_64-pc-linux-gnu/*/libgcc.a rw,
   /usr/x86_64-pc-linux-gnu/gcc-bin/*/{,**} r,
   
   owner /tmp/tac* rw,
   owner /tmp/sh-thd.* rw,
+  owner /tmp/gcc-config-ima rw,
+  owner /tmp/sed* rw,
   
   
   profile portageq flags=(complain) {
