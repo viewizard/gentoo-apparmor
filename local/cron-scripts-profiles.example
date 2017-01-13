@@ -62,7 +62,7 @@ profile cron.daily/00_update_portage /etc/cron.daily/00_update_portage {
   /usr/bin/libnotify-notify-send-users Px,
   /usr/bin/mail Px,
   /usr/bin/logger Px,
-  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> emerge,
+  /usr/{bin,lib{,32,64}/python-exec}/python-exec2{,c} Cx -> emerge,
   /lib{,32,64}/rc/bin/checkpath ix,
   
   owner /tmp/portage.cron.?????? rw,
@@ -70,14 +70,9 @@ profile cron.daily/00_update_portage /etc/cron.daily/00_update_portage {
   
   profile emerge {
     #include <abstractions/base>
-    
-    /usr/lib{,32,64}/python-exec/python-exec2 m,
-    /usr/lib{,32,64}/python-exec/python-exec2-c m,
-    /bin/env r,
+    #include <abstractions/python-exec>
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge Px,
-    
-    /etc/env.d/python/config r,
     
   }
   
@@ -206,21 +201,16 @@ profile cron.daily/glsa /etc/cron.daily/glsa {
   /usr/bin/libnotify-notify-send-users Px,
   /usr/bin/mail Px,
   /usr/bin/logger Px,
-  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> glsa_check,
+  /usr/{bin,lib{,32,64}/python-exec}/python-exec2{,c} Cx -> glsa_check,
   
   owner /tmp/glsa.cron.?????? rw,
   
   
   profile glsa_check {
     #include <abstractions/base>
-    
-    /usr/lib{,32,64}/python-exec/python-exec2 m,
-    /usr/lib{,32,64}/python-exec/python-exec2-c m,
-    /bin/env r,
+    #include <abstractions/python-exec>
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/glsa-check Px,
-    
-    /etc/env.d/python/config r,
     
   }
   

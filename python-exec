@@ -9,12 +9,9 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile python-exec /usr/lib{,32,64}/python-exec/python-exec2 {
+profile python-exec /usr/{bin,lib{,32,64}/python-exec}/python-exec2{,c} {
   #include <abstractions/base>
-  
-  /usr/lib{,32,64}/python-exec/python-exec2 m,
-  /usr/lib{,32,64}/python-exec/python-exec2-c m,
-  /bin/env r,
+  #include <abstractions/python-exec>
   
   # только программы в enforce mode
   
@@ -23,20 +20,13 @@ profile python-exec /usr/lib{,32,64}/python-exec/python-exec2 {
   /usr/lib{,32,64}/python-exec/@{PYTHON}/porthole Px,
   /usr/lib{,32,64}/python-exec/@{PYTHON}/pyfa Px,
   
-  /etc/env.d/python/config r,
-  
 }
 
 
 profile python_exec_root {
   #include <abstractions/base>
-  
-  /usr/lib{,32,64}/python-exec/python-exec2 m,
-  /usr/lib{,32,64}/python-exec/python-exec2-c m,
-  /bin/env r,
+  #include <abstractions/python-exec>
   
   /usr/lib{,32,64}/python-exec/@{PYTHON}/* Px,
-  
-  /etc/env.d/python/config r,
   
 }

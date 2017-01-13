@@ -26,12 +26,13 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
   /bin/rm ix,
   /bin/rmdir ix,
   /bin/mkdir ix,
+  /bin/cat ix,
   /sbin/consoletype ix,
   /usr/bin/find ix,
   /usr/bin/tput ix,
   /usr/bin/scanelf ix,
   /usr/bin/cmp ix,
-  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> portageq,
+  /usr/{bin,lib{,32,64}/python-exec}/python-exec2{,c} Cx -> portageq,
   
   /etc/terminfo/x/xterm r,
   /etc/env.d/** rw,
@@ -39,18 +40,15 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
   /usr/x86_64-pc-linux-gnu/** rw,
   /usr/x86_64-pc-linux-gnu/binutils-bin/{,**} r,
   
+  owner /tmp/sh-thd.* rw,
+  
   
   profile portageq flags=(complain) {
     #include <abstractions/base>
-    
-    /usr/lib{,32,64}/python-exec/python-exec2 m,
-    /usr/lib{,32,64}/python-exec/python-exec2-c m,
-    /bin/env r,
+    #include <abstractions/python-exec>
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq Px,
     /usr/lib{,32,64}/python-exec/@{PYTHON}/env-update Px,
-    
-    /etc/env.d/python/config r,
     
   }
   

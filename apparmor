@@ -16,6 +16,7 @@ profile apparmor_parser /sbin/apparmor_parser flags=(complain) {
   
   /dev/tty[0-9]* w,
   /dev/pts/[0-9]* w,
+  /sys/devices/system/cpu/ r,
   /sys/kernel/security/apparmor/{,**} r,
   /sys/kernel/security/apparmor/{.load,.replace,.remove} w,
   @{PROC}/@{pid}/mounts r,

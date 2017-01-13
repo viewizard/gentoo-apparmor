@@ -40,7 +40,7 @@ profile net-tools.netstat /bin/netstat flags=(complain) {
   @{PROC}/ r,
   @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/cmdline r,
-  @{PROC}/@{pid}/net/{tcp,udp} r,
+  @{PROC}/@{pid}/net/* r,
   
   /bin/netstat mr,
   

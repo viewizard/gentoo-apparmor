@@ -170,7 +170,7 @@ profile gentoolkit.revdep-rebuild.sh /usr/bin/revdep-rebuild.sh flags=(complain)
   /dev/tty rw,
   /dev/pts/[0-9]* w,
   
-  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> portageq,
+  /usr/{bin,lib{,32,64}/python-exec}/python-exec2{,c} Cx -> portageq,
   
   / r,
   /{bin,sbin,usr,opt,lib,lib32,lib64}/ r,
@@ -194,14 +194,9 @@ profile gentoolkit.revdep-rebuild.sh /usr/bin/revdep-rebuild.sh flags=(complain)
   
   profile portageq {
     #include <abstractions/base>
-    
-    /usr/lib{,32,64}/python-exec/python-exec2 m,
-    /usr/lib{,32,64}/python-exec/python-exec2-c m,
-    /bin/env r,
+    #include <abstractions/python-exec>
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq Px,
-    
-    /etc/env.d/python/config r,
     
   }
   

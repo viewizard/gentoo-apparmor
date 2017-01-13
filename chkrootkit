@@ -19,8 +19,6 @@ profile chkrootkit /usr/sbin/chkrootkit {
   
   /dev/{,**} r,
   /dev/tty rw,
-  @{PROC}/@{pid}/fd/* r,
-  @{PROC}/@{pid}/net/* r,
   
   /bin/bash Cxmr -> shell,
   /bin/sed ix,
@@ -36,7 +34,7 @@ profile chkrootkit /usr/sbin/chkrootkit {
   /bin/tr ix,
   /bin/wc ix,
   /bin/cat ix,
-  /bin/netstat ix,
+  /bin/netstat Px,
   /usr/bin/id ix,
   /usr/bin/crontab ix,
   /usr/bin/gawk ix,

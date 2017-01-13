@@ -35,12 +35,14 @@ profile apparmor-utils.aa-unconfined /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-u
   capability sys_ptrace,
   
   /dev/pts/[0-9]* w,
+  @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/mounts r,
   @{PROC}/@{pid}/attr/{current,prev,exec} r,
   
   /bin/env mr,
   /bin/bash Cx -> shell,
   /bin/cat ix,
+  /bin/netstat Px,
   
   /etc/apparmor/logprof.conf r,
   /etc/inputrc r,
@@ -48,6 +50,8 @@ profile apparmor-utils.aa-unconfined /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-u
   /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/*.pyc w,
   
   owner /tmp/{,tmp}?????? rw,
+  owner /tmp/???????? rw,
+  owner /var/tmp/???????? rw,
   
   
   profile shell flags=(complain) {
@@ -62,7 +66,7 @@ profile apparmor-utils.aa-unconfined /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-u
     @{PROC}/@{pid}/net/* r,
     
     /bin/bash mr,
-    /bin/netstat ix,
+    /bin/netstat Px,
     
   }
   

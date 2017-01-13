@@ -41,7 +41,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
   /lib64/rc/bin/ebegin ix,
   /lib64/rc/bin/ewarn ix,
   /lib64/rc/bin/eend ix,
-  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> portageq,
+  /usr/{bin,lib{,32,64}/python-exec}/python-exec2{,c} Cx -> portageq,
   
   / r,
   /lib{,32,64}/ r,
@@ -62,15 +62,10 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
   
   profile portageq flags=(complain) {
     #include <abstractions/base>
-    
-    /usr/lib{,32,64}/python-exec/python-exec2 m,
-    /usr/lib{,32,64}/python-exec/python-exec2-c m,
-    /bin/env r,
+    #include <abstractions/python-exec>
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq Px,
     /usr/lib{,32,64}/python-exec/@{PYTHON}/env-update Px,
-    
-    /etc/env.d/python/config r,
     
   }
   

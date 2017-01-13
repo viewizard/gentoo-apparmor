@@ -35,7 +35,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
   /usr/bin/find ix,
   /usr/bin/realpath ix,
   /usr/bin/h2ph ix,
-  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> portage,
+  /usr/{bin,lib{,32,64}/python-exec}/python-exec2{,c} Cx -> portage,
   
   /etc/terminfo/x/xterm r,
   /etc/portage/{,**} r,
@@ -66,15 +66,10 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
   
   profile portage {
     #include <abstractions/base>
-    
-    /usr/lib{,32,64}/python-exec/python-exec2 m,
-    /usr/lib{,32,64}/python-exec/python-exec2-c m,
-    /bin/env r,
+    #include <abstractions/python-exec>
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge Px,
     /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq Px,
-    
-    /etc/env.d/python/config r,
     
   }
   

@@ -42,20 +42,15 @@ profile eselect_root flags=(complain) {
   /usr/bin/scanelf ix,
   /usr/bin/tput ix,
   /usr/bin/binutils-config Px,
-  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> portage,
+  /usr/{bin,lib{,32,64}/python-exec}/python-exec2{,c} Cx -> portage,
   
   
   profile portage {
     #include <abstractions/base>
-    
-    /usr/lib{,32,64}/python-exec/python-exec2 m,
-    /usr/lib{,32,64}/python-exec/python-exec2-c m,
-    /bin/env r,
+    #include <abstractions/python-exec>
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq Px,
     /usr/lib{,32,64}/python-exec/@{PYTHON}/env-update Px,
-    
-    /etc/env.d/python/config r,
     
   }
   

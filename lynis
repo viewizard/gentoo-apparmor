@@ -14,7 +14,6 @@ profile lynis /usr/sbin/lynis {
   #include <abstractions/perl>
   #include <abstractions/nameservice>
   
-  capability sys_ptrace,
   capability dac_read_search,
   
   /dev/tty rw,
@@ -46,7 +45,7 @@ profile lynis /usr/sbin/lynis {
   /bin/passwd Px,
   /bin/rm ix,
   /bin/mount Px,
-  /bin/netstat ix,
+  /bin/netstat Px,
   /usr/sbin/sysctl Px,
   /sbin/lvm Px,
   /sbin/tune2fs ix,
@@ -70,7 +69,7 @@ profile lynis /usr/sbin/lynis {
   /usr/bin/logrotate Px,
   /usr/sbin/grpck ix,
   /usr/sbin/pwck ix,
-  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> aa_status,
+  /usr/{bin,lib{,32,64}/python-exec}/python-exec2{,c} Cx -> aa_status,
   
   /{,**} r,
   deny /* w,
@@ -132,14 +131,9 @@ profile lynis /usr/sbin/lynis {
   
   profile aa_status {
     #include <abstractions/base>
-    
-    /usr/lib{,32,64}/python-exec/python-exec2 m,
-    /usr/lib{,32,64}/python-exec/python-exec2-c m,
-    /bin/env r,
+    #include <abstractions/python-exec>
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-status Px,
-    
-    /etc/env.d/python/config r,
     
   }
   

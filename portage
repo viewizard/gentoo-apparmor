@@ -154,6 +154,8 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
     /run/openrc/deptree w,
     /run/openrc/depconfig w,
     
+    /var/ r,
+    /var/tmp/ r,
     owner /tmp/sh-thd.* rw,
     owner /tmp/portage.cron.* rw,
     owner /tmp/sed* rw,
@@ -223,6 +225,7 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
     /usr/lib{,32,64}/** ixr,
     /usr/libexec/** ixr,
     /usr/share/build-1/mkdir.sh ixr,
+    /usr/share/gnuconfig/config.sub ixr,
     /usr/x86_64-pc-linux-gnu/** ixr,
     /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/** ixr,
     /usr/src/linux-[0-9]*-{hardened,gentoo}*/tools/gcc/**.so m,
@@ -241,6 +244,7 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
     
     /tmp/ r,
     owner /tmp/cf*/{,**} rw,
+    owner /tmp/test.* rw,
     owner /var/tmp/cf*/{,**} rw,
     
   }
@@ -400,7 +404,7 @@ profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
   /bin/mv ix,
   /usr/bin/diff ix,
   /usr/bin/find ix,
-  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> portageq,
+  /usr/{bin,lib{,32,64}/python-exec}/python-exec2{,c} Cx -> portageq,
   
   / r,
   /etc/ r,
@@ -415,14 +419,9 @@ profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
   
   profile portageq {
     #include <abstractions/base>
-    
-    /usr/lib{,32,64}/python-exec/python-exec2 m,
-    /usr/lib{,32,64}/python-exec/python-exec2-c m,
-    /bin/env r,
+    #include <abstractions/python-exec>
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq Px,
-    
-    /etc/env.d/python/config r,
     
   }
   

@@ -39,7 +39,7 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
   /usr/bin/qtchooser Px,
   /usr/bin/gparted-pkexec Px,
   /usr/bin/pavucontrol Px,
-  /usr/lib{,32,64}/python-exec/python-exec2 Cx -> alacarte,
+  /usr/{bin,lib{,32,64}/python-exec}/python-exec2{,c} Cx -> alacarte,
   /usr/bin/passwd.sh Px,
   /usr/bin/xfdesktop-settings Px,
   /usr/bin/mate-screensaver-preferences Px,
@@ -67,14 +67,9 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
   
   profile alacarte {
     #include <abstractions/base>
-    
-    /usr/lib{,32,64}/python-exec/python-exec2 m,
-    /usr/lib{,32,64}/python-exec/python-exec2-c m,
-    /bin/env r,
+    #include <abstractions/python-exec>
     
     /usr/lib{,32,64}/python-exec/@{PYTHON}/alacarte Px,
-    
-    /etc/env.d/python/config r,
     
   }
   
