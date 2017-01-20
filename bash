@@ -208,7 +208,7 @@ profile bash_root {
   /usr/sbin/python-updater Pxr,
   /usr/sbin/iftop Pxr,
   /usr/sbin/nettop Pxr,
-  /usr/lib{,32,64}/python-exec/python-exec2 Pxr -> python_exec_root,
+  /usr/{bin,lib{,32,64}/python-exec}/python-exec2{,c} Pxr -> python_exec_root,
   /usr/local/bin/** Pxr,
   /usr/local/sbin/** Pxr,
   /etc/init.d/* Pxr,

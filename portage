@@ -143,8 +143,6 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
     /var/db/pkg/** rw,
     /var/tmp/portage/ rw,
     /var/tmp/portage/** rwkix,
-    /var/tmp/portage_tmpfs/ rw,
-    /var/tmp/portage_tmpfs/** rwkix,
     /var/cache/** rwl,
     /var/lib/*/ rw,
     /var/lib/*/** rwkl,
@@ -236,8 +234,6 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
     /var/tmp/ r,
     /var/tmp/portage/ rw,
     /var/tmp/portage/** rwklix,
-    /var/tmp/portage_tmpfs/ rw,
-    /var/tmp/portage_tmpfs/** rwklix,
     /var/log/sandbox/sandbox-*.log w,
     /var/db/pkg/{,**} r,
     /var/cache/{,**} r,
@@ -414,7 +410,6 @@ profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
   owner /var/tmp/etc-update-*/{,**} rw,
   owner /tmp/sh-thd.* rw,
   owner /var/tmp/portage/** rw,
-  owner /var/tmp/portage_tmpfs/** rw,
   
   
   profile portageq {
