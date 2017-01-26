@@ -140,6 +140,7 @@ profile bash_root {
   /bin/keyctl ixr,
   /bin/mkdir ixr,
   /bin/touch ixr,
+  /bin/lsblk ixr,
   /sbin/mdadm Pxr,
   /sbin/shutdown Pxr,
   /sbin/{halt,poweroff,reboot} Pxr,
@@ -212,7 +213,7 @@ profile bash_root {
   /usr/local/bin/** Pxr,
   /usr/local/sbin/** Pxr,
   /etc/init.d/* Pxr,
-  /usr/src/linux-[0-9]*-hardened/scripts/sign-file Pxr,
+  /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/* Pxr,
   /usr/src/IMA/certs/* Pxr,  # в профиле /etc/apparmor.d/kernel
   
   # don't use by default

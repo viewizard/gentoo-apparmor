@@ -48,3 +48,15 @@ profile kernel.gen-ima-certs /usr/src/IMA/certs/* flags=(complain) {
   }
   
 }
+
+profile kernel.checkpatch.pl /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/checkpatch.pl flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/perl>
+  
+  /dev/pts/[0-9]* w,
+  
+  /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/checkpatch.pl r,
+  
+  /usr/src/** r,
+  
+}
