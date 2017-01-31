@@ -107,7 +107,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /usr/src/linux-[0-9]*-{hardened,gentoo}*/{,**} rw,
     /usr/src/linux-[0-9]*-{hardened,gentoo}*/tools/gcc/**.so m,
     /usr/share/pkgconfig/{,**} r,
-    /var/tmp/portage/genkernel/initramfs-*-hardened.cpio r,
+    /var/tmp/portage/genkernel/initramfs-*-{hardened,gentoo}*.cpio r,
     
     owner /tmp/sh-thd.* rw,
     owner /tmp/cc*.{s,c,res,o,le,ld} rw,
