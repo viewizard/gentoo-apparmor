@@ -75,7 +75,7 @@ profile firefox /usr/{bin/firefox,lib{,32,64}/firefox/firefox{,-bin}} {
   # plugin-container нужен для flash, новые версии flash работают крайне нестабильно!
   audit deny /usr/lib{,32,64}/firefox/plugin-container x,
   #owner /dev/shm/org.chromium.* rw,
-  #/usr/lib64/firefox/plugin-container Px,
+  #/usr/lib{,32,64}/firefox/plugin-container Px,
   
   # Needed for the crash reporter
   owner @{PROC}/@{pid}/environ r,
@@ -97,7 +97,11 @@ profile firefox /usr/{bin/firefox,lib{,32,64}/firefox/firefox{,-bin}} {
   
   /tmp/ r,
   owner /tmp/.gl* rw,
+  owner /tmp/tmp-* rw,
+  owner /tmp/mozilla-temp-* rw,
+  owner /tmp/mozilla_*/{,**} rw,
   /var/tmp/ r,
+  owner /var/tmp/etilqs_* rw,
   
 }
 
