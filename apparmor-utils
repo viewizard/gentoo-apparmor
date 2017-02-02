@@ -23,7 +23,7 @@ profile apparmor-utils.aa-status /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-statu
   
   /bin/env ixr,
   
-  /usr/lib{,32,64}/@{PYTHON}/site-packages/apparmor/*.pyc w,
+  /usr/lib{,32,64}/@{PYTHON}/site-packages/apparmor/**.pyc{,.*} w,
   
 }
 
@@ -47,7 +47,8 @@ profile apparmor-utils.aa-unconfined /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-u
   /etc/apparmor/logprof.conf r,
   /etc/inputrc r,
   /etc/terminfo/x/xterm r,
-  /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/*.pyc w,
+  /usr/lib{,32,64}/@{PYTHON}/site-packages/apparmor/**.pyc{,.*} w,
+  /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/**.pyc{,.*} w,
   
   owner /tmp/{,tmp}?????? rw,
   owner /tmp/???????? rw,
@@ -87,7 +88,8 @@ profile apparmor-utils.aa-complain /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-com
   /etc/apparmor/logprof.conf r,
   /etc/apparmor.d/{,**} r,
   /etc/apparmor.d/* w,
-  /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/*.pyc w,
+  /usr/lib{,32,64}/@{PYTHON}/site-packages/apparmor/**.pyc{,.*} w,
+  /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/**.pyc{,.*} w,
   
   owner /tmp/{,tmp}?????? rw,
   
@@ -108,7 +110,8 @@ profile apparmor-utils.aa-enforce /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-enfo
   /etc/apparmor/logprof.conf r,
   /etc/apparmor.d/{,**} r,
   /etc/apparmor.d/* w,
-  /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/*.pyc w,
+  /usr/lib{,32,64}/@{PYTHON}/site-packages/apparmor/**.pyc{,.*} w,
+  /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/**.pyc{,.*} w,
   
   owner /tmp/{,tmp}?????? rw,
   
@@ -129,7 +132,8 @@ profile apparmor-utils.aa-disable /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-disa
   /etc/apparmor/logprof.conf r,
   /etc/apparmor.d/{,**} r,
   /etc/apparmor.d/disable/* w,
-  /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/*.pyc w,
+  /usr/lib{,32,64}/@{PYTHON}/site-packages/apparmor/**.pyc{,.*} w,
+  /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/**.pyc{,.*} w,
   
   owner /tmp/{,tmp}?????? rw,
   

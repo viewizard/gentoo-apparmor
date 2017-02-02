@@ -43,11 +43,9 @@ profile porthole /usr/lib{,32,64}/python-exec/@{PYTHON}/porthole {
   
   /usr/share/gtksourceview-2.0/** r,
   /usr/share/porthole/** r,
+  /usr/lib{,32,64}/@{PYTHON}/site-packages/cairo/**.pyc{,.*} w,
   
   owner @{HOME}/.porthole/{,prefs.xml} rw,
-  
-  # Noisy
-  deny /usr/lib{,32,64}/@{PYTHON}/site-packages/cairo/__init__.pyc w,
   
   
   profile shell {

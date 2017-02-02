@@ -51,15 +51,13 @@ profile meld /usr/bin/meld {
   
   /usr/share/meld/{,**} r,
   /usr/share/gtksourceview-[2-9]*/{,**} r,
+  /usr/lib{,32,64}/@{PYTHON}/site-packages/cairo/**.pyc{,.*} w,
   
   owner @{HOME}/.config/meld/{,**} rw,
   owner @{HOME}/.local/share/meld/{,**} rw,
   
   owner /tmp/??????{,_*} rw,
   owner /var/tmp/?????? rw,
-  
-  # Noisy
-#  deny /usr/lib{,32,64}/@{PYTHON}/site-packages/cairo/__init__.pyc w,
   
 }
 
@@ -102,14 +100,12 @@ profile meld_root {
   
   /usr/share/meld/{,**} r,
   /usr/share/gtksourceview-[2-9]*/{,**} r,
+  /usr/lib{,32,64}/@{PYTHON}/site-packages/cairo/**.pyc{,.*} w,
   
   owner @{HOME}/.config/meld/{,**} rw,
   owner @{HOME}/.local/share/meld/{,**} rw,
   
   owner /tmp/??????{,_*} rw,
   owner /var/tmp/?????? rw,
-  
-  # Noisy
-#  deny /usr/lib{,32,64}/@{PYTHON}/site-packages/cairo/__init__.pyc w,
   
 }

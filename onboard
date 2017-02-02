@@ -29,13 +29,12 @@ profile onboard /usr/bin/onboard {
   /usr/bin/ r,
   /usr/share/onboard/{,**} r,
   /usr/share/xml/iso-codes/{,*} r,
+  /usr/lib{,32,64}/@{PYTHON}/site-packages/cairo/**.pyc{,.*} w,
   
   owner @{HOME}/.local/share/onboard/{,**} rw,
   
   # Noisy
   deny @{HOME}/ r,
-  deny /usr/lib{,32,64}/@{PYTHON}/site-packages/cairo/__pycache__/ w,
-  deny /usr/share/onboard/scripts/__pycache__/ w,
   
 }
 
@@ -58,10 +57,8 @@ profile onboard-settings /usr/bin/onboard-settings {
   /etc/terminfo/l/linux r,
   /usr/bin/ r,
   /usr/share/onboard/{,**} r,
+  /usr/lib{,32,64}/@{PYTHON}/site-packages/cairo/**.pyc{,.*} w,
   
   owner @{HOME}/.local/share/onboard/{,**} rw,
-  
-  # Noisy
-  deny /usr/lib{,32,64}/@{PYTHON}/site-packages/cairo/__pycache__/ w,
   
 }
