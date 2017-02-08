@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -18,7 +18,7 @@ profile lm_sensors.sensors /usr/bin/sensors {
 }
 
 
-profile lm_sensors.init.d /etc/init.d/lm_sensors flags=(complain) {
+profile lm_sensors.init.d /etc/init.d/lm_sensors {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -32,7 +32,7 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors flags=(complain) {
   /etc/{conf,init}.d/lm_sensors r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

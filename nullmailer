@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -73,7 +73,7 @@ profile nullmailer-send /usr/sbin/nullmailer-send {
 }
 
 
-profile nullmailer.init.d /etc/init.d/nullmailer flags=(complain) {
+profile nullmailer.init.d /etc/init.d/nullmailer {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
@@ -90,14 +90,14 @@ profile nullmailer.init.d /etc/init.d/nullmailer flags=(complain) {
   /bin/bash Cx -> shell,
   
   /etc/environment r,
-  /etc/init.d/nullmailer r,
+  /etc/{conf,init}.d/nullmailer r,
   /etc/security/limits.d/{,*} r,
   
   /run/nullmailer.pid rwk,
   /run/utmp rk,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -89,7 +89,7 @@ profile zfs.zed.d /usr/libexec/zfs/zed.d/*.sh {
 }
 
 
-profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed flags=(complain) {
+profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -104,14 +104,14 @@ profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed flags=(complain) {
   /bin/kmod Pxr,
   
   / r,
-  /etc/init.d/zfs-zed r,
+  /etc/{conf,init}.d/zfs-zed r,
   /etc/conf.d/zfs r,
   /etc/zfs/zfs-functions r,
   
   /var/lib/run/zed.pid r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -121,7 +121,7 @@ profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed flags=(complain) {
 }
 
 
-profile zfs.zfs-import.init.d /etc/init.d/zfs-import flags=(complain) {
+profile zfs.zfs-import.init.d /etc/init.d/zfs-import {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -136,10 +136,10 @@ profile zfs.zfs-import.init.d /etc/init.d/zfs-import flags=(complain) {
   / r,
   /etc/conf.d/zfs r,
   /etc/zfs/zfs-functions r,
-  /etc/init.d/zfs-import r,
+  /etc/{conf,init}.d/zfs-import r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

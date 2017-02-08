@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -22,15 +22,13 @@ profile mdadm /sbin/mdadm flags=(complain) {
   /dev/.tmp.md.* w,
   /sys/block/ r,
   /sys/bus/pci/drivers/ahci/ r,
-  /sys/devices/pci[0-9]*/**/vendor r,
-  /sys/devices/pci[0-9]*/**/device r,
+  /sys/devices/pci[0-9]*/**/{class,device,vendor} r,
   /sys/devices/virtual/block/md[0-9]*/* r,
   /sys/devices/virtual/block/md[0-9]*/md/array_state rw,
   /sys/devices/virtual/block/md[0-9]*/md/{,component_size,metadata_version} r,
   /sys/devices/virtual/block/md[0-9]*/md/dev-sd[a-z][0-9]*/* r,
   /sys/devices/pci[0-9]*/**/ata[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/dev r,
-  @{PROC}/mdstat r,
-  @{PROC}/devices r,
+  @{PROC}/{devices,mdstat,partitions} r,
   
   /sbin/mdadm mr,
   
@@ -63,7 +61,7 @@ profile mdadm.checkarray /usr/sbin/checkarray flags=(complain) {
 }
 
 
-profile mdadm.init.d /etc/init.d/mdadm flags=(complain) {
+profile mdadm.init.d /etc/init.d/mdadm {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -77,7 +75,7 @@ profile mdadm.init.d /etc/init.d/mdadm flags=(complain) {
   /run/mdadm.pid rwk,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

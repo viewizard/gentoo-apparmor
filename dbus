@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -121,7 +121,7 @@ profile dbus-daemon-launch-helper /usr/libexec/dbus-daemon-launch-helper {
   
 }
 
-profile dbus.init.d /etc/init.d/dbus flags=(complain) {
+profile dbus.init.d /etc/init.d/dbus {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -132,12 +132,14 @@ profile dbus.init.d /etc/init.d/dbus flags=(complain) {
   /usr/bin/dbus-uuidgen Px,
   /usr/bin/dbus-daemon Px,
   
+  /etc/{conf,init}.d/dbus r,
+  
   /run/dbus.pid rwk,
   /run/dbus/ w,
   /run/dbus/system_bus_socket rwk,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

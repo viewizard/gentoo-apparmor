@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -31,7 +31,7 @@ profile tor /usr/bin/tor {
   
 }
 
-profile tor.init.d /etc/init.d/tor flags=(complain) {
+profile tor.init.d /etc/init.d/tor {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -49,7 +49,7 @@ profile tor.init.d /etc/init.d/tor flags=(complain) {
   /run/tor/tor.pid rwk,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

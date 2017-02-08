@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -257,7 +257,7 @@ profile openrc.tmpfiles.sh /lib{,32,64}/rc/sh/tmpfiles.sh flags=(complain) {
   
 }
 
-profile openrc.netmount.init.d /etc/init.d/netmount flags=(complain) {
+profile openrc.netmount.init.d /etc/init.d/netmount {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -273,7 +273,7 @@ profile openrc.netmount.init.d /etc/init.d/netmount flags=(complain) {
   /etc/{conf,init}.d/netmount r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -283,7 +283,7 @@ profile openrc.netmount.init.d /etc/init.d/netmount flags=(complain) {
 }
 
 
-profile openrc.consolefont.init.d /etc/init.d/consolefont flags=(complain) {
+profile openrc.consolefont.init.d /etc/init.d/consolefont {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -300,7 +300,7 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont flags=(complain) {
   /lib{,32,64}/rc/console/font rw,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -317,7 +317,7 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont flags=(complain) {
 }
 
 
-profile openrc.local.init.d /etc/init.d/local flags=(complain) {
+profile openrc.local.init.d /etc/init.d/local {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -325,11 +325,11 @@ profile openrc.local.init.d /etc/init.d/local flags=(complain) {
   
   /bin/bash Cx -> shell,
   
-  /etc/init.d/local r,
+  /etc/{conf,init}.d/local r,
   /etc/local.d/{,*} r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -339,7 +339,7 @@ profile openrc.local.init.d /etc/init.d/local flags=(complain) {
 }
 
 
-profile openrc.hwclock.init.d /etc/init.d/hwclock flags=(complain) {
+profile openrc.hwclock.init.d /etc/init.d/hwclock {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -355,7 +355,7 @@ profile openrc.hwclock.init.d /etc/init.d/hwclock flags=(complain) {
   /etc/{conf,init}.d/hwclock r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -365,7 +365,7 @@ profile openrc.hwclock.init.d /etc/init.d/hwclock flags=(complain) {
 }
 
 
-profile openrc.swap.init.d /etc/init.d/swap flags=(complain) {
+profile openrc.swap.init.d /etc/init.d/swap {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -378,7 +378,7 @@ profile openrc.swap.init.d /etc/init.d/swap flags=(complain) {
   /etc/{conf,init}.d/swap r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -388,12 +388,11 @@ profile openrc.swap.init.d /etc/init.d/swap flags=(complain) {
 }
 
 
-profile openrc.modules.init.d /etc/init.d/modules flags=(complain) {
+profile openrc.modules.init.d /etc/init.d/modules {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /etc/init.d/root-ro Px,
   /bin/bash Cx -> shell,
   /bin/uname ix,
   /bin/kmod Px,
@@ -401,7 +400,7 @@ profile openrc.modules.init.d /etc/init.d/modules flags=(complain) {
   /etc/{conf,init}.d/modules r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -411,7 +410,7 @@ profile openrc.modules.init.d /etc/init.d/modules flags=(complain) {
 }
 
 
-profile openrc.fsck.init.d /etc/init.d/fsck flags=(complain) {
+profile openrc.fsck.init.d /etc/init.d/fsck {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -424,7 +423,7 @@ profile openrc.fsck.init.d /etc/init.d/fsck flags=(complain) {
   /etc/{conf,init}.d/fsck r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -434,7 +433,7 @@ profile openrc.fsck.init.d /etc/init.d/fsck flags=(complain) {
 }
 
 
-profile openrc.root.init.d /etc/init.d/root flags=(complain) {
+profile openrc.root.init.d /etc/init.d/root {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -447,10 +446,10 @@ profile openrc.root.init.d /etc/init.d/root flags=(complain) {
   /bin/bash Cx -> shell,
   
   /etc/fstab r,
-  /etc/init.d/root r,
+  /etc/{conf,init}.d/root r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -460,7 +459,7 @@ profile openrc.root.init.d /etc/init.d/root flags=(complain) {
 }
 
 
-profile openrc.mtab.init.d /etc/init.d/mtab flags=(complain) {
+profile openrc.mtab.init.d /etc/init.d/mtab {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -472,7 +471,7 @@ profile openrc.mtab.init.d /etc/init.d/mtab flags=(complain) {
   /etc/{conf,init}.d/mtab r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -482,7 +481,7 @@ profile openrc.mtab.init.d /etc/init.d/mtab flags=(complain) {
 }
 
 
-profile openrc.localmount.init.d /etc/init.d/localmount flags=(complain) {
+profile openrc.localmount.init.d /etc/init.d/localmount {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -503,7 +502,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount flags=(complain) {
   /etc/{conf,init}.d/localmount r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -513,7 +512,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount flags=(complain) {
 }
 
 
-profile openrc.sysctl.init.d /etc/init.d/sysctl flags=(complain) {
+profile openrc.sysctl.init.d /etc/init.d/sysctl {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -521,10 +520,10 @@ profile openrc.sysctl.init.d /etc/init.d/sysctl flags=(complain) {
   /bin/bash Cx -> shell,
   /usr/sbin/sysctl Pxr,
   
-  /etc/init.d/sysctl r,
+  /etc/{conf,init}.d/sysctl r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -534,7 +533,7 @@ profile openrc.sysctl.init.d /etc/init.d/sysctl flags=(complain) {
 }
 
 
-profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(complain) {
+profile openrc.bootmisc.init.d /etc/init.d/bootmisc {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -572,7 +571,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(complain) {
   owner /tmp/.X11-unix/ w,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -582,7 +581,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(complain) {
 }
 
 
-profile openrc.hostname.init.d /etc/init.d/hostname flags=(complain) {
+profile openrc.hostname.init.d /etc/init.d/hostname {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -596,7 +595,7 @@ profile openrc.hostname.init.d /etc/init.d/hostname flags=(complain) {
   /etc/{conf,init}.d/hostname r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/openrc_shell>
     
@@ -605,7 +604,7 @@ profile openrc.hostname.init.d /etc/init.d/hostname flags=(complain) {
 }
 
 
-profile openrc.tmpfiles.init.d /etc/init.d/tmpfiles.setup flags=(complain) {
+profile openrc.tmpfiles.init.d /etc/init.d/tmpfiles.setup {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -616,11 +615,11 @@ profile openrc.tmpfiles.init.d /etc/init.d/tmpfiles.setup flags=(complain) {
   /lib{,32,64}/rc/sh/tmpfiles.sh Px,
   /usr/bin/find ix,
   
-  /etc/init.d/tmpfiles.setup r,
+  /etc/{conf,init}.d/tmpfiles.setup r,
   /etc/conf.d/tmpfiles r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -630,7 +629,7 @@ profile openrc.tmpfiles.init.d /etc/init.d/tmpfiles.setup flags=(complain) {
 }
 
 
-profile openrc.termencoding.init.d /etc/init.d/termencoding flags=(complain) {
+profile openrc.termencoding.init.d /etc/init.d/termencoding {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -641,12 +640,12 @@ profile openrc.termencoding.init.d /etc/init.d/termencoding flags=(complain) {
   /etc/init.d/keymaps Px,
   /etc/init.d/consolefont Px,
   
-  /etc/init.d/termencoding r,
+  /etc/{conf,init}.d/termencoding r,
   
   /lib{,32,64}/rc/console/unicode w,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -656,17 +655,17 @@ profile openrc.termencoding.init.d /etc/init.d/termencoding flags=(complain) {
 }
 
 
-profile openrc.runsvdir.init.d /etc/init.d/runsvdir flags=(complain) {
+profile openrc.runsvdir.init.d /etc/init.d/runsvdir {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
   /bin/bash Cx -> shell,
   
-  /etc/init.d/runsvdir r,
+  /etc/{conf,init}.d/runsvdir r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -676,7 +675,7 @@ profile openrc.runsvdir.init.d /etc/init.d/runsvdir flags=(complain) {
 }
 
 
-profile openrc.keymaps.init.d /etc/init.d/keymaps flags=(complain) {
+profile openrc.keymaps.init.d /etc/init.d/keymaps {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -696,7 +695,7 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps flags=(complain) {
   /lib{,32,64}/rc/console/keymap w,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -714,7 +713,7 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps flags=(complain) {
 }
 
 
-profile openrc.urandom.init.d /etc/init.d/urandom flags=(complain) {
+profile openrc.urandom.init.d /etc/init.d/urandom {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -732,7 +731,7 @@ profile openrc.urandom.init.d /etc/init.d/urandom flags=(complain) {
   /var/lib/misc/random-seed rw,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -742,7 +741,7 @@ profile openrc.urandom.init.d /etc/init.d/urandom flags=(complain) {
 }
 
 
-profile openrc.loopback.init.d /etc/init.d/loopback flags=(complain) {
+profile openrc.loopback.init.d /etc/init.d/loopback {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -752,11 +751,11 @@ profile openrc.loopback.init.d /etc/init.d/loopback flags=(complain) {
   /bin/bash Cx -> shell,
   /bin/ip ix,
   
-  /etc/init.d/loopback r,
+  /etc/{conf,init}.d/loopback r,
   /etc/iproute2/rt_scopes r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -766,17 +765,17 @@ profile openrc.loopback.init.d /etc/init.d/loopback flags=(complain) {
 }
 
 
-profile openrc.procfs.init.d /etc/init.d/procfs flags=(complain) {
+profile openrc.procfs.init.d /etc/init.d/procfs {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
   /bin/bash Cx -> shell,
   
-  /etc/init.d/procfs r,
+  /etc/{conf,init}.d/procfs r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -786,18 +785,18 @@ profile openrc.procfs.init.d /etc/init.d/procfs flags=(complain) {
 }
 
 
-profile openrc.killprocs.init.d /etc/init.d/killprocs flags=(complain) {
+profile openrc.killprocs.init.d /etc/init.d/killprocs {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
   /bin/bash Cx -> shell,
   
-  /etc/init.d/killprocs r,
+  /etc/{conf,init}.d/killprocs r,
   /sbin/killall5 Px,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -807,19 +806,25 @@ profile openrc.killprocs.init.d /etc/init.d/killprocs flags=(complain) {
 }
 
 
-profile openrc.mount-ro.init.d /etc/init.d/mount-ro flags=(complain) {
+profile openrc.mount-ro.init.d /etc/init.d/mount-ro {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  @{PROC}/@{pid}/mounts r,
+  
   /bin/bash Cx -> shell,
   
-  /etc/init.d/mount-ro r,
   /bin/sync ix,
+  /bin/sed ix,
   /bin/umount Px,
+  /bin/fuser Px,
+  /lib{,32,64}/rc/bin/mountinfo ix,
   
+  /etc/{conf,init}.d/mount-ro r,
+  /etc/fstab r,
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -829,17 +834,20 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro flags=(complain) {
 }
 
 
-profile openrc.savecache.init.d /etc/init.d/savecache flags=(complain) {
+profile openrc.savecache.init.d /etc/init.d/savecache {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
   /bin/bash Cx -> shell,
+  /bin/cp ix,
   
-  /etc/init.d/savecache r,
+  /etc/{conf,init}.d/savecache r,
+  /lib{,32,64}/rc/cache/* rw,
+  /run/openrc/** r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -849,7 +857,7 @@ profile openrc.savecache.init.d /etc/init.d/savecache flags=(complain) {
 }
 
 
-profile openrc.devfs.init.d /etc/init.d/devfs flags=(complain) {
+profile openrc.devfs.init.d /etc/init.d/devfs {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -859,16 +867,15 @@ profile openrc.devfs.init.d /etc/init.d/devfs flags=(complain) {
   
   /bin/bash Cx -> shell,
   
-  /etc/init.d/devfs r,
   /bin/grep ix,
   /bin/mount Px,
   /bin/umount Px,
   
   /etc/fstab r,
-  /etc/conf.d/devfs r,
+  /etc/{conf,init}.d/devfs r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -878,7 +885,7 @@ profile openrc.devfs.init.d /etc/init.d/devfs flags=(complain) {
 }
 
 
-profile openrc.dmesg.init.d /etc/init.d/dmesg flags=(complain) {
+profile openrc.dmesg.init.d /etc/init.d/dmesg {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -887,15 +894,14 @@ profile openrc.dmesg.init.d /etc/init.d/dmesg flags=(complain) {
   
   /bin/bash Cx -> shell,
   
-  /etc/init.d/dmesg r,
   /bin/dmesg ix,
   
-  /etc/conf.d/dmesg r,
+  /etc/{conf,init}.d/dmesg r,
   
   /var/log/dmesg w,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -905,20 +911,20 @@ profile openrc.dmesg.init.d /etc/init.d/dmesg flags=(complain) {
 }
 
 
-profile openrc.kmod-static-nodes.init.d /etc/init.d/kmod-static-nodes flags=(complain) {
+profile openrc.kmod-static-nodes.init.d /etc/init.d/kmod-static-nodes {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
   /bin/bash Cx -> shell,
   
-  /etc/init.d/kmod-static-nodes r,
+  /etc/{conf,init}.d/kmod-static-nodes r,
   /bin/kmod Px,
   
   /run/tmpfiles.d/ w,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -928,7 +934,7 @@ profile openrc.kmod-static-nodes.init.d /etc/init.d/kmod-static-nodes flags=(com
 }
 
 
-profile openrc.sysfs.init.d /etc/init.d/sysfs flags=(complain) {
+profile openrc.sysfs.init.d /etc/init.d/sysfs {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -939,15 +945,15 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs flags=(complain) {
   
   /bin/bash Cx -> shell,
   
-  /etc/init.d/sysfs r,
   /bin/grep ix,
   /bin/mount Px,
   /bin/umount Px,
   
   /etc/fstab r,
+  /etc/{conf,init}.d/sysfs r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -957,20 +963,20 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs flags=(complain) {
 }
 
 
-profile openrc.tmpfiles.dev.init.d /etc/init.d/tmpfiles.dev flags=(complain) {
+profile openrc.tmpfiles.dev.init.d /etc/init.d/tmpfiles.dev {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
   /bin/bash Cx -> shell,
   
-  /etc/init.d/tmpfiles.dev r,
+  /etc/{conf,init}.d/tmpfiles.dev r,
   
   /etc/conf.d/tmpfiles r,
   /lib{,32,64}/rc/sh/tmpfiles.sh Px,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -980,7 +986,7 @@ profile openrc.tmpfiles.dev.init.d /etc/init.d/tmpfiles.dev flags=(complain) {
 }
 
 
-profile openrc.udev.init.d /etc/init.d/udev flags=(complain) {
+profile openrc.udev.init.d /etc/init.d/udev {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -992,19 +998,18 @@ profile openrc.udev.init.d /etc/init.d/udev flags=(complain) {
   
   /bin/bash Cx -> shell,
   
-  /etc/init.d/udev r,
   /bin/cat ix,
   /bin/grep ix,
   /bin/udevadm Px,
   /sbin/udevd Px,
   
   /etc/fstab r,
-  /etc/conf.d/udev r,
+  /etc/{conf,init}.d/udev r,
   
   /run/udev/rules.d/*.rules w,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -1014,18 +1019,18 @@ profile openrc.udev.init.d /etc/init.d/udev flags=(complain) {
 }
 
 
-profile openrc.modules-load.init.d /etc/init.d/modules-load flags=(complain) {
+profile openrc.modules-load.init.d /etc/init.d/modules-load {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
   /bin/bash Cx -> shell,
   
-  /etc/init.d/modules-load r,
+  /etc/{conf,init}.d/modules-load r,
   /bin/kmod Px,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

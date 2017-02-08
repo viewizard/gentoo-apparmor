@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -110,7 +110,7 @@ profile lvm2.lvm /sbin/lvm flags=(complain) {
 }
 
 
-profile lvm2.lvmetad.init.d /etc/init.d/lvmetad flags=(complain) {
+profile lvm2.lvmetad.init.d /etc/init.d/lvmetad {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -119,13 +119,13 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad flags=(complain) {
   /bin/bash Cx -> shell,
   /sbin/lvmetad Px,
   
-  /etc/init.d/lvmetad r,
+  /etc/{conf,init}.d/lvmetad r,
   
   /run/lvm/ w,
   /run/lvmetad.pid rwk,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -135,7 +135,7 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad flags=(complain) {
 }
 
 
-profile lvm2.lvm.init.d /etc/init.d/lvm flags=(complain) {
+profile lvm2.lvm.init.d /etc/init.d/lvm {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -150,7 +150,7 @@ profile lvm2.lvm.init.d /etc/init.d/lvm flags=(complain) {
   /etc/{conf,init}.d/lvm r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

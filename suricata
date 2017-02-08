@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -40,7 +40,7 @@ profile suricata /usr/bin/suricata {
 }
 
 
-profile suricata.init.d /etc/init.d/suricata flags=(complain) {
+profile suricata.init.d /etc/init.d/suricata {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -58,8 +58,7 @@ profile suricata.init.d /etc/init.d/suricata flags=(complain) {
   /usr/bin/suricata Px,
   
   /etc/suricata/{,**} r,
-  /etc/init.d/suricata r,
-  /etc/conf.d/suricata r,
+  /etc/{conf,init}.d/suricata r,
   
   /run/suricata/ rw,
   /run/suricata/suricata.pid rwk,
@@ -67,7 +66,7 @@ profile suricata.init.d /etc/init.d/suricata flags=(complain) {
   owner /tmp/oinkmaster.cron.?????? w,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

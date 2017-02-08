@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -42,7 +42,7 @@ profile cryptsetup /sbin/cryptsetup flags=(complain) {
 }
 
 
-profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(complain) {
+profile cryptsetup.init.d /etc/init.d/dmcrypt {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -65,7 +65,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(complain) {
   /etc/{conf,init}.d/dmcrypt r,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

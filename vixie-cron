@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -45,7 +45,7 @@ profile vixie-cron.cron /usr/sbin/cron {
 }
 
 
-profile vixie-cron.init.d /etc/init.d/vixie-cron flags=(complain) {
+profile vixie-cron.init.d /etc/init.d/vixie-cron {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -53,12 +53,12 @@ profile vixie-cron.init.d /etc/init.d/vixie-cron flags=(complain) {
   /usr/sbin/cron Px,
   /bin/bash Cx -> shell,
   
-  /etc/init.d/vixie-cron r,
+  /etc/{conf,init}.d/vixie-cron r,
   
   /run/cron.pid rwk,
   
   
-  profile shell flags=(complain) {
+  profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
