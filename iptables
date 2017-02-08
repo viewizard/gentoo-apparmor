@@ -52,3 +52,28 @@ profile iptables.init.d /etc/init.d/iptables flags=(complain) {
   }
   
 }
+
+
+profile iptables.firewall /usr/sbin/firewall {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  capability sys_tty_config,
+  capability dac_override,
+  capability dac_read_search,
+  
+  /dev/pts/[0-9]* w,
+  @{PROC}/@{pid}/net/ip_tables_names r,
+  
+  /dev/tty rw,
+  /dev/console rw,
+  
+  /usr/sbin/firewall r,
+  /bin/bash mr,
+  /bin/cat ix,
+  /sbin/xtables-multi Px,
+  /etc/init.d/iptables Px,
+  
+  /etc/firewall.conf r,
+  
+}

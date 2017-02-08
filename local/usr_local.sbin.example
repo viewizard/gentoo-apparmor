@@ -9,25 +9,3 @@
 # ------------------------------------------------------------------
 
 
-
-profile usr_local.sbin.firewall /usr/local/sbin/firewall.sh {
-  #include <abstractions/base>
-  #include <abstractions/nameservice>
-  
-  capability sys_tty_config,
-  capability dac_override,
-  capability dac_read_search,
-  
-  /dev/pts/[0-9]* w,
-  @{PROC}/@{pid}/net/ip_tables_names r,
-  
-  /dev/tty rw,
-  /dev/console rw,
-  
-  /usr/local/sbin/firewall.sh r,
-  /bin/bash mr,
-  /bin/cat ix,
-  /sbin/xtables-multi Px,
-  /etc/init.d/iptables Px,
-  
-}
