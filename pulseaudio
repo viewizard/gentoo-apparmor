@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -36,10 +36,12 @@ profile pulseaudio /usr/bin/pulseaudio {
   /usr/share/applications/{,*} r,
   
   /run/udev/data/+sound:card* r,
-  /run/user/*/pulse/autospawn.lock rwk,
+  owner /run/user/*/pulse/autospawn.lock rwk,
   
   owner @{HOME}/.config/pulse/ rw,
   owner @{HOME}/.config/pulse/** rwk,
+  
+  owner /tmp/pulse-*/autospawn.lock rwk,
   
 }
 

@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -216,6 +216,8 @@ profile util-linux.eject /usr/bin/eject flags=(complain) {
   @{PROC}/@{pid}/mountinfo r,
   
   /usr/bin/eject mr,
+  
+  /run/mount/utab r,
   
 }
 
