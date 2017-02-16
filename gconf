@@ -1,0 +1,22 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2016 Mikhail Kurinnoi
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+profile gconf /usr/libexec/gconfd-2 flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  /usr/libexec/gconfd-2 mr,
+  
+  /etc/gconf/{,**} r,
+  
+  owner @{HOME}/.config/gconf/{,**} rw,
+  
+}
