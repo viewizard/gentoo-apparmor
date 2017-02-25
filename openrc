@@ -236,26 +236,6 @@ profile openrc.init.sh /lib{,32,64}/rc/sh/init.sh flags=(complain) {
   
 }
 
-profile openrc.tmpfiles.sh /lib{,32,64}/rc/sh/tmpfiles.sh flags=(complain) {
-  #include <abstractions/base>
-  #include <abstractions/nameservice>
-  
-  capability chown,
-  
-  /dev/tty rw,
-  
-  /bin/bash mr,
-  /lib{,32,64}/rc/sh/tmpfiles.sh r,
-  /bin/sort ix,
-  /bin/mkdir ix,
-  /lib{,32,64}/rc/bin/checkpath ix,
-  
-  /usr/lib{,32,64}/tmpfiles.d/{,*} r,
-  
-  /run/tmpfiles.d/{,*} r,
-  /run/**/ w,
-  
-}
 
 profile openrc.netmount.init.d /etc/init.d/netmount {
   #include <abstractions/base>
@@ -433,6 +413,48 @@ profile openrc.fsck.init.d /etc/init.d/fsck {
 }
 
 
+profile openrc.opentmpfiles-dev.init.d /etc/init.d/opentmpfiles-dev {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /bin/bash Cx -> shell,
+  /bin/tmpfiles Px,
+  
+  /etc/{conf,init}.d/opentmpfiles-dev r,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/openrc_shell>
+    
+  }
+  
+}
+
+
+profile openrc.opentmpfiles-setup.init.d /etc/init.d/opentmpfiles-setup {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  /bin/bash Cx -> shell,
+  /bin/tmpfiles Px,
+  
+  /etc/{conf,init}.d/opentmpfiles-setup r,
+  
+  
+  profile shell {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/openrc_shell>
+    
+  }
+  
+}
+
+
 profile openrc.root.init.d /etc/init.d/root {
   #include <abstractions/base>
   #include <abstractions/nameservice>
@@ -597,31 +619,6 @@ profile openrc.hostname.init.d /etc/init.d/hostname {
   
   profile shell {
     #include <abstractions/base>
-    #include <abstractions/openrc_shell>
-    
-  }
-  
-}
-
-
-profile openrc.tmpfiles.init.d /etc/init.d/tmpfiles.setup {
-  #include <abstractions/base>
-  #include <abstractions/nameservice>
-  #include <abstractions/openrc>
-  
-  capability chown,
-  
-  /bin/bash Cx -> shell,
-  /lib{,32,64}/rc/sh/tmpfiles.sh Px,
-  /usr/bin/find ix,
-  
-  /etc/{conf,init}.d/tmpfiles.setup r,
-  /etc/conf.d/tmpfiles r,
-  
-  
-  profile shell {
-    #include <abstractions/base>
-    #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
     
   }
@@ -951,29 +948,6 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs {
   
   /etc/fstab r,
   /etc/{conf,init}.d/sysfs r,
-  
-  
-  profile shell {
-    #include <abstractions/base>
-    #include <abstractions/nameservice>
-    #include <abstractions/openrc_shell>
-    
-  }
-  
-}
-
-
-profile openrc.tmpfiles.dev.init.d /etc/init.d/tmpfiles.dev {
-  #include <abstractions/base>
-  #include <abstractions/nameservice>
-  #include <abstractions/openrc>
-  
-  /bin/bash Cx -> shell,
-  
-  /etc/{conf,init}.d/tmpfiles.dev r,
-  
-  /etc/conf.d/tmpfiles r,
-  /lib{,32,64}/rc/sh/tmpfiles.sh Px,
   
   
   profile shell {
