@@ -960,39 +960,6 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs {
 }
 
 
-profile openrc.udev.init.d /etc/init.d/udev {
-  #include <abstractions/base>
-  #include <abstractions/nameservice>
-  #include <abstractions/openrc>
-  
-  capability sys_admin,
-  
-  @{PROC}/@{pid}/mounts r,
-  @{PROC}/sys/kernel/hotplug w,
-  
-  /bin/bash Cx -> shell,
-  
-  /bin/cat ix,
-  /bin/grep ix,
-  /bin/udevadm Px,
-  /sbin/udevd Px,
-  
-  /etc/fstab r,
-  /etc/{conf,init}.d/udev r,
-  
-  /run/udev/rules.d/*.rules w,
-  
-  
-  profile shell {
-    #include <abstractions/base>
-    #include <abstractions/nameservice>
-    #include <abstractions/openrc_shell>
-    
-  }
-  
-}
-
-
 profile openrc.modules-load.init.d /etc/init.d/modules-load {
   #include <abstractions/base>
   #include <abstractions/nameservice>
