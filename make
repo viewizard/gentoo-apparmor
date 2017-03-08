@@ -103,7 +103,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /usr/libexec/gcc/x86_64-pc-linux-gnu/{,**}.so* mr,
     /usr/include/{,**} r,
     /lib{,32,64}/modules/{,**} rw,
-    /usr/src/IMA/certs/.x509 r,
+    /usr/src/IMA/certs/*.x509 r,
     /usr/src/linux-[0-9]*-{hardened,gentoo}*/{,**} rw,
     /usr/src/linux-[0-9]*-{hardened,gentoo}*/tools/gcc/**.so m,
     /usr/share/pkgconfig/{,**} r,
@@ -112,6 +112,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     owner /tmp/sh-thd.* rw,
     owner /tmp/cc*.{s,c,res,o,le,ld} rw,
     owner /tmp/cpiolist.* rw,
+    owner /tmp/depmod.*/{,**} rw,
     
     # Noisy
     deny /.git/{,**} r,
