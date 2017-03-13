@@ -72,10 +72,9 @@ profile firefox /usr/{bin/firefox,lib{,32,64}/firefox/firefox{,-bin}} {
   owner @{HOME}/.mozilla/**/extensions/** ixmr,
   /usr/lib{,32,64}/firefox/browser/extensions/** ixmr,
   
-  # plugin-container нужен для flash, новые версии flash работают крайне нестабильно!
-  audit deny /usr/lib{,32,64}/firefox/plugin-container x,
-  #owner /dev/shm/org.chromium.* rw,
-  #/usr/lib{,32,64}/firefox/plugin-container Px,
+  # plugin-container
+  owner /dev/shm/org.chromium.* rw,
+  /usr/lib{,32,64}/firefox/plugin-container Px,
   
   # Needed for the crash reporter
   owner @{PROC}/@{pid}/environ r,
@@ -96,27 +95,36 @@ profile firefox /usr/{bin/firefox,lib{,32,64}/firefox/firefox{,-bin}} {
   owner @{HOME_CACHE}/mozilla/firefox/**/*.sqlite k,
   
   /tmp/ r,
-  owner /tmp/.gl* rw,
-  owner /tmp/tmp-* rw,
+  owner /tmp/* rw,
+  owner /tmp/plugtmp/ rw,
+  owner /tmp/plugtmp/plugin-* rw,
   owner /tmp/mozilla-temp-* rw,
   owner /tmp/mozilla_*/{,**} rw,
+  owner /tmp/gnotifier/{,**} rw,
   /var/tmp/ r,
   owner /var/tmp/etilqs_* rw,
   
 }
 
-profile firefoxplugin-container /usr/lib64/firefox/plugin-container {
+profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
   #include <abstractions/X>
+  #include <abstractions/audio>
+  #include <abstractions/nvidia>
+  #include <abstractions/gtk>
   #include <abstractions/nameservice>
   
+  /dev/ r,
   /dev/tty[0-9] w,
   owner /dev/shm/org.chromium.* rw,
+  /sys/devices/system/cpu/ r,
   
   owner @{PROC}/@{pid}/stat r,
   owner @{PROC}/@{pid}/task/@{pid}/stat r,
   
-  /usr/lib64/firefox/plugin-container m,
+  /usr/lib{,32,64}/firefox/plugin-container m,
   /bin/bash Cx -> shell,
   
   /etc/adobe/mms.cfg r,
@@ -125,8 +133,12 @@ profile firefoxplugin-container /usr/lib64/firefox/plugin-container {
   owner @{HOME}/.adobe/Flash_Player/{,**} r,
   owner @{HOME}/.macromedia/Flash_Player/{,**} rw,
   owner @{HOME}/.mozilla/firefox/{,**} r,
+  owner @{HOME}/.config/freshwrapper-data/{,**} rw,
   
   /tmp/ r,
+  owner /tmp/.gl* rw,
+  owner /tmp/FreshStream* rw,
+  owner /tmp/FreshTemp* rw,
   /var/tmp/ r,
   
   
@@ -139,6 +151,8 @@ profile firefoxplugin-container /usr/lib64/firefox/plugin-container {
     /bin/bash mr,
     /bin/ps Px,
     /bin/grep ix,
+    
+    owner @{HOME}/.session.log w,
     
   }
 }
