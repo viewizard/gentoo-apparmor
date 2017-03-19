@@ -61,6 +61,7 @@ profile codeblocks /usr/bin/codeblocks {
     #include <abstractions/program-work-with-disk-rwk>
     
     /dev/tty rw,
+    @{PROC}/@{pid}/fd/ r,
     
     /bin/bash mr,
     
@@ -72,6 +73,7 @@ profile codeblocks /usr/bin/codeblocks {
     /etc/env.d/** r,
     /etc/ld.so.conf r,
     /etc/ld.so.conf.d/{,*} r,
+    /etc/python-exec/python-exec.conf r,
     /{etc,usr,usr/local}/portage/** r,
     /usr/share/portage/config/* r,
     /usr/include/** r,

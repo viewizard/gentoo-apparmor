@@ -12,7 +12,7 @@
 
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
 @{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*.{po,po.*,pot,mo,c,h,cpp,hpp,PO,PO.*,POT,MO,C,H,CPP,HPP}"
+@{PROG_FILE}="[^.]*.{po,po.*,pot,mo,c,h,cpp,hpp,PO,PO.*,POT,MO,C,H,CPP,HPP,temp*}"
 
 profile poedit /usr/bin/poedit {
   #include <abstractions/base>
@@ -44,7 +44,6 @@ profile poedit /usr/bin/poedit {
   
   owner /run/user/*/poedit.* rwk,
   
-  owner /tmp/poedit*/ w,
-  owner /tmp/poedit*/*validated* rw,
+  owner /tmp/poedit*/{,**} rw,
   
 }
