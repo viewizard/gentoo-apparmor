@@ -2,7 +2,7 @@
 #
 #    Copyright (C) 2002-2005 Novell/SUSE
 #    Copyright (C) 2010-2011 Canonical Ltd.
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -10,15 +10,9 @@
 #
 # ------------------------------------------------------------------
 
-/etc/ssl/ r,
-/etc/ssl/* r,
-/etc/ssl/certs/ r,
-/etc/ssl/certs/* r,
-/etc/pki/trust/ r,
-/etc/pki/trust/* r,
-/etc/pki/trust/anchors/ r,
-/etc/pki/trust/anchors/** r,
-/usr/share/ca-certificates/ r,
-/usr/share/ca-certificates/** r,
-/usr/local/share/ca-certificates/ r,
-/usr/local/share/ca-certificates/** r,
+/etc/ssl/{,*}				r,
+/etc/ssl/certs/{,*}			r,
+/etc/pki/trust/{,*}			r,
+/etc/pki/trust/anchors/{,**}		r,
+/usr/share/ca-certificates/{,**}	r,
+/usr/local/share/ca-certificates/{,**}	r,

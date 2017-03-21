@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -14,37 +14,35 @@
 capability ipc_lock,
 
 # libvdpau config file for nvidia workarounds
-/etc/vdpau_wrapper.cfg r,
-/etc/nvidia/nvidia-application-profiles-rc r,
+/etc/vdpau_wrapper.cfg				r,
+/etc/nvidia/nvidia-application-profiles-rc	r,
 
 # device files
-/dev/nvidia0    rw,
-/dev/nvidiactl  rw,
-/dev/nvidia-modeset rw,
+/dev/nvidia{0,ctl,-modeset}			rw,
 
-@{PROC}/interrupts r,
-@{PROC}/sys/vm/max_map_count r,
-@{PROC}/driver/nvidia/params r,
-@{PROC}/modules r,
+@{PROC}/interrupts				r,
+@{PROC}/sys/vm/max_map_count			r,
+@{PROC}/driver/nvidia/params			r,
+@{PROC}/modules					r,
 
-/sys/bus/pci/devices/ r,
-/sys/devices/pci**/config r,
-/opt/bin/nvidia-modprobe Px,
+/sys/bus/pci/devices/				r,
+/sys/devices/pci**/config			r,
+/opt/bin/nvidia-modprobe			Px,
 
-owner @{HOME}/.nv/ rw,
-owner @{HOME}/.nv/GLCache/ rw,
-owner @{HOME}/.nv/GLCache/** rwk,
-owner @{HOME}/.nv/ComputeCache/ rw,
-owner @{HOME}/.nv/ComputeCache/** rwk,
-owner @{HOMEDIRS}/*.nv/ rw,
-owner @{HOMEDIRS}/*.nv/** rwk,
-owner @{HOMEDIRS}/*.nv/.gl* m,
-owner /tmp/.gl* m,
+owner @{HOME}/.nv/				rw,
+owner @{HOME}/.nv/GLCache/			rw,
+owner @{HOME}/.nv/GLCache/**			rwk,
+owner @{HOME}/.nv/ComputeCache/			rw,
+owner @{HOME}/.nv/ComputeCache/**		rwk,
+owner @{HOMEDIRS}/*.nv/				rw,
+owner @{HOMEDIRS}/*.nv/**			rwk,
+owner @{HOMEDIRS}/*.nv/.gl*			m,
+owner /tmp/.gl*					m,
 
 # nouveau
-/sys/devices/pci**/uevent r,
-/etc/udev/udev.conf r,
-/run/udev/data/+pci:* r,
+/sys/devices/pci**/uevent			r,
+/etc/udev/udev.conf				r,
+/run/udev/data/+pci:*				r,
 
 # mesa opencl (nouveau/gallium-related)
-/usr/lib{,32,64}/gallium-pipe/pipe_*.so m,
+/usr/lib{,32,64}/gallium-pipe/pipe_*.so		m,

@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------
 #
 #    Copyright (C) 2010 Canonical Ltd.
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -11,36 +11,28 @@
 
 # abstraction for Enchant spellchecking frontend
 
-/usr/share/enchant/                              r,
-/usr/share/enchant/enchant.ordering              r,
+/usr/share/enchant/{,enchant.ordering}			r,
 
 # aspell
 #include <abstractions/aspell>
-/var/lib/dictionaries-common/aspell/             r,
-/var/lib/dictionaries-common/aspell/*            r,
+/var/lib/dictionaries-common/aspell/{,*}		r,
 
 # hunspell
-/usr/share/hunspell/                             r,
-/usr/share/hunspell/*                            r,
+/usr/share/hunspell/{,*}				r,
 
 # ispell
-/usr/lib/ispell/                                 r,
-/usr/lib/ispell/*.hash                           r,
-/usr/share/dict/                                 r,
-/usr/share/dict/*                                r,
-/var/lib/dictionaries-common/                    r,
-/var/lib/dictionaries-common/{ispell,wordlist}/  r,
-/var/lib/dictionaries-common/{ispell,wordlist}/* r,
+/usr/lib/ispell/{,*.hash}				r,
+/usr/share/dict/{,*}					r,
+/var/lib/dictionaries-common/				r,
+/var/lib/dictionaries-common/{ispell,wordlist}/{,*}	r,
 
 # myspell
-/usr/share/myspell/                              r,
-/usr/share/myspell/**                            r,
+/usr/share/myspell/{,**}				r,
 
 # zemberek
-/usr/share/java/                                 r,
-/usr/share/java/zemberek-[0-9]*.jar              r,
-/usr/share/java/zemberek-tr-[0-9]*.jar           r,
+/usr/share/java/					r,
+/usr/share/java/zemberek{,-tr}-[0-9]*.jar		r,
 
 # per-user dictionaries
-owner @{HOME}/.config/enchant/                   rw,
-owner @{HOME}/.config/enchant/*                  rwk,
+owner @{HOME}/.config/enchant/				rw,
+owner @{HOME}/.config/enchant/*				rwk,

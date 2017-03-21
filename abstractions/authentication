@@ -2,7 +2,7 @@
 #
 #    Copyright (C) 2002-2009 Novell/SUSE
 #    Copyright (C) 2009-2012 Canonical Ltd
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -14,17 +14,17 @@
 # Some services need to perform authentication of users
 # Such authentication almost certainly needs access to the local users
 # databases containing passwords, PAM configuration files, PAM libraries
-/etc/pam.d/*                r,
-/etc/securetty              r,
-/etc/security/*             r,
-/etc/shadow                 r,
-/etc/gshadow                r,
-/etc/passwd                 r,
-/etc/login.defs             r,
+/etc/pam.d/*				r,
+/etc/securetty				r,
+/etc/security/*				r,
+/etc/shadow				r,
+/etc/gshadow				r,
+/etc/passwd				r,
+/etc/login.defs				r,
 
-/lib{,32,64}/security/pam_filter/*  mr,
-/lib{,32,64}/security/pam_*.so      mr,
-/lib{,32,64}/security/              r,
+/lib{,32,64}/security/			r,
+/lib{,32,64}/security/pam_*.so		mr,
+/lib{,32,64}/security/pam_filter/*	mr,
 
 # kerberos
 #include <abstractions/kerberosclient>
@@ -33,12 +33,12 @@
 #include <abstractions/p11-kit>
 
 # pam_usb
-/etc/pamusb.conf r,
-/media/*/.pamusb/*.pad rw,
-@{HOME}/.pamusb/*.pad rw,
+/etc/pamusb.conf			r,
+/media/*/.pamusb/*.pad			rw,
+@{HOME}/.pamusb/*.pad			rw,
 
 # pam_mount
-/run/pam_mount/* rwk,
+/run/pam_mount/*			rwk,
 
 # pam-script
-/etc/security/pam-script/pam_script* Px,
+/etc/security/pam-script/pam_script*	Px,

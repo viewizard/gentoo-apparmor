@@ -2,7 +2,7 @@
 #
 #    Copyright (C) 2002-2009 Novell/SUSE
 #    Copyright (C) 2009 Canonical Ltd.
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -10,47 +10,36 @@
 #
 # ------------------------------------------------------------------
 
-/usr/lib{,32,64}/xorg/modules/fonts/**.so*    mr,
 
-/usr/share/fonts/                     r,
-/usr/share/fonts/**                   r,
+/etc/fonts/{,**}				r,
 
-/etc/fonts/**                         r,
-
-/usr/lib{,32,64}/libreoffice/share/fonts/**    r,
-
-/var/cache/fonts/**                   r,
-/var/cache/fontconfig/**              mr,
-
-/usr/share/xfce/fonts/**              r,
-/usr/share/ghostscript/*/Resource/Font/**       r,
-/usr/share/javascript/*/fonts/**      r,
-/usr/share/texmf/{,*/}fonts/**        r,
-/usr/share/texlive/texmf-dist/fonts/** r,
-
-owner @{HOME}/.fontconfig/   r,
-owner @{HOME}/.fontconfig/** mrl,
-owner @{HOME_CACHE}/fontconfig/   r,
-owner @{HOME_CACHE}/fontconfig/** mrl,
-owner @{HOME}/.config/fontconfig/     r,
-owner @{HOME}/.config/fontconfig/**   r,
-owner @{HOME}/.local/share/fonts/     r,
-owner @{HOME}/.local/share/fonts/**   r,
-
-/usr/local/share/fonts/               r,
-/usr/local/share/fonts/**             r,
+/usr/lib{,32,64}/libreoffice/share/fonts/{,**}	r,
+/usr/lib{,32,64}/xorg/modules/fonts/**.so*	mr,
+/usr/share/fonts/{,**}				r,
+/usr/local/share/fonts/{,**}			r,
+/usr/share/xfce/fonts/{,**}			r,
+/usr/share/ghostscript/*/Resource/Font/{,**}	r,
+/usr/share/javascript/*/fonts/{,**}		r,
+/usr/share/texmf/{,*/}fonts/{,**}		r,
+/usr/share/texlive/texmf-dist/fonts/{,**}	r,
 
 # poppler tables
-/usr/share/poppler/                   r,
-/usr/share/poppler/**                 r,
+/usr/share/poppler/{,**}			r,
 
+owner @{HOME}/.fontconfig/			r,
+owner @{HOME}/.fontconfig/**			mrl,
+owner @{HOME_CACHE}/fontconfig/			r,
+owner @{HOME_CACHE}/fontconfig/**		mrl,
+owner @{HOME}/.config/fontconfig/{,**}		r,
+owner @{HOME}/.local/share/fonts/{,**}		r,
+
+/var/cache/fonts/**				r,
+/var/cache/fontconfig/**			mr,
 
 #
 # Silence a few non-needed writes.
 # Since we don't have users fonts, we use system-wide fonts cache only.
 #
-deny /var/cache/fontconfig/ w,
-deny @{HOME}/.fontconfig/   w,
-deny @{HOME}/.fontconfig/** w,
-deny @{HOME_CACHE}/fontconfig/   w,
-deny @{HOME_CACHE}/fontconfig/** w,
+deny /var/cache/fontconfig/			w,
+deny @{HOME}/.fontconfig/{,**}			w,
+deny @{HOME_CACHE}/fontconfig/{,**}		w,

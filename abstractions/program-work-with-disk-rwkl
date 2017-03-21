@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -15,21 +15,20 @@
 # Example for folder downloads (torrent, etc):
 # @{PROG_FILE}="**"
 
-/ r,
-@{HOMEDIRS}/ r,
-owner @{HOME}/ r,
-owner @{HOME}/@{PROG_DIR}/ r,
-owner @{HOME}/@{PROG_FILE} rwkl,
-owner @{HOME}/@{PROG_DIR}/@{PROG_FILE} rwkl,
-owner /run/user/*/gvfs/*/ r,
-owner /run/user/*/gvfs/*/@{PROG_DIR}/ r,
-owner /run/user/*/gvfs/*/@{PROG_FILE} rwkl,
-owner /run/user/*/gvfs/*/@{PROG_DIR}/@{PROG_FILE} rwkl,
-/media/ r,
-/media/@{PROG_DIR}/ r,
-/media/@{PROG_FILE} rwkl,
-/media/@{PROG_DIR}/@{PROG_FILE} rwkl,
+/							r,
+@{HOMEDIRS}/						r,
+owner @{HOME}/						r,
+owner @{HOME}/@{PROG_DIR}/				r,
+owner @{HOME}/@{PROG_FILE}				rwkl,
+owner @{HOME}/@{PROG_DIR}/@{PROG_FILE}			rwkl,
+owner /run/user/*/gvfs/*/				r,
+owner /run/user/*/gvfs/*/@{PROG_DIR}/			r,
+owner /run/user/*/gvfs/*/@{PROG_FILE}			rwkl,
+owner /run/user/*/gvfs/*/@{PROG_DIR}/@{PROG_FILE}	rwkl,
+/media/							r,
+/media/@{PROG_DIR}/					r,
+/media/@{PROG_FILE}					rwkl,
+/media/@{PROG_DIR}/@{PROG_FILE}				rwkl,
 
 # program-related places for xdg-open:
-owner @{HOME}/.claws-mail/mimetmp/ r,
-owner @{HOME}/.claws-mail/mimetmp/* r,
+owner @{HOME}/.claws-mail/mimetmp/{,*}			r,

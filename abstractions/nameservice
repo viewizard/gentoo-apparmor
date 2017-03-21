@@ -2,7 +2,7 @@
 #
 #    Copyright (C) 2002-2009 Novell/SUSE
 #    Copyright (C) 2009-2011 Canonical Ltd.
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -14,25 +14,25 @@
 # looking up users by name or id, groups by name or id, hosts by name
 # or IP, etc. These operations may be performed through files, dns,
 # NIS, NIS+, LDAP, hesiod, wins, etc. Allow them all here.
-/etc/group              r,
-/etc/host.conf          r,
-/etc/hosts              r,
-/etc/nsswitch.conf      r,
-/etc/gai.conf           r,
-/etc/passwd             r,
-/etc/protocols          r,
-/etc/resolv.conf        r,
-/etc/samba/lmhosts      r,
-/etc/services           r,
+/etc/group			r,
+/etc/host.conf			r,
+/etc/hosts			r,
+/etc/nsswitch.conf		r,
+/etc/gai.conf			r,
+/etc/passwd			r,
+/etc/protocols			r,
+/etc/resolv.conf		r,
+/etc/samba/lmhosts		r,
+/etc/services			r,
 
 # db backend
-/var/lib/misc/*.db      r,
+/var/lib/misc/*.db		r,
   
 # The nss libraries are sometimes used in addition to PAM; make sure
 # they are available
-/lib{,32,64}/libnss_*.so*      mr,
-/usr/lib{,32,64}/libnss_*.so*  mr,
-/etc/default/nss               r,
+/lib{,32,64}/libnss_*.so*	mr,
+/usr/lib{,32,64}/libnss_*.so*	mr,
+/etc/default/nss		r,
 
 # ldap
 #include <abstractions/ldapclient>
@@ -50,4 +50,4 @@ network inet6 dgram,
 ## network netlink raw,
 
 # interface details
-@{PROC}/@{pid}/net/route r,
+@{PROC}/@{pid}/net/route	r,
