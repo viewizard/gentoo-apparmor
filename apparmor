@@ -1,32 +1,37 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile apparmor_parser /sbin/apparmor_parser flags=(complain) {
+
+profile apparmor.apparmor_parser /sbin/apparmor_parser flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability mac_admin,
   
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* w,
-  /sys/devices/system/cpu/ r,
-  /sys/kernel/security/apparmor/{,**} r,
-  /sys/kernel/security/apparmor/{.load,.replace,.remove} w,
-  @{PROC}/@{pid}/mounts r,
-  @{PROC}/sys/kernel/osrelease r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					w,
+  /sys/devices/system/cpu/				r,
+  /sys/kernel/security/apparmor/{,**}			r,
+  /sys/kernel/security/apparmor/.{load,replace,remove}	w,
+  @{PROC}/@{pid}/mounts					r,
+  @{PROC}/sys/kernel/osrelease				r,
   
-  /sbin/apparmor_parser mr,
+  # EXECUTABLES ----------------------------------------
+  /sbin/apparmor_parser					mr,
   
-  /etc/apparmor.d/{,**} r,
-  /etc/apparmor/parser.conf r,
-  /etc/apparmor.d/cache/{,*} w,
+  # READS/WRITES ---------------------------------------
+  /etc/apparmor/parser.conf				r,
+  /etc/apparmor.d/{,**}					r,
+  /etc/apparmor.d/cache/{,*}				w,
   
 }
 
@@ -36,19 +41,23 @@ profile apparmor.init.d /etc/init.d/apparmor {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # CAPABILITIES ---------------------------------------
   capability mac_admin,
   
-  /sys/kernel/security/apparmor/* wr,
-  @{PROC}/@{pid}/mounts r,
+  # PSEUDO ---------------------------------------------
+  /sys/kernel/security/apparmor/*			rw,
+  @{PROC}/@{pid}/mounts					r,
   
-  /bin/bash Cx -> shell,
-  /bin/grep ix,
-  /bin/sed ix,
-  /bin/sort ix,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/grep						ix,
+  /bin/sed						ix,
+  /bin/sort						ix,
   
-  /etc/fstab r,
-  /etc/{conf,init}.d/apparmor r,
-  /usr/libexec/rc.apparmor.functions r,
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
+  /etc/{conf,init}.d/apparmor				r,
+  /usr/libexec/rc.apparmor.functions			r,
   
   
   profile shell {

@@ -1,29 +1,34 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile apparmor-utils.aa-status /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-status {
   #include <abstractions/base>
   #include <abstractions/python>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   
-  /dev/pts/[0-9]* w,
-  /sys/kernel/security/apparmor/* r,
-  @{PROC}/ r,
-  @{PROC}/@{pid}/attr/{current,prev,exec} r,
-  @{PROC}/@{pid}/mounts r,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  /sys/kernel/security/apparmor/*			r,
+  @{PROC}/						r,
+  @{PROC}/@{pid}/attr/{current,prev,exec}		r,
+  @{PROC}/@{pid}/mounts					r,
   
-  /bin/env ixr,
+  # EXECUTABLES ----------------------------------------
+  /bin/env						ixr,
   
-  /usr/lib{,32,64}/@{PYTHON}/site-packages/apparmor/**.pyc{,.*} w,
+  # READS/WRITES ---------------------------------------
+  @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
   
 }
 
@@ -32,42 +37,50 @@ profile apparmor-utils.aa-unconfined /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-u
   #include <abstractions/base>
   #include <abstractions/python>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   
-  /dev/pts/[0-9]* w,
-  @{PROC}/@{pid}/fd/ r,
-  @{PROC}/@{pid}/mounts r,
-  @{PROC}/@{pid}/attr/{current,prev,exec} r,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  @{PROC}/@{pid}/fd/					r,
+  @{PROC}/@{pid}/mounts					r,
+  @{PROC}/@{pid}/attr/{current,prev,exec}		r,
   
-  /bin/env mr,
-  /bin/bash Cx -> shell,
-  /bin/cat ix,
-  /bin/netstat Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/env						mr,
+  /bin/bash						Cx -> shell,
+  /bin/cat						ix,
+  /bin/netstat						Px,
   
-  /etc/apparmor/logprof.conf r,
-  /etc/inputrc r,
-  /etc/terminfo/x/xterm r,
-  /usr/lib{,32,64}/@{PYTHON}/site-packages/apparmor/**.pyc{,.*} w,
-  /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/**.pyc{,.*} w,
+  # READS/WRITES ---------------------------------------
+  /etc/apparmor/logprof.conf				r,
+  /etc/inputrc						r,
+  /etc/terminfo/x/xterm					r,
+  @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
+  @{PYTHON_PACKAGES}/LibAppArmor/**.pyc{,.*}		w,
   
-  owner /tmp/{,tmp}?????? rw,
-  owner /tmp/???????? rw,
-  owner /var/tmp/???????? rw,
+  # TEMP -----------------------------------------------
+  owner /tmp/{,tmp}??????				rw,
+  owner /tmp/????????					rw,
+  owner /var/tmp/????????				rw,
   
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     
+    # CAPABILITIES -------------------------------------
     capability sys_ptrace,
     
-    /dev/tty rw,
-    @{PROC}/ r,
-    @{PROC}/@{pid}/fd/ r,
-    @{PROC}/@{pid}/cmdline r,
-    @{PROC}/@{pid}/net/* r,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    @{PROC}/						r,
+    @{PROC}/@{pid}/fd/					r,
+    @{PROC}/@{pid}/cmdline				r,
+    @{PROC}/@{pid}/net/*				r,
     
-    /bin/bash mr,
-    /bin/netstat Px,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/netstat					Px,
     
   }
   
@@ -78,20 +91,24 @@ profile apparmor-utils.aa-complain /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-com
   #include <abstractions/base>
   #include <abstractions/python>
   
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
   
-  /bin/env mr,
-  /sbin/apparmor_parser Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/env						mr,
+  /sbin/apparmor_parser					Px,
   
-  /etc/inputrc r,
-  /etc/terminfo/x/xterm r,
-  /etc/apparmor/logprof.conf r,
-  /etc/apparmor.d/{,**} r,
-  /etc/apparmor.d/* w,
-  /usr/lib{,32,64}/@{PYTHON}/site-packages/apparmor/**.pyc{,.*} w,
-  /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/**.pyc{,.*} w,
+  # READS/WRITES ---------------------------------------
+  /etc/inputrc						r,
+  /etc/terminfo/x/xterm					r,
+  /etc/apparmor/logprof.conf				r,
+  /etc/apparmor.d/{,**}					r,
+  /etc/apparmor.d/*					w,
+  @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
+  @{PYTHON_PACKAGES}/LibAppArmor/**.pyc{,.*}		w,
   
-  owner /tmp/{,tmp}?????? rw,
+  # TEMP -----------------------------------------------
+  owner /tmp/{,tmp}??????				rw,
   
 }
 
@@ -100,20 +117,24 @@ profile apparmor-utils.aa-enforce /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-enfo
   #include <abstractions/base>
   #include <abstractions/python>
   
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
   
-  /bin/env mr,
-  /sbin/apparmor_parser Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/env						mr,
+  /sbin/apparmor_parser					Px,
   
-  /etc/inputrc r,
-  /etc/terminfo/x/xterm r,
-  /etc/apparmor/logprof.conf r,
-  /etc/apparmor.d/{,**} r,
-  /etc/apparmor.d/* w,
-  /usr/lib{,32,64}/@{PYTHON}/site-packages/apparmor/**.pyc{,.*} w,
-  /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/**.pyc{,.*} w,
+  # READS/WRITES ---------------------------------------
+  /etc/inputrc						r,
+  /etc/terminfo/x/xterm					r,
+  /etc/apparmor/logprof.conf				r,
+  /etc/apparmor.d/{,**}					r,
+  /etc/apparmor.d/*					w,
+  @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
+  @{PYTHON_PACKAGES}/LibAppArmor/**.pyc{,.*}		w,
   
-  owner /tmp/{,tmp}?????? rw,
+  # TEMP -----------------------------------------------
+  owner /tmp/{,tmp}??????				rw,
   
 }
 
@@ -122,19 +143,23 @@ profile apparmor-utils.aa-disable /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-disa
   #include <abstractions/base>
   #include <abstractions/python>
   
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
   
-  /bin/env mr,
-  /sbin/apparmor_parser Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/env						mr,
+  /sbin/apparmor_parser					Px,
   
-  /etc/inputrc r,
-  /etc/terminfo/x/xterm r,
-  /etc/apparmor/logprof.conf r,
-  /etc/apparmor.d/{,**} r,
-  /etc/apparmor.d/disable/* w,
-  /usr/lib{,32,64}/@{PYTHON}/site-packages/apparmor/**.pyc{,.*} w,
-  /usr/lib{,32,64}/@{PYTHON}/site-packages/LibAppArmor/**.pyc{,.*} w,
+  # READS/WRITES ---------------------------------------
+  /etc/inputrc						r,
+  /etc/terminfo/x/xterm					r,
+  /etc/apparmor/logprof.conf				r,
+  /etc/apparmor.d/{,**}					r,
+  /etc/apparmor.d/disable/*				w,
+  @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
+  @{PYTHON_PACKAGES}/LibAppArmor/**.pyc{,.*}		w,
   
-  owner /tmp/{,tmp}?????? rw,
+  # TEMP -----------------------------------------------
+  owner /tmp/{,tmp}??????				rw,
   
 }

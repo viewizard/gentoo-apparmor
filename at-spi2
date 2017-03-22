@@ -1,36 +1,43 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile at-spi-bus-launcher /usr/libexec/at-spi-bus-launcher {
   #include <abstractions/base>
   #include <abstractions/dbus>
   #include <abstractions/dconf>
   #include <abstractions/gtk>
   
-  owner @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  owner @{PROC}/@{pid}/fd/				r,
   
-  /usr/libexec/at-spi-bus-launcher mr,
-  /usr/bin/dbus-daemon Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/at-spi-bus-launcher			mr,
+  /usr/bin/dbus-daemon					Px,
   
-  /etc/at-spi2/accessibility.conf r,
+  # READS/WRITES ---------------------------------------
+  /etc/at-spi2/accessibility.conf			r,
   
-  owner @{HOME}/.session.log w,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,  # XFCE4, <abstractions/X>
   
 }
 
 profile at-spi2-registryd /usr/libexec/at-spi2-registryd {
   #include <abstractions/base>
   
-  /usr/libexec/at-spi2-registryd mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/at-spi2-registryd			mr,
   
-  owner @{HOME}/.session.log w,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,  # XFCE4, <abstractions/X>
   
 }

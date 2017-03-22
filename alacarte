@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -26,20 +26,23 @@ profile alacarte /usr/lib{,32,64}/python-exec/@{PYTHON2}/alacarte {
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rk>
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   
-  /usr/share/alacarte/{,*} r,
-  /etc/xdg/menus/{,**/,**.menu} r,
-  /usr/share/desktop-directories/{,*.directory} r,
-  /opt/**.png r,
+  # READS/WRITES ---------------------------------------
+  /etc/xdg/menus/{,**/,**.menu}				r,
+  /usr/share/alacarte/{,*}				r,
+  /usr/share/desktop-directories/{,*.directory}		r,
+  /opt/**.png						r,
   
-  owner @{HOME}/.config/menus/{,**/} r,
-  owner @{HOME}/.config/menus/**.menu rw,
-  owner @{HOME}/.local/ r,
-  owner @{HOME}/.local/share/ r,
-  owner @{HOME}/.local/share/icons/{,**} r,
-  owner @{HOME}/.local/share/applications/{,**/} r,
-  owner @{HOME}/.local/share/applications/**.desktop rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/menus/{,**/}			r,
+  owner @{HOME}/.config/menus/**.menu			rw,
+  owner @{HOME}/.local/					r,
+  owner @{HOME}/.local/share/				r,
+  owner @{HOME}/.local/share/icons/{,**}		r,
+  owner @{HOME}/.local/share/applications/{,**/}	r,
+  owner @{HOME}/.local/share/applications/**.desktop	rw,
   owner @{HOME}/.local/share/desktop-directories/{,*.directory} r,
   
 }

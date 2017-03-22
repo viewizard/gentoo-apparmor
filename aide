@@ -1,29 +1,32 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile aide /usr/bin/aide {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_read_search,
   capability dac_override,
   
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
-  /usr/bin/aide mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/aide						mr,
   
-  / r,
-  /** r,
-  
-  /var/lib/aide/** rwk,
+  # READS/WRITES ---------------------------------------
+  /{,**}						r,
+  /var/lib/aide/**					rwk,
   
 }
 
@@ -31,21 +34,25 @@ profile aide /usr/bin/aide {
 profile aide.aideinit /usr/sbin/aideinit {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_read_search,
   
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
-  /bin/bash mr,
-  /usr/sbin/aideinit r,
-  /bin/cut ix,
-  /bin/grep ix,
-  /bin/egrep ixr,
-  /bin/cp ix,
-  /usr/bin/aide Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						mr,
+  /usr/sbin/aideinit					r,
+  /bin/cut						ix,
+  /bin/grep						ix,
+  /bin/egrep						ixr,
+  /bin/cp						ix,
+  /usr/bin/aide						Px,
   
-  /etc/aide/** r,
-  /var/lib/aide/** rwk,
+  # READS/WRITES ---------------------------------------
+  /etc/aide/**						r,
+  /var/lib/aide/**					rwk,
   
 }

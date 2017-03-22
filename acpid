@@ -1,57 +1,66 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile acpid /usr/sbin/acpid {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_tty_config,
   
-  /dev/console w,
-  /dev/input/ r,
-  /dev/input/by-id/ r,
-  /dev/input/by-path/ r,
-  /dev/input/event* r,
-  /dev/input/mouse* r,
-  owner @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/console						w,
+  /dev/input/						r,
+  /dev/input/by-id/					r,
+  /dev/input/by-path/					r,
+  /dev/input/event*					r,
+  /dev/input/mouse*					r,
+  owner @{PROC}/@{pid}/fd/				r,
   
-  /usr/sbin/acpid mr,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/acpid					mr,
+  /bin/bash						Cx -> shell,
   
-  /etc/acpi/{,**} r,
-  /run/acpid.pid rwl,
-  /run/acpid.socket rw,
+  # READS/WRITES ---------------------------------------
+  /etc/acpi/{,**}					r,
+  /run/acpid.pid					rwl,
+  /run/acpid.socket					rw,
   
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
+    # CAPABILITIES -------------------------------------
     capability sys_tty_config,
     
-    /dev/tty{,[0-9]*} rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty{,[0-9]*}					rw,
     
-    /bin/bash mr,
-    /bin/ps Px,
-    /bin/sed ix,
-    /sbin/shutdown Px,
-    /usr/bin/fgconsole ix,
-    /usr/bin/gawk ix,
-    /usr/bin/logger Px,
-    /usr/bin/pinky ix,
-    /usr/bin/pgrep Px,
-    /usr/bin/pidof Px,
-    /etc/acpi/default.sh ixr,
-    /etc/acpi/actions/powerbtn.sh ixr,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/ps						Px,
+    /bin/sed						ix,
+    /sbin/shutdown					Px,
+    /usr/bin/fgconsole					ix,
+    /usr/bin/gawk					ix,
+    /usr/bin/logger					Px,
+    /usr/bin/pinky					ix,
+    /usr/bin/pgrep					Px,
+    /usr/bin/pidof					Px,
+    /etc/acpi/default.sh				ixr,
+    /etc/acpi/actions/powerbtn.sh			ixr,
     
-    /run/utmp rk,
+    # READS/WRITES -------------------------------------
+    /run/utmp						rk,
     
   }
   
@@ -60,17 +69,20 @@ profile acpid /usr/sbin/acpid {
 profile acpid.acpi_listen /usr/bin/acpi_listen flags=(complain) {
   #include <abstractions/base>
   
-  /usr/bin/acpi_listen mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/acpi_listen					mr,
   
 }
 
 profile acpid.kacpimon /usr/sbin/kacpimon {
   #include <abstractions/base>
   
-  /dev/pts/[0-9]* rw,
-  /dev/input/{,event*} r,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  /dev/input/{,event*}					r,
   
-  /usr/sbin/kacpimon mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/kacpimon					mr,
   
 }
 
@@ -80,10 +92,12 @@ profile acpid.init.d /etc/init.d/acpid {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /usr/sbin/acpid Px,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/acpid					Px,
+  /bin/bash						Cx -> shell,
   
-  /etc/{conf,init}.d/acpid r,
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/acpid				r,
   
   
   profile shell {
