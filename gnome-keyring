@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -21,7 +21,7 @@ profile gnome-keyring-daemon /usr/bin/gnome-keyring-daemon {
   owner @{HOME}/.local/share/keyrings/* rwl,
   owner @{HOME_CACHE}/keyring-*/{,*} rw,
   owner @{HOME}/.ssh/ r,
-  owner @{HOME}/.session.log w,
+  owner @{HOME}/.session.log w,  # <abstractions/X>
   
   owner /run/user/*/keyring/{,control,pkcs11,ssh} rw,
   
