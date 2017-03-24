@@ -1,54 +1,61 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile binutils-config /usr/bin/binutils-config flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_admin,
   
-  /dev/tty rw,
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					w,
   
-  /usr/bin/binutils-config r,
-  /bin/bash mr,
-  /bin/stty ix,
-  /bin/tr ix,
-  /bin/ln ix,
-  /bin/mv ix,
-  /bin/rm ix,
-  /bin/rmdir ix,
-  /bin/mkdir ix,
-  /bin/cat ix,
-  /sbin/consoletype ix,
-  /usr/bin/find ix,
-  /usr/bin/tput ix,
-  /usr/bin/scanelf ix,
-  /usr/bin/cmp ix,
-  /usr/{bin,lib{,32,64}/python-exec}/python-exec2{,c} Cx -> portageq,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/binutils-config				r,
+  /bin/bash						mr,
+  /bin/stty						ix,
+  /bin/tr						ix,
+  /bin/ln						ix,
+  /bin/mv						ix,
+  /bin/rm						ix,
+  /bin/rmdir						ix,
+  /bin/mkdir						ix,
+  /bin/cat						ix,
+  /sbin/consoletype					ix,
+  /usr/bin/find						ix,
+  /usr/bin/tput						ix,
+  /usr/bin/scanelf					ix,
+  /usr/bin/cmp						ix,
+  @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,
   
-  /etc/terminfo/x/xterm r,
-  /etc/env.d/** rw,
-  /usr/bin/* rw,
-  /usr/x86_64-pc-linux-gnu/** rw,
-  /usr/x86_64-pc-linux-gnu/binutils-bin/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /etc/terminfo/x/xterm					r,
+  /etc/env.d/**						rw,
+  /usr/bin/*						rw,
+  /usr/x86_64-pc-linux-gnu/**				rw,
+  /usr/x86_64-pc-linux-gnu/binutils-bin/{,**}		r,
   
-  owner /tmp/sh-thd.* rw,
+  # TEMP -----------------------------------------------
+  owner /tmp/sh-thd.*					rw,
   
   
   profile portageq flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
-    /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq Px,
-    /usr/lib{,32,64}/python-exec/@{PYTHON}/env-update Px,
+    # EXECUTABLES --------------------------------------
+    @{PYTHON_EXEC}/portageq				Px,
+    @{PYTHON_EXEC}/env-update				Px,
     
   }
   
