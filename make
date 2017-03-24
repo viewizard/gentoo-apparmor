@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -26,7 +26,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
   /bin/grep ix,
   /bin/mkdir ix,
   /usr/bin/gcc ix,
-  /usr/x86_64-pc-linux-gnu/gcc-bin/*/x86_64-pc-linux-gnu-gcc ix,
+  /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc ix,
   
   /etc/env.d/gcc/{,**} r,
   /etc/terminfo/x/xterm r,
@@ -92,15 +92,15 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /usr/bin/gcc ix,
     /usr/bin/g++ ix,
     /usr/bin/openssl ix,
-    /usr/libexec/gcc/x86_64-pc-linux-gnu/*/* ix,
-    /usr/x86_64-pc-linux-gnu/gcc-bin/*/* ix,
-    /usr/x86_64-pc-linux-gnu/binutils-bin/*/* ix,
+    /usr/libexec/gcc/@{CHOST}/*/* ix,
+    /usr/@{CHOST}/gcc-bin/*/* ix,
+    /usr/@{CHOST}/binutils-bin/*/* ix,
     /usr/src/linux-[0-9]*-{hardened,gentoo}*/{,**} rix,
     
     /etc/ld.so.conf r,
     /etc/ld.so.conf.d/{,*} r,
     /etc/env.d/gcc/{,**} r,
-    /usr/libexec/gcc/x86_64-pc-linux-gnu/{,**}.so* mr,
+    /usr/libexec/gcc/@{CHOST}/{,**}.so* mr,
     /usr/include/{,**} r,
     /lib{,32,64}/modules/{,**} rw,
     /usr/src/IMA/certs/*.x509 r,

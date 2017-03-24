@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -43,7 +43,7 @@ profile xarchiver /usr/bin/xarchiver {
   /bin/cp ix,
   /bin/dd ix,
   /bin/cpio ixr,
-  /usr/x86_64-pc-linux-gnu/binutils-bin/*/ar ix,
+  /usr/@{CHOST}/binutils-bin/*/ar ix,
   /opt/rar/rar Cx,
   /bin/bzip2 ix,
   /bin/gzip ix,
@@ -107,7 +107,7 @@ profile xarchiver_root {
   /bin/cp ix,
   /bin/dd ix,
   /bin/cpio ixr,
-  /usr/x86_64-pc-linux-gnu/binutils-bin/*/ar ix,
+  /usr/@{CHOST}/binutils-bin/*/ar ix,
   /opt/rar/rar Cx,
   /bin/bzip2 ix,
   /bin/gzip ix,

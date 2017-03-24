@@ -55,9 +55,9 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
     /bin/bash mr,
     /bin/grep ix,
     /usr/bin/gawk ix,
-    /usr/bin/x86_64-pc-linux-gnu-gcc ix,
-    /usr/x86_64-pc-linux-gnu/gcc-bin/*/x86_64-pc-linux-gnu-gcc ix,
-    /usr/libexec/gcc/x86_64-pc-linux-gnu/*/cc1 ix,
+    /usr/bin/@{CHOST}-gcc ix,
+    /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc ix,
+    /usr/libexec/gcc/@{CHOST}/*/cc1 ix,
     
     /etc/env.d/gcc/{,**} r,
     /usr/include/{,**} r,

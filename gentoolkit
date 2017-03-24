@@ -129,9 +129,9 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild flags=(complain)
   /usr/bin/scanelf ix,
   
   / r,
-  /{bin,sbin,usr,opt,lib,lib32,lib64}/ r,
-  /{bin,sbin,opt,lib,lib32,lib64}/** r,
-  /usr/{bin,sbin,lib,lib32,lib64,libexec,x86_64-pc-linux-gnu}/{,**} r,
+  /{bin,sbin,usr,opt,lib{,32,64}}/ r,
+  /{bin,sbin,opt,lib{,32,64}}/** r,
+  /usr/{bin,sbin,lib{,32,64,exec},@{CHOST}}/{,**} r,
   /usr/local/lib{,32,64}/{,**} r,
   
   /etc/profile.env r,
@@ -173,10 +173,10 @@ profile gentoolkit.revdep-rebuild.sh /usr/bin/revdep-rebuild.sh flags=(complain)
   @{PYTHON_EXEC_WRAPPER} Cx -> portageq,
   
   / r,
-  /{bin,sbin,usr,opt,lib,lib32,lib64}/ r,
-  /{bin,sbin,opt,lib,lib32,lib64}/** ixmr,
-  /usr/{bin,sbin,lib,lib32,lib64,libexec,x86_64-pc-linux-gnu}/ r,
-  /usr/{bin,sbin,lib,lib32,lib64,libexec,x86_64-pc-linux-gnu}/** ixmr,
+  /{bin,sbin,usr,opt,lib{,32,64}}/ r,
+  /{bin,sbin,opt,lib{,32,64}}/** ixmr,
+  /usr/{bin,sbin,lib{,32,64,exec},@{CHOST}}/ r,
+  /usr/{bin,sbin,lib{,32,64,exec},@{CHOST}}/** ixmr,
   /usr/local/lib{,32,64}/ r,
   /usr/local/lib{,32,64}/** ixmr,
   

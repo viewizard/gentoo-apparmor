@@ -19,7 +19,7 @@ profile ntp.ntpd /usr/sbin/ntpd flags=(attach_disconnected) {
   capability dac_override,
   
   /usr/sbin/ntpd mr,
-  /usr/x86_64-pc-linux-gnu/gcc-bin/[0-9]*.[0-9]*.[0-9]*/ r,
+  /usr/@{CHOST}/gcc-bin/[0-9]*.[0-9]*.[0-9]*/ r,
   
   /etc/ntp.conf r,
   

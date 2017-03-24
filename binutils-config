@@ -42,8 +42,8 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
   /etc/terminfo/x/xterm					r,
   /etc/env.d/**						rw,
   /usr/bin/*						rw,
-  /usr/x86_64-pc-linux-gnu/**				rw,
-  /usr/x86_64-pc-linux-gnu/binutils-bin/{,**}		r,
+  /usr/@{CHOST}/**					rw,
+  /usr/@{CHOST}/binutils-bin/{,**}			r,
   
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.*					rw,

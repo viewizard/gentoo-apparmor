@@ -106,7 +106,7 @@ profile exo-desktop-item-edit /usr/bin/exo-desktop-item-edit {
   /usr/{bin,sbin}/* r,
   /opt/bin/{,*} r,
   /usr/local/bin/{,*} r,
-  deny /usr/x86_64-pc-linux-gnu/** r,
+  deny /usr/@{CHOST}/** r,
   deny /usr/libexec/** r,
   
   owner @{HOME}/.config/xfce4/panel/** rw,
