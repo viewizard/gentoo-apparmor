@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile apparmor-utils.aa-status /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-status {
+profile apparmor-utils.aa-status @{PYTHON_EXEC}/aa-status {
   #include <abstractions/base>
   #include <abstractions/python>
   
@@ -33,7 +33,7 @@ profile apparmor-utils.aa-status /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-statu
 }
 
 
-profile apparmor-utils.aa-unconfined /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-unconfined {
+profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   #include <abstractions/base>
   #include <abstractions/python>
   
@@ -87,7 +87,7 @@ profile apparmor-utils.aa-unconfined /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-u
 }
 
 
-profile apparmor-utils.aa-complain /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-complain {
+profile apparmor-utils.aa-complain @{PYTHON_EXEC}/aa-complain {
   #include <abstractions/base>
   #include <abstractions/python>
   
@@ -113,7 +113,7 @@ profile apparmor-utils.aa-complain /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-com
 }
 
 
-profile apparmor-utils.aa-enforce /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-enforce {
+profile apparmor-utils.aa-enforce @{PYTHON_EXEC}/aa-enforce {
   #include <abstractions/base>
   #include <abstractions/python>
   
@@ -139,7 +139,7 @@ profile apparmor-utils.aa-enforce /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-enfo
 }
 
 
-profile apparmor-utils.aa-disable /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-disable {
+profile apparmor-utils.aa-disable @{PYTHON_EXEC}/aa-disable {
   #include <abstractions/base>
   #include <abstractions/python>
   

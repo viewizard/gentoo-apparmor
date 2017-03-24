@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -70,7 +70,7 @@ profile lynis /usr/sbin/lynis {
   /usr/bin/logrotate Px,
   /usr/sbin/grpck ix,
   /usr/sbin/pwck ix,
-  /usr/{bin,lib{,32,64}/python-exec}/python-exec2{,c} Cx -> aa_status,
+  @{PYTHON_EXEC_WRAPPER} Cx -> aa_status,
   
   /{,**} r,
   deny /* w,
@@ -134,7 +134,7 @@ profile lynis /usr/sbin/lynis {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
-    /usr/lib{,32,64}/python-exec/@{PYTHON}/aa-status Px,
+    @{PYTHON_EXEC}/aa-status Px,
     
   }
   

@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -14,7 +14,6 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/gtk>
-  #include <abstractions/qt>
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/nameservice>
@@ -39,7 +38,7 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
   /usr/bin/qtchooser Px,
   /usr/bin/gparted-pkexec Px,
   /usr/bin/pavucontrol Px,
-  /usr/{bin,lib{,32,64}/python-exec}/python-exec2{,c} Cx -> alacarte,
+  @{PYTHON_EXEC_WRAPPER} Cx -> alacarte,
   /usr/bin/passwd.sh Px,
   /usr/bin/xfdesktop-settings Px,
   /usr/bin/mate-screensaver-preferences Px,
@@ -69,7 +68,7 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
-    /usr/lib{,32,64}/python-exec/@{PYTHON}/alacarte Px,
+    @{PYTHON_EXEC}/alacarte Px,
     
   }
   

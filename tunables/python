@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,5 +10,15 @@
 
 # @{PYTHON} is the location where python is installed
 @{PYTHON}=python[2-3].[0-9]
+@{PYTHON_PACKAGES}=/usr/lib{,32,64}/@{PYTHON}/site-packages/
+@{PYTHON_EXEC}=/usr/lib{,32,64}/python-exec/@{PYTHON}
+
 @{PYTHON2}=python2.[0-9]
+@{PYTHON2_PACKAGES}=/usr/lib{,32,64}/@{PYTHON2}/site-packages/
+@{PYTHON2_EXEC}=/usr/lib{,32,64}/python-exec/@{PYTHON2}
+
 @{PYTHON3}=python3.[0-9]
+@{PYTHON3_PACKAGES}=/usr/lib{,32,64}/@{PYTHON3}/site-packages/
+@{PYTHON3_EXEC}=/usr/lib{,32,64}/python-exec/@{PYTHON3}
+
+@{PYTHON_EXEC_WRAPPER}=/usr/{bin,lib{,32,64}/python-exec}/python-exec2{,c}

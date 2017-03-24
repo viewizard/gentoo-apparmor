@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -14,7 +14,7 @@
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*.{emp,xml,txt,EMP,XML,TXT}"
 
-profile pyfa /usr/lib{,32,64}/python-exec/@{PYTHON2}/pyfa {
+profile pyfa @{PYTHON2_EXEC}/pyfa {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -36,7 +36,7 @@ profile pyfa /usr/lib{,32,64}/python-exec/@{PYTHON2}/pyfa {
   
   /usr/share/pyfa/ r,
   /usr/share/pyfa/* rk,
-  /usr/lib{,32,64}/@{PYTHON2}/site-packages/wxversion.pyc{,.*} w,
+  @{PYTHON2_PACKAGES}/wxversion.pyc{,.*} w,
   
   owner @{HOME}/.pyfa/ rw,
   owner @{HOME}/.pyfa/** rwk,

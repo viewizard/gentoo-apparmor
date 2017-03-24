@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile gentoolkit.glsa-check /usr/lib{,32,64}/python-exec/@{PYTHON}/glsa-check flags=(complain) {
+profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -44,7 +44,7 @@ profile gentoolkit.glsa-check /usr/lib{,32,64}/python-exec/@{PYTHON}/glsa-check 
 }
 
 
-profile gentoolkit.equery /usr/lib{,32,64}/python-exec/@{PYTHON}/equery flags=(complain) {
+profile gentoolkit.equery @{PYTHON_EXEC}/equery flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -79,7 +79,7 @@ profile gentoolkit.equery /usr/lib{,32,64}/python-exec/@{PYTHON}/equery flags=(c
 }
 
 
-profile gentoolkit.eclean /usr/lib{,32,64}/python-exec/@{PYTHON}/eclean flags=(complain) {
+profile gentoolkit.eclean @{PYTHON_EXEC}/eclean flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -116,7 +116,7 @@ profile gentoolkit.eclean /usr/lib{,32,64}/python-exec/@{PYTHON}/eclean flags=(c
 }
 
 
-profile gentoolkit.revdep-rebuild /usr/lib{,32,64}/python-exec/@{PYTHON}/revdep-rebuild flags=(complain) {
+profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -170,7 +170,7 @@ profile gentoolkit.revdep-rebuild.sh /usr/bin/revdep-rebuild.sh flags=(complain)
   /dev/tty rw,
   /dev/pts/[0-9]* w,
   
-  /usr/{bin,lib{,32,64}/python-exec}/python-exec2{,c} Cx -> portageq,
+  @{PYTHON_EXEC_WRAPPER} Cx -> portageq,
   
   / r,
   /{bin,sbin,usr,opt,lib,lib32,lib64}/ r,
@@ -196,7 +196,7 @@ profile gentoolkit.revdep-rebuild.sh /usr/bin/revdep-rebuild.sh flags=(complain)
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
-    /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq Px,
+    @{PYTHON_EXEC}/portageq Px,
     
   }
   

@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile porthole /usr/lib{,32,64}/python-exec/@{PYTHON}/porthole {
+profile porthole @{PYTHON_EXEC}/porthole {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -43,7 +43,7 @@ profile porthole /usr/lib{,32,64}/python-exec/@{PYTHON}/porthole {
   
   /usr/share/gtksourceview-2.0/** r,
   /usr/share/porthole/** r,
-  /usr/lib{,32,64}/@{PYTHON}/site-packages/cairo/**.pyc{,.*} w,
+  @{PYTHON_PACKAGES}/cairo/**.pyc{,.*} w,
   
   owner @{HOME}/.porthole/{,prefs.xml} rw,
   

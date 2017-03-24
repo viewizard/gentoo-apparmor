@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -29,7 +29,7 @@ profile onboard /usr/bin/onboard {
   /usr/bin/ r,
   /usr/share/onboard/{,**} r,
   /usr/share/xml/iso-codes/{,*} r,
-  /usr/lib{,32,64}/@{PYTHON}/site-packages/cairo/**.pyc{,.*} w,
+  @{PYTHON_PACKAGES}/cairo/**.pyc{,.*} w,
   
   owner @{HOME}/.local/share/onboard/{,**} rw,
   
@@ -57,7 +57,7 @@ profile onboard-settings /usr/bin/onboard-settings {
   /etc/terminfo/l/linux r,
   /usr/bin/ r,
   /usr/share/onboard/{,**} r,
-  /usr/lib{,32,64}/@{PYTHON}/site-packages/cairo/**.pyc{,.*} w,
+  @{PYTHON_PACKAGES}/cairo/**.pyc{,.*} w,
   
   owner @{HOME}/.local/share/onboard/{,**} rw,
   

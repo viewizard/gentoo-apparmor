@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -41,7 +41,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
   /lib64/rc/bin/ebegin ix,
   /lib64/rc/bin/ewarn ix,
   /lib64/rc/bin/eend ix,
-  /usr/{bin,lib{,32,64}/python-exec}/python-exec2{,c} Cx -> portageq,
+  @{PYTHON_EXEC_WRAPPER} Cx -> portageq,
   
   / r,
   /lib{,32,64}/ r,
@@ -64,8 +64,8 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
-    /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq Px,
-    /usr/lib{,32,64}/python-exec/@{PYTHON}/env-update Px,
+    @{PYTHON_EXEC}/portageq Px,
+    @{PYTHON_EXEC}/env-update Px,
     
   }
   

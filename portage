@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(complain) {
+profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -254,7 +254,7 @@ profile portage.emerge /usr/lib{,32,64}/python-exec/@{PYTHON}/emerge flags=(comp
 }
 
 
-profile portage.env-update /usr/lib{,32,64}/python-exec/@{PYTHON}/env-update flags=(complain) {
+profile portage.env-update @{PYTHON_EXEC}/env-update flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -300,7 +300,7 @@ profile portage.env-update /usr/lib{,32,64}/python-exec/@{PYTHON}/env-update fla
 }
 
 
-profile portage.dispatch-conf /usr/lib{,32,64}/python-exec/@{PYTHON}/dispatch-conf flags=(complain) {
+profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -350,7 +350,7 @@ profile portage.dispatch-conf /usr/lib{,32,64}/python-exec/@{PYTHON}/dispatch-co
 }
 
 
-profile portage.portageq /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq flags=(complain) {
+profile portage.portageq @{PYTHON_EXEC}/portageq flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -406,7 +406,7 @@ profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
   /bin/mv ix,
   /usr/bin/diff ix,
   /usr/bin/find ix,
-  /usr/{bin,lib{,32,64}/python-exec}/python-exec2{,c} Cx -> portageq,
+  @{PYTHON_EXEC_WRAPPER} Cx -> portageq,
   
   / r,
   /etc/ r,
@@ -422,14 +422,14 @@ profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
-    /usr/lib{,32,64}/python-exec/@{PYTHON}/portageq Px,
+    @{PYTHON_EXEC}/portageq Px,
     
   }
   
 }
 
 
-profile portage.emaint /usr/lib{,32,64}/python-exec/@{PYTHON}/emaint flags=(complain) {
+profile portage.emaint @{PYTHON_EXEC}/emaint flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>

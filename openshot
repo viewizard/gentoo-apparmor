@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -14,7 +14,7 @@
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*.*"
 
-profile openshot /usr/lib{,32,64}/python-exec/@{PYTHON2}/openshot {
+profile openshot @{PYTHON2_EXEC}/openshot {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -35,14 +35,14 @@ profile openshot /usr/lib{,32,64}/python-exec/@{PYTHON2}/openshot {
   /usr/lib{,32,64}/ r,
   /usr/lib{,32,64}/frei0r-1/*.so m,
   /usr/share/mlt/** r,
-  /usr/lib{,32,64}/@{PYTHON}/site-packages/cairo/**.pyc{,.*} w,
+  @{PYTHON_PACKAGES}/cairo/**.pyc{,.*} w,
   
   owner @{HOME}/.openshot/{,**} rw,
   
 }
 
 
-profile openshot-render /usr/lib{,32,64}/python-exec/@{PYTHON2}/openshot-render flags=(complain) {
+profile openshot-render @{PYTHON2_EXEC}/openshot-render flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   
