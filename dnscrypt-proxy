@@ -1,18 +1,20 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile dnscrypt-proxy /usr/sbin/dnscrypt-proxy {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability setgid,
   capability setuid,
   capability sys_chroot,
@@ -20,44 +22,47 @@ profile dnscrypt-proxy /usr/sbin/dnscrypt-proxy {
   capability net_bind_service,
   capability dac_override,
   
-  /usr/sbin/dnscrypt-proxy mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/dnscrypt-proxy				mr,
   
-  /usr/share/dnscrypt-proxy/{,*} r,
-  
-  /run/dnscrypt-proxy/dnscrypt-proxy.pid rwl,
-  /var/log/dnscrypt-proxy.log rw,
+  # READS/WRITES ---------------------------------------
+  /usr/share/dnscrypt-proxy/{,*}			r,
+  /run/dnscrypt-proxy/dnscrypt-proxy.pid		rwl,
+  /var/log/dnscrypt-proxy.log				rw,
   
 }
-
 
 profile dnscrypt-proxy.hostip /usr/bin/hostip {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
-  /dev/pts/[0-9]* rw,
-  @{PROC}/sys/kernel/random/uuid r,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  @{PROC}/sys/kernel/random/uuid			r,
   
-  /usr/bin/hostip mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/hostip					mr,
   
 }
-
 
 profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # CAPABILITIES ---------------------------------------
   capability chown,
   capability dac_override,
   capability dac_read_search,
   
-  /usr/sbin/dnscrypt-proxy Px,
-  /bin/bash Cx -> shell,
-  /bin/chown ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/dnscrypt-proxy				Px,
+  /bin/bash						Cx -> shell,
+  /bin/chown						ix,
   
-  /etc/{conf,init}.d/dnscrypt-proxy r,
-  
-  /run/dnscrypt-proxy/ rw,
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/dnscrypt-proxy			r,
+  /run/dnscrypt-proxy/					rw,
   
   
   profile shell {

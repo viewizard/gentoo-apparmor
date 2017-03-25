@@ -1,46 +1,49 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile dnsmasq /usr/sbin/dnsmasq {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability setgid,
   capability setuid,
   capability net_bind_service,
   
-  /usr/sbin/dnsmasq mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/dnsmasq					mr,
   
-  /etc/dnsmasq.conf r,
-  /usr/share/dnsmasq/{,*} r,
-  
-  /run/dnsmasq.pid rw,
-  /var/lib/hosts.blacklist r,
-  /var/lib/misc/dnsmasq.leases rw,
+  # READS/WRITES ---------------------------------------
+  /etc/dnsmasq.conf					r,
+  /usr/share/dnsmasq/{,*}				r,
+  /run/dnsmasq.pid					rw,
+  /var/lib/hosts.blacklist				r,
+  /var/lib/misc/dnsmasq.leases				rw,
   
 }
-
 
 profile dnsmasq.init.d /etc/init.d/dnsmasq {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /usr/sbin/dnsmasq Px,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/dnsmasq					Px,
+  /bin/bash						Cx -> shell,
+  /etc/init.d/net.*					Px,
   
-  /etc/{conf,init}.d/dnsmasq r,
-  /etc/init.d/net.* Px,
-  
-  /run/dnsmasq.pid rwk,
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/dnsmasq				r,
+  /run/dnsmasq.pid					rwk,
   
   
   profile shell {

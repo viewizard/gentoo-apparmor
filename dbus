@@ -1,125 +1,140 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile dbus-cleanup-sockets /usr/bin/dbus-cleanup-sockets flags=(complain) {
+
+profile dbus.dbus-cleanup-sockets /usr/bin/dbus-cleanup-sockets flags=(complain) {
   #include <abstractions/base>
-  
   
 }
 
-profile dbus-daemon /usr/bin/dbus-daemon {
+profile dbus.dbus-daemon /usr/bin/dbus-daemon {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/dbus>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_resource,
   capability setgid,
   capability setuid,
   
-  @{PROC}/@{pid}/cmdline r,
-  @{PROC}/@{pid}/oom_score_adj w,
+  # PSEUDO ---------------------------------------------
+  @{PROC}/@{pid}/cmdline				r,
+  @{PROC}/@{pid}/oom_score_adj				w,
   
-  /usr/bin/dbus-daemon mr,
-  /usr/bin/thunar Px,
-  /usr/lib{,32,64}/xfce4/xfconf/xfconfd Px,
-  /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd Px,
-  /usr/lib{,32,64}/tumbler-1/tumblerd Px,
-  /usr/libexec/at-spi-bus-launcher Px,
-  /usr/libexec/at-spi2-registryd Px,
-  /usr/libexec/gvfsd Px,
-  /usr/libexec/gvfsd-metadata Px,
-  /usr/libexec/gvfs-udisks2-volume-monitor Px,
-  /usr/libexec/dconf-service Px,
-  /usr/libexec/dbus-daemon-launch-helper Px,
-  /usr/libexec/gconfd-2 Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/dbus-daemon					mr,
+  /usr/bin/thunar					Px,	# XFCE4
+  /usr/lib{,32,64}/xfce4/xfconf/xfconfd			Px,	# XFCE4
+  /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd		Px,	# XFCE4
+  /usr/lib{,32,64}/tumbler-1/tumblerd			Px,
+  /usr/libexec/at-spi-bus-launcher			Px,
+  /usr/libexec/at-spi2-registryd			Px,
+  /usr/libexec/gvfsd					Px,
+  /usr/libexec/gvfsd-metadata				Px,
+  /usr/libexec/gvfs-udisks2-volume-monitor		Px,
+  /usr/libexec/dconf-service				Px,
+  /usr/libexec/dbus-daemon-launch-helper		Px,
+  /usr/libexec/gconfd-2					Px,
   
-  /etc/dbus-1/** r,
-  /usr/share/dbus-1/** r,
-  /usr/share/defaults/at-spi2/accessibility.conf r,
-  
-  /run/dbus.pid rw,
+  # READS/WRITES ---------------------------------------
+  /etc/dbus-1/**					r,
+  /usr/share/dbus-1/**					r,
+  /usr/share/defaults/at-spi2/accessibility.conf	r,
+  /run/dbus.pid						rw,
   
 }
 
-profile dbus-launch /usr/bin/dbus-launch {
+profile dbus.dbus-launch /usr/bin/dbus-launch {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/X>
   #include <abstractions/dbus-session>
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   
-  /usr/bin/dbus-launch mr,
-  /bin/bash Cx -> shell,
-  /usr/bin/dbus-daemon Px,
-  /usr/bin/xfce4-session Px,
-  /etc/X11/Sessions/Xfce4 Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/dbus-launch					mr,
+  /bin/bash						Cx -> shell,
+  /usr/bin/dbus-daemon					Px,
+  /usr/bin/xfce4-session				Px,	# XFCE4
+  /etc/X11/Sessions/Xfce4				Px,	# XFCE4
   
-  owner @{HOME}/.dbus/{,**} rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.dbus/{,**}				rw,
   
   
   profile shell {
     #include <abstractions/base>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /etc/X11/Sessions/Xfce4 r,
-    /usr/bin/startxfce4 Px,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /etc/X11/Sessions/Xfce4				r,	# XFCE4
+    /usr/bin/startxfce4					Px,	# XFCE4
     
   }
   
 }
 
-profile dbus-run-session /usr/bin/dbus-run-session flags=(complain) {
+profile dbus.dbus-run-session /usr/bin/dbus-run-session flags=(complain) {
   #include <abstractions/base>
   
-  /usr/bin/dbus-run-session mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/dbus-run-session				mr,
   
 }
 
-profile dbus-send /usr/bin/dbus-send flags=(complain) {
+profile dbus.dbus-send /usr/bin/dbus-send flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/dbus-session>
   
-  owner @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  owner @{PROC}/@{pid}/fd/				r,
   
-  /usr/bin/dbus-send mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/dbus-send					mr,
   
 }
 
-profile dbus-uuidgen /usr/bin/dbus-uuidgen flags=(complain) {
+profile dbus.dbus-uuidgen /usr/bin/dbus-uuidgen flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/dbus-session-strict>
   
-  /usr/bin/dbus-uuidgen mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/dbus-uuidgen					mr,
   
 }
 
-profile dbus-daemon-launch-helper /usr/libexec/dbus-daemon-launch-helper {
+profile dbus.dbus-daemon-launch-helper /usr/libexec/dbus-daemon-launch-helper {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability setgid,
   capability setuid,
   
-  /usr/libexec/dbus-daemon-launch-helper mr,
-  /usr/sbin/console-kit-daemon Px,
-  /usr/lib{,32,64}/polkit-1/polkitd Px,
-  /usr/lib{,32,64}/udisks/udisks-daemon Px,
-  /usr/lib{,32,64}/upower/upowerd Px,
-  /usr/libexec/udisks2/udisksd Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/dbus-daemon-launch-helper		mr,
+  /usr/sbin/console-kit-daemon				Px,
+  /usr/lib{,32,64}/polkit-1/polkitd			Px,
+  /usr/lib{,32,64}/udisks/udisks-daemon			Px,
+  /usr/lib{,32,64}/upower/upowerd			Px,
+  /usr/libexec/udisks2/udisksd				Px,
   
-  /etc/dbus-1/** r,
-  /usr/share/dbus-1/** r,
+  # READS/WRITES ---------------------------------------
+  /etc/dbus-1/**					r,
+  /usr/share/dbus-1/**					r,
   
 }
 
@@ -128,17 +143,18 @@ profile dbus.init.d /etc/init.d/dbus {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /etc/init.d/* Pxr,
-  /bin/bash Cx -> shell,
-  /bin/rm ix,
-  /usr/bin/dbus-uuidgen Px,
-  /usr/bin/dbus-daemon Px,
+  # EXECUTABLES ----------------------------------------
+  /etc/init.d/*						Pxr,	# FIX ME! неужели требует так много, что нельзя описать?
+  /bin/bash						Cx -> shell,
+  /bin/rm						ix,
+  /usr/bin/dbus-uuidgen					Px,
+  /usr/bin/dbus-daemon					Px,
   
-  /etc/{conf,init}.d/dbus r,
-  
-  /run/dbus.pid rwk,
-  /run/dbus/ w,
-  /run/dbus/system_bus_socket rwk,
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/dbus				r,
+  /run/dbus.pid						rwk,
+  /run/dbus/						w,
+  /run/dbus/system_bus_socket				rwk,
   
   
   profile shell {
