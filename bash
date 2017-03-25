@@ -69,7 +69,7 @@ profile bash_users {
   /usr/bin/sudo						Pxr,
   /usr/bin/whoami					ixr,
   /usr/bin/id						ixr,
-  /usr/bin/startxfce4					Pxr,
+  /usr/bin/startxfce4					Pxr,	# XFCE4
   /usr/bin/clear					ixr,
   /usr/bin/wine						Pxr,
   /usr/bin/winecfg					Pxr,
@@ -178,7 +178,7 @@ profile bash_root {
   /usr/bin/revdep-rebuild{,.sh}				Pxr,
   /usr/bin/whoami					ixr,
   /usr/bin/id						ixr,
-  /usr/bin/startxfce4					Pxr,
+  /usr/bin/startxfce4					Pxr,	# XFCE4
   /usr/bin/rsync					ixr,
   /usr/bin/htop						Pxr,
   /usr/bin/mc						Pxr -> mc_root,
@@ -224,8 +224,8 @@ profile bash_root {
   /usr/local/bin/**					Pxr,
   /usr/local/sbin/**					Pxr,
   /etc/init.d/*						Pxr,
-  /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/*	Pxr,  # в профиле /etc/apparmor.d/kernel
-  /usr/src/IMA/certs/*					Pxr,  # в профиле /etc/apparmor.d/kernel
+  /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/*	Pxr,	# в профиле /etc/apparmor.d/kernel
+  /usr/src/IMA/certs/*					Pxr,	# в профиле /etc/apparmor.d/kernel
   
   # don't use by default
   #/usr/sbin/sysctl Pxr,
