@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile exo-open /usr/bin/exo-open {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -20,15 +21,17 @@ profile exo-open /usr/bin/exo-open {
   #include <abstractions/executable-binary-helper>
   #include <abstractions/nameservice>
   
-  owner @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  owner @{PROC}/@{pid}/fd/				r,
   
-  /usr/bin/exo-open mr,
-  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/exo-open					mr,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1		Px,
   
-  /etc/machine-id r,
+  # READS/WRITES ---------------------------------------
+  /etc/machine-id					r,
   /usr/share/gvfs/remote-volume-monitors/{,udisks2.monitor} r,
-  
-  /usr/portage/licenses/{,*} r,
+  /usr/portage/licenses/{,*}				r,
   
 }
 
@@ -41,23 +44,27 @@ profile exo-helper /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 {
   #include <abstractions/fonts>
   #include <abstractions/executable-binary-helper>
   
-  owner @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  owner @{PROC}/@{pid}/fd/				r,
   
-  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 mr,
-  /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1		mr,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1	Px,
   
-  # helpers
-  /usr/share/ r,
-  /usr/local/share/ r,
-  /usr/share/xfce4/ r,
-  /usr/share/xfce4/helpers/{,*} r,
-  /etc/xdg/xfce4/helpers.rc r,
-  owner @{HOME}/.config/xfce4/helpers.rc* rw,
-  owner @{HOME}/.config/mimeapps.list* rw,
-  owner @{HOME}/.local/share/ r,
-  owner @{HOME}/.local/share/xfce4/ r,
-  owner @{HOME}/.local/share/xfce4/helpers/{,*} r,
-  owner @{HOME}/.local/share/applications/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /usr/share/						r,
+  /usr/local/share/					r,
+  /usr/share/xfce4/					r,
+  /usr/share/xfce4/helpers/{,*}				r,
+  /etc/xdg/xfce4/helpers.rc				r,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/xfce4/helpers.rc*		rw,
+  owner @{HOME}/.config/mimeapps.list*			rw,
+  owner @{HOME}/.local/share/				r,
+  owner @{HOME}/.local/share/xfce4/			r,
+  owner @{HOME}/.local/share/xfce4/helpers/{,*}		r,
+  owner @{HOME}/.local/share/applications/{,**}		r,
   
 }
 
@@ -66,12 +73,13 @@ profile exo-compose-mail /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 {
   #include <abstractions/perl>
   #include <abstractions/executable-binary-helper>
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   
-  /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 mr,
-  
-  /bin/env rm,
-  /usr/bin/perl ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1	mr,
+  /bin/env						rm,
+  /usr/bin/perl						ix,
   
 }
 
@@ -79,11 +87,13 @@ profile exo-preferred-applications /usr/bin/exo-preferred-applications {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   
-  /dev/tty rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   
-  /bin/bash mr,
-  /usr/bin/exo-preferred-applications r,
-  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						mr,
+  /usr/bin/exo-preferred-applications			r,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1		Px,
   
 }
 
@@ -94,24 +104,28 @@ profile exo-desktop-item-edit /usr/bin/exo-desktop-item-edit {
   #include <abstractions/X>
   #include <abstractions/gtk>
   
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
   
-  /usr/bin/exo-desktop-item-edit mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/exo-desktop-item-edit			mr,
   
-  / r,
-  /{bin,sbin,usr,opt}/ r,
-  /{bin,sbin}/* r,
-  /usr/{bin,sbin,local}/ r,
-  /usr/{bin,sbin}/* r,
-  /opt/bin/{,*} r,
-  /usr/local/bin/{,*} r,
-  deny /usr/@{CHOST}/** r,
-  deny /usr/libexec/** r,
+  # READS/WRITES ---------------------------------------
+  /							r,
+  /{bin,sbin,usr,opt}/{,*}				r,
+  /usr/{bin,sbin,local}/{,*}				r,
+  /opt/bin/{,*}						r,
+  /usr/local/bin/{,*}					r,
   
-  owner @{HOME}/.config/xfce4/panel/** rw,
-  owner @{HOME}/[^.]*/*.desktop rw,
-  owner @{HOME}/Desktop/*.desktop{,.*} rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/xfce4/panel/**			rw,
+  owner @{HOME}/[^.]*/*.desktop				rw,
+  owner @{HOME}/Desktop/*.desktop{,.*}			rw,
+  
+  # NOISY ----------------------------------------------
+  deny /usr/@{CHOST}/**					r,
+  deny /usr/libexec/**					r,
   
 }
 
@@ -127,17 +141,20 @@ profile exo_open_root {
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open_root>
   
+  # CAPABILITIES ---------------------------------------
   capability fowner,
   
-  owner @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  owner @{PROC}/@{pid}/fd/				r,
   
-  /usr/bin/exo-open mr,
-  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 Px -> exo_helper_root,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/exo-open					mr,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1		Px -> exo_helper_root,
   
-  /etc/machine-id r,
+  # READS/WRITES ---------------------------------------
+  /etc/machine-id					r,
   /usr/share/gvfs/remote-volume-monitors/{,udisks2.monitor} r,
-  
-  /usr/portage/licenses/{,*} r,
+  /usr/portage/licenses/{,*}				r,
   
 }
 
@@ -150,23 +167,27 @@ profile exo_helper_root {
   #include <abstractions/fonts>
   #include <abstractions/executable-binary-helper_root>
   
-  owner @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  owner @{PROC}/@{pid}/fd/				r,
   
-  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 mr,
-  /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 Px -> exo_compose_mail_root,
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1		mr,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1	Px -> exo_compose_mail_root,
   
-  # helpers
-  /usr/share/ r,
-  /usr/local/share/ r,
-  /usr/share/xfce4/ r,
-  /usr/share/xfce4/helpers/{,*} r,
-  /etc/xdg/xfce4/helpers.rc r,
-  owner @{HOME}/.config/xfce4/helpers.rc* rw,
-  owner @{HOME}/.config/mimeapps.list* rw,
-  owner @{HOME}/.local/share/ r,
-  owner @{HOME}/.local/share/xfce4/ r,
-  owner @{HOME}/.local/share/xfce4/helpers/{,*} r,
-  owner @{HOME}/.local/share/applications/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /usr/share/						r,
+  /usr/local/share/					r,
+  /usr/share/xfce4/					r,
+  /usr/share/xfce4/helpers/{,*}				r,
+  /etc/xdg/xfce4/helpers.rc				r,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/xfce4/helpers.rc*		rw,
+  owner @{HOME}/.config/mimeapps.list*			rw,
+  owner @{HOME}/.local/share/				r,
+  owner @{HOME}/.local/share/xfce4/			r,
+  owner @{HOME}/.local/share/xfce4/helpers/{,*}		r,
+  owner @{HOME}/.local/share/applications/{,**}		r,
   
 }
 
@@ -175,11 +196,12 @@ profile exo_compose_mail_root {
   #include <abstractions/perl>
   #include <abstractions/executable-binary-helper_root>
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   
-  /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 mr,
-  
-  /bin/env rm,
-  /usr/bin/perl ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1	mr,
+  /bin/env						rm,
+  /usr/bin/perl						ix,
   
 }

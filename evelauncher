@@ -1,25 +1,28 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile evelauncher.sh /home/*/evelauncher/evelauncher.sh {
   #include <abstractions/base>
   
-  /dev/tty rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   
-  owner @{HOME}/evelauncher/evelauncher.sh r,
-  owner @{HOME}/evelauncher/evelauncher px,
-  /bin/bash mr,
-  /bin/sed ix,
-  /bin/basename ix,
-  /bin/dirname ix,
+  # EXECUTABLES ----------------------------------------
+  owner @{HOME}/evelauncher/evelauncher.sh		r,
+  owner @{HOME}/evelauncher/evelauncher			px,
+  /bin/bash						mr,
+  /bin/sed						ix,
+  /bin/basename						ix,
+  /bin/dirname						ix,
   
 }
 
@@ -36,41 +39,45 @@ profile evelauncher /home/*/evelauncher/evelauncher {
   #include <abstractions/xdg-open>
   #include <abstractions/ssl_certs>
   
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
-  
-  /dev/disk/by-label/ r,
-  /dev/shm/.org.chromium.Chromium.* rw,
-  @{PROC}/sys/kernel/shmmax r,
-  owner @{PROC}/@{pid}/oom_score_adj rw,
-  /sys/bus/pci/devices/ r,
-  /sys/devices/system/cpu/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
+  /dev/disk/by-label/					r,
+  /dev/shm/.org.chromium.Chromium.*			rw,
+  /sys/bus/pci/devices/					r,
+  /sys/devices/system/cpu/				r,
   /sys/devices/pci[0-9]*/**/{resource,irq,vendor,device,class,config} r,
+  @{PROC}/sys/kernel/shmmax				r,
+  owner @{PROC}/@{pid}/oom_score_adj			rw,
   
-  owner @{HOME}/evelauncher/evelauncher mr,
-  /usr/bin/wine Px,
-  owner @{HOME}/{.eve,evelauncher}/updater px,
-  owner @{HOME}/evelauncher/QtWebEngineProcess ix,
-  owner @{HOME}/evelauncher/LogLite px,
+  # EXECUTABLES ----------------------------------------
+  owner @{HOME}/evelauncher/evelauncher			mr,
+  /usr/bin/wine						Px,
+  owner @{HOME}/{.eve,evelauncher}/updater		px,
+  owner @{HOME}/evelauncher/QtWebEngineProcess		ix,
+  owner @{HOME}/evelauncher/LogLite			px,
   
-  /etc/os-release r,
+  # READS/WRITES ---------------------------------------
+  /etc/os-release					r,
+  /							r,
+  /home/						r,
   
-  / r,
-  /home/ r,
-  owner @{HOME}/ r,
-  owner @{HOME}/evelauncher/ r,
-  owner @{HOME}/evelauncher/** rw,
-  owner @{HOME}/evelauncher/**.so{,.[0-9]*} m,
-  owner @{HOME}/.eve/{,**} rw,
-  owner @{HOME}/.config/CCP/{,**} rwk,
-  owner @{HOME}/.local/share/CCP/{,**} rwk,
-  owner @{HOME}/.pki/nssdb/{,**} rwk,
-  owner @{HOME_CACHE}/CCP/{,**} rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/					r,
+  owner @{HOME}/evelauncher/				r,
+  owner @{HOME}/evelauncher/**				rw,
+  owner @{HOME}/evelauncher/**.so{,.[0-9]*}		m,
+  owner @{HOME}/.eve/{,**}				rw,
+  owner @{HOME}/.config/CCP/{,**}			rwk,
+  owner @{HOME}/.local/share/CCP/{,**}			rwk,
+  owner @{HOME}/.pki/nssdb/{,**}			rwk,
+  owner @{HOME_CACHE}/CCP/{,**}				rw,
   
-  /tmp/ r,
-  owner /tmp/.gl* rw,
-  /var/tmp/ r,
-  owner /var/tmp/etilqs_* rw,
+  # TEMP -----------------------------------------------
+  /tmp/							r,
+  owner /tmp/.gl*					rw,
+  /var/tmp/						r,
+  owner /var/tmp/etilqs_*				rw,
   
 }
 
@@ -79,11 +86,13 @@ profile evelauncher.updater /home/*/{.eve,evelauncher}/updater {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
-  owner @{HOME}/{.eve,evelauncher}/updater mr,
-  owner @{HOME}/evelauncher/evelauncher px,
+  # EXECUTABLES ----------------------------------------
+  owner @{HOME}/{.eve,evelauncher}/updater		mr,
+  owner @{HOME}/evelauncher/evelauncher			px,
   
-  owner @{HOME}/evelauncher/{,**} rw,
-  owner @{HOME}/.eve/{,**} rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/evelauncher/{,**}			rw,
+  owner @{HOME}/.eve/{,**}				rw,
   
 }
 
@@ -91,13 +100,15 @@ profile evelauncher.updater /home/*/{.eve,evelauncher}/updater {
 profile evelauncher.LogLite.sh /home/*/evelauncher/LogLite.sh {
   #include <abstractions/base>
   
-  /dev/tty rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   
-  owner @{HOME}/evelauncher/LogLite px,
-  /bin/bash mr,
-  /bin/sed ix,
-  /bin/basename ix,
-  /bin/dirname ix,
+  # EXECUTABLES ----------------------------------------
+  owner @{HOME}/evelauncher/LogLite			px,
+  /bin/bash						mr,
+  /bin/sed						ix,
+  /bin/basename						ix,
+  /bin/dirname						ix,
   
 }
 
@@ -111,13 +122,16 @@ profile evelauncher.LogLite /home/*/evelauncher/LogLite {
   #include <abstractions/nvidia>
   #include <abstractions/nameservice>
   
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
   
-  owner @{HOME}/evelauncher/LogLite mr,
+  # EXECUTABLES ----------------------------------------
+  owner @{HOME}/evelauncher/LogLite			mr,
   
-  owner @{HOME}/evelauncher/{,**} r,
-  owner @{HOME}/evelauncher/**.so{,.[0-9]*} m,
-  owner @{HOME}/.config/CCP/{,**} rwk,
+  # USERS ----------------------------------------------
+  owner @{HOME}/evelauncher/{,**}			r,
+  owner @{HOME}/evelauncher/**.so{,.[0-9]*}		m,
+  owner @{HOME}/.config/CCP/{,**}			rwk,
   
 }

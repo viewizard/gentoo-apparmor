@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -16,69 +16,77 @@ profile elfix_migrate_pax_root flags=(complain) {
   #include <abstractions/python>
   #include <abstractions/nameservice>
   
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
   
-  /usr/sbin/migrate-pax mr,
-  /bin/env mr,
-  /usr/bin/python-wrapper ix,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/migrate-pax					mr,
+  /bin/env						mr,
+  /bin/bash						Cx -> shell,
+  /usr/bin/python-wrapper				ix,
   
-  /{bin,sbin,opt,lib{,32,64}}/** rw,
-  /usr/{bin,sbin,lib{,32,64,exec},@{CHOST}}/** rw,
-  
-  /etc/profile.env r,
-  /etc/env.d/python/config r,
-  /{etc,usr,usr/local,usr/share}/portage/{,**} r,
-  /var/db/pkg/{,**} r,
-  /var/cache/edb/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /{bin,sbin,opt,lib{,32,64}}/**			rw,
+  /usr/{bin,sbin,lib{,32,64,exec},@{CHOST}}/**		rw,
+  /etc/profile.env					r,
+  /etc/env.d/python/config				r,
+  /{etc,usr,usr/local,usr/share}/portage/{,**}		r,
+  /var/db/pkg/{,**}					r,
+  /var/cache/edb/{,**}					r,
   
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     
+    # CAPABILITIES -------------------------------------
     capability dac_read_search,
     capability dac_override,
     
-    /dev/tty rw,
-    /dev/pts/[0-9]* w,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/pts/[0-9]*					w,
     
-    /bin/bash mr,
-    /bin/uname ixr,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/uname						ixr,
     
   }
   
 }
-
 
 profile elfix_revdep_pax_root flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
   
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
   
-  /bin/env mr,
-  /usr/bin/python-wrapper ix,
-  /usr/sbin/revdep-pax mr,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/revdep-pax					mr,
+  /bin/env						mr,
+  /bin/bash						Cx -> shell,
+  /usr/bin/python-wrapper				ix,
   
-  /{bin,sbin,opt,lib{,32,64}}/** rw,
-  /usr/{bin,sbin,lib{,32,64,exec},@{CHOST}}/** rw,
-  
-  /etc/profile.env r,
-  /etc/env.d/python/config r,
-  /{etc,usr,usr/local,usr/share}/portage/{,**} r,
-  /var/db/pkg/{,**} r,
-  /var/cache/edb/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /{bin,sbin,opt,lib{,32,64}}/**			rw,
+  /usr/{bin,sbin,lib{,32,64,exec},@{CHOST}}/**		rw,
+  /etc/profile.env					r,
+  /etc/env.d/python/config				r,
+  /{etc,usr,usr/local,usr/share}/portage/{,**}		r,
+  /var/db/pkg/{,**}					r,
+  /var/cache/edb/{,**}					r,
   
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /bin/uname ix,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/uname						ix,
     
   }
   

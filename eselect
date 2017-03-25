@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -15,42 +15,46 @@ profile eselect_root flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/user-systemwide-files>
   
+  # CAPABILITIES ---------------------------------------
   capability fsetid,
   capability sys_admin,
   capability dac_override,
   capability dac_read_search,
   
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
   
-  /bin/bash m,
-  /bin/readlink ix,
-  /bin/ln ix,
-  /bin/mv ix,
-  /bin/rm ix,
-  /bin/sed ix,
-  /bin/sort ix,
-  /bin/head ix,
-  /bin/mkdir ix,
-  /bin/mktemp ix,
-  /bin/cut ix,
-  /bin/grep ix,
-  /bin/chgrp ix,
-  /bin/chmod ix,
-  /bin/cat ix,
-  /bin/uname ix,
-  /usr/bin/file ix,
-  /usr/bin/scanelf ix,
-  /usr/bin/tput ix,
-  /usr/bin/binutils-config Px,
-  @{PYTHON_EXEC_WRAPPER} Cx -> portage,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						m,
+  /bin/readlink						ix,
+  /bin/ln						ix,
+  /bin/mv						ix,
+  /bin/rm						ix,
+  /bin/sed						ix,
+  /bin/sort						ix,
+  /bin/head						ix,
+  /bin/mkdir						ix,
+  /bin/mktemp						ix,
+  /bin/cut						ix,
+  /bin/grep						ix,
+  /bin/chgrp						ix,
+  /bin/chmod						ix,
+  /bin/cat						ix,
+  /bin/uname						ix,
+  /usr/bin/file						ix,
+  /usr/bin/scanelf					ix,
+  /usr/bin/tput						ix,
+  /usr/bin/binutils-config				Px,
+  @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
   
   
   profile portage {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
-    @{PYTHON_EXEC}/portageq Px,
-    @{PYTHON_EXEC}/env-update Px,
+    # EXECUTABLES --------------------------------------
+    @{PYTHON_EXEC}/portageq				Px,
+    @{PYTHON_EXEC}/env-update				Px,
     
   }
   

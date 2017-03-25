@@ -1,35 +1,38 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile eudev.udevadm /bin/udevadm flags=(complain) {
   #include <abstractions/base>
   
-  /dev/input/event[0-9]* r,
-  /dev/snd/** w,
-  /sys/bus/ r,
-  /sys/class/ r,
-  /sys/module/ r,
-  /sys/class/*/ rw,
-  /sys/bus/**/{,uevent} rw,
-  /sys/module/*/uevent rw,
-  /sys/devices/**/uevent rw,
-  /sys/module/block/parameters/events_dfl_poll_msecs rw,
+  # PSEUDO ---------------------------------------------
+  /dev/input/event[0-9]*				r,
+  /dev/snd/**						w,
+  /sys/bus/						r,
+  /sys/class/						r,
+  /sys/module/						r,
+  /sys/class/*/						rw,
+  /sys/bus/**/{,uevent}					rw,
+  /sys/module/*/uevent					rw,
+  /sys/devices/**/uevent				rw,
+  /sys/module/block/parameters/events_dfl_poll_msecs	rw,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/** rw,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/** rw,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/**		rw,
   
-  /bin/udevadm mr,
+  # EXECUTABLES ----------------------------------------
+  /bin/udevadm						mr,
   
-  /etc/udev/udev.conf r,
-  
-  /run/udev/tags/{,**} w,
+  # READS/WRITES ---------------------------------------
+  /etc/udev/udev.conf					r,
+  /run/udev/tags/{,**}					w,
   
 }
 
@@ -37,6 +40,7 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_admin,
   capability sys_module,
   capability sys_resource,
@@ -44,68 +48,69 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
   capability dac_override,
   capability chown,
   
-  /dev/* w,
-  /dev/pts/[0-9]* r,
-  /dev/input/event[0-9]* r,
-  /dev/snd/** w,
-  /dev/@{BLOCK_ALL} rk,
-  /dev/vg[0-9]*{,/*} w,
-  /dev/md/{,*:*} rw,
-  /dev/disk/{,**} rw,
-  /dev/input/{,**} w,
-  /dev/{block,char,mapper}/{,*} w,
-  /dev/bus/usb/** w,
-  /sys/bus/pci/slots/ r,
-  /sys/**/uevent rw,
-  /sys/devices/pci[0-9]**/** r,
-  /sys/devices/virtual/** r,
+  # PSEUDO ---------------------------------------------
+  /dev/*						w,
+  /dev/pts/[0-9]*					rw,
+  /dev/input/event[0-9]*				r,
+  /dev/snd/**						w,
+  /dev/@{BLOCK_ALL}					rk,
+  /dev/vg[0-9]*{,/*}					w,
+  /dev/md/{,*:*}					rw,
+  /dev/disk/{,**}					rw,
+  /dev/input/{,**}					w,
+  /dev/{block,char,mapper}/{,*}				w,
+  /dev/bus/usb/**					w,
+  /sys/bus/pci/slots/					r,
+  /sys/**/uevent					rw,
+  /sys/devices/pci[0-9]**/**				r,
+  /sys/devices/virtual/**				r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/queue/scheduler w,
   /sys/devices/pci[0-9]**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/queue/scheduler w,
-  /sys/devices/**/input/input[0-9]*/{,capabilities/}* r,
-  /sys/devices/pnp[0-9]*/*/rtc/rtc[0-9]*/hctosys r,
-  /sys/module/block/parameters/events_dfl_poll_msecs rw,
-  /sys/module/coretemp/initstate r,
-  @{PROC}/cmdline r,
-  @{PROC}/@{pid}/oom_score_adj rw,
+  /sys/devices/**/input/input[0-9]*/{,capabilities/}*	r,
+  /sys/devices/pnp[0-9]*/*/rtc/rtc[0-9]*/hctosys	r,
+  /sys/module/block/parameters/events_dfl_poll_msecs	rw,
+  /sys/module/coretemp/initstate			r,
+  @{PROC}/cmdline					r,
+  @{PROC}/@{pid}/oom_score_adj				rw,
   
+  # EXECUTABLES ----------------------------------------
+  /sbin/udevd						mr,
+  /bin/bash						Cx -> shell,
+  /sbin/dmsetup						Px,
+  /sbin/mdadm						Px,
+  /sbin/lvm						Px,
+  /usr/sbin/alsactl					Px,
+  /lib{,32,64}/udev/net.sh				Px,
+  /lib{,32,64}/udev/nvidia-udev.sh			Px,
+  /lib{,32,64}/udev/ata_id				Px,
+  /lib{,32,64}/udev/scsi_id				Px,
   
-  /dev/pts/[0-9]* w,
-  
-  /sbin/udevd mr,
-  /bin/bash Cx -> shell,
-  /sbin/dmsetup Px,
-  /sbin/mdadm Px,
-  /sbin/lvm Px,
-  /usr/sbin/alsactl Px,
-  /lib{,32,64}/udev/net.sh Px,
-  /lib{,32,64}/udev/nvidia-udev.sh Px,
-  /lib{,32,64}/udev/ata_id Px,
-  /lib{,32,64}/udev/scsi_id Px,
-  
-  /etc/group r,
-  /etc/udev/{,**} r,
-  /etc/modprobe.d/{,*} r,
-  /lib{,32,64}/udev/rules.d/{,*} r,
-  /lib{,32,64}/modprobe.d/{,*} r,
-  /lib{,32,64}/modules/4.7.10-hardened/modules.{dep,alias,symbols,builtin}.bin r,
-  
-  /run/udev/control w,
-  /run/udev/rules.d/{,*} r,
-  /run/udev/queue rw,
-  /run/udev/tags/{,**} w,
-  /run/udev/{data,watch,links}/** rw,
-  /run/udev/watch{,.old}/{,[0-9]*} rw,
+  # READS/WRITES ---------------------------------------
+  /etc/group						r,
+  /etc/udev/{,**}					r,
+  /etc/modprobe.d/{,*}					r,
+  /lib{,32,64}/udev/rules.d/{,*}			r,
+  /lib{,32,64}/modprobe.d/{,*}				r,
+  /lib{,32,64}/modules/[0-9]*-{hardened,gentoo}*/modules.{dep,alias,symbols,builtin}.bin r,
+  /run/udev/control					w,
+  /run/udev/rules.d/{,*}				r,
+  /run/udev/queue					rw,
+  /run/udev/tags/{,**}					w,
+  /run/udev/{data,watch,links}/**			rw,
+  /run/udev/watch{,.old}/{,[0-9]*}			rw,
   
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /bin/sed ix,
-    /sbin/mdadm Px,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/sed						ix,
+    /sbin/mdadm						Px,
     
   }
   
@@ -114,21 +119,27 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
 profile eudev.ata_id /lib{,32,64}/udev/ata_id flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_rawio,
   
-  /dev/@{BLOCK_REAL} r,
+  # PSEUDO ---------------------------------------------
+  /dev/@{BLOCK_REAL}					r,
   
-  /lib{,32,64}/udev/ata_id mr,
+  # EXECUTABLES ----------------------------------------
+  /lib{,32,64}/udev/ata_id				mr,
   
-  /etc/udev/udev.conf r,
+  # READS/WRITES ---------------------------------------
+  /etc/udev/udev.conf					r,
   
 }
 
 profile eudev.scsi_id /lib{,32,64}/udev/scsi_id flags=(complain) {
   #include <abstractions/base>
   
-  /lib{,32,64}/udev/scsi_id mr,
+  # EXECUTABLES ----------------------------------------
+  /lib{,32,64}/udev/scsi_id				mr,
   
-  /etc/udev/udev.conf r,
+  # READS/WRITES ---------------------------------------
+  /etc/udev/udev.conf					r,
   
 }
