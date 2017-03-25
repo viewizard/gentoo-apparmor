@@ -1,23 +1,27 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile consolekit.ck-history /usr/bin/ck-history flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
-  /dev/pts/[0-9]* rw,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
   
-  /usr/bin/ck-history mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/ck-history					mr,
   
-  /var/log/ConsoleKit/history r,
+  # READS/WRITES ---------------------------------------
+  /var/log/ConsoleKit/history				r,
   
 }
 
@@ -26,22 +30,27 @@ profile consolekit.ck-launch-session /usr/bin/ck-launch-session flags=(complain)
   #include <abstractions/dbus-session>
   #include <abstractions/nameservice>
   
-  /usr/bin/ck-launch-session mr,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/ck-launch-session				mr,
+  /bin/bash						Cx -> shell,
   
-  /etc/X11/Sessions/{,*} r,
+  # READS/WRITES ---------------------------------------
+  /etc/X11/Sessions/{,*}				r,
   
-  owner @{HOME}/.Xauthority r,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.Xauthority				r,
   
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /etc/X11/Sessions/Xfce4 r,
-    /usr/bin/startxfce4 Px,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /etc/X11/Sessions/Xfce4				r,	# XFCE4
+    /usr/bin/startxfce4					Px,	# XFCE4
     
   }
   
@@ -51,36 +60,42 @@ profile consolekit.ck-list-sessions /usr/bin/ck-list-sessions flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
-  /dev/pts/[0-9]* rw,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
   
-  /usr/bin/ck-list-sessions mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/ck-list-sessions				mr,
   
 }
 
 profile consolekit.ck-log-system-restart /usr/sbin/ck-log-system-restart flags=(complain) {
   #include <abstractions/base>
   
-  /usr/sbin/ck-log-system-restart mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/ck-log-system-restart			mr,
   
 }
 
 profile consolekit.ck-log-system-start /usr/sbin/ck-log-system-start flags=(complain) {
   #include <abstractions/base>
   
-  /usr/sbin/ck-log-system-start mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/ck-log-system-start				mr,
   
 }
 
 profile consolekit.ck-log-system-stop /usr/sbin/ck-log-system-stop flags=(complain) {
   #include <abstractions/base>
   
-  /usr/sbin/ck-log-system-stop mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/ck-log-system-stop				mr,
 }
 
 profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_tty_config,
   capability sys_ptrace,
   capability sys_admin,
@@ -90,71 +105,77 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   capability dac_read_search,
   capability dac_override,
   
-  /dev/tty{,[0-9]*} rw,
-  /sys/power/state r,
-  /sys/devices/virtual/tty/tty*/active r,
-  @{PROC}/@{pid}/fd/ r,
-  @{PROC}/@{pid}/stat r,
-  @{PROC}/tty/drivers r,
-  @{PROC}/@{pid}/environ r,
-  @{PROC}/@{pid}/sessionid r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty{,[0-9]*}					rw,
+  /sys/power/state					r,
+  /sys/devices/virtual/tty/tty*/active			r,
+  @{PROC}/@{pid}/fd/					r,
+  @{PROC}/@{pid}/stat					r,
+  @{PROC}/tty/drivers					r,
+  @{PROC}/@{pid}/environ				r,
+  @{PROC}/@{pid}/sessionid				r,
   
-  /usr/sbin/console-kit-daemon mr,
-  /usr/lib{,32,64}/ConsoleKit/** Pix,
-  /usr/bin/pm-is-supported ixr,
-  /bin/grep ix,
-  /bin/bash mr,
-  /bin/tr ix,
-  /bin/cut ix,
-  /usr/bin/getent ix,
-  /bin/mkdir ix,
-  /bin/sed ix,
-  /bin/rm ix,
-  /sbin/shutdown Pxr,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/console-kit-daemon				mr,
+  /bin/grep						ix,
+  /bin/bash						mr,
+  /bin/tr						ix,
+  /bin/cut						ix,
+  /bin/mkdir						ix,
+  /bin/sed						ix,
+  /bin/rm						ix,
+  /sbin/shutdown					Pxr,
+  /usr/bin/getent					ix,
+  /usr/bin/pm-is-supported				ixr,
+  /usr/lib{,32,64}/ConsoleKit/**			Pix,
   
-  /etc/ConsoleKit/{,**} r,
-  /etc/pm/config.d/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /etc/ConsoleKit/{,**}					r,
+  /etc/pm/config.d/{,**}				r,
+  /run/ConsoleKit/{,*}					rw,
+  /run/user/{,**}					rw,
+  /run/console/{,*}					rw,
+  /var/log/ConsoleKit/					r,
+  /var/log/ConsoleKit/**				rw,
   
-  /run/ConsoleKit/{,*} rw,
-  /run/user/{,**} rw,
-  /run/console/{,*} rw,
-  
-  /var/log/ConsoleKit/ r,
-  /var/log/ConsoleKit/** rw,
-  
-  owner @{HOME}/.Xauthority r,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.Xauthority				r,
   
 }
 
 profile consolekit.udev-acl /usr/lib{,32,64}/ConsoleKit/udev-acl {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
   
-  /sys/devices/**/uevent r,
+  # PSEUDO ---------------------------------------------
+  /sys/devices/**/uevent				r,
   
-  /usr/lib{,32,64}/ConsoleKit/udev-acl m,
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/ConsoleKit/udev-acl			m,
   
-  /etc/udev/udev.conf r,
-  /run/udev/tags/udev-acl/ r,
-  /run/ConsoleKit/database r,
+  # READS/WRITES ---------------------------------------
+  /etc/udev/udev.conf					r,
+  /run/udev/tags/udev-acl/				r,
+  /run/ConsoleKit/database				r,
   
 }
-
 
 profile consolekit.init.d /etc/init.d/consolekit {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /usr/sbin/console-kit-daemon Px,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/console-kit-daemon				Px,
+  /bin/bash						Cx -> shell,
   
-  /etc/{conf,init}.d/consolekit r,
-  
-  /run/ConsoleKit/ w,
-  /run/ConsoleKit/pid rwk,
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/consolekit				r,
+  /run/ConsoleKit/					w,
+  /run/ConsoleKit/pid					rwk,
   
   
   profile shell {

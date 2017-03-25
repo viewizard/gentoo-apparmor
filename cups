@@ -1,19 +1,21 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile cups.cupsd /usr/sbin/cupsd {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
   
+  # CAPABILITIES ---------------------------------------
   capability fsetid,
   capability net_bind_service,
   capability dac_read_search,
@@ -21,39 +23,39 @@ profile cups.cupsd /usr/sbin/cupsd {
   capability chown,
   capability kill,
   
-  /usr/sbin/cupsd Pxmr,
-  /bin/bash Cx -> shell,
-  /usr/libexec/cups/daemon/* Px,
-  /usr/libexec/cups/driver/* Px,
-  /usr/libexec/cups/cgi-bin/* Px,
-  /usr/libexec/cups/filter/* Px,
-  /usr/libexec/cups/backend/* Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/cupsd					Pxmr,
+  /bin/bash						Cx -> shell,
+  /usr/libexec/cups/daemon/*				Px,
+  /usr/libexec/cups/driver/*				Px,
+  /usr/libexec/cups/cgi-bin/*				Px,
+  /usr/libexec/cups/filter/*				Px,
+  /usr/libexec/cups/backend/*				Px,
   
-  /etc/environment r,
-  /etc/papersize r,
-  /etc/printcap rw,
-  /etc/cups/{,**} r,
-  /etc/cups/*.conf* rw,
-  /etc/cups/ppd/{,**} rw,
-  /usr/libexec/cups/** r,
-  /usr/share/cups/** r,
-  
-  /var/log/cups/{,access_log,error_log,page_log} rw,
-  /{,var/}run/cups/ rw,
-  /{,var/}run/cups/** rw,
-  /var/cache/cups/ rw,
-  /var/cache/cups/** rwk,
-  /var/spool/cups/{,**} rw,
-  /var/log/cups/{,**} rw,
+  # READS/WRITES ---------------------------------------
+  /etc/environment					r,
+  /etc/papersize					r,
+  /etc/printcap						rw,
+  /etc/cups/{,**}					r,
+  /etc/cups/*.conf*					rw,
+  /etc/cups/ppd/{,**}					rw,
+  /usr/libexec/cups/**					r,
+  /usr/share/cups/**					r,
+  /{,var/}run/cups/{,**}				rw,
+  /var/cache/cups/{,**}					rwk,
+  /var/spool/cups/{,**}					rw,
+  /var/log/cups/{,**}					rw,
   
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/authentication-pam_usb>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
     
   }
   
@@ -62,34 +64,37 @@ profile cups.cupsd /usr/sbin/cupsd {
 profile cups.daemon /usr/libexec/cups/daemon/* {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability setgid,
   capability setuid,
   
-  /usr/bin/smbspool Px,
-  /usr/libexec/cups/daemon/* Pxmr,
-  /usr/libexec/cups/cgi-bin/* Px,
-  /usr/libexec/cups/backend/ r,
-  /usr/libexec/cups/backend/* Px,
-  /usr/libexec/cups/driver/ r,
-  /usr/libexec/cups/driver/* Px,
-  /usr/libexec/cups/filter/* Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/smbspool					Px,
+  /usr/libexec/cups/daemon/*				Pxmr,
+  /usr/libexec/cups/cgi-bin/*				Px,
+  /usr/libexec/cups/backend/*				Px,
+  /usr/libexec/cups/driver/*				Px,
+  /usr/libexec/cups/filter/*				Px,
   
-  /usr/share/cups/{,**} r,
-  /usr/share/ppd/{,**} r,
-  
-  /var/spool/cups/{,**} r,
-  /var/cache/cups/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /usr/share/cups/{,**}					r,
+  /usr/share/ppd/{,**}					r,
+  /var/spool/cups/{,**}					r,
+  /var/cache/cups/{,**}					r,
+  /usr/libexec/cups/{backend,driver}/			r,
   
 }
 
 profile cups.driver /usr/libexec/cups/driver/* {
   #include <abstractions/base>
   
-  /usr/libexec/cups/driver/* mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/cups/driver/*				mr,
   
-  /usr/share/gutenprint/{,**} r,
-  /usr/lib{,32,64}/gutenprint/{,**} r,
-  /usr/lib{,32,64}/gutenprint/[0-9]*/modules/*.so m,
+  # READS/WRITES ---------------------------------------
+  /usr/share/gutenprint/{,**}				r,
+  /usr/lib{,32,64}/gutenprint/{,**}			r,
+  /usr/lib{,32,64}/gutenprint/[0-9]*/modules/*.so	m,
   
 }
 
@@ -97,59 +102,64 @@ profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
-  /usr/libexec/cups/cgi-bin/* mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/cups/cgi-bin/*				mr,
   
-  /etc/cups/{,**} r,
-  /usr/share/cups/templates/{,**} r,
-  /usr/share/cups/data/{,**} r,
-  
-  /var/cache/cups/* r,
-  /{,var/}run/cups/certs/{,**} r,
-  /var/spool/cups/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /etc/cups/{,**}					r,
+  /usr/share/cups/templates/{,**}			r,
+  /usr/share/cups/data/{,**}				r,
+  /var/cache/cups/*					r,
+  /{,var/}run/cups/certs/{,**}				r,
+  /var/spool/cups/{,**}					r,
   
 }
 
 profile cups.filter /usr/libexec/cups/filter/* flags=(complain) {
   #include <abstractions/base>
   
-  /usr/libexec/cups/filter/* Pxmr,
-  /usr/bin/pdftops Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/cups/filter/*				Pxmr,
+  /usr/bin/pdftops					Px,
   
-  /etc/cups/ppd/*.ppd r,
-  /usr/share/poppler/{,**} r,
-  /usr/share/cups/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /etc/cups/ppd/*.ppd					r,
+  /usr/share/poppler/{,**}				r,
+  /usr/share/cups/{,**}					r,
+  /var/spool/cups/*					r,
   
-  /var/spool/cups/* r,
-  
-  # будет работать с fsuid=4 ouid=4 (UID lp)
-  owner /tmp/??????* rw,
+  # TEMP -----------------------------------------------
+  owner /tmp/??????*					rw,
   
 }
 
 profile cups.backend /usr/libexec/cups/backend/* {
   #include <abstractions/base>
   
-  /dev/bus/usb/ r,
-  /sys/bus/ r,
-  /sys/bus/usb/devices/ r,
-  /sys/class/ r,
-  /sys/devices/pci[0-9]*/**/usb[0-9]*/{,**} r,
+  # PSEUDO ---------------------------------------------
+  /dev/bus/usb/						r,
+  /sys/bus/						r,
+  /sys/bus/usb/devices/					r,
+  /sys/class/						r,
+  /sys/devices/pci[0-9]*/**/usb[0-9]*/{,**}		r,
   
-  /usr/libexec/cups/backend/* mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/cups/backend/*				mr,
   
-  /etc/cups/snmp.conf r,
-  /etc/cups/ppd/*.ppd r,
-  /etc/udev/udev.conf r,
-  /usr/share/cups/{,**} r,
-  
-  /var/cache/cups/*.snmp r,
+  # READS/WRITES ---------------------------------------
+  /etc/cups/snmp.conf					r,
+  /etc/cups/ppd/*.ppd					r,
+  /etc/udev/udev.conf					r,
+  /usr/share/cups/{,**}					r,
+  /var/cache/cups/*.snmp				r,
   
 }
 
 profile cups.smbspool /usr/bin/smbspool flags=(complain) {
   #include <abstractions/base>
   
-  /usr/bin/smbspool mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/smbspool					mr,
   
 }
 
@@ -158,19 +168,21 @@ profile cups.init.d /etc/init.d/cupsd {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # CAPABILITIES ---------------------------------------
   capability fsetid,
   capability chown,
   capability dac_override,
   capability dac_read_search,
   
-  /usr/sbin/cupsd Px,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/cupsd					Px,
+  /bin/bash						Cx -> shell,
   
-  /etc/{conf,init}.d/cupsd r,
-  
-  /var/cache/cups/ w,
-  /run/cups/ w,
-  /run/cups/certs/ w,
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/cupsd				r,
+  /var/cache/cups/					w,
+  /run/cups/						w,
+  /run/cups/certs/					w,
   
   
   profile shell {

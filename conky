@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile conky /usr/bin/conky {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -16,6 +17,7 @@ profile conky /usr/bin/conky {
   #include <abstractions/X>
   #include <abstractions/sensors>
   
+  # PSEUDO ---------------------------------------------
   /dev/tty rw,
   /dev/tty[0-9]* w,
   /sys/devices/system/cpu/present r,
@@ -24,36 +26,42 @@ profile conky /usr/bin/conky {
   @{PROC}/@{pid}/net/dev r,
   @{PROC}/@{pid}/mounts r,
   
-  /bin/bash Cx -> shell,
-  /usr/bin/conky mr,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /usr/bin/conky					mr,
   
-  /etc/conky/{,*} r,
-  /etc/terminfo/l/linux r,
+  # READS/WRITES ---------------------------------------
+  /etc/conky/{,*}					r,
+  /etc/terminfo/l/linux					r,
   
-  owner @{HOME}/.conkyrc r,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.conkyrc				r,
   
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/sensors>
     
-    /dev/tty rw,
-    /dev/tty[0-9]* w,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					w,
     
-    /bin/bash mr,
-    /bin/tail ix,
-    /bin/head ix,
-    /bin/date ix,
-    /bin/sed ix,
-    /bin/cat ix,
-    /bin/cut ix,
-    /bin/grep ix,
-    /bin/wc ix,
-    /usr/bin/cal ix,
-    /usr/bin/sensors ix,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/tail						ix,
+    /bin/head						ix,
+    /bin/date						ix,
+    /bin/sed						ix,
+    /bin/cat						ix,
+    /bin/cut						ix,
+    /bin/grep						ix,
+    /bin/wc						ix,
+    /usr/bin/cal					ix,
+    /usr/bin/sensors					ix,
     
-    /etc/terminfo/l/linux r,
-    /usr/portage/metadata/timestamp r,
+    # READS/WRITES -------------------------------------
+    /etc/terminfo/l/linux				r,
+    /usr/portage/metadata/timestamp			r,
     
   }
   

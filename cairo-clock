@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile cairo-clock /usr/bin/cairo-clock {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -18,12 +19,16 @@ profile cairo-clock /usr/bin/cairo-clock {
   #include <abstractions/audio>
   #include <abstractions/X>
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   
-  /usr/bin/cairo-clock mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/cairo-clock					mr,
   
-  /usr/share/cairo-clock/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /usr/share/cairo-clock/{,**}				r,
   
-  owner @{HOME}/.cairo-clockrc rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.cairo-clockrc				rw,
   
 }

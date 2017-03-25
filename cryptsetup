@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -19,50 +19,52 @@ profile cryptsetup /sbin/cryptsetup flags=(complain) {
   #include <abstractions/program-work-with-disk-rwk>
   #include <local/cryptsetup-custom>
   
+  # CAPABILITIES ---------------------------------------
   capability ipc_lock,
   capability sys_nice,
   capability sys_admin,
   
-  /dev/tty rw,
-  /dev/pts/[0-9]* rw,
-  /dev/null rw,
-  /dev/sd[a-z]{,[0-9]*} rw,
-  /dev/{dm-,md,zd}[0-9]* rw,
-  /dev/mapper/ r,
-  /dev/mapper/control rw,
-  /sys/devices/virtual/bdi/*/read_ahead_kb r,
-  @{PROC}/devices r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  /dev/null						rw,
+  /dev/sd[a-z]{,[0-9]*}					rw,
+  /dev/{dm-,md,zd}[0-9]*				rw,
+  /dev/mapper/						r,
+  /dev/mapper/control					rw,
+  /sys/devices/virtual/bdi/*/read_ahead_kb		r,
+  @{PROC}/devices					r,
   
-  /sbin/cryptsetup mr,
+  # EXECUTABLES ----------------------------------------
+  /sbin/cryptsetup					mr,
   
-  /etc/udev/udev.conf r,
-  
-  /run/openrc/dm-crypt-remdev.*/enc.key r,
+  # READS/WRITES ---------------------------------------
+  /etc/udev/udev.conf					r,
+  /run/openrc/dm-crypt-remdev.*/enc.key			r,
   
 }
-
 
 profile cryptsetup.init.d /etc/init.d/dmcrypt {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /dev/null w,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/rmdir						ix,
+  /bin/egrep						ixr,
+  /bin/grep						ix,
+  /bin/cat						ix,
+  /bin/dd						ix,
+  /bin/stty						ix,
+  /bin/mount						Px,
+  /bin/umount						Px,
+  /sbin/mkswap						Px,
+  /sbin/cryptsetup					Px,
+  /usr/bin/gpg{,2,-static}				Px,
   
-  /bin/bash Cx -> shell,
-  /bin/rmdir ix,
-  /bin/egrep ixr,
-  /bin/grep ix,
-  /bin/cat ix,
-  /bin/dd ix,
-  /bin/stty ix,
-  /bin/mount Px,
-  /bin/umount Px,
-  /sbin/mkswap Px,
-  /sbin/cryptsetup Px,
-  /usr/bin/gpg{,2,-static} Px,
-  
-  /etc/{conf,init}.d/dmcrypt r,
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/dmcrypt				r,
   
   
   profile shell {

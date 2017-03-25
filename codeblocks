@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -25,31 +25,35 @@ profile codeblocks /usr/bin/codeblocks {
   #include <abstractions/nameservice>
   #include <local/codeblocks-custom-settings>
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   
-  /usr/bin/codeblocks mr,
-  /bin/bash Cx -> shell,
-  /usr/bin/gcc ix,
-  /usr/bin/g++ ix,
-  /usr/bin/llvm-ar ix,
-  /usr/bin/gfortran ix,
-  /usr/bin/x86_64-pc-linux-gnu-clang-* ix,
-  /usr/x86_64-pc-linux-gnu/gcc-bin/*/x86_64-pc-linux-gnu-gcc ix,
-  /usr/x86_64-pc-linux-gnu/gcc-bin/*/x86_64-pc-linux-gnu-g++ ix,
-  /usr/libexec/gcc/x86_64-pc-linux-gnu/*/cc1plus ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/codeblocks					mr,
+  /bin/bash						Cx -> shell,
+  /usr/bin/gcc						ix,
+  /usr/bin/g++						ix,
+  /usr/bin/llvm-ar					ix,
+  /usr/bin/gfortran					ix,
+  /usr/bin/@{CHOST}-clang-*				ix,
+  /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc			ix,
+  /usr/@{CHOST}/gcc-bin/*/@{CHOST}-g++			ix,
+  /usr/libexec/gcc/@{CHOST}/*/cc1plus	ix,
   
-  /etc/lsb-release r,
-  /etc/mime.types r,
-  /usr/share/mime-info/{,*.mime,*.keys} r,
-  /etc/env.d/gcc/x86_64-pc-linux-gnu-* r,
-  /etc/env.d/gcc/config-x86_64-pc-linux-gnu r,
-  /usr/include/** r,
+  # READS/WRITES ---------------------------------------
+  /etc/lsb-release					r,
+  /etc/mime.types					r,
+  /etc/env.d/gcc/@{CHOST}-*				r,
+  /etc/env.d/gcc/config-@{CHOST}			r,
+  /usr/include/**					r,
+  /usr/share/mime-info/{,*.mime,*.keys}			r,
+  /usr/share/codeblocks/{,**}				r,
   
-  /usr/share/codeblocks/{,**} r,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/codeblocks/{,*}			rw,
+  owner @{HOME}/.local/share/codeblocks/{,**}		rw,
   
-  owner @{HOME}/.config/codeblocks/{,*} rw,
-  owner @{HOME}/.local/share/codeblocks/{,**} rw,
-  
+  # TEMP -----------------------------------------------
   owner /tmp/wxbf* rw,
   owner /tmp/CODEBLOCKS*.socket rw,
   owner /tmp/Code::Blocks-* rwk,
@@ -61,24 +65,27 @@ profile codeblocks /usr/bin/codeblocks {
     #include <abstractions/program-work-with-disk-rwk>
     #include <abstractions/python-exec>
     
-    /dev/tty rw,
-    @{PROC}/@{pid}/fd/ r,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    @{PROC}/@{pid}/fd/					r,
     
-    /bin/bash mr,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /{bin,sbin}/**					ixr,
+    /usr/{bin,sbin}/**					ixr,
+    /usr/{lib{,32,64,exec},@{CHOST}}/**			ixr,
     
-    /{bin,sbin}/** ixr,
-    /usr/{bin,sbin}/** ixr,
-    /usr/{lib,lib32,lib64,libexec,x86_64-pc-linux-gnu}/** ixr,
+    # READS/WRITES -------------------------------------
+    /etc/profile.env					r,
+    /etc/env.d/**					r,
+    /etc/ld.so.conf					r,
+    /etc/ld.so.conf.d/{,*}				r,
+    /{etc,usr,usr/local}/portage/**			r,
+    /usr/share/portage/config/*				r,
+    /usr/include/**					r,
     
-    /etc/profile.env r,
-    /etc/env.d/** r,
-    /etc/ld.so.conf r,
-    /etc/ld.so.conf.d/{,*} r,
-    /{etc,usr,usr/local}/portage/** r,
-    /usr/share/portage/config/* r,
-    /usr/include/** r,
-    
-    owner /tmp/cc*.{s,c,res,o,le,ld} rw,
+    # TEMP ---------------------------------------------
+    owner /tmp/cc*.{s,c,res,o,le,ld}			rw,
     
   }
   

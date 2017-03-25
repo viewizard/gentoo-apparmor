@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile chromium /usr/{bin/chromium-browser,lib{,32,64}/chromium-browser/{chrome,chromium-launcher.sh}} flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -24,105 +25,94 @@ profile chromium /usr/{bin/chromium-browser,lib{,32,64}/chromium-browser/{chrome
   #include <abstractions/xdg-open>
   #include <abstractions/dconf>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_admin,
   capability sys_chroot,
+  
+  # PTRACE ---------------------------------------------
   ptrace (trace) peer=@{profile_name},
   
-  /dev/ r,
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* rw,
-  /dev/video[0-9]* r,
-  owner /{dev,run}/shm/{,.}org.chromium.* mrw,
-  /sys/bus/{,**} r,
-  /sys/class/{,**} r,
-  /sys/devices/pci[0-9]*/**/usb[0-9]*/** r,
-  /sys/bus/pci/** r,
-  /sys/devices/system/cpu/ r,
-  /sys/devices/system/cpu/cpu*/cpufreq/cpuinfo_max_freq r,
-  /sys/devices/system/cpu/cpufreq/policy*/cpuinfo_max_freq r,
-  /sys/devices/pci[0-9]*/**/{class,device,irq,resource,vendor,removable,uevent} r,
-  /sys/devices/pci[0-9]*/**/block/**/size r,
-  /sys/devices/virtual/block/**/{removable,uevent,size} r,
-  /sys/devices/virtual/tty/tty[0-9]*/active r,
-  @{PROC}/ r,
-  @{PROC}/filesystems r,
-  @{PROC}/sys/kernel/shmmax r,
-  @{PROC}/@{pid}/{sched,smaps,statm,stat} r,
-  @{PROC}/@{pid}/task/ r,
-  @{PROC}/@{pid}/task/@{pid}/{stat,status} r,
-  owner @{PROC}/@{pid}/io r,
-  owner @{PROC}/@{pid}/oom_{,score_}adj w,
-  # Networking
-  @{PROC}/@{pid}/net/if_inet6 r,
-  @{PROC}/@{pid}/net/ipv6_route r,
-  @{PROC}/sys/net/ipv4/tcp_fastopen r,
-  # Needed for the crash reporter
-  owner @{PROC}/@{pid}/auxv r,
-  @{PROC}/@{pid}/setgroups rw,
-  @{PROC}/@{pid}/uid_map rw,
-  @{PROC}/@{pid}/gid_map rw,
+  # PSEUDO ---------------------------------------------
+  /dev/							r,
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
+  /dev/video[0-9]*					r,
+  owner /dev/shm/{,.}org.chromium.*			rw,
+  owner /dev/shm/pulse-shm*				m,
+  /sys/bus/{,**}					r,
+  /sys/class/{,**}					r,
+  /sys/devices/system/cpu/{,**}				r,
+  /sys/devices/pci[0-9]*/**/*				r,
+  /sys/devices/pci[0-9]*/**/usb[0-9]*/**		r,
+  /sys/devices/pci[0-9]*/**/block/**/size		r,
+  /sys/devices/virtual/block/**/{removable,uevent,size}	r,
+  /sys/devices/virtual/tty/tty[0-9]*/active		r,
+  @{PROC}/						r,
+  @{PROC}/filesystems					r,
+  @{PROC}/sys/kernel/shmmax				r,
+  @{PROC}/@{pid}/{sched,smaps,statm,stat}		r,
+  @{PROC}/@{pid}/task/					r,
+  @{PROC}/@{pid}/task/@{pid}/{stat,status}		r,
+  owner @{PROC}/@{pid}/io				r,
+  owner @{PROC}/@{pid}/oom_{,score_}adj			w,
+  @{PROC}/@{pid}/net/if_inet6				r,
+  @{PROC}/@{pid}/net/ipv6_route				r,
+  @{PROC}/sys/net/ipv4/tcp_fastopen			r,
+  owner @{PROC}/@{pid}/auxv				r,
+  @{PROC}/@{pid}/setgroups				rw,
+  @{PROC}/@{pid}/uid_map				rw,
+  @{PROC}/@{pid}/gid_map				rw,
   
-  /bin/bash mr,
-  /bin/ps Pxr,
-  /usr/bin/xdg-settings Cxr -> xdgsettings,
-  /usr/bin/lsb_release Pxr,
-  /bin/readlink ixr,
-  
-  /etc/udev/udev.conf r,
-  /etc/mime.types r,
-  /etc/mtab r,
-  
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						mr,
+  /bin/ps						Pxr,
+  /usr/bin/xdg-settings					Cxr -> xdgsettings,
+  /usr/bin/lsb_release					Pxr,
+  /usr/bin/gvfs-open					Pxr,
+  /bin/readlink						ixr,
   # Allow transitions to ourself and our sandbox
-  /usr/bin/chromium-browser Pxr,
-  /usr/lib{,32,64}/chromium-browser/chrome ixm,
+  /usr/bin/chromium-browser				Pxr,
+  /usr/lib{,32,64}/chromium-browser/chrome		ixm,
   /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh Px,
-  /usr/lib{,32,64}/chromium-browser/chrome-sandbox cx -> sandbox,
-  # Helpers
-  /usr/bin/gvfs-open Pxr,
+  /usr/lib{,32,64}/chromium-browser/chrome-sandbox	cx -> sandbox,
   
-  
+  # READS/WRITES ---------------------------------------
+  /etc/chromium/{,**}					r,
+  /etc/udev/udev.conf					r,
+  /etc/mime.types					r,
+  /etc/mtab						r,
   # chromium mmaps all kinds of things for speed.
-  /etc/passwd m,
-  /usr/share/fonts/truetype/**/*.tt[cf] m,
-  /usr/share/fonts/**/*.pfb m,
-  /usr/share/mime/mime.cache m,
-  /usr/share/icons/**/*.cache m,
-  /usr/lib{,32,64}/chromium-browser/*.pak mr,
-  /usr/lib{,32,64}/chromium-browser/locales/* mr,
-  owner /{dev,run}/shm/pulse-shm* m,
-  owner @{HOME}/.local/share/mime/mime.cache m,
+  /etc/passwd						m,
+  /usr/share/fonts/truetype/**/*.tt[cf]			m,
+  /usr/share/fonts/**/*.pfb				m,
+  /usr/share/mime/mime.cache				m,
+  /usr/share/icons/**/*.cache				m,
+  /usr/lib{,32,64}/chromium-browser/*.pak		mr,
+  /usr/lib{,32,64}/chromium-browser/locales/*		mr,
   
+  # USERS ----------------------------------------------
+  owner @{HOME}/.pki/nssdb/*				rwk,
+  owner @{HOME_CACHE}/chromium/{,**}			rw,
+  owner @{HOME_CACHE}/chromium/Cache/*			m,
+  owner @{HOME}/.config/chromium/			rw,
+  owner @{HOME}/.config/chromium/**			rwk,
+  owner @{HOME}/.config/chromium/**/Cache/*		m,
+  owner @{HOME}/.config/chromium/Dictionaries/*.bdic	m,
+  owner @{HOME}/.config/chromium/**/Dictionaries/*.bdic	m,
+  owner @{HOME}/.local/share/mime/mime.cache		m,
   
-#  # Importing firefox settings
-#  @{PROC}/@{pid}/oom_{,score_}adj w,
-#  /etc/firefox/profile/bookmarks.html r,
-#  owner @{HOME}/.mozilla/** k,
-#  # For migration
-#  owner @{HOME}/.mozilla/firefox/profiles.ini r,
-#  owner @{HOME}/.mozilla/firefox/*/prefs.js r,
-  deny owner @{HOME}/.mozilla/{,**} r,
+  # TEMP -----------------------------------------------
+  /tmp/							r,
+  owner /tmp/.org.chromium.Chromium.??????{,/,/**}	rw,
+  owner /tmp/scoped_dir_**				rw,
+  /var/tmp/						r,
+  owner /var/tmp/etilqs_*				rw,
   
-  # Chromium configuration
-  /etc/chromium/{,**} r,
-  owner @{HOME}/.pki/nssdb/* rwk,
-  owner @{HOME_CACHE}/chromium/{,**} rw,
-  owner @{HOME_CACHE}/chromium/Cache/* m,
-  owner @{HOME}/.config/chromium/ rw,
-  owner @{HOME}/.config/chromium/** rwk,
-  owner @{HOME}/.config/chromium/**/Cache/* m,
-  owner @{HOME}/.config/chromium/Dictionaries/*.bdic m,
-  owner @{HOME}/.config/chromium/**/Dictionaries/*.bdic m,
-  
-  /tmp/ r,
-  owner /tmp/.org.chromium.Chromium.??????{,/,/**} rw,
-  owner /tmp/scoped_dir_** rw,
-  /var/tmp/ r,
-  owner /var/tmp/etilqs_* rw,
-  
-  # Noisy
-  deny /dev/bus/usb/ r,
-  deny /usr/lib{,32,64}/chromium-browser/** w,
+  # NOISY ----------------------------------------------
+  deny /dev/bus/usb/					r,
+  deny /usr/lib{,32,64}/chromium-browser/**		w,
+  deny owner @{HOME}/.mozilla/{,**}			r,
   
   
   profile xdgsettings {
@@ -132,52 +122,54 @@ profile chromium /usr/{bin/chromium-browser,lib{,32,64}/chromium-browser/{chrome
     #include <abstractions/bash>
     #include <abstractions/gtk>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /usr/bin/xdg-settings mr,
-    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/xdg-settings				mr,
     # Checking default browser
-    /bin/bash mr,
-    /bin/grep ixr,
-    /bin/readlink ixr,
-    /bin/sed ixr,
-    /bin/which ixr,
-    /usr/bin/basename ixr,
-    /usr/bin/cut ixr,
-    deny /bin/bash x,
-    
+    /bin/bash						mr,
+    /bin/grep						ixr,
+    /bin/readlink					ixr,
+    /bin/sed						ixr,
+    /bin/which						ixr,
+    /usr/bin/basename					ixr,
+    /usr/bin/cut					ixr,
     # Setting the default browser
-    /bin/mkdir ix,
-    /bin/mv ix,
-    /bin/touch ix,
-    /bin/cut ix,
-    /usr/bin/dirname ix,
-    /usr/bin/gconftool-2 ix,
-    /usr/bin/[gm]awk ixr,
-    /usr/bin/xdg-mime ixr,
+    /bin/mkdir						ix,
+    /bin/mv						ix,
+    /bin/touch						ix,
+    /bin/cut						ix,
+    /usr/bin/dirname					ix,
+    /usr/bin/gconftool-2				ix,
+    /usr/bin/[gm]awk					ixr,
+    /usr/bin/xdg-mime					ixr,
     
-    /etc/xdg/xfce4/helpers.rc r,
-    owner @{HOME}/.config/xfce4/helpers.rc r,
-    owner @{HOME}/.local/share/applications/ w,
+    # READS/WRITES -------------------------------------
+    /etc/xdg/xfce4/helpers.rc				r,
+    owner @{HOME}/.config/xfce4/helpers.rc		r,
+    owner @{HOME}/.local/share/applications/		w,
     owner @{HOME}/.local/share/applications/mimeapps.list* rw,
     
+    # NOISY --------------------------------------------
+    deny /bin/bash					x,  # checking default browser
   }
   
   profile sandbox {
     # Be fanatical since it is setuid root and don't use an abstraction
-    /lib/libgcc_s.so* mr,
-    /lib{,32,64}/libm-*.so* mr,
-    /lib{,32,64}/libpthread-*.so* mr,
-    /lib{,32,64}/libc-*.so* mr,
-    /lib{,32,64}/libld-*.so* mr,
-    /lib{,32,64}/ld-*.so* mr,
-    /etc/ld.so.cache r,
+    /lib/libgcc_s.so*					mr,
+    /lib{,32,64}/libm-*.so*				mr,
+    /lib{,32,64}/libpthread-*.so*			mr,
+    /lib{,32,64}/libc-*.so*				mr,
+    /lib{,32,64}/libld-*.so*				mr,
+    /lib{,32,64}/ld-*.so*				mr,
+    /etc/ld.so.cache					r,
     
+    # CAPABILITIES -------------------------------------
     # Required for dropping into PID namespace. Keep in mind that until the
     # process drops this capability it can escape confinement, but once it
     # drops CAP_SYS_ADMIN we are ok.
     capability sys_admin,
-    
     # All of these are for sanely dropping from root and chrooting
     capability chown,
     capability fsetid,
@@ -185,22 +177,23 @@ profile chromium /usr/{bin/chromium-browser,lib{,32,64}/chromium-browser/{chrome
     capability setuid,
     capability dac_override,
     capability sys_chroot,
-    
     capability sys_ptrace,
+    
+    # PTRACE -------------------------------------------
     ptrace (read, readby),
     
-    @{PROC}/ r,
-    @{PROC}/@{pid}/ r,
-    @{PROC}/@{pid}/fd/ r,
-    owner @{PROC}/@{pid}/oom_adj w,
-    owner @{PROC}/@{pid}/oom_score_adj w,
-    @{PROC}/@{pid}/status r,
-    @{PROC}/@{pid}/task/@{pid}/stat r,
+    # PSEUDO -------------------------------------------
+    /dev/null						rw,
+    @{PROC}/						r,
+    @{PROC}/@{pid}/					r,
+    @{PROC}/@{pid}/fd/					r,
+    owner @{PROC}/@{pid}/oom_{,score_}adj		w,
+    @{PROC}/@{pid}/status				r,
+    @{PROC}/@{pid}/task/@{pid}/stat			r,
     
-    /usr/lib{,32,64}/chromium-browser/chrome Px,
-    /usr/lib{,32,64}/chromium-browser/chrome-sandbox mr,
-    
-    /dev/null rw,
+    # EXECUTABLES ----------------------------------------
+    /usr/lib{,32,64}/chromium-browser/chrome		Px,
+    /usr/lib{,32,64}/chromium-browser/chrome-sandbox	mr,
     
   }
 }

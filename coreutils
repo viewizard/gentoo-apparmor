@@ -1,48 +1,54 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile coreutils.df /bin/df {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
   
-  /dev/pts/[0-9]* w,
-  @{PROC}/@{pid}/mounts r,
-  @{PROC}/@{pid}/mountinfo r,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  @{PROC}/@{pid}/mount{s,info}				r,
   
-  /bin/df mr,
+  # EXECUTABLES ----------------------------------------
+  /bin/df						mr,
   
 }
-
 
 profile coreutils.stat /usr/bin/stat {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
   
+  # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]* w,
   
+  # EXECUTABLES ----------------------------------------
   /usr/bin/stat mr,
   
 }
 
-
 profile coreutils.date /bin/date {
   #include <abstractions/base>
   
+  # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]* w,
   
+  # EXECUTABLES ----------------------------------------
   /bin/date mr,
   
 }

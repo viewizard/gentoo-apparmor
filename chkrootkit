@@ -1,69 +1,76 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile chkrootkit /usr/sbin/chkrootkit {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   capability dac_override,
   capability dac_read_search,
   
-  /dev/{,**} r,
-  /dev/tty rw,
+  # PSEUDO ---------------------------------------------
+  /dev/{,**}						r,
+  /dev/tty						rw,
   
-  /bin/bash Cxmr -> shell,
-  /bin/sed ix,
-  /bin/uname ix,
-  /bin/ps Px,
-  /bin/cut ix,
-  /bin/egrep ix,
-  /bin/grep ix,
-  /bin/basename ix,
-  /bin/ls ix,
-  /bin/head ix,
-  /bin/echo ix,
-  /bin/tr ix,
-  /bin/wc ix,
-  /bin/cat ix,
-  /bin/netstat Px,
-  /usr/bin/id ix,
-  /usr/bin/crontab ix,
-  /usr/bin/gawk ix,
-  /usr/bin/find ix,
-  /usr/sbin/chkdirs ix,
-  /usr/sbin/strings-static ix,
-  /usr/sbin/chkproc ix,
-  /usr/sbin/ifpromisc ix,
-  /usr/sbin/chkwtmp ix,
-  /usr/sbin/chklastlog ix,
-  /usr/sbin/chkutmp ix,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cxmr -> shell,
+  /bin/sed						ix,
+  /bin/uname						ix,
+  /bin/ps						Px,
+  /bin/cut						ix,
+  /bin/egrep						ix,
+  /bin/grep						ix,
+  /bin/basename						ix,
+  /bin/ls						ix,
+  /bin/head						ix,
+  /bin/echo						ix,
+  /bin/tr						ix,
+  /bin/wc						ix,
+  /bin/cat						ix,
+  /bin/netstat						Px,
+  /usr/bin/id						ix,
+  /usr/bin/crontab					ix,
+  /usr/bin/gawk						ix,
+  /usr/bin/find						ix,
+  /usr/sbin/chkdirs					ix,
+  /usr/sbin/strings-static				ix,
+  /usr/sbin/chkproc					ix,
+  /usr/sbin/ifpromisc					ix,
+  /usr/sbin/chkwtmp					ix,
+  /usr/sbin/chklastlog					ix,
+  /usr/sbin/chkutmp					ix,
   
-  /{,**} r,
-  
-  owner /tmp/chkrootkit.cron.* rw,
+  # READS/WRITES ---------------------------------------
+  /{,**}						r,
+  owner /tmp/chkrootkit.cron.*				rw,
   
   
   profile shell {
     #include <abstractions/base>
     
+    # CAPABILITIES -------------------------------------
     capability dac_override,
     capability dac_read_search,
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /bin/ps Px,
-    /bin/tr ix,
-    /bin/cut ix,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/ps						Px,
+    /bin/tr						ix,
+    /bin/cut						ix,
     
   }
   
