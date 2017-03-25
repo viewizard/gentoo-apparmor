@@ -15,7 +15,7 @@ profile dosfstools.fsck.fat /usr/sbin/fsck.fat flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
-  /dev/sd[a-z][0-9]*					rw,
+  /dev/@{BLOCK_ALL}					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/fsck.fat					mr,

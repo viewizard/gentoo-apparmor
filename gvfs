@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -9,16 +9,15 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monitor {
+profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monitor {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
   capability dac_override,
   capability dac_read_search,
   
-  /sys/devices/pci[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/uevent r,
-  /sys/devices/virtual/block/{dm-,md,zd,loop}[0-9]*/uevent r,
-  /sys/devices/pci[0-9]*/**/usb[0-9]*/**/block/sr[0-9]*/uevent r,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}uevent r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/mounts r,
   
@@ -36,7 +35,7 @@ profile gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monitor {
 }
 
 
-profile gvfsd /usr/libexec/gvfsd {
+profile gvfs.gvfsd /usr/libexec/gvfsd {
   #include <abstractions/base>
   
   owner @{PROC}/@{pid}/fd/ rw,
@@ -52,42 +51,42 @@ profile gvfsd /usr/libexec/gvfsd {
   
 }
 
-profile gvfsd-archive /usr/libexec/gvfsd-archive flags=(complain) {
+profile gvfs.gvfsd-archive /usr/libexec/gvfsd-archive flags=(complain) {
   #include <abstractions/base>
   
   /usr/libexec/gvfsd-archive mr,
   
 }
 
-profile gvfsd-burn /usr/libexec/gvfsd-burn flags=(complain) {
+profile gvfs.gvfsd-burn /usr/libexec/gvfsd-burn flags=(complain) {
   #include <abstractions/base>
   
   /usr/libexec/gvfsd-burn mr,
   
 }
 
-profile gvfsd-computer /usr/libexec/gvfsd-computer flags=(complain) {
+profile gvfs.gvfsd-computer /usr/libexec/gvfsd-computer flags=(complain) {
   #include <abstractions/base>
   
   /usr/libexec/gvfsd-computer mr,
   
 }
 
-profile gvfsd-dav /usr/libexec/gvfsd-dav flags=(complain) {
+profile gvfs.gvfsd-dav /usr/libexec/gvfsd-dav flags=(complain) {
   #include <abstractions/base>
   
   /usr/libexec/gvfsd-dav mr,
   
 }
 
-profile gvfsd-ftp /usr/libexec/gvfsd-ftp flags=(complain) {
+profile gvfs.gvfsd-ftp /usr/libexec/gvfsd-ftp flags=(complain) {
   #include <abstractions/base>
   
   /usr/libexec/gvfsd-ftp mr,
   
 }
 
-profile gvfsd-fuse /usr/libexec/gvfsd-fuse {
+profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -110,7 +109,7 @@ profile gvfsd-fuse /usr/libexec/gvfsd-fuse {
   
 }
 
-profile gvfsd-http /usr/libexec/gvfsd-http flags=(complain) {
+profile gvfs.gvfsd-http /usr/libexec/gvfsd-http flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/gtk>
@@ -123,20 +122,19 @@ profile gvfsd-http /usr/libexec/gvfsd-http flags=(complain) {
   
 }
 
-profile gvfsd-localtest /usr/libexec/gvfsd-localtest flags=(complain) {
+profile gvfs.gvfsd-localtest /usr/libexec/gvfsd-localtest flags=(complain) {
   #include <abstractions/base>
   
   /usr/libexec/gvfsd-localtest mr,
   
 }
 
-profile gvfsd-metadata /usr/libexec/gvfsd-metadata {
+profile gvfs.gvfsd-metadata /usr/libexec/gvfsd-metadata {
   #include <abstractions/base>
   
   /etc/udev/udev.conf r,
-  /sys/devices/pci[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/uevent r,
-  /sys/devices/virtual/block/{dm-,md,zd}[0-9]*/uevent r,
-  /sys/devices/pci[0-9]*/**/usb[0-9]*/**/block/sd[a-z]/uevent r,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}uevent r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   /run/udev/data/* r,
     
   /usr/libexec/gvfsd-metadata mr,
@@ -145,7 +143,7 @@ profile gvfsd-metadata /usr/libexec/gvfsd-metadata {
   
 }
 
-profile gvfsd-network /usr/libexec/gvfsd-network flags=(complain) {
+profile gvfs.gvfsd-network /usr/libexec/gvfsd-network flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/dconf>
   #include <abstractions/gtk>
@@ -154,21 +152,21 @@ profile gvfsd-network /usr/libexec/gvfsd-network flags=(complain) {
   
 }
 
-profile gvfsd-recent /usr/libexec/gvfsd-recent flags=(complain) {
+profile gvfs.gvfsd-recent /usr/libexec/gvfsd-recent flags=(complain) {
   #include <abstractions/base>
   
   /usr/libexec/gvfsd-recent mr,
   
 }
 
-profile gvfsd-sftp /usr/libexec/gvfsd-sftp flags=(complain) {
+profile gvfs.gvfsd-sftp /usr/libexec/gvfsd-sftp flags=(complain) {
   #include <abstractions/base>
   
   /usr/libexec/gvfsd-sftp mr,
   
 }
 
-profile gvfsd-smb /usr/libexec/gvfsd-smb {
+profile gvfs.gvfsd-smb /usr/libexec/gvfsd-smb {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/dconf>
@@ -185,7 +183,7 @@ profile gvfsd-smb /usr/libexec/gvfsd-smb {
   
 }
 
-profile gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse {
+profile gvfs.gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse {
   #include <abstractions/base>
   #include <abstractions/dconf>
   #include <abstractions/gtk>
@@ -200,7 +198,7 @@ profile gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse {
   
 }
 
-profile gvfsd-trash /usr/libexec/gvfsd-trash {
+profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   #include <abstractions/base>
   
   @{PROC}/@{pid}/mounts r,
@@ -218,7 +216,7 @@ profile gvfsd-trash /usr/libexec/gvfsd-trash {
   
 }
 
-profile gvfs-open /usr/bin/gvfs-open flags=(complain) {
+profile gvfs.gvfs-open /usr/bin/gvfs-open flags=(complain) {
   #include <abstractions/base>
   
   /usr/bin/gvfs-open mr,

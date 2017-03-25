@@ -22,16 +22,10 @@ profile util-linux.mount /bin/mount flags=(complain) {
   
   /dev/tty[0-9]* w,
   /dev/pts/[0-9]* w,
-  /dev/sd[a-z]{,[0-9]*} r,
-  /dev/dm-[0-9]* r,
-  /dev/zd[0-9]* rw,
-  /dev/loop[0-9]* rw,
+  /dev/@{BLOCK_ALL} r,
   /dev/loop-control rw,
-  /sys/devices/pci[0-9]*/**/block/sd[a-z]/{,dev} r,
-  /sys/devices/pci[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/{,size,start} r,
-  /sys/devices/virtual/block/dm-[0-9]*/ r,
-  /sys/devices/virtual/block/dm-[0-9]*/dm/{name,uuid} r,
-  /sys/devices/virtual/block/loop[0-9]*/{,ro,loop/autoclear} r,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
   @{PROC}/@{pid}/mountinfo r,
   
   /bin/mount mr,
@@ -58,7 +52,8 @@ profile util-linux.umount /bin/umount flags=(complain) {
   
   /dev/tty[0-9]* w,
   /dev/pts/[0-9]* w,
-  /sys/devices/virtual/block/dm-*/dm/name r,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
   @{PROC}/@{pid}/mountinfo r,
   
   /bin/umount mr,
@@ -73,9 +68,9 @@ profile util-linux.mkswap /sbin/mkswap flags=(complain) {
   #include <abstractions/base>
   
   /dev/pts/[0-9]* w,
-  /dev/{dm-,loop,md,sd[a-z],zd}[0-9]* rw,
-  /sys/devices/virtual/block/dm-[0-9]*/ r,
-  /sys/devices/virtual/block/dm-[0-9]*/dm/uuid r,
+  /dev/@{BLOCK_ALL} rw,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
   
   @{PROC}/swaps r,
   @{PROC}/@{pid}/mounts r,
@@ -90,8 +85,9 @@ profile util-linux.swapon /sbin/swap{on,off} flags=(complain) {
   
   capability sys_admin,
   
-  /dev/{dm-,loop,md,sd[a-z],zd}[0-9]* rw,
-  /sys/devices/virtual/block/dm-[0-9]*/dm/name r,
+  /dev/@{BLOCK_ALL} rw,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
   @{PROC}/swaps r,
   
   /sbin/swap{on,off} mr,
@@ -106,10 +102,9 @@ profile util-linux.lsblk /bin/lsblk flags=(complain) {
   
   /dev/pts/[0-9]* w,
   /sys/block/ r,
-  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/type r,
-  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/{sd[a-z],sr[0-9]*}/{,**} r,
-  /sys/devices/virtual/block/md[0-9]*/{,**} r,
-  /sys/devices/virtual/block/{dm-,loop,zd}[0-9]*/{,**} r,
+##  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/type r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
   @{PROC}/swaps r,
   @{PROC}/@{pid}/mountinfo r,
   
@@ -147,12 +142,11 @@ profile util-linux.fsck /sbin/fsck flags=(complain) {
   #include <abstractions/base>
   
   /dev/ r,
-  /dev/{dm-,md}[0-9]* r,
   /dev/pts/[0-9]* w,
-  /dev/sd{[a-z],[a-z][0-9]*} r,
+  /dev/@{BLOCK_ALL} r,
   /sys/block/ r,
-  /sys/devices/virtual/block/{dm-,md}[0-9]*/{,**} r,
-  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/sd[a-z]/{,**} r,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
   @{PROC}/partitions r,
   
   /sbin/fsck mr,
@@ -193,9 +187,9 @@ profile util-linux.fdisk /sbin/{,c}fdisk flags=(complain) {
   #include <abstractions/base>
   
   /dev/pts/[0-9]* rw,
-  /dev/dm-[0-9]* rw,
-  /sys/devices/virtual/block/dm-[0-9]*/ r,
-  /sys/devices/virtual/block/dm-[0-9]*/dm/uuid r,
+  /dev/@{BLOCK_ALL} rw,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
   
   /sbin/{,c}fdisk mr,
   
@@ -210,9 +204,9 @@ profile util-linux.eject /usr/bin/eject flags=(complain) {
   capability sys_rawio,
   capability sys_admin,
   
-  /dev/sd[a-z] rw,
-  /sys/devices/virtual/block/dm-[0-9]*/dm/name r,
-  /sys/devices/pci[0-9]*/**/usb[0-9]*/**/block/sd[a-z]/{,removable} r,
+  /dev/@{BLOCK_REAL} rw,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
   @{PROC}/@{pid}/mountinfo r,
   
   /usr/bin/eject mr,
@@ -226,6 +220,7 @@ profile util-linux.blkid /sbin/blkid flags=(complain) {
   
   /dev/* r,
   /sys/devices/virtual/block/** r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/** r,
   
   /sbin/blkid mr,
   

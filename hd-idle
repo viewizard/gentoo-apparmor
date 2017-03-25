@@ -14,7 +14,7 @@ profile hd-idle /usr/sbin/hd-idle {
   
   capability sys_rawio,
   
-  /dev/sd[a-z] r,
+  /dev/@{BLOCK_REAL} r,
   @{PROC}/diskstats r,
   
   /usr/sbin/hd-idle mr,

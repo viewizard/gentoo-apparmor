@@ -26,8 +26,8 @@ profile mdadm /sbin/mdadm flags=(complain) {
   /sys/devices/virtual/block/md[0-9]*/* r,
   /sys/devices/virtual/block/md[0-9]*/md/array_state rw,
   /sys/devices/virtual/block/md[0-9]*/md/{,component_size,metadata_version} r,
-  /sys/devices/virtual/block/md[0-9]*/md/dev-sd[a-z][0-9]*/* r,
-  /sys/devices/pci[0-9]*/**/ata[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/dev r,
+  /sys/devices/virtual/block/md[0-9]*/md/dev-@{BLOCK_REAL}/* r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}dev r,
   @{PROC}/{devices,mdstat,partitions} r,
   
   /sbin/mdadm mr,

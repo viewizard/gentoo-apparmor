@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -26,15 +26,13 @@ profile xfburn /usr/bin/xfburn flags=(complain) {
   #include <abstractions/executable-binary-helper>
   
   /dev/tty[0-9]* w,
-  /dev/sr[0-9] rwk,
+  /dev/@{BLOCK_MEDIA} rwk,
   /sys/bus/ r,
   /sys/class/ r,
   /sys/class/block/ r,
-  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/sd[a-z]/uevent r,
-  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/uevent r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   /sys/devices/pci[0-9]*/**/usb[0-9]*/**/{vendor,model} r,
-  /sys/devices/virtual/block/{dm-,md,loop,zd}[0-9]*/uevent r,
-  /sys/devices/virtual/block/zd[0-9]*/zd[0-9]*/uevent r,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}uevent r,
   owner @{PROC}/@{pid}/fd/ r,
   @{PROC}/sys/dev/cdrom/info r,
   

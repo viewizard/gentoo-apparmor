@@ -15,7 +15,7 @@ profile smartmontools.smartd /usr/sbin/smartd {
   capability sys_rawio,
   
   /dev/ r,
-  /dev/sd[a-z] r,
+  /dev/@{BLOCK_REAL} r,
   /sys/devices/pci[0-9]*/**/usb[0-9]*/**/{idVendor,idProduct,bcdDevice} r,
   @{PROC}/devices r,
   
@@ -46,7 +46,7 @@ profile smartmontools.smartctl /usr/sbin/smartctl {
   capability sys_rawio,
   
   /dev/pts/[0-9]* rw,
-  /dev/sd[a-z] r,
+  /dev/@{BLOCK_REAL} r,
   
   /usr/sbin/smartctl mr,
   

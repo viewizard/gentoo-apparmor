@@ -1,45 +1,48 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile e2fsprogs.e2fsck /sbin/e2fsck flags=(complain) {
   #include <abstractions/base>
   
-  /dev/pts/[0-9]* w,
-  /dev/{dm-,loop,md,sd[a-z],zd}[0-9]* rw,
-  @{PROC}/swaps r,
-  @{PROC}/@{pid}/mounts r,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  /dev/@{BLOCK_ALL}					rw,
+  @{PROC}/swaps						r,
+  @{PROC}/@{pid}/mounts					r,
   
-  /sbin/e2fsck mr,
+  # EXECUTABLES ----------------------------------------
+  /sbin/e2fsck						mr,
   
-  /etc/e2fsck.conf r,
-  
-  /run/blkid/blkid.tab r,
+  # READS/WRITES ---------------------------------------
+  /etc/e2fsck.conf					r,
+  /run/blkid/blkid.tab					r,
   
 }
-
 
 profile e2fsprogs.mke2fs /sbin/mke2fs flags=(complain) {
   #include <abstractions/base>
   
-  /dev/pts/[0-9]* rw,
-  /dev/{dm-,zd}[0-9]* rw,
-  /sys/devices/virtual/block/{dm-,zd}[0-9]*/ r,
-  /sys/devices/virtual/block/{dm-,zd}[0-9]*/dm/uuid r,
-  @{PROC}/swaps r,
-  @{PROC}/@{pid}/mounts r,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  /dev/@{BLOCK_ALL}					rw,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}uuid	r,
+  @{PROC}/swaps						r,
+  @{PROC}/@{pid}/mounts					r,
   
-  /sbin/mke2fs mr,
+  # EXECUTABLES ----------------------------------------
+  /sbin/mke2fs						mr,
   
-  /etc/mke2fs.conf r,
-  
-  /run/blkid/blkid.tab* rwl,
+  # READS/WRITES ---------------------------------------
+  /etc/mke2fs.conf					r,
+  /run/blkid/blkid.tab*					rwl,
   
 }

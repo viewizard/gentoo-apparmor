@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -9,27 +9,23 @@
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile udisks-daemon /usr/lib{,32,64}/udisks/udisks-daemon {
+profile udisks.udisks-daemon /usr/lib{,32,64}/udisks/udisks-daemon {
   #include <abstractions/base>
   
   capability sys_rawio,
   capability dac_override,
   capability dac_read_search,
   
-  /dev/sd[a-z] r,
-  /dev/{dm-,loop,md,zd}[0-9]* r,
+  /dev/@{BLOCK_ALL} r,
   /sys/bus/ r,
   /sys/bus/pci/devices/ r,
   /sys/class/ r,
   /sys/class/block/ r,
   /sys/class/scsi_host/ r,
   /sys/module/block/parameters/events_dfl_poll_msecs r,
-  /sys/devices/virtual/block/{dm-,loop,md,zd}[0-9]*/{,**} r,
-  /sys/devices/virtual/block/zd[0-9]*/zd[0-9]*/{,**} r,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
   /sys/devices/pci[0-9]*/**/{,class,uevent} r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/* r,
-  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/sd[a-z]/{,**} r,
-  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/{,**} r,
   @{PROC}/mdstat r,
   @{PROC}/@{pid}/fd/ r,
   @{PROC}/@{pid}/mountinfo r,
@@ -52,15 +48,12 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {
   
   capability sys_rawio,
   
-  /dev/sd[a-z] r,
-  /dev/{dm-,loop,zd}[0-9]* r,
+  /dev/@{BLOCK_ALL} r,
   /sys/bus/ r,
   /sys/class/ r,
   /sys/class/block/ r,
-  /sys/devices/virtual/block/{dm-,loop,md,zd}[0-9]*/{,**} r,
-  /sys/devices/virtual/block/zd[0-9]*/zd[0-9]*/{,**} r,
-  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/{sd[a-z],sr[0-9]*}/{,**} r,
-  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/{,**} r,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
   /sys/devices/pci[0-9]*/**/usb[0-9]*/{,**/}{remove,uevent} rw,
   
   @{PROC}/@{pid}/mountinfo r,

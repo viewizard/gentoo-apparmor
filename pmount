@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -18,13 +18,12 @@ profile pmount /usr/bin/pmount flags=(complain) {
   capability dac_read_search,
   
   /dev/tty[0-9]* w,
-  /dev/sd[a-z]{,[0-9]*} r,
+  /dev/@{BLOCK_REAL} r,
   /sys/class/block/ r,
   /sys/devices/virtual/block/md*/dev r,
-  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/sd[a-z]/{,dev} r,
-  /sys/devices/pci[0-9]*/**/usb[0-9]*/**/block/sd[a-z]/removable r,
-  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/{,dev} r,
-  /sys/devices/pci[0-9]*/**/usb[0-9]*/**/block/sd[a-z]/sd[a-z][0-9]*/{size,start} r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}{,dev} r,
+  /sys/devices/pci[0-9]*/**/usb[0-9]*/**/block/@{BLOCK_REAL}/removable r,
+  /sys/devices/pci[0-9]*/**/usb[0-9]*/**/block/@{BLOCK_REAL}/*/{size,start} r,
   @{PROC}/@{pid}/mounts r,
   
   /usr/bin/pmount mr,

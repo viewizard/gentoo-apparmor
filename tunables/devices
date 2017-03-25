@@ -1,0 +1,19 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# Virtual block devices - /sys/devices/virtual/block/..
+@{BLOCK_VIRT}={dm-,loop,md,zd}[0-9]*
+
+# Real block devices - /sys/devices/pci[0-9]*/**/block/..
+@{BLOCK_MEDIA}=sr[0-9]*
+@{BLOCK_REAL}={sd[a-z]{,[0-9]*},@{BLOCK_MEDIA}}
+
+# All block devices.
+@{BLOCK_ALL}=@{BLOCK_VIRT} @{BLOCK_REAL}
