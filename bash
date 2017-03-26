@@ -168,7 +168,7 @@ profile bash_root {
   /sbin/fsck						Pxr,
   /sbin/rc-service					Pxr,
   /sbin/xtables-multi					Pxr,
-  /sbin/blkid						ixr,
+  /sbin/blkid						Pxr,
   /usr/bin/which					ixr,
   /usr/bin/git						Px -> git_root,
   /usr/bin/exo-open					Pxr,

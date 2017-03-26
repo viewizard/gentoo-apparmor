@@ -218,9 +218,12 @@ profile util-linux.eject /usr/bin/eject flags=(complain) {
 profile util-linux.blkid /sbin/blkid flags=(complain) {
   #include <abstractions/base>
   
-  /dev/* r,
+  /dev/ r,
+  /dev/@{BLOCK_ALL} r,
+  /sys/block/						r,
   /sys/devices/virtual/block/** r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/** r,
+  @{PROC}/partitions					r,
   
   /sbin/blkid mr,
   

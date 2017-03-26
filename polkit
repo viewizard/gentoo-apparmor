@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#    Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of version 2 of the GNU General Public
@@ -50,8 +50,25 @@ profile polkit.pkcheck /usr/bin/pkcheck flags=(complain) {
 
 profile polkit.pkexec /usr/bin/pkexec flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/authentication>
+  
+  capability sys_ptrace,
+  capability setuid,
+  capability setgid,
+  
+  @{PROC}/@{pid}/stat					r,
+  @{PROC}/@{pid}/attr/current				w,
   
   /usr/bin/pkexec mr,
+  /usr/sbin/pmvarrun					Px,
+  /usr/sbin/gparted					Px,
+  
+  # FIX ME! Did we need a 'hat' here?
+  
+  /etc/shells						r,
+  /etc/environment					r,
+  /etc/security/limits.d/				r,
   
 }
 
