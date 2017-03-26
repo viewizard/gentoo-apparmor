@@ -26,6 +26,8 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
   /bin/rmdir ix,
   /bin/sort ix,
   /bin/stty ix,
+  /bin/cat ix,
+  /bin/rm ix,
   /sbin/consoletype ix,
   /usr/bin/q ix,
   /usr/bin/xargs ix,
@@ -45,6 +47,8 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
   /etc/portage/bin/{,**} r,
   /etc/env.d/cblas/lib64/{,**} r,
   /usr/lib{,32,64}/perl** w,
+  
+  owner /tmp/sh-thd.* rw,
   
   
   profile shell flags=(complain) {

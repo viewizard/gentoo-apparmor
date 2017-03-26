@@ -11,7 +11,6 @@
 #include <tunables/global>
 profile python-updater /usr/sbin/python-updater flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/python>
   
   capability sys_admin,
   
@@ -28,6 +27,7 @@ profile python-updater /usr/sbin/python-updater flags=(complain) {
   /bin/bzip2 ix,
   /bin/stty ix,
   /bin/cut ix,
+  /bin/cat ix,
   /bin/readlink ix,
   /sbin/consoletype ix,
   /usr/bin/find ix,
@@ -47,13 +47,31 @@ profile python-updater /usr/sbin/python-updater flags=(complain) {
   /var/nullmailer/{,**} r,
   /var/**/.keep* r,
   
+  owner /tmp/sh-thd.* rw,
+  
   
   profile portage {
     #include <abstractions/base>
+    #include <abstractions/python>
     #include <abstractions/python-exec>
+    #include <abstractions/nameservice>
     
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/pts/[0-9]*					w,
+    
+    /bin/bash ix,
+    /bin/uname ix,
     @{PYTHON_EXEC}/emerge Px,
     @{PYTHON_EXEC}/portageq Px,
+    
+    /etc/profile.env r,
+    /etc/portage/{,**} r,
+    /usr/portage/{,**} r,
+    /usr/local/portage/{,**} r,
+    /usr/share/portage/{,**} r,
     
   }
   
