@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile firefox /usr/{bin/firefox,lib{,32,64}/firefox/firefox{,-bin}} {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -26,84 +27,76 @@ profile firefox /usr/{bin/firefox,lib{,32,64}/firefox/firefox{,-bin}} {
   #include <abstractions/X>
   #include <abstractions/executable-binary-helper>
   
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
+  owner /dev/shm/org.chromium.*				rw,
+  /sys/devices/system/cpu/{,**}				r,
+  /sys/devices/pci[0-9]*/**/uevent			r,
+  @{PROC}/						r,
+  @{PROC}/@{pid}/fd/					r,
+  @{PROC}/@{pid}/mountinfo				r,
+  @{PROC}/@{pid}/stat					r,
+  @{PROC}/@{pid}/net/arp				r,
+  owner @{PROC}/@{pid}/task/@{pid}/stat			r,
+  @{PROC}/filesystems					r,
+  @{PROC}/@{pid}/net/if_inet6				r,
+  @{PROC}/@{pid}/net/ipv6_route				r,
+  @{PROC}/@{pid}/net/dev				r,
+  @{PROC}/@{pid}/net/wireless				r,
+  owner @{PROC}/@{pid}/statm				r,
+  owner @{PROC}/@{pid}/smaps				r,
+  owner @{PROC}/@{pid}/environ				r,
+  owner @{PROC}/@{pid}/auxv				r,
   
-  @{PROC}/ r,
-  @{PROC}/@{pid}/fd/ r,
-  @{PROC}/@{pid}/mountinfo r,
-  @{PROC}/@{pid}/stat r,
-  @{PROC}/@{pid}/net/arp r,
-  owner @{PROC}/@{pid}/task/@{pid}/stat r,
-  @{PROC}/filesystems r,
-  /sys/devices/pci[0-9]*/**/uevent r,
-  # for networking
-  @{PROC}/@{pid}/net/if_inet6 r,
-  @{PROC}/@{pid}/net/ipv6_route r,
-  @{PROC}/@{pid}/net/dev r,
-  @{PROC}/@{pid}/net/wireless r,
-  # about:memory
-  owner @{PROC}/@{pid}/statm r,
-  owner @{PROC}/@{pid}/smaps r,
-  
-  /etc/ r,
-  /etc/mtab r,
-  /etc/fstab r,
-  /etc/mime.types r,
-  /etc/timezone r,
-  /etc/udev/udev.conf r,
-  /usr/share/myspell/ r,
-  /usr/share/myspell/* r,
-  owner @{HOME}/.macromedia/** rw,
-  owner @{HOME}/.local/share/gvfs-metadata/home r,
-  
-  /usr/bin/firefox mr,
-  /usr/lib{,32,64}/firefox/firefox{,-bin} mr,
-  /bin/bash mr,
-  /sbin/killall5 ixr,
-  /bin/which ixr,
-  /usr/bin/tr ixr,
-  /bin/ps Pxr,
-  /bin/uname ixr,
-  /usr/bin/basename ixr,
-  /usr/bin/dirname ixr,
-  /usr/bin/pwd ixr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/firefox					mr,
+  /usr/lib{,32,64}/firefox/firefox{,-bin}		mr,
+  /bin/bash						mr,
+  /bin/which						ixr,
+  /bin/ps						Pxr,
+  /bin/uname						ixr,
+  /sbin/killall5					ixr,
+  /usr/bin/tr						ixr,
+  /usr/bin/basename					ixr,
+  /usr/bin/dirname					ixr,
+  /usr/bin/pwd						ixr,
+  /usr/bin/expr						ix,
+  /usr/lib{,32,64}/firefox/plugin-container		Px,
   # Allow 'x' for downloaded extensions, but inherit policy for safety
-  owner @{HOME}/.mozilla/**/extensions/** ixmr,
-  /usr/lib{,32,64}/firefox/browser/extensions/** ixmr,
+  owner @{HOME}/.mozilla/**/extensions/**		ixmr,
+  /usr/lib{,32,64}/firefox/browser/extensions/**	ixmr,
   
-  # plugin-container
-  owner /dev/shm/org.chromium.* rw,
-  /usr/lib{,32,64}/firefox/plugin-container Px,
+  # READS/WRITES ---------------------------------------
+  /etc/							r,
+  /etc/lsb-release					r,
+  /etc/mtab						r,
+  /etc/fstab						r,
+  /etc/mime.types					r,
+  /etc/timezone						r,
+  /etc/udev/udev.conf					r,
   
-  # Needed for the crash reporter
-  owner @{PROC}/@{pid}/environ r,
-  owner @{PROC}/@{pid}/auxv r,
-  /etc/lsb-release r,
-  /usr/bin/expr ix,
-  /sys/devices/system/cpu/ r,
-  /sys/devices/system/cpu/** r,
-  
-  # Firefox configuration
-  owner @{HOME}/.{firefox,mozilla}/ rw,
-  owner @{HOME}/.{firefox,mozilla}/** rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.macromedia/**				rw,
+  owner @{HOME}/.local/share/gvfs-metadata/home		r,
+  owner @{HOME}/.{firefox,mozilla}/{,**}		rw,
   owner @{HOME}/.{firefox,mozilla}/**/*.{db,parentlock,sqlite}* k,
-  owner @{HOME}/.{firefox,mozilla}/plugins/** mr,
-  owner @{HOME}/.{firefox,mozilla}/**/plugins/** mr,
-  owner @{HOME_CACHE}/mozilla/{,firefox/} rw,
-  owner @{HOME_CACHE}/mozilla/firefox/** rw,
-  owner @{HOME_CACHE}/mozilla/firefox/**/*.sqlite k,
+  owner @{HOME}/.{firefox,mozilla}/{,**/}plugins/**	mr,
+  owner @{HOME_CACHE}/mozilla/{,firefox/}		rw,
+  owner @{HOME_CACHE}/mozilla/firefox/**		rw,
+  owner @{HOME_CACHE}/mozilla/firefox/**/*.sqlite	k,
   
-  /tmp/ r,
-  owner /tmp/* rw,
-  owner /tmp/plugtmp/ rw,
-  owner /tmp/plugtmp/plugin-* rw,
-  owner /tmp/mozilla-temp-* rw,
-  owner /tmp/mozilla_*/{,**} rw,
-  owner /tmp/firefox_*/{,**} rwk,
-  owner /tmp/gnotifier/{,**} rw,
-  /var/tmp/ r,
-  owner /var/tmp/etilqs_* rw,
+  # TEMP -----------------------------------------------
+  /tmp/							r,
+  owner /tmp/*						rw,	# Need for download files with any filename.
+  owner /tmp/plugtmp/					rw,
+  owner /tmp/plugtmp/plugin-*				rw,
+  owner /tmp/mozilla-temp-*				rw,
+  owner /tmp/mozilla_*/{,**}				rw,
+  owner /tmp/firefox_*/{,**}				rwk,
+  owner /tmp/gnotifier/{,**}				rw,
+  /var/tmp/						r,
+  owner /var/tmp/etilqs_*				rw,
   
 }
 
@@ -117,43 +110,50 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   #include <abstractions/gtk>
   #include <abstractions/nameservice>
   
-  /dev/ r,
-  /dev/tty[0-9] w,
-  owner /dev/shm/org.chromium.* rw,
-  /sys/devices/system/cpu/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/							r,
+  /dev/tty[0-9]						w,
+  owner /dev/shm/org.chromium.*				rw,
+  /sys/devices/system/cpu/				r,
+  owner @{PROC}/@{pid}/stat				r,
+  owner @{PROC}/@{pid}/task/@{pid}/stat			r,
   
-  owner @{PROC}/@{pid}/stat r,
-  owner @{PROC}/@{pid}/task/@{pid}/stat r,
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/firefox/plugin-container		m,
+  /bin/bash						Cx -> shell,
   
-  /usr/lib{,32,64}/firefox/plugin-container m,
-  /bin/bash Cx -> shell,
+  # READS/WRITES ---------------------------------------
+  /etc/adobe/mms.cfg					r,
+  /etc/ssl/openssl.cnf					r,
   
-  /etc/adobe/mms.cfg r,
-  /etc/ssl/openssl.cnf r,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.adobe/Flash_Player/{,**}		r,
+  owner @{HOME}/.macromedia/Flash_Player/{,**}		rw,
+  owner @{HOME}/.mozilla/firefox/{,**}			r,
+  owner @{HOME}/.config/freshwrapper-data/{,**}		rw,
   
-  owner @{HOME}/.adobe/Flash_Player/{,**} r,
-  owner @{HOME}/.macromedia/Flash_Player/{,**} rw,
-  owner @{HOME}/.mozilla/firefox/{,**} r,
-  owner @{HOME}/.config/freshwrapper-data/{,**} rw,
-  
-  /tmp/ r,
-  owner /tmp/.gl* rw,
-  owner /tmp/FreshStream* rw,
-  owner /tmp/FreshTemp* rw,
-  /var/tmp/ r,
+  # TEMP -----------------------------------------------
+  /tmp/							r,
+  owner /tmp/.gl*					rw,
+  owner /tmp/FreshStream*				rw,
+  owner /tmp/FreshTemp*					rw,
+  /var/tmp/						r,
   
   
   profile shell {
     #include <abstractions/base>
     
-    /dev/tty rw,
-    /dev/tty[0-9] w,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]					w,
     
-    /bin/bash mr,
-    /bin/ps Px,
-    /bin/grep ix,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/ps						Px,
+    /bin/grep						ix,
     
-    owner @{HOME}/.session.log w,  # XFCE4, <abstractions/X>
+    # USERS --------------------------------------------
+    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
     
   }
 }

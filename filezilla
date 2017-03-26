@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -26,19 +26,23 @@ profile filezilla /usr/bin/filezilla {
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   
-  /usr/bin/filezilla mr,
-  /bin/bash Cx -> shell,
-  /usr/bin/fzsftp ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/filezilla					mr,
+  /bin/bash						Cx -> shell,
+  /usr/bin/fzsftp					ix,
   
-  /usr/share/filezilla/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /usr/share/filezilla/{,**}				r,
   
-  owner @{HOME}/.filezilla/{,**} rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.filezilla/{,**}			rw,
   
   # NOISY ----------------------------------------------
-  deny /*/						r,  # если нужно будет работать под root с системными
-  							    # файлами - сделать профиль filezilla_root
+  deny /*/						r,	# если нужно будет работать под root с системными
+  								# файлами - сделать профиль filezilla_root
   
   
   profile shell {
@@ -46,18 +50,21 @@ profile filezilla /usr/bin/filezilla {
     #include <abstractions/nameservice>
     #include <abstractions/program-work-with-disk-rwk>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /bin/uname ix,
-    /bin/ls ix,
-    /usr/bin/lsb_release Pxr,
-    /bin/ps Px,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/uname						ix,
+    /bin/ls						ix,
+    /usr/bin/lsb_release				Pxr,
+    /bin/ps						Px,
     
-    /tmp/ r,
+    # TEMP ---------------------------------------------
+    /tmp/						r,
     
-    # Noisy
-    deny /etc/ r,
+    # NOISY --------------------------------------------
+    deny /etc/						r,
   }
   
 }
