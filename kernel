@@ -1,49 +1,59 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile kernel.sign-file /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/sign-file flags=(complain) {
   #include <abstractions/base>
   
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
   
+  # EXECUTABLES ----------------------------------------
   /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/sign-file mr,
   
+  # READS/WRITES ---------------------------------------
   /usr/src/linux-[0-9]*-{hardened,gentoo}*/certs/signing_key.{pem,x509} r,
-  /lib{,32,64}/modules/[0-9]*-{hardened,gentoo}*/**.ko rw,
+  /lib{,32,64}/modules/[0-9]*-{hardened,gentoo}*/**.ko	rw,
   
 }
 
 profile kernel.gen-ima-certs /usr/src/IMA/certs/* flags=(complain) {
   #include <abstractions/base>
   
-  /dev/tty rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   
-  /bin/bash mr,
-  /bin/cat ix,
-  /usr/bin/openssl Cx -> openssl,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						mr,
+  /bin/cat						ix,
+  /usr/bin/openssl					Cx -> openssl,
   
-  /usr/src/IMA/certs/* rw,
+  # READS/WRITES ---------------------------------------
+  /usr/src/IMA/certs/*					rw,
   
   
   profile openssl flags=(complain) {
     #include <abstractions/base>
     
-    /dev/tty rw,
-    /dev/pts/[0-9]* w,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/pts/[0-9]*					w,
     
-    /usr/bin/openssl mr,
+    # EXECUTABLES --------------------------------------
+    /usr/bin/openssl					mr,
     
-    /etc/ssl/openssl.cnf r,
-    /usr/src/IMA/certs/* rw,
-    /root/.rnd rw,
+    # READS/WRITES -------------------------------------
+    /etc/ssl/openssl.cnf				r,
+    /usr/src/IMA/certs/*				rw,
+    /root/.rnd						rw,
     
   }
   
@@ -53,10 +63,13 @@ profile kernel.checkpatch.pl /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/ch
   #include <abstractions/base>
   #include <abstractions/perl>
   
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
   
+  # EXECUTABLES ----------------------------------------
   /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/checkpatch.pl r,
   
-  /usr/src/** r,
+  # READS/WRITES ---------------------------------------
+  /usr/src/**						r,
   
 }

@@ -1,35 +1,39 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile kmod /{bin/kmod,sbin/modprobe,sbin/modeinfo} {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_module,
   
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* w,
-  /sys/module/** r,
-  @{PROC}/cmdline r,
-  @{PROC}/modules r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					w,
+  /sys/module/**					r,
+  @{PROC}/{cmdline,modules}				r,
   
-  /bin/kmod mr,
+  # EXECUTABLES ----------------------------------------
+  /bin/kmod						mr,
   
-  /etc/modprobe.d/{,*} r,
-  /lib{,32,64}/modules/*/modules.* rw,
-  /usr/src/linux-[0-9]*-{hardened,gentoo}*/System.map r,
+  # READS/WRITES ---------------------------------------
+  /etc/modprobe.d/{,*}					r,
+  /lib{,32,64}/modules/*/modules.*			rw,
+  /usr/src/linux-[0-9]*-{hardened,gentoo}*/System.map	r,
   /usr/src/linux-[0-9]*-{hardened,gentoo}*/tar-install/lib/modules/[0-9]*-{hardened,gentoo}*/ r,
   /usr/src/linux-[0-9]*-{hardened,gentoo}*/tar-install/lib/modules/[0-9]*-{hardened,gentoo}*/** rw,
+  /run/tmpfiles.d/kmod.conf				w,
   
-  /run/tmpfiles.d/kmod.conf w,
-  
-  owner /tmp/depmod.*/{,**} rw,
+  # TEMP -----------------------------------------------
+  owner /tmp/depmod.*/{,**}				rw,
   
 }

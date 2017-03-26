@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -26,16 +26,19 @@ profile keepassx /usr/bin/keepassx {
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   
-  /dev/tty[0-9]* w,
-  @{PROC}/@{pid}/cmdline r,
-  @{PROC}/@{pid}/status r,
-  @{PROC}/@{pid}/task/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  @{PROC}/@{pid}/{cmdline,status}			r,
+  @{PROC}/@{pid}/task/					r,
   
+  # EXECUTABLES ----------------------------------------
   /usr/bin/keepassx mr,
   
+  # READS/WRITES ---------------------------------------
   /usr/bin/ r,
   /usr/share/keepassx/{,**} r,
   
+  # USERS ----------------------------------------------
   owner @{HOME}/.config/keepassx/ rw,
   owner @{HOME}/.config/keepassx/** rwk,
   
