@@ -1,61 +1,69 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile gradm /sbin/gradm flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
-  /dev/ r,
-  /dev/grsec w,
-  /dev/pts/[0-9]* rw,
-  @{PROC}/@{pid}/mounts r,
+  # PSEUDO ---------------------------------------------
+  /dev/							r,
+  /dev/grsec						w,
+  /dev/pts/[0-9]*					rw,
+  @{PROC}/@{pid}/mounts					r,
   
-  /sbin/gradm mr,
-  /sbin/grlearn Px,
+  # EXECUTABLES ----------------------------------------
+  /sbin/gradm						mr,
+  /sbin/grlearn						Px,
   
-  / r,
-  /etc/ld.so.conf r,
-  /etc/grsec/ r,
-  /etc/grsec/* rw,
+  # READS/WRITES ---------------------------------------
+  /							r,
+  /etc/ld.so.conf					r,
+  /etc/grsec/						r,
+  /etc/grsec/*						rw,
   
 }
-
 
 profile gradm.grlearn /sbin/grlearn flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability ipc_lock,
   capability sys_nice,
   capability sys_ptrace,
   
-  /dev/grsec r,
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/grsec						r,
+  /dev/pts/[0-9]*					w,
   
-  /sbin/grlearn mr,
+  # EXECUTABLES ----------------------------------------
+  /sbin/grlearn						mr,
   
-  /etc/grsec/ r,
-  /etc/grsec/* rw,
+  # READS/WRITES ---------------------------------------
+  /etc/grsec/						r,
+  /etc/grsec/*						rw,
   
 }
-
 
 profile gradm.init.d /etc/init.d/gradm {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /bin/bash Cx -> shell,
-  /sbin/gradm Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /sbin/gradm						Px,
   
-  /etc/{conf,init}.d/gradm r,
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/gradm				r,
   
   
   profile shell {

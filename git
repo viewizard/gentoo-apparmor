@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -20,24 +20,28 @@ profile git /usr/bin/git {
   #include <abstractions/nameservice>
   #include <abstractions/ssl_certs>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability fowner,
   
-  /dev/tty rw,
-  /dev/pts/[0-9]* rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
   
-  /usr/bin/git mr,
-  /usr/bin/less ix,
-  /usr/libexec/git-core/git ix,
-  /usr/libexec/git-core/git-remote-http ix,
-  /usr/libexec/git-core/git-remote-https ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/git						mr,
+  /usr/bin/less						ix,
+  /usr/libexec/git-core/git				ix,
+  /usr/libexec/git-core/git-remote-http			ix,
+  /usr/libexec/git-core/git-remote-https		ix,
   
-  /usr/share/git-core/** r,
+  # READS/WRITES ---------------------------------------
+  /usr/share/git-core/**				r,
   
-  owner @{HOME}/.gitconfig rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.gitconfig				rw,
   
 }
-
 
 profile git_root {
   #include <abstractions/base>
@@ -46,20 +50,25 @@ profile git_root {
   #include <abstractions/ssl_certs>
   #include <abstractions/user-systemwide-files>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability fowner,
   
-  /dev/tty rw,
-  /dev/pts/[0-9]* rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
   
-  /usr/bin/git mr,
-  /usr/bin/less ix,
-  /usr/libexec/git-core/git ix,
-  /usr/libexec/git-core/git-remote-http ix,
-  /usr/libexec/git-core/git-remote-https ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/git						mr,
+  /usr/bin/less						ix,
+  /usr/libexec/git-core/git				ix,
+  /usr/libexec/git-core/git-remote-http			ix,
+  /usr/libexec/git-core/git-remote-https		ix,
   
-  /usr/share/git-core/** r,
+  # READS/WRITES ---------------------------------------
+  /usr/share/git-core/**				r,
   
-  owner @{HOME}/.gitconfig rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.gitconfig				rw,
   
 }

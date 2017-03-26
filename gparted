@@ -1,100 +1,108 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
-profile gparted /usr/{bin/gparted-pkexec,sbin/gpartedbin} flags=(complain) {
+
+profile gparted.gparted-pkexec /usr/bin/gparted-pkexec flags=(complain) {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/gparted-pkexec				r,
+  /bin/bash						mr,
+  /usr/bin/pkexec					Px,
+  
+}
+
+profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/authentication>
   #include <abstractions/nameservice>
+  #include <abstractions/dbus-session>
   #include <abstractions/executable-binary-helper>
   
-  capability dac_override,
+  # CAPABILITIES ---------------------------------------
   capability sys_admin,
   capability sys_rawio,
-  capability setuid,
-  capability setgid,
-  capability chown,
   
-  /dev/ r,
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
-  /dev/@{BLOCK_ALL} rwk,
-  /dev/mapper/control rw,
-  /sys/block/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /dev/@{BLOCK_ALL}					rwk,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]**/host*/target**/{vendor,model} r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
-  @{PROC}/@{pid}/fd/ r,
-  @{PROC}/version r,
-  @{PROC}/partitions r,
-  @{PROC}/swaps r,
-  @{PROC}/mdstat r,
-  @{PROC}/devices r,
-  @{PROC}/tty/drivers r,
-  @{PROC}/@{pid}/mountinfo r,
-  @{PROC}/@{pid}/stat r,
-  @{PROC}/@{pid}/attr/current w,
-  @{PROC}/@{pid}/attr/current w,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+  @{PROC}/@{pid}/fd/					r,
+  @{PROC}/swaps						r,
+  @{PROC}/devices					r,
+  @{PROC}/mdstat					r,
+  @{PROC}/partitions					r,
+  @{PROC}/version					r,
   
-  /bin/bash mr,
-  /usr/sbin/gpartedbin ixmr,
-  /usr/sbin/gparted ixmr,
-  /usr/bin/pkexec ix,
-  /usr/bin/gparted-pkexec mr,
-  /bin/udevadm ix,
-  /bin/umount ix,
-  /bin/ps Px,
-  /bin/sed ix,
-  /usr/bin/id ix,
-  /bin/touch ix,
-  /bin/rm ixr,
-  /bin/grep ix,
-  /bin/egrep ixr,
-  /usr/bin/mtools ix,
-  /sbin/e2image ix,
-  /sbin/blkid ix,
-  /sbin/dumpe2fs ix,
-  /sbin/hdparm ix,
-  /sbin/tune2fs ix,
-  /sbin/swaplabel ix,
-  /sbin/mke2fs ix,
-  /sbin/dmsetup ix,
-  /sbin/lvm Px,
-  /usr/sbin/fsck.* ix,
-  /usr/sbin/mkfs.* ix,
-  /usr/sbin/mkntfs ix,
-  /usr/sbin/ntfslabel ix,
-  /usr/sbin/ntfsresize ix,
-  /sbin/mdadm Px,
-  /usr/sbin/pmvarrun ix,
-  /sbin/mkswap ix,
-  /usr/bin/udisks ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/gpartedbin					mr,
+  /bin/umount						Px,
+  /bin/udevadm						Px,
+  /sbin/hdparm						ix,
+  /sbin/blkid						Px,
+  /sbin/mdadm						Px,
+  /sbin/e2image						ix,
+  /sbin/lvm						Px,
+  /sbin/tune2fs						ix,
+  /sbin/dumpe2fs					ix,
+  /sbin/dmsetup						Px,
+  /sbin/mke2fs						Px,
+  /sbin/swaplabel					ix,
+  /sbin/mkswap						Px,
+  /usr/bin/mtools					ix,
+  /usr/bin/udisks					ix,
+  /usr/sbin/mkfs.*					ix,
+  /usr/sbin/fsck.*					ix,
+  /usr/sbin/mkntfs					ix,
+  /usr/sbin/ntfsresize					ix,
+  /usr/sbin/ntfslabel					ix,
   
-  /etc/fstab r,
-  /etc/shells r,
-  /etc/environment r,
-  /etc/mke2fs.conf r,
-  /etc/udev/udev.conf r,
-  /etc/mtools/mtools.conf r,
-  /etc/security/limits.d/ r,
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
+  /run/blkid/blkid.tab*					rwl,
   
-  /run/blkid/ rw,
-  /run/blkid/blkid.tab* rwl,
-  /run/mount/utab* rwk,
-  /run/udev/rules.d/{,*} rw,
+  # USERS ----------------------------------------------
+  @{HOME}/.Xauthority					r,
   
-  @{HOME}/.Xauthority r,
+}
+
+profile gparted.gparted /usr/sbin/gparted flags=(complain) {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty rw,
+  /dev/tty[0-9]*					w,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/gparted					r,
+  /bin/bash						mr,
+  /bin/ps						Px,
+  /bin/rm						ix,
+  /bin/grep						ix,
+  /bin/egrep						ixr,
+  /bin/touch						ix,
+  /bin/sed						ix,
+  /usr/bin/id						ix,
+  /usr/sbin/gpartedbin					Px,
+  
+  # READS/WRITES ---------------------------------------
+  /run/udev/rules.d/{,*}				rw,
   
 }

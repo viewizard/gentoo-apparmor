@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile gsmartcontrol /usr/bin/gsmartcontrol {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -18,47 +19,50 @@ profile gsmartcontrol /usr/bin/gsmartcontrol {
   #include <abstractions/X>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
-  capability sys_rawio,
   
-  /dev/tty[0-9]* w,
-  /dev/@{BLOCK_ALL} r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   /sys/devices/pci[0-9]*/**/usb[0-9]*/**/{idVendor,idProduct,bcdDevice} r,
+  @{PROC}/@{pid}/fd/					r,
+  @{PROC}/partitions					r,
+  @{PROC}/devices					r,
+  @{PROC}/scsi/scsi					r,
   
-  @{PROC}/@{pid}/fd/ r,
-  @{PROC}/partitions r,
-  @{PROC}/devices r,
-  @{PROC}/scsi/scsi r,
-
-  /usr/bin/gsmartcontrol mr,
-  /usr/sbin/smartctl ix,
-  /usr/bin/exo-open Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/gsmartcontrol				mr,
+  /usr/sbin/smartctl					Px,
+  /usr/bin/exo-open					Px,
   
-  /etc/fstab r,
-  /usr/share/smartmontools/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
   
+  # USERS ----------------------------------------------
   owner @{HOME}/.config/gsmartcontrol/{,gsmartcontrol.conf} rw,
   
 }
 
-
 profile gsmartcontrol-root /usr/bin/gsmartcontrol-root {
   #include <abstractions/base>
   
-  /bin/bash Cx -> shell,
-  /bin/env mr,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/env						mr,
   
   
   profile shell {
     #include <abstractions/base>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /usr/bin/gsmartcontrol-root r,
-    /usr/bin/which ix,
-    /usr/bin/sudo Px,
-    /usr/bin/gksu Px,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /usr/bin/gsmartcontrol-root				r,
+    /usr/bin/which					ix,
+    /usr/bin/sudo					Px,
+    /usr/bin/gksu					Px,
     
   }
   

@@ -1,32 +1,37 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile glibc_ldd_root {
+  #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_read_search,
   capability dac_override,
   
-  /dev/tty rw,
-  /dev/pts/[0-9]* rw,
-  @{PROC}/meminfo r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  @{PROC}/meminfo					r,
   
-  /usr/bin/ldd mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/ldd						mr,
+  /bin/**						ixmr,
+  /sbin/**						ixmr,
+  /lib{,32,64,exec}/**					ixmr,
+  /opt/**						ixmr,
+  /usr/**						ixmr,
   
-  /bin/** ixmr,
-  /sbin/** ixmr,
-  /lib{,32,64}/** ixmr,
-  /opt/** ixmr,
-  /usr/** ixmr,
-  
-  /etc/ld.so.cache mr,
-  /var/cache/revdep-rebuild/*errors* rw,	# gentoolkit.revdep-rebuild.sh
+  # READS/WRITES ---------------------------------------
+  /etc/ld.so.cache					mr,
+  /var/cache/revdep-rebuild/*errors*			rw,	# gentoolkit.revdep-rebuild.sh
   
 }

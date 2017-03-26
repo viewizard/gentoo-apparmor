@@ -1,75 +1,85 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile gnupg.gpg-agent /usr/bin/gpg-agent flags=(complain) {
   #include <abstractions/base>
   
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* w,
-  @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					w,
+  @{PROC}/@{pid}/fd/					r,
   
-  /usr/bin/gpg-agent mr,
-  /usr/bin/pinentry-* Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/gpg-agent					mr,
+  /usr/bin/pinentry-*					Px,
   
-  owner /run/user/*/gnupg/{,**} rw,
+  # READS/WRITES ---------------------------------------
+  owner /run/user/*/gnupg/{,**}				rw,
   
-  owner @{HOME_CACHE}/gpg-agent-info rw,
-  owner @{HOME}/.gnupg/private-keys-*/{,**} w,
+  # USERS ----------------------------------------------
+  owner @{HOME_CACHE}/gpg-agent-info			rw,
+  owner @{HOME}/.gnupg/private-keys-*/{,**}		w,
   
 }
-
 
 profile gnupg.gpg /usr/bin/gpg{,2,-static} flags=(complain) {
   #include <abstractions/base>
   
-  /dev/tty rw,
-  /dev/pts/[0-9]* rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
   
-  /usr/bin/gpg{,2,-static} mr,
-  /usr/bin/gpg-agent Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/gpg{,2,-static}				mr,
+  /usr/bin/gpg-agent					Px,
   
-  /etc/inputrc r,
-  /etc/terminfo/x/xterm r,
+  # READS/WRITES ---------------------------------------
+  /etc/inputrc						r,
+  /etc/terminfo/x/xterm					r,
+  /run/openrc/dm-crypt-remdev.*/*			r,
+  /var/lib/gentoo/gkeys/keyrings/gentoo/release/	r,
+  /var/lib/gentoo/gkeys/keyrings/gentoo/release/**	rwl,
   
-  /run/openrc/dm-crypt-remdev.*/* r,
-  /var/lib/gentoo/gkeys/keyrings/gentoo/release/ r,
-  /var/lib/gentoo/gkeys/keyrings/gentoo/release/** rwl,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.gnupg/					rw,
+  owner @{HOME}/.gnupg/**				rwk,
   
-  owner @{HOME}/.gnupg/ rw,
-  owner @{HOME}/.gnupg/** rwk,
-    
-  # Noisy
-  deny /.gnupg/{,**} r,
+  # NOISY ----------------------------------------------
+  deny /.gnupg/{,**}					r,
   
 }
-
 
 profile gnupg.gpgconf /usr/bin/gpgconf flags=(complain) {
   #include <abstractions/base>
   
-  @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  @{PROC}/@{pid}/fd/					r,
   
-  /usr/bin/gpgconf mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/gpgconf					mr,
   
-  /run/user/*/gnupg/{,**} w,
+  # READS/WRITES ---------------------------------------
+  /run/user/*/gnupg/{,**}				w,
   
-  owner @{HOME}/.gnupg/ rw,
-  owner @{HOME}/.gnupg/** rwl,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.gnupg/					rw,
+  owner @{HOME}/.gnupg/**				rwl,
   
 }
-
 
 profile gnupg.gpgsm /usr/bin/gpgsm flags=(complain) {
   #include <abstractions/base>
   
-  /usr/bin/gpgsm mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/gpgsm					mr,
   
 }

@@ -1,88 +1,105 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
+# config for abstractions/program-work-with-disk-** (**-rk,rwk)
+@{PROG_DIR}="[^.]**"
+@{PROG_FILE}="[^.]*.*"
+
 profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monitor {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
   
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}uevent r,
+  # PSEUDO ---------------------------------------------
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}uevent	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
-  @{PROC}/@{pid}/fd/ r,
-  @{PROC}/@{pid}/mounts r,
+  @{PROC}/@{pid}/fd/					r,
+  @{PROC}/@{pid}/mounts					r,
   
-  /usr/libexec/gvfs-udisks2-volume-monitor mr,
-  /bin/mount Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gvfs-udisks2-volume-monitor		mr,
+  /bin/mount						Px,
   
-  /etc/fstab r,
-  /etc/udev/udev.conf r,
-  /usr/share/mime/treemagic r,
-  /media/*/{,**/} r,
-  /run/udev/data/* r,
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
+  /etc/udev/udev.conf					r,
+  /usr/share/mime/treemagic				r,
+  /media/*/{,**/}					r,
+  /run/udev/data/*					r,
   
-  owner @{HOME}/.local/share/mime/treemagic r,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.local/share/mime/treemagic		r,
   
 }
-
 
 profile gvfs.gvfsd /usr/libexec/gvfsd {
   #include <abstractions/base>
   
-  owner @{PROC}/@{pid}/fd/ rw,
+  # PSEUDO ---------------------------------------------
+  owner @{PROC}/@{pid}/fd/				rw,
   
-  /usr/libexec/gvfsd mr,
-  /usr/libexec/gvfsd-* Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gvfsd					mr,
+  /usr/libexec/gvfsd-*					Px,
   
-  /usr/share/gvfs/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /usr/share/gvfs/{,**}					r,
+  /run/user/*/gvfs/{,**}				rw,
   
-  /run/user/*/gvfs/{,**} rw,
-  
-  owner @{HOME}/.gvfs/ rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.gvfs/					rw,
   
 }
 
 profile gvfs.gvfsd-archive /usr/libexec/gvfsd-archive flags=(complain) {
   #include <abstractions/base>
   
-  /usr/libexec/gvfsd-archive mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gvfsd-archive				mr,
   
 }
 
 profile gvfs.gvfsd-burn /usr/libexec/gvfsd-burn flags=(complain) {
   #include <abstractions/base>
   
-  /usr/libexec/gvfsd-burn mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gvfsd-burn				mr,
   
 }
 
 profile gvfs.gvfsd-computer /usr/libexec/gvfsd-computer flags=(complain) {
   #include <abstractions/base>
   
-  /usr/libexec/gvfsd-computer mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gvfsd-computer				mr,
   
 }
 
 profile gvfs.gvfsd-dav /usr/libexec/gvfsd-dav flags=(complain) {
   #include <abstractions/base>
   
-  /usr/libexec/gvfsd-dav mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gvfsd-dav				mr,
   
 }
 
 profile gvfs.gvfsd-ftp /usr/libexec/gvfsd-ftp flags=(complain) {
   #include <abstractions/base>
   
-  /usr/libexec/gvfsd-ftp mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gvfsd-ftp				mr,
   
 }
 
@@ -90,22 +107,25 @@ profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
   capability sys_admin,
   
-  /dev/fuse rw,
+  # PSEUDO ---------------------------------------------
+  /dev/fuse						rw,
+  @{PROC}/@{pid}/mounts					r,
   
-  @{PROC}/@{pid}/mounts r,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gvfsd-fuse				mr,
+  /usr/bin/fusermount					ixr,
   
-  /usr/libexec/gvfsd-fuse mr,
-  /usr/bin/fusermount ixr,
+  # READS/WRITES ---------------------------------------
+  /etc/fuse.conf					r,
+  /run/user/*/gvfs/{,**}				rw,
   
-  /etc/fuse.conf r,
-  
-  /run/user/*/gvfs/{,**} rw,
-  
-  @{HOME}/.gvfs/{,**} rw,
+  # USERS ----------------------------------------------
+  @{HOME}/.gvfs/{,**}					rw,
   
 }
 
@@ -116,8 +136,10 @@ profile gvfs.gvfsd-http /usr/libexec/gvfsd-http flags=(complain) {
   #include <abstractions/dconf>
   #include <abstractions/ssl_certs>
   
-  /usr/libexec/gvfsd-http mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gvfsd-http				mr,
   
+  # READS/WRITES ---------------------------------------
   /usr/lib{,32,64}/libproxy/[0-9]*.[0-9]*.[0-9]*/modules/*.so m,
   
 }
@@ -125,21 +147,25 @@ profile gvfs.gvfsd-http /usr/libexec/gvfsd-http flags=(complain) {
 profile gvfs.gvfsd-localtest /usr/libexec/gvfsd-localtest flags=(complain) {
   #include <abstractions/base>
   
-  /usr/libexec/gvfsd-localtest mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gvfsd-localtest				mr,
   
 }
 
 profile gvfs.gvfsd-metadata /usr/libexec/gvfsd-metadata {
   #include <abstractions/base>
   
-  /etc/udev/udev.conf r,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}uevent r,
-  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
-  /run/udev/data/* r,
-    
-  /usr/libexec/gvfsd-metadata mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gvfsd-metadata				mr,
   
-  owner @{HOME}/.local/share/gvfs-metadata/{,**} rw,
+  # READS/WRITES ---------------------------------------
+  /etc/udev/udev.conf					r,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}uevent	r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
+  /run/udev/data/*					r,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   
 }
 
@@ -148,21 +174,24 @@ profile gvfs.gvfsd-network /usr/libexec/gvfsd-network flags=(complain) {
   #include <abstractions/dconf>
   #include <abstractions/gtk>
   
-  /usr/libexec/gvfsd-network mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gvfsd-network				mr,
   
 }
 
 profile gvfs.gvfsd-recent /usr/libexec/gvfsd-recent flags=(complain) {
   #include <abstractions/base>
   
-  /usr/libexec/gvfsd-recent mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gvfsd-recent				mr,
   
 }
 
 profile gvfs.gvfsd-sftp /usr/libexec/gvfsd-sftp flags=(complain) {
   #include <abstractions/base>
   
-  /usr/libexec/gvfsd-sftp mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gvfsd-sftp				mr,
   
 }
 
@@ -173,13 +202,13 @@ profile gvfs.gvfsd-smb /usr/libexec/gvfsd-smb {
   #include <abstractions/gtk>
   #include <abstractions/nameservice>
   
-  /usr/libexec/gvfsd-smb mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gvfsd-smb				mr,
   
-  /etc/samba/smb.conf r,
-  /usr/share/samba/codepages/** r,
-  
-  /var/cache/samba/ r,
-  /var/cache/samba/** r,
+  # READS/WRITES ---------------------------------------
+  /etc/samba/smb.conf					r,
+  /usr/share/samba/codepages/**				r,
+  /var/cache/samba/{,**}				r,
   
 }
 
@@ -189,36 +218,39 @@ profile gvfs.gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse {
   #include <abstractions/gtk>
   #include <abstractions/nameservice>
   
-  /usr/libexec/gvfsd-smb-browse mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gvfsd-smb-browse				mr,
   
-  /etc/samba/smb.conf r,
-  /usr/share/samba/codepages/** r,
-
-  /var/cache/samba/{,**} rw,
+  # READS/WRITES ---------------------------------------
+  /etc/samba/smb.conf					r,
+  /usr/share/samba/codepages/**				r,
+  /var/cache/samba/{,**}				rw,
   
 }
 
 profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   #include <abstractions/base>
+  #include <abstractions/program-work-with-disk-rwk>
   
-  @{PROC}/@{pid}/mounts r,
+  # PSEUDO ---------------------------------------------
+  @{PROC}/@{pid}/mounts					r,
   
-  /usr/libexec/gvfsd-trash mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gvfsd-trash				mr,
   
-  # we must be able create and read all files
-  # DAC will care about access permissions
-  owner @{HOME}/** rw,
-  /media/** rw,
+  # READS/WRITES ---------------------------------------
+  /usr/share/mime/mime.cache				r,
   
-  /usr/share/mime/mime.cache r,
-  owner @{HOME}/.local/share/mime/mime.cache r,
-  owner @{HOME}/.local/share/Trash/{,**} rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.local/share/mime/mime.cache		r,
+  owner @{HOME}/.local/share/Trash/{,**}		rw,
   
 }
 
 profile gvfs.gvfs-open /usr/bin/gvfs-open flags=(complain) {
   #include <abstractions/base>
   
-  /usr/bin/gvfs-open mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/gvfs-open					mr,
   
 }

@@ -1,20 +1,23 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile gptfdisk.gdisk /usr/sbin/gdisk flags=(complain) {
   #include <abstractions/base>
   
-  /dev/pts/[0-9]* rw,
-  /dev/@{BLOCK_ALL} rw,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  /dev/@{BLOCK_ALL}					rw,
   
-  /usr/sbin/gdisk mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/gdisk					mr,
   
 }
