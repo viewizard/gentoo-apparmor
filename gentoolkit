@@ -1,202 +1,246 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
   
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
   
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
   
-  /etc/mime.types r,
-  /etc/profile.env r,
-  /etc/portage/** r,
-  /usr/portage/** r,
-  /usr/local/portage/** r,
-  /usr/share/portage/config/* r,
-  /var/db/pkg/ r,
-  /var/db/pkg/** r,
-  /var/cache/edb/** r,
+  # READS/WRITES ---------------------------------------
+  /etc/mime.types					r,
+  /etc/profile.env					r,
+  /etc/portage/**					r,
+  /usr/portage/**					r,
+  /usr/local/portage/**					r,
+  /usr/share/portage/config/*				r,
+  /var/db/pkg/{,**}					r,
+  /var/cache/edb/**					r,
   
-  owner /tmp/glsa.cron.* w,
+  # TEMP -----------------------------------------------
+  owner /tmp/glsa.cron.*				w,
   
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /bin/uname ix,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/uname						ix,
     
   }
   
 }
-
 
 profile gentoolkit.equery @{PYTHON_EXEC}/equery flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
   
-  /dev/pts/[0-9]* w,
-  @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  @{PROC}/@{pid}/fd/					r,
   
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
   
-  /etc/profile.env r,
-  /etc/terminfo/x/xterm r,
-  /etc/portage/** r,
-  /usr/portage/** r,
-  /usr/local/portage/** r,
-  /usr/share/portage/config/* r,
-  /var/db/pkg/ r,
-  /var/db/pkg/** r,
-  /var/cache/edb/ r,
-  /var/cache/edb/** r,
+  # READS/WRITES ---------------------------------------
+  /etc/profile.env					r,
+  /etc/terminfo/x/xterm					r,
+  /etc/portage/**					r,
+  /usr/portage/**					r,
+  /usr/local/portage/**					r,
+  /usr/share/portage/config/*				r,
+  /var/db/pkg/{,**}					r,
+  /var/cache/edb/{,**}					r,
   
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /bin/uname ix,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/uname						ix,
     
   }
   
 }
-
 
 profile gentoolkit.eclean @{PYTHON_EXEC}/eclean flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
   
-  /dev/pts/[0-9]* rw,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
   
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
   
-  /etc/profile.env r,
-  /etc/eclean/ r,
-  /etc/eclean/* r,
-  /etc/portage/** r,
-  /usr/portage/** r,
-  /usr/portage/distfiles/** rw,
-  /usr/portage/packages/** rw,
-  /usr/local/portage/** r,
-  /usr/share/portage/config/* r,
-  /var/db/pkg/ r,
-  /var/db/pkg/** r,
-  /var/cache/edb/ r,
-  /var/cache/edb/** r,
+  # READS/WRITES ---------------------------------------
+  /etc/profile.env					r,
+  /etc/eclean/{,*}					r,
+  /etc/portage/**					r,
+  /usr/portage/**					r,
+  /usr/portage/distfiles/**				rw,
+  /usr/portage/packages/**				rw,
+  /usr/local/portage/**					r,
+  /usr/share/portage/config/*				r,
+  /var/db/pkg/{,**}					r,
+  /var/cache/edb/{,**}					r,
   
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /bin/uname ix,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/uname						ix,
     
   }
   
 }
-
 
 profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_admin,
   
-  /dev/pts/[0-9]* rw,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  @{PROC}/@{pid}/fd/					r,
   
-  /bin/bash Cx -> shell,
-  /usr/bin/scanelf ix,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /usr/bin/scanelf					ix,
+  # FIX ME! должен вызывать emerge (?)
   
-  / r,
-  /{bin,sbin,usr,opt,lib{,32,64}}/ r,
-  /{bin,sbin,opt,lib{,32,64}}/** r,
-  /usr/{bin,sbin,lib{,32,64,exec},@{CHOST}}/{,**} r,
-  /usr/local/lib{,32,64}/{,**} r,
-  
-  /etc/profile.env r,
-  /etc/ld.so.conf r,
-  /etc/ld.so.conf.d/{,*} r,
-  /etc/portage/{,**} r,
-  /usr/portage/{,**} r,
-  /usr/share/portage/{,**} r,
-  /usr/local/portage/{,**} r,
-  /etc/revdep-rebuild/{,**} r,
-  
-  /var/cache/revdep-rebuild/{,**} rw,
+  # READS/WRITES ---------------------------------------
+  /							r,
+  /{bin,sbin,usr,opt,lib{,32,64}}/			r,
+  /{bin,sbin,opt,lib{,32,64}}/**			r,
+  /usr/{bin,sbin,lib{,32,64,exec},@{CHOST}}/{,**}	r,
+  /usr/local/lib{,32,64}/{,**}				r,
+  /etc/profile.env					r,
+  /etc/ld.so.conf					r,
+  /etc/ld.so.conf.d/{,*}				r,
+  /etc/revdep-rebuild/{,**}				r,
+  /etc/portage/{,**}					r,
+  /usr/portage/{,**}					r,
+  /usr/share/portage/{,**}				r,
+  /usr/local/portage/{,**}				r,
+  /var/cache/revdep-rebuild/{,**}			rw,
   
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /bin/uname ix,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/uname						ix,
     
   }
   
 }
 
-# устаревший, будет заменен на gentoolkit.revdep-rebuild
+# FIX ME! Устаревший, будет заменен на gentoolkit.revdep-rebuild
 profile gentoolkit.revdep-rebuild.sh /usr/bin/revdep-rebuild.sh flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/python>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability fsetid,
   capability chown,
   
-  /dev/tty rw,
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					w,
   
-  @{PYTHON_EXEC_WRAPPER} Cx -> portageq,
+  # EXECUTABLES ----------------------------------------
+  @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
+  /bin/bash						mr,
+  /bin/chown						ix,
+  /bin/chmod						ix,
+  /bin/grep						ix,
+  /bin/sort						ix,
+  /bin/rm						ix,
+  /bin/cat						ix,
+  /bin/sed						ix,
+  /bin/tr						ix,
+  /bin/stty						ix,
+  /bin/sleep						ix,
+  /sbin/consoletype					ix,
+  /usr/bin/find						ix,
+  /usr/bin/tput						ix,
+  /usr/bin/gawk						ix,
+  /usr/bin/renice					ix,
+  /usr/bin/nice						ix,
+  /usr/bin/xargs					ix,
+  /usr/bin/realpath					ix,
+  /usr/bin/ldd						Px -> glibc_ldd_root,
+  /usr/@{CHOST}/binutils-bin/*/objdump			ix,
   
-  / r,
-  /{bin,sbin,usr,opt,lib{,32,64}}/ r,
-  /{bin,sbin,opt,lib{,32,64}}/** ixmr,
-  /usr/{bin,sbin,lib{,32,64,exec},@{CHOST}}/ r,
-  /usr/{bin,sbin,lib{,32,64,exec},@{CHOST}}/** ixmr,
-  /usr/local/lib{,32,64}/ r,
-  /usr/local/lib{,32,64}/** ixmr,
+  # READS/WRITES ---------------------------------------
+  /							r,
+  /{bin,sbin,usr,opt,lib{,32,64}}/			r,
+  /{bin,sbin,opt,lib{,32,64}}/**			r,
+  /usr/{bin,sbin,lib{,32,64,exec},@{CHOST}}/{,**}	r,
+  /usr/local/lib{,32,64}/{,**}				r,
+  /etc/profile.env					r,
+  /etc/ld.so.conf					r,
+  /etc/ld.so.conf.d/{,*}				r,
+  /etc/revdep-rebuild/{,*}				r,
+  /etc/env.d/python/config				r,
+  /etc/terminfo/x/xterm					r,
+  /var/db/pkg/{,**}					r,
+  /var/cache/revdep-rebuild/{,**}			rw,
   
-  /etc/profile.env r,
-  /etc/ld.so.conf r,
-  /etc/ld.so.conf.d/{,*} r,
-  /etc/revdep-rebuild/{,*} r,
-  /etc/env.d/python/config r,
-  /etc/terminfo/x/xterm r,
-  
-  /var/cache/revdep-rebuild/{,**} rw,
-  
-  owner /tmp/sh-thd.* rw,
+  # TEMP -----------------------------------------------
+  owner /tmp/sh-thd.*					rw,
+  owner /tmp/revdep-rebuild.**				rw,
   
   
-  profile portageq {
+  profile portage {
     #include <abstractions/base>
+    #include <abstractions/python>
     #include <abstractions/python-exec>
+    #include <abstractions/nameservice>
     
-    @{PYTHON_EXEC}/portageq Px,
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					w,
+    
+    # EXECUTABLES --------------------------------------
+    @{PYTHON_EXEC}/portageq				Px,
+    @{PYTHON_EXEC}/emerge				Px,
     
   }
   

@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile galculator /usr/bin/galculator {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -18,13 +19,17 @@ profile galculator /usr/bin/galculator {
   #include <abstractions/X>
   #include <abstractions/executable-binary-helper>
   
-  /dev/tty[0-9]* w,
-  @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  @{PROC}/@{pid}/fd/					r,
   
-  /usr/bin/galculator mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/galculator					mr,
   
-  /usr/share/galculator/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /usr/share/galculator/{,**}				r,
   
-  owner @{HOME}/.config/galculator/{,**} rwk,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/galculator/{,**}		rwk,
   
 }

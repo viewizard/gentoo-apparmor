@@ -1,71 +1,80 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile gcc-config /usr/bin/gcc-config flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_admin,
   
-  /dev/tty rw,
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					w,
   
-  /usr/bin/gcc-config r,
-  /bin/bash mr,
-  /bin/mv ix,
-  /bin/cp ix,
-  /bin/rm ix,
-  /bin/ln ix,
-  /bin/tr ix,
-  /bin/cat ix,
-  /bin/sed ix,
-  /bin/touch ix,
-  /bin/sort ix,
-  /bin/grep ix,
-  /bin/egrep ixr,
-  /bin/setfattr ix,
-  /bin/getfattr ix,
-  /usr/bin/find ix,
-  /usr/bin/cmp ix,
-  /usr/bin/gawk ix,
-  /usr/bin/tac ix,
-  /usr/bin/python-wrapper Px,
-  /lib64/rc/bin/eval_ecolors ix,
-  /lib64/rc/bin/ebegin ix,
-  /lib64/rc/bin/ewarn ix,
-  /lib64/rc/bin/eend ix,
-  @{PYTHON_EXEC_WRAPPER} Cx -> portageq,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/gcc-config					r,
+  /bin/bash						mr,
+  /bin/mv						ix,
+  /bin/cp						ix,
+  /bin/rm						ix,
+  /bin/ln						ix,
+  /bin/tr						ix,
+  /bin/cat						ix,
+  /bin/sed						ix,
+  /bin/touch						ix,
+  /bin/sort						ix,
+  /bin/grep						ix,
+  /bin/egrep						ixr,
+  /bin/setfattr						ix,
+  /bin/getfattr						ix,
+  /usr/bin/find						ix,
+  /usr/bin/cmp						ix,
+  /usr/bin/gawk						ix,
+  /usr/bin/tac						ix,
+  /usr/bin/python-wrapper				Px,
+  /lib64/rc/bin/eval_ecolors				ix,
+  /lib64/rc/bin/ebegin					ix,
+  /lib64/rc/bin/ewarn					ix,
+  /lib64/rc/bin/eend					ix,
+  @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,
   
-  / r,
-  /lib{,32,64}/ r,
-  /lib{,32,64}/* rwl,
-  /etc/env.d/ r,
-  /etc/env.d/** rw,
-  /etc/ld.so.conf.d/* rw,
-  /etc/terminfo/x/xterm r,
-  /usr/bin/* rw,
-  /usr/lib64/gcc/@{CHOST}/*/libgcc.a rw,
-  /usr/@{CHOST}/gcc-bin/*/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /							r,
+  /lib{,32,64}/						r,
+  /lib{,32,64}/*					rwl,
+  /etc/env.d/						r,
+  /etc/env.d/**						rw,
+  /etc/ld.so.conf.d/*					rw,
+  /etc/terminfo/x/xterm					r,
+  /usr/bin/*						rw,
+  /usr/lib{,32,64}/gcc/@{CHOST}/*/libgcc.a		rw,
+  /usr/@{CHOST}/gcc-bin/*/{,**}				r,
   
-  owner /tmp/tac* rw,
-  owner /tmp/sh-thd.* rw,
-  owner /tmp/gcc-config-ima rw,
-  owner /tmp/sed* rw,
+  # TEMP -----------------------------------------------
+  owner /tmp/tac*					rw,
+  owner /tmp/sh-thd.*					rw,
+  owner /tmp/gcc-config-ima				rw,
+  owner /tmp/sed*					rw,
   
   
   profile portageq flags=(complain) {
     #include <abstractions/base>
+    #include <abstractions/python>
     #include <abstractions/python-exec>
+    #include <abstractions/nameservice>
     
-    @{PYTHON_EXEC}/portageq Px,
-    @{PYTHON_EXEC}/env-update Px,
+    # EXECUTABLES --------------------------------------
+    @{PYTHON_EXEC}/portageq				Px,
+    @{PYTHON_EXEC}/env-update				Px,
     
   }
   
