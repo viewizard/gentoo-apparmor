@@ -1,54 +1,60 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile ifplugd /usr/sbin/ifplugd {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability sys_tty_config,
   capability net_admin,
   capability sys_module,
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   
-  /usr/sbin/ifplugd mr,
-  /etc/ifplugd/ifplugd.action Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/ifplugd					mr,
+  /etc/ifplugd/ifplugd.action				Px,
   
-  /run/ifplugd.*.pid rwk,
+  # READS/WRITES ---------------------------------------
+  /run/ifplugd.*.pid					rwk,
   
 }
-
 
 profile ifplugd.action /etc/ifplugd/ifplugd.action {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
-  /dev/tty rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   
-  /etc/ifplugd/ifplugd.action r,
-  /bin/bash mr,
-  /bin/grep ix,
-  /bin/rc-status Px,
-  /etc/init.d/net.lo Px,
-  /etc/init.d/dnsmasq Px,
-  /etc/init.d/netmount Px,
-  /etc/init.d/tor Px,
-  /etc/init.d/suricata Px,
+  # EXECUTABLES ----------------------------------------
+  /etc/ifplugd/ifplugd.action				r,
+  /bin/bash						mr,
+  /bin/grep						ix,
+  /bin/rc-status					Px,
+  /etc/init.d/net.lo					Px,
+  /etc/init.d/dnsmasq					Px,
+  /etc/init.d/netmount					Px,
+  /etc/init.d/tor					Px,
+  /etc/init.d/suricata					Px,
   
 }
-
 
 profile ifplugd.ifplugstatus /usr/sbin/ifplugstatus flags=(complain) {
   #include <abstractions/base>
   
-  /usr/sbin/ifplugstatus mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/ifplugstatus				mr,
   
 }

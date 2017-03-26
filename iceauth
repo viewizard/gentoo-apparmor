@@ -1,21 +1,25 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile iceauth /usr/bin/iceauth {
   #include <abstractions/base>
   
-  /usr/bin/iceauth mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/iceauth					mr,
   
-  owner @{HOME}/.ICEauthority* rwl,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.ICEauthority*				rwl,
   
-  owner /tmp/.xfsm-ICE-* rw,
+  # TEMP -----------------------------------------------
+  owner /tmp/.xfsm-ICE-*				rw,
   
 }
