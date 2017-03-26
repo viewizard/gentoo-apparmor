@@ -10,13 +10,6 @@
 
 #include <tunables/global>
 
-# FIX ME!
-# при завершении работы в init.d/apparmor НЕ выгружать правила, иначе не работает в режиме RBAC ! при перезагрузке - не перезагружает компьютер
-# пока НЕ убирать flags=(complain) пока все на 100% не будет работать !
-# Режим проверки (выводит в 12-ю консоль постоянно вывод аудита)
-# /etc/init.d/syslog-ng stop
-# /usr/sbin/syslog-ng --cfgfile "/etc/syslog-ng/syslog-ng-test.conf" --pidfile "/run/syslog-ng.pid"
-
 profile openrc /sbin/openrc flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
