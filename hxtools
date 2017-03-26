@@ -1,25 +1,29 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile hxtools.ofl /usr/bin/ofl {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
   capability sys_ptrace,
   
-  @{PROC} r,
-  @{PROC}/@{pid}/task/ r,
-  @{PROC}/@{pid}/task/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  @{PROC}						r,
+  @{PROC}/@{pid}/task/					r,
+  @{PROC}/@{pid}/task/@{pid}/fd/			r,
   
-  /usr/bin/ofl mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/ofl						mr,
   
 }
