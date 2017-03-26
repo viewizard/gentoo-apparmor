@@ -1,125 +1,138 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile lvm2.lvmetad /sbin/lvmetad flags=(complain) {
   #include <abstractions/base>
   
-  /sbin/lvmetad mr,
+  # EXECUTABLES ----------------------------------------
+  /sbin/lvmetad						mr,
   
-  /run/lvmetad.pid rwk,
-  /run/lvm/lvmetad.socket w,
+  # READS/WRITES ---------------------------------------
+  /run/lvmetad.pid					rwk,
+  /run/lvm/lvmetad.socket				w,
   
 }
 
 profile lvm2.dmsetup /sbin/dmsetup flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_admin,
   
-  /dev/mapper/control rw,
-  @{PROC}/devices r,
+  # PSEUDO ---------------------------------------------
+  /dev/mapper/control					rw,
+  @{PROC}/devices					r,
   
-  /sbin/dmsetup mr,
+  # EXECUTABLES ----------------------------------------
+  /sbin/dmsetup						mr,
   
-  /etc/udev/udev.conf r,
+  # READS/WRITES ---------------------------------------
+  /etc/udev/udev.conf					r,
   
 }
 
 profile lvm2.dmeventd /sbin/dmeventd flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_admin,
   capability sys_resource,
   capability ipc_lock,
   
-  /dev/mapper/control rw,
-  /sys/bus/ r,
-  /sys/class/ r,
-  /sys/class/block/ r,
-  /sys/devices/**/uevent r,
-  @{PROC}/devices r,
-  @{PROC}/@{pid}/mounts r,
-  @{PROC}/@{pid}/oom_score_adj w,
+  # PSEUDO ---------------------------------------------
+  /dev/mapper/control					rw,
+  /sys/bus/						r,
+  /sys/class/						r,
+  /sys/class/block/					r,
+  /sys/devices/**/uevent				r,
+  @{PROC}/devices					r,
+  @{PROC}/@{pid}/mounts					r,
+  @{PROC}/@{pid}/oom_score_adj				w,
   
-  /sbin/dmeventd mr,
+  # EXECUTABLES ----------------------------------------
+  /sbin/dmeventd					mr,
   
-  /etc/lvm/lvm.conf r,
-  /etc/udev/udev.conf r,
-  
-  /run/dmeventd.pid rwk,
-  /run/dmeventd-{client,server} rwk,
-  /run/lock/lvm/* rwk,
-  /run/udev/data/* r,
+  # READS/WRITES ---------------------------------------
+  /etc/lvm/lvm.conf					r,
+  /etc/udev/udev.conf					r,
+  /run/dmeventd.pid					rwk,
+  /run/dmeventd-{client,server}				rwk,
+  /run/lock/lvm/*					rwk,
+  /run/udev/data/*					r,
   
 }
-
 
 profile lvm2.lvm /sbin/lvm flags=(complain) {
   #include <abstractions/base>
   #include <local/lvm2-user-custom>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_admin,
   capability sys_rawio,
   capability ipc_lock,
   capability sys_nice,
   
-  /dev/pts/[0-9]* w,
-  /dev/@{BLOCK_ALL} rw,
-  /dev/mapper/ r,
-  /dev/mapper/control rw,
-  /sys/bus/ r,
-  /sys/class/ r,
-  /sys/class/block/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  /dev/@{BLOCK_ALL}					rw,
+  /dev/mapper/						r,
+  /dev/mapper/control					rw,
+  /sys/bus/						r,
+  /sys/class/						r,
+  /sys/class/block/					r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}{uevent,dev,holders/} r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{uevent,dev,holders/} r,
-  /sys/devices/virtual/bdi/*/read_ahead_kb rw,
-  @{PROC}/devices r,
-  @{PROC}/@{pid}/fd/ r,
-  @{PROC}/@{pid}/mounts r,
-  @{PROC}/@{pid}/mountinfo r,
+  /sys/devices/virtual/bdi/*/read_ahead_kb		rw,
+  @{PROC}/devices					r,
+  @{PROC}/@{pid}/fd/					r,
+  @{PROC}/@{pid}/mounts					r,
+  @{PROC}/@{pid}/mountinfo				r,
   
-  /sbin/lvm mr,
-  /sbin/dmeventd Px,
+  # EXECUTABLES ----------------------------------------
+  /sbin/lvm						mr,
+  /sbin/dmeventd					Px,
   
-  /etc/udev/udev.conf r,
-  /etc/lvm/lvmlocal.conf r,
-  /etc/lvm/lvm.conf r,
-  /etc/lvm/archive/ rw,
-  /etc/lvm/archive/* rwkl,
-  /etc/lvm/backup/ rw,
-  /etc/lvm/backup/* rwkl,
+  # READS/WRITES ---------------------------------------
+  /etc/udev/udev.conf					r,
+  /etc/lvm/lvmlocal.conf				r,
+  /etc/lvm/lvm.conf					r,
+  /etc/lvm/archive/					rw,
+  /etc/lvm/archive/*					rwkl,
+  /etc/lvm/backup/					rw,
+  /etc/lvm/backup/*					rwkl,
+  /run/udev/data/*					r,
+  /run/lock/lvm/					w,
+  /run/lock/lvm/*					rwk,
+  /run/dmeventd-{client,server}				rwk,
   
-  /run/udev/data/* r,
-  /run/lock/lvm/ w,
-  /run/lock/lvm/* rwk,
-  /run/dmeventd-{client,server} rwk,
-  
+  # TEMP -----------------------------------------------
   owner /tmp/{rootbackup,dailyhomebackup,homebackup}.cron.* w,
   
 }
-
 
 profile lvm2.lvmetad.init.d /etc/init.d/lvmetad {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /etc/init.d/lvm Px,
-  /bin/bash Cx -> shell,
-  /sbin/lvmetad Px,
+  # EXECUTABLES ----------------------------------------
+  /etc/init.d/lvm					Px,
+  /bin/bash						Cx -> shell,
+  /sbin/lvmetad						Px,
   
-  /etc/{conf,init}.d/lvmetad r,
-  
-  /run/lvm/ w,
-  /run/lvmetad.pid rwk,
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/lvmetad				r,
+  /run/lvm/						w,
+  /run/lvmetad.pid					rwk,
   
   
   profile shell {
@@ -131,20 +144,22 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad {
   
 }
 
-
 profile lvm2.lvm.init.d /etc/init.d/lvm {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  @{PROC}/misc r,
-  @{PROC}/devices r,
+  # PSEUDO ---------------------------------------------
+  @{PROC}/misc						r,
+  @{PROC}/devices					r,
   
-  /sbin/lvm Px,
-  /bin/bash Cx -> shell,
-  /bin/grep ix,
+  # EXECUTABLES ----------------------------------------
+  /sbin/lvm						Px,
+  /bin/bash						Cx -> shell,
+  /bin/grep						ix,
   
-  /etc/{conf,init}.d/lvm r,
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/lvm				r,
   
   
   profile shell {

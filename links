@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile links /usr/bin/links {
   #include <abstractions/base>
   #include <abstractions/X>
@@ -16,10 +17,13 @@ profile links /usr/bin/links {
   #include <abstractions/user-download>
   #include <abstractions/user-upload>
   
-  /sys/devices/system/cpu/ r,
+  # PSEUDO ---------------------------------------------
+  /sys/devices/system/cpu/				r,
   
-  /usr/bin/links mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/links					mr,
   
-  owner @{HOME}/.links/{,**} rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.links/{,**}				rw,
   
 }

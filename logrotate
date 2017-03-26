@@ -1,51 +1,57 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile logrotate /usr/bin/logrotate {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability setuid,
   capability setgid,
   capability fsetid,
   capability chown,
   capability fowner,
   
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
   
-  /usr/bin/logrotate mr,
-  /bin/bash Cx -> shell,
-  /usr/bin/xz ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/logrotate					mr,
+  /bin/bash						Cx -> shell,
+  /usr/bin/xz						ix,
   
-  /etc/logrotate.conf rk,
-  /etc/logrotate.d/ r,
-  /etc/logrotate.d/* rk,
+  # READS/WRITES ---------------------------------------
+  /							r,
+  /etc/logrotate.conf					rk,
+  /etc/logrotate.d/					r,
+  /etc/logrotate.d/*					rk,
+  /var/log/						r,
+  /var/log/**						rw,
+  /var/lib/logrotate*					rw,
   
-  / r,
-  /var/log/ r,
-  /var/log/** rw,
-  /var/lib/logrotate* rw,
-  
-  # Noisy
-  deny @{HOME}/ r,
+  # NOISY ----------------------------------------------
+  deny @{HOME}/						r,
   
   
   profile shell {
     #include <abstractions/base>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /bin/su Px,
-    /etc/init.d/syslog-ng Px,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/su						Px,
+    /etc/init.d/syslog-ng				Px,
     
   }
   

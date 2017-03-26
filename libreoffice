@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -18,52 +18,57 @@ profile libreoffice /usr/{bin,lib64/libreoffice/program}/soffice {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
   
-  /bin/bash mr,
-  /bin/dirname ix,
-  /bin/basename ix,
-  /bin/grep ix,
-  /bin/uname ix,
-  /bin/ls ix,
-  /bin/sed ix,
-  /usr/lib{,32,64}/libreoffice/program/oosplash Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						mr,
+  /bin/dirname						ix,
+  /bin/basename						ix,
+  /bin/grep						ix,
+  /bin/uname						ix,
+  /bin/ls						ix,
+  /bin/sed						ix,
+  /usr/lib{,32,64}/libreoffice/program/oosplash		Px,
   
 }
-
 
 profile libreoffice.oosplash /usr/lib{,32,64}/libreoffice/program/oosplash {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/queue/rotational r,
   
-  /usr/lib{,32,64}/libreoffice/program/oosplash m,
-  /usr/lib{,32,64}/libreoffice/program/javaldx Px,
-  /usr/lib{,32,64}/libreoffice/program/soffice.bin Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/libreoffice/program/oosplash		m,
+  /usr/lib{,32,64}/libreoffice/program/javaldx		Px,
+  /usr/lib{,32,64}/libreoffice/program/soffice.bin	Px,
   
-  owner @{HOME}/.Xauthority r,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.Xauthority				r,
   
 }
-
 
 profile libreoffice.javaldx /usr/lib{,32,64}/libreoffice/program/javaldx {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   
-  /usr/lib{,32,64}/libreoffice/program/javaldx m,
-  /opt/{oracle-jdk,icedtea}-bin-*/bin/java Px,
-  /opt/{oracle-jdk,icedtea}-bin-*/jre/bin/java Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/libreoffice/program/javaldx		m,
+  /opt/{oracle-jdk,icedtea}-bin-*/bin/java		Px,
+  /opt/{oracle-jdk,icedtea}-bin-*/jre/bin/java		Px,
   
-  owner @{HOME}/.config/libreoffice/ rw,
-  owner @{HOME}/.config/libreoffice/** rwk,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/libreoffice/			rw,
+  owner @{HOME}/.config/libreoffice/**			rwk,
   
 }
-
 
 profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   #include <abstractions/base>
@@ -81,41 +86,45 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
   
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* rw,
-  /sys/devices/system/cpu/ r,
-  @{PROC}/version r,
-  @{PROC}/sys/vm/mmap_min_addr r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
+  /sys/devices/system/cpu/				r,
+  @{PROC}/version					r,
+  @{PROC}/sys/vm/mmap_min_addr				r,
   
-  /usr/lib{,32,64}/libreoffice/program/soffice.bin m,
-  /bin/bash Cx -> shell,
-  /opt/{oracle-jdk,icedtea}-bin-*/bin/java Px,
-  /opt/{oracle-jdk,icedtea}-bin-*/jre/bin/java Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/libreoffice/program/soffice.bin	m,
+  /bin/bash						Cx -> shell,
+  /opt/{oracle-jdk,icedtea}-bin-*/bin/java		Px,
+  /opt/{oracle-jdk,icedtea}-bin-*/jre/bin/java		Px,
   
-  /etc/OpenCL/vendors/{,*} r,
-  /usr/lib{,32,64}/libreoffice/{,**} r,
-  /usr/share/liblangtag/** r,
-  /usr/share/libexttextcat/{,*} r,
-  
-  owner @{HOME}/.config/libreoffice/ rw,
-  owner @{HOME}/.config/libreoffice/** rwk,
-  owner @{HOME}/.languagetool-ooo.cfg rw,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/OpenCL/vendors/{,*}				r,
+  /usr/lib{,32,64}/libreoffice/{,**}			r,
+  /usr/share/liblangtag/**				r,
+  /usr/share/libexttextcat/{,*}				r,
   # jre
-  /opt/{oracle-jdk,icedtea}-bin-*/{,**} r,
-  /opt/{oracle-jdk,icedtea}-bin-*/jre/lib/**.so rm,
-  /usr/ r,
-  /usr/lib{,32,64}/ r,
-  /usr/lib{,32,64}/jvm/{,**} r,
+  /opt/{oracle-jdk,icedtea}-bin-*/{,**}			r,
+  /opt/{oracle-jdk,icedtea}-bin-*/jre/lib/**.so		rm,
+  /usr/							r,
+  /usr/lib{,32,64}/					r,
+  /usr/lib{,32,64}/jvm/{,**}				r,
   
-  /tmp/ r,
-  owner /tmp/?????? rwk,
-  owner /tmp/*.tmp/ rw,
-  owner /tmp/*.tmp/*.tmp rwk,
-  owner /tmp/.gl* rw,
-  owner /tmp/OSL_PIPE_[0-9]*_SingleOfficeIPC_* rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/libreoffice/			rw,
+  owner @{HOME}/.config/libreoffice/**			rwk,
+  owner @{HOME}/.languagetool-ooo.cfg			rw,
   
-  # Noisy
+  # TEMP -----------------------------------------------
+  /tmp/							r,
+  owner /tmp/??????					rwk,
+  owner /tmp/*.tmp/					rw,
+  owner /tmp/*.tmp/*.tmp				rwk,
+  owner /tmp/.gl*					rw,
+  owner /tmp/OSL_PIPE_[0-9]*_SingleOfficeIPC_*		rw,
+  
+  # NOISY ----------------------------------------------
   deny /usr/lib{,32,64}/libreoffice/share/uno_packages/cache/* w,
   
   
@@ -123,13 +132,15 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
     #include <abstractions/base>
     #include <abstractions/xdg-open>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /bin/sed ix,
-    /bin/grep ix,
-    /usr/bin/paperconf ix,
-    /usr/lib{,32,64}/libreoffice/program/open-url ix,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/sed						ix,
+    /bin/grep						ix,
+    /usr/bin/paperconf					ix,
+    /usr/lib{,32,64}/libreoffice/program/open-url	ix,
     
   }
   

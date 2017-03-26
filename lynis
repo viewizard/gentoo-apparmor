@@ -1,116 +1,129 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile lynis /usr/sbin/lynis {
   #include <abstractions/base>
   #include <abstractions/perl>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   capability dac_read_search,
   
-  /dev/tty rw,
-  /dev/mapper/control w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/mapper/control					w,
   
-  /bin/bash Cxmr -> shell,
-  /bin/date ix,
-  /bin/expr ix,
-  /bin/ls ix,
-  /bin/egrep ix,
-  /bin/grep ix,
-  /bin/cut ix,
-  /bin/wc ix,
-  /bin/sed ix,
-  /bin/tr ix,
-  /bin/chmod ix,
-  /bin/ps Px,
-  /bin/uname ix,
-  /bin/head ix,
-  /bin/cat ix,
-  /bin/echo ix,
-  /bin/kmod Px,
-  /bin/sort ix,
-  /bin/sleep ix,
-  /bin/ifconfig ix,
-  /bin/hostname ix,
-  /bin/readlink ix,
-  /bin/mktemp ix,
-  /bin/passwd Px,
-  /bin/rm ix,
-  /bin/mount Px,
-  /bin/netstat Px,
-  /usr/sbin/sysctl Px,
-  /sbin/lvm Px,
-  /sbin/tune2fs ix,
-  /sbin/rpcinfo ix,
-  /usr/bin/aide Px,
-  /usr/bin/id ix,
-  /usr/bin/wget ix,
-  /usr/bin/gawk ix,
-  /usr/bin/find ix,
-  /usr/bin/nmap ix,
-  /usr/bin/openssl ix,
-  /usr/bin/xargs ix,
-  /usr/bin/uniq ix,
-  /usr/bin/which ix,
-  /usr/bin/dig ix,
-  /usr/bin/ntpq ix,
-  /usr/bin/shasum-*-perl-* ix,
-  /usr/sbin/smbd Cx -> smbd,
-  /usr/sbin/sshd Cx -> sshd,
-  /usr/sbin/syslog-ng Px,
-  /usr/bin/logrotate Px,
-  /usr/sbin/grpck ix,
-  /usr/sbin/pwck ix,
-  @{PYTHON_EXEC_WRAPPER} Cx -> aa_status,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cxmr -> shell,
+  /bin/date						ix,
+  /bin/expr						ix,
+  /bin/ls						ix,
+  /bin/egrep						ix,
+  /bin/grep						ix,
+  /bin/cut						ix,
+  /bin/wc						ix,
+  /bin/sed						ix,
+  /bin/tr						ix,
+  /bin/chmod						ix,
+  /bin/ps						Px,
+  /bin/uname						ix,
+  /bin/head						ix,
+  /bin/cat						ix,
+  /bin/echo						ix,
+  /bin/kmod						Px,
+  /bin/sort						ix,
+  /bin/sleep						ix,
+  /bin/ifconfig						Px,
+  /bin/hostname						ix,
+  /bin/readlink						ix,
+  /bin/mktemp						ix,
+  /bin/passwd						Px,
+  /bin/rm						ix,
+  /bin/mount						Px,
+  /bin/netstat						Px,
+  /sbin/lvm						Px,
+  /sbin/tune2fs						ix,
+  /sbin/rpcinfo						ix,
+  /usr/bin/aide						Px,
+  /usr/bin/id						ix,
+  /usr/bin/wget						ix,
+  /usr/bin/gawk						ix,
+  /usr/bin/find						ix,
+  /usr/bin/nmap						Px,
+  /usr/bin/openssl					ix,
+  /usr/bin/xargs					ix,
+  /usr/bin/uniq						ix,
+  /usr/bin/which					ix,
+  /usr/bin/dig						ix,
+  /usr/bin/ntpq						Px,
+  /usr/bin/shasum-*-perl-*				ix,
+  /usr/sbin/smbd					Cx -> smbd,
+  /usr/sbin/sshd					Cx -> sshd,
+  /usr/sbin/sysctl					Px,
+  /usr/sbin/syslog-ng					Px,
+  /usr/bin/logrotate					Px,
+  /usr/sbin/grpck					ix,
+  /usr/sbin/pwck					ix,
+  @{PYTHON_EXEC_WRAPPER}				Cx -> aa_status,
   
-  /{,**} r,
-  deny /* w,
+  # READS/WRITES ---------------------------------------
+  /{,**}						r,
+  /run/lynis.pid					rw,
+  /var/log/lynis.log					rw,
+  /var/log/lynis-report.dat				rw,
   
-  /run/lynis.pid rw,
-  /var/log/lynis.log rw,
-  /var/log/lynis-report.dat rw,
+  # TEMP -----------------------------------------------
+  owner /tmp/lynis.*					rw,
+  owner /tmp/lynis2.*					rw,
+  owner /tmp/lynis.cron.??????				rw,
+  owner /tmp/lynis-shellshock-test.*			rw,
   
-  owner /tmp/lynis.* rw,
-  owner /tmp/lynis2.* rw,
-  owner /tmp/lynis.cron.?????? rw,
-  owner /tmp/lynis-shellshock-test.* rw,
+  # NOISY ----------------------------------------------
+  deny /*						w,
   
   
   profile shell {
     #include <abstractions/base>
     
+    # CAPABILITIES -------------------------------------
     capability dac_read_search,
     capability dac_override,
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash ixmr,
-    /bin/grep ix,
-    /bin/env ix,
-    /bin/rm ix,
-    /bin/cat ix,
-    /bin/date ix,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						ixmr, # FIX ME! не просто mr?
+    /bin/grep						ix,
+    /bin/env						ix,
+    /bin/rm						ix,
+    /bin/cat						ix,
+    /bin/date						ix,
     
-    owner /tmp/sh-thd.* rw,
-    owner /tmp/lynis-shellshock-test.* rw,
+    # TEMP ---------------------------------------------
+    owner /tmp/sh-thd.*					rw,
+    owner /tmp/lynis-shellshock-test.*			rw,
     
   }
   
   profile smbd {
     #include <abstractions/base>
     
-    /usr/sbin/smbd mr,
+    # EXECUTABLES --------------------------------------
+    /usr/sbin/smbd					mr,
     
-    /usr/share/samba/{,**} r,
+    # READS/WRITES -------------------------------------
+    /usr/share/samba/{,**}				r,
     
   }
   
@@ -118,15 +131,19 @@ profile lynis /usr/sbin/lynis {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
+    # CAPABILITIES -------------------------------------
     capability setuid,
     capability setgid,
     
-    @{PROC}/@{pid}/fd/ r,
+    # PSEUDO -------------------------------------------
+    @{PROC}/@{pid}/fd/					r,
     
-    /usr/sbin/sshd mr,
+    # EXECUTABLES --------------------------------------
+    /usr/sbin/sshd					mr,
     
-    /etc/ssl/openssl.cnf r,
-    /etc/ssh/sshd_config r,
+    # READS/WRITES -------------------------------------
+    /etc/ssl/openssl.cnf				r,
+    /etc/ssh/sshd_config				r,
     
   }
   
@@ -134,7 +151,8 @@ profile lynis /usr/sbin/lynis {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
-    @{PYTHON_EXEC}/aa-status Px,
+    # EXECUTABLES --------------------------------------
+    @{PYTHON_EXEC}/aa-status				Px,
     
   }
   
