@@ -1,18 +1,20 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile man-db.mandb /usr/bin/mandb {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability setuid,
   capability setgid,
   capability fsetid,
@@ -21,47 +23,51 @@ profile man-db.mandb /usr/bin/mandb {
   capability dac_override,
   capability dac_read_search,
   
-  /usr/bin/mandb mr,
-  /bin/bzip2 ix,
-  /usr/libexec/man-db/manconv ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/mandb					mr,
+  /bin/bzip2						ix,
+  /usr/libexec/man-db/manconv				ix,
   
-  /etc/man_db.conf r,
-  /usr/share/man/{,**} r,
-  
-  /var/cache/man/ r,
-  /var/cache/man/** rwk,
+  # READS/WRITES ---------------------------------------
+  /etc/man_db.conf					r,
+  /usr/share/man/{,**}					r,
+  /var/cache/man/					r,
+  /var/cache/man/**					rwk,
   
 }
 
 profile man-db.man /usr/bin/man flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability setuid,
   capability setgid,
   
-  /dev/tty rw,
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					w,
   
-  /usr/bin/man mr,
-  /bin/bzip2 ix,
-  /bin/gzip ix,
-  /usr/bin/less ix,
-  /usr/bin/preconv ix,
-  /usr/bin/neqn ix,
-  /usr/bin/nroff ixr,
-  /usr/bin/groff ix,
-  /usr/bin/troff ix,
-  /usr/bin/grotty ix,
-  /usr/bin/tbl ix,
-  /usr/bin/locale ix,
-  /usr/libexec/man-db/manconv ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/man						mr,
+  /bin/bzip2						ix,
+  /bin/gzip						ix,
+  /usr/bin/less						ix,
+  /usr/bin/preconv					ix,
+  /usr/bin/neqn						ix,
+  /usr/bin/nroff					ixr,
+  /usr/bin/groff					ix,
+  /usr/bin/troff					ix,
+  /usr/bin/grotty					ix,
+  /usr/bin/tbl						ix,
+  /usr/bin/locale					ix,
+  /usr/libexec/man-db/manconv				ix,
   
-  /etc/man_db.conf r,
-  /etc/terminfo/x/xterm r,
-  /usr/share/groff/{,**} r,
-  /usr/share/man/{,**} r,
-  
-  /var/cache/man/ r,
-  /var/cache/man/** rwk,
+  # READS/WRITES ---------------------------------------
+  /etc/man_db.conf					r,
+  /etc/terminfo/x/xterm					r,
+  /usr/share/groff/{,**}				r,
+  /usr/share/man/{,**}					r,
+  /var/cache/man/					r,
+  /var/cache/man/**					rwk,
   
 }

@@ -1,25 +1,30 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile mailx /usr/bin/{mail,Mail,mailx} {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability setuid,
   capability setgid,
   
-  /usr/bin/mail mr,
-  /usr/sbin/sendmail Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/mail						mr,
+  /usr/sbin/sendmail					Px,
   
-  /etc/mail.rc r,
+  # READS/WRITES ---------------------------------------
+  /etc/mail.rc						r,
   
-  owner /tmp/mail.* rw,
+  # TEMP -----------------------------------------------
+  owner /tmp/mail.*					rw,
   
 }

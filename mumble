@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile mumble /usr/bin/mumble {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -19,22 +20,24 @@ profile mumble /usr/bin/mumble {
   #include <abstractions/nameservice>
   #include <abstractions/audio>
   
-  # /dev/tty rw,
-  /dev/tty[0-9]* w,
-  /dev/shm/MumbleLink.* rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /dev/shm/MumbleLink.*					rw,
   
-  /usr/bin/mumble mr,
-  /usr/bin/lsb_release Pxr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/mumble					mr,
+  /usr/bin/lsb_release					Pxr,
   
-  owner @{HOME}/.local/share/data/Mumble/ rw,
-  owner @{HOME}/.local/share/data/Mumble/** rwk,
-  owner @{HOME}/.config/Mumble/ rw,
-  owner @{HOME}/.config/Mumble/** rwk,
-  owner @{HOME}/.MumbleSocket rw,
-  owner @{HOME}/.MumbleOverlayPipe rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.local/share/data/Mumble/		rw,
+  owner @{HOME}/.local/share/data/Mumble/**		rwk,
+  owner @{HOME}/.config/Mumble/				rw,
+  owner @{HOME}/.config/Mumble/**			rwk,
+  owner @{HOME}/.MumbleSocket				rw,
+  owner @{HOME}/.MumbleOverlayPipe			rw,
   
-  # Noisy
-  deny /etc/ r,
-  deny @{HOME} r,
+  # NOISY ----------------------------------------------
+  deny /etc/						r,
+  deny @{HOME}						r,
   
 }

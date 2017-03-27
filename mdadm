@@ -1,78 +1,83 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile mdadm /sbin/mdadm flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_admin,
   capability sys_rawio,
   capability mknod,
   
-  /dev/ r,
-  /dev/** r,
-  /dev/pts/[0-9]* rw,
-  /dev/.tmp.md.* w,
-  /sys/block/ r,
-  /sys/bus/pci/drivers/ahci/ r,
-  /sys/devices/pci[0-9]*/**/{class,device,vendor} r,
-  /sys/devices/virtual/block/md[0-9]*/* r,
-  /sys/devices/virtual/block/md[0-9]*/md/array_state rw,
+  # PSEUDO ---------------------------------------------
+  /dev/{,**}						r,
+  /dev/pts/[0-9]*					rw,
+  /dev/.tmp.md.*					w,
+  /sys/block/						r,
+  /sys/bus/pci/drivers/ahci/				r,
+  /sys/devices/pci[0-9]*/**/{class,device,vendor}	r,
+  /sys/devices/virtual/block/md[0-9]*/*			r,
+  /sys/devices/virtual/block/md[0-9]*/md/array_state	rw,
   /sys/devices/virtual/block/md[0-9]*/md/{,component_size,metadata_version} r,
   /sys/devices/virtual/block/md[0-9]*/md/dev-@{BLOCK_REAL}/* r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}dev r,
-  @{PROC}/{devices,mdstat,partitions} r,
+  @{PROC}/{devices,mdstat,partitions}			r,
   
-  /sbin/mdadm mr,
+  # EXECUTABLES ----------------------------------------
+  /sbin/mdadm						mr,
   
-  /etc/mdadm.conf r,
-  
-  owner /run/mdadm.pid rw,
-  owner /run/mdadm/ rw,
-  owner /run/mdadm/* rwk,
+  # READS/WRITES ---------------------------------------
+  /etc/mdadm.conf					r,
+  owner /run/mdadm.pid					rw,
+  owner /run/mdadm/					rw,
+  owner /run/mdadm/*					rwk,
   
 }
-
 
 profile mdadm.checkarray /usr/sbin/checkarray flags=(complain) {
   #include <abstractions/base>
   
-  /dev/tty rw,
-  /dev/pts/[0-9]* w,
-  /sys/block/ r,
-  /sys/devices/virtual/block/md[0-9]*/{,**} r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					w,
+  /sys/block/						r,
+  /sys/devices/virtual/block/md[0-9]*/{,**}		r,
   
-  /bin/bash mr,
-  /usr/sbin/checkarray r,
-  /bin/ls ix,
-  /bin/egrep ixr,
-  /bin/grep ix,
-  /usr/bin/getopt ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/checkarray					r,
+  /bin/bash						mr,
+  /bin/ls						ix,
+  /bin/egrep						ixr,
+  /bin/grep						ix,
+  /usr/bin/getopt					ix,
   
-  /etc/default/mdadm r,
+  # READS/WRITES ---------------------------------------
+  /etc/default/mdadm					r,
   
 }
-
 
 profile mdadm.init.d /etc/init.d/mdadm {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /sbin/mdadm Px,
-  /bin/bash Cx -> shell,
-  /bin/rm ix,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/rm						ix,
+  /sbin/mdadm						Px,
   
-  /etc/{conf,init}.d/mdadm r,
-  
-  /run/mdadm.pid rwk,
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/mdadm				r,
+  /run/mdadm.pid					rwk,
   
   
   profile shell {

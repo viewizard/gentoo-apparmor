@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile mate-screensaver /usr/bin/mate-screensaver {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -17,19 +18,24 @@ profile mate-screensaver /usr/bin/mate-screensaver {
   #include <abstractions/gtk>
   #include <abstractions/dconf>
   
-  /dev/tty[0-9]* w,
-  owner @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  owner @{PROC}/@{pid}/fd/				r,
   
-  /usr/bin/mate-screensaver mr,
-  /usr/libexec/mate-screensaver-dialog Px,
-  /usr/libexec/mate-screensaver-gl-helper Px,
-  /usr/libexec/mate-screensaver/popsquares Px,
-  /usr/libexec/mate-screensaver/floaters Px,
-  /usr/libexec/mate-screensaver/slideshow Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/mate-screensaver				mr,
+  /usr/libexec/mate-screensaver-dialog			Px,
+  /usr/libexec/mate-screensaver-gl-helper		Px,
+  /usr/libexec/mate-screensaver/popsquares		Px,
+  /usr/libexec/mate-screensaver/floaters		Px,
+  /usr/libexec/mate-screensaver/slideshow		Px,
   
-  /etc/xdg/menus/mate-screensavers.menu r,
-  /usr/share/mate-screensaver/{,**} r,
-  /usr/share/{,mate/}desktop-directories/{,*.directory} r,
+  # READS/WRITES ---------------------------------------
+  /etc/xdg/menus/mate-screensavers.menu			r,
+  /usr/share/mate-screensaver/{,**}			r,
+  /usr/share/{,mate/}desktop-directories/{,*.directory}	r,
+  
+  # USERS ----------------------------------------------
   owner @{HOME}/.local/share/desktop-directories/{,*.directory} r,
   
 }
@@ -37,17 +43,19 @@ profile mate-screensaver /usr/bin/mate-screensaver {
 profile mate-screensaver.sh /usr/bin/mate-screensaver.sh {
   #include <abstractions/base>
   
-  /dev/tty rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   
-  /bin/bash mr,
-  /usr/bin/mate-screensaver.sh r,
-  /bin/grep ix,
-  /bin/sleep ixr,
-  /bin/ps Px,
-  /usr/bin/mate-screensaver Px,
-  /usr/bin/xautolock Px,
-  /usr/bin/killall Px,
-  /usr/bin/gsettings Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/mate-screensaver.sh				r,
+  /bin/bash						mr,
+  /bin/grep						ix,
+  /bin/sleep						ixr,
+  /bin/ps						Px,
+  /usr/bin/mate-screensaver				Px,
+  /usr/bin/xautolock					Px,
+  /usr/bin/killall					Px,
+  /usr/bin/gsettings					Px,
   
 }
 
@@ -59,17 +67,22 @@ profile mate-screensaver-preferences /usr/bin/mate-screensaver-preferences {
   #include <abstractions/gtk>
   #include <abstractions/dconf>
   
-  owner @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  owner @{PROC}/@{pid}/fd/				r,
   
-  /usr/bin/mate-screensaver-preferences mr,
-  /usr/libexec/mate-screensaver-gl-helper Px,
-  /usr/libexec/mate-screensaver/popsquares Px,
-  /usr/libexec/mate-screensaver/floaters Px,
-  /usr/libexec/mate-screensaver/slideshow Px,
-
-  /etc/xdg/menus/mate-screensavers.menu r,
-  /usr/share/mate-screensaver/{,**} r,
-  /usr/share/{,mate/}desktop-directories/{,*.directory} r,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/mate-screensaver-preferences			mr,
+  /usr/libexec/mate-screensaver-gl-helper		Px,
+  /usr/libexec/mate-screensaver/popsquares		Px,
+  /usr/libexec/mate-screensaver/floaters		Px,
+  /usr/libexec/mate-screensaver/slideshow		Px,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/xdg/menus/mate-screensavers.menu			r,
+  /usr/share/mate-screensaver/{,**}			r,
+  /usr/share/{,mate/}desktop-directories/{,*.directory}	r,
+  
+  # USERS ----------------------------------------------
   owner @{HOME}/.local/share/desktop-directories/{,*.directory} r,
   
 }
@@ -79,7 +92,8 @@ profile mate-screensaver.popsquares /usr/libexec/mate-screensaver/popsquares {
   #include <abstractions/X>
   #include <abstractions/gtk>
   
-  /usr/libexec/mate-screensaver/popsquares mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/mate-screensaver/popsquares		mr,
   
 }
 
@@ -89,10 +103,12 @@ profile mate-screensaver.floaters /usr/libexec/mate-screensaver/floaters {
   #include <abstractions/X>
   #include <abstractions/gtk>
   
-  /usr/libexec/mate-screensaver/floaters mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/mate-screensaver/floaters		mr,
   
-  /usr/share/pixmaps/gnome-logo-white.svg r,
-  /usr/share/pixmaps/mate-logo-white.svg r,
+  # READS/WRITES ---------------------------------------
+  /usr/share/pixmaps/gnome-logo-white.svg		r,
+  /usr/share/pixmaps/mate-logo-white.svg		r,
   
 }
 
@@ -102,12 +118,14 @@ profile mate-screensaver.slideshow /usr/libexec/mate-screensaver/slideshow {
   #include <abstractions/X>
   #include <abstractions/gtk>
   
-  /usr/libexec/mate-screensaver/slideshow mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/mate-screensaver/slideshow		mr,
   
-  /usr/share/backgrounds/cosmos/ r,
+  # READS/WRITES ---------------------------------------
+  /usr/share/backgrounds/cosmos/			r,
   /usr/share/backgrounds/cosmos/*.{jpg,jpeg,tga,png,bmp} r,
-  /usr/local/share/backgrounds/ r,
-  /usr/local/share/backgrounds/*.{jpg,jpeg,tga,png,bmp} r,
+  /usr/local/share/backgrounds/				r,
+  /usr/local/share/backgrounds/*.{jpg,jpeg,tga,png,bmp}	r,
   
 }
 
@@ -116,7 +134,8 @@ profile mate-screensaver-gl-helper /usr/libexec/mate-screensaver-gl-helper {
   #include <abstractions/X>
   #include <abstractions/nvidia>
   
-  /usr/libexec/mate-screensaver-gl-helper mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/mate-screensaver-gl-helper		mr,
   
 }
 
@@ -130,28 +149,34 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
   
-  owner @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  owner @{PROC}/@{pid}/fd/				r,
   
-  /usr/libexec/mate-screensaver-dialog mr,
-  /bin/bash Cx -> shell,
-  /sbin/unix_chkpwd Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/mate-screensaver-dialog			mr,
+  /bin/bash						Cx -> shell,
+  /sbin/unix_chkpwd					Px,
   
-  /etc/environment r,
-  /usr/share/mate-screensaver/{,**} r,
-  /run/utmp rk,
+  # READS/WRITES ---------------------------------------
+  /etc/environment					r,
+  /usr/share/mate-screensaver/{,**}			r,
+  /run/utmp						rk,
   
-  owner @{HOME}/.face r,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.face					r,
   
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/authentication-pam_usb>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /bin/wc ix,
-    /usr/bin/pidof Px,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/wc						ix,
+    /usr/bin/pidof					Px,
     
   }
   
@@ -160,9 +185,11 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
 profile mate-screensaver-command /usr/bin/mate-screensaver-command {
   #include <abstractions/base>
   
-  /dev/tty[0-9] w,
-  /dev/pts/[0-9]* rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]						w,
+  /dev/pts/[0-9]*					rw,
   
-  /usr/bin/mate-screensaver-command mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/mate-screensaver-command			mr,
   
 }

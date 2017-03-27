@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -26,11 +26,14 @@ profile masterpdfeditor /opt/master-pdf-editor-3/masterpdfeditor3 {
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   
-  /opt/master-pdf-editor-3/{,**} mr,
+  # EXECUTABLES ----------------------------------------
+  /opt/master-pdf-editor-3/{,**}			mr,
   
-  owner "@{HOME}/.config/Code Industry/" rw,
-  owner "@{HOME}/.config/Code Industry/*" rwk,
+  # READS/WRITES ---------------------------------------
+  owner "@{HOME}/.config/Code Industry/"		rw,
+  owner "@{HOME}/.config/Code Industry/*"		rwk,
   
 }

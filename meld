@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -29,38 +29,43 @@ profile meld /usr/bin/meld {
   #include <abstractions/dbus-session>
   #include <abstractions/dconf>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
   capability fowner,
   
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* rw,
-  /dev/shm/* rwl,
-  @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
+  /dev/shm/*						rwl,
+  @{PROC}/@{pid}/fd/					r,
   
-  /usr/bin/meld mr,
-  /bin/env r,
-  /usr/bin/which ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/meld						mr,
+  /bin/env						r,
+  /usr/bin/which					ix,
   # Usage:
   #    meld <file|folder>                Start a version control comparison
   # In the same time, "meld <file>" and git close meld with message:
   # Error: Git: Path <our file> is invalid or not present
   # Error: Path not in repository
   #/usr/bin/git Px,
-  deny /usr/bin/git x,
+  deny /usr/bin/git					x,
   
-  /usr/share/meld/{,**} r,
-  /usr/share/gtksourceview-[2-9]*/{,**} r,
-  @{PYTHON_PACKAGES}/cairo/**.pyc{,.*} w,
+  # READS/WRITES ---------------------------------------
+  /usr/share/meld/{,**}					r,
+  /usr/share/gtksourceview-[2-9]*/{,**}			r,
+  @{PYTHON_PACKAGES}/cairo/**.pyc{,.*}			w,
   
-  owner @{HOME}/.config/meld/{,**} rw,
-  owner @{HOME}/.local/share/meld/{,**} rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/meld/{,**}			rw,
+  owner @{HOME}/.local/share/meld/{,**}			rw,
   
-  owner /tmp/??????{,_*} rw,
-  owner /var/tmp/?????? rw,
+  # TEMP -----------------------------------------------
+  owner /tmp/??????{,_*}				rw,
+  owner /var/tmp/??????					rw,
   
 }
-
 
 profile meld_root {
   #include <abstractions/base>
@@ -75,37 +80,43 @@ profile meld_root {
   #include <abstractions/executable-binary-helper_root>
   #include <abstractions/cups-client>
   #include <abstractions/dbus-session>
-  #include <abstractions/user-systemwide-files>
   #include <abstractions/dconf>
+  #include <abstractions/user-systemwide-files>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
   capability fowner,
   
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* rw,
-  /dev/shm/* rwl,
-  @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
+  /dev/shm/*						rwl,
+  @{PROC}/@{pid}/fd/					r,
   
-  /usr/bin/meld mr,
-  /bin/env r,
-  /usr/bin/which ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/meld						mr,
+  /bin/env						r,
+  /usr/bin/which					ix,
   # Usage:
   #    meld <file|folder>                Start a version control comparison
   # In the same time, "meld <file>" and git close meld with message:
   # Error: Git: Path <our file> is invalid or not present
   # Error: Path not in repository
   #/usr/bin/git Px -> git_root,
-  deny /usr/bin/git x,
+  deny /usr/bin/git					x,
   
-  /usr/share/meld/{,**} r,
-  /usr/share/gtksourceview-[2-9]*/{,**} r,
-  @{PYTHON_PACKAGES}/cairo/**.pyc{,.*} w,
+  # READS/WRITES ---------------------------------------
+  /usr/share/meld/{,**}					r,
+  /usr/share/gtksourceview-[2-9]*/{,**}			r,
+  @{PYTHON_PACKAGES}/cairo/**.pyc{,.*}			w,
   
-  owner @{HOME}/.config/meld/{,**} rw,
-  owner @{HOME}/.local/share/meld/{,**} rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/meld/{,**}			rw,
+  owner @{HOME}/.local/share/meld/{,**}			rw,
   
-  owner /tmp/??????{,_*} rw,
-  owner /var/tmp/?????? rw,
+  # TEMP -----------------------------------------------
+  owner /tmp/??????{,_*}				rw,
+  owner /var/tmp/??????					rw,
   
 }
