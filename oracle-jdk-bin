@@ -1,27 +1,30 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile oracle-jdk-bin.java /opt/oracle-jdk-bin-*/{,jre/}bin/java {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
-  /sys/devices/system/cpu/ r,
+  # PSEUDO ---------------------------------------------
+  /sys/devices/system/cpu/				r,
   
-  /opt/oracle-jdk-bin-*/{,jre/}bin/java ixmr,
+  # EXECUTABLES ----------------------------------------
+  /opt/oracle-jdk-bin-*/{,jre/}bin/java			ixmr,
   
-  /opt/oracle-jdk-bin-*/** r,
-  /opt/oracle-jdk-bin-*/lib/**.so mr,
-  /opt/oracle-jdk-bin-*/jre/lib/**.so mr,
+  # READS/WRITES ---------------------------------------
+  /opt/oracle-jdk-bin-*/**				r,
+  /opt/oracle-jdk-bin-*/lib/**.so			mr,
+  /opt/oracle-jdk-bin-*/jre/lib/**.so			mr,
   
-  # Noisy
-  deny @{HOME}/ r,
-  
+  # NOISY ----------------------------------------------
+  deny @{HOME}/						r,
 }

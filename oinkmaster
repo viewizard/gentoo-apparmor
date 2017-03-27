@@ -1,34 +1,37 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile oinkmaster.pl /usr/bin/oinkmaster.pl {
   #include <abstractions/base>
   #include <abstractions/perl>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_read_search,
   capability dac_override,
   
-  /usr/bin/oinkmaster.pl mr,
-  /bin/gzip ix,
-  /bin/tar ix,
-  /usr/bin/wget ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/oinkmaster.pl				mr,
+  /bin/gzip						ix,
+  /bin/tar						ix,
+  /usr/bin/wget						ix,
   
-  /etc/oinkmaster.conf r,
-  /etc/suricata/rules/ r,
-  /etc/suricata/rules/** rw,
+  # READS/WRITES ---------------------------------------
+  /etc/oinkmaster.conf					r,
+  /etc/wgetrc						r,
+  /etc/suricata/rules/					r,
+  /etc/suricata/rules/**				rw,
   
-  /etc/wgetrc r,
-  
-  owner /tmp/oinkmaster.cron.??????{,/,/**} rw,
-  owner /tmp/oinkmaster.*/{,**} rw,
-  
+  # TEMP -----------------------------------------------
+  owner /tmp/oinkmaster.cron.??????{,/,/**}		rw,
+  owner /tmp/oinkmaster.*/{,**}				rw,
 }

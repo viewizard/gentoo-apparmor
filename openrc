@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -14,281 +14,286 @@ profile openrc /sbin/openrc flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   capability sys_tty_config,
   capability dac_override,
   capability kill,
   
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
-  /dev/console rw,
-  /dev/ptmx rw,
-  /dev/pts/[0-9]* rw,
-  @{PROC}/ r,
-  @{PROC}/cmdline r,
-  @{PROC}/@{pid}/cmdline r,
-  @{PROC}/@{pid}/environ r,
-  @{PROC}/@{pid}/stat r,
-  @{PROC}/@{pid}/mounts r,
-  /sys/fs/cgroup/ r,
-  /sys/fs/cgroup/** rwkl,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
+  /dev/console						rw,
+  /dev/ptmx						rw,
+  /dev/pts/[0-9]*					rw,
+  @{PROC}/						r,
+  @{PROC}/cmdline					r,
+  @{PROC}/@{pid}/cmdline				r,
+  @{PROC}/@{pid}/environ				r,
+  @{PROC}/@{pid}/stat					r,
+  @{PROC}/@{pid}/mounts					r,
+  /sys/fs/cgroup/					r,
+  /sys/fs/cgroup/**					rwkl,
   
-  /sbin/openrc mr,
-  /bin/bash Cx -> shell,
-  /lib{,32,64}/rc/sh/init-early.sh Px,
-  /lib{,32,64}/rc/sh/init.sh Px,
+  # EXECUTABLES ----------------------------------------
+  /sbin/openrc						mr,
+  /bin/bash						Cx -> shell,
+  /lib{,32,64}/rc/sh/init-early.sh			Px,
+  /lib{,32,64}/rc/sh/init.sh				Px,
   # All scripts from ALL runlevels must have profiles!
-  /etc/init.d/* Pxr,
-  /etc/conf.d/* r,
+  /etc/init.d/*						Pxr,
   
-  /etc/rc.conf r,
-  /etc/profile.env r,
-  /etc/fstab r,
-  /etc/{conf,init}.d/ r,
-  /etc/runlevels/{,**} rw,
-  /etc/terminfo/l/linux r,
-  /etc/terminfo/x/xterm r,
-  
-  /var/log/rc.log w,
-  /run/**{,.}pid rw,
-  /run/openrc/** rwk,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/conf.d/*						r,
+  /etc/rc.conf						r,
+  /etc/profile.env					r,
+  /etc/fstab						r,
+  /etc/{conf,init}.d/					r,
+  /etc/runlevels/{,**}					rw,
+  /etc/terminfo/l/linux					r,
+  /etc/terminfo/x/xterm					r,
+  /var/log/rc.log					w,
+  /run/**{,.}pid					rw,
+  /run/openrc/**					rwk,
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
     
+    # CAPABILITIES -------------------------------------
     capability sys_tty_config,
     capability dac_override,
     capability dac_read_search,
     
-    /dev/console rw,
-    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
   }
-  
 }
-
 
 profile openrc.rc-service /sbin/rc-service flags=(complain) {
   #include <abstractions/base>
   
-  /sbin/rc-service mr,
-  /etc/init.d/* Px,
+  # EXECUTABLES ----------------------------------------
+  /sbin/rc-service					mr,
+  /etc/init.d/*						Px,
   
-  /run/openrc/scheduled/ r,
-  
+  # READS/WRITES ---------------------------------------
+  /run/openrc/scheduled/				r,
 }
-
 
 profile openrc.rc-update /sbin/rc-update flags=(complain) {
   #include <abstractions/base>
   
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
   
-  /sbin/rc-update mr,
+  # EXECUTABLES ----------------------------------------
+  /sbin/rc-update					mr,
   
-  /etc/init.d/ r,
-  /etc/runlevels/{,**} rw,
-  /etc/terminfo/x/xterm r,
-  
-  /run/openrc/** rw,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/init.d/						r,
+  /etc/runlevels/{,**}					rw,
+  /etc/terminfo/x/xterm					r,
+  /run/openrc/**					rw,
 }
-
 
 profile openrc.rc-status /bin/rc-status {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability kill,
   capability sys_ptrace,
   capability dac_read_search,
   capability dac_override,
   
-  /dev/pts/[0-9]* w,
-  @{PROC}/ r,
-  @{PROC}/cmdline r,
-  @{PROC}/@{pid}/{cmdline,environ} r,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  @{PROC}/						r,
+  @{PROC}/cmdline					r,
+  @{PROC}/@{pid}/{cmdline,environ}			r,
   
-  /bin/rc-status mr,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /bin/rc-status					mr,
+  /bin/bash						Cx -> shell,
   
-  /etc/init.d/ r,
-  /etc/conf.d/ r,
-  /etc/rc.conf r,
-  /etc/runlevels/{,**} r,
-  /etc/terminfo/x/xterm r,
-  
-  /run/openrc/** r,
-  /run/openrc/depconfig w,
-  /run/openrc/deptree w,
-  /run/{*.,*/,*/*.}pid r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/					r,
+  /etc/rc.conf						r,
+  /etc/runlevels/{,**}					r,
+  /etc/terminfo/x/xterm					r,
+  /run/openrc/**					r,
+  /run/openrc/depconfig					w,
+  /run/openrc/deptree					w,
+  /run/{*.,*/,*/*.}pid					r,
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.gendepends.sh /lib{,32,64}/rc/sh/gendepends.sh flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_tty_config,
   capability dac_override,
   capability dac_read_search,
   
-  /dev/tty rw,
-  /dev/console rw,
-  @{PROC}/@{pid}/mounts r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/console						rw,
+  @{PROC}/@{pid}/mounts					r,
   
-  /bin/bash mr,
-  /lib{,32,64}/rc/sh/gendepends.sh r,
-  /lib{,32,64}/rc/bin/shell_var ixr,
-  /lib{,32,64}/rc/bin/service_started ixr,
-  /lib{,32,64}/rc/bin/service_get_value ixr,
-  /lib{,32,64}/rc/bin/fstabinfo ixr,
-  /lib{,32,64}/rc/bin/eval_ecolors ix,
-  /lib{,32,64}/rc/bin/mountinfo ix,
-  /bin/sed ixr,
-  /bin/grep ixr,
-  /sbin/openrc Px,
-  /sbin/lvm Px,
-  /usr/bin/gawk ixr,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						mr,
+  /bin/sed						ixr,
+  /bin/grep						ixr,
+  /sbin/openrc						Px,
+  /sbin/lvm						Px,
+  /usr/bin/gawk						ixr,
+  /lib{,32,64}/rc/sh/gendepends.sh			r,
+  /lib{,32,64}/rc/bin/shell_var				ixr,
+  /lib{,32,64}/rc/bin/service_started			ixr,
+  /lib{,32,64}/rc/bin/service_get_value			ixr,
+  /lib{,32,64}/rc/bin/fstabinfo				ixr,
+  /lib{,32,64}/rc/bin/eval_ecolors			ix,
+  /lib{,32,64}/rc/bin/mountinfo				ix,
   
-  /etc/rc.conf r,
-  /etc/fstab r,
-  /etc/exports r,
-  /etc/ssh/sshd_config r,
-  /etc/zfs/zfs-functions r,
-  /etc/{conf,init}.d/{,*} r,
-  /etc/exports.d/{,*} r,
-  /etc/terminfo/l/linux r,
-  /etc/terminfo/x/xterm r,
-  /usr/libexec/rc.apparmor.functions r,
-  
-  /run/openrc/scheduled/ r,
-  /run/openrc/options/lvm/need r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/rc.conf						r,
+  /etc/fstab						r,
+  /etc/exports						r,
+  /etc/ssh/sshd_config					r,
+  /etc/zfs/zfs-functions				r,
+  /etc/{conf,init}.d/{,*}				r,
+  /etc/exports.d/{,*}					r,
+  /etc/terminfo/l/linux					r,
+  /etc/terminfo/x/xterm					r,
+  /usr/libexec/rc.apparmor.functions			r,
+  /run/openrc/scheduled/				r,
+  /run/openrc/options/lvm/need				r,
 }
-
 
 profile openrc.init-early.sh /lib{,32,64}/rc/sh/init-early.sh flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_tty_config,
   
-  /dev/tty rw,
-  /dev/null w,
-  /dev/console rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/null						w,
+  /dev/console						rw,
   
-  /bin/bash mr,
-  /lib{,32,64}/rc/sh/init-early.sh r,
-  /usr/bin/setfont ix,
-  /usr/bin/loadkeys ix,
-  /usr/bin/kbd_mode ix,
-  
+  # EXECUTABLES ----------------------------------------
+  /lib{,32,64}/rc/sh/init-early.sh			r,
+  /bin/bash						mr,
+  /usr/bin/setfont					ix,
+  /usr/bin/loadkeys					ix,
+  /usr/bin/kbd_mode					ix,
 }
-
 
 profile openrc.init.sh /lib{,32,64}/rc/sh/init.sh flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability chown,
   capability sys_admin,
   
-  /dev/tty rw,
-  /dev/pts/[0-9]* w,
-  @{PROC}/@{pid}/mounts r,
-  @{PROC}/@{pid}/environ r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					w,
+  @{PROC}/@{pid}/mounts					r,
+  @{PROC}/@{pid}/environ				r,
   
-  /bin/bash mr,
-  /bin/grep ix,
-  /bin/cp ix,
-  /usr/bin/md5sum ix,
-  /sbin/openrc Px,
-  /lib{,32,64}/rc/sh/init.sh r,
-  /lib{,32,64}/rc/bin/checkpath ix,
-  /lib{,32,64}/rc/bin/eval_ecolors ix,
-  /lib{,32,64}/rc/bin/einfo ix,
-  /lib{,32,64}/rc/bin/mountinfo ix,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						mr,
+  /bin/grep						ix,
+  /bin/cp						ix,
+  /sbin/openrc						Px,
+  /usr/bin/md5sum					ix,
+  /lib{,32,64}/rc/sh/init.sh				r,
+  /lib{,32,64}/rc/bin/checkpath				ix,
+  /lib{,32,64}/rc/bin/eval_ecolors			ix,
+  /lib{,32,64}/rc/bin/einfo				ix,
+  /lib{,32,64}/rc/bin/mountinfo				ix,
   
-  /etc/rc.conf r,
-  /etc/fstab r,
-  /etc/terminfo/l/linux r,
-  
-  /run/lock/ w,
-  /run/openrc/{,*} w,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/rc.conf						r,
+  /etc/fstab						r,
+  /etc/terminfo/l/linux					r,
+  /run/lock/						w,
+  /run/openrc/{,*}					w,
 }
-
 
 profile openrc.netmount.init.d /etc/init.d/netmount {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  @{PROC}/@{pid}/mounts r,
+  # PSEUDO ---------------------------------------------
+  @{PROC}/@{pid}/mounts					r,
   
-  /bin/bash Cx -> shell,
-  /etc/init.d/dnsmasq Px,
-  /bin/mount Px,
-  /bin/umount Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /etc/init.d/dnsmasq					Px,
+  /bin/mount						Px,
+  /bin/umount						Px,
   
-  /etc/fstab r,
-  /etc/{conf,init}.d/netmount r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
+  /etc/{conf,init}.d/netmount				r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.consolefont.init.d /etc/init.d/consolefont {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /dev/tty[0-9]* rw,
-  /dev/pts/[0-9]* r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					r,
   
-  /usr/bin/setfont ix,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/setfont					ix,
+  /bin/bash						Cx -> shell,
   
-  / r,
-  /etc/{conf,init}.d/consolefont r,
-  /usr/share/consolefonts/{,**} r,
-  /lib{,32,64}/rc/console/font rw,
-  
+  # READS/WRITES ---------------------------------------
+  /							r,
+  /etc/{conf,init}.d/consolefont			r,
+  /usr/share/consolefonts/{,**}				r,
+  /lib{,32,64}/rc/console/font				rw,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
     
+    # CAPABILITIES -------------------------------------
     capability sys_tty_config,
     
-    /dev/console rw,
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
     
-    /bin/gzip ix,
-    /usr/share/consolefonts/{,**} r,
+    # EXECUTABLES --------------------------------------
+    /bin/gzip						ix,
     
+    # READS/WRITES -------------------------------------
+    /usr/share/consolefonts/{,**}			r,
   }
-  
 }
-
 
 profile openrc.local.init.d /etc/init.d/local {
   #include <abstractions/base>
@@ -296,679 +301,636 @@ profile openrc.local.init.d /etc/init.d/local {
   #include <abstractions/openrc>
   #include <local/openrc-local-scripts>
   
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
   
-  /etc/{conf,init}.d/local r,
-  /etc/local.d/{,*} r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/local				r,
+  /etc/local.d/{,*}					r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.hwclock.init.d /etc/init.d/hwclock {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /dev/ r,
-  @{PROC}/devices r,
+  # PSEUDO ---------------------------------------------
+  /dev/							r,
+  @{PROC}/devices					r,
   
-  /bin/bash Cx -> shell,
-  /bin/uname ix,
-  /bin/grep ix,
-  /sbin/hwclock Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/uname						ix,
+  /bin/grep						ix,
+  /sbin/hwclock						Px,
   
-  /etc/{conf,init}.d/hwclock r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/hwclock				r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.swap.init.d /etc/init.d/swap {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /bin/bash Cx -> shell,
-  /bin/umount Px,
-  /sbin/swapon Px,
-  /sbin/swapoff Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/umount						Px,
+  /sbin/swapon						Px,
+  /sbin/swapoff						Px,
   
-  /etc/{conf,init}.d/swap r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/swap				r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.modules.init.d /etc/init.d/modules {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /bin/bash Cx -> shell,
-  /bin/uname ix,
-  /bin/kmod Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/uname						ix,
+  /bin/kmod						Px,
   
-  /etc/{conf,init}.d/modules r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/modules				r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.fsck.init.d /etc/init.d/fsck {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /bin/bash Cx -> shell,
-  /etc/init.d/* Px,
-  /bin/cat ix,
-  /sbin/fsck Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /etc/init.d/*						Px,
+  /bin/cat						ix,
+  /sbin/fsck						Px,
   
-  /etc/{conf,init}.d/fsck r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/fsck				r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.opentmpfiles-dev.init.d /etc/init.d/opentmpfiles-dev {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /bin/bash Cx -> shell,
-  /bin/tmpfiles Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/tmpfiles						Px,
   
-  /etc/{conf,init}.d/opentmpfiles-dev r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/opentmpfiles-dev			r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.opentmpfiles-setup.init.d /etc/init.d/opentmpfiles-setup {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /bin/bash Cx -> shell,
-  /bin/tmpfiles Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/tmpfiles						Px,
   
-  /etc/{conf,init}.d/opentmpfiles-setup r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/opentmpfiles-setup			r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.root.init.d /etc/init.d/root {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  @{PROC}/@{pid}/mounts r,
+  # PSEUDO ---------------------------------------------
+  @{PROC}/@{pid}/mounts					r,
   
-  /etc/init.d/mtab Px,
-  /bin/rm ix,
-  /bin/mount Px,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /etc/init.d/mtab					Px,
+  /bin/rm						ix,
+  /bin/mount						Px,
+  /bin/bash						Cx -> shell,
   
-  /etc/fstab r,
-  /etc/{conf,init}.d/root r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
+  /etc/{conf,init}.d/root				r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.mtab.init.d /etc/init.d/mtab {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /bin/ln ix,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /bin/ln						ix,
+  /bin/bash						Cx -> shell,
   
-  /etc/mtab w,
-  /etc/{conf,init}.d/mtab r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/mtab						w,
+  /etc/{conf,init}.d/mtab				r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.localmount.init.d /etc/init.d/localmount {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  @{PROC}/@{pid}/mounts r,
+  # PSEUDO ---------------------------------------------
+  @{PROC}/@{pid}/mounts					r,
   
-  /bin/bash Cx -> shell,
-  /etc/init.d/* Px,
-  /bin/mount Px,
-  /bin/umount Px,
-  /bin/sed ix,
-  /bin/sync ixr,
-  /bin/fuser Px,
-  /bin/sleep ix,
-  /usr/bin/timeout ix,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /etc/init.d/*						Px,
+  /bin/mount						Px,
+  /bin/umount						Px,
+  /bin/sed						ix,
+  /bin/sync						ixr,
+  /bin/fuser						Px,
+  /bin/sleep						ix,
+  /usr/bin/timeout					ix,
   
-  /etc/fstab r,
-  /etc/{conf,init}.d/localmount r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
+  /etc/{conf,init}.d/localmount				r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.sysctl.init.d /etc/init.d/sysctl {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /bin/bash Cx -> shell,
-  /usr/sbin/sysctl Pxr,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /usr/sbin/sysctl					Pxr,
   
-  /etc/{conf,init}.d/sysctl r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/sysctl				r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.bootmisc.init.d /etc/init.d/bootmisc {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # CAPABILITIES ---------------------------------------
   capability fsetid,
   capability syslog,
   capability chown,
   
-  /dev/kmsg r,
-  @{PROC}/@{pid}/mounts r,
+  # PSEUDO ---------------------------------------------
+  /dev/kmsg						r,
+  @{PROC}/@{pid}/mounts					r,
   
-  /bin/bash Cx -> shell,
-  /bin/rm ix,
-  /bin/readlink ix,
-  /bin/mktemp ix,
-  /bin/rmdir ix,
-  /bin/chgrp ix,
-  /bin/chmod ix,
-  /bin/dmesg ix,
-  /bin/mount Px,
-  /bin/umount Px,
-  /sbin/halt Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/rm						ix,
+  /bin/readlink						ix,
+  /bin/mktemp						ix,
+  /bin/rmdir						ix,
+  /bin/chgrp						ix,
+  /bin/chmod						ix,
+  /bin/dmesg						ix,
+  /bin/mount						Px,
+  /bin/umount						Px,
+  /sbin/halt						Px,
   
-  /etc/fstab r,
-  /etc/{conf,init}.d/bootmisc r,
-  /lib{,32,64}/rc/console/{font,keymap,unicode} w,
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
+  /etc/{conf,init}.d/bootmisc				r,
+  /lib{,32,64}/rc/console/{font,keymap,unicode}		w,
+  /run/utmp						w,
+  /var/log/dmesg					w,
+  /var/log/wtmp						w,
   
-  /var/log/dmesg w,
-  /var/log/wtmp w,
-  /run/utmp w,
-  
-  owner /tmp/tmp.*/ w,
-  owner /tmp/tmp.*/run/ r,
-  owner /tmp/.ICE-unix/ w,
-  owner /tmp/.X11-unix/ w,
-  
+  # TEMP -----------------------------------------------
+  owner /tmp/tmp.*/					w,
+  owner /tmp/tmp.*/run/					r,
+  owner /tmp/.ICE-unix/					w,
+  owner /tmp/.X11-unix/					w,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.hostname.init.d /etc/init.d/hostname {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_admin,
   
-  /bin/bash Cx -> shell,
-  /etc/init.d/syslog-ng Px,
-  /bin/hostname ix,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /etc/init.d/syslog-ng					Px,
+  /bin/hostname						ix,
   
-  /etc/{conf,init}.d/hostname r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/hostname				r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.termencoding.init.d /etc/init.d/termencoding {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   
-  /bin/bash Cx -> shell,
-  /etc/init.d/keymaps Px,
-  /etc/init.d/consolefont Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /etc/init.d/keymaps					Px,
+  /etc/init.d/consolefont				Px,
   
-  /etc/{conf,init}.d/termencoding r,
-  
-  /lib{,32,64}/rc/console/unicode w,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/termencoding			r,
+  /lib{,32,64}/rc/console/unicode			w,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.runsvdir.init.d /etc/init.d/runsvdir {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
   
-  /etc/{conf,init}.d/runsvdir r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/runsvdir				r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.keymaps.init.d /etc/init.d/keymaps {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /dev/tty[0-9]* rw,
-  /dev/pts/[0-9]* r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					r,
   
-  /bin/bash Cx -> shell,
-  /usr/bin/kbd_mode ix,
-  /usr/bin/loadkeys ix,
-  /usr/bin/dumpkeys ix,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /usr/bin/kbd_mode					ix,
+  /usr/bin/loadkeys					ix,
+  /usr/bin/dumpkeys					ix,
   
-  / r,
-  /etc/{conf,init}.d/keymaps r,
-  /usr/share/keymaps/{,**} r,
-  
-  /lib{,32,64}/rc/console/keymap w,
-  
+  # READS/WRITES ---------------------------------------
+  /							r,
+  /etc/{conf,init}.d/keymaps				r,
+  /usr/share/keymaps/{,**}				r,
+  /lib{,32,64}/rc/console/keymap			w,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
     
+    # CAPABILITIES -------------------------------------
     capability sys_tty_config,
     
-    /dev/console rw,
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
     
-    /bin/gzip ix,
+    # EXECUTABLES --------------------------------------
+    /bin/gzip						ix,
     
-    /usr/share/keymaps/{,**} r,
-    
+    # READS/WRITES -------------------------------------
+    /usr/share/keymaps/{,**}				r,
   }
-  
 }
-
 
 profile openrc.urandom.init.d /etc/init.d/urandom {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /dev/urandom w,
-  @{PROC}/sys/kernel/random/poolsize r,
+  # PSEUDO ---------------------------------------------
+  /dev/urandom						w,
+  @{PROC}/sys/kernel/random/poolsize			r,
   
-  /bin/bash Cx -> shell,
-  /bin/cat ix,
-  /bin/dd ix,
-  /bin/rm ix,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/cat						ix,
+  /bin/dd						ix,
+  /bin/rm						ix,
   
-  /etc/{conf,init}.d/urandom r,
-  
-  /var/lib/misc/random-seed rw,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/urandom				r,
+  /var/lib/misc/random-seed				rw,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.loopback.init.d /etc/init.d/loopback {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # CAPABILITIES ---------------------------------------
   capability net_admin,
   
-  /bin/bash Cx -> shell,
-  /bin/ip ix,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/ip						ix,
   
-  /etc/{conf,init}.d/loopback r,
-  /etc/iproute2/rt_scopes r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/loopback				r,
+  /etc/iproute2/rt_scopes				r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.procfs.init.d /etc/init.d/procfs {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
   
-  /etc/{conf,init}.d/procfs r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/procfs				r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.killprocs.init.d /etc/init.d/killprocs {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /sbin/killall5					Px,
   
-  /etc/{conf,init}.d/killprocs r,
-  /sbin/killall5 Px,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/killprocs				r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.mount-ro.init.d /etc/init.d/mount-ro {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  @{PROC}/@{pid}/mounts r,
+  # PSEUDO ---------------------------------------------
+  @{PROC}/@{pid}/mounts					r,
   
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/sync						ix,
+  /bin/sed						ix,
+  /bin/umount						Px,
+  /bin/fuser						Px,
+  /lib{,32,64}/rc/bin/mountinfo				ix,
   
-  /bin/sync ix,
-  /bin/sed ix,
-  /bin/umount Px,
-  /bin/fuser Px,
-  /lib{,32,64}/rc/bin/mountinfo ix,
-  
-  /etc/{conf,init}.d/mount-ro r,
-  /etc/fstab r,
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/mount-ro				r,
+  /etc/fstab						r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.savecache.init.d /etc/init.d/savecache {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /bin/bash Cx -> shell,
-  /bin/cp ix,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/cp						ix,
   
-  /etc/{conf,init}.d/savecache r,
-  /lib{,32,64}/rc/cache/* rw,
-  /run/openrc/** r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/savecache				r,
+  /lib{,32,64}/rc/cache/*				rw,
+  /run/openrc/**					r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.devfs.init.d /etc/init.d/devfs {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /dev/mqueue/ rw,
-  @{PROC}/@{pid}/mounts r,
+  # PSEUDO ---------------------------------------------
+  /dev/mqueue/						rw,
+  @{PROC}/@{pid}/mounts					r,
   
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/grep						ix,
+  /bin/mount						Px,
+  /bin/umount						Px,
   
-  /bin/grep ix,
-  /bin/mount Px,
-  /bin/umount Px,
-  
-  /etc/fstab r,
-  /etc/{conf,init}.d/devfs r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
+  /etc/{conf,init}.d/devfs				r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.dmesg.init.d /etc/init.d/dmesg {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # CAPABILITIES ---------------------------------------
   capability syslog,
   
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/dmesg						ix,
   
-  /bin/dmesg ix,
-  
-  /etc/{conf,init}.d/dmesg r,
-  
-  /var/log/dmesg w,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/dmesg				r,
+  /var/log/dmesg					w,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.kmod-static-nodes.init.d /etc/init.d/kmod-static-nodes {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/kmod						Px,
   
-  /etc/{conf,init}.d/kmod-static-nodes r,
-  /bin/kmod Px,
-  
-  /run/tmpfiles.d/ w,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/kmod-static-nodes			r,
+  /run/tmpfiles.d/					w,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.sysfs.init.d /etc/init.d/sysfs {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /sys/fs/cgroup/*/{,**} w,
-  @{PROC}/cgroups r,
-  @{PROC}/@{pid}/mounts r,
+  # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/*/{,**}				w,
+  @{PROC}/cgroups					r,
+  @{PROC}/@{pid}/mounts					r,
   
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/grep						ix,
+  /bin/mount						Px,
+  /bin/umount						Px,
   
-  /bin/grep ix,
-  /bin/mount Px,
-  /bin/umount Px,
-  
-  /etc/fstab r,
-  /etc/{conf,init}.d/sysfs r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
+  /etc/{conf,init}.d/sysfs				r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile openrc.modules-load.init.d /etc/init.d/modules-load {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/kmod						Px,
   
-  /etc/{conf,init}.d/modules-load r,
-  /bin/kmod Px,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/modules-load			r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }

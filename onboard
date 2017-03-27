@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile onboard /usr/bin/onboard {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -18,26 +19,28 @@ profile onboard /usr/bin/onboard {
   #include <abstractions/X>
   #include <abstractions/dconf>
   
-  /dev/tty[0-9]* w,
-  @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  @{PROC}/@{pid}/fd/					r,
   
-  /usr/bin/onboard mr,
-  /usr/bin/tput ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/onboard					mr,
+  /usr/bin/tput						ix,
   
-  /etc/terminfo/l/linux r,
-  /etc/terminfo/x/xterm r,
-  /usr/bin/ r,
-  /usr/share/onboard/{,**} r,
-  /usr/share/xml/iso-codes/{,*} r,
-  @{PYTHON_PACKAGES}/cairo/**.pyc{,.*} w,
+  # READS/WRITES ---------------------------------------
+  /etc/terminfo/l/linux					r,
+  /etc/terminfo/x/xterm					r,
+  /usr/bin/						r,
+  /usr/share/onboard/{,**}				r,
+  /usr/share/xml/iso-codes/{,*}				r,
+  @{PYTHON_PACKAGES}/cairo/**.pyc{,.*}			w,
   
-  owner @{HOME}/.local/share/onboard/{,**} rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.local/share/onboard/{,**}		rw,
   
-  # Noisy
-  deny @{HOME}/ r,
-  
+  # NOISY ----------------------------------------------
+  deny @{HOME}/						r,
 }
-
 
 profile onboard-settings /usr/bin/onboard-settings {
   #include <abstractions/base>
@@ -48,17 +51,20 @@ profile onboard-settings /usr/bin/onboard-settings {
   #include <abstractions/X>
   #include <abstractions/dconf>
   
-  /dev/tty[0-9]* w,
-  @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  @{PROC}/@{pid}/fd/					r,
   
-  /usr/bin/onboard-settings mr,
-  /usr/bin/tput ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/onboard-settings				mr,
+  /usr/bin/tput						ix,
   
-  /etc/terminfo/l/linux r,
-  /usr/bin/ r,
-  /usr/share/onboard/{,**} r,
-  @{PYTHON_PACKAGES}/cairo/**.pyc{,.*} w,
+  # READS/WRITES ---------------------------------------
+  /etc/terminfo/l/linux					r,
+  /usr/bin/						r,
+  /usr/share/onboard/{,**}				r,
+  @{PYTHON_PACKAGES}/cairo/**.pyc{,.*}			w,
   
-  owner @{HOME}/.local/share/onboard/{,**} rw,
-  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.local/share/onboard/{,**}		rw,
 }

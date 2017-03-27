@@ -1,34 +1,38 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile opentmpfiles.tmpfiles /bin/tmpfiles flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability chown,
   capability fowner,
   capability fsetid,
   
-  /dev/tty rw,
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					w,
   
-  /bin/bash mr,
-  /bin/tmpfiles r,
-  /bin/sort ix,
-  /bin/mkdir ix,
-  /bin/chmod ix,
-  /bin/chown ix,
-  /bin/chgrp ix,
+  # EXECUTABLES ----------------------------------------
+  /bin/tmpfiles						r,
+  /bin/bash						mr,
+  /bin/sort						ix,
+  /bin/mkdir						ix,
+  /bin/chmod						ix,
+  /bin/chown						ix,
+  /bin/chgrp						ix,
   
-  /run/**/ w,
-  /run/tmpfiles.d/{,*} r,
-  
+  # READS/WRITES ---------------------------------------
+  /run/**/						w,
+  /run/tmpfiles.d/{,*}					r,
 }
