@@ -19,7 +19,6 @@ profile lvm2.lvmetad /sbin/lvmetad flags=(complain) {
   # READS/WRITES ---------------------------------------
   /run/lvmetad.pid					rwk,
   /run/lvm/lvmetad.socket				w,
-  
 }
 
 profile lvm2.dmsetup /sbin/dmsetup flags=(complain) {
@@ -37,7 +36,6 @@ profile lvm2.dmsetup /sbin/dmsetup flags=(complain) {
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
-  
 }
 
 profile lvm2.dmeventd /sbin/dmeventd flags=(complain) {
@@ -68,7 +66,6 @@ profile lvm2.dmeventd /sbin/dmeventd flags=(complain) {
   /run/dmeventd-{client,server}				rwk,
   /run/lock/lvm/*					rwk,
   /run/udev/data/*					r,
-  
 }
 
 profile lvm2.lvm /sbin/lvm flags=(complain) {
@@ -116,7 +113,6 @@ profile lvm2.lvm /sbin/lvm flags=(complain) {
   
   # TEMP -----------------------------------------------
   owner /tmp/{rootbackup,dailyhomebackup,homebackup}.cron.* w,
-  
 }
 
 profile lvm2.lvmetad.init.d /etc/init.d/lvmetad {
@@ -134,14 +130,11 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad {
   /run/lvm/						w,
   /run/lvmetad.pid					rwk,
   
-  
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
 
 profile lvm2.lvm.init.d /etc/init.d/lvm {
@@ -161,12 +154,9 @@ profile lvm2.lvm.init.d /etc/init.d/lvm {
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/lvm				r,
   
-  
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }

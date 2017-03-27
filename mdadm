@@ -40,7 +40,6 @@ profile mdadm /sbin/mdadm flags=(complain) {
   owner /run/mdadm.pid					rw,
   owner /run/mdadm/					rw,
   owner /run/mdadm/*					rwk,
-  
 }
 
 profile mdadm.checkarray /usr/sbin/checkarray flags=(complain) {
@@ -62,7 +61,6 @@ profile mdadm.checkarray /usr/sbin/checkarray flags=(complain) {
   
   # READS/WRITES ---------------------------------------
   /etc/default/mdadm					r,
-  
 }
 
 profile mdadm.init.d /etc/init.d/mdadm {
@@ -79,12 +77,9 @@ profile mdadm.init.d /etc/init.d/mdadm {
   /etc/{conf,init}.d/mdadm				r,
   /run/mdadm.pid					rwk,
   
-  
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }

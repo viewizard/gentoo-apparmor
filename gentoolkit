@@ -34,7 +34,6 @@ profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check flags=(complain) {
   # TEMP -----------------------------------------------
   owner /tmp/glsa.cron.*				w,
   
-  
   profile shell flags=(complain) {
     #include <abstractions/base>
     
@@ -44,9 +43,7 @@ profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check flags=(complain) {
     # EXECUTABLES --------------------------------------
     /bin/bash						mr,
     /bin/uname						ix,
-    
   }
-  
 }
 
 profile gentoolkit.equery @{PYTHON_EXEC}/equery flags=(complain) {
@@ -71,7 +68,6 @@ profile gentoolkit.equery @{PYTHON_EXEC}/equery flags=(complain) {
   /var/db/pkg/{,**}					r,
   /var/cache/edb/{,**}					r,
   
-  
   profile shell flags=(complain) {
     #include <abstractions/base>
     
@@ -81,9 +77,7 @@ profile gentoolkit.equery @{PYTHON_EXEC}/equery flags=(complain) {
     # EXECUTABLES --------------------------------------
     /bin/bash						mr,
     /bin/uname						ix,
-    
   }
-  
 }
 
 profile gentoolkit.eclean @{PYTHON_EXEC}/eclean flags=(complain) {
@@ -109,7 +103,6 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean flags=(complain) {
   /var/db/pkg/{,**}					r,
   /var/cache/edb/{,**}					r,
   
-  
   profile shell flags=(complain) {
     #include <abstractions/base>
     
@@ -119,9 +112,7 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean flags=(complain) {
     # EXECUTABLES --------------------------------------
     /bin/bash						mr,
     /bin/uname						ix,
-    
   }
-  
 }
 
 profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild flags=(complain) {
@@ -157,7 +148,6 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild flags=(complain)
   /usr/local/portage/{,**}				r,
   /var/cache/revdep-rebuild/{,**}			rw,
   
-  
   profile shell flags=(complain) {
     #include <abstractions/base>
     
@@ -167,9 +157,7 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild flags=(complain)
     # EXECUTABLES --------------------------------------
     /bin/bash						mr,
     /bin/uname						ix,
-    
   }
-  
 }
 
 # FIX ME! Устаревший, будет заменен на gentoolkit.revdep-rebuild
@@ -228,7 +216,6 @@ profile gentoolkit.revdep-rebuild.sh /usr/bin/revdep-rebuild.sh flags=(complain)
   owner /tmp/sh-thd.*					rw,
   owner /tmp/revdep-rebuild.**				rw,
   
-  
   profile portage {
     #include <abstractions/base>
     #include <abstractions/python>
@@ -241,7 +228,5 @@ profile gentoolkit.revdep-rebuild.sh /usr/bin/revdep-rebuild.sh flags=(complain)
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/portageq				Px,
     @{PYTHON_EXEC}/emerge				Px,
-    
   }
-  
 }

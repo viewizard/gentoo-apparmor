@@ -91,7 +91,6 @@ profile lynis /usr/sbin/lynis {
   # NOISY ----------------------------------------------
   deny /*						w,
   
-  
   profile shell {
     #include <abstractions/base>
     
@@ -113,7 +112,6 @@ profile lynis /usr/sbin/lynis {
     # TEMP ---------------------------------------------
     owner /tmp/sh-thd.*					rw,
     owner /tmp/lynis-shellshock-test.*			rw,
-    
   }
   
   profile smbd {
@@ -124,7 +122,6 @@ profile lynis /usr/sbin/lynis {
     
     # READS/WRITES -------------------------------------
     /usr/share/samba/{,**}				r,
-    
   }
   
   profile sshd {
@@ -144,7 +141,6 @@ profile lynis /usr/sbin/lynis {
     # READS/WRITES -------------------------------------
     /etc/ssl/openssl.cnf				r,
     /etc/ssh/sshd_config				r,
-    
   }
   
   profile aa_status {
@@ -153,7 +149,5 @@ profile lynis /usr/sbin/lynis {
     
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/aa-status				Px,
-    
   }
-  
 }

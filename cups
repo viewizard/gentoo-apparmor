@@ -46,7 +46,6 @@ profile cups.cupsd /usr/sbin/cupsd {
   /var/spool/cups/{,**}					rw,
   /var/log/cups/{,**}					rw,
   
-  
   profile shell {
     #include <abstractions/base>
     #include <abstractions/authentication-pam_usb>
@@ -56,9 +55,7 @@ profile cups.cupsd /usr/sbin/cupsd {
     
     # EXECUTABLES --------------------------------------
     /bin/bash						mr,
-    
   }
-  
 }
 
 profile cups.daemon /usr/libexec/cups/daemon/* {
@@ -82,7 +79,6 @@ profile cups.daemon /usr/libexec/cups/daemon/* {
   /var/spool/cups/{,**}					r,
   /var/cache/cups/{,**}					r,
   /usr/libexec/cups/{backend,driver}/			r,
-  
 }
 
 profile cups.driver /usr/libexec/cups/driver/* {
@@ -95,7 +91,6 @@ profile cups.driver /usr/libexec/cups/driver/* {
   /usr/share/gutenprint/{,**}				r,
   /usr/lib{,32,64}/gutenprint/{,**}			r,
   /usr/lib{,32,64}/gutenprint/[0-9]*/modules/*.so	m,
-  
 }
 
 profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* flags=(complain) {
@@ -112,7 +107,6 @@ profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* flags=(complain) {
   /var/cache/cups/*					r,
   /{,var/}run/cups/certs/{,**}				r,
   /var/spool/cups/{,**}					r,
-  
 }
 
 profile cups.filter /usr/libexec/cups/filter/* flags=(complain) {
@@ -130,7 +124,6 @@ profile cups.filter /usr/libexec/cups/filter/* flags=(complain) {
   
   # TEMP -----------------------------------------------
   owner /tmp/??????*					rw,
-  
 }
 
 profile cups.backend /usr/libexec/cups/backend/* {
@@ -152,7 +145,6 @@ profile cups.backend /usr/libexec/cups/backend/* {
   /etc/udev/udev.conf					r,
   /usr/share/cups/{,**}					r,
   /var/cache/cups/*.snmp				r,
-  
 }
 
 profile cups.smbspool /usr/bin/smbspool flags=(complain) {
@@ -160,7 +152,6 @@ profile cups.smbspool /usr/bin/smbspool flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/smbspool					mr,
-  
 }
 
 profile cups.init.d /etc/init.d/cupsd {
@@ -184,12 +175,9 @@ profile cups.init.d /etc/init.d/cupsd {
   /run/cups/						w,
   /run/cups/certs/					w,
   
-  
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }

@@ -41,7 +41,6 @@ profile logrotate /usr/bin/logrotate {
   # NOISY ----------------------------------------------
   deny @{HOME}/						r,
   
-  
   profile shell {
     #include <abstractions/base>
     
@@ -52,7 +51,5 @@ profile logrotate /usr/bin/logrotate {
     /bin/bash						mr,
     /bin/su						Px,
     /etc/init.d/syslog-ng				Px,
-    
   }
-  
 }

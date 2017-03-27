@@ -29,7 +29,6 @@ profile dnscrypt-proxy /usr/sbin/dnscrypt-proxy {
   /usr/share/dnscrypt-proxy/{,*}			r,
   /run/dnscrypt-proxy/dnscrypt-proxy.pid		rwl,
   /var/log/dnscrypt-proxy.log				rw,
-  
 }
 
 profile dnscrypt-proxy.hostip /usr/bin/hostip {
@@ -42,7 +41,6 @@ profile dnscrypt-proxy.hostip /usr/bin/hostip {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/hostip					mr,
-  
 }
 
 profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy {
@@ -64,12 +62,9 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy {
   /etc/{conf,init}.d/dnscrypt-proxy			r,
   /run/dnscrypt-proxy/					rw,
   
-  
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }

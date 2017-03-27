@@ -35,7 +35,6 @@ profile ntp.ntpd /usr/sbin/ntpd flags=(attach_disconnected) {
   deny /opt/bin/					r,
   deny /usr/{,s}bin/					r,
   deny /usr/local/{,s}bin/				r,
-  
 }
 
 profile ntp.ntpq /usr/bin/ntpq {
@@ -57,7 +56,6 @@ profile ntp.ntpq /usr/bin/ntpq {
   deny /opt/bin/					r,
   deny /usr/{,s}bin/					r,
   deny /usr/local/{,s}bin/				r,
-  
 }
 
 profile ntp.init.d /etc/init.d/ntpd {
@@ -73,12 +71,9 @@ profile ntp.init.d /etc/init.d/ntpd {
   /etc/{conf,init}.d/ntpd				r,
   /run/ntpd.pid						rwk,
   
-  
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }

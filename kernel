@@ -22,7 +22,6 @@ profile kernel.sign-file /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/sign-f
   # READS/WRITES ---------------------------------------
   /usr/src/linux-[0-9]*-{hardened,gentoo}*/certs/signing_key.{pem,x509} r,
   /lib{,32,64}/modules/[0-9]*-{hardened,gentoo}*/**.ko	rw,
-  
 }
 
 profile kernel.gen-ima-certs /usr/src/IMA/certs/* flags=(complain) {
@@ -39,7 +38,6 @@ profile kernel.gen-ima-certs /usr/src/IMA/certs/* flags=(complain) {
   # READS/WRITES ---------------------------------------
   /usr/src/IMA/certs/*					rw,
   
-  
   profile openssl flags=(complain) {
     #include <abstractions/base>
     
@@ -54,9 +52,7 @@ profile kernel.gen-ima-certs /usr/src/IMA/certs/* flags=(complain) {
     /etc/ssl/openssl.cnf				r,
     /usr/src/IMA/certs/*				rw,
     /root/.rnd						rw,
-    
   }
-  
 }
 
 profile kernel.checkpatch.pl /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/checkpatch.pl flags=(complain) {
@@ -71,5 +67,4 @@ profile kernel.checkpatch.pl /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/ch
   
   # READS/WRITES ---------------------------------------
   /usr/src/**						r,
-  
 }

@@ -28,7 +28,6 @@ profile gnupg.gpg-agent /usr/bin/gpg-agent flags=(complain) {
   # USERS ----------------------------------------------
   owner @{HOME_CACHE}/gpg-agent-info			rw,
   owner @{HOME}/.gnupg/private-keys-*/{,**}		w,
-  
 }
 
 profile gnupg.gpg /usr/bin/gpg{,2,-static} flags=(complain) {
@@ -55,7 +54,6 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} flags=(complain) {
   
   # NOISY ----------------------------------------------
   deny /.gnupg/{,**}					r,
-  
 }
 
 profile gnupg.gpgconf /usr/bin/gpgconf flags=(complain) {
@@ -73,7 +71,6 @@ profile gnupg.gpgconf /usr/bin/gpgconf flags=(complain) {
   # USERS ----------------------------------------------
   owner @{HOME}/.gnupg/					rw,
   owner @{HOME}/.gnupg/**				rwl,
-  
 }
 
 profile gnupg.gpgsm /usr/bin/gpgsm flags=(complain) {
@@ -81,5 +78,4 @@ profile gnupg.gpgsm /usr/bin/gpgsm flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gpgsm					mr,
-  
 }

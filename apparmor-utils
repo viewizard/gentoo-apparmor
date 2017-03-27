@@ -29,9 +29,7 @@ profile apparmor-utils.aa-status @{PYTHON_EXEC}/aa-status {
   
   # READS/WRITES ---------------------------------------
   @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
-  
 }
-
 
 profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   #include <abstractions/base>
@@ -64,7 +62,6 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   owner /tmp/????????					rw,
   owner /var/tmp/????????				rw,
   
-  
   profile shell flags=(complain) {
     #include <abstractions/base>
     
@@ -81,11 +78,8 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
     # EXECUTABLES --------------------------------------
     /bin/bash						mr,
     /bin/netstat					Px,
-    
   }
-  
 }
-
 
 profile apparmor-utils.aa-complain @{PYTHON_EXEC}/aa-complain {
   #include <abstractions/base>
@@ -109,9 +103,7 @@ profile apparmor-utils.aa-complain @{PYTHON_EXEC}/aa-complain {
   
   # TEMP -----------------------------------------------
   owner /tmp/{,tmp}??????				rw,
-  
 }
-
 
 profile apparmor-utils.aa-enforce @{PYTHON_EXEC}/aa-enforce {
   #include <abstractions/base>
@@ -135,9 +127,7 @@ profile apparmor-utils.aa-enforce @{PYTHON_EXEC}/aa-enforce {
   
   # TEMP -----------------------------------------------
   owner /tmp/{,tmp}??????				rw,
-  
 }
-
 
 profile apparmor-utils.aa-disable @{PYTHON_EXEC}/aa-disable {
   #include <abstractions/base>
@@ -161,5 +151,4 @@ profile apparmor-utils.aa-disable @{PYTHON_EXEC}/aa-disable {
   
   # TEMP -----------------------------------------------
   owner /tmp/{,tmp}??????				rw,
-  
 }

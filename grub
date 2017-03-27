@@ -51,7 +51,6 @@ profile grub.grub-mkconfig /usr/sbin/grub-mkconfig flags=(complain) {
   
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.*					rw,
-  
 }
 
 profile grub.grub-probe /usr/sbin/grub-probe flags=(complain) {
@@ -74,7 +73,6 @@ profile grub.grub-probe /usr/sbin/grub-probe flags=(complain) {
   /usr/sbin/grub-probe					mr,
   /bin/udevadm						Px,
   /sbin/lvm						Px,
-  
 }
 
 profile grub.grub-install /usr/sbin/grub-install flags=(complain) {
@@ -104,7 +102,6 @@ profile grub.grub-install /usr/sbin/grub-install flags=(complain) {
   /boot/grub/{,**}					rw,
   /usr/share/grub/{,**}					r,
   
-  
   profile shell flags=(complain) {
     #include <abstractions/base>
     
@@ -121,7 +118,5 @@ profile grub.grub-install /usr/sbin/grub-install flags=(complain) {
     
     # READS/WRITES -------------------------------------
     /etc/default/grub					r,
-    
   }
-  
 }

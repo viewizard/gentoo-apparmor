@@ -34,7 +34,6 @@ profile elfix_migrate_pax_root flags=(complain) {
   /var/db/pkg/{,**}					r,
   /var/cache/edb/{,**}					r,
   
-  
   profile shell flags=(complain) {
     #include <abstractions/base>
     
@@ -49,9 +48,7 @@ profile elfix_migrate_pax_root flags=(complain) {
     # EXECUTABLES --------------------------------------
     /bin/bash						mr,
     /bin/uname						ixr,
-    
   }
-  
 }
 
 profile elfix_revdep_pax_root flags=(complain) {
@@ -77,7 +74,6 @@ profile elfix_revdep_pax_root flags=(complain) {
   /var/db/pkg/{,**}					r,
   /var/cache/edb/{,**}					r,
   
-  
   profile shell flags=(complain) {
     #include <abstractions/base>
     
@@ -87,7 +83,5 @@ profile elfix_revdep_pax_root flags=(complain) {
     # EXECUTABLES --------------------------------------
     /bin/bash						mr,
     /bin/uname						ix,
-    
   }
-  
 }

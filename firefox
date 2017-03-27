@@ -56,7 +56,7 @@ profile firefox /usr/{bin/firefox,lib{,32,64}/firefox/firefox{,-bin}} {
   /bin/which						ixr,
   /bin/ps						Pxr,
   /bin/uname						ixr,
-  /sbin/killall5					ixr,
+  /sbin/killall5					Pxr,
   /usr/bin/tr						ixr,
   /usr/bin/basename					ixr,
   /usr/bin/dirname					ixr,
@@ -97,7 +97,6 @@ profile firefox /usr/{bin/firefox,lib{,32,64}/firefox/firefox{,-bin}} {
   owner /tmp/gnotifier/{,**}				rw,
   /var/tmp/						r,
   owner /var/tmp/etilqs_*				rw,
-  
 }
 
 profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
@@ -139,7 +138,6 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   owner /tmp/FreshTemp*					rw,
   /var/tmp/						r,
   
-  
   profile shell {
     #include <abstractions/base>
     
@@ -154,6 +152,5 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
     
     # USERS --------------------------------------------
     owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
-    
   }
 }

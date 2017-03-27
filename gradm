@@ -29,7 +29,6 @@ profile gradm /sbin/gradm flags=(complain) {
   /etc/ld.so.conf					r,
   /etc/grsec/						r,
   /etc/grsec/*						rw,
-  
 }
 
 profile gradm.grlearn /sbin/grlearn flags=(complain) {
@@ -50,7 +49,6 @@ profile gradm.grlearn /sbin/grlearn flags=(complain) {
   # READS/WRITES ---------------------------------------
   /etc/grsec/						r,
   /etc/grsec/*						rw,
-  
 }
 
 profile gradm.init.d /etc/init.d/gradm {
@@ -65,12 +63,9 @@ profile gradm.init.d /etc/init.d/gradm {
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/gradm				r,
   
-  
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }

@@ -32,9 +32,7 @@ profile apparmor.apparmor_parser /sbin/apparmor_parser flags=(complain) {
   /etc/apparmor/parser.conf				r,
   /etc/apparmor.d/{,**}					r,
   /etc/apparmor.d/cache/{,*}				w,
-  
 }
-
 
 profile apparmor.init.d /etc/init.d/apparmor {
   #include <abstractions/base>
@@ -59,12 +57,9 @@ profile apparmor.init.d /etc/init.d/apparmor {
   /etc/{conf,init}.d/apparmor				r,
   /usr/libexec/rc.apparmor.functions			r,
   
-  
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }

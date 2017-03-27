@@ -40,7 +40,6 @@ profile cryptsetup /sbin/cryptsetup flags=(complain) {
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
   /run/openrc/dm-crypt-remdev.*/enc.key			r,
-  
 }
 
 profile cryptsetup.init.d /etc/init.d/dmcrypt {
@@ -65,12 +64,9 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/dmcrypt				r,
   
-  
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }

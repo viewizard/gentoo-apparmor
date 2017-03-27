@@ -14,7 +14,6 @@
 @{PROG_DIR}="**"
 @{PROG_FILE}="**"
 
-
 # профиль используется службами без аутентификации
 profile bash_default /bin/{bash,rbash,sh} {
   #include <abstractions/base>
@@ -28,9 +27,7 @@ profile bash_default /bin/{bash,rbash,sh} {
   /bin/uname						ixr,
   /sbin/mdadm						Pxr,
   /usr/sbin/logcheck					Pxr,
-  
 }
-
 
 # профиль всех пользователей, прошедших аутентификацию
 profile bash_users {
@@ -81,9 +78,7 @@ profile bash_users {
   /etc/bash/bash_logout					r,
   /etc/terminfo/l/linux					r,
   /etc/terminfo/x/xterm					r,
-  
 }
-
 
 # профиль специального пользователя root
 profile bash_root {
@@ -234,5 +229,4 @@ profile bash_root {
   /etc/profile.env					r,
   /etc/terminfo/l/linux					r,
   /etc/terminfo/x/xterm					r,
-  
 }

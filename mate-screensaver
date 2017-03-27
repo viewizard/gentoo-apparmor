@@ -37,7 +37,6 @@ profile mate-screensaver /usr/bin/mate-screensaver {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.local/share/desktop-directories/{,*.directory} r,
-  
 }
 
 profile mate-screensaver.sh /usr/bin/mate-screensaver.sh {
@@ -56,7 +55,6 @@ profile mate-screensaver.sh /usr/bin/mate-screensaver.sh {
   /usr/bin/xautolock					Px,
   /usr/bin/killall					Px,
   /usr/bin/gsettings					Px,
-  
 }
 
 profile mate-screensaver-preferences /usr/bin/mate-screensaver-preferences {
@@ -84,7 +82,6 @@ profile mate-screensaver-preferences /usr/bin/mate-screensaver-preferences {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.local/share/desktop-directories/{,*.directory} r,
-  
 }
 
 profile mate-screensaver.popsquares /usr/libexec/mate-screensaver/popsquares {
@@ -94,7 +91,6 @@ profile mate-screensaver.popsquares /usr/libexec/mate-screensaver/popsquares {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/mate-screensaver/popsquares		mr,
-  
 }
 
 profile mate-screensaver.floaters /usr/libexec/mate-screensaver/floaters {
@@ -109,7 +105,6 @@ profile mate-screensaver.floaters /usr/libexec/mate-screensaver/floaters {
   # READS/WRITES ---------------------------------------
   /usr/share/pixmaps/gnome-logo-white.svg		r,
   /usr/share/pixmaps/mate-logo-white.svg		r,
-  
 }
 
 profile mate-screensaver.slideshow /usr/libexec/mate-screensaver/slideshow {
@@ -126,7 +121,6 @@ profile mate-screensaver.slideshow /usr/libexec/mate-screensaver/slideshow {
   /usr/share/backgrounds/cosmos/*.{jpg,jpeg,tga,png,bmp} r,
   /usr/local/share/backgrounds/				r,
   /usr/local/share/backgrounds/*.{jpg,jpeg,tga,png,bmp}	r,
-  
 }
 
 profile mate-screensaver-gl-helper /usr/libexec/mate-screensaver-gl-helper {
@@ -136,7 +130,6 @@ profile mate-screensaver-gl-helper /usr/libexec/mate-screensaver-gl-helper {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/mate-screensaver-gl-helper		mr,
-  
 }
 
 profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
@@ -165,7 +158,6 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
   # USERS ----------------------------------------------
   owner @{HOME}/.face					r,
   
-  
   profile shell {
     #include <abstractions/base>
     #include <abstractions/authentication-pam_usb>
@@ -177,9 +169,7 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
     /bin/bash						mr,
     /bin/wc						ix,
     /usr/bin/pidof					Px,
-    
   }
-  
 }
 
 profile mate-screensaver-command /usr/bin/mate-screensaver-command {
@@ -191,5 +181,4 @@ profile mate-screensaver-command /usr/bin/mate-screensaver-command {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mate-screensaver-command			mr,
-  
 }

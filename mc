@@ -40,7 +40,6 @@ profile mc /usr/bin/mc {
   /etc/terminfo/l/linux					r,
   /usr/libexec/mc/{,**}					r,
   /usr/share/mc/{,**}					r,
-  
 }
 
 profile mc_root flags=(complain) {
@@ -70,5 +69,4 @@ profile mc_root flags=(complain) {
   /etc/terminfo/l/linux					r,
   /usr/libexec/mc/{,**}					r,
   /usr/share/mc/{,**}					r,
-  
 }

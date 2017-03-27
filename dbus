@@ -12,7 +12,6 @@
 
 profile dbus.dbus-cleanup-sockets /usr/bin/dbus-cleanup-sockets flags=(complain) {
   #include <abstractions/base>
-  
 }
 
 profile dbus.dbus-daemon /usr/bin/dbus-daemon {
@@ -49,7 +48,6 @@ profile dbus.dbus-daemon /usr/bin/dbus-daemon {
   /usr/share/dbus-1/**					r,
   /usr/share/defaults/at-spi2/accessibility.conf	r,
   /run/dbus.pid						rw,
-  
 }
 
 profile dbus.dbus-launch /usr/bin/dbus-launch {
@@ -75,7 +73,6 @@ profile dbus.dbus-launch /usr/bin/dbus-launch {
   # USERS ----------------------------------------------
   owner @{HOME}/.dbus/{,**}				rw,
   
-  
   profile shell {
     #include <abstractions/base>
     
@@ -86,9 +83,7 @@ profile dbus.dbus-launch /usr/bin/dbus-launch {
     /bin/bash						mr,
     /etc/X11/Sessions/Xfce4				r,	# XFCE4
     /usr/bin/startxfce4					Px,	# XFCE4
-    
   }
-  
 }
 
 profile dbus.dbus-run-session /usr/bin/dbus-run-session flags=(complain) {
@@ -96,7 +91,6 @@ profile dbus.dbus-run-session /usr/bin/dbus-run-session flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dbus-run-session				mr,
-  
 }
 
 profile dbus.dbus-send /usr/bin/dbus-send flags=(complain) {
@@ -108,7 +102,6 @@ profile dbus.dbus-send /usr/bin/dbus-send flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dbus-send					mr,
-  
 }
 
 profile dbus.dbus-uuidgen /usr/bin/dbus-uuidgen flags=(complain) {
@@ -117,7 +110,6 @@ profile dbus.dbus-uuidgen /usr/bin/dbus-uuidgen flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dbus-uuidgen					mr,
-  
 }
 
 profile dbus.dbus-daemon-launch-helper /usr/libexec/dbus-daemon-launch-helper {
@@ -139,7 +131,6 @@ profile dbus.dbus-daemon-launch-helper /usr/libexec/dbus-daemon-launch-helper {
   # READS/WRITES ---------------------------------------
   /etc/dbus-1/**					r,
   /usr/share/dbus-1/**					r,
-  
 }
 
 profile dbus.init.d /etc/init.d/dbus {
@@ -160,12 +151,9 @@ profile dbus.init.d /etc/init.d/dbus {
   /run/dbus/						w,
   /run/dbus/system_bus_socket				rwk,
   
-  
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }

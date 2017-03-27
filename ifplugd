@@ -28,7 +28,6 @@ profile ifplugd /usr/sbin/ifplugd {
   
   # READS/WRITES ---------------------------------------
   /run/ifplugd.*.pid					rwk,
-  
 }
 
 profile ifplugd.action /etc/ifplugd/ifplugd.action {
@@ -48,7 +47,6 @@ profile ifplugd.action /etc/ifplugd/ifplugd.action {
   /etc/init.d/netmount					Px,
   /etc/init.d/tor					Px,
   /etc/init.d/suricata					Px,
-  
 }
 
 profile ifplugd.ifplugstatus /usr/sbin/ifplugstatus flags=(complain) {
@@ -56,5 +54,4 @@ profile ifplugd.ifplugstatus /usr/sbin/ifplugstatus flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/ifplugstatus				mr,
-  
 }

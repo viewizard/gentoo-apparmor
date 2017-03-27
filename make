@@ -40,7 +40,6 @@ profile make /usr/bin/{,g}make flags=(complain) {
   # NOISY ----------------------------------------------
   deny /						r,
   
-  
   profile shell flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
@@ -124,7 +123,5 @@ profile make /usr/bin/{,g}make flags=(complain) {
     # NOISY --------------------------------------------
     deny /.git/{,**}					r,
     deny @{HOME}/{,**}					r,
-  
   }
-  
 }

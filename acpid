@@ -34,7 +34,6 @@ profile acpid /usr/sbin/acpid {
   /run/acpid.pid					rwl,
   /run/acpid.socket					rw,
   
-  
   profile shell flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
@@ -61,9 +60,7 @@ profile acpid /usr/sbin/acpid {
     
     # READS/WRITES -------------------------------------
     /run/utmp						rk,
-    
   }
-  
 }
 
 profile acpid.acpi_listen /usr/bin/acpi_listen flags=(complain) {
@@ -71,7 +68,6 @@ profile acpid.acpi_listen /usr/bin/acpi_listen flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/acpi_listen					mr,
-  
 }
 
 profile acpid.kacpimon /usr/sbin/kacpimon {
@@ -83,9 +79,7 @@ profile acpid.kacpimon /usr/sbin/kacpimon {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/kacpimon					mr,
-  
 }
-
 
 profile acpid.init.d /etc/init.d/acpid {
   #include <abstractions/base>
@@ -99,12 +93,9 @@ profile acpid.init.d /etc/init.d/acpid {
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/acpid				r,
   
-  
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }

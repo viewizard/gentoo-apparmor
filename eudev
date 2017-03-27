@@ -33,7 +33,6 @@ profile eudev.udevadm /bin/udevadm flags=(complain) {
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
   /run/udev/tags/{,**}					w,
-  
 }
 
 profile eudev.udevd /sbin/udevd flags=(complain) {
@@ -99,7 +98,6 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
   /run/udev/{data,watch,links}/**			rw,
   /run/udev/watch{,.old}/{,[0-9]*}			rw,
   
-  
   profile shell flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
@@ -111,9 +109,7 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
     /bin/bash						mr,
     /bin/sed						ix,
     /sbin/mdadm						Px,
-    
   }
-  
 }
 
 profile eudev.ata_id /lib{,32,64}/udev/ata_id flags=(complain) {
@@ -130,7 +126,6 @@ profile eudev.ata_id /lib{,32,64}/udev/ata_id flags=(complain) {
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
-  
 }
 
 profile eudev.scsi_id /lib{,32,64}/udev/scsi_id flags=(complain) {
@@ -141,5 +136,4 @@ profile eudev.scsi_id /lib{,32,64}/udev/scsi_id flags=(complain) {
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
-  
 }

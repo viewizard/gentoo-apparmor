@@ -40,7 +40,6 @@ profile gsmartcontrol /usr/bin/gsmartcontrol {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/gsmartcontrol/{,gsmartcontrol.conf} rw,
-  
 }
 
 profile gsmartcontrol-root /usr/bin/gsmartcontrol-root {
@@ -49,7 +48,6 @@ profile gsmartcontrol-root /usr/bin/gsmartcontrol-root {
   # EXECUTABLES ----------------------------------------
   /bin/bash						Cx -> shell,
   /bin/env						mr,
-  
   
   profile shell {
     #include <abstractions/base>
@@ -63,7 +61,5 @@ profile gsmartcontrol-root /usr/bin/gsmartcontrol-root {
     /usr/bin/which					ix,
     /usr/bin/sudo					Px,
     /usr/bin/gksu					Px,
-    
   }
-  
 }

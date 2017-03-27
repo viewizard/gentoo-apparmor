@@ -16,7 +16,6 @@ profile lm_sensors.sensors /usr/bin/sensors {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/sensors					mr,
-  
 }
 
 profile lm_sensors.init.d /etc/init.d/lm_sensors {
@@ -34,12 +33,9 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors {
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/lm_sensors				r,
   
-  
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }

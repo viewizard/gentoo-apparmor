@@ -22,7 +22,6 @@ profile hd-idle /usr/sbin/hd-idle {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/hd-idle					mr,
-  
 }
 
 profile hd-idle.init.d /etc/init.d/hd-idle {
@@ -41,12 +40,9 @@ profile hd-idle.init.d /etc/init.d/hd-idle {
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/hd-idle				r,
   
-  
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }

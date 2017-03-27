@@ -40,7 +40,6 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(com
   # USERS ----------------------------------------------
   owner @{HOME}/.nvidia-settings-rc			rw,
   
-  
   profile shell {
     #include <abstractions/base>
     
@@ -56,9 +55,7 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(com
     
     # READS/WRITES -------------------------------------
     /usr/share/pkgconfig/				r,
-    
   }
-
 }
 
 profile nvidia-drivers.nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe {
@@ -74,7 +71,6 @@ profile nvidia-drivers.nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe {
   # EXECUTABLES ----------------------------------------
   /{usr,opt}/bin/nvidia-modprobe			mr,
   /bin/kmod						Px,
-  
 }
 
 profile nvidia-drivers.nvidia-smi /opt/bin/nvidia-smi {
@@ -93,7 +89,6 @@ profile nvidia-drivers.nvidia-smi /opt/bin/nvidia-smi {
   
   # EXECUTABLES ----------------------------------------
   /opt/bin/nvidia-smi					mr,
-  
 }
 
 profile nvidia-drivers.nvidia-udev.sh /lib{,32,64}/udev/nvidia-udev.sh {
@@ -110,5 +105,4 @@ profile nvidia-drivers.nvidia-udev.sh /lib{,32,64}/udev/nvidia-udev.sh {
   /bin/kmod						Px,
   /bin/grep						ix,
   /opt/bin/nvidia-smi					Px,
-  
 }

@@ -41,7 +41,6 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
   
   # USERS ----------------------------------------------
   owner @{HOME}/.local/share/mime/treemagic		r,
-  
 }
 
 profile gvfs.gvfsd /usr/libexec/gvfsd {
@@ -60,7 +59,6 @@ profile gvfs.gvfsd /usr/libexec/gvfsd {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.gvfs/					rw,
-  
 }
 
 profile gvfs.gvfsd-archive /usr/libexec/gvfsd-archive flags=(complain) {
@@ -68,7 +66,6 @@ profile gvfs.gvfsd-archive /usr/libexec/gvfsd-archive flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-archive				mr,
-  
 }
 
 profile gvfs.gvfsd-burn /usr/libexec/gvfsd-burn flags=(complain) {
@@ -76,7 +73,6 @@ profile gvfs.gvfsd-burn /usr/libexec/gvfsd-burn flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-burn				mr,
-  
 }
 
 profile gvfs.gvfsd-computer /usr/libexec/gvfsd-computer flags=(complain) {
@@ -84,7 +80,6 @@ profile gvfs.gvfsd-computer /usr/libexec/gvfsd-computer flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-computer				mr,
-  
 }
 
 profile gvfs.gvfsd-dav /usr/libexec/gvfsd-dav flags=(complain) {
@@ -92,7 +87,6 @@ profile gvfs.gvfsd-dav /usr/libexec/gvfsd-dav flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-dav				mr,
-  
 }
 
 profile gvfs.gvfsd-ftp /usr/libexec/gvfsd-ftp flags=(complain) {
@@ -100,7 +94,6 @@ profile gvfs.gvfsd-ftp /usr/libexec/gvfsd-ftp flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-ftp				mr,
-  
 }
 
 profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
@@ -126,7 +119,6 @@ profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   
   # USERS ----------------------------------------------
   @{HOME}/.gvfs/{,**}					rw,
-  
 }
 
 profile gvfs.gvfsd-http /usr/libexec/gvfsd-http flags=(complain) {
@@ -141,7 +133,6 @@ profile gvfs.gvfsd-http /usr/libexec/gvfsd-http flags=(complain) {
   
   # READS/WRITES ---------------------------------------
   /usr/lib{,32,64}/libproxy/[0-9]*.[0-9]*.[0-9]*/modules/*.so m,
-  
 }
 
 profile gvfs.gvfsd-localtest /usr/libexec/gvfsd-localtest flags=(complain) {
@@ -149,7 +140,6 @@ profile gvfs.gvfsd-localtest /usr/libexec/gvfsd-localtest flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-localtest				mr,
-  
 }
 
 profile gvfs.gvfsd-metadata /usr/libexec/gvfsd-metadata {
@@ -166,7 +156,6 @@ profile gvfs.gvfsd-metadata /usr/libexec/gvfsd-metadata {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
-  
 }
 
 profile gvfs.gvfsd-network /usr/libexec/gvfsd-network flags=(complain) {
@@ -176,7 +165,6 @@ profile gvfs.gvfsd-network /usr/libexec/gvfsd-network flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-network				mr,
-  
 }
 
 profile gvfs.gvfsd-recent /usr/libexec/gvfsd-recent flags=(complain) {
@@ -184,7 +172,6 @@ profile gvfs.gvfsd-recent /usr/libexec/gvfsd-recent flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-recent				mr,
-  
 }
 
 profile gvfs.gvfsd-sftp /usr/libexec/gvfsd-sftp flags=(complain) {
@@ -192,7 +179,6 @@ profile gvfs.gvfsd-sftp /usr/libexec/gvfsd-sftp flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-sftp				mr,
-  
 }
 
 profile gvfs.gvfsd-smb /usr/libexec/gvfsd-smb {
@@ -209,7 +195,6 @@ profile gvfs.gvfsd-smb /usr/libexec/gvfsd-smb {
   /etc/samba/smb.conf					r,
   /usr/share/samba/codepages/**				r,
   /var/cache/samba/{,**}				r,
-  
 }
 
 profile gvfs.gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse {
@@ -225,7 +210,6 @@ profile gvfs.gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse {
   /etc/samba/smb.conf					r,
   /usr/share/samba/codepages/**				r,
   /var/cache/samba/{,**}				rw,
-  
 }
 
 profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
@@ -244,7 +228,6 @@ profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   # USERS ----------------------------------------------
   owner @{HOME}/.local/share/mime/mime.cache		r,
   owner @{HOME}/.local/share/Trash/{,**}		rw,
-  
 }
 
 profile gvfs.gvfs-open /usr/bin/gvfs-open flags=(complain) {
@@ -252,5 +235,4 @@ profile gvfs.gvfs-open /usr/bin/gvfs-open flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gvfs-open					mr,
-  
 }

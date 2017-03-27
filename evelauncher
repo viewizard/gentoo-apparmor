@@ -23,9 +23,7 @@ profile evelauncher.sh /home/*/evelauncher/evelauncher.sh {
   /bin/sed						ix,
   /bin/basename						ix,
   /bin/dirname						ix,
-  
 }
-
 
 profile evelauncher /home/*/evelauncher/evelauncher {
   #include <abstractions/base>
@@ -78,9 +76,7 @@ profile evelauncher /home/*/evelauncher/evelauncher {
   owner /tmp/.gl*					rw,
   /var/tmp/						r,
   owner /var/tmp/etilqs_*				rw,
-  
 }
-
 
 profile evelauncher.updater /home/*/{.eve,evelauncher}/updater {
   #include <abstractions/base>
@@ -93,9 +89,7 @@ profile evelauncher.updater /home/*/{.eve,evelauncher}/updater {
   # USERS ----------------------------------------------
   owner @{HOME}/evelauncher/{,**}			rw,
   owner @{HOME}/.eve/{,**}				rw,
-  
 }
-
 
 profile evelauncher.LogLite.sh /home/*/evelauncher/LogLite.sh {
   #include <abstractions/base>
@@ -109,9 +103,7 @@ profile evelauncher.LogLite.sh /home/*/evelauncher/LogLite.sh {
   /bin/sed						ix,
   /bin/basename						ix,
   /bin/dirname						ix,
-  
 }
-
 
 profile evelauncher.LogLite /home/*/evelauncher/LogLite {
   #include <abstractions/base>
@@ -133,5 +125,4 @@ profile evelauncher.LogLite /home/*/evelauncher/LogLite {
   owner @{HOME}/evelauncher/{,**}			r,
   owner @{HOME}/evelauncher/**.so{,.[0-9]*}		m,
   owner @{HOME}/.config/CCP/{,**}			rwk,
-  
 }

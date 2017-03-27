@@ -58,7 +58,6 @@ profile netifrc.init.d /etc/init.d/net.* {
   /run/dhcpcd-*.pid					rwk,
   /run/ifplugd.*.pid					rwk,
   
-  
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
@@ -69,9 +68,7 @@ profile netifrc.init.d /etc/init.d/net.* {
     
     # PSEUDO -------------------------------------------
     /dev/console					rw,
-    
   }
-  
 }
 
 profile netifrc.net.sh /lib{,32,64}/udev/net.sh flags=(complain) {
@@ -85,5 +82,4 @@ profile netifrc.net.sh /lib{,32,64}/udev/net.sh flags=(complain) {
   /lib{,32,64}/udev/net.sh				r,
   /bin/bash						mr,
   /etc/init.d/net.*					Px,
-  
 }

@@ -16,7 +16,6 @@ profile nullmailer.sendmail /usr/sbin/sendmail {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/sendmail					mr,
   /usr/bin/nullmailer-inject				Px,
-  
 }
 
 profile nullmailer.nullmailer-inject /usr/bin/nullmailer-inject flags=(complain) {
@@ -35,7 +34,6 @@ profile nullmailer.nullmailer-inject /usr/bin/nullmailer-inject flags=(complain)
   
   # TEMP -----------------------------------------------
   owner /tmp/mail.*					rw,
-  
 }
 
 profile nullmailer.nullmailer-queue /usr/sbin/nullmailer-queue {
@@ -48,7 +46,6 @@ profile nullmailer.nullmailer-queue /usr/sbin/nullmailer-queue {
   /etc/nullmailer/{,*}					r,
   /var/nullmailer/					r,
   /var/nullmailer/**					rwl,
-  
 }
 
 profile nullmailer.smtp /usr/libexec/nullmailer/smtp {
@@ -61,7 +58,6 @@ profile nullmailer.smtp /usr/libexec/nullmailer/smtp {
   
   # READS/WRITES ---------------------------------------
   /var/nullmailer/queue/**				rw,
-  
 }
 
 profile nullmailer.nullmailer-send /usr/sbin/nullmailer-send {
@@ -75,7 +71,6 @@ profile nullmailer.nullmailer-send /usr/sbin/nullmailer-send {
   /etc/nullmailer/**					r,
   /var/nullmailer/{,**}					r,
   /var/nullmailer/queue/**				rw,
-  
 }
 
 profile nullmailer.init.d /etc/init.d/nullmailer {
@@ -104,12 +99,9 @@ profile nullmailer.init.d /etc/init.d/nullmailer {
   /run/nullmailer.pid					rwk,
   /run/utmp						rk,
   
-  
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }

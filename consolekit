@@ -22,7 +22,6 @@ profile consolekit.ck-history /usr/bin/ck-history flags=(complain) {
   
   # READS/WRITES ---------------------------------------
   /var/log/ConsoleKit/history				r,
-  
 }
 
 profile consolekit.ck-launch-session /usr/bin/ck-launch-session flags=(complain) {
@@ -40,7 +39,6 @@ profile consolekit.ck-launch-session /usr/bin/ck-launch-session flags=(complain)
   # USERS ----------------------------------------------
   owner @{HOME}/.Xauthority				r,
   
-  
   profile shell flags=(complain) {
     #include <abstractions/base>
     
@@ -51,9 +49,7 @@ profile consolekit.ck-launch-session /usr/bin/ck-launch-session flags=(complain)
     /bin/bash						mr,
     /etc/X11/Sessions/Xfce4				r,	# XFCE4
     /usr/bin/startxfce4					Px,	# XFCE4
-    
   }
-  
 }
 
 profile consolekit.ck-list-sessions /usr/bin/ck-list-sessions flags=(complain) {
@@ -65,7 +61,6 @@ profile consolekit.ck-list-sessions /usr/bin/ck-list-sessions flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/ck-list-sessions				mr,
-  
 }
 
 profile consolekit.ck-log-system-restart /usr/sbin/ck-log-system-restart flags=(complain) {
@@ -73,7 +68,6 @@ profile consolekit.ck-log-system-restart /usr/sbin/ck-log-system-restart flags=(
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/ck-log-system-restart			mr,
-  
 }
 
 profile consolekit.ck-log-system-start /usr/sbin/ck-log-system-start flags=(complain) {
@@ -81,7 +75,6 @@ profile consolekit.ck-log-system-start /usr/sbin/ck-log-system-start flags=(comp
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/ck-log-system-start				mr,
-  
 }
 
 profile consolekit.ck-log-system-stop /usr/sbin/ck-log-system-stop flags=(complain) {
@@ -140,7 +133,6 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.Xauthority				r,
-  
 }
 
 profile consolekit.udev-acl /usr/lib{,32,64}/ConsoleKit/udev-acl {
@@ -160,7 +152,6 @@ profile consolekit.udev-acl /usr/lib{,32,64}/ConsoleKit/udev-acl {
   /etc/udev/udev.conf					r,
   /run/udev/tags/udev-acl/				r,
   /run/ConsoleKit/database				r,
-  
 }
 
 profile consolekit.init.d /etc/init.d/consolekit {
@@ -177,12 +168,9 @@ profile consolekit.init.d /etc/init.d/consolekit {
   /run/ConsoleKit/					w,
   /run/ConsoleKit/pid					rwk,
   
-  
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
