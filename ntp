@@ -1,78 +1,77 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile ntp.ntpd /usr/sbin/ntpd flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_resource,
   capability net_bind_service,
   capability sys_time,
   capability dac_override,
   
-  /usr/sbin/ntpd mr,
-  /usr/@{CHOST}/gcc-bin/[0-9]*.[0-9]*.[0-9]*/ r,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/ntpd					mr,
   
-  /etc/ntp.conf r,
+  # READS/WRITES ---------------------------------------
+  /etc/ntp.conf						r,
+  /usr/@{CHOST}/gcc-bin/[0-9]*.[0-9]*.[0-9]*/		r,
+  /var/lib/ntp/ntp.drift*				rw,
+  /var/log/ntp.log					w,
+  /run/ntpd.pid						rw,
   
-  /var/lib/ntp/ntp.drift* rw,
-  /var/log/ntp.log w,
-  /run/ntpd.pid rw,
+  # NOISY ----------------------------------------------
+  deny /{,s}bin/					r,
+  deny /opt/bin/					r,
+  deny /usr/{,s}bin/					r,
+  deny /usr/local/{,s}bin/				r,
   
-  # Noisy
-  deny /bin/ r,
-  deny /sbin/ r,
-  deny /opt/bin/ r,
-  deny /usr/bin/ r,
-  deny /usr/sbin/ r,
-  deny /usr/local/bin/ r,
-  deny /usr/local/sbin/ r,
-
 }
-
 
 profile ntp.ntpq /usr/bin/ntpq {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_read_search,
   capability dac_override,
   
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
   
-  /usr/bin/ntpq mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/ntpq						mr,
   
-  # Noisy
-  deny /bin/ r,
-  deny /sbin/ r,
-  deny /opt/bin/ r,
-  deny /usr/bin/ r,
-  deny /usr/sbin/ r,
-  deny /usr/local/bin/ r,
-  deny /usr/local/sbin/ r,
+  # NOISY ----------------------------------------------
+  deny /{,s}bin/					r,
+  deny /opt/bin/					r,
+  deny /usr/{,s}bin/					r,
+  deny /usr/local/{,s}bin/				r,
   
 }
-
 
 profile ntp.init.d /etc/init.d/ntpd {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /usr/sbin/ntpd Px,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/ntpd					Px,
+  /bin/bash						Cx -> shell,
   
-  /etc/{conf,init}.d/ntpd r,
-  
-  /run/ntpd.pid rwk,
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/ntpd				r,
+  /run/ntpd.pid						rwk,
   
   
   profile shell {

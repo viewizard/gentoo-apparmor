@@ -1,77 +1,82 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile nullmailer.sendmail /usr/sbin/sendmail {
   #include <abstractions/base>
   
-  /usr/sbin/sendmail mr,
-  /usr/bin/nullmailer-inject Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/sendmail					mr,
+  /usr/bin/nullmailer-inject				Px,
   
 }
 
-
-profile nullmailer-inject /usr/bin/nullmailer-inject flags=(complain) {
+profile nullmailer.nullmailer-inject /usr/bin/nullmailer-inject flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_read_search,
   capability dac_override,
   
-  /usr/bin/nullmailer-inject mr,
-  /usr/sbin/nullmailer-queue Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/nullmailer-inject				mr,
+  /usr/sbin/nullmailer-queue				Px,
   
-  /etc/nullmailer/{,*} r,
+  # READS/WRITES ---------------------------------------
+  /etc/nullmailer/{,*}					r,
   
-  owner /tmp/mail.* rw,
+  # TEMP -----------------------------------------------
+  owner /tmp/mail.*					rw,
   
 }
 
-
-profile nullmailer-queue /usr/sbin/nullmailer-queue {
+profile nullmailer.nullmailer-queue /usr/sbin/nullmailer-queue {
   #include <abstractions/base>
   
-  /usr/sbin/nullmailer-queue mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/nullmailer-queue				mr,
   
-  /etc/nullmailer/{,*} r,
-  
-  /var/nullmailer/ r,
-  /var/nullmailer/** rwl,
+  # READS/WRITES ---------------------------------------
+  /etc/nullmailer/{,*}					r,
+  /var/nullmailer/					r,
+  /var/nullmailer/**					rwl,
   
 }
-
 
 profile nullmailer.smtp /usr/libexec/nullmailer/smtp {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ssl_certs>
   
-  /usr/libexec/nullmailer/smtp mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/nullmailer/smtp				mr,
   
-  /var/nullmailer/queue/** rw,
+  # READS/WRITES ---------------------------------------
+  /var/nullmailer/queue/**				rw,
   
 }
 
-
-profile nullmailer-send /usr/sbin/nullmailer-send {
+profile nullmailer.nullmailer-send /usr/sbin/nullmailer-send {
   #include <abstractions/base>
   
-  /usr/sbin/nullmailer-send mr,
-  /usr/libexec/nullmailer/smtp Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/nullmailer-send				mr,
+  /usr/libexec/nullmailer/smtp				Px,
   
-  /etc/nullmailer/** r,
-  
-  /var/nullmailer/{,**} r,
-  /var/nullmailer/queue/** rw,
+  # READS/WRITES ---------------------------------------
+  /etc/nullmailer/**					r,
+  /var/nullmailer/{,**}					r,
+  /var/nullmailer/queue/**				rw,
   
 }
-
 
 profile nullmailer.init.d /etc/init.d/nullmailer {
   #include <abstractions/base>
@@ -79,22 +84,25 @@ profile nullmailer.init.d /etc/init.d/nullmailer {
   #include <abstractions/authentication>
   #include <abstractions/openrc>
   
+  # CAPABILITIES ---------------------------------------
   capability audit_control,
   capability setuid,
   capability setgid,
   
-  @{PROC}/@{pid}/uid_map r,
-  @{PROC}/@{pid}/loginuid wr,
+  # PSEUDO ---------------------------------------------
+  @{PROC}/@{pid}/uid_map				r,
+  @{PROC}/@{pid}/loginuid				wr,
   
-  /usr/sbin/nullmailer-send Px,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/nullmailer-send				Px,
+  /bin/bash						Cx -> shell,
   
-  /etc/environment r,
-  /etc/{conf,init}.d/nullmailer r,
-  /etc/security/limits.d/{,*} r,
-  
-  /run/nullmailer.pid rwk,
-  /run/utmp rk,
+  # READS/WRITES ---------------------------------------
+  /etc/environment					r,
+  /etc/{conf,init}.d/nullmailer				r,
+  /etc/security/limits.d/{,*}				r,
+  /run/nullmailer.pid					rwk,
+  /run/utmp						rk,
   
   
   profile shell {

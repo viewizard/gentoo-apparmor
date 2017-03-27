@@ -1,47 +1,53 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile net-tools.iptunnel /sbin/iptunnel flags=(complain) {
   #include <abstractions/base>
   
-  @{PROC}/@{pid}/net/dev r,
+  # PSEUDO ---------------------------------------------
+  @{PROC}/@{pid}/net/dev				r,
   
-  /sbin/iptunnel mr,
+  # EXECUTABLES ----------------------------------------
+  /sbin/iptunnel					mr,
   
 }
-
 
 profile net-tools.ifconfig /bin/ifconfig flags=(complain) {
   #include <abstractions/base>
   
-  /dev/pts/[0-9]* w,
-  @{PROC}/@{pid}/net/dev r,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  @{PROC}/@{pid}/net/dev				r,
   
-  /bin/ifconfig mr,
+  # EXECUTABLES ----------------------------------------
+  /bin/ifconfig						mr,
   
 }
-
 
 profile net-tools.netstat /bin/netstat flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   
-  /dev/pts/[0-9]* w,
-  @{PROC}/ r,
-  @{PROC}/@{pid}/fd/ r,
-  @{PROC}/@{pid}/cmdline r,
-  @{PROC}/@{pid}/net/* r,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  @{PROC}/						r,
+  @{PROC}/@{pid}/fd/					r,
+  @{PROC}/@{pid}/cmdline				r,
+  @{PROC}/@{pid}/net/*					r,
   
-  /bin/netstat mr,
+  # EXECUTABLES ----------------------------------------
+  /bin/netstat						mr,
   
 }

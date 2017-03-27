@@ -1,31 +1,36 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile nettop /usr/sbin/nettop flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/dbus-session>
   
+  # CAPABILITIES ---------------------------------------
   capability net_raw,
   capability net_admin,
   
-  /dev/tty rw,
-  /dev/pts/[0-9]* rw,
-  @{PROC}/@{pid}/fd/ r,
-  @{PROC}/@{pid}/net/dev r,
-  /sys/class/net/ r,
-  /sys/bus/usb/devices/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  /sys/class/net/					r,
+  /sys/bus/usb/devices/					r,
+  @{PROC}/@{pid}/fd/					r,
+  @{PROC}/@{pid}/net/dev				r,
   
-  /usr/sbin/nettop mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/nettop					mr,
   
-  /etc/terminfo/x/xterm r,
+  # READS/WRITES ---------------------------------------
+  /etc/terminfo/x/xterm					r,
   
 }

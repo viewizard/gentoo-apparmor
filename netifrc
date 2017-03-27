@@ -1,58 +1,62 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile netifrc.init.d /etc/init.d/net.* {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # CAPABILITIES ---------------------------------------
   capability net_admin,
   capability sys_admin,
   capability sys_module,
   
-  /dev/net/tun rw,
-  /sys/devices/virtual/net/tap*/{,**} r,
-  /sys/devices/virtual/net/br*/ r,
-  /sys/devices/virtual/net/br*/** rw,
-  /sys/devices/pci[0-9]*/**/net/eth[0-9]*/{,**} r,
+  # PSEUDO ---------------------------------------------
+  /dev/net/tun						rw,
+  /sys/devices/virtual/net/tap*/{,**}			r,
+  /sys/devices/virtual/net/br*/				r,
+  /sys/devices/virtual/net/br*/**			rw,
+  /sys/devices/pci[0-9]*/**/net/eth[0-9]*/{,**}		r,
   /sys/devices/pci[0-9]*/**/usb[0-9]*/**/net/usb[0-9]*/ifindex r,
-  @{PROC}/@{pid}/mounts r,
-  @{PROC}/@{pid}/net/dev r,
-  @{PROC}/sys/net/ipv4/route/flush w,
+  @{PROC}/@{pid}/mounts					r,
+  @{PROC}/@{pid}/net/dev				r,
+  @{PROC}/sys/net/ipv4/route/flush			w,
   
-  /etc/init.d/* Pxr,
-  /bin/bash Cx -> shell,
-  /bin/ip ix,
-  /bin/cat ix,
-  /bin/grep ix,
-  /bin/sed ix,
-  /bin/chmod ix,
-  /bin/tr ix,
-  /bin/readlink ix,
-  /bin/rc-status Px,
-  /sbin/dhcpcd  Px,
-  /sbin/brctl Px,
-  /sbin/iptunnel Px,
-  /sbin/iwconfig Px,
-  /usr/bin/gawk ix,
-  /usr/sbin/ifplugd Px,
-  /lib64/rc/sbin/mark_service_inactive ix,
+  # EXECUTABLES ----------------------------------------
+  /etc/init.d/*						Pxr,
+  /bin/bash						Cx -> shell,
+  /bin/ip						ix,
+  /bin/cat						ix,
+  /bin/grep						ix,
+  /bin/sed						ix,
+  /bin/chmod						ix,
+  /bin/tr						ix,
+  /bin/readlink						ix,
+  /bin/rc-status					Px,
+  /sbin/dhcpcd						Px,
+  /sbin/brctl						Px,
+  /sbin/iptunnel					Px,
+  /sbin/iwconfig					Px,
+  /usr/bin/gawk						ix,
+  /usr/sbin/ifplugd					Px,
+  /lib64/rc/sbin/mark_service_inactive			ix,
   
-  /etc/fstab r,
-  /etc/resolv.conf w,
-  /etc/conf.d/net r,
-  /etc/iproute2/{,*} r,
-  
-  /run/dhcpcd-*.pid rwk,
-  /run/ifplugd.*.pid rwk,
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
+  /etc/resolv.conf					w,
+  /etc/conf.d/net					r,
+  /etc/iproute2/{,*}					r,
+  /run/dhcpcd-*.pid					rwk,
+  /run/ifplugd.*.pid					rwk,
   
   
   profile shell {
@@ -60,9 +64,11 @@ profile netifrc.init.d /etc/init.d/net.* {
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
     
+    # CAPABILITIES -------------------------------------
     capability sys_tty_config,
     
-    /dev/console rw,
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
     
   }
   
@@ -72,10 +78,12 @@ profile netifrc.net.sh /lib{,32,64}/udev/net.sh flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
-  /dev/tty rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   
-  /lib{,32,64}/udev/net.sh r,
-  /bin/bash mr,
-  /etc/init.d/net.* Px,
+  # EXECUTABLES ----------------------------------------
+  /lib{,32,64}/udev/net.sh				r,
+  /bin/bash						mr,
+  /etc/init.d/net.*					Px,
   
 }
