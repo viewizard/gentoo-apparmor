@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile pidgin /usr/bin/pidgin {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -28,25 +29,30 @@ profile pidgin /usr/bin/pidgin {
   #include <abstractions/user-download>
   #include <abstractions/user-upload>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   
-  /dev/tty[0-9]* w,
-  /dev/shm/ r,
-  /dev/shm/* rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /dev/shm/						r,
+  /dev/shm/*						rw,
   
-  /usr/bin/gconftool-2 ixr,
-  /usr/bin/pidgin mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/pidgin					mr,
+  /usr/bin/gconftool-2					ixr,
   
-  /etc/pulse/client.conf r,
-  /usr/lib{,32,64}/libvisual-*/**.so mr,
-  /usr/lib{,32,64}/pidgin/*.so mr,
-  /usr/lib{,32,64}/purple*/*.so mr,
-  /usr/share/purple/ca-certs/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /etc/pulse/client.conf				r,
+  /usr/lib{,32,64}/libvisual-*/**.so			mr,
+  /usr/lib{,32,64}/pidgin/*.so				mr,
+  /usr/lib{,32,64}/purple*/*.so				mr,
+  /usr/share/purple/ca-certs/{,**}			r,
   
-  owner @{HOME}/.purple/ rw,
-  owner @{HOME}/.purple/** mrwk,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.purple/				rw,
+  owner @{HOME}/.purple/**				mrwk,	# FIX ME! разве это будет работать с IMA/EVM?
   
-  /tmp/ r,
-  /var/tmp/ r,
-  
+  # TEMP -----------------------------------------------
+  /tmp/							r,
+  /var/tmp/						r,
 }

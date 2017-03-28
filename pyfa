@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -26,19 +26,22 @@ profile pyfa @{PYTHON2_EXEC}/pyfa {
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/xdg-open>
   
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					w,
   
-  /bin/bash ix,
-  /bin/env mr,
-  /sbin/ldconfig ix,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						ix,	# FIX ME! почему он в основном профиле с ix?
+  /bin/env						mr,
+  /sbin/ldconfig					ix,
   
-  /usr/share/pyfa/ r,
-  /usr/share/pyfa/* rk,
-  @{PYTHON2_PACKAGES}/wxversion.pyc{,.*} w,
+  # READS/WRITES ---------------------------------------
+  /usr/share/pyfa/					r,
+  /usr/share/pyfa/*					rk,
+  @{PYTHON2_PACKAGES}/wxversion.pyc{,.*}		w,
   
-  owner @{HOME}/.pyfa/ rw,
-  owner @{HOME}/.pyfa/** rwk,
-  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.pyfa/					rw,
+  owner @{HOME}/.pyfa/**				rwk,
 }

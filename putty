@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile putty /usr/bin/putty flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -17,10 +18,12 @@ profile putty /usr/bin/putty flags=(complain) {
   #include <abstractions/gtk>
   #include <abstractions/nameservice>
   
-  owner @{PROC}/@{pid}/loginuid r,
+  # PSEUDO ---------------------------------------------
+  owner @{PROC}/@{pid}/loginuid				r,
   
-  /usr/bin/putty mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/putty					mr,
   
-  owner @{HOME}/.putty/{,**} rwk,
-  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.putty/{,**}				rwk,
 }

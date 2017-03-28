@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile porthole @{PYTHON_EXEC}/porthole {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -20,47 +21,49 @@ profile porthole @{PYTHON_EXEC}/porthole {
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* rw,
-  /dev/ptmx rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
+  /dev/ptmx						rw,
   
-  /bin/bash cx -> shell,
-  /bin/bzip2 ix,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						cx -> shell,
+  /bin/bzip2						ix,
+  /usr/bin/sandbox					ixr,
   
-  /usr/bin/sandbox ixr,
-  /etc/sandbox.conf r,
-  /etc/sandbox.d/{,*} r,
+  # READS/WRITES ---------------------------------------
+  /etc/sandbox.conf					r,
+  /etc/sandbox.d/{,*}					r,
+  /etc/portage/**					r,
+  /etc/profile.env					r,
+  /usr/portage/**					r,
+  /usr/local/portage/**					r,
+  /usr/share/portage/**					r,
+  /usr/share/gtksourceview-2.0/**			r,
+  /usr/share/porthole/**				r,
+  @{PYTHON_PACKAGES}/cairo/**.pyc{,.*}			w,
+  /var/lib/portage/*					r,
+  /var/cache/edb/**					r,
+  /var/db/pkg/{,**}					r,
+  /var/db/porthole/descriptions.db			w,
   
-  /usr/portage/** r,
-  /usr/local/portage/** r,
-  /var/db/pkg/{,**} r,  
-  /etc/portage/** r,
-  /etc/profile.env r,
-  /usr/share/portage/** r,
-  /var/lib/portage/* r,
-  /var/cache/edb/** r,
-  /var/db/porthole/descriptions.db w,
-  
-  /usr/share/gtksourceview-2.0/** r,
-  /usr/share/porthole/** r,
-  @{PYTHON_PACKAGES}/cairo/**.pyc{,.*} w,
-  
-  owner @{HOME}/.porthole/{,prefs.xml} rw,
-  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.porthole/{,prefs.xml}			rw,
   
   profile shell {
     #include <abstractions/base>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /bin/uname ix,
-    /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh ix,
-
-    /usr/portage/** r,
-    /usr/local/portage/** r,
-    /usr/share/sandbox/* r,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/uname						ix,
+    /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh	ix,
     
+    # READS/WRITES -------------------------------------
+    /usr/portage/**					r,
+    /usr/local/portage/**				r,
+    /usr/share/sandbox/*				r,
   }
-  
 }

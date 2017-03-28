@@ -1,64 +1,67 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile pmount /usr/bin/pmount flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability setuid,
   capability setgid,
   capability dac_override,
   capability dac_read_search,
   
-  /dev/tty[0-9]* w,
-  /dev/@{BLOCK_REAL} r,
-  /sys/class/block/ r,
-  /sys/devices/virtual/block/md*/dev r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /dev/@{BLOCK_REAL}					r,
+  /sys/class/block/					r,
+  /sys/devices/virtual/block/md*/dev			r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}{,dev} r,
   /sys/devices/pci[0-9]*/**/usb[0-9]*/**/block/@{BLOCK_REAL}/removable r,
   /sys/devices/pci[0-9]*/**/usb[0-9]*/**/block/@{BLOCK_REAL}/*/{size,start} r,
-  @{PROC}/@{pid}/mounts r,
+  @{PROC}/@{pid}/mounts					r,
   
-  /usr/bin/pmount mr,
-  /bin/mount Px,
-  /sbin/cryptsetup Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/pmount					mr,
+  /bin/mount						Px,
+  /sbin/cryptsetup					Px,
   
-  /etc/pmount.conf r,
-  /etc/pmount.allow r,
-  /etc/fstab r,
-  
-  /media/pam_usb*/{,**} rw,
-  
-  /run/lock/pmount__media_pam_usb* rwk,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/pmount.conf					r,
+  /etc/pmount.allow					r,
+  /etc/fstab						r,
+  /media/pam_usb*/{,**}					rw,
+  /run/lock/pmount__media_pam_usb*			rwk,
 }
-
 
 profile pmount.pumount /usr/bin/pumount flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability setuid,
   capability dac_override,
   capability dac_read_search,
   
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* w,
-  @{PROC}/@{pid}/mounts r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					w,
+  @{PROC}/@{pid}/mounts					r,
   
-  /usr/bin/pumount mr,
-  /bin/umount Px,
-  /sbin/cryptsetup Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/pumount					mr,
+  /bin/umount						Px,
+  /sbin/cryptsetup					Px,
   
-  /etc/pmount.conf r,
-  /etc/fstab r,
-  
-  /media/pam_usb*/{,**} rw,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/pmount.conf					r,
+  /etc/fstab						r,
+  /media/pam_usb*/{,**}					rw,
 }

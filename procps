@@ -1,86 +1,93 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile procps.ps /bin/ps {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   capability dac_override,
   capability dac_read_search,
   
-  /dev/tty r,
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						r,
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
+  @{PROC}/						r,
+  @{PROC}/uptime					r,
+  @{PROC}/sys/kernel/pid_max				r,
+  @{PROC}/sys/kernel/osrelease				r,
+  @{PROC}/tty/drivers					r,
+  @{PROC}/@{pid}/{stat,status,cmdline}			r,
+  @{PROC}/@{pid}/task/{,**}				r,
   
-  @{PROC}/ r,
-  @{PROC}/uptime r,
-  @{PROC}/sys/kernel/pid_max r,
-  @{PROC}/sys/kernel/osrelease r,
-  @{PROC}/tty/drivers r,
-  @{PROC}/@{pid}/{stat,status,cmdline} r,
-  @{PROC}/@{pid}/task/{,**} r,
+  # EXECUTABLES ----------------------------------------
+  /bin/ps						mr,
   
-  /bin/ps mr,
-  
-  /usr/src/linux-[0-9]*-{hardened,gentoo}*/System.map r,
-  
+  # READS/WRITES ---------------------------------------
+  /usr/src/linux-[0-9]*-{hardened,gentoo}*/System.map	r,
 }
-
 
 profile procps.pidof /usr/bin/pidof {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   capability dac_override,
   capability dac_read_search,
   
-  @{PROC}/ r,
-  @{PROC}/@{pid}/{stat,cmdline} r,
-  @{PROC}/sys/kernel/osrelease r,
+  # PSEUDO ---------------------------------------------
+  @{PROC}/						r,
+  @{PROC}/@{pid}/{stat,cmdline}				r,
+  @{PROC}/sys/kernel/osrelease				r,
   
-  /usr/bin/pidof mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/pidof					mr,
 }
-
 
 profile procps.pgrep /usr/bin/pgrep {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   capability dac_override,
   capability dac_read_search,
   
-  @{PROC}/ r,
-  @{PROC}/@{pid}/{stat,status,cmdline,loginuid} r,
-  @{PROC}/sys/kernel/osrelease r,
+  # PSEUDO ---------------------------------------------
+  @{PROC}/						r,
+  @{PROC}/@{pid}/{stat,status,cmdline,loginuid}		r,
+  @{PROC}/sys/kernel/osrelease				r,
   
-  /usr/bin/pgrep mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/pgrep					mr,
 }
-
 
 profile procps.sysctl /usr/sbin/sysctl {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_admin,
   capability net_admin,
   
-  /dev/pts/[0-9]* rw,
-  @{PROC}/sys/ r,
-  @{PROC}/sys/** rw,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  @{PROC}/sys/						r,
+  @{PROC}/sys/**					rw,
   
-  /usr/sbin/sysctl mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/sysctl					mr,
   
-  /etc/sysctl.conf r,
-  /etc/sysctl.d/{,*} r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/sysctl.conf					r,
+  /etc/sysctl.d/{,*}					r,
 }

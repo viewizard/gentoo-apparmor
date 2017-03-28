@@ -1,51 +1,53 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile polkit.polkitd /usr/lib{,32,64}/polkit-1/polkitd {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability setgid,
   capability setuid,
   
-  /usr/lib{,32,64}/polkit-1/polkitd m,
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/polkit-1/polkitd			m,
   
-  /etc/polkit-1/{,**} r,
-  /usr/share/polkit-1/{,**} r,
-  /usr/share/gvfs/remote-volume-monitors/{,*} r,
-  
-  /run/ConsoleKit/database r,
-  /var/lib/polkit-1/.cache/{,**} w,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/polkit-1/{,**}					r,
+  /usr/share/polkit-1/{,**}				r,
+  /usr/share/gvfs/remote-volume-monitors/{,*}		r,
+  /run/ConsoleKit/database				r,
+  /var/lib/polkit-1/.cache/{,**}			w,
 }
 
 profile polkit.polkit-agent-helper /usr/lib{,32,64}/polkit-1/polkit-agent-helper-1 flags=(complain) {
   #include <abstractions/base>
   
-  /usr/lib{,32,64}/polkit-1/polkit-agent-helper-1 mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/polkit-1/polkit-agent-helper-1	mr,
 }
 
 profile polkit.pkaction /usr/bin/pkaction flags=(complain) {
   #include <abstractions/base>
   
-  /usr/bin/pkaction mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/pkaction					mr,
 }
 
 profile polkit.pkcheck /usr/bin/pkcheck flags=(complain) {
   #include <abstractions/base>
   
-  /usr/bin/pkcheck mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/pkcheck					mr,
 }
 
 profile polkit.pkexec /usr/bin/pkexec flags=(complain) {
@@ -53,28 +55,31 @@ profile polkit.pkexec /usr/bin/pkexec flags=(complain) {
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   capability setuid,
   capability setgid,
   
+  # PSEUDO ---------------------------------------------
   @{PROC}/@{pid}/stat					r,
   @{PROC}/@{pid}/attr/current				w,
   
+  # EXECUTABLES ----------------------------------------
   /usr/bin/pkexec mr,
   /usr/sbin/pmvarrun					Px,
   /usr/sbin/gparted					Px,
   
   # FIX ME! Did we need a 'hat' here?
   
+  # READS/WRITES ---------------------------------------
   /etc/shells						r,
   /etc/environment					r,
   /etc/security/limits.d/				r,
-  
 }
 
 profile polkit.pkttyagent /usr/bin/pkttyagent flags=(complain) {
   #include <abstractions/base>
   
-  /usr/bin/pkttyagent mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/pkttyagent					mr,
 }

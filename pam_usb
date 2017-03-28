@@ -1,76 +1,81 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile pam_usb.pamusb-agent /usr/bin/pamusb-agent {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
   
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					w,
   
-  /bin/env ixmr,
-  /usr/bin/pamusb-agent mr,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/pamusb-agent					mr,
+  /bin/bash						Cx -> shell,
+  /bin/env						ixmr,	# FIX ME! действительно надо ixmr?
   
-  /etc/pamusb.conf r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/pamusb.conf					r,
   
   profile shell {
     #include <abstractions/base>
     
-    /dev/tty rw,
-    /dev/tty[0-9]* w,
+    # EXECUTABLES --------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					w,
     
-    /bin/bash mr,
-    /usr/bin/mate-screensaver-command Px,
-    /usr/bin/alock Px,
-    /usr/bin/pamusb-check Px,
-    
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /usr/bin/mate-screensaver-command			Px,
+    /usr/bin/alock					Px,
+    /usr/bin/pamusb-check				Px,
   }
-  
 }
-
 
 profile pam_usb.pamusb-check /usr/bin/pamusb-check {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_read_search,
   capability dac_override,
   capability chown,
   capability fowner,
   capability fsetid,
   
-  /dev/pts/[0-9]* rw,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
   
-  /usr/bin/pamusb-check mr,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/pamusb-check					mr,
+  /bin/bash						Cx -> shell,
   
-  /etc/pamusb.conf r,
+  # READS/WRITES ---------------------------------------
+  /etc/pamusb.conf					r,
+  /run/utmp						rk,
+  /media/*/.pamusb/{,*.pad}				rw,
   
-  @{HOME}/.pamusb/*.pad rw,
-  /media/*/.pamusb/{,*.pad} rw,
-  
-  /run/utmp rk,
-  
+  # USERS ----------------------------------------------
+  @{HOME}/.pamusb/*.pad					rw,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/authentication-pam_usb>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
   }
-  
 }

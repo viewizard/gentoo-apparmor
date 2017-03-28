@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile pinentry /usr/bin/pinentry-* flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -19,17 +20,20 @@ profile pinentry /usr/bin/pinentry-* flags=(complain) {
   #include <abstractions/X>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
   
-  /dev/tty rw,
-  /dev/console rw,
-  /dev/pts/[0-9]* rw,
-  @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
+  @{PROC}/@{pid}/fd/					r,
   
-  /usr/bin/pinentry-* mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/pinentry-*					mr,
   
-  /etc/terminfo/x/xterm r,
-  /etc/terminfo/l/linux r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/terminfo/x/xterm					r,
+  /etc/terminfo/l/linux					r,
 }

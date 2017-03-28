@@ -1,29 +1,32 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile pciutils.lspci /usr/sbin/lspci {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_admin,
   
-  /dev/pts/[0-9]* w,
-  
-  /sys/bus/pci/devices/ r,
-  /sys/bus/pci/slots/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  /sys/bus/pci/devices/					r,
+  /sys/bus/pci/slots/					r,
   /sys/devices/pci*/**/{resource,irq,vendor,device,class,config} r,
   
-  /usr/sbin/lspci mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/lspci					mr,
   
-  /etc/udev/udev.conf r,
-  /etc/udev/hwdb.bin r,
-  /usr/share/misc/pci.ids.gz r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/udev/udev.conf					r,
+  /etc/udev/hwdb.bin					r,
+  /usr/share/misc/pci.ids.gz				r,
 }

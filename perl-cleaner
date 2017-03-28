@@ -1,80 +1,85 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/perl>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_admin,
   
-  /dev/tty rw,
-  /dev/pts/[0-9]* w,
-  @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					w,
+  @{PROC}/@{pid}/fd/					r,
   
-  /usr/sbin/perl-cleaner mr,
-  /bin/bash cxmr -> shell,
-  /bin/grep ix,
-  /bin/tr ix,
-  /bin/rmdir ix,
-  /bin/sort ix,
-  /bin/stty ix,
-  /bin/cat ix,
-  /bin/rm ix,
-  /sbin/consoletype ix,
-  /usr/bin/q ix,
-  /usr/bin/xargs ix,
-  /usr/bin/gawk ix,
-  /usr/bin/tput ix,
-  /usr/bin/scanelf ix,
-  /usr/bin/find ix,
-  /usr/bin/realpath ix,
-  /usr/bin/h2ph ix,
-  @{PYTHON_EXEC_WRAPPER} Cx -> portage,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/perl-cleaner				mr,
+  /bin/bash						cxmr -> shell,	# FIX ME! действительно нужно mr?
+  /bin/grep						ix,
+  /bin/tr						ix,
+  /bin/rmdir						ix,
+  /bin/sort						ix,
+  /bin/stty						ix,
+  /bin/cat						ix,
+  /bin/rm						ix,
+  /sbin/consoletype					ix,
+  /usr/bin/q						ix,
+  /usr/bin/xargs					ix,
+  /usr/bin/gawk						ix,
+  /usr/bin/tput						ix,
+  /usr/bin/scanelf					ix,
+  /usr/bin/find						ix,
+  /usr/bin/realpath					ix,
+  /usr/bin/h2ph						ix,
+  @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
   
-  /etc/terminfo/x/xterm r,
-  /etc/portage/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /etc/terminfo/x/xterm					r,
+  /etc/portage/{,**}					r,
+  /							r,
+  /{bin,sbin,usr,opt,var}/{,**}				r,
+  /etc/portage/bin/{,**}				r,
+  /etc/env.d/cblas/lib64/{,**}				r,
+  /usr/lib{,32,64}/perl**				w,
   
-  / r,
-  /{bin,sbin,usr,opt,var}/{,**} r,
-  /etc/portage/bin/{,**} r,
-  /etc/env.d/cblas/lib64/{,**} r,
-  /usr/lib{,32,64}/perl** w,
-  
-  owner /tmp/sh-thd.* rw,
-  
+  # TEMP -----------------------------------------------
+  owner /tmp/sh-thd.*					rw,
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /bin/grep ix,
-    /usr/bin/gawk ix,
-    /usr/bin/@{CHOST}-gcc ix,
-    /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc ix,
-    /usr/libexec/gcc/@{CHOST}/*/cc1 ix,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/grep						ix,
+    /usr/bin/gawk					ix,
+    /usr/bin/@{CHOST}-gcc				ix,
+    /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc		ix,
+    /usr/libexec/gcc/@{CHOST}/*/cc1			ix,
     
-    /etc/env.d/gcc/{,**} r,
-    /usr/include/{,**} r,
-    
+    # READS/WRITES -------------------------------------
+    /etc/env.d/gcc/{,**}				r,
+    /usr/include/{,**}					r,
   }
   
   profile portage {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
-    @{PYTHON_EXEC}/emerge Px,
-    @{PYTHON_EXEC}/portageq Px,
-    
+    # EXECUTABLES --------------------------------------
+    @{PYTHON_EXEC}/emerge				Px,
+    @{PYTHON_EXEC}/portageq				Px,
   }
-  
 }

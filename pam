@@ -1,20 +1,22 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile pam.unix_chkpwd /sbin/unix_chkpwd {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
-  /sbin/unix_chkpwd mr,
+  # EXECUTABLES ----------------------------------------
+  /sbin/unix_chkpwd					mr,
   
-  owner /etc/shadow r,
-  
+  # READS/WRITES ---------------------------------------
+  owner /etc/shadow					r,
 }

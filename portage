@@ -1,19 +1,21 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
   capability chown,
@@ -25,65 +27,73 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
   capability kill,
   capability setfcap,
   
-  /dev/tty rw,
-  /dev/ptmx rw,
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* rw,
-  /sys/fs/cgroup/portage/{,**} rw,
-  @{PROC}/@{pid}/fd/ r,
-  @{PROC}/@{pid}/mountinfo r,
-  @{PROC}/sys/kernel/osrelease r,
+  # PSEUDO ---------------------------------------------
+  /dev/							r,
+  /dev/tty						rw,
+  /dev/ptmx						rw,
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
+  /sys/fs/cgroup/portage/{,**}				rw,
+  @{PROC}/@{pid}/fd/					r,
+  @{PROC}/@{pid}/mountinfo				r,
+  @{PROC}/sys/kernel/osrelease				r,
   
-  /bin/bash cx -> shell,
-  /bin/stty ix,
-  /bin/mount Px,
-  /bin/tar ix,
-  /sbin/ldconfig ix,
-  /usr/bin/sandbox cx -> sandboxed_shell,
-  /usr/bin/find ix,
-  /usr/bin/id ix,
-  /usr/bin/install-info ix,
-  /usr/bin/scanelf ix,
-  /usr/bin/wget ix,
-  /usr/bin/desktop-file-validate ix,
-  /usr/bin/rsync ix,
-  /usr/bin/gcc-config Px,
-  /usr/bin/free ix,
-  /usr/@{CHOST}/binutils-bin/*/ld ix,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						cx -> shell,
+  /bin/stty						ix,
+  /bin/mount						Px,
+  /bin/tar						ix,
+  /sbin/ldconfig					ix,
+  /usr/bin/sandbox					cx -> sandboxed_shell,
+  /usr/bin/find						ix,
+  /usr/bin/id						ix,
+  /usr/bin/install-info					ix,
+  /usr/bin/scanelf					ix,
+  /usr/bin/wget						ix,
+  /usr/bin/desktop-file-validate			ix,
+  /usr/bin/rsync					ix,
+  /usr/bin/gcc-config					Px,
+  /usr/bin/free						ix,
+  /usr/@{CHOST}/binutils-bin/*/ld			ix,
   
-  / r,
-  /dev/ r,
-  /bin/ r,
-  /bin/** rw,
-  /etc/ r,
-  deny /etc/ w,
-  /etc/** rw,
-  /lib{,32,64}/ r,
-  /lib{,32,64}/** rw,
-  /opt/{,**} rw,
-  /sbin/ r,
-  /sbin/** rw,
-  /usr/ r,
-  deny /usr/ w,
-  /usr/** rwl, # FIX ME! exclude "/usr/local" with {*^}/{**^}, when this features will be available
-  /usr/portage/distfiles/** rwk,
-  /usr/portage/packages/** rwk,
-  /run/ r,
-  /var/ rw,
-  /var/** rwk, # FIX ME! exclude "/var/log" (allow only subfolder creation and .keep* files) with {*^}/{**^}, when this features will be available
-  /tmp/* rwk,
+  # READS/WRITES ---------------------------------------
+  /							r,
+  /bin/							r,
+  /bin/**						rw,
+  /etc/							r,
+  /etc/**						rw,
+  /lib{,32,64}/						r,
+  /lib{,32,64}/**					rw,
+  /opt/{,**}						rw,
+  /sbin/						r,
+  /sbin/**						rw,
+  /usr/							r,
+  /usr/**						rwl,	# FIX ME! exclude "/usr/local" with {*^}/{**^},
+  								# when this features will be available
+  /usr/portage/distfiles/**				rwk,
+  /usr/portage/packages/**				rwk,
+  /run/							r,
+  /var/							rw,
+  /var/**						rwk,	# FIX ME! exclude "/var/log" (allow only subfolder
+  								# creation and .keep* files) with {*^}/{**^},
+  								# when this features will be available
   
-  # Noisy
-  deny /root/ r,
-  deny @{HOMEDIRS}/** r,
-  deny /lib64/ w,
+  # TEMP -----------------------------------------------
+  /tmp/*						rwk,
   
+  # NOISY ----------------------------------------------
+  deny /root/						r,
+  deny @{HOMEDIRS}/**					r,
+  deny /etc/						w,
+  deny /usr/						w,
+  deny /lib64/						w,
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/python>
     #include <abstractions/nameservice>
     
+    # CAPABILITIES -------------------------------------
     capability dac_override,
     capability dac_read_search,
     capability chown,
@@ -94,75 +104,76 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     capability sys_ptrace,
     capability kill,
     
-    /dev/tty rw,
-    /dev/pts/[0-9]* rw,
-    /dev/initctl w,
-    /sys/devices/system/cpu/ r,
-    @{PROC}/ r,
-    @{PROC}/cmdline r,
-    @{PROC}/@{pid}/{environ,cmdline,status} r,
-    @{PROC}/@{pid}/fd/ r,
-    @{PROC}/@{pid}/fd/[0-9]* w,
-    @{PROC}/@{pid}/{mounts,mountinfo} r,
-    @{PROC}/sys/kernel/osrelease r,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
+    /dev/initctl					w,
+    /sys/devices/system/cpu/				r,
+    @{PROC}/						r,
+    @{PROC}/cmdline					r,
+    @{PROC}/@{pid}/{environ,cmdline,status}		r,
+    @{PROC}/@{pid}/fd/					r,
+    @{PROC}/@{pid}/fd/[0-9]*				w,
+    @{PROC}/@{pid}/{mounts,mountinfo}			r,
+    @{PROC}/sys/kernel/osrelease			r,
     
-    /bin/bash mr,
-    /usr/sbin/useradd Px,
-    /usr/sbin/lspci Px,
-    /lib{,32,64}/rc/sh/migrate-to-run.sh ix,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /usr/sbin/useradd					Px,
+    /usr/sbin/lspci					Px,
+    /lib{,32,64}/rc/sh/migrate-to-run.sh		ix,
+    /etc/portage/bin/**					ix,
+    /bin/**						ix,
+    /sbin/**						ix,
+    /sbin/udevadm					Px,
+    /opt/**						ix,
+    /usr/bin/**						ix,
+    /usr/sbin/**					ix,
+    /usr/lib{,32,64,exec}/**				ix,
+    /usr/@{CHOST}/**					ix,
+    /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/**	ix,
+    /lib{,32,64}/rc/sh/gendepends.sh			Px,
+    /var/tmp/portage/**					ix,
     
-    /etc/portage/bin/** ixr,
-    /boot/ r,
-    /boot/** rw,
-    /bin/ r,
-    /bin/** ixrw,
-    /sbin/ r,
-    /sbin/** ixr,
-    /sbin/udevadm Pxr,
-    /opt/ r,
-    /opt/** ixr,
-    /usr/bin/** ixr,
-    /usr/sbin/** ixr,
-    /usr/lib{,32,64,exec}/** ixr,
-    /usr/@{CHOST}/** ixr,
-    /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/** ixr,
-    /lib{,32,64}/rc/sh/gendepends.sh Px,
+    # READS/WRITES -------------------------------------
+    /							r,
+    /boot/						r,
+    /boot/**						rw,
+    /bin/						r,
+    /bin/**						rw,
+    /sbin/{,**}						r,
+    /opt/{,**}						r,
+    /etc/						r,
+    /etc/**						rw,
+    /usr/						r,
+    /usr/**						rw,	# FIX ME! exclude "/usr/local" with {*^}/{**^},
+    								# when this features will be available
+    /usr/portage/packages/**				rwk,
+    /lib{,32,64}/					r,
+    /lib{,32,64}/*					rwl,
+    /lib{,32,64}/modules/*-{hardened,gentoo}*/modules.*	rw,
+    /lib{,32,64}/rc/bin/*				ix,
+    /var/db/pkg/					r,
+    /var/db/pkg/**					rw,
+    /var/tmp/portage/					rw,
+    /var/tmp/portage/**					rwk,
+    /var/cache/**					rwl,
+    /var/lib/*/						rw,
+    /var/lib/*/**					rwkl,
+    /run/mount/utab					rw,
+    /run/openrc/*					r,
+    /run/openrc/deptree					w,
+    /run/openrc/depconfig				w,
+    /var/						r,
     
-    /usr/bin/dumpcap w,
-    
-    / r,
-    /etc/ r,
-    /etc/** rw,
-    /usr/ r,
-    /usr/** rw, # FIX ME! exclude "/usr/local" with {*^}/{**^}, when this features will be available
-    /usr/portage/packages/** rwk,
-    /lib{,32,64}/ r,
-    /lib{,32,64}/* rwl,
-    /lib{,32,64}/modules/*-{hardened,gentoo}*/modules.* rw,
-    /lib{,32,64}/rc/bin/* ix,
-    
-    /var/db/pkg/ r,
-    /var/db/pkg/** rw,
-    /var/tmp/portage/ rw,
-    /var/tmp/portage/** rwkix,
-    /var/cache/** rwl,
-    /var/lib/*/ rw,
-    /var/lib/*/** rwkl,
-    
-    /run/mount/utab rw,
-    /run/openrc/* r,
-    /run/openrc/deptree w,
-    /run/openrc/depconfig w,
-    
-    /var/ r,
-    /var/tmp/ r,
-    owner /tmp/sh-thd.* rw,
-    owner /tmp/portage.cron.* rw,
-    owner /tmp/sed* rw,
-    owner /tmp/gcc-config-ima rw,
-    owner /tmp/?????? rw,
-    owner /tmp/tmp?????? rwk,
-    
+    # TEMP ---------------------------------------------
+    /var/tmp/						r,
+    owner /tmp/sh-thd.*					rw,
+    owner /tmp/portage.cron.*				rw,
+    owner /tmp/sed*					rw,
+    owner /tmp/gcc-config-ima				rw,
+    owner /tmp/??????					rw,
+    owner /tmp/tmp??????				rwk,
   }
   
   profile sandboxed_shell flags=(complain) {
@@ -171,6 +182,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     #include <abstractions/fonts>
     #include <abstractions/nameservice>
     
+    # CAPABILITIES -------------------------------------
     capability dac_override,
     capability dac_read_search,
     capability chown,
@@ -183,279 +195,290 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     capability mknod,
     capability sys_resource,
     
-    /dev/tty rw,
-    /dev/null k,
-    /dev/pts/[0-9]* rw,
-    /dev/dri/ r,
-    /dev/shm/{,*} rwl,
-    /dev/ptmx rw,
-    /sys/bus/pci/devices/ r,
-    /sys/devices/pci[0-9]*/**/config r,
-    /sys/devices/system/cpu/{,**} r,
-    @{PROC}/ r,
-    @{PROC}/@{pid}/fd/ r,
-    @{PROC}/cmdline r,
-    @{PROC}/uptime r,
-    @{PROC}/@{pid}/stat r,
-    @{PROC}/@{pid}/mounts r,
-    @{PROC}/@{pid}/loginuid r,
-    @{PROC}/@{pid}/task/@{pid}/stat r,
-    @{PROC}/@{pid}/net/arp r,
-    @{PROC}/sys/net/ipv4/ip_local_port_range r,
-    @{PROC}/sys/kernel/randomize_va_space r,
-    @{PROC}/sys/kernel/osrelease r,
-    @{PROC}/sys/kernel/pid_max r,
-    @{PROC}/sys/kernel/osrelease r,
-    @{PROC}/sys/kernel/ostype r,
-    @{PROC}/tty/drivers r,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/null						k,
+    /dev/pts/[0-9]*					rw,
+    /dev/dri/						r,
+    /dev/shm/{,*}					rwl,
+    /dev/ptmx						rw,
+    /sys/bus/pci/devices/				r,
+    /sys/devices/pci[0-9]*/**/config			r,
+    /sys/devices/system/cpu/{,**}			r,
+    @{PROC}/						r,
+    @{PROC}/@{pid}/fd/					r,
+    @{PROC}/cmdline					r,
+    @{PROC}/uptime					r,
+    @{PROC}/@{pid}/stat					r,
+    @{PROC}/@{pid}/mounts				r,
+    @{PROC}/@{pid}/loginuid				r,
+    @{PROC}/@{pid}/task/@{pid}/stat			r,
+    @{PROC}/@{pid}/net/arp				r,
+    @{PROC}/sys/net/ipv4/ip_local_port_range		r,
+    @{PROC}/sys/kernel/randomize_va_space		r,
+    @{PROC}/sys/kernel/osrelease			r,
+    @{PROC}/sys/kernel/pid_max				r,
+    @{PROC}/sys/kernel/osrelease			r,
+    @{PROC}/sys/kernel/ostype				r,
+    @{PROC}/tty/drivers					r,
     
-    /bin/bash mr,
+    # EXECUTABLES ----------------------------------------
+    /bin/bash						mr,
+    /bin/**						ix,
+    /sbin/**						ix,
+    /opt/**						ix,
+    /lib{,32,64}/**					ix,
+    /usr/bin/**						ix,
+    /usr/sbin/**					ix,
+    /usr/lib{,32,64,exec}/**				ix,
+    /usr/share/build-1/mkdir.sh				ix,
+    /usr/share/gnuconfig/config.sub			ix,
+    /usr/@{CHOST}/**					ix,
+    /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/**	ix,
+    /var/tmp/portage/**					ix,
     
-    / r,
-    /bin/ r,
-    /bin/** ixr,
-    /sbin/ r,
-    /sbin/** ixr,
-    /opt/ r,
-    /opt/** ixr,
-    /lib{,32,64}/ r,
-    /lib{,32,64}/** ixr,
-    /etc/{,**} r,
-    /usr/{,**} r,
-    /usr/bin/** ixr,
-    /usr/sbin/** ixr,
-    /usr/lib{,32,64,exec}/** ixr,
-    /usr/share/build-1/mkdir.sh ixr,
-    /usr/share/gnuconfig/config.sub ixr,
-    /usr/@{CHOST}/** ixr,
-    /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/** ixr,
+    # READS/WRITES -------------------------------------
+    /							r,
+    /bin/{,**}						r,
+    /sbin/{,**}						r,
+    /opt/{,**}						r,
+    /lib{,32,64}/{,**}					r,
+    /etc/{,**}						r,
+    /usr/{,**}						r,
     /usr/src/linux-[0-9]*-{hardened,gentoo}*/tools/gcc/**.so m,
-    /usr/portage/distfiles/{egit,git3}-src/** rwl,
-    /usr/portage/packages/{,**} rw,
+    /usr/portage/distfiles/{egit,git3}-src/**		rwl,
+    /usr/portage/packages/{,**}				rw,
+    /var/						r,
+    /var/log/sandbox/sandbox-*.log			w,
+    /var/db/pkg/{,**}					r,
+    /var/cache/{,**}					r,
     
-    /var/ r,
-    /var/tmp/ r,
-    /var/tmp/portage/ rw,
-    /var/tmp/portage/** rwklix,
-    /var/log/sandbox/sandbox-*.log w,
-    /var/db/pkg/{,**} r,
-    /var/cache/{,**} r,
-    
-    /tmp/ r,
-    owner /tmp/cf*/{,**} rw,
-    owner /tmp/test.* rw,
-    owner /tmp/tmp* rw,
-    owner /var/tmp/cf*/{,**} rw,
-    
+    # TEMP ---------------------------------------------
+    /tmp/						r,
+    owner /tmp/cf*/{,**}				rw,
+    owner /tmp/test.*					rw,
+    owner /tmp/tmp*					rw,
+    /var/tmp/						r,
+    owner /var/tmp/cf*/{,**}				rw,
+    /var/tmp/portage/					rw,
+    /var/tmp/portage/**					rwkl,
   }
-  
 }
-
 
 profile portage.env-update @{PYTHON_EXEC}/env-update flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
   
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
   
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
   
-  / r,
-  /etc/ld.so.conf* rw,
-  /etc/csh.env* rw,
-  /etc/profile.env* rw,
-  /etc/env.d/{,*} r,
-  /etc/portage/** r,
-  /usr/portage/** r,
-  /usr/ r,
-  /usr/local/portage/** r,
-  /usr/share/portage/config/* r,
+  # READS/WRITES ---------------------------------------
+  /							r,
+  /etc/ld.so.conf*					rw,
+  /etc/csh.env*						rw,
+  /etc/profile.env*					rw,
+  /etc/env.d/{,*}					r,
+  /etc/portage/**					r,
+  /usr/portage/**					r,
+  /usr/							r,
+  /usr/local/portage/**					r,
+  /usr/share/portage/config/*				r,
+  /var/cache/edb/mtimedb				r,
+  /var/lib/portage/config				rwk,
   
-  /var/cache/edb/mtimedb r,
-  /var/lib/portage/config rwk,
-  
-  owner /tmp/?????? rw,
-  owner /tmp/tmp?????? rwk,
-  
+  # TEMP -----------------------------------------------
+  owner /tmp/??????					rw,
+  owner /tmp/tmp??????					rwk,
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /bin/uname ix,
-    /sbin/ldconfig ix,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/uname						ix,
+    /sbin/ldconfig					ix,
     
-    /etc/ld.so.conf r,
-    /etc/ld.so.cache* rw,
-    /etc/ld.so.conf.d/{,*} r,
-    /lib{,32,64}/ r,
-    /usr/lib{,32,64}/ r,
-    /usr/local/lib{,32,64}/ r,
-    
-    /var/cache/ldconfig/aux-cache* rw,
-    
+    # READS/WRITES -------------------------------------
+    /etc/ld.so.conf					r,
+    /etc/ld.so.cache*					rw,
+    /etc/ld.so.conf.d/{,*}				r,
+    /lib{,32,64}/					r,
+    /usr/lib{,32,64}/					r,
+    /usr/local/lib{,32,64}/				r,
+    /var/cache/ldconfig/aux-cache*			rw,
   }
 }
-
 
 profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   
-  /dev/pts/[0-9]* rw,
-  @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  @{PROC}/@{pid}/fd/					r,
   
-  /bin/bash Cx -> shell,
-  /usr/bin/diff ix,
-  /usr/bin/find ix,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /usr/bin/diff						ix,
+  /usr/bin/find						ix,
   
-  /etc/profile.env r,
-  /etc/dispatch-conf.conf r,
-  /etc/portage/** r,
-  /usr/portage/** r,
-  /usr/local/portage/** r,
-  /usr/share/portage/** r,
+  # READS/WRITES ---------------------------------------
+  /etc/{,**}						rw,
+  /usr/portage/**					r,
+  /usr/local/portage/**					r,
+  /usr/share/portage/**					r,
   
-  /etc/{,**} rw,
-  
-  owner /tmp/dispatch-conf.*/ rw,
-  
+  # TEMP -----------------------------------------------
+  owner /tmp/dispatch-conf.*/				rw,
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     
+    # CAPABILITIES -------------------------------------
     capability dac_override,
     capability dac_read_search,
     
-    /dev/tty rw,
-    /dev/pts/[0-9]* rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
     
-    /bin/bash mr,
-    /bin/uname ix,
-    /usr/bin/find ix,
-    /usr/bin/diff ix,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/uname						ix,
+    /usr/bin/find					ix,
+    /usr/bin/diff					ix,
     
-    /etc/{,**} r,
+    # READS/WRITES -------------------------------------
+    /etc/{,**}						r,
     
-    # Noisy
-    deny @{HOME}/ r,
-    
+    # NOISY --------------------------------------------
+    deny @{HOME}/					r,
   }
-  
 }
-
 
 profile portage.portageq @{PYTHON_EXEC}/portageq flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
   
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
   
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
   
-  /etc/profile.env r,
-  /etc/portage/{,**} r,
-  /usr/portage/{,**} r,
-  /usr/local/portage/{,**} r,
-  /usr/share/portage/{,**} r,
-  /var/db/pkg/{,**} r,
-  /var/cache/edb/{,**} r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/profile.env					r,
+  /etc/portage/{,**}					r,
+  /usr/portage/{,**}					r,
+  /usr/local/portage/{,**}				r,
+  /usr/share/portage/{,**}				r,
+  /var/db/pkg/{,**}					r,
+  /var/cache/edb/{,**}					r,
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /bin/uname ix,
-    
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/uname						ix,
   }
-  
 }
-
 
 profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   
-  /dev/tty rw,
-  /dev/pts/[0-9]* rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
   
-  /bin/bash mr,
-  /usr/sbin/etc-update r,
-  /bin/cat ix,
-  /bin/grep ix,
-  /bin/cut ix,
-  /bin/rm ix,
-  /bin/mkdir ix,
-  /bin/chmod ix,
-  /bin/chown ix,
-  /bin/sed ix,
-  /bin/sort ix,
-  /bin/head ix,
-  /bin/wc ix,
-  /bin/mv ix,
-  /usr/bin/diff ix,
-  /usr/bin/find ix,
-  @{PYTHON_EXEC_WRAPPER} Cx -> portageq,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/etc-update					r,
+  /bin/bash						mr,
+  /bin/cat						ix,
+  /bin/grep						ix,
+  /bin/cut						ix,
+  /bin/rm						ix,
+  /bin/mkdir						ix,
+  /bin/chmod						ix,
+  /bin/chown						ix,
+  /bin/sed						ix,
+  /bin/sort						ix,
+  /bin/head						ix,
+  /bin/wc						ix,
+  /bin/mv						ix,
+  /usr/bin/diff						ix,
+  /usr/bin/find						ix,
+  @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,
   
-  / r,
-  /etc/ r,
-  /etc/** rw,
-  /usr/share/gnupg/ r,
+  # READS/WRITES ---------------------------------------
+  /							r,
+  /etc/							r,
+  /etc/**						rw,
+  /usr/share/gnupg/					r,
   
-  owner /var/tmp/etc-update-*/{,**} rw,
-  owner /tmp/sh-thd.* rw,
-  owner /var/tmp/portage/** rw,
-  
+  # TEMP -----------------------------------------------
+  owner /var/tmp/etc-update-*/{,**}			rw,
+  owner /tmp/sh-thd.*					rw,
+  owner /var/tmp/portage/**				rw,
   
   profile portageq {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
-    @{PYTHON_EXEC}/portageq Px,
-    
+    # EXECUTABLES --------------------------------------
+    @{PYTHON_EXEC}/portageq				Px,
   }
-  
 }
-
 
 profile portage.emaint @{PYTHON_EXEC}/emaint flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
   
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
   
-  /bin/bash cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						cx -> shell,
   
-  /etc/profile.env r,
-  /etc/terminfo/x/xterm r,
-  /etc/portage/{,**} r,
-  /usr/portage/{,**} r,
-  /usr/local/portage/{,**} r,
-  /usr/share/portage/{,**} r,
-  /var/lib/portage/{,**} r,
-  /var/db/pkg/{,**} r,
-  /var/cache/edb/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /etc/profile.env					r,
+  /etc/terminfo/x/xterm					r,
+  /etc/portage/{,**}					r,
+  /usr/portage/{,**}					r,
+  /usr/local/portage/{,**}				r,
+  /usr/share/portage/{,**}				r,
+  /var/lib/portage/{,**}				r,
+  /var/db/pkg/{,**}					r,
+  /var/cache/edb/{,**}					r,
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /bin/uname ix,
-    
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/uname						ix,
   }
 }

@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile pavucontrol /usr/bin/pavucontrol {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -18,12 +19,15 @@ profile pavucontrol /usr/bin/pavucontrol {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   
-  /usr/bin/pavucontrol mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/pavucontrol					mr,
   
-  /usr/share/pavucontrol/* r,
+  # READS/WRITES ---------------------------------------
+  /usr/share/pavucontrol/*				r,
   
-  owner @{HOME}/.config/pavucontrol.ini* rw,
-  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/pavucontrol.ini*		rw,
 }

@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile pulseaudio /usr/bin/pulseaudio {
   #include <abstractions/base>
   #include <abstractions/audio>
@@ -16,44 +17,48 @@ profile pulseaudio /usr/bin/pulseaudio {
   #include <abstractions/X>
   #include <abstractions/nameservice>
   
-  /sys/bus/ r,
-  /sys/class/ r,
-  /sys/class/sound/ r,
-  /sys/devices/pci[0-9]*/**/sound/card*/uevent r,
-  /sys/devices/pci[0-9]*/**/sound/card*/pcm*/pcm_class r,
-  /sys/devices/system/cpu/ r,
+  # PSEUDO ---------------------------------------------
+  /sys/bus/						r,
+  /sys/class/						r,
+  /sys/class/sound/					r,
+  /sys/devices/pci[0-9]*/**/sound/card*/uevent		r,
+  /sys/devices/pci[0-9]*/**/sound/card*/pcm*/pcm_class	r,
+  /sys/devices/system/cpu/				r,
   /sys/devices/virtual/dmi/id/{sys_vendor,board_vendor,bios_vendor} r,
-  owner @{PROC}/@{pid}/fd/ r,
-  owner @{PROC}/@{pid}/stat r,
+  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC}/@{pid}/stat				r,
   
-  /usr/bin/pulseaudio ixmr,
-  /usr/libexec/pulse/gconf-helper ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/pulseaudio					ixmr,
+  /usr/libexec/pulse/gconf-helper			ix,
   
-  /etc/udev/udev.conf r,
-  /usr/lib{,32,64}/pulseaudio/{,**} r,
-  /usr/lib{,32,64}/pulse-*/modules/** m,
-  /usr/share/pulseaudio/** r,
-  /usr/share/applications/{,*} r,
+  # READS/WRITES ---------------------------------------
+  /etc/udev/udev.conf					r,
+  /usr/lib{,32,64}/pulseaudio/{,**}			r,
+  /usr/lib{,32,64}/pulse-*/modules/**			m,
+  /usr/share/pulseaudio/**				r,
+  /usr/share/applications/{,*}				r,
+  /run/udev/data/+sound:card*				r,
+  owner /run/user/*/pulse/autospawn.lock		rwk,
   
-  /run/udev/data/+sound:card* r,
-  owner /run/user/*/pulse/autospawn.lock rwk,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/pulse/				rw,
+  owner @{HOME}/.config/pulse/**			rwk,
   
-  owner @{HOME}/.config/pulse/ rw,
-  owner @{HOME}/.config/pulse/** rwk,
-  
-  owner /tmp/pulse-*/autospawn.lock rwk,
-  
+  # TEMP -----------------------------------------------
+  owner /tmp/pulse-*/autospawn.lock			rwk,
 }
 
 profile pulseaudio.start-pulseaudio-x11 /usr/bin/start-pulseaudio-x11 {
   #include <abstractions/base>
   
-  /dev/tty rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   
-  /bin/bash mr,
-  /usr/bin/start-pulseaudio-x11 r,
-  /usr/bin/pactl Px,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/start-pulseaudio-x11				r,
+  /bin/bash						mr,
+  /usr/bin/pactl					Px,
 }
 
 profile pulseaudio.pactl /usr/bin/pactl {
@@ -62,14 +67,15 @@ profile pulseaudio.pactl /usr/bin/pactl {
   #include <abstractions/X>
   #include <abstractions/dbus-session>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_read_search,
   capability dac_override,
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  owner @{PROC}/@{pid}/fd/				r,
   
-  owner @{PROC}/@{pid}/fd/ r,
-  
-  /usr/bin/pactl mr,
-  /usr/bin/pulseaudio Px,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/pactl					mr,
+  /usr/bin/pulseaudio					Px,
 }

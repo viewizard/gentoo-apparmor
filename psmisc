@@ -1,42 +1,46 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile psmisc.killall /usr/bin/killall {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   
-  /dev/tty[0-9]* w,
-  @{PROC}/ r,
-  @{PROC}/@{pid}/{stat,status,cmdline} r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  @{PROC}/						r,
+  @{PROC}/@{pid}/{stat,status,cmdline}			r,
   
-  /usr/bin/killall mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/killall					mr,
 }
-
 
 profile psmisc.fuser /bin/fuser flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   capability kill,
   
-  @{PROC}/ r,
-  @{PROC}/swaps r,
-  @{PROC}/@{pid}/fd/ r,
-  @{PROC}/@{pid}/{mounts,mountinfo,stat} r,
-  @{PROC}/@{pid}/net/unix r,
-  @{PROC}/fs/nfs/exports r,
+  # PSEUDO ---------------------------------------------
+  @{PROC}/						r,
+  @{PROC}/swaps						r,
+  @{PROC}/@{pid}/fd/					r,
+  @{PROC}/@{pid}/{mounts,mountinfo,stat}		r,
+  @{PROC}/@{pid}/net/unix				r,
+  @{PROC}/fs/nfs/exports				r,
   
-  /bin/fuser mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /bin/fuser						mr,
 }
