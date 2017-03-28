@@ -1,18 +1,26 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
+# Блочные устройства подключенные к виртуальной среде.
+  # PSEUDO ---------------------------------------------
+  /dev/zd[0-9]*						rw,
 
-/media/sdb2/VM_SERVERS/boot/kernel-x86_64* r,
-/media/sdb2/VM_SERVERS/swap/* rw,
-/media/sdb2/VM_SERVERS/* rw,
-/media/sdb2/VM_DESKTOP/* rw,
-/media/sdb2/VM_WIN/* rw,
-owner @{HOME}/@{XDG_DESKTOP_DIR}/shared/ r,
-owner @{HOME}/@{XDG_DESKTOP_DIR}/shared/** rw,
+# Пути размещения файлов виртуальной среды.
+  # READS/WRITES ---------------------------------------
+  /media/sdb2/VM_SERVERS/boot/kernel-x86_64*		r,
+  /media/sdb2/VM_SERVERS/swap/*				rw,
+  /media/sdb2/VM_SERVERS/*				rw,
+  /media/sdb2/VM_DESKTOP/*				rw,
+  /media/sdb2/VM_WIN/*					rw,
+
+# Папка обмена хост-гость для VirtFS (Plan 9 folder sharing)
+  # USERS ----------------------------------------------
+  owner @{HOME}/@{XDG_DESKTOP_DIR}/shared/		r,
+  owner @{HOME}/@{XDG_DESKTOP_DIR}/shared/**		rw,
