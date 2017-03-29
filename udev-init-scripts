@@ -1,85 +1,80 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile udev-init-scripts.udev.init.d /etc/init.d/udev flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_admin,
   
-  @{PROC}/@{pid}/mounts r,
-  @{PROC}/sys/kernel/hotplug w,
+  # PSEUDO ---------------------------------------------
+  @{PROC}/@{pid}/mounts					r,
+  @{PROC}/sys/kernel/hotplug				w,
   
-  /bin/bash Cx -> shell,
-  /bin/grep ix,
-  /bin/udevadm Px,
-  /sbin/udevd Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/grep						ix,
+  /bin/udevadm						Px,
+  /sbin/udevd						Px,
   
-  /etc/fstab r,
-  /etc/{conf,init}.d/udev r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
+  /etc/{conf,init}.d/udev				r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/udevadm						Px,
+  /bin/cat						ix,
   
-  /bin/bash Cx -> shell,
-  /bin/udevadm Px,
-  /bin/cat ix,
-  
-  /etc/{conf,init}.d/udev-trigger r,
-  
-  /run/udev/rules.d/*.rules w,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/udev-trigger			r,
+  /run/udev/rules.d/*.rules				w,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile udev-init-scripts.udev-settle.init.d /etc/init.d/udev-settle flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/udevadm						Px,
   
-  /bin/bash Cx -> shell,
-  /bin/udevadm Px,
-  
-  /etc/{conf,init}.d/udev-settle r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/udev-settle			r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }

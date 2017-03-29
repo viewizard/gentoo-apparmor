@@ -1,18 +1,20 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile util-linux.mount /bin/mount flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_admin,
   capability dac_override,
   capability dac_read_search,
@@ -20,103 +22,106 @@ profile util-linux.mount /bin/mount flags=(complain) {
   capability setgid,
   capability setuid,
   
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* w,
-  /dev/@{BLOCK_ALL} r,
-  /dev/loop-control rw,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					w,
+  /dev/@{BLOCK_ALL}					r,
+  /dev/loop-control					rw,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
-  @{PROC}/@{pid}/mountinfo r,
+  @{PROC}/@{pid}/mountinfo				r,
   
-  /bin/mount mr,
-  /sbin/mount.zfs Px,
-  /usr/bin/ntfs-3g Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/mount						mr,
+  /sbin/mount.zfs					Px,
+  /usr/bin/ntfs-3g					Px,
   
-  /etc/fstab r,
-  /etc/filesystems r,
-  
-  /run/mount/ w,
-  /run/mount/utab rw,
-  /run/mount/utab.* rwk,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
+  /etc/filesystems					r,
+  /run/mount/						w,
+  /run/mount/utab					rw,
+  /run/mount/utab.*					rwk,
 }
-
 
 profile util-linux.umount /bin/umount flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_admin,
   capability chown,
   capability dac_override,
   capability dac_read_search,
   
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* w,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					w,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
-  @{PROC}/@{pid}/mountinfo r,
+  @{PROC}/@{pid}/mountinfo				r,
   
-  /bin/umount mr,
+  # EXECUTABLES ----------------------------------------
+  /bin/umount						mr,
   
-  /run/mount/utab rw,
-  /run/mount/utab.* rwk,
-  
+  # READS/WRITES ---------------------------------------
+  /run/mount/utab					rw,
+  /run/mount/utab.*					rwk,
 }
-
 
 profile util-linux.mkswap /sbin/mkswap flags=(complain) {
   #include <abstractions/base>
   
-  /dev/pts/[0-9]* w,
-  /dev/@{BLOCK_ALL} rw,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  /dev/@{BLOCK_ALL}					rw,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
+  @{PROC}/swaps						r,
+  @{PROC}/@{pid}/mounts					r,
   
-  @{PROC}/swaps r,
-  @{PROC}/@{pid}/mounts r,
-  
-  /sbin/mkswap mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /sbin/mkswap						mr,
 }
-
 
 profile util-linux.swapon /sbin/swap{on,off} flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_admin,
   
-  /dev/@{BLOCK_ALL} rw,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
+  # PSEUDO ---------------------------------------------
+  /dev/@{BLOCK_ALL}					rw,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
-  @{PROC}/swaps r,
+  @{PROC}/swaps						r,
   
-  /sbin/swap{on,off} mr,
+  # EXECUTABLES ----------------------------------------
+  /sbin/swap{on,off}					mr,
   
-  /etc/fstab r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
 }
-
 
 profile util-linux.lsblk /bin/lsblk flags=(complain) {
   #include <abstractions/base>
   
-  /dev/pts/[0-9]* w,
-  /sys/block/ r,
-##  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/type r,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  /sys/block/						r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
-  @{PROC}/swaps r,
-  @{PROC}/@{pid}/mountinfo r,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+  @{PROC}/swaps 					r,
+  @{PROC}/@{pid}/mountinfo				r,
   
-  /bin/lsblk mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /bin/lsblk						mr,
 }
-
 
 profile util-linux.agetty /sbin/agetty {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_admin,
   capability sys_tty_config,
   capability fsetid,
@@ -124,53 +129,54 @@ profile util-linux.agetty /sbin/agetty {
   capability dac_override,
   capability dac_read_search,
   
-  /dev/tty[0-9]* rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   
-  /sbin/agetty mr,
-  /bin/login Px,
+  # EXECUTABLES ----------------------------------------
+  /sbin/agetty						mr,
+  /bin/login						Px,
   
-  /etc/issue r,
-  
-  /run/utmp rwk,
-  /run/agetty.reload rw,
-  /var/log/wtmp wk,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/issue						r,
+  /run/utmp						rwk,
+  /run/agetty.reload					rw,
+  /var/log/wtmp						wk,
 }
-
 
 profile util-linux.fsck /sbin/fsck flags=(complain) {
   #include <abstractions/base>
   
-  /dev/ r,
-  /dev/pts/[0-9]* w,
-  /dev/@{BLOCK_ALL} r,
-  /sys/block/ r,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
+  # PSEUDO ---------------------------------------------
+  /dev/							r,
+  /dev/pts/[0-9]*					w,
+  /dev/@{BLOCK_ALL}					r,
+  /sys/block/						r,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
-  @{PROC}/partitions r,
+  @{PROC}/partitions					r,
   
-  /sbin/fsck mr,
-  /sbin/e2fsck Px,
-  /usr/sbin/fsck.fat Px,
+  # EXECUTABLES ----------------------------------------
+  /sbin/fsck						mr,
+  /sbin/e2fsck						Px,
+  /usr/sbin/fsck.fat					Px,
   
-  /etc/fstab r,
-  
-  /run/blkid/blkid.tab* rwl,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
+  /run/blkid/blkid.tab*					rwl,
 }
-
 
 profile util-linux.hwclock /sbin/hwclock flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_time,
   
-  /dev/rtc0 rw,
+  # PSEUDO ---------------------------------------------
+  /dev/rtc0						rw,
   
-  /sbin/hwclock mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /sbin/hwclock						mr,
 }
-
 
 profile util-linux.logger /usr/bin/logger flags=(complain) {
   #include <abstractions/base>
@@ -178,63 +184,68 @@ profile util-linux.logger /usr/bin/logger flags=(complain) {
   
   @{PROC}/@{pid}/loginuid r,
   
-  /usr/bin/logger mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/logger					mr,
 }
-
 
 profile util-linux.fdisk /sbin/{,c}fdisk flags=(complain) {
   #include <abstractions/base>
   
-  /dev/pts/[0-9]* rw,
-  /dev/@{BLOCK_ALL} rw,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  /dev/@{BLOCK_ALL}					rw,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
   
-  /sbin/{,c}fdisk mr,
+  # EXECUTABLES ----------------------------------------
+  /sbin/{,c}fdisk					mr,
   
-  /etc/terminfo/x/xterm r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/terminfo/x/xterm					r,
 }
-
 
 profile util-linux.eject /usr/bin/eject flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_rawio,
   capability sys_admin,
   
-  /dev/@{BLOCK_REAL} rw,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
+  # PSEUDO ---------------------------------------------
+  /dev/@{BLOCK_REAL}					rw,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
-  @{PROC}/@{pid}/mountinfo r,
+  @{PROC}/@{pid}/mountinfo				r,
   
-  /usr/bin/eject mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/eject					mr,
   
-  /run/mount/utab r,
-  
+  # READS/WRITES ---------------------------------------
+  /run/mount/utab					r,
 }
 
 profile util-linux.blkid /sbin/blkid flags=(complain) {
   #include <abstractions/base>
   
-  /dev/ r,
-  /dev/@{BLOCK_ALL} r,
+  # PSEUDO ---------------------------------------------
+  /dev/							r,
+  /dev/@{BLOCK_ALL}					r,
   /sys/block/						r,
-  /sys/devices/virtual/block/** r,
-  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/** r,
+  /sys/devices/virtual/block/**				r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/**	r,
   @{PROC}/partitions					r,
   
-  /sbin/blkid mr,
+  # EXECUTABLES ----------------------------------------
+  /sbin/blkid						mr,
   
-  /run/blkid/blkid.tab* rwl,
-  
+  # READS/WRITES ---------------------------------------
+  /run/blkid/blkid.tab*					rwl,
 }
 
 profile util-linux.switch_root /sbin/switch_root flags=(complain) {
   #include <abstractions/base>
   
-  /sbin/switch_root mr,
-  /sbin/init Px,
-  
+  # EXECUTABLES ----------------------------------------
+  /sbin/switch_root					mr,
+  /sbin/init						Px,
 }

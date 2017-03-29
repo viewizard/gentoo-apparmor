@@ -1,77 +1,80 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile udisks.udisks-daemon /usr/lib{,32,64}/udisks/udisks-daemon {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_rawio,
   capability dac_override,
   capability dac_read_search,
   
-  /dev/@{BLOCK_ALL} r,
-  /sys/bus/ r,
-  /sys/bus/pci/devices/ r,
-  /sys/class/ r,
-  /sys/class/block/ r,
-  /sys/class/scsi_host/ r,
-  /sys/module/block/parameters/events_dfl_poll_msecs r,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
-  /sys/devices/pci[0-9]*/**/{,class,uevent} r,
-  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/* r,
-  @{PROC}/mdstat r,
-  @{PROC}/@{pid}/fd/ r,
-  @{PROC}/@{pid}/mountinfo r,
-  @{PROC}/@{pid}/mounts r,
+  # PSEUDO ---------------------------------------------
+  /dev/@{BLOCK_ALL}					r,
+  /sys/bus/						r,
+  /sys/bus/pci/devices/					r,
+  /sys/class/						r,
+  /sys/class/block/					r,
+  /sys/class/scsi_host/					r,
+  /sys/module/block/parameters/events_dfl_poll_msecs	r,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+  /sys/devices/pci[0-9]*/**/{,class,uevent}		r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/*	r,
+  @{PROC}/mdstat					r,
+  @{PROC}/@{pid}/fd/					r,
+  @{PROC}/@{pid}/mount{s,info}				r,
   
-  /etc/udev/udev.conf r,
-  /etc/fstab r,
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/udisks/udisks-daemon			mr,
+  /usr/lib{,32,64}/udisks/*				ix,	# FIX ME! Ограничить списком.
   
-  /usr/lib{,32,64}/udisks/udisks-daemon m,
-  /usr/lib{,32,64}/udisks/* ix,
-  
-  /run/udisks/ rw,
-  /run/udev/data/* r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/udev/udev.conf					r,
+  /etc/fstab						r,
+  /run/udisks/						rw,
+  /run/udev/data/*					r,
 }
 
 profile udisks.udisksd /usr/libexec/udisks2/udisksd {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_rawio,
   
-  /dev/@{BLOCK_ALL} r,
-  /sys/bus/ r,
-  /sys/class/ r,
-  /sys/class/block/ r,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**} r,
+  # PSEUDO ---------------------------------------------
+  /dev/@{BLOCK_ALL}					r,
+  /sys/bus/						r,
+  /sys/class/						r,
+  /sys/class/block/					r,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
   /sys/devices/pci[0-9]*/**/usb[0-9]*/{,**/}{remove,uevent} rw,
+  @{PROC}/@{pid}/mountinfo				r,
+  @{PROC}/swaps						r,
+  @{PROC}/@{pid}/fd/					r,
   
-  @{PROC}/@{pid}/mountinfo r,
-  @{PROC}/swaps r,
-  @{PROC}/@{pid}/fd/ r,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/udisks2/udisksd				mr,
+  /bin/mount						Px,
+  /bin/umount						Px,
+  /sbin/cryptsetup					Px,
+  /usr/bin/eject					Px,
   
-  /usr/libexec/udisks2/udisksd mr,
-  /bin/mount Px,
-  /bin/umount Px,
-  /sbin/cryptsetup Px,
-  /usr/bin/eject Px,
-  
-  /etc/udev/udev.conf r,
-  /etc/fstab r,
-  /media/*/ w,
-  /usr/share/gvfs/remote-volume-monitors/{,*} r,
-  
-  /run/udisks2/{,mounted-fs*,unlocked-luks*} rw,
-  /run/udev/data/* r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/udev/udev.conf					r,
+  /etc/fstab						r,
+  /usr/share/gvfs/remote-volume-monitors/{,*}		r,
+  /run/udisks2/{,mounted-fs*,unlocked-luks*}		rw,
+  /run/udev/data/*					r,
+  /media/*/						w,
 }
