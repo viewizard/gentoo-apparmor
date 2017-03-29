@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile thunar-volman /usr/bin/thunar-volman {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -18,23 +19,23 @@ profile thunar-volman /usr/bin/thunar-volman {
   #include <abstractions/dbus-session>
   #include <abstractions/nameservice>
   
-  /dev/tty[0-9]* w,
-  /sys/devices/pci[0-9]*/**/usb[0-9]*/{,**/}uevent rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /sys/devices/pci[0-9]*/**/usb[0-9]*/{,**/}uevent	rw,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{,uevent} r,
-  @{PROC}/@{pid}/fd/ r,
+  @{PROC}/@{pid}/fd/					r,
   
-  /usr/bin/thunar-volman mr,
-  /usr/bin/thunar-volman-settings Px,
-  /usr/bin/thunar Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/thunar-volman				mr,
+  /usr/bin/thunar-volman-settings			Px,
+  /usr/bin/thunar					Px,
   
-  /etc/fstab r,
-  /etc/udev/udev.conf r,
-  
-  /run/udev/data/* r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
+  /etc/udev/udev.conf					r,
+  /run/udev/data/*					r,
 }
-
 
 profile thunar-volman-settings /usr/bin/thunar-volman-settings {
   #include <abstractions/base>
@@ -43,6 +44,6 @@ profile thunar-volman-settings /usr/bin/thunar-volman-settings {
   #include <abstractions/X>
   #include <abstractions/gtk>
   
-  /usr/bin/thunar-volman-settings mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/thunar-volman-settings			mr,
 }

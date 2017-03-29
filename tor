@@ -1,34 +1,37 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile tor /usr/bin/tor {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability setgid,
   capability setuid,
   capability net_bind_service,
   
-  /dev/pts/[0-9]* rw,
-  /sys/devices/system/cpu/ r,
-  @{PROC}/sys/kernel/random/uuid r,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  /sys/devices/system/cpu/				r,
+  @{PROC}/sys/kernel/random/uuid			r,
   
-  /usr/bin/tor mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/tor						mr,
   
-  /etc/tor/{,*} r,
-  
-  /usr/share/tor/** r,
-  /var/lib/tor/** rwk,
-  /run/tor/{,tor.pid} rw,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/tor/{,*}						r,
+  /usr/share/tor/**					r,
+  /var/lib/tor/**					rwk,
+  /run/tor/{,tor.pid}					rw,
 }
 
 profile tor.init.d /etc/init.d/tor {
@@ -36,24 +39,23 @@ profile tor.init.d /etc/init.d/tor {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # CAPABILITIES ---------------------------------------
   capability fowner,
   capability fsetid,
   capability sys_resource,
   
-  /usr/bin/tor Px,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/tor						Px,
+  /bin/bash						Cx -> shell,
   
-  /etc/{conf,init}.d/tor r,
-  
-  /run/tor/ w,
-  /run/tor/tor.pid rwk,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/tor				r,
+  /run/tor/						w,
+  /run/tor/tor.pid					rwk,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }

@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile transmission /usr/bin/transmission-* {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -24,18 +25,21 @@ profile transmission /usr/bin/transmission-* {
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
   
-  /dev/tty[0-9]* w,
-  owner @{PROC}/@{pid}/fd/ r,
-  @{PROC}/sys/kernel/random/uuid r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  owner @{PROC}/@{pid}/fd/				r,
+  @{PROC}/sys/kernel/random/uuid			r,
   
-  /usr/bin/transmission-* mr,
-  /usr/bin/canberra-gtk-play ixr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/transmission-*				mr,
+  /usr/bin/canberra-gtk-play				ixr,
   
-  /etc/ssl/openssl.cnf r,
+  # READS/WRITES ---------------------------------------
+  /etc/ssl/openssl.cnf					r,
   
-  owner @{HOME_CACHE}/transmission/{,**} rw,
-  owner @{HOME}/.config/transmission/{,**} rw,
-  owner @{HOME}/.local/share/Trash/{info,files}/** rw,
+  # USERS ----------------------------------------------
+  owner @{HOME_CACHE}/transmission/{,**}		rw,
+  owner @{HOME}/.config/transmission/{,**}		rw,
+  owner @{HOME}/.local/share/Trash/{info,files}/**	rw,
   owner @{HOME}/.local/share/gvfs-metadata/home{,-*.log} r,
-  
 }

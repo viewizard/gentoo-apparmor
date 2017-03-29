@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile teamspeak /usr/bin/teamspeak3 {
   #include <abstractions/audio>
   #include <abstractions/base>
@@ -21,24 +22,30 @@ profile teamspeak /usr/bin/teamspeak3 {
   #include <abstractions/X>
   #include <abstractions/xdg-open>
   
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
-  owner @{PROC}/@{pid}/auxv r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
+  owner @{PROC}/@{pid}/auxv				r,
   
-  /bin/bash mr,
-  /usr/bin/teamspeak3 r,
-  /opt/teamspeak3-client/ r,
-  /opt/teamspeak3-client/** rkix,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/teamspeak3					r,
+  /bin/bash						mr,
+  /opt/teamspeak3-client/**				ix,
   
-  owner @{HOME}/.ts3client/ rw,
-  owner @{HOME}/.ts3client/** rwk,
+  # READS/WRITES ---------------------------------------
+  /opt/teamspeak3-client/				r,
+  /opt/teamspeak3-client/**				rk,
   
-  owner /tmp/TS3Client* rw,
-  owner /tmp/qipc_systemsem_tsDatabaseNotifierf* rw,
-  owner /tmp/qipc_sharedmemory_tsDatabaseNotifierf* rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.ts3client/				rw,
+  owner @{HOME}/.ts3client/**				rwk,
   
-  # Noisy
-  deny /* w,
-  deny /opt/teamspeak3-client/** w,
+  # TEMP -----------------------------------------------
+  owner /tmp/TS3Client*					rw,
+  owner /tmp/qipc_systemsem_tsDatabaseNotifierf*	rw,
+  owner /tmp/qipc_sharedmemory_tsDatabaseNotifierf*	rw,
   
+  # NOISY ----------------------------------------------
+  deny /*						w,
+  deny /opt/teamspeak3-client/**			w,
 }

@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -29,6 +29,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   #include <abstractions/executable-binary-programs>
   #include <local/thunar-custom-exec>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
   capability sys_resource,
@@ -36,66 +37,70 @@ profile thunar /usr/bin/{Thunar,thunar} {
   capability fsetid,
   capability sys_admin,
   
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
-  /sys/devices/pci[0-9]*/**/uevent r,
-  /sys/devices/virtual/block/md[0-9]*/uevent r,
-  @{PROC}/@{pid}/fd/ r,
-  owner @{PROC}/@{pid}/mountinfo r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
+  /sys/devices/pci[0-9]*/**/uevent			r,
+  /sys/devices/virtual/block/md[0-9]*/uevent		r,
+  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/mountinfo			r,
   
-  /usr/bin/thunar mr,
-  /bin/bash Cx -> shell,
-  /bin/env Cx -> env,
-  /bin/umount Px,
-  /usr/libexec/thunar-archive-plugin/xarchiver.tap Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/thunar					mr,
+  /bin/bash						Cx -> shell,
+  /bin/env						Cx -> env,
+  /bin/umount						Px,
+  /usr/libexec/thunar-archive-plugin/xarchiver.tap	Px,
   
-  /etc/udev/udev.conf r,
-  /usr/lib{,32,64}/thunarx-2/*.so m,
-  /usr/share/ r,
-  /usr/local/share/ r,
-  /usr/share/Thunar/ r,
-  /usr/share/Thunar/sendto/ r,
-  /usr/share/Thunar/sendto/*.desktop r,
-  /opt/*/**.png r,
+  # READS/WRITES ---------------------------------------
+  /etc/udev/udev.conf					r,
+  /usr/lib{,32,64}/thunarx-2/*.so			m,
+  /usr/share/						r,
+  /usr/local/share/					r,
+  /usr/share/Thunar/					r,
+  /usr/share/Thunar/sendto/				r,
+  /usr/share/Thunar/sendto/*.desktop			r,
+  /opt/*/**.png						r,
+  /run/udev/data/*					r,
   
-  /run/udev/data/* r,
-  
-  owner @{HOME}/.config/Thunar/ rw,
-  owner @{HOME}/.config/Thunar/** rwk,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/Thunar/				rw,
+  owner @{HOME}/.config/Thunar/**			rwk,
   owner @{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
-  owner @{HOME}/.local/share/gvfs-metadata/{,**} rw,
-  
+  owner @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   
   profile shell {
     #include <abstractions/base>
     #include <local/thunar-custom-actions>
     
+    # CAPABILITIES -------------------------------------
     capability dac_read_search,
     capability dac_override,
     
-    capability dac_override,
-    capability dac_read_search,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					w,
     
-    /dev/tty rw,
-    /dev/tty[0-9]* w,
-    
-    /bin/bash mr,
-    
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
   }
   
   profile env {
     #include <abstractions/base>
     
-    /dev/tty[0-9]* w,
-    /dev/pts/[0-9]* rw,
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    capability dac_read_search,
     
-    /bin/env mr,
-    /usr/bin/wine Px,
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					w,
+    /dev/pts/[0-9]*					rw,
     
+    # EXECUTABLES --------------------------------------
+    /bin/env						mr,
+    /usr/bin/wine					Px,
   }
-  
 }
-
 
 profile thunar_root {
   #include <abstractions/base>
@@ -112,6 +117,7 @@ profile thunar_root {
   #include <local/thunar_root-custom-exec>
   #include <abstractions/user-systemwide-files>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
   capability sys_resource,
@@ -119,84 +125,89 @@ profile thunar_root {
   capability fsetid,
   capability sys_admin,
   
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
-  /sys/devices/pci[0-9]*/**/uevent r,
-  /sys/devices/virtual/block/md[0-9]*/uevent r,
-  @{PROC}/@{pid}/fd/ r,
-  owner @{PROC}/@{pid}/mountinfo r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
+  /sys/devices/pci[0-9]*/**/uevent			r,
+  /sys/devices/virtual/block/md[0-9]*/uevent		r,
+  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/mountinfo			r,
   
-  /usr/bin/thunar mr,
-  /bin/bash Cx -> shell,
-  /bin/env Cx -> env,
-  /bin/umount Px,
-  /usr/libexec/thunar-archive-plugin/xarchiver.tap Px -> xarchiver_tap_root,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/thunar					mr,
+  /bin/bash						Cx -> shell,
+  /bin/env						Cx -> env,
+  /bin/umount						Px,
+  /usr/libexec/thunar-archive-plugin/xarchiver.tap	Px -> xarchiver_tap_root,
   
-  /etc/udev/udev.conf r,
-  /usr/lib{,32,64}/thunarx-2/*.so m,
-  /usr/share/ r,
-  /usr/local/share/ r,
-  /usr/share/Thunar/ r,
-  /usr/share/Thunar/sendto/ r,
-  /usr/share/Thunar/sendto/*.desktop r,
-  /opt/*/**.png r,
+  # READS/WRITES ---------------------------------------
+  /etc/udev/udev.conf					r,
+  /usr/lib{,32,64}/thunarx-2/*.so			m,
+  /usr/share/						r,
+  /usr/local/share/					r,
+  /usr/share/Thunar/					r,
+  /usr/share/Thunar/sendto/				r,
+  /usr/share/Thunar/sendto/*.desktop			r,
+  /opt/*/**.png						r,
+  /run/udev/data/*					r,
   
-  /run/udev/data/* r,
-  
-  owner @{HOME}/.config/Thunar/ rw,
-  owner @{HOME}/.config/Thunar/** rwk,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/Thunar/				rw,
+  owner @{HOME}/.config/Thunar/**			rwk,
   owner @{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
-  owner @{HOME}/.local/share/gvfs-metadata/{,**} rw,
-  
+  owner @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   
   profile shell {
     #include <abstractions/base>
     #include <local/thunar_root-custom-actions>
     
+    # CAPABILITIES -------------------------------------
     capability dac_read_search,
     capability dac_override,
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
   }
   
   profile env {
     #include <abstractions/base>
     
+    # CAPABILITIES -------------------------------------
     capability dac_override,
     capability dac_read_search,
     
-    /dev/tty[0-9]* w,
-    /dev/pts/[0-9]* rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					w,
+    /dev/pts/[0-9]*					rw,
     
-    /bin/env mr,
-    /usr/bin/wine Px,
-    
+    # EXECUTABLES --------------------------------------
+    /bin/env						mr,
+    /usr/bin/wine					Px,
   }
-  
 }
-
 
 profile thunar-settings /usr/bin/thunar-settings {
   #include <abstractions/base>
   
-  /dev/tty rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   
-  /usr/bin/dbus-send Pxr,
-  /usr/bin/thunar-settings r,
-  /bin/bash mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/thunar-settings				r,
+  /bin/bash						mr,
+  /usr/bin/dbus-send					Pxr,
 }
-
 
 profile thunar-ThunarBulkRename /usr/lib{,32,64}/Thunar/ThunarBulkRename {
   #include <abstractions/base>
   
-  /dev/tty rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   
-  /usr/bin/thunar Px,
-  /bin/bash mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						mr,
+  /usr/bin/thunar					Px,
 }
