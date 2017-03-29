@@ -1,20 +1,22 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile wget_root {
   #include <abstractions/base>
   #include <abstractions/user-systemwide-files>
   
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
   
-  /usr/bin/wget mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/wget						mr,
 }

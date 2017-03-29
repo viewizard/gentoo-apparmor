@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -27,24 +27,29 @@ profile wireshark /usr/bin/{tshark,wireshark} {
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   
+  # CAPABILITIES ---------------------------------------
   capability net_admin,
   capability net_raw,
   
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* rw,
-  /sys/class/net/ r,
-  /sys/bus/usb/devices/ r,
-  @{PROC}/@{pid}/net/dev r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
+  /sys/class/net/					r,
+  /sys/bus/usb/devices/					r,
+  @{PROC}/@{pid}/net/dev				r,
   
-  /usr/bin/wireshark mr,
-  /usr/bin/dumpcap ix,
-
-  /etc/libnl/classid r,
-  /usr/share/wireshark/{,**} r,
-  /usr/lib{,32,64}/wireshark/plugins/**{la,so} m,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/wireshark					mr,
+  /usr/bin/dumpcap					ix,
   
-  owner @{HOME}/.wireshark/{,**} rw,
+  # READS/WRITES ---------------------------------------
+  /etc/libnl/classid					r,
+  /usr/share/wireshark/{,**}				r,
+  /usr/lib{,32,64}/wireshark/plugins/**{la,so}		m,
   
-  owner /tmp/wireshark_*_*_*.pcapng rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.wireshark/{,**}			rw,
   
+  # TEMP -----------------------------------------------
+  owner /tmp/wireshark_*_*_*.pcapng			rw,
 }
