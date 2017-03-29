@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -25,18 +25,21 @@ profile vlc /usr/bin/vlc {
   #include <abstractions/program-work-with-disk-rk>
   #include <abstractions/nameservice>
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   
-  /usr/bin/vlc mr,
-  /usr/bin/xdg-screensaver Pxr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/vlc						mr,
+  /usr/bin/xdg-screensaver				Pxr,
   
-  /usr/lib{,32,64}/vlc/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /usr/lib{,32,64}/vlc/{,**}				r,
   
-  owner @{HOME}/.config/vlc/ rw,
-  owner @{HOME}/.config/vlc/** rwk,
-  owner @{HOME}/.local/share/vlc/{,**} rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/vlc/				rw,
+  owner @{HOME}/.config/vlc/**				rwk,
+  owner @{HOME}/.local/share/vlc/{,**}			rw,
   
-  # Noisy
-  deny /usr/lib{,32,64}/vlc/** w,
-  
+  # NOISY ----------------------------------------------
+  deny /usr/lib{,32,64}/vlc/**				w,
 }

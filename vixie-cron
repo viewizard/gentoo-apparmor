@@ -1,68 +1,68 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile vixie-cron.cron /usr/sbin/cron {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
   
+  # CAPABILITIES ---------------------------------------
   capability setuid,
   capability setgid,
   
-  /usr/sbin/cron mr,
-  /bin/bash Cx -> shell,
-  /usr/sbin/sendmail Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/cron					mr,
+  /bin/bash						Cx -> shell,
+  /usr/sbin/sendmail					Px,
   
-  /etc/crontab r,
-  /etc/cron.d/{,*} r,
-  /etc/security/limits.d/{,*} r,
-  
-  /run/cron.pid rwk,
-  /var/spool/cron/{,**} rw,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/crontab						r,
+  /etc/cron.d/{,*}					r,
+  /etc/security/limits.d/{,*}				r,
+  /run/cron.pid						rwk,
+  /var/spool/cron/{,**}					rw,
   
   profile shell {
     #include <abstractions/base>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /bin/rm ix,
-    /usr/sbin/run-crons Px,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/rm						ix,
+    /usr/sbin/run-crons					Px,
     
-    /var/spool/cron/lastrun/{,*} rw,
-    
+    # READS/WRITES -------------------------------------
+    /var/spool/cron/lastrun/{,*}			rw,
   }
-  
 }
-
 
 profile vixie-cron.init.d /etc/init.d/vixie-cron {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /usr/sbin/cron Px,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/cron					Px,
+  /bin/bash						Cx -> shell,
   
-  /etc/{conf,init}.d/vixie-cron r,
-  
-  /run/cron.pid rwk,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/vixie-cron				r,
+  /run/cron.pid						rwk,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }

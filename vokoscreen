@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -27,17 +27,20 @@ profile vokoscreen /usr/bin/vokoscreen {
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   
-  /dev/ r,
-  /dev/tty r,
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/							r,
+  /dev/tty						r,
+  /dev/tty[0-9]*					w,
   
-  /usr/bin/vokoscreen mr,
-  /usr/bin/ffmpeg ixr,
-  /usr/bin/pactl ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/vokoscreen					mr,
+  /usr/bin/ffmpeg					ixr,
+  /usr/bin/pactl					ix,
   
-  /etc/os-release r,
+  # READS/WRITES ---------------------------------------
+  /etc/os-release					r,
   
-  owner @{HOME}/.config/vokoscreen/ rw,
-  owner @{HOME}/.config/vokoscreen/** rwk,
-  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/vokoscreen/			rw,
+  owner @{HOME}/.config/vokoscreen/**			rwk,
 }

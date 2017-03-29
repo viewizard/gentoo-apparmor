@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile vino-server /usr/libexec/vino-server flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/fonts>
@@ -19,12 +20,12 @@ profile vino-server /usr/libexec/vino-server flags=(complain) {
   #include <abstractions/dconf>
   #include <abstractions/nameservice>
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   
-  /usr/libexec/vino-server mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/vino-server				mr,
 }
-
 
 profile vino-preferences /usr/bin/vino-preferences flags=(complain) {
   #include <abstractions/base>
@@ -34,10 +35,12 @@ profile vino-preferences /usr/bin/vino-preferences flags=(complain) {
   #include <abstractions/gtk>
   #include <abstractions/dconf>
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   
-  /usr/bin/vino-preferences mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/vino-preferences				mr,
   
-  /usr/share/vino/{,**} r,
-  
+  # READS/WRITES ---------------------------------------
+  /usr/share/vino/{,**}					r,
 }
