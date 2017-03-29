@@ -1,18 +1,20 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile suricata /usr/bin/suricata {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability setgid,
   capability setuid,
   capability setpcap,
@@ -23,54 +25,56 @@ profile suricata /usr/bin/suricata {
   capability sys_nice,
   capability net_raw,
   
-  /sys/devices/system/cpu/ r,
-  @{PROC}/@{pid}/net/dev r,
+  # PSEUDO ---------------------------------------------
+  /sys/devices/system/cpu/				r,
+  @{PROC}/@{pid}/net/dev				r,
   
-  /usr/bin/suricata mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/suricata					mr,
   
-  /etc/suricata/{,**} r,
-  /usr/share/misc/magic.mgc r,
+  # READS/WRITES ---------------------------------------
+  /etc/suricata/{,**}					r,
+  /usr/share/misc/magic.mgc				r,
+  /var/lib/suricata/**					rwk,
+  /run/suricata/suricata.pid				rw,
   
-  /var/lib/suricata/** rwk,
-  /run/suricata/suricata.pid rw,
-  
-  /tmp/ r,
-  /var/tmp/ r,
-  
+  # TEMP -----------------------------------------------
+  /tmp/							r,
+  /var/tmp/						r,
 }
-
 
 profile suricata.init.d /etc/init.d/suricata {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
   
-  @{PROC}/@{pid}/cmdline r,
+  # PSEUDO ---------------------------------------------
+  @{PROC}/@{pid}/cmdline				r,
   
-  /bin/bash Cx -> shell,
-  /bin/cat ixr,
-  /bin/ps Pxr,
-  /bin/sleep ixr,
-  /bin/grep ixr,
-  /usr/bin/suricata Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/cat						ixr,
+  /bin/ps						Pxr,
+  /bin/sleep						ixr,
+  /bin/grep						ixr,
+  /usr/bin/suricata					Px,
   
-  /etc/suricata/{,**} r,
-  /etc/{conf,init}.d/suricata r,
+  # READS/WRITES ---------------------------------------
+  /etc/suricata/{,**}					r,
+  /etc/{conf,init}.d/suricata				r,
+  /run/suricata/					rw,
+  /run/suricata/suricata.pid				rwk,
   
-  /run/suricata/ rw,
-  /run/suricata/suricata.pid rwk,
-  
-  owner /tmp/oinkmaster.cron.?????? w,
-  
+  # TEMP -----------------------------------------------
+  owner /tmp/oinkmaster.cron.??????			w,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }

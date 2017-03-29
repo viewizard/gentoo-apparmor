@@ -1,86 +1,94 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile sysvinit.halt /sbin/{halt,poweroff,reboot} {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_boot,
   
-  /sbin/{halt,poweroff,reboot} mr,
-  /sbin/shutdown Px,
+  # EXECUTABLES ----------------------------------------
+  /sbin/{halt,poweroff,reboot}				mr,
+  /sbin/shutdown					Px,
   
-  /run/utmp rk,
-  
-  /var/log/wtmp wk,
-  
+  # READS/WRITES ---------------------------------------
+  /run/utmp						rk,
+  /var/log/wtmp						wk,
 }
 
 profile sysvinit.shutdown /sbin/shutdown {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability setuid,
   capability dac_override,
   capability sys_tty_config,
   
-  /dev/tty[0-9]* w,
-  /dev/initctl w,
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /dev/initctl						w,
+  /dev/pts/[0-9]*					w,
   
-  /sbin/shutdown mr,
-  /sbin/init Px,
+  # EXECUTABLES ----------------------------------------
+  /sbin/shutdown					mr,
+  /sbin/init						Px,
   
-  /run/shutdown.pid w,
-  /run/utmp rk,
-  
+  # READS/WRITES ---------------------------------------
+  /run/shutdown.pid					w,
+  /run/utmp						rk,
 }
 
 profile sysvinit.init /sbin/init {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_boot,
   capability sys_admin,
   capability sys_tty_config,
   capability kill,
   
-  /dev/tty[0-9]* rw,
-  /dev/initctl rw,
-  /dev/console rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/initctl						rw,
+  /dev/console						rw,
   
-  /sbin/init Pxmr,
-  /sbin/openrc Px,
-  /sbin/{halt,poweroff,reboot} Px,
-  /sbin/agetty Px,
-  /sbin/shutdown Px,
-#  /sbin/sulogin Px,
-#  /etc/X11/startDM.sh Px,
+  # EXECUTABLES ----------------------------------------
+  /sbin/init						Pxmr,
+  /sbin/openrc						Px,
+  /sbin/{halt,poweroff,reboot}				Px,
+  /sbin/agetty						Px,
+  /sbin/shutdown					Px,
+#  /sbin/sulogin					Px,	# не задействуем
+#  /etc/X11/startDM.sh					Px,	# не задействуем
   
-  /etc/inittab r,
-  
-  /run/utmp rwk,
-  
-  /var/log/wtmp wk,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/inittab						r,
+  /run/utmp						rwk,
+  /var/log/wtmp						wk,
 }
 
 profile sysvinit.killall5 /sbin/killall5 flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   
-  /dev/tty[0-9]* w,
-  @{PROC}/ r,
-  @{PROC}/@{pid}/{stat,status,cmdline} r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  @{PROC}/						r,
+  @{PROC}/@{pid}/{stat,status,cmdline}			r,
   
-  /sbin/killall5 mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /sbin/killall5					mr,
 }

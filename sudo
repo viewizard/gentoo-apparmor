@@ -1,20 +1,22 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile sudo /usr/bin/sudo {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
   #include <local/sudo-custom>
   
+  # CAPABILITIES ---------------------------------------
   capability setuid,
   capability setgid,
   capability chown,
@@ -23,67 +25,73 @@ profile sudo /usr/bin/sudo {
   capability dac_read_search,
   capability dac_override,
   
-  /dev/ r,
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* rw,
+  # PSEUDO ---------------------------------------------
+  /dev/							r,
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
+  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/stat				r,
   
-  @{PROC}/@{pid}/fd/ r,
-  owner @{PROC}/@{pid}/stat r,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/sudo						mr,
+  /usr/bin/gksu_askpass.sh				Px,
+  /usr/sbin/sendmail					Px,
   
-  /usr/bin/sudo mr,
-  /usr/bin/gksu_askpass.sh Px,
-  /usr/sbin/sendmail Px,
-  
-  /usr/lib{,32,64}/sudo/sudoers.so m,
-  /usr/libexec/sudo/libsudo_util.so* mr,
-  
-  /etc/sudoers r,
-  /etc/sudoers.d/{,*} r,
-  /etc/environment r,
-  /etc/security/limits.d/{,*} r,
-  
-  /run/utmp rk,
-  /run/sudo/ rw,
-  /run/sudo/ts/ rw,
-  /run/sudo/ts/* rwk,
+  # READS/WRITES ---------------------------------------
+  /etc/sudoers						r,
+  /etc/sudoers.d/{,*}					r,
+  /etc/environment					r,
+  /etc/security/limits.d/{,*}				r,
+  /usr/lib{,32,64}/sudo/sudoers.so			m,
+  /usr/libexec/sudo/libsudo_util.so*			mr,
+  /run/utmp						rk,
+  /run/sudo/						rw,
+  /run/sudo/ts/						rw,
+  /run/sudo/ts/*					rwk,
   
   
 ###################################################
 # MAC (without PAM)
 ###################################################
-
-#  @{PROC}/@{pid}/{mounts,mountinfo} r,
   
-#  /bin/bash Px -> bash_root,
-#  /usr/sbin/pmvarrun Px,
-#  /usr/bin/ofl Px,
-#  /bin/mount Px,
-#  /bin/umount Px,
-#  /usr/bin/thunar Px,
-#  /usr/bin/dbus-daemon Px,
-#  /usr/bin/gsmartcontrol Px,
-
+#  # PSEUDO ---------------------------------------------
+#  @{PROC}/@{pid}/{mounts,mountinfo}			r,
+  
+#  # EXECUTABLES ----------------------------------------
+#  /bin/bash						Px -> bash_root,
+#  /bin/mount						Px,
+#  /bin/umount						Px,
+#  /usr/bin/ofl						Px,
+#  /usr/bin/thunar					Px,	# XFCE4
+#  /usr/bin/dbus-daemon					Px,
+#  /usr/bin/gsmartcontrol				Px,
+#  /usr/sbin/pmvarrun					Px,
+  
 ###################################################
 # RBAC (with PAM)
 ###################################################
-
-  @{PROC}/@{pid}/attr/{current,exec} w,
-  @{PROC}/@{pid}/attr/{current,prev,exec} r,
   
-  /bin/bash Cx -> shell,
+  # PSEUDO ---------------------------------------------
+  @{PROC}/@{pid}/attr/{current,exec}			w,
+  @{PROC}/@{pid}/attr/{current,prev,exec}		r,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/authentication-pam_usb>
     
+    # CAPABILITIES -------------------------------------
     capability setuid,
     capability setgid,
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
   }
   
   ^DEFAULT {
@@ -92,28 +100,31 @@ profile sudo /usr/bin/sudo {
     #include <abstractions/authentication>
     #include <local/sudo-custom>
     
+    # CAPABILITIES -------------------------------------
     capability dac_override,
     capability sys_resource,
     capability setuid,
     capability setgid,
     capability fsetid,
     
-    /dev/pts/[0-9]* w,
-    @{PROC}/@{pid}/fd/ r,
-    @{PROC}/@{pid}/mountinfo r,
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					w,
+    @{PROC}/@{pid}/fd/					r,
+    @{PROC}/@{pid}/mountinfo				r,
     
-    /bin/bash Px -> bash_users,
-    /usr/sbin/pmvarrun Px,
-    /usr/bin/ofl Px,
-    /bin/mount Px,
-    /bin/umount Px,
-    /usr/bin/thunar Px,
-    /usr/bin/dbus-daemon Px,
-    /usr/bin/gksu_askpass.sh Px,
-    /usr/bin/gsmartcontrol Px,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						Px -> bash_users,
+    /bin/mount						Px,
+    /bin/umount						Px,
+    /usr/bin/ofl					Px,
+    /usr/bin/thunar					Px,	# XFCE4
+    /usr/bin/dbus-daemon				Px,
+    /usr/bin/gksu_askpass.sh				Px,
+    /usr/bin/gsmartcontrol				Px,
+    /usr/sbin/pmvarrun					Px,
     
-    /etc/environment r,
-    
+    # READS/WRITES -------------------------------------
+    /etc/environment					r,
   }
   
   ^root {
@@ -122,34 +133,35 @@ profile sudo /usr/bin/sudo {
     #include <abstractions/authentication>
     #include <local/sudo-custom>
     
+    # CAPABILITIES -------------------------------------
     capability dac_override,
     capability sys_resource,
     capability setuid,
     capability setgid,
     capability fsetid,
     
-    /dev/pts/[0-9]* w,
-    @{PROC}/@{pid}/fd/ r,
-    @{PROC}/@{pid}/mountinfo r,
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					w,
+    @{PROC}/@{pid}/fd/					r,
+    @{PROC}/@{pid}/mountinfo				r,
     
-    /bin/bash Px -> bash_root,
-    /usr/sbin/pmvarrun Px,
-    /usr/bin/ofl Px,
-    /bin/mount Px,
-    /bin/umount Px,
-    /usr/bin/thunar Px -> thunar_root,
-    /usr/bin/dbus-daemon Px,
-    /usr/bin/gksu_askpass.sh Px,
-    /usr/bin/gsmartcontrol Px,
-    /sbin/xtables-multi Px,
-    /usr/sbin/firewall Px,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						Px -> bash_root,
+    /bin/mount						Px,
+    /bin/umount						Px,
+    /sbin/xtables-multi					Px,
+    /usr/bin/ofl					Px,
+    /usr/bin/thunar					Px -> thunar_root,	# XFCE4
+    /usr/bin/dbus-daemon				Px,
+    /usr/bin/gksu_askpass.sh				Px,
+    /usr/bin/gsmartcontrol				Px,
+    /usr/sbin/pmvarrun					Px,
+    /usr/sbin/firewall					Px,
     
-    /etc/environment r,
-    
+    # READS/WRITES -------------------------------------
+    /etc/environment					r,
   }
-  
 }
-
 
 profile sudo.askpass /usr/bin/gksu_askpass.sh {
   #include <abstractions/base>
@@ -159,24 +171,25 @@ profile sudo.askpass /usr/bin/gksu_askpass.sh {
   #include <abstractions/gtk>
   #include <abstractions/X>
   
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
   
-  /usr/bin/gksu_askpass.sh r,
-  /usr/bin/zenity ixr,
-  /bin/bash ixmr,	# FIX ME! почему он в основном профиле с ix?
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/gksu_askpass.sh				r,
+  /usr/bin/zenity					ixr,
+  /bin/bash						ixmr,	# FIX ME! почему он в основном профиле с ix?
 }
-
 
 profile sudo.gksudo /usr/bin/{gksu,gksudo} {
   #include <abstractions/base>
   
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
   
-  /bin/bash mr,
-  /usr/bin/{gksu,gksudo} mr,
-  /usr/bin/sudo Px,
-  
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						mr,
+  /usr/bin/{gksu,gksudo}				mr,
+  /usr/bin/sudo						Px,
 }

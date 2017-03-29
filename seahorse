@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -21,20 +21,23 @@ profile seahorse /usr/bin/seahorse flags=(complain) {
   #include <abstractions/ssl_certs>
   #include <abstractions/executable-binary-helper>
   
-  /dev/tty[0-9]* w,
-  @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  @{PROC}/@{pid}/fd/					r,
   
-  /usr/bin/seahorse mr,
-  /usr/bin/gpgconf Px,
-  /usr/bin/gpg2 Px,
-  /usr/bin/gpgsm Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/seahorse					mr,
+  /usr/bin/gpgconf					Px,
+  /usr/bin/gpg2						Px,
+  /usr/bin/gpgsm					Px,
   
-  /usr/share/seahorse/{,**} r,
-  /usr/share/p11-kit/modules/{,*.module} r,
-  /usr/lib{,32,64}/pkcs11/*.so m,
-  /etc/ssl/certs/ca-certificates.crt r,
+  # READS/WRITES ---------------------------------------
+  /etc/ssl/certs/ca-certificates.crt			r,
+  /usr/share/seahorse/{,**}				r,
+  /usr/share/p11-kit/modules/{,*.module}		r,
+  /usr/lib{,32,64}/pkcs11/*.so				m,
   
-  owner @{HOME}/.gnupg/{,**} r,
-  owner @{HOME}/.ssh/{,**} r,
-  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.gnupg/{,**}				r,
+  owner @{HOME}/.ssh/{,**}				r,
 }

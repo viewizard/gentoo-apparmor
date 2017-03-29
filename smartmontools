@@ -1,78 +1,80 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile smartmontools.smartd /usr/sbin/smartd {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_rawio,
   
-  /dev/ r,
-  /dev/@{BLOCK_REAL} r,
+  # PSEUDO ---------------------------------------------
+  /dev/							r,
+  /dev/@{BLOCK_REAL}					r,
   /sys/devices/pci[0-9]*/**/usb[0-9]*/**/{idVendor,idProduct,bcdDevice} r,
-  @{PROC}/devices r,
+  @{PROC}/devices					r,
   
-  /usr/sbin/smartd mr,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/smartd					mr,
+  /bin/bash						Cx -> shell,
   
-  /etc/smartd.conf r,
-  /usr/share/smartmontools/** r,
-  
-  /run/smartd.pid rwk,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/smartd.conf					r,
+  /usr/share/smartmontools/**				r,
+  /run/smartd.pid					rwk,
   
   profile shell {
     #include <abstractions/base>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
   }
-  
 }
-
 
 profile smartmontools.smartctl /usr/sbin/smartctl {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_rawio,
   
-  /dev/pts/[0-9]* rw,
-  /dev/@{BLOCK_REAL} r,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  /dev/@{BLOCK_REAL}					r,
   
-  /usr/sbin/smartctl mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/smartctl					mr,
   
-  /usr/share/smartmontools/** r,
-  
+  # READS/WRITES ---------------------------------------
+  /usr/share/smartmontools/**				r,
 }
-
 
 profile smartmontools.init.d /etc/init.d/smartd {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /usr/sbin/smartd Px,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/smartd					Px,
+  /bin/bash						Cx -> shell,
   
-  /etc/{conf,init}.d/smartd r,
-  
-  /run/smartd.pid rwk,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/smartd				r,
+  /run/smartd.pid					rwk,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }

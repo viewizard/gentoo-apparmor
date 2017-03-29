@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -18,31 +18,29 @@ profile smplayer /usr/bin/smplayer {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
-  #include <abstractions/audio>
   #include <abstractions/qt>
-  #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/program-work-with-disk-rk>
   #include <abstractions/nameservice>
   
-  /dev/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/							r,
   
-  /usr/bin/smplayer mr,
-  /usr/bin/mplayer ix,
-  deny /usr/bin/mpv x, # have issues with smplayer (sound freez, pulseaudio), but work fine as stand alone player
-  /usr/bin/aplay Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/smplayer					mr,
+  /usr/bin/mplayer					Px,
+  deny /usr/bin/mpv					x,	# проблемы с smplayer (pulseaudio, подвисает звук) как
+  								# самостоятельный проигрыватель, mpv работает без проблем
+  /usr/bin/aplay					Px,
   
-  /usr/share/smplayer/{,**} r,
-  # mplayer
-  /etc/mplayer/mplayer.conf r,
-  /etc/terminfo/l/linux r,
-  /usr/share/terminfo/u/unknown r,
+  # READS/WRITES ---------------------------------------
+  /usr/share/smplayer/{,**}				r,
   
-  owner @{HOME}/.config/smplayer/ rw,
-  owner @{HOME}/.config/smplayer/** rwk,
-  owner @{HOME}/mplayer.log rw,
-  owner @{HOME}/.mplayer/{,config} rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/smplayer/			rw,
+  owner @{HOME}/.config/smplayer/**			rwk,
+  owner @{HOME}/mplayer.log				rw,	# mplayer
   
-  owner /tmp/qtsingleapp-smplay-*-*{,-lockfile} rwk,
-  
+  # TEMP -----------------------------------------------
+  owner /tmp/qtsingleapp-smplay-*-*{,-lockfile}		rwk,
 }
