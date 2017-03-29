@@ -1,19 +1,21 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability setuid,
   capability setgid,
@@ -21,71 +23,79 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
   capability fowner,
   capability fsetid,
   
-  /dev/pts/[0-9]* w,
-  @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  @{PROC}/@{pid}/fd/					r,
   
-  /bin/bash Cx -> shell,
-  /usr/bin/sandbox cx -> sandboxed_shell,
-  /bin/basename ix,
-  /usr/bin/git ix,	# не используем Px и Px -> git_root.
-  /usr/bin/id ix,
-  /usr/bin/wget ix,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /usr/bin/sandbox					cx -> sandboxed_shell,
+  /bin/basename						ix,
+  /usr/bin/git						ix,	# не используем Px и Px -> git_root.
+  /usr/bin/id						ix,
+  /usr/bin/wget						ix,
   
-  /etc/profile.env r,
-  /etc/wgetrc r,
-  /etc/terminfo/x/xterm r,
-  /etc/portage/{,**} r,
-  /usr/portage/{,**} r,
-  /usr/portage/distfiles/* wk,
-  /usr/local/portage/{,**} r,
-  /usr/local/portage/**/Manifest* rw,
-  /usr/share/portage/{,**} r,
-  /var/cache/edb/dep/usr/local/portage/** rw,
+  # READS/WRITES ---------------------------------------
+  /etc/profile.env					r,
+  /etc/wgetrc						r,
+  /etc/terminfo/x/xterm					r,
+  /etc/portage/{,**}					r,
+  /usr/portage/{,**}					r,
+  /usr/portage/distfiles/*				wk,
+  /usr/local/portage/{,**}				r,
+  /usr/local/portage/**/Manifest*			rw,
+  /usr/share/portage/{,**}				r,
+  /var/cache/edb/dep/usr/local/portage/**		rw,
   
-  owner @{HOME}/.gitconfig r,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.gitconfig				r,
   
-  owner /tmp/?????? rw,
-  owner /tmp/tmp_* rw,
-  owner /var/tmp/portage/tmp*/{,**} rw,
-  
+  # TEMP -----------------------------------------------
+  owner /tmp/??????					rw,
+  owner /tmp/tmp_*					rw,
+  owner /var/tmp/portage/tmp*/{,**}			rw,
   
   profile shell flags=(complain) {
     #include <abstractions/base>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /bin/uname ix,
-    /bin/rm ix,
-    /sbin/ldconfig ix,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/uname						ix,
+    /bin/rm						ix,
+    /sbin/ldconfig					ix,
     
-    /usr/portage/distfiles/* w,
-    /var/cache/ldconfig/aux-cache* rw,
-    
+    # READS/WRITES -------------------------------------
+    /usr/portage/distfiles/*				w,
+    /var/cache/ldconfig/aux-cache*			rw,
   }
   
   profile sandboxed_shell flags=(complain) {
     #include <abstractions/base>
     
-    /dev/tty rw,
-    /dev/pts/[0-9]* w,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/pts/[0-9]*					w,
     
-    /usr/bin/sandbox mr,
-    /bin/bash ixr,	# FIX ME! почему он в профиле с ix?
-    /bin/sed ixr,
-    /bin/basename ixr,
-    /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh ix,
+    # EXECUTABLES --------------------------------------
+    /usr/bin/sandbox					mr,
+    /bin/bash						ixr,	# FIX ME! почему он в профиле с ix?
+    /bin/sed						ixr,
+    /bin/basename					ixr,
+    /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh	ix,
     
-    /etc/sandbox.conf r,
-    /etc/sandbox.d/{,*} r,
-    /usr/share/sandbox/{,**} r,
-    /etc/portage/{,**} r,
-    /usr/portage/{,**} r,
-    /usr/local/portage/{,**} r,
+    # READS/WRITES -------------------------------------
+    /etc/sandbox.conf					r,
+    /etc/sandbox.d/{,*}					r,
+    /etc/portage/{,**}					r,
+    /usr/portage/{,**}					r,
+    /usr/share/sandbox/{,**}				r,
+    /usr/local/portage/{,**}				r,
+    /var/log/sandbox/sandbox-*.log			w,
     
-    /var/tmp/portage/**/temp/{,**} w,
-    /var/log/sandbox/sandbox-*.log w,
-    
+    # TEMP ---------------------------------------------
+    /var/tmp/portage/**/temp/{,**}			w,
   }
-  
 }

@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -26,16 +26,19 @@ profile remmina /usr/bin/remmina {
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk>
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   
-  /usr/bin/remmina mr,
-  /usr/lib{,32,64}/remmina/plugins/**.so m,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/remmina					mr,
+  /usr/lib{,32,64}/remmina/plugins/**.so		m,
   
-  /etc/timezone r,
-  /usr/share/remmina/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /etc/timezone						r,
+  /usr/share/remmina/{,**}				r,
   
+  # USERS ----------------------------------------------
   owner @{HOME}/.config/autostart/remmina-applet.desktop r,
-  owner @{HOME}/.remmina/{,*} rw,
-  owner @{HOME}/.config/freerdp/{,**} rw,
-  
+  owner @{HOME}/.remmina/{,*}				rw,
+  owner @{HOME}/.config/freerdp/{,**}			rw,
 }
