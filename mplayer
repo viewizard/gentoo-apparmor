@@ -1,0 +1,41 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+# config for abstractions/program-work-with-disk-** (**-rk,rwk)
+@{PROG_DIR}="[^.]**"
+@{PROG_FILE}="[^.]*.{mpeg,vob,ogg,asf,wav,wmv,wma,mov,mp3,mp4,avi,mkv,mka,webm,vivo,ts,ogm,aac,h264,3p2,3gp,3ga,flv,ass,smi,srt,sub,txt,mdv,ssa,sup,tt,smil,gif,MPEG,VOB,OGG,ASF,WAV,WMV,WMA,MOV,MP3,MP4,AVI,MKV,MKA,WEBM,VIVO,TS,OGM,AAC,H264,3P2,3GP,3GA,FLV,ASS,SMI,SRT,SUB,TXT,MDV,SSA,SUP,TT,SMIL,GIF}"
+
+profile mplayer /usr/bin/mplayer {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/audio>
+  #include <abstractions/nvidia>
+  #include <abstractions/X>
+  #include <abstractions/program-work-with-disk-rk>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/mplayer					mr,
+  
+  # USERS ----------------------------------------------
+  /etc/mplayer/{,**}					r,
+  /etc/terminfo/l/linux					r,
+  /etc/terminfo/x/xterm					r,
+  /usr/share/terminfo/u/unknown				r,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/smplayer/styles.ass		r,	# smplayer
+  owner @{HOME}/.mplayer/{,config}			rw,
+}
