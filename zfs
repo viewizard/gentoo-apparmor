@@ -1,149 +1,152 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile zfs /sbin/zfs flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_resource,
   
-  /dev/zfs rw,
-  /dev/pts/[0-9]* w,
-  @{PROC}/@{pid}/mounts r,
-  @{PROC}/sys/fs/pipe-max-size r,
+  # PSEUDO ---------------------------------------------
+  /dev/zfs						rw,
+  /dev/pts/[0-9]*					w,
+  @{PROC}/@{pid}/mounts					r,
+  @{PROC}/sys/fs/pipe-max-size				r,
   
-  /sbin/zfs mr,
-  /bin/mount Px,
+  # EXECUTABLES ----------------------------------------
+  /sbin/zfs						mr,
+  /bin/mount						Px,
   
-  /etc/dfs/sharetab r,
+  # READS/WRITES ---------------------------------------
+  /etc/dfs/sharetab					r,
   
-  owner @{HOME}/.session.log w,  # XFCE4, <abstractions/X>
-  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
-
 
 profile zfs.mount /sbin/mount.zfs flags=(complain) {
   #include <abstractions/base>
   
-  /sbin/mount.zfs mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /sbin/mount.zfs					mr,
 }
 
 profile zfs.zpool /sbin/zpool flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
-  /dev/zfs rw,
-  /dev/pts/[0-9]* w,
-  /sys/module/spl/parameters/spl_hostid r,
-  @{PROC}/@{pid}/mounts r,
+  # PSEUDO ---------------------------------------------
+  /dev/zfs						rw,
+  /dev/pts/[0-9]*					w,
+  /sys/module/spl/parameters/spl_hostid			r,
+  @{PROC}/@{pid}/mounts					r,
   
-  /sbin/zpool mr,
-  /bin/umount Px,
-  /usr/libexec/zfs/zed.d/all-syslog.sh Px,
+  # EXECUTABLES ----------------------------------------
+  /sbin/zpool						mr,
+  /bin/umount						Px,
+  /usr/libexec/zfs/zed.d/all-syslog.sh			Px,
   
-  /etc/dfs/sharetab r,
-  /etc/zfs/zpool.cache rw,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/dfs/sharetab					r,
+  /etc/zfs/zpool.cache					rw,
 }
-
 
 profile zfs.zed /sbin/zed flags=(complain) {
   #include <abstractions/base>
   
-  /dev/zfs rw,
-  @{PROC}/@{pid}/mounts r,
+  # PSEUDO ---------------------------------------------
+  /dev/zfs						rw,
+  @{PROC}/@{pid}/mounts					r,
   
-  /sbin/zed mr,
-  /usr/libexec/zfs/zed.d/all-syslog.sh Px,
+  # EXECUTABLES ----------------------------------------
+  /sbin/zed						mr,
+  /usr/libexec/zfs/zed.d/all-syslog.sh			Px,
   
-  /etc/dfs/sharetab r,
-  /etc/zfs/zed.d/{,*} r,
-  
-  /var/lib/run/zed.{pid,state} rwk,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/dfs/sharetab					r,
+  /etc/zfs/zed.d/{,*}					r,
+  /var/lib/run/zed.{pid,state}				rwk,
 }
-
 
 profile zfs.zed.d /usr/libexec/zfs/zed.d/*.sh {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
-  /dev/tty rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   
-  /usr/libexec/zfs/zed.d/*.sh r,
-  /bin/bash mr,
-  /usr/bin/logger Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/zfs/zed.d/*.sh				r,
+  /bin/bash						mr,
+  /usr/bin/logger					Px,
   
-  /etc/zfs/zed.d/zed-functions.sh r,
-  /etc/zfs/zed.d/zed.rc r,
-  
+  # READS/WRITES ---------------------------------------
+  /etc/zfs/zed.d/zed-functions.sh			r,
+  /etc/zfs/zed.d/zed.rc					r,
 }
-
 
 profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
   
-  /bin/bash Cx -> shell,
-  /sbin/zpool Px,
-  /sbin/zed Px,
-  /bin/rm ix,
-  /bin/kmod Pxr,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /sbin/zpool						Px,
+  /sbin/zed						Px,
+  /bin/rm						ix,
+  /bin/kmod						Pxr,
   
-  / r,
-  /etc/{conf,init}.d/zfs-zed r,
-  /etc/conf.d/zfs r,
-  /etc/zfs/zfs-functions r,
-  
-  /var/lib/run/zed.pid r,
-  
+  # READS/WRITES ---------------------------------------
+  /							r,
+  /etc/{conf,init}.d/zfs-zed				r,
+  /etc/conf.d/zfs					r,
+  /etc/zfs/zfs-functions				r,
+  /var/lib/run/zed.pid					r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }
-
 
 profile zfs.zfs-import.init.d /etc/init.d/zfs-import {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  /bin/bash Cx -> shell,
-  /bin/grep ix,
-  /bin/uname ix,
-  /bin/udevadm Px,
-  /bin/kmod Pxr,
-  /sbin/zpool Px,
+  # EXECUTABLES ----------------------------------------
+  /bin/bash						Cx -> shell,
+  /bin/grep						ix,
+  /bin/uname						ix,
+  /bin/udevadm						Px,
+  /bin/kmod						Pxr,
+  /sbin/zpool						Px,
   
-  / r,
-  /etc/conf.d/zfs r,
-  /etc/zfs/zfs-functions r,
-  /etc/{conf,init}.d/zfs-import r,
-  
+  # READS/WRITES ---------------------------------------
+  /							r,
+  /etc/conf.d/zfs					r,
+  /etc/zfs/zfs-functions				r,
+  /etc/{conf,init}.d/zfs-import				r,
   
   profile shell {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
-    
   }
-  
 }

@@ -1,18 +1,20 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile xorg-server.Xorg /usr/bin/Xorg {
   #include <abstractions/base>
   #include <abstractions/fonts>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_admin,
   capability sys_rawio,
   capability mknod,
@@ -22,90 +24,96 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   capability ipc_owner,
   capability chown,
   
-  /dev/tty[0-9]* rw,
-  /dev/nvidiactl rw,
-  /dev/nvidia[0-9]* rw,
-  /dev/nvidia-modeset rw,
-  /dev/vga_arbiter rw,
-  /dev/dri/{,card[0-9]*} rw,
-  /dev/input/event[0-9]* rw,
-  /sys/bus/ r,
-  /sys/class/ r,
-  /sys/class/tty/ r,
-  /sys/class/drm/ r,
-  /sys/class/input/ r,
-  /sys/bus/pci/devices/ r,
-  /sys/devices/**/{id,uevent,name} r,
-  /sys/devices/pci[0-9]*/**/{,config,resource,boot_vga} r,
-  @{PROC}/mtrr rw,
-  @{PROC}/cmdline r,
-  @{PROC}/modules r,
-  @{PROC}/@{pid}/cmdline r,
-  @{PROC}/driver/nvidia/params r,
-  @{PROC}/sys/kernel/modprobe r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/nvidiactl					rw,
+  /dev/nvidia[0-9]*					rw,
+  /dev/nvidia-modeset					rw,
+  /dev/vga_arbiter					rw,
+  /dev/dri/{,card[0-9]*}				rw,
+  /dev/input/event[0-9]*				rw,
+  /sys/bus/						r,
+  /sys/class/						r,
+  /sys/class/tty/					r,
+  /sys/class/drm/					r,
+  /sys/class/input/					r,
+  /sys/bus/pci/devices/					r,
+  /sys/devices/**/{id,uevent,name}			r,
+  /sys/devices/pci[0-9]*/**/{,config,resource,boot_vga}	r,
+  @{PROC}/mtrr						rw,
+  @{PROC}/cmdline					r,
+  @{PROC}/modules					r,
+  @{PROC}/@{pid}/cmdline				r,
+  @{PROC}/driver/nvidia/params				r,
+  @{PROC}/sys/kernel/modprobe				r,
   
-  /usr/bin/Xorg mr,
-  /bin/bash Cx -> shell,
-  /bin/kmod Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/Xorg						mr,
+  /bin/bash						Cx -> shell,
+  /bin/kmod						Px,
   
-  /usr/lib{,32,64}/xorg/modules/**.so m,
-  /usr/lib{,32,64}/mesa/**.so m,
+  # READS/WRITES ---------------------------------------
+  /etc/drirc						r,
+  /etc/udev/udev.conf					r,
+  /etc/X11/xorg.conf					r,
+  /etc/X11/xorg.conf.d/{,*}				r,
+  /usr/lib{,32,64}/xorg/modules/**.so			m,
+  /usr/lib{,32,64}/mesa/**.so				m,
+  /usr/share/X11/{,**}					r,
+  /run/udev/data/*					r,
+  /var/log/Xorg.[0-9].log{,.old}			rw,
+  /var/lib/xkb/server-[0-9].xkm				rw,
   
-  /etc/drirc r,
-  /etc/udev/udev.conf r,
-  /etc/X11/xorg.conf r,
-  /etc/X11/xorg.conf.d/{,*} r,
-  /usr/share/X11/{,**} r,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.serverauth*				r,
   
-  /run/udev/data/* r,
-  
-  owner @{HOME}/.serverauth* r,
-  
-  /var/log/Xorg.[0-9].log{,.old} rw,
-  
-  owner /tmp/.tX[0-9]-lock w,
-  owner /tmp/.X[0-9]-lock wl,
-  owner /tmp/.X11-unix/X[0-9] w,
-  /tmp/server-[0-9].xkm rw,
-  /var/lib/xkb/server-[0-9].xkm rw,
+  # TEMP -----------------------------------------------
+  owner /tmp/.tX[0-9]-lock				w,	# 0-9 ONLY!
+  owner /tmp/.X[0-9]-lock				wl,	# 0-9 ONLY!
+  owner /tmp/.X11-unix/X[0-9]				w,	# 0-9 ONLY!
+  /tmp/server-[0-9].xkm					rw,	# 0-9 ONLY!
   
   profile shell {
     #include <abstractions/base>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /usr/bin/xkbcomp Px,
-    
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /usr/bin/xkbcomp					Px,
   }
-  
 }
 
 profile xorg-server.Xephyr /usr/bin/Xephyr flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/fonts>
   
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
   
-  /usr/bin/Xephyr mr,
-  /bin/bash Cx -> shell,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/Xephyr					mr,
+  /bin/bash						Cx -> shell,
   
-  /usr/lib64/mesa/swrastg_dri.so m,
-  /usr/share/X11/xkb/rules/evdev r,
+  # READS/WRITES ---------------------------------------
+  /usr/lib64/mesa/swrastg_dri.so			m,
+  /usr/share/X11/xkb/rules/evdev			r,
   
-  owner @{HOME}/.Xauthority r,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.Xauthority				r,
   
-  # tmp работать только с дисплеями 10 и выше
-  # 0-9 закреплены за xorg-server
+  # TEMP -----------------------------------------------
+  # tmp работать только с дисплеями 10 и выше, 0-9 закреплены за xorg-server
   
   profile shell {
     #include <abstractions/base>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /usr/bin/xkbcomp Px,
-    
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /usr/bin/xkbcomp					Px,
   }
-  
 }

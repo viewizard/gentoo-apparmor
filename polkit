@@ -61,6 +61,7 @@ profile polkit.pkexec /usr/bin/pkexec flags=(complain) {
   capability setgid,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   @{PROC}/@{pid}/stat					r,
   @{PROC}/@{pid}/attr/current				w,
   

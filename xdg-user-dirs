@@ -1,21 +1,25 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile xdg-user-dirs-update /usr/bin/xdg-user-dirs-update flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
-  /usr/bin/xdg-user-dirs-update mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/xdg-user-dirs-update				mr,
   
-  /etc/xdg/user-dirs.{conf,defaults} r,
-  owner @{HOME}/.config/user-dirs.dirs r,
+  # READS/WRITES ---------------------------------------
+  /etc/xdg/user-dirs.{conf,defaults}			r,
   
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/user-dirs.dirs			r,
 }

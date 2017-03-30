@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile xfce4-appfinder /usr/bin/{xfrun4,xfce4-appfinder} {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -18,30 +19,33 @@ profile xfce4-appfinder /usr/bin/{xfrun4,xfce4-appfinder} {
   #include <abstractions/gtk>
   #include <abstractions/executable-binary-programs>
   
-  @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  @{PROC}/@{pid}/fd/					r,
   
-  /usr/bin/{xfrun4,xfce4-appfinder} mr,
-  /bin/env Cx -> env,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/{xfrun4,xfce4-appfinder}			mr,
+  /bin/env						Cx -> env,
   
-  /etc/xdg/menus/{,**} r,
-  /usr/share/desktop-directories/{,*} r,
-  /usr/lib{,32,64}/pango/*/modules/* m,
-  /opt/**.png r,
+  # READS/WRITES ---------------------------------------
+  /etc/xdg/menus/{,**}					r,
+  /usr/share/desktop-directories/{,*}			r,
+  /usr/lib{,32,64}/pango/*/modules/*			m,
+  /opt/**.png						r,
   
-  owner @{HOME}/.config/menus/{,**} r,
-  owner @{HOME}/.local/share/mime/mime.cache r,
-  owner @{HOME}/.local/share/desktop-directories/{,*} r,
-  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/menus/{,**}			r,
+  owner @{HOME}/.local/share/mime/mime.cache		r,
+  owner @{HOME}/.local/share/desktop-directories/{,*}	r,
   
   profile env {
     #include <abstractions/base>
     
-    /dev/tty[0-9]* w,
-    /dev/pts/[0-9]* rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					w,
+    /dev/pts/[0-9]*					rw,
     
-    /bin/env mr,
-    /usr/bin/wine Px,
-    
+    # EXECUTABLES --------------------------------------
+    /bin/env						mr,
+    /usr/bin/wine					Px,
   }
-  
 }

@@ -1,97 +1,104 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile xinit /usr/bin/xinit {
   #include <abstractions/base>
   #include <abstractions/X>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_nice,
   capability setuid,
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   
-  /usr/bin/xinit mr,
-  /bin/bash Cx -> shell,
-  /etc/X11/xinit/xserverrc Px,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/xinit					mr,
+  /bin/bash						Cx -> shell,
+  /etc/X11/xinit/xserverrc				Px,
   
   profile shell {
     #include <abstractions/base>
     
-    /dev/tty rw,
-    /dev/tty[0-9]* w,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					w,
     
-    /bin/bash mr,
-    /bin/cat ix,
-    /bin/grep ix,
-    /bin/sed ix,
-    /usr/bin/which ix,
-    /usr/bin/gawk ix,
-    /usr/bin/xrdb Px,
-    /usr/bin/dbus-send Px,
-    /usr/bin/nvidia-settings Px,
-    /usr/bin/xfce4-session Px,
-    /usr/bin/ck-launch-session Px,
-    /usr/bin/xdg-user-dirs-update Px,
-    /etc/X11/xinit/xinitrc r,
-    /etc/X11/chooser.sh ixr,
-    /etc/X11/Sessions/{,*} r,
-    /etc/X11/xinit/xinitrc.d/{,*} r,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/cat						ix,
+    /bin/grep						ix,
+    /bin/sed						ix,
+    /usr/bin/which					ix,
+    /usr/bin/gawk					ix,
+    /usr/bin/xrdb					Px,
+    /usr/bin/dbus-send					Px,
+    /usr/bin/nvidia-settings				Px,
+    /usr/bin/xfce4-session				Px,	# XFCE4
+    /usr/bin/ck-launch-session				Px,
+    /usr/bin/xdg-user-dirs-update			Px,
+    /etc/X11/chooser.sh					ixr,
     
-    /etc/xdg/xfce4/xinitrc r,
-    /etc/xdg/xfce4/Xft.xrdb r,
-    
+    # READS/WRITES -------------------------------------
+    /etc/X11/xinit/xinitrc				r,
+    /etc/X11/Sessions/{,*}				r,
+    /etc/X11/xinit/xinitrc.d/{,*}			r,
+    /etc/xdg/xfce4/xinitrc				r,
+    /etc/xdg/xfce4/Xft.xrdb				r,
   }
-  
 }
-
 
 profile xinit.xserverrc /etc/X11/xinit/xserverrc {
   #include <abstractions/base>
   
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
   
-  /bin/bash mr,
-  /etc/X11/xinit/xserverrc r,
-  /usr/bin/Xorg Px,
-  
+  # EXECUTABLES ----------------------------------------
+  /etc/X11/xinit/xserverrc				r,
+  /bin/bash						mr,
+  /usr/bin/Xorg						Px,
 }
 
-
-profile xinit.startx /usr/bin/startx {
+profile xinit.startx /usr/bin/startx flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability sys_tty_config,
   
-  /dev/tty rw,
-  /dev/tty[0-9]* rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   
-  /usr/bin/startx r,
-  /bin/bash mr,
-  /bin/uname ix,
-  /bin/hostname ix,
-  /bin/grep ix,
-  /bin/sed ix,
-  /bin/rm ixr,
-  /usr/bin/mcookie ix,
-  /usr/bin/deallocvt ixr,
-  /usr/bin/xauth ixr,
-  /usr/bin/xinit Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/startx					r,
+  /bin/bash						mr,
+  /bin/uname						ix,
+  /bin/hostname						ix,
+  /bin/grep						ix,
+  /bin/sed						ix,
+  /bin/rm						ixr,
+  /usr/bin/mcookie					ix,
+  /usr/bin/deallocvt					ixr,
+  /usr/bin/xauth					Pxr,	# FIX ME! ixr, flags=(complain) 30.03.2017
+  /usr/bin/xinit					Px,
   
-  owner @{HOME}/.serverauth* rwl,
-  owner @{HOME}/.Xauthority* rwl,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.serverauth*				rwl,
+#  owner @{HOME}/.Xauthority*				rwl,	# FIX ME! 30.03.2017
   
-  owner /tmp/sh-thd.?????? rw,
-  
+  # TEMP -----------------------------------------------
+  owner /tmp/sh-thd.??????				rw,
 }

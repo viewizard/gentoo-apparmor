@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile xfce4-session /usr/bin/xfce4-session {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -21,77 +22,80 @@ profile xfce4-session /usr/bin/xfce4-session {
   #include <abstractions/executable-binary-programs>
   #include <local/xfce4-session-custom-exec>
   
-  /dev/tty[0-9]* w,
-  @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  @{PROC}/@{pid}/fd/					r,
   
-  /usr/bin/xfce4-session Pxmr,
-  /bin/bash Cx -> shell,
-  /bin/env Cx -> env,
-  /bin/true ix,
-  /bin/rm ixr,
-  /usr/bin/ssh-agent Px,
-  /usr/bin/gpg-agent Px,
-  /usr/bin/xfsettingsd Px,
-  /usr/bin/xdg-user-dirs-gtk-update Px,
-  /usr/bin/start-pulseaudio-x11 Px,
-  /usr/bin/mate-screensaver{,.sh} Px,
-  /usr/bin/pkexec Px,
-  /usr/bin/gnome-keyring-daemon Px,
-  /usr/bin/xfdesktop Px,
-  /usr/bin/xfwm4 Px,
-  /usr/bin/xfce4-panel Px,
-  /usr/libexec/polkit-gnome-authentication-agent-1 Px,
-  /usr/libexec/vino-server Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/xfce4-session				Pxmr,	# Все правильно, запуск и mmap.
+  /bin/bash						Cx -> shell,
+  /bin/env						Cx -> env,
+  /bin/true						ix,
+  /bin/rm						ixr,
+  /usr/bin/ssh-agent					Px,
+  /usr/bin/gpg-agent					Px,
+  /usr/bin/xfsettingsd					Px,
+  /usr/bin/xdg-user-dirs-gtk-update			Px,
+  /usr/bin/start-pulseaudio-x11				Px,
+  /usr/bin/mate-screensaver{,.sh}			Px,
+  /usr/bin/pkexec					Px,
+  /usr/bin/gnome-keyring-daemon				Px,
+  /usr/bin/xfdesktop					Px,
+  /usr/bin/xfwm4					Px,
+  /usr/bin/xfce4-panel					Px,
+  /usr/libexec/polkit-gnome-authentication-agent-1	Px,
+  /usr/libexec/vino-server				Px,
   
-  owner @{HOME}/.ICEauthority* w,
+  # READS/WRITES ---------------------------------------
+  /etc/xdg/						r,
+  /etc/xdg/autostart/{,*}				r,
   
-  /etc/xdg/ r,
-  /etc/xdg/autostart/{,*} r,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.ICEauthority*				w,
+  owner @{HOME}/.xfce4-session.verbose-log*		rw,
+  owner @{HOME}/.config/				r,
+  owner @{HOME}/.config/autostart/{,*}			r,
+  owner @{HOME}/.dbus/session-bus/{,*}			rw,
+  owner @{HOME_CACHE}/sessions/{,*}			rw,
+  owner @{HOME_CACHE}/sessions/thumbs*/{,*.png}		rw,
+  owner @{HOME_CACHE}/gpg-agent-info			rw,
   
-  owner @{HOME}/.xfce4-session.verbose-log* rw,
-  owner @{HOME}/.config/ r,
-  owner @{HOME}/.config/autostart/{,*} r,
-  owner @{HOME}/.dbus/session-bus/{,*} rw,
-  owner @{HOME_CACHE}/sessions/{,*} rw,
-  owner @{HOME_CACHE}/sessions/thumbs*/{,*.png} rw,
-  owner @{HOME_CACHE}/gpg-agent-info rw,
-  
-  owner /tmp/.ICE-unix/* w,
-  owner /tmp/.xfsm-ICE-* rw,
-  
+  # TEMP -----------------------------------------------
+  owner /tmp/.ICE-unix/*				w,
+  owner /tmp/.xfsm-ICE-*				rw,
   
   profile shell {
     #include <abstractions/base>
     
-    /dev/tty rw,
-    /dev/tty[0-9]* w,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					w,
     
-    /bin/bash mr,
-    /bin/sleep ix,
-    /usr/bin/iceauth Px,
-    /usr/bin/cairo-clock Px,
-    /usr/bin/conky Px,
-    
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/sleep						ix,
+    /usr/bin/iceauth					Px,
+    /usr/bin/cairo-clock				Px,
+    /usr/bin/conky					Px,
   }
   
   profile env {
     #include <abstractions/base>
     
-    /dev/tty[0-9]* w,
-    /dev/pts/[0-9]* rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					w,
+    /dev/pts/[0-9]*					rw,
     
-    /bin/env mr,
-    /usr/bin/xfwm4 Px,
-    /usr/bin/xfsettingsd Px,
-    /usr/bin/xfce4-panel Px,
-    /usr/bin/thunar Px,
-    /usr/bin/xfdesktop Px,
-    /usr/bin/cairo-clock Px,
-    
+    # EXECUTABLES --------------------------------------
+    /bin/env						mr,
+    /usr/bin/xfwm4					Px,
+    /usr/bin/xfsettingsd				Px,
+    /usr/bin/xfce4-panel				Px,
+    /usr/bin/thunar					Px,
+    /usr/bin/xfdesktop					Px,
+    /usr/bin/cairo-clock				Px,
   }
-  
 }
-
 
 profile xfce4-session-logout /usr/bin/xfce4-session-logout {
   #include <abstractions/base>
@@ -101,11 +105,12 @@ profile xfce4-session-logout /usr/bin/xfce4-session-logout {
   #include <abstractions/X>
   #include <abstractions/gtk>
   
-  /dev/pts/[0-9]* rw,
-  /usr/bin/xfce4-session-logout mr,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
   
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/xfce4-session-logout				mr,
 }
-
 
 profile xfce4-session-settings /usr/bin/xfce4-session-settings {
   #include <abstractions/base>
@@ -116,69 +121,72 @@ profile xfce4-session-settings /usr/bin/xfce4-session-settings {
   #include <abstractions/X>
   #include <abstractions/nameservice>
   
-  /usr/bin/xfce4-session-settings mr,
-  /etc/xdg/ r,
-  /etc/xdg/autostart/{,*} r,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/xfce4-session-settings			mr,
   
-  owner @{HOME}/.config/ r,
-  owner @{HOME}/.config/autostart/ r,
-  owner @{HOME}/.config/autostart/* rw,
+  # READS/WRITES ---------------------------------------
+  /etc/xdg/						r,
+  /etc/xdg/autostart/{,*}				r,
   
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/				r,
+  owner @{HOME}/.config/autostart/			r,
+  owner @{HOME}/.config/autostart/*			rw,
 }
-
 
 profile xfce4-session.xflock4 /usr/bin/xflock4 {
   #include <abstractions/base>
   
-  /dev/tty rw,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   
-  /usr/bin/xflock4 r,
-  /bin/bash mr,
-  /usr/bin/mate-screensaver-command Px,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/xflock4					r,
+  /bin/bash						mr,
+  /usr/bin/mate-screensaver-command			Px,	# MATE
 }
-
 
 profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
   #include <abstractions/base>
   #include <abstractions/X>
   
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
   
-  /usr/bin/startxfce4 mr,
-  /bin/bash Cxmr -> shell,
-  /usr/bin/xinit Px,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/startxfce4					r,
+  /bin/bash						Cxmr -> shell,	# Все правильно, запуск и mmap.
+  /usr/bin/xinit					Px,
   
   profile shell {
     #include <abstractions/base>
     
-    /dev/tty rw,
-    /dev/tty[0-9]* w,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					w,
     
-    /bin/bash mr,
-    /bin/cat ix,
-    /bin/grep ix,
-    /bin/sed ix,
-    /usr/bin/which ix,
-    /usr/bin/gawk ix,
-    /usr/bin/xrdb Px,
-    /usr/bin/xfce4-session Px,
-    /usr/bin/xdg-user-dirs-update Px,
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/cat						ix,
+    /bin/grep						ix,
+    /bin/sed						ix,
+    /usr/bin/which					ix,
+    /usr/bin/gawk					ix,
+    /usr/bin/xrdb					Px,
+    /usr/bin/xfce4-session				Px,
+    /usr/bin/xdg-user-dirs-update			Px,
     
-    /etc/xdg/xfce4/xinitrc r,
-    /etc/xdg/xfce4/Xft.xrdb r,
-    
+    # READS/WRITES -------------------------------------
+    /etc/xdg/xfce4/xinitrc				r,
+    /etc/xdg/xfce4/Xft.xrdb				r,
   }
-  
 }
-
 
 profile xfce4-session.Xfce4 /etc/X11/Sessions/Xfce4 {
   #include <abstractions/base>
   
-  /etc/X11/Sessions/Xfce4 r,
-  /bin/bash mr,
-  
+  # EXECUTABLES --------------------------------------
+  /etc/X11/Sessions/Xfce4				r,
+  /bin/bash						mr,
 }

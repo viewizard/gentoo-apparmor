@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile xfwm4 /usr/bin/xfwm4 {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -19,26 +20,30 @@ profile xfwm4 /usr/bin/xfwm4 {
   #include <abstractions/X>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_read_search,
   capability dac_override,
   
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* w,
-  owner @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					w,
+  owner @{PROC}/@{pid}/fd/				r,
   
-  /usr/bin/xfwm4 mr,
-  /usr/lib{,32,64}/xfce4/xfwm4/helper-dialog ix,
-  /usr/bin/pulseaudio Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/xfwm4					mr,
+  /usr/lib{,32,64}/xfce4/xfwm4/helper-dialog		ix,
+  /usr/bin/pulseaudio					Px,
   
-  /usr/share/xfwm4/{,**} r,
+  # READS/WRITES ---------------------------------------
+  /usr/share/xfwm4/{,**}				r,
   
-  owner @{HOME_CACHE}/sessions/{,xfwm4-*.state} rw,
-  owner @{HOME}/.config/xfce4/xfwm4/ rw,
+  # USERS ----------------------------------------------
+  owner @{HOME_CACHE}/sessions/{,xfwm4-*.state}		rw,
+  owner @{HOME}/.config/xfce4/xfwm4/			rw,
   
+  # TEMP -----------------------------------------------
   owner /tmp/.gl* rw,
-  
 }
-
 
 profile xfwm4-settings /usr/bin/xfwm4{,-tweaks,-workspace}-settings {
   #include <abstractions/base>
@@ -48,8 +53,9 @@ profile xfwm4-settings /usr/bin/xfwm4{,-tweaks,-workspace}-settings {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   
-  /usr/bin/xfwm4{,-tweaks,-workspace}-settings mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/xfwm4{,-tweaks,-workspace}-settings		mr,
 }

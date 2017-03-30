@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -25,26 +25,28 @@ profile xfburn /usr/bin/xfburn flags=(complain) {
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
   
-  /dev/tty[0-9]* w,
-  /dev/@{BLOCK_MEDIA} rwk,
-  /sys/bus/ r,
-  /sys/class/ r,
-  /sys/class/block/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  /dev/@{BLOCK_MEDIA}					rwk,
+  /sys/bus/						r,
+  /sys/class/						r,
+  /sys/class/block/					r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
-  /sys/devices/pci[0-9]*/**/usb[0-9]*/**/{vendor,model} r,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}uevent r,
-  owner @{PROC}/@{pid}/fd/ r,
-  @{PROC}/sys/dev/cdrom/info r,
+  /sys/devices/pci[0-9]*/**/usb[0-9]*/**/{vendor,model}	r,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}uevent	r,
+  owner @{PROC}/@{pid}/fd/				r,
+  @{PROC}/sys/dev/cdrom/info				r,
   
-  /usr/bin/xfburn mr,
-  /usr/libexec/gvfsd-burn r,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/xfburn					mr,
+  /usr/libexec/gvfsd-burn				r,
   
-  /etc/udev/udev.conf r,
-  /usr/share/xfburn/{,**} r,
-  /run/udev/data/* r,
+  # READS/WRITES ---------------------------------------
+  /etc/udev/udev.conf					r,
+  /usr/share/xfburn/{,**}				r,
+  /run/udev/data/*					r,
+  owner /run/user/*/gvfs-burn/				rw,
   
-  owner @{HOME}/.config/xfburn/{,**} rw,
-  
-  owner /run/user/*/gvfs-burn/ rw,
-  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/xfburn/{,**}			rw,
 }

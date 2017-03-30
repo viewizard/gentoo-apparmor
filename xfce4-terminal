@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile xfce4-terminal /usr/bin/xfce4-terminal {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -20,53 +21,59 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
   
-  /dev/ptmx rw,
-  /dev/tty[0-9]* w,
-  /dev/pts/[0-9]* rw,
-  owner @{PROC}/@{pid}/fd/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/ptmx						rw,
+  /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
+  owner @{PROC}/@{pid}/fd/				r,
   
-  /usr/bin/xfce4-terminal mr,
-  /bin/bash Px -> bash_users,  # Must be bash_users only by default.
-  /usr/bin/sudo Px,
-  /usr/bin/htop Px,
-  /usr/libexec/gnome-pty-helper Cx,
-  /usr/bin/passwd.sh Px,
-  /bin/rc-status Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/xfce4-terminal				mr,
+  /bin/bash						Px -> bash_users,  # By default, must be bash_users only.
+  /usr/bin/sudo						Px,
+  /usr/bin/htop						Px,
+  /usr/libexec/gnome-pty-helper				Cx -> gnome_pty_helper,
+  /usr/bin/passwd.sh					Px,
+  /bin/rc-status					Px,
   
-  /etc/terminfo/x/xterm r,
-  /usr/share/ r,
-  /usr/share/xfce4/ r,
-  /usr/share/xfce4/terminal/{,**} r,
-  /usr/share/vte/termcap-0.0/xterm r,
+  # READS/WRITES ---------------------------------------
+  /etc/terminfo/x/xterm					r,
+  /usr/share/						r,
+  /usr/share/xfce4/					r,
+  /usr/share/xfce4/terminal/{,**}			r,
+  /usr/share/vte/termcap-0.0/xterm			r,
   
-  owner @{HOME}/.local/share/ r,
-  owner @{HOME}/.local/share/xfce4/ r,
-  owner @{HOME}/.local/share/xfce4/terminal/{,**} r,
-  owner @{HOME}/.config/xfce4/terminal/* rw,
-  owner @{HOME}/.config/xfce4/help.rc* rw,
-  owner @{HOME}/.dbus/ rw,
-  owner @{HOME}/.dbus/** rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.local/share/				r,
+  owner @{HOME}/.local/share/xfce4/			r,
+  owner @{HOME}/.local/share/xfce4/terminal/{,**}	r,
+  owner @{HOME}/.config/xfce4/terminal/*		rw,
+  owner @{HOME}/.config/xfce4/help.rc*			rw,
+  owner @{HOME}/.dbus/{,**}				rw,
   
-  owner /tmp/vte* rw,
+  # TEMP -----------------------------------------------
+  owner /tmp/vte*					rw,
   
-  
-  profile gnome-pty-helper /usr/libexec/gnome-pty-helper {
+  profile gnome_pty_helper {
     #include <abstractions/base>
     #include <abstractions/freedesktop.org>
     #include <abstractions/nvidia>
     #include <abstractions/nameservice>
-        
+    
+    # CAPABILITIES -------------------------------------
     capability setuid,
     capability setgid,
     capability fsetid,
     
-    /dev/pts/[0-9]* rw,
-    /dev/ptmx rw,
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    /dev/ptmx						rw,
     
-    /usr/libexec/gnome-pty-helper mr,
+    # EXECUTABLES --------------------------------------
+    /usr/libexec/gnome-pty-helper			mr,
     
-    /run/utmp rwk,
-    /var/log/wtmp wk,
+    # READS/WRITES -------------------------------------
+    /run/utmp						rwk,
+    /var/log/wtmp					wk,
   }
-  
 }

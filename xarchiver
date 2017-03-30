@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
@@ -26,56 +26,60 @@ profile xarchiver /usr/bin/xarchiver {
   #include <abstractions/xdg-open>
   #include <abstractions/executable-binary-helper>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
   capability chown,
   capability fowner,
   capability fsetid,
   
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
-  /sys/devices/system/cpu/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
+  /sys/devices/system/cpu/				r,
   
-  /usr/bin/xarchiver mr,
-  /bin/bash ix,	# FIX ME! почему он в основном профиле с ix?
-  /bin/mv ix,
-  /bin/rm ix,
-  /bin/cp ix,
-  /bin/dd ix,
-  /bin/cpio ixr,
-  /usr/@{CHOST}/binutils-bin/*/ar ix,
-  /opt/rar/rar Cx,
-  /bin/bzip2 ix,
-  /bin/gzip ix,
-  /usr/bin/xz ix,
-  /bin/tar ix,
-  /bin/gunzip ixr,
-  /usr/bin/zip ix,
-  /usr/bin/unzip ix,
-  /usr/bin/7za ixr,
-  /usr/lib{,32,64}/p7zip/7za ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/xarchiver					mr,
+  /bin/bash						ix,	# FIX ME! почему он в основном профиле с ix?
+  /bin/mv						ix,
+  /bin/rm						ix,
+  /bin/cp						ix,
+  /bin/dd						ix,
+  /bin/cpio						ixr,
+  /usr/@{CHOST}/binutils-bin/*/ar			ix,
+  /opt/rar/rar						Cx,
+  /bin/bzip2						ix,
+  /bin/gzip						ix,
+  /usr/bin/xz						ix,
+  /bin/tar						ix,
+  /bin/gunzip						ixr,
+  /usr/bin/zip						ix,
+  /usr/bin/unzip					ix,
+  /usr/bin/7za						ixr,
+  /usr/lib{,32,64}/p7zip/7za				ix,
   
-  /etc/fstab r,
-  owner @{HOME}/.config/xarchiver/{,**} rw,
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
   
-  owner /tmp/xarchiver_*_socket rw,
-  owner /tmp/xa-*/{,**} rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/xarchiver/{,**}			rw,
   
+  # TEMP -----------------------------------------------
+  owner /tmp/xarchiver_*_socket				rw,
+  owner /tmp/xa-*/{,**}					rw,
   
   profile rar /opt/rar/rar {
     #include <abstractions/base>
     #include <abstractions/program-work-with-disk-rwkl>
     
-    /opt/rar/rar mr,
+    # EXECUTABLES --------------------------------------
+    /opt/rar/rar					mr,
     
-    # Noisy
-    deny /etc/ r,
-    deny /usr/lib{,32,64}/ r,
-    deny /usr/local/lib{,32,64}/ r,
+    # NOISY --------------------------------------------
+    deny /etc/						r,
+    deny /usr/{,local/}lib{,32,64}/			r,
   }
-  
 }
-
 
 profile xarchiver_root {
   #include <abstractions/base>
@@ -90,79 +94,84 @@ profile xarchiver_root {
   #include <abstractions/executable-binary-helper_root>
   #include <abstractions/user-systemwide-files>
   
+  # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
   capability chown,
   capability fowner,
   capability fsetid,
   
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
-  /sys/devices/system/cpu/ r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
+  /sys/devices/system/cpu/				r,
   
-  /usr/bin/xarchiver mr,
-  /bin/bash ix,	# FIX ME! почему он в основном профиле с ix?
-  /bin/mv ix,
-  /bin/rm ix,
-  /bin/cp ix,
-  /bin/dd ix,
-  /bin/cpio ixr,
-  /usr/@{CHOST}/binutils-bin/*/ar ix,
-  /opt/rar/rar Cx,
-  /bin/bzip2 ix,
-  /bin/gzip ix,
-  /usr/bin/xz ix,
-  /bin/tar ix,
-  /bin/gunzip ixr,
-  /usr/bin/zip ix,
-  /usr/bin/unzip ix,
-  /usr/bin/7za ixr,
-  /usr/lib{,32,64}/p7zip/7za ix,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/xarchiver					mr,
+  /bin/bash						ix,	# FIX ME! почему он в основном профиле с ix?
+  /bin/mv						ix,
+  /bin/rm						ix,
+  /bin/cp						ix,
+  /bin/dd						ix,
+  /bin/cpio						ixr,
+  /usr/@{CHOST}/binutils-bin/*/ar			ix,
+  /opt/rar/rar						Cx,
+  /bin/bzip2						ix,
+  /bin/gzip						ix,
+  /usr/bin/xz						ix,
+  /bin/tar						ix,
+  /bin/gunzip						ixr,
+  /usr/bin/zip						ix,
+  /usr/bin/unzip					ix,
+  /usr/bin/7za						ixr,
+  /usr/lib{,32,64}/p7zip/7za				ix,
   
-  /etc/fstab r,
-  owner @{HOME}/.config/xarchiver/{,**} rw,
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
   
-  owner /tmp/xarchiver_*_socket rw,
-  /tmp/xa-*/{,**} rw,
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/xarchiver/{,**}			rw,
   
+  # TEMP -----------------------------------------------
+  owner /tmp/xarchiver_*_socket				rw,
+  /tmp/xa-*/{,**}					rw,
   
   profile rar /opt/rar/rar {
     #include <abstractions/base>
     #include <abstractions/program-work-with-disk-rwkl>
     #include <abstractions/user-systemwide-files>
     
-    /opt/rar/rar mr,
+    # EXECUTABLES --------------------------------------
+    /opt/rar/rar					mr,
     
-    # Noisy
-    deny /etc/ r,
-    deny /usr/lib{,32,64}/ r,
-    deny /usr/local/lib{,32,64}/ r,
+    # NOISY --------------------------------------------
+    deny /etc/						r,
+    deny /usr/{,local/}lib{,32,64}/			r,
   }
-  
 }
-
 
 profile xarchiver_tap /usr/libexec/thunar-archive-plugin/xarchiver.tap {
   #include <abstractions/base>
   
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
   
-  /bin/bash mr,
-  /usr/libexec/thunar-archive-plugin/xarchiver.tap r,
-  /usr/bin/xarchiver Px,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/thunar-archive-plugin/xarchiver.tap	r,
+  /bin/bash						mr,
+  /usr/bin/xarchiver					Px,
 }
-
 
 profile xarchiver_tap_root {
   #include <abstractions/base>
   
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
   
-  /bin/bash mr,
-  /usr/libexec/thunar-archive-plugin/xarchiver.tap r,
-  /usr/bin/xarchiver Px -> xarchiver_root,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/thunar-archive-plugin/xarchiver.tap	r,
+  /bin/bash						mr,
+  /usr/bin/xarchiver					Px -> xarchiver_root,
 }

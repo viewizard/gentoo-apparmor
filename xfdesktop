@@ -1,14 +1,17 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
+@{local_ext}="{png,jpeg,jpg,bmp,PNG,JPEG,JPG,BMP}"
+
 profile xfdesktop /usr/bin/xfdesktop {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -18,57 +21,55 @@ profile xfdesktop /usr/bin/xfdesktop {
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-programs>
   
-  /dev/tty[0-9]* w,
-  @{PROC}/@{pid}/fd/ r,
-  owner @{PROC}/@{pid}/mountinfo r,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/mountinfo			r,
   
-  /usr/bin/xfdesktop mr,
-  /bin/bash Cx -> shell,
-  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 Px,
-  /usr/bin/exo-desktop-item-edit Px,
-  /usr/bin/xfdesktop-settings Px,
-  /usr/bin/xfce4-session-logout Px,
-  /usr/libexec/thunar-archive-plugin/xarchiver.tap Px,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/xfdesktop					mr,
+  /bin/bash						Cx -> shell,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1		Px,
+  /usr/bin/exo-desktop-item-edit			Px,
+  /usr/bin/xfdesktop-settings				Px,
+  /usr/bin/xfce4-session-logout				Px,
+  /usr/libexec/thunar-archive-plugin/xarchiver.tap	Px,
   
-  /usr/lib{,32,64}/thunarx-2/*.so m,
+  # READS/WRITES ---------------------------------------
+  /etc/xdg/menus/**.menu				r,
+  /etc/xdg/menus/applications-merged/			r,
+  /usr/share/desktop-directories/{,*.directory}		r,
+  /usr/{,local/}share/**/				r,
+  /usr/{,local/}share/**.@{local_ext}			r,
+  /usr/lib{,32,64}/thunarx-2/*.so			m,
+  /opt/**/						r,
+  /opt/**.@{local_ext}					r,
   
-  /etc/xdg/menus/**.menu r,
-  /etc/xdg/menus/applications-merged/ r,
-  /usr/share/desktop-directories/{,*.directory} r,
-  
-  /opt/**/ r,
-  /opt/**.{png,jpg,bmp} r,
-  /usr/share/**/ r,
-  /usr/share/**.{png,jpg,bmp} r,
-  /usr/local/share/**/ r,
-  /usr/local/share/**.{png,jpg,bmp} r,
-  owner @{HOME}/ r,
-  owner @{HOME}/[^.]** r,
-  owner @{HOME}/**.{png,jpg,bmp} r,
-  owner @{HOME}/[^.]**/ r,
-  
-  owner @{HOME}/.config/xfce4/desktop/{,**} rw,
-  owner @{HOME}/.config/Thunar/{,**} rw,
-  owner @{HOME}/.config/menus/**.menu r,
-  owner @{HOME}/.config/menus/applications-merged/ r,
+  # USERS ----------------------------------------------
+  owner @{HOME}/					r,
+  owner @{HOME}/[^.]**					r,
+  owner @{HOME}/**.@{local_ext}				r,
+  owner @{HOME}/[^.]**/					r,
+  owner @{HOME}/.config/xfce4/desktop/{,**}		rw,
+  owner @{HOME}/.config/Thunar/{,**}			rw,
+  owner @{HOME}/.config/menus/**.menu			r,
+  owner @{HOME}/.config/menus/applications-merged/	r,
   owner @{HOME}/.local/share/desktop-directories/{,*.directory} r,
-  owner @{HOME}/.local/share/gvfs-metadata/{,*} r,
-  owner @{HOME}/.xfce4-session.verbose-log rw,
-  
+  owner @{HOME}/.local/share/gvfs-metadata/{,*}		r,
+  owner @{HOME}/.xfce4-session.verbose-log		rw,
   
   profile shell {
     #include <abstractions/base>
     #include <local/thunar-custom-actions>  # Must be the same as thunar custom actions!
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /usr/bin/{gksu,gksudo} Px,
-    
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /usr/bin/{gksu,gksudo}				Px,
   }
-  
 }
-
 
 profile xfdesktop-settings /usr/bin/xfdesktop-settings {
   #include <abstractions/base>
@@ -77,22 +78,24 @@ profile xfdesktop-settings /usr/bin/xfdesktop-settings {
   #include <abstractions/X>
   #include <abstractions/gtk>
   
-  @{PROC}/@{pid}/mountinfo r,
+  # PSEUDO ---------------------------------------------
+  @{PROC}/@{pid}/mountinfo				r,
   
-  /usr/bin/xfdesktop-settings mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/xfdesktop-settings				mr,
   
+  # READS/WRITES ---------------------------------------
+  /usr/{,local/}share/**/				r,
+  /usr/{,local/}share/**.@{local_ext}			r,
   /opt/**/ r,
-  /opt/**.{png,jpg,bmp} r,
-  /usr/share/**/ r,
-  /usr/share/**.{png,jpg,bmp} r,
-  /usr/local/share/**/ r,
-  /usr/local/share/**.{png,jpg,bmp} r,
-  owner @{HOME}/ r,
-  owner @{HOME}/**.{png,jpg,bmp} r,
-  owner @{HOME}/**/ r,
-  owner @{HOME}/.local/share/gvfs-metadata/{home,root}* r,
+  /opt/**.@{local_ext}					r,
   
-  # Noisy
-  deny @{HOME}/.* r,
+  # USERS ----------------------------------------------
+  owner @{HOME}/					r,
+  owner @{HOME}/**.@{local_ext}				r,
+  owner @{HOME}/**/					r,
+  owner @{HOME}/.local/share/gvfs-metadata/{home,root}*	r,
   
+  # NOISY ----------------------------------------------
+  deny @{HOME}/.*					r,
 }

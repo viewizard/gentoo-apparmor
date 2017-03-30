@@ -1,32 +1,34 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile xautolock /usr/bin/xautolock {
   #include <abstractions/base>
   #include <abstractions/X>
   
-  /dev/pts/[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
   
-  /usr/bin/xautolock mr,
-  /bin/bash Cx -> shell,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/xautolock					mr,
+  /bin/bash						Cx -> shell,
   
   profile shell {
     #include <abstractions/base>
     
-    /dev/tty rw,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     
-    /bin/bash mr,
-    /usr/bin/mate-screensaver-command Px,
-    
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /usr/bin/mate-screensaver-command			Px,
   }
-  
 }

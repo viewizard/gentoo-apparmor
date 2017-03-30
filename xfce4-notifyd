@@ -1,14 +1,15 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
 #include <tunables/global>
+
 profile xfce4-notifyd /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -17,17 +18,19 @@ profile xfce4-notifyd /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   
-  /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd mr,
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd		mr,
   
-  /usr/lib{,32,64}/pango/*/modules/* m,
-  /usr/share/hplip/data/images/32x32/*.png r,
+  # READS/WRITES ---------------------------------------
+  /usr/lib{,32,64}/pango/*/modules/*			m,
+  /usr/share/hplip/data/images/32x32/*.png		r,
   
-  owner @{HOME_CACHE}/xfce4-notifyd-theme.rc* rw,
+  # USERS ----------------------------------------------
+  owner @{HOME_CACHE}/xfce4-notifyd-theme.rc*		rw,
   
-  owner /tmp/gnotifier/gnotifier-* r,
-  
+  # TEMP -----------------------------------------------
+  owner /tmp/gnotifier/gnotifier-*			r,
 }
-
 
 profile xfce4-notifyd-config /usr/bin/xfce4-notifyd-config {
   #include <abstractions/base>
@@ -37,8 +40,9 @@ profile xfce4-notifyd-config /usr/bin/xfce4-notifyd-config {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   
-  /dev/tty[0-9]* w,
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   
-  /usr/bin/xfce4-notifyd-config mr,
-  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/xfce4-notifyd-config				mr,
 }

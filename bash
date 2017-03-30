@@ -30,6 +30,7 @@ profile bash_default /bin/{bash,rbash,sh} {
 }
 
 # профиль всех пользователей, прошедших аутентификацию
+# профиль терминала по умолчанию
 profile bash_users {
   #include <abstractions/base>
   #include <abstractions/bash>
