@@ -35,7 +35,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
   /etc/env.d/gcc/{,**}					r,
   /etc/terminfo/x/xterm					r,
   /lib{,32,64}/modules/{,**}				rw,
-  /usr/src/linux-[0-9]*-{hardened,gentoo}*/{,**}	ixrw,
+  /usr/src/@{kernel}/{,**}				ixrw,
   
   # NOISY ----------------------------------------------
   deny /						r,
@@ -99,7 +99,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /usr/libexec/gcc/@{CHOST}/*/*			ix,
     /usr/@{CHOST}/gcc-bin/*/*				ix,
     /usr/@{CHOST}/binutils-bin/*/*			ix,
-    /usr/src/linux-[0-9]*-{hardened,gentoo}*/{,**}	ixr,
+    /usr/src/@{kernel}/{,**}				ixr,
     
     # READS/WRITES -------------------------------------
     /etc/ld.so.conf					r,
@@ -109,8 +109,8 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /usr/include/{,**}					r,
     /lib{,32,64}/modules/{,**}				rw,
     /usr/src/IMA/certs/*.x509				r,
-    /usr/src/linux-[0-9]*-{hardened,gentoo}*/{,**}	rw,
-    /usr/src/linux-[0-9]*-{hardened,gentoo}*/tools/gcc/**.so m,
+    /usr/src/@{kernel}/{,**}				rw,
+    /usr/src/@{kernel}/tools/gcc/**.so			m,
     /usr/share/pkgconfig/{,**}				r,
     
     # TEMP ---------------------------------------------
@@ -118,7 +118,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     owner /tmp/cc*.{s,c,res,o,le,ld}			rw,
     owner /tmp/cpiolist.*				rw,
     owner /tmp/depmod.*/{,**}				rw,
-    owner /var/tmp/portage/genkernel/initramfs-*-{hardened,gentoo}*.cpio r,
+    owner /var/tmp/portage/genkernel/initramfs-@{kernel_ver}.cpio r,
     
     # NOISY --------------------------------------------
     deny /.git/{,**}					r,

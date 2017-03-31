@@ -90,7 +90,7 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
   /etc/modprobe.d/{,*}					r,
   /lib{,32,64}/udev/rules.d/{,*}			r,
   /lib{,32,64}/modprobe.d/{,*}				r,
-  /lib{,32,64}/modules/[0-9]*-{hardened,gentoo}*/modules.{dep,alias,symbols,builtin}.bin r,
+  /lib{,32,64}/modules/@{kernel_ver}/modules.{dep,alias,symbols,builtin}.bin r,
   /run/udev/control					w,
   /run/udev/rules.d/{,*}				r,
   /run/udev/queue					rw,

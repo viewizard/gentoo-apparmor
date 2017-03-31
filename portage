@@ -131,7 +131,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     /usr/sbin/**					ix,
     /usr/lib{,32,64,exec}/**				ix,
     /usr/@{CHOST}/**					ix,
-    /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/**	ix,
+    /usr/src/@{kernel}/scripts/**			ix,
     /lib{,32,64}/rc/sh/gendepends.sh			Px,
     /var/tmp/portage/**					ix,
     
@@ -151,7 +151,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     /usr/portage/packages/**				rwk,
     /lib{,32,64}/					r,
     /lib{,32,64}/*					rwl,
-    /lib{,32,64}/modules/*-{hardened,gentoo}*/modules.*	rw,
+    /lib{,32,64}/modules/@{kernel_ver}/modules.*	rw,
     /lib{,32,64}/rc/bin/*				ix,
     /var/db/pkg/					r,
     /var/db/pkg/**					rw,
@@ -234,7 +234,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     /usr/share/build-1/mkdir.sh				ix,
     /usr/share/gnuconfig/config.sub			ix,
     /usr/@{CHOST}/**					ix,
-    /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/**	ix,
+    /usr/src/@{kernel}/scripts/**			ix,
     /var/tmp/portage/**					ix,
     
     # READS/WRITES -------------------------------------
@@ -245,7 +245,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     /lib{,32,64}/{,**}					r,
     /etc/{,**}						r,
     /usr/{,**}						r,
-    /usr/src/linux-[0-9]*-{hardened,gentoo}*/tools/gcc/**.so m,
+    /usr/src/@{kernel}/tools/gcc/**.so			m,
     /usr/portage/distfiles/{egit,git3}-src/**		rwl,
     /usr/portage/packages/{,**}				rw,
     /var/						r,

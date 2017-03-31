@@ -220,7 +220,7 @@ profile bash_root {
   /usr/local/bin/**					Pxr,
   /usr/local/sbin/**					Pxr,
   /etc/init.d/*						Pxr,
-  /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/*	Pxr,	# в профиле /etc/apparmor.d/kernel
+  /usr/src/@{kernel}/scripts/*				Pxr,	# в профиле /etc/apparmor.d/kernel
   /usr/src/IMA/certs/*					Pxr,	# в профиле /etc/apparmor.d/kernel
   
   # don't use by default

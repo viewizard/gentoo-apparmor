@@ -10,18 +10,18 @@
 
 #include <tunables/global>
 
-profile kernel.sign-file /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/sign-file flags=(complain) {
+profile kernel.sign-file /usr/src/@{kernel}/scripts/sign-file flags=(complain) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					w,
   
   # EXECUTABLES ----------------------------------------
-  /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/sign-file mr,
+  /usr/src/@{kernel}/scripts/sign-file			mr,
   
   # READS/WRITES ---------------------------------------
-  /usr/src/linux-[0-9]*-{hardened,gentoo}*/certs/signing_key.{pem,x509} r,
-  /lib{,32,64}/modules/[0-9]*-{hardened,gentoo}*/**.ko	rw,
+  /usr/src/@{kernel}/certs/signing_key.{pem,x509}	r,
+  /lib{,32,64}/modules/@{kernel_ver}/**.ko		rw,
 }
 
 profile kernel.gen-ima-certs /usr/src/IMA/certs/* flags=(complain) {
@@ -55,7 +55,7 @@ profile kernel.gen-ima-certs /usr/src/IMA/certs/* flags=(complain) {
   }
 }
 
-profile kernel.checkpatch.pl /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/checkpatch.pl flags=(complain) {
+profile kernel.checkpatch.pl /usr/src/@{kernel}/scripts/checkpatch.pl flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/perl>
   
@@ -63,7 +63,7 @@ profile kernel.checkpatch.pl /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/ch
   /dev/pts/[0-9]*					w,
   
   # EXECUTABLES ----------------------------------------
-  /usr/src/linux-[0-9]*-{hardened,gentoo}*/scripts/checkpatch.pl r,
+  /usr/src/@{kernel}/scripts/checkpatch.pl		r,
   
   # READS/WRITES ---------------------------------------
   /usr/src/**						r,
