@@ -36,7 +36,7 @@ profile bash_users {
   #include <abstractions/bash>
   #include <abstractions/consoles>
   #include <abstractions/nameservice>
-  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/program-work-with-disk-rwk-strict>
   
   # CAPABILITIES ---------------------------------------
   capability setuid,

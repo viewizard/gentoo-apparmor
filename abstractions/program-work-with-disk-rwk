@@ -8,12 +8,17 @@
 #
 # ------------------------------------------------------------------
 
+# Важно! Данную абстракцию использовать только для файлового
+# менеджера. В ней разрешаем работать с доступными для
+# интернет-программ ресурсами:
+# @{XDG_PUBLICSHARE_DIR} и @{XDG_DOWNLOAD_DIR}
+
 # Some programs should work with disk - read user data, store results.
 # Don't forget, provide configuration in profile, like:
 # @{PROG_DIR}="[^.]**"
 # @{PROG_FILE}="{[^.]*.pdf,[^.]*.xps,qt_temp.*}"
-# Example for folder downloads (torrent, etc):
-# @{PROG_FILE}="**"
+
+#include <abstractions/xdg-open-folders>
 
 /							r,
 @{HOMEDIRS}/						r,
@@ -29,6 +34,3 @@ owner /run/user/*/gvfs/*/@{PROG_DIR}/@{PROG_FILE}	rwk,
 /media/@{PROG_DIR}/					r,
 /media/@{PROG_FILE}					rwk,
 /media/@{PROG_DIR}/@{PROG_FILE}				rwk,
-
-# program-related places for xdg-open:
-owner @{HOME}/.claws-mail/mimetmp/{,*}			r,

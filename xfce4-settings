@@ -74,7 +74,7 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
   }
 }
 
-profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd flags=(complain) {
+profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -85,12 +85,11 @@ profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-#  /dev/tty[0-9]*					w,	# FIX ME! 30.03.2017
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfsettingsd					mr,
-  /usr/bin/xkbcomp					Pxr,	# FIX ME! изменен с ixr, добавлен flags=(complain) 30.03.2017
+  /usr/bin/xkbcomp					Pxr,
   /usr/bin/xflock4					Pxr,
   /usr/bin/xfce4-display-settings			Px,
   /usr/bin/xfdesktop					Px,

@@ -10,10 +10,6 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="**"
-@{PROG_FILE}="*"
-
 profile uget-gtk /usr/bin/uget-gtk {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -21,11 +17,13 @@ profile uget-gtk /usr/bin/uget-gtk {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/user-download>
+  #include <abstractions/dconf>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
@@ -36,12 +34,19 @@ profile uget-gtk /usr/bin/uget-gtk {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/uGet/{,**}			rw,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/uGetIPC-*					rw,
+  
+  # NOISY ----------------------------------------------
+  deny @{HOMEDIRS}					r,
+  deny @{HOME}						r,
 }
 
 profile uget-cmd /usr/bin/uget-cmd {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
-  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/user-download>
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------

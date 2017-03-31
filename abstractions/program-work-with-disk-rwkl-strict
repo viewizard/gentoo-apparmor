@@ -12,8 +12,12 @@
 # Don't forget, provide configuration in profile, like:
 # @{PROG_DIR}="[^.]**"
 # @{PROG_FILE}="{[^.]*.pdf,[^.]*.xps,qt_temp.*}"
-# Example for folder downloads (torrent, etc):
-# @{PROG_FILE}="**"
+
+#include <abstractions/xdg-open-folders>
+
+# Не разрешаем работать с доступными для интернет-программ ресурсами
+deny @{HOME}/@{XDG_PUBLICSHARE_DIR}/{,**}		rwkl,
+deny @{HOME}/@{XDG_DOWNLOAD_DIR}/{,**}			rwkl,
 
 /							r,
 @{HOMEDIRS}/						r,
@@ -29,6 +33,3 @@ owner /run/user/*/gvfs/*/@{PROG_DIR}/@{PROG_FILE}	rwkl,
 /media/@{PROG_DIR}/					r,
 /media/@{PROG_FILE}					rwkl,
 /media/@{PROG_DIR}/@{PROG_FILE}				rwkl,
-
-# program-related places for xdg-open:
-owner @{HOME}/.claws-mail/mimetmp/{,*}			r,

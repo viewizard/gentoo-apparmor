@@ -13,6 +13,12 @@
 # @{PROG_DIR}="[^.]**"
 # @{PROG_FILE}="{[^.]*.pdf,[^.]*.xps,qt_temp.*}"
 
+#include <abstractions/xdg-open-folders>
+
+# Не разрешаем работать с доступными для интернет-программ ресурсами
+deny @{HOME}/@{XDG_PUBLICSHARE_DIR}/{,**}		rwkl,
+deny @{HOME}/@{XDG_DOWNLOAD_DIR}/{,**}			rwkl,
+
 /							r,
 @{HOMEDIRS}/						r,
 owner @{HOME}/						r,
@@ -27,6 +33,3 @@ owner /run/user/*/gvfs/*/@{PROG_DIR}/@{PROG_FILE}	rk,
 /media/@{PROG_DIR}/					r,
 /media/@{PROG_FILE}					rk,
 /media/@{PROG_DIR}/@{PROG_FILE}				rk,
-
-# program-related places for xdg-open:
-owner @{HOME}/.claws-mail/mimetmp/{,*}			r,
