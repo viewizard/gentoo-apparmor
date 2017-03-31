@@ -51,6 +51,10 @@ profile ghex_root {
   #include <abstractions/dbus-session>
   #include <abstractions/user-systemwide-files>
   
+  # CAPABILITIES ---------------------------------------
+  capability dac_read_search,
+  capability dac_override,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					w,
   @{PROC}/@{pid}/fd/					r,
