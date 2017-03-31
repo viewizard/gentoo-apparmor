@@ -71,7 +71,7 @@ profile xinit.xserverrc /etc/X11/xinit/xserverrc {
   /usr/bin/Xorg						Px,
 }
 
-profile xinit.startx /usr/bin/startx flags=(complain) {
+profile xinit.startx /usr/bin/startx {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -92,12 +92,11 @@ profile xinit.startx /usr/bin/startx flags=(complain) {
   /bin/rm						ixr,
   /usr/bin/mcookie					ix,
   /usr/bin/deallocvt					ixr,
-  /usr/bin/xauth					Pxr,	# FIX ME! ixr, flags=(complain) 30.03.2017
+  /usr/bin/xauth					Pxr,
   /usr/bin/xinit					Px,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.serverauth*				rwl,
-#  owner @{HOME}/.Xauthority*				rwl,	# FIX ME! 30.03.2017
   
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.??????				rw,

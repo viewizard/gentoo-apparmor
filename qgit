@@ -65,6 +65,8 @@ profile qgit_root {
   
   # CAPABILITIES ---------------------------------------
   capability sys_nice,
+  capability dac_read_search,
+  capability dac_override,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
@@ -80,6 +82,7 @@ profile qgit_root {
   owner @{HOME}/.config/.??????				rwk,
   owner @{HOME}/.config/qgit/				rw,
   owner @{HOME}/.config/qgit/**				rwk,
+  @{HOME}/.Xauthority					r,
   
   # TEMP -----------------------------------------------
   owner /tmp/qgit4.*					rw,

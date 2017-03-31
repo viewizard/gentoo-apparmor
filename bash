@@ -68,6 +68,7 @@ profile bash_users {
   /usr/bin/whoami					ixr,
   /usr/bin/id						ixr,
   /usr/bin/startxfce4					Pxr,	# XFCE4
+  /usr/bin/startx					Pxr,
   /usr/bin/clear					ixr,
   /usr/bin/wine						Pxr,
   /usr/bin/winecfg					Pxr,
@@ -175,6 +176,7 @@ profile bash_root {
   /usr/bin/whoami					ixr,
   /usr/bin/id						ixr,
   /usr/bin/startxfce4					Pxr,	# XFCE4
+  /usr/bin/startx					Pxr,
   /usr/bin/rsync					ixr,
   /usr/bin/htop						Pxr,
   /usr/bin/mc						Pxr -> mc_root,

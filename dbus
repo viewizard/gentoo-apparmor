@@ -72,6 +72,7 @@ profile dbus.dbus-launch /usr/bin/dbus-launch {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.dbus/{,**}				rw,
+  @{HOME}/.Xauthority					r,
   
   profile shell {
     #include <abstractions/base>
@@ -98,6 +99,7 @@ profile dbus.dbus-send /usr/bin/dbus-send flags=(complain) {
   #include <abstractions/dbus-session>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
@@ -139,11 +141,12 @@ profile dbus.init.d /etc/init.d/dbus {
   #include <abstractions/openrc>
   
   # EXECUTABLES ----------------------------------------
-  /etc/init.d/*						Pxr,	# FIX ME! неужели требует так много, что нельзя описать?
+  /etc/init.d/{cupsd,consolekit,xdm,net.*}		Px,
   /bin/bash						Cx -> shell,
   /bin/rm						ix,
   /usr/bin/dbus-uuidgen					Px,
   /usr/bin/dbus-daemon					Px,
+  /usr/bin/dbus-send					Px,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/dbus				r,

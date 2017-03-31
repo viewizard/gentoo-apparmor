@@ -27,12 +27,10 @@ profile openshot @{PYTHON2_EXEC}/openshot {
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty						rw,
   /dev/tty[0-9]*					w,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						ix,	# FIX ME! почему он в основном профиле с ix?
-  /sbin/ldconfig					ix,
+  /bin/bash						Cx -> shell,
   
   # READS/WRITES ---------------------------------------
   /usr/lib{,32,64}/					r,
@@ -42,6 +40,17 @@ profile openshot @{PYTHON2_EXEC}/openshot {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.openshot/{,**}				rw,
+  
+  profile shell flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /sbin/ldconfig					ix,
+  }
 }
 
 profile openshot-render @{PYTHON2_EXEC}/openshot-render flags=(complain) {

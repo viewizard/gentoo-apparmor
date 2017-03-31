@@ -13,9 +13,16 @@
 profile xauth /usr/bin/xauth {
   #include <abstractions/base>
   
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					w,
+  
   # EXECUTABLES ----------------------------------------
   /usr/bin/xauth					mr,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.Xauthority*				rwl,
+  owner @{HOME}/.serverauth.*				rwl,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/sh-thd.*					rw,
 }
