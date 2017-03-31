@@ -110,7 +110,8 @@ profile wine.wine-preloader /usr/bin/wine-preloader {
   deny /						r,
   deny /etc/fstab					r,
   deny @{HOME}/						r,
-  deny @{HOME}/.*					w,
+#  deny @{HOME}/.*					w,	# 31.03.2017 @{HOME}/.Xauthority может потребоваться доступ
+  deny @{HOME}/.glvnd*					w,
   deny /etc/						r,
   deny /usr/local/					r,
   deny /usr/local/lib{,32,64}/				r,

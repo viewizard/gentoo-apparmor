@@ -19,6 +19,10 @@ profile thunar-volman /usr/bin/thunar-volman {
   #include <abstractions/dbus-session>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
+  capability dac_read_search,
+  capability dac_override,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					w,
   /sys/devices/pci[0-9]*/**/usb[0-9]*/{,**/}uevent	rw,
