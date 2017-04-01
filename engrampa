@@ -1,0 +1,204 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+# config for abstractions/program-work-with-disk-** (**-rk,rwk,rwkl)
+@{PROG_DIR}="[^.]**"
+@{PROG_FILE}="[^.]**"
+
+profile engrampa /usr/bin/engrampa {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+  #include <abstractions/nvidia>
+  #include <abstractions/X>
+  #include <abstractions/dbus-session>
+  #include <abstractions/dconf>
+  #include <abstractions/nameservice>
+  #include <abstractions/executable-binary-helper>
+  #include <abstractions/xdg-open>
+  #include <abstractions/program-work-with-disk-rwkl-strict>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
+  /sys/devices/system/cpu/				r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/engrampa					mr,
+  /bin/bash						Cx,
+  /bin/mv						ix,
+  /bin/rm						ix,
+  /bin/cp						ix,
+  /bin/tar						ix,
+  /bin/bzip2						ix,
+  /bin/gzip						ix,
+  /usr/bin/7z						ixr,
+  /usr/bin/7za						ixr,
+  /usr/bin/zip						ix,
+  /usr/bin/unzip					ix,
+  /usr/bin/lzip						ix,
+  /usr/bin/xz						ix,
+  /usr/lib{,32,64}/p7zip/7z				ix,
+  /usr/lib{,32,64}/p7zip/7za				ix,
+  /usr/@{CHOST}/binutils-bin/*/ar			ix,
+  /opt/rar/rar						Cx,
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/engrampa/{,**}				r,
+  /usr/lib64/p7zip/7z.so				m,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.fr-*/{,**}				rw,
+  owner @{HOME}/.config/mimeapps.list*			rw,
+  owner @{HOME_CACHE}/.fr-*/{,**}			rw,
+  
+  profile /bin/bash {
+    #include <abstractions/base>
+    #include <abstractions/program-work-with-disk-rwkl-strict>
+    
+    # PSEUDO ---------------------------------------------
+    /dev/tty						rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/gzip						ix,
+    /bin/bzip2						ix,
+    /usr/bin/lzip					ix,
+    /usr/bin/xz						ix,
+  }
+  
+  profile /opt/rar/rar {
+    #include <abstractions/base>
+    #include <abstractions/program-work-with-disk-rwkl-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /opt/rar/rar					mr,
+    
+    # NOISY --------------------------------------------
+    deny /etc/						r,
+    deny /usr/{,local/}lib{,32,64}/			r,
+  }
+}
+
+profile engrampa_root {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+  #include <abstractions/nvidia>
+  #include <abstractions/X>
+  #include <abstractions/dbus-session>
+  #include <abstractions/dconf>
+  #include <abstractions/nameservice>
+  #include <abstractions/xdg-open_root>
+  #include <abstractions/executable-binary-helper_root>
+  #include <abstractions/program-work-with-disk-rwkl-strict>
+  #include <abstractions/user-systemwide-files>
+  
+  # CAPABILITIES ---------------------------------------
+  capability chown,
+  capability fowner,
+  capability fsetid,
+  capability dac_override,
+  capability dac_read_search,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
+  /sys/devices/system/cpu/				r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/engrampa					mr,
+  /bin/bash						Cx,
+  /bin/mv						ix,
+  /bin/rm						ix,
+  /bin/cp						ix,
+  /bin/tar						ix,
+  /bin/bzip2						ix,
+  /bin/gzip						ix,
+  /usr/bin/7z						ixr,
+  /usr/bin/7za						ixr,
+  /usr/bin/zip						ix,
+  /usr/bin/unzip					ix,
+  /usr/bin/lzip						ix,
+  /usr/bin/xz						ix,
+  /usr/lib{,32,64}/p7zip/7z				ix,
+  /usr/lib{,32,64}/p7zip/7za				ix,
+  /usr/@{CHOST}/binutils-bin/*/ar			ix,
+  /opt/rar/rar						Cx,
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/engrampa/{,**}				r,
+  /usr/lib64/p7zip/7z.so				m,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.fr-*/{,**}				rw,
+  owner @{HOME}/.config/mimeapps.list*			rw,
+  @{HOME_CACHE}/.fr-*/{,**}				rw,
+  @{HOME}/.Xauthority					r,
+  
+  profile /bin/bash {
+    #include <abstractions/base>
+    #include <abstractions/program-work-with-disk-rwkl-strict>
+    #include <abstractions/user-systemwide-files>
+    
+    # PSEUDO ---------------------------------------------
+    /dev/tty						rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/bash						mr,
+    /bin/gzip						ix,
+    /bin/bzip2						ix,
+    /usr/bin/lzip					ix,
+    /usr/bin/xz						ix,
+  }
+  
+  profile /opt/rar/rar {
+    #include <abstractions/base>
+    #include <abstractions/program-work-with-disk-rwkl-strict>
+    #include <abstractions/user-systemwide-files>
+    
+    # EXECUTABLES --------------------------------------
+    /opt/rar/rar					mr,
+    
+    # NOISY --------------------------------------------
+    deny /etc/						r,
+    deny /usr/{,local/}lib{,32,64}/			r,
+  }
+}
+
+profile engrampa_tap /usr/libexec/thunar-archive-plugin/engrampa.tap {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/thunar-archive-plugin/engrampa.tap	r,
+  /bin/bash						mr,
+  /usr/bin/engrampa					Px,
+}
+
+profile engrampa_tap_root {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					w,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/thunar-archive-plugin/engrampa.tap	r,
+  /bin/bash						mr,
+  /usr/bin/engrampa					Px -> engrampa_root,
+}

@@ -47,10 +47,11 @@ profile thunar /usr/bin/{Thunar,thunar} {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar					mr,
-  /bin/bash						Cx -> shell,
-  /bin/env						Cx -> env,
+  /bin/bash						Cx,
+  /bin/env						Cx,
   /bin/umount						Px,
   /usr/libexec/thunar-archive-plugin/xarchiver.tap	Px,
+  /usr/libexec/thunar-archive-plugin/engrampa.tap	Px,
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
@@ -69,7 +70,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   owner @{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
   owner @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   
-  profile shell {
+  profile /bin/bash {
     #include <abstractions/base>
     #include <local/thunar-custom-actions>
     
@@ -85,7 +86,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
     /bin/bash						mr,
   }
   
-  profile env {
+  profile /bin/env {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -135,10 +136,11 @@ profile thunar_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar					mr,
-  /bin/bash						Cx -> shell,
-  /bin/env						Cx -> env,
+  /bin/bash						Cx,
+  /bin/env						Cx,
   /bin/umount						Px,
-  /usr/libexec/thunar-archive-plugin/xarchiver.tap	Px -> xarchiver_tap_root,
+#  /usr/libexec/thunar-archive-plugin/xarchiver.tap	Px -> xarchiver_tap_root,	# RBAC!
+  /usr/libexec/thunar-archive-plugin/engrampa.tap	Px -> engrampa_tap_root,
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
@@ -158,7 +160,7 @@ profile thunar_root {
   owner @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   @{HOME}/.Xauthority					r,
   
-  profile shell {
+  profile /bin/bash {
     #include <abstractions/base>
     #include <local/thunar_root-custom-actions>
     
@@ -173,7 +175,7 @@ profile thunar_root {
     /bin/bash						mr,
   }
   
-  profile env {
+  profile /bin/env {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
