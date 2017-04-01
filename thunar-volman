@@ -19,36 +19,9 @@ profile thunar-volman /usr/bin/thunar-volman {
   #include <abstractions/dbus-session>
   #include <abstractions/nameservice>
   
-  # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
-  /sys/devices/pci[0-9]*/**/usb[0-9]*/{,**/}uevent	rw,
-  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{,uevent} r,
-  @{PROC}/@{pid}/fd/					r,
-  
-  # EXECUTABLES ----------------------------------------
-  /usr/bin/thunar-volman				mr,
-  /usr/bin/thunar-volman-settings			Px,
-  /usr/bin/thunar					Px,
-  
-  # READS/WRITES ---------------------------------------
-  /etc/fstab						r,
-  /etc/udev/udev.conf					r,
-  /run/udev/data/*					r,
-}
-
-profile thunar_volman_root {
-  #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
-  #include <abstractions/dbus-session>
-  #include <abstractions/nameservice>
-  
   # CAPABILITIES ---------------------------------------
-  capability dac_read_search,
-  capability dac_override,
+  capability dac_read_search,					# RBAC! Нужно только для выполнения под root-ом
+  capability dac_override,					# RBAC! Нужно только для выполнения под root-ом
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					w,
@@ -68,7 +41,7 @@ profile thunar_volman_root {
   /run/udev/data/*					r,
   
   # USERS ----------------------------------------------
-  @{HOME}/.Xauthority					r,
+  @{HOME}/.Xauthority					r,	# RBAC! Нужно только для выполнения под root-ом
 }
 
 profile thunar-volman-settings /usr/bin/thunar-volman-settings {

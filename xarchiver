@@ -28,13 +28,6 @@ profile xarchiver /usr/bin/xarchiver {
   #include <abstractions/xdg-open>
   #include <abstractions/executable-binary-helper>
   
-  # CAPABILITIES ---------------------------------------
-  capability dac_override,
-  capability dac_read_search,
-  capability chown,
-  capability fowner,
-  capability fsetid,
-  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					w,
@@ -42,14 +35,14 @@ profile xarchiver /usr/bin/xarchiver {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xarchiver					mr,
-  /bin/bash						Cx -> shell,
+  /bin/bash						Cx,
   /bin/mv						ix,
   /bin/rm						ix,
   /bin/cp						ix,
   /bin/dd						ix,
   /bin/cpio						ix,
   /usr/@{CHOST}/binutils-bin/*/ar			ix,
-  /opt/rar/rar						Cx -> opt_rar,
+  /opt/rar/rar						Cx,
   /bin/bzip2						ix,
   /bin/gzip						ix,
   /usr/bin/xz						ix,
@@ -69,7 +62,7 @@ profile xarchiver /usr/bin/xarchiver {
   owner /tmp/xarchiver_*_socket				rw,
   owner /tmp/xa-*/{,**}					rw,
   
-  profile shell {
+  profile /bin/bash {
     #include <abstractions/base>
     #include <abstractions/program-work-with-disk-rwkl-strict>
     
@@ -84,7 +77,7 @@ profile xarchiver /usr/bin/xarchiver {
     /bin/gunzip						ix,
   }
   
-  profile opt_rar {
+  profile /opt/rar/rar {
     #include <abstractions/base>
     #include <abstractions/program-work-with-disk-rwkl-strict>
     
@@ -127,14 +120,14 @@ profile xarchiver_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xarchiver					mr,
-  /bin/bash						Cx -> shell,
+  /bin/bash						Cx,
   /bin/mv						ix,
   /bin/rm						ix,
   /bin/cp						ix,
   /bin/dd						ix,
   /bin/cpio						ixr,
   /usr/@{CHOST}/binutils-bin/*/ar			ix,
-  /opt/rar/rar						Cx -> opt_rar,
+  /opt/rar/rar						Cx,
   /bin/bzip2						ix,
   /bin/gzip						ix,
   /usr/bin/xz						ix,
@@ -155,7 +148,7 @@ profile xarchiver_root {
   owner /tmp/xarchiver_*_socket				rw,
   /tmp/xa-*/{,**}					rw,
   
-  profile shell {
+  profile /bin/bash {
     #include <abstractions/base>
     #include <abstractions/program-work-with-disk-rwkl-strict>
     #include <abstractions/user-systemwide-files>
@@ -171,7 +164,7 @@ profile xarchiver_root {
     /bin/gunzip						ix,
   }
   
-  profile opt_rar {
+  profile /opt/rar/rar {
     #include <abstractions/base>
     #include <abstractions/program-work-with-disk-rwkl-strict>
     #include <abstractions/user-systemwide-files>
