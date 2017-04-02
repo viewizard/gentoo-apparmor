@@ -16,8 +16,6 @@ profile pidgin /usr/bin/pidgin {
   #include <abstractions/fonts>
   #include <abstractions/audio>
   #include <abstractions/enchant>
-  #include <abstractions/shell>		# FIX ME! Действительно он тут нужен?
-  #include <abstractions/consoles>	# FIX ME! Действительно он тут нужен?
   #include <abstractions/dbus>
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
@@ -50,7 +48,11 @@ profile pidgin /usr/bin/pidgin {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.purple/				rw,
-  owner @{HOME}/.purple/**				mrwk,	# FIX ME! mr - разве это будет работать с IMA/EVM?
+  owner @{HOME}/.purple/**				rwk,
+  
+  # AUDIT USERS ----------------------------------------
+  audit deny @{HOME}/.purple/plugins/**			m,	# Не разрешаем использовать плагины пользователя,
+  								# в любом случае их не пропустит IMA/EVM.
   
   # TEMP -----------------------------------------------
   /tmp/							r,

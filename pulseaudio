@@ -67,15 +67,19 @@ profile pulseaudio.pactl /usr/bin/pactl {
   #include <abstractions/X>
   #include <abstractions/dbus-session>
   
-  # CAPABILITIES ---------------------------------------
-  capability dac_read_search,
-  capability dac_override,
+#  capability dac_read_search,					# RBAC! Нужно только для выполнения под root-ом
+#  capability dac_override,					# если сервер запущен от имени пользователя.
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					w,
+  /dev/pts/[0-9]*					w,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pactl					mr,
   /usr/bin/pulseaudio					Px,
+  
+  # USERS ----------------------------------------------
+#  @{HOME}/.Xauthority					r,	# RBAC! Нужно только для выполнения под root-ом
+  								# если сервер запущен от имени пользователя.
 }

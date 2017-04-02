@@ -14,7 +14,6 @@ profile sudo /usr/bin/sudo {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
-  #include <local/sudo-custom>
   
   # CAPABILITIES ---------------------------------------
   capability setuid,
@@ -68,38 +67,8 @@ profile sudo /usr/bin/sudo {
     @{shell}						mr,
   }
   
-  ^DEFAULT {
-    #include <abstractions/base>
-    #include <abstractions/nameservice>
-    #include <abstractions/authentication>
-    #include <local/sudo-custom>
-    
-    # CAPABILITIES -------------------------------------
-    capability dac_override,
-    capability sys_resource,
-    capability setuid,
-    capability setgid,
-    capability fsetid,
-    
-    # PSEUDO -------------------------------------------
-    /dev/pts/[0-9]*					w,
-    @{PROC}/@{pid}/fd/					r,
-    @{PROC}/@{pid}/mountinfo				r,
-    
-    # EXECUTABLES --------------------------------------
-    @{shell}						Px -> shell_users,
-    /bin/mount						Px,
-    /bin/umount						Px,
-    /usr/bin/ofl					Px,
-    /usr/bin/thunar					Px,	# XFCE4
-    /usr/bin/dbus-daemon				Px,
-    /usr/bin/gksu_askpass.sh				Px,
-    /usr/bin/gsmartcontrol				Px,
-    /usr/sbin/pmvarrun					Px,
-    
-    # READS/WRITES -------------------------------------
-    /etc/environment					r,
-  }
+  ^DEFAULT {}							# Важно! У sudo не должно быть никаких
+  								# других hat кроме root.
   
   ^root {
     #include <abstractions/base>
@@ -109,6 +78,7 @@ profile sudo /usr/bin/sudo {
     
     # CAPABILITIES -------------------------------------
     capability dac_override,
+    capability dac_read_search,
     capability sys_resource,
     capability setuid,
     capability setgid,

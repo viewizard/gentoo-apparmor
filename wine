@@ -25,6 +25,7 @@ profile wine /usr/bin/wine {
   capability sys_ptrace,
   
   # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
   @{PROC}/cpuinfo					r,
   @{PROC}/meminfo					r,
   @{PROC}/scsi/scsi					r,

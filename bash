@@ -45,8 +45,8 @@ profile shell_users {
   capability setuid,
   capability sys_tty_config,
   capability kill,
-  capability dac_read_search,
-  capability dac_override,
+#  capability dac_read_search,					# FIX ME! 02.04.2017, зачем было нужно - непонятно.
+#  capability dac_override,					# Крайне плохо будет их разрешать, т.к. нам нужен DAC.
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
