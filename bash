@@ -8,6 +8,9 @@
 #
 # ------------------------------------------------------------------
 
+# На самом деле это общий профиль для shell, если будет изменен
+# shell c bash на другой - переименовать в shell.
+
 #include <tunables/global>
 
 # config for abstractions/program-work-with-disk-** (**-rk,rwk)
@@ -15,14 +18,14 @@
 @{PROG_FILE}="**"
 
 # профиль используется службами без аутентификации
-profile bash_default /bin/{bash,rbash,sh} {
+profile shell_service @{shell} {
   #include <abstractions/base>
-  #include <abstractions/bash>
+  #include <abstractions/shell>
   #include <abstractions/consoles>
   #include <abstractions/nameservice>
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						mr,
+  @{shell}						mr,
   /bin/sed						ixr,
   /bin/uname						ixr,
   /sbin/mdadm						Pxr,
@@ -31,9 +34,9 @@ profile bash_default /bin/{bash,rbash,sh} {
 
 # профиль всех пользователей, прошедших аутентификацию
 # профиль терминала по умолчанию
-profile bash_users {
+profile shell_users {
   #include <abstractions/base>
-  #include <abstractions/bash>
+  #include <abstractions/shell>
   #include <abstractions/consoles>
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk-strict>
@@ -49,7 +52,7 @@ profile bash_users {
   /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						ixmr,
+  @{shell}						ixmr,
   /bin/ls						ixr,
   /bin/ln						ixr,
   /bin/df						Pxr,
@@ -67,8 +70,7 @@ profile bash_users {
   /usr/bin/sudo						Pxr,
   /usr/bin/whoami					ixr,
   /usr/bin/id						ixr,
-  /usr/bin/startxfce4					Pxr,	# XFCE4
-  /usr/bin/startx					Pxr,
+  /usr/bin/startx{,fce4}				Pxr,
   /usr/bin/clear					ixr,
   /usr/bin/wine						Pxr,
   /usr/bin/winecfg					Pxr,
@@ -83,9 +85,9 @@ profile bash_users {
 }
 
 # профиль специального пользователя root
-profile bash_root {
+profile shell_root {
   #include <abstractions/base>
-  #include <abstractions/bash>
+  #include <abstractions/shell>
   #include <abstractions/consoles>
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk>
@@ -105,7 +107,7 @@ profile bash_root {
   capability dac_override,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						ixmr,
+  @{shell}						ixmr,
   /bin/ls						ixr,
   /bin/ln						ixr,
   /bin/df						Pxr,
@@ -167,7 +169,7 @@ profile bash_root {
   /sbin/xtables-multi					Pxr,
   /sbin/blkid						Pxr,
   /usr/bin/which					ixr,
-  /usr/bin/git						Px -> git_root,
+  /usr/bin/git						Pxr -> git_root,
   /usr/bin/exo-open					Pxr,
   /usr/bin/killall					Pxr,
   /usr/bin/pamusb-check					Pxr,
@@ -175,12 +177,10 @@ profile bash_root {
   /usr/bin/revdep-rebuild{,.sh}				Pxr,
   /usr/bin/whoami					ixr,
   /usr/bin/id						ixr,
-  /usr/bin/startxfce4					Pxr,	# XFCE4
-  /usr/bin/startx					Pxr,
   /usr/bin/rsync					ixr,
   /usr/bin/htop						Pxr,
   /usr/bin/mc						Pxr -> mc_root,
-  /usr/bin/eselect					Pxr -> eselect_root,
+  /usr/bin/eselect					Pxr,
   /usr/bin/ntpq						Pxr,
   /usr/bin/genkernel					Pxr,
   /usr/bin/{,g}make					Pxr,
@@ -194,8 +194,8 @@ profile bash_root {
   /usr/bin/wget						Pxr -> wget_root,
   /usr/bin/man						Pxr,
   /usr/bin/locale					ixr,
-  /usr/bin/ldd						Pxr -> glibc_ldd_root,
-  /usr/bin/evmctl					Pxr -> ima_evm_utils_evmctl_root,
+  /usr/bin/ldd						Pxr,
+  /usr/bin/evmctl					Pxr,
   /usr/bin/gawk						ixr,
   /usr/bin/patch					ixr,
   /usr/bin/diff						ixr,
@@ -208,8 +208,8 @@ profile bash_root {
   /usr/sbin/userdel					Pxr,
   /usr/sbin/lspci					Pxr,
   /usr/sbin/etc-update					Pxr,
-  /usr/sbin/migrate-pax					Pxr -> elfix_migrate_pax_root,
-  /usr/sbin/revdep-pax					Pxr -> elfix_revdep_pax_root,
+  /usr/sbin/migrate-pax					Pxr,
+  /usr/sbin/revdep-pax					Pxr,
   /usr/sbin/paxctl-ng					ixr,
   /usr/sbin/grub-mkconfig				Pxr,
   /usr/sbin/grub-install				Pxr,
@@ -218,6 +218,7 @@ profile bash_root {
   /usr/sbin/iftop					Pxr,
   /usr/sbin/nettop					Pxr,
   /usr/sbin/firewall					Pxr,
+  /usr/sbin/sysctl					Pxr,
   @{PYTHON_EXEC_WRAPPER}				Pxr -> python_exec_root,
   /usr/local/bin/**					Pxr,
   /usr/local/sbin/**					Pxr,
@@ -225,8 +226,10 @@ profile bash_root {
   /usr/src/@{kernel}/scripts/*				Pxr,	# в профиле /etc/apparmor.d/kernel
   /usr/src/IMA/certs/*					Pxr,	# в профиле /etc/apparmor.d/kernel
   
-  # don't use by default
-  #/usr/sbin/sysctl Pxr,
+  # AUDIT EXECUTABLES ----------------------------------
+  audit deny /usr/bin/startx*				x,	# RBAC! Запрещаем запуск Xorg-server под root. У нас
+  								# нет полноценной ветки профилей для запуска всех
+  								# дочерних процессов.
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,

@@ -28,13 +28,13 @@ profile xfdesktop /usr/bin/xfdesktop {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfdesktop					mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1		Px,
   /usr/bin/exo-desktop-item-edit			Px,
   /usr/bin/xfdesktop-settings				Px,
   /usr/bin/xfce4-session-logout				Px,
-  /usr/libexec/thunar-archive-plugin/xarchiver.tap	Px,
-  /usr/libexec/thunar-archive-plugin/engrampa.tap	Px,
+  /usr/libexec/thunar-archive-plugin/xarchiver.tap	Px,	# RBAC! В случае root, вызывать xarchiver_tap_root
+  /usr/libexec/thunar-archive-plugin/engrampa.tap	Px,	# RBAC! В случае root, вызывать engrampa_tap_root
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/menus/**.menu				r,
@@ -59,7 +59,7 @@ profile xfdesktop /usr/bin/xfdesktop {
   owner @{HOME}/.local/share/gvfs-metadata/{,*}		r,
   owner @{HOME}/.xfce4-session.verbose-log		rw,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <local/thunar-custom-actions>  # Must be the same as thunar custom actions!
     
@@ -67,7 +67,7 @@ profile xfdesktop /usr/bin/xfdesktop {
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /usr/bin/{gksu,gksudo}				Px,
   }
 }

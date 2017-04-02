@@ -31,7 +31,7 @@ profile consolekit.ck-launch-session /usr/bin/ck-launch-session flags=(complain)
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/ck-launch-session				mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/X11/Sessions/{,*}				r,
@@ -39,14 +39,14 @@ profile consolekit.ck-launch-session /usr/bin/ck-launch-session flags=(complain)
   # USERS ----------------------------------------------
   owner @{HOME}/.Xauthority				r,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /etc/X11/Sessions/Xfce4				r,	# XFCE4
     /usr/bin/startxfce4					Px,	# XFCE4
   }
@@ -111,7 +111,7 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/console-kit-daemon				mr,
   /bin/grep						ix,
-  /bin/bash						mr,
+  @{shell}						mr,
   /bin/tr						ix,
   /bin/cut						ix,
   /bin/mkdir						ix,
@@ -161,14 +161,14 @@ profile consolekit.init.d /etc/init.d/consolekit {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/console-kit-daemon				Px,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/consolekit				r,
   /run/ConsoleKit/					w,
   /run/ConsoleKit/pid					rwk,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

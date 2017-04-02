@@ -24,7 +24,7 @@ profile chkrootkit /usr/sbin/chkrootkit {
   /dev/tty						rw,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cxmr -> shell,
+  @{shell}						Cxmr,
   /bin/sed						ix,
   /bin/uname						ix,
   /bin/ps						Px,
@@ -55,7 +55,7 @@ profile chkrootkit /usr/sbin/chkrootkit {
   /{,**}						r,
   owner /tmp/chkrootkit.cron.*				rw,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -66,7 +66,7 @@ profile chkrootkit /usr/sbin/chkrootkit {
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/ps						Px,
     /bin/tr						ix,
     /bin/cut						ix,

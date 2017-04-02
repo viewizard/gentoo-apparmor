@@ -74,7 +74,7 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /sbin/udevd						mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /sbin/dmsetup						Px,
   /sbin/mdadm						Px,
   /sbin/lvm						Px,
@@ -98,7 +98,7 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
   /run/udev/{data,watch,links}/**			rw,
   /run/udev/watch{,.old}/{,[0-9]*}			rw,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
@@ -106,7 +106,7 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/sed						ix,
     /sbin/mdadm						Px,
   }

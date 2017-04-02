@@ -31,14 +31,14 @@ profile kernel.gen-ima-certs /usr/src/IMA/certs/* flags=(complain) {
   /dev/tty						rw,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						mr,
+  @{shell}						mr,
   /bin/cat						ix,
-  /usr/bin/openssl					Cx -> openssl,
+  /usr/bin/openssl					Cx,
   
   # READS/WRITES ---------------------------------------
   /usr/src/IMA/certs/*					rw,
   
-  profile openssl flags=(complain) {
+  profile openssl /usr/bin/openssl flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------

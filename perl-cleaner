@@ -24,7 +24,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/perl-cleaner				mr,
-  /bin/bash						cxmr -> shell,	# FIX ME! действительно нужно mr?
+  @{shell}						cxmr,	# FIX ME! действительно нужно mr?
   /bin/grep						ix,
   /bin/tr						ix,
   /bin/rmdir						ix,
@@ -55,14 +55,14 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.*					rw,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/grep						ix,
     /usr/bin/gawk					ix,
     /usr/bin/@{CHOST}-gcc				ix,

@@ -23,7 +23,7 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev flags=(complain) {
   @{PROC}/sys/kernel/hotplug				w,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /bin/grep						ix,
   /bin/udevadm						Px,
   /sbin/udevd						Px,
@@ -32,7 +32,7 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev flags=(complain) {
   /etc/fstab						r,
   /etc/{conf,init}.d/udev				r,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -45,7 +45,7 @@ profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger flags=(co
   #include <abstractions/openrc>
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /bin/udevadm						Px,
   /bin/cat						ix,
   
@@ -53,7 +53,7 @@ profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger flags=(co
   /etc/{conf,init}.d/udev-trigger			r,
   /run/udev/rules.d/*.rules				w,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -66,13 +66,13 @@ profile udev-init-scripts.udev-settle.init.d /etc/init.d/udev-settle flags=(comp
   #include <abstractions/openrc>
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /bin/udevadm						Px,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/udev-settle			r,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

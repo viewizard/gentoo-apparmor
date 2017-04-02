@@ -31,7 +31,7 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(com
   
   # EXECUTABLES ----------------------------------------
   /{usr,opt}/bin/nvidia-settings			mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/conf.d/gpm					r,
@@ -40,7 +40,7 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(com
   # USERS ----------------------------------------------
   owner @{HOME}/.nvidia-settings-rc			rw,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -48,7 +48,7 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(com
     owner @{PROC}/cmdline				r,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/ps						Px,
     /usr/bin/Xorg					ix,	# Не используем Px.
     /usr/bin/pkg-config					ix,
@@ -101,7 +101,7 @@ profile nvidia-drivers.nvidia-udev.sh /lib{,32,64}/udev/nvidia-udev.sh {
   
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/udev/nvidia-udev.sh			r,
-  /bin/bash						mr,
+  @{shell}						mr,
   /bin/kmod						Px,
   /bin/grep						ix,
   /opt/bin/nvidia-smi					Px,

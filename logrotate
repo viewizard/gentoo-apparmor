@@ -20,13 +20,15 @@ profile logrotate /usr/bin/logrotate {
   capability fsetid,
   capability chown,
   capability fowner,
+  capability dac_override,
+  capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					w,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/logrotate					mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /usr/bin/xz						ix,
   
   # READS/WRITES ---------------------------------------
@@ -41,14 +43,14 @@ profile logrotate /usr/bin/logrotate {
   # NOISY ----------------------------------------------
   deny @{HOME}/						r,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/su						Px,
     /etc/init.d/syslog-ng				Px,
   }

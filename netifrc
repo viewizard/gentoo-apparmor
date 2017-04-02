@@ -33,7 +33,7 @@ profile netifrc.init.d /etc/init.d/net.* {
   
   # EXECUTABLES ----------------------------------------
   /etc/init.d/*						Pxr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /bin/ip						ix,
   /bin/cat						ix,
   /bin/grep						ix,
@@ -58,7 +58,7 @@ profile netifrc.init.d /etc/init.d/net.* {
   /run/dhcpcd-*.pid					rwk,
   /run/ifplugd.*.pid					rwk,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -80,6 +80,6 @@ profile netifrc.net.sh /lib{,32,64}/udev/net.sh flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/udev/net.sh				r,
-  /bin/bash						mr,
+  @{shell}						mr,
   /etc/init.d/net.*					Px,
 }

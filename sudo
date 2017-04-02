@@ -32,9 +32,12 @@ profile sudo /usr/bin/sudo {
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   owner @{PROC}/@{pid}/stat				r,
+  @{PROC}/@{pid}/attr/{current,exec}			w,
+  @{PROC}/@{pid}/attr/{current,prev,exec}		r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/sudo						mr,
+  @{shell}						Cx,
   /usr/bin/gksu_askpass.sh				Px,
   /usr/sbin/sendmail					Px,
   
@@ -50,36 +53,7 @@ profile sudo /usr/bin/sudo {
   /run/sudo/ts/						rw,
   /run/sudo/ts/*					rwk,
   
-  
-###################################################
-# MAC (without PAM)
-###################################################
-  
-#  # PSEUDO ---------------------------------------------
-#  @{PROC}/@{pid}/{mounts,mountinfo}			r,
-  
-#  # EXECUTABLES ----------------------------------------
-#  /bin/bash						Px -> bash_root,
-#  /bin/mount						Px,
-#  /bin/umount						Px,
-#  /usr/bin/ofl						Px,
-#  /usr/bin/thunar					Px,	# XFCE4
-#  /usr/bin/dbus-daemon					Px,
-#  /usr/bin/gsmartcontrol				Px,
-#  /usr/sbin/pmvarrun					Px,
-  
-###################################################
-# RBAC (with PAM)
-###################################################
-  
-  # PSEUDO ---------------------------------------------
-  @{PROC}/@{pid}/attr/{current,exec}			w,
-  @{PROC}/@{pid}/attr/{current,prev,exec}		r,
-  
-  # EXECUTABLES ----------------------------------------
-  /bin/bash						Cx -> shell,
-  
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/authentication-pam_usb>
     
@@ -91,7 +65,7 @@ profile sudo /usr/bin/sudo {
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
   }
   
   ^DEFAULT {
@@ -113,7 +87,7 @@ profile sudo /usr/bin/sudo {
     @{PROC}/@{pid}/mountinfo				r,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						Px -> bash_users,
+    @{shell}						Px -> shell_users,
     /bin/mount						Px,
     /bin/umount						Px,
     /usr/bin/ofl					Px,
@@ -146,7 +120,7 @@ profile sudo /usr/bin/sudo {
     @{PROC}/@{pid}/mountinfo				r,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						Px -> bash_root,
+    @{shell}						Px -> shell_root,
     /bin/mount						Px,
     /bin/umount						Px,
     /sbin/xtables-multi					Px,
@@ -178,7 +152,7 @@ profile sudo.askpass /usr/bin/gksu_askpass.sh {
   # EXECUTABLES ----------------------------------------
   /usr/bin/gksu_askpass.sh				r,
   /usr/bin/zenity					ixr,
-  /bin/bash						ixmr,	# FIX ME! почему он в основном профиле с ix?
+  @{shell}						ixmr,	# FIX ME! почему он в основном профиле с ix?
 }
 
 profile sudo.gksudo /usr/bin/{gksu,gksudo} {
@@ -189,7 +163,7 @@ profile sudo.gksudo /usr/bin/{gksu,gksudo} {
   /dev/tty[0-9]*					w,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						mr,
+  @{shell}						mr,
   /usr/bin/{gksu,gksudo}				mr,
   /usr/bin/sudo						Px,
 }

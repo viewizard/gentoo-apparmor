@@ -25,7 +25,7 @@ profile cups.cupsd /usr/sbin/cupsd {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/cupsd					Pxmr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /usr/libexec/cups/daemon/*				Px,
   /usr/libexec/cups/driver/*				Px,
   /usr/libexec/cups/cgi-bin/*				Px,
@@ -46,7 +46,7 @@ profile cups.cupsd /usr/sbin/cupsd {
   /var/spool/cups/{,**}					rw,
   /var/log/cups/{,**}					rw,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/authentication-pam_usb>
     
@@ -54,7 +54,7 @@ profile cups.cupsd /usr/sbin/cupsd {
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
   }
 }
 
@@ -167,7 +167,7 @@ profile cups.init.d /etc/init.d/cupsd {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/cupsd					Px,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/cupsd				r,
@@ -175,7 +175,7 @@ profile cups.init.d /etc/init.d/cupsd {
   /run/cups/						w,
   /run/cups/certs/					w,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

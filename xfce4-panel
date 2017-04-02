@@ -75,7 +75,7 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/panel/wrapper-1.0		m,
   /usr/bin/xfce4-session-logout				Px,
-  /bin/env						Cx -> env,
+  /bin/env						Cx,
   /usr/bin/xflock4					Px,
   /usr/bin/alock					Px,
   /usr/bin/passwd.sh					Px,
@@ -107,7 +107,7 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   # TEMP -----------------------------------------------
   owner /tmp/*_????-??-??_??-??-??.png			rw,	# xfce4-screenshooter
   
-  profile env {
+  profile env /bin/env {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------

@@ -27,7 +27,7 @@ profile conky /usr/bin/conky {
   @{PROC}/@{pid}/mounts r,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /usr/bin/conky					mr,
   
   # READS/WRITES ---------------------------------------
@@ -37,7 +37,7 @@ profile conky /usr/bin/conky {
   # USERS ----------------------------------------------
   owner @{HOME}/.conkyrc				r,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/sensors>
     
@@ -46,7 +46,7 @@ profile conky /usr/bin/conky {
     /dev/tty[0-9]*					w,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/tail						ix,
     /bin/head						ix,
     /bin/date						ix,

@@ -47,17 +47,17 @@ profile gsmartcontrol-root /usr/bin/gsmartcontrol-root {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /bin/env						mr,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /usr/bin/gsmartcontrol-root				r,
     /usr/bin/which					ix,
     /usr/bin/sudo					Px,

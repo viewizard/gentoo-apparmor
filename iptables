@@ -38,7 +38,7 @@ profile iptables.init.d /etc/init.d/iptables {
   @{PROC}/@{pid}/net/ip_tables_names			r,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /bin/dirname						ix,
   /bin/cat						ix,
   /sbin/xtables-multi					Px,
@@ -47,7 +47,7 @@ profile iptables.init.d /etc/init.d/iptables {
   /etc/{conf,init}.d/iptables				r,
   /var/lib/iptables/rules-save				rw,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -71,7 +71,7 @@ profile iptables.firewall /usr/sbin/firewall {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/firewall					r,
-  /bin/bash						mr,
+  @{shell}						mr,
   /bin/cat						ix,
   /sbin/xtables-multi					Px,
   /etc/init.d/iptables					Px,

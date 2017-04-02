@@ -19,16 +19,16 @@ profile xautolock /usr/bin/xautolock {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xautolock					mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /usr/bin/mate-screensaver-command			Px,
   }
 }

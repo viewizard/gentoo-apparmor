@@ -23,7 +23,7 @@ profile python-updater /usr/sbin/python-updater flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/python-updater				r,
   @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
-  /bin/bash						mr,
+  @{shell}						mr,
   /bin/grep						ix,
   /bin/sort						ix,
   /bin/sed						ix,
@@ -68,7 +68,7 @@ profile python-updater /usr/sbin/python-updater flags=(complain) {
     /dev/pts/[0-9]*					w,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						Px -> python_updater_shell,
+    @{shell}						Px -> python_updater_shell,
     @{PYTHON_EXEC}/emerge				Px,
     @{PYTHON_EXEC}/portageq				Px,
     
@@ -91,6 +91,6 @@ profile python_updater_shell flags=(complain) {
   /dev/tty						rw,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						mr,
+  @{shell}						mr,
   /bin/uname						ix,
 }

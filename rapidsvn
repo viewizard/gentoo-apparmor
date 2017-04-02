@@ -29,7 +29,7 @@ profile rapidsvn /usr/bin/rapidsvn flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/rapidsvn					mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /usr/bin/meld						Px,
   
   # USERS ----------------------------------------------
@@ -39,14 +39,14 @@ profile rapidsvn /usr/bin/rapidsvn flags=(complain) {
   # TEMP -----------------------------------------------
   owner /tmp/*						rw,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						rm,
+    @{shell}						rm,
     /bin/uname						ix,
     /usr/bin/lsb_release				Px,
   }

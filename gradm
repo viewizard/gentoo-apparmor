@@ -57,13 +57,13 @@ profile gradm.init.d /etc/init.d/gradm {
   #include <abstractions/openrc>
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /sbin/gradm						Px,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/gradm				r,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

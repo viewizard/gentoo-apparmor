@@ -21,7 +21,7 @@ profile vixie-cron.cron /usr/sbin/cron {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/cron					mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /usr/sbin/sendmail					Px,
   
   # READS/WRITES ---------------------------------------
@@ -31,14 +31,14 @@ profile vixie-cron.cron /usr/sbin/cron {
   /run/cron.pid						rwk,
   /var/spool/cron/{,**}					rw,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/rm						ix,
     /usr/sbin/run-crons					Px,
     
@@ -54,13 +54,13 @@ profile vixie-cron.init.d /etc/init.d/vixie-cron {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/cron					Px,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/vixie-cron				r,
   /run/cron.pid						rwk,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

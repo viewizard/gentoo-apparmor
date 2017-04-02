@@ -46,7 +46,7 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /bin/cat						ix,
   /bin/netstat						Px,
   
@@ -62,7 +62,7 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   owner /tmp/????????					rw,
   owner /var/tmp/????????				rw,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -76,7 +76,7 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
     @{PROC}/@{pid}/net/*				r,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/netstat					Px,
   }
 }

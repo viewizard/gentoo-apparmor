@@ -37,14 +37,14 @@ profile dnsmasq.init.d /etc/init.d/dnsmasq {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/dnsmasq					Px,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /etc/init.d/net.*					Px,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/dnsmasq				r,
   /run/dnsmasq.pid					rwk,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

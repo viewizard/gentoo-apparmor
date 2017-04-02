@@ -27,14 +27,14 @@ profile acpid /usr/sbin/acpid {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/acpid					mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/acpi/{,**}					r,
   /run/acpid.pid					rwl,
   /run/acpid.socket					rw,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
@@ -45,7 +45,7 @@ profile acpid /usr/sbin/acpid {
     /dev/tty{,[0-9]*}					rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/ps						Px,
     /bin/sed						ix,
     /sbin/shutdown					Px,
@@ -88,12 +88,12 @@ profile acpid.init.d /etc/init.d/acpid {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/acpid					Px,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/acpid				r,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

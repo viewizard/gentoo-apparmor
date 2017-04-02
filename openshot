@@ -30,7 +30,7 @@ profile openshot @{PYTHON2_EXEC}/openshot {
   /dev/tty[0-9]*					w,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /usr/lib{,32,64}/					r,
@@ -41,14 +41,14 @@ profile openshot @{PYTHON2_EXEC}/openshot {
   # USERS ----------------------------------------------
   owner @{HOME}/.openshot/{,**}				rw,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /sbin/ldconfig					ix,
   }
 }

@@ -20,7 +20,7 @@ profile grub.grub-mkconfig /usr/sbin/grub-mkconfig flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/grub-mkconfig				r,
-  /bin/bash						mr,
+  @{shell}						mr,
   /bin/basename						ix,
   /bin/dirname						ix,
   /bin/rm						ix,
@@ -93,7 +93,7 @@ profile grub.grub-install /usr/sbin/grub-install flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/grub-install				mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /bin/kmod						Px,
   /bin/udevadm						Px,
   /sbin/lvm						Px,
@@ -102,7 +102,7 @@ profile grub.grub-install /usr/sbin/grub-install flags=(complain) {
   /boot/grub/{,**}					rw,
   /usr/share/grub/{,**}					r,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -114,7 +114,7 @@ profile grub.grub-install /usr/sbin/grub-install flags=(complain) {
     /dev/pts/[0-9]*					w,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     
     # READS/WRITES -------------------------------------
     /etc/default/grub					r,

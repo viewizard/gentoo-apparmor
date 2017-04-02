@@ -56,7 +56,7 @@ profile suricata.init.d /etc/init.d/suricata {
   @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /bin/cat						ixr,
   /bin/ps						Pxr,
   /bin/sleep						ixr,
@@ -72,7 +72,7 @@ profile suricata.init.d /etc/init.d/suricata {
   # TEMP -----------------------------------------------
   owner /tmp/oinkmaster.cron.??????			w,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

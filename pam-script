@@ -22,14 +22,14 @@ profile pam-script /etc/security/pam-script/pam_script* flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /etc/security/pam-script/pam_script*			r,
-  /bin/bash						Cxmr -> shell,
+  @{shell}						Cxmr,	# Все правильно, запуск и mmap.
   /bin/dirname						ix,
   /bin/basename						ix,
   
   # READS/WRITES ---------------------------------------
   /etc/security/pam-script/pam-script.d/{,**} r,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
@@ -40,6 +40,6 @@ profile pam-script /etc/security/pam-script/pam_script* flags=(complain) {
     
     # EXECUTABLES --------------------------------------
     /etc/security/pam-script/pam-script.d/pam_script*	r,
-    /bin/bash						mr,
+    @{shell}						mr,
   }
 }

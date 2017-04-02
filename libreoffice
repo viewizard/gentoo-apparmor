@@ -23,7 +23,7 @@ profile libreoffice /usr/{bin,lib64/libreoffice/program}/soffice {
   /dev/tty[0-9]*					w,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						mr,
+  @{shell}						mr,
   /bin/dirname						ix,
   /bin/basename						ix,
   /bin/grep						ix,
@@ -92,7 +92,7 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/libreoffice/program/soffice.bin	m,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /opt/{oracle-jdk,icedtea}-bin-*/bin/java		Px,
   /opt/{oracle-jdk,icedtea}-bin-*/jre/bin/java		Px,
   
@@ -124,7 +124,7 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   # NOISY ----------------------------------------------
   deny /usr/lib{,32,64}/libreoffice/share/uno_packages/cache/* w,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/xdg-open>
     
@@ -132,7 +132,7 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/sed						ix,
     /bin/grep						ix,
     /usr/bin/paperconf					ix,

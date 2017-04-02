@@ -35,12 +35,12 @@ profile hd-idle.init.d /etc/init.d/hd-idle {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/hd-idle					Px,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/hd-idle				r,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

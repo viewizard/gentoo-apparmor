@@ -19,7 +19,7 @@ profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check flags=(complain) {
   /dev/pts/[0-9]*					w,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/mime.types					r,
@@ -34,14 +34,14 @@ profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check flags=(complain) {
   # TEMP -----------------------------------------------
   owner /tmp/glsa.cron.*				w,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/uname						ix,
   }
 }
@@ -56,7 +56,7 @@ profile gentoolkit.equery @{PYTHON_EXEC}/equery flags=(complain) {
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
@@ -68,14 +68,14 @@ profile gentoolkit.equery @{PYTHON_EXEC}/equery flags=(complain) {
   /var/db/pkg/{,**}					r,
   /var/cache/edb/{,**}					r,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/uname						ix,
   }
 }
@@ -89,7 +89,7 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean flags=(complain) {
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
@@ -103,14 +103,14 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean flags=(complain) {
   /var/db/pkg/{,**}					r,
   /var/cache/edb/{,**}					r,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/uname						ix,
   }
 }
@@ -128,7 +128,7 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild flags=(complain)
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /usr/bin/scanelf					ix,
   # FIX ME! должен вызывать emerge (?)
   
@@ -148,14 +148,14 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild flags=(complain)
   /usr/local/portage/{,**}				r,
   /var/cache/revdep-rebuild/{,**}			rw,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/uname						ix,
   }
 }
@@ -175,7 +175,7 @@ profile gentoolkit.revdep-rebuild.sh /usr/bin/revdep-rebuild.sh flags=(complain)
   
   # EXECUTABLES ----------------------------------------
   @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
-  /bin/bash						mr,
+  @{shell}						mr,
   /bin/chown						ix,
   /bin/chmod						ix,
   /bin/grep						ix,
@@ -194,7 +194,7 @@ profile gentoolkit.revdep-rebuild.sh /usr/bin/revdep-rebuild.sh flags=(complain)
   /usr/bin/nice						ix,
   /usr/bin/xargs					ix,
   /usr/bin/realpath					ix,
-  /usr/bin/ldd						Px -> glibc_ldd_root,
+  /usr/bin/ldd						Px,
   /usr/@{CHOST}/binutils-bin/*/objdump			ix,
   
   # READS/WRITES ---------------------------------------

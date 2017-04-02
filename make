@@ -18,8 +18,8 @@ profile make /usr/bin/{,g}make flags=(complain) {
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/{,g}make					ixmr,	# FIX ME! действительно надо ixmr?
-  /bin/bash						Cx -> shell,
+  /usr/bin/{,g}make					ixmr,	# Все правильно, запуск и mmap.
+  @{shell}						Cx,
   /bin/uname						ix,
   /bin/rm						ix,
   /bin/ln						ix,
@@ -40,7 +40,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
   # NOISY ----------------------------------------------
   deny /						r,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/perl>
@@ -52,7 +52,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     @{PROC}/@{pid}/fd/					r,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						ixmr,	# FIX ME! действительно надо ixmr?
+    @{shell}						ixmr,	# Все правильно, запуск и mmap.
     /bin/uname						ix,
     /bin/sed						ix,
     /bin/rm						ix,

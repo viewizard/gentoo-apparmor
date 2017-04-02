@@ -10,8 +10,7 @@
 
 #include <tunables/global>
 
-# /usr/sbin/migrate-pax for root RBAC role only, should be used with Px->profile only
-profile elfix_migrate_pax_root flags=(complain) {
+profile elfix.migrate-pax /usr/sbin/migrate-pax flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -22,7 +21,7 @@ profile elfix_migrate_pax_root flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/migrate-pax					mr,
   /bin/env						mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /usr/bin/python-wrapper				ix,
   
   # READS/WRITES ---------------------------------------
@@ -34,7 +33,7 @@ profile elfix_migrate_pax_root flags=(complain) {
   /var/db/pkg/{,**}					r,
   /var/cache/edb/{,**}					r,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -46,12 +45,12 @@ profile elfix_migrate_pax_root flags=(complain) {
     /dev/pts/[0-9]*					w,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/uname						ixr,
   }
 }
 
-profile elfix_revdep_pax_root flags=(complain) {
+profile elfix.revdep-pax /usr/sbin/revdep-pax flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -62,7 +61,7 @@ profile elfix_revdep_pax_root flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/revdep-pax					mr,
   /bin/env						mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /usr/bin/python-wrapper				ix,
   
   # READS/WRITES ---------------------------------------
@@ -74,14 +73,14 @@ profile elfix_revdep_pax_root flags=(complain) {
   /var/db/pkg/{,**}					r,
   /var/cache/edb/{,**}					r,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/uname						ix,
   }
 }

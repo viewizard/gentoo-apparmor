@@ -55,14 +55,14 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/dnscrypt-proxy				Px,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /bin/chown						ix,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/dnscrypt-proxy			r,
   /run/dnscrypt-proxy/					rw,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

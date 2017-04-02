@@ -32,7 +32,7 @@ profile mc /usr/bin/mc {
   # EXECUTABLES ----------------------------------------
   /usr/bin/mc						mr,
   /usr/libexec/mc/cons.saver				ix,
-  /bin/bash						Px -> bash_users,
+  @{shell}						Px -> shell_users,
   
   # READS/WRITES ---------------------------------------
   /etc/mc/{,**}						r,
@@ -61,7 +61,7 @@ profile mc_root flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /usr/bin/mc						mr,
   /usr/libexec/mc/cons.saver				ix,
-  /bin/bash						Px -> bash_root,
+  @{shell}						Px -> shell_root,
   
   # READS/WRITES ---------------------------------------
   /etc/mc/{,**}						r,

@@ -21,13 +21,13 @@ profile pam_usb.pamusb-agent /usr/bin/pamusb-agent {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pamusb-agent					mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /bin/env						ixmr,	# FIX ME! действительно надо ixmr?
   
   # READS/WRITES ---------------------------------------
   /etc/pamusb.conf					r,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -35,7 +35,7 @@ profile pam_usb.pamusb-agent /usr/bin/pamusb-agent {
     /dev/tty[0-9]*					w,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /usr/bin/mate-screensaver-command			Px,
     /usr/bin/alock					Px,
     /usr/bin/pamusb-check				Px,
@@ -58,7 +58,7 @@ profile pam_usb.pamusb-check /usr/bin/pamusb-check {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pamusb-check					mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/pamusb.conf					r,
@@ -68,7 +68,7 @@ profile pam_usb.pamusb-check /usr/bin/pamusb-check {
   # USERS ----------------------------------------------
   @{HOME}/.pamusb/*.pad					rw,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/authentication-pam_usb>
     
@@ -76,6 +76,6 @@ profile pam_usb.pamusb-check /usr/bin/pamusb-check {
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
   }
 }

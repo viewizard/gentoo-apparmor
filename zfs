@@ -87,7 +87,7 @@ profile zfs.zed.d /usr/libexec/zfs/zed.d/*.sh {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/zfs/zed.d/*.sh				r,
-  /bin/bash						mr,
+  @{shell}						mr,
   /usr/bin/logger					Px,
   
   # READS/WRITES ---------------------------------------
@@ -105,7 +105,7 @@ profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed {
   capability dac_read_search,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /sbin/zpool						Px,
   /sbin/zed						Px,
   /bin/rm						ix,
@@ -118,7 +118,7 @@ profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed {
   /etc/zfs/zfs-functions				r,
   /var/lib/run/zed.pid					r,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
@@ -131,7 +131,7 @@ profile zfs.zfs-import.init.d /etc/init.d/zfs-import {
   #include <abstractions/openrc>
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /bin/grep						ix,
   /bin/uname						ix,
   /bin/udevadm						Px,
@@ -144,7 +144,7 @@ profile zfs.zfs-import.init.d /etc/init.d/zfs-import {
   /etc/zfs/zfs-functions				r,
   /etc/{conf,init}.d/zfs-import				r,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

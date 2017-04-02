@@ -46,14 +46,14 @@ profile tor.init.d /etc/init.d/tor {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/tor						Px,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/tor				r,
   /run/tor/						w,
   /run/tor/tor.pid					rwk,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

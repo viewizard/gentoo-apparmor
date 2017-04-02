@@ -24,7 +24,7 @@ profile xfce4-appfinder /usr/bin/{xfrun4,xfce4-appfinder} {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/{xfrun4,xfce4-appfinder}			mr,
-  /bin/env						Cx -> env,
+  /bin/env						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/menus/{,**}					r,
@@ -37,7 +37,7 @@ profile xfce4-appfinder /usr/bin/{xfrun4,xfce4-appfinder} {
   owner @{HOME}/.local/share/mime/mime.cache		r,
   owner @{HOME}/.local/share/desktop-directories/{,*}	r,
   
-  profile env {
+  profile env /bin/env {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------

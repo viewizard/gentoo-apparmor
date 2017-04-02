@@ -39,12 +39,12 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
   @{PROC}/sys/kernel/osrelease				r,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						cx -> shell,
+  @{shell}						cx,
   /bin/stty						ix,
   /bin/mount						Px,
   /bin/tar						ix,
   /sbin/ldconfig					ix,
-  /usr/bin/sandbox					cx -> sandboxed_shell,
+  /usr/bin/sandbox					cx,
   /usr/bin/find						ix,
   /usr/bin/id						ix,
   /usr/bin/install-info					ix,
@@ -88,7 +88,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
   deny /usr/						w,
   deny /lib64/						w,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/python>
     #include <abstractions/nameservice>
@@ -118,7 +118,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     @{PROC}/sys/kernel/osrelease			r,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /usr/sbin/useradd					Px,
     /usr/sbin/lspci					Px,
     /lib{,32,64}/rc/sh/migrate-to-run.sh		ix,
@@ -176,7 +176,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     owner /tmp/tmp??????				rwk,
   }
   
-  profile sandboxed_shell flags=(complain) {
+  profile sandbox /usr/bin/sandbox flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/freedesktop.org>
     #include <abstractions/fonts>
@@ -223,7 +223,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     @{PROC}/tty/drivers					r,
     
     # EXECUTABLES ----------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/**						ix,
     /sbin/**						ix,
     /opt/**						ix,
@@ -274,7 +274,7 @@ profile portage.env-update @{PYTHON_EXEC}/env-update flags=(complain) {
   /dev/pts/[0-9]*					w,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -294,14 +294,14 @@ profile portage.env-update @{PYTHON_EXEC}/env-update flags=(complain) {
   owner /tmp/??????					rw,
   owner /tmp/tmp??????					rwk,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/uname						ix,
     /sbin/ldconfig					ix,
     
@@ -329,7 +329,7 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf flags=(complain) {
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /usr/bin/diff						ix,
   /usr/bin/find						ix,
   
@@ -342,7 +342,7 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf flags=(complain) {
   # TEMP -----------------------------------------------
   owner /tmp/dispatch-conf.*/				rw,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -354,7 +354,7 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf flags=(complain) {
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/uname						ix,
     /usr/bin/find					ix,
     /usr/bin/diff					ix,
@@ -376,7 +376,7 @@ profile portage.portageq @{PYTHON_EXEC}/portageq flags=(complain) {
   /dev/pts/[0-9]*					w,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
@@ -387,14 +387,14 @@ profile portage.portageq @{PYTHON_EXEC}/portageq flags=(complain) {
   /var/db/pkg/{,**}					r,
   /var/cache/edb/{,**}					r,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/uname						ix,
   }
 }
@@ -412,7 +412,7 @@ profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/etc-update					r,
-  /bin/bash						mr,
+  @{shell}						mr,
   /bin/cat						ix,
   /bin/grep						ix,
   /bin/cut						ix,
@@ -458,7 +458,7 @@ profile portage.emaint @{PYTHON_EXEC}/emaint flags=(complain) {
   /dev/pts/[0-9]*					w,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						cx -> shell,
+  @{shell}						cx,
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
@@ -471,14 +471,14 @@ profile portage.emaint @{PYTHON_EXEC}/emaint flags=(complain) {
   /var/db/pkg/{,**}					r,
   /var/cache/edb/{,**}					r,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/uname						ix,
   }
 }

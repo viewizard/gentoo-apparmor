@@ -67,9 +67,9 @@ profile chromium /usr/{bin/chromium-browser,lib{,32,64}/chromium-browser/{chrome
   @{PROC}/@{pid}/gid_map				rw,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						mr,
+  @{shell}						mr,
   /bin/ps						Pxr,
-  /usr/bin/xdg-settings					Cxr -> xdgsettings,
+  /usr/bin/xdg-settings					Cxr,
   /usr/bin/lsb_release					Pxr,
   /usr/bin/gvfs-open					Pxr,
   /bin/readlink						ixr,
@@ -77,7 +77,7 @@ profile chromium /usr/{bin/chromium-browser,lib{,32,64}/chromium-browser/{chrome
   /usr/bin/chromium-browser				Pxr,
   /usr/lib{,32,64}/chromium-browser/chrome		ixm,
   /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh Px,
-  /usr/lib{,32,64}/chromium-browser/chrome-sandbox	cx -> sandbox,
+  /usr/lib{,32,64}/chromium-browser/chrome-sandbox	cx,
   
   # READS/WRITES ---------------------------------------
   /etc/chromium/{,**}					r,
@@ -116,11 +116,11 @@ profile chromium /usr/{bin/chromium-browser,lib{,32,64}/chromium-browser/{chrome
   deny /usr/lib{,32,64}/chromium-browser/**		w,
   deny owner @{HOME}/.mozilla/{,**}			r,
   
-  profile xdgsettings {
+  profile xdg-settings /usr/bin/xdg-settings {
     #include <abstractions/base>
     #include <abstractions/freedesktop.org>
     #include <abstractions/fonts>
-    #include <abstractions/bash>
+    #include <abstractions/shell>
     #include <abstractions/gtk>
     
     # PSEUDO -------------------------------------------
@@ -129,7 +129,7 @@ profile chromium /usr/{bin/chromium-browser,lib{,32,64}/chromium-browser/{chrome
     # EXECUTABLES --------------------------------------
     /usr/bin/xdg-settings				mr,
     # Checking default browser
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/grep						ixr,
     /bin/readlink					ixr,
     /bin/sed						ixr,
@@ -153,10 +153,10 @@ profile chromium /usr/{bin/chromium-browser,lib{,32,64}/chromium-browser/{chrome
     owner @{HOME}/.local/share/applications/mimeapps.list* rw,
     
     # NOISY --------------------------------------------
-    deny /bin/bash					x,  # checking default browser
+    deny @{shell}					x,	# checking default browser
   }
   
-  profile sandbox {
+  profile chrome-sandbox /usr/lib{,32,64}/chromium-browser/chrome-sandbox {
     # Be fanatical since it is setuid root and don't use an abstraction
     /lib/libgcc_s.so*					mr,
     /lib{,32,64}/libm-*.so*				mr,
@@ -193,7 +193,7 @@ profile chromium /usr/{bin/chromium-browser,lib{,32,64}/chromium-browser/{chrome
     @{PROC}/@{pid}/task/@{pid}/stat			r,
     
     # EXECUTABLES ----------------------------------------
-    /usr/lib{,32,64}/chromium-browser/chrome		Px,
     /usr/lib{,32,64}/chromium-browser/chrome-sandbox	mr,
+    /usr/lib{,32,64}/chromium-browser/chrome		Px,
   }
 }

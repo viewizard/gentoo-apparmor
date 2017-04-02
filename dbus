@@ -65,7 +65,7 @@ profile dbus.dbus-launch /usr/bin/dbus-launch {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dbus-launch					mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /usr/bin/dbus-daemon					Px,
   /usr/bin/xfce4-session				Px,	# XFCE4
   /etc/X11/Sessions/Xfce4				Px,	# XFCE4
@@ -74,14 +74,14 @@ profile dbus.dbus-launch /usr/bin/dbus-launch {
   owner @{HOME}/.dbus/{,**}				rw,
   @{HOME}/.Xauthority					r,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /etc/X11/Sessions/Xfce4				r,	# XFCE4
     /usr/bin/startxfce4					Px,	# XFCE4
   }
@@ -142,7 +142,7 @@ profile dbus.init.d /etc/init.d/dbus {
   
   # EXECUTABLES ----------------------------------------
   /etc/init.d/{cupsd,consolekit,xdm,net.*}		Px,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /bin/rm						ix,
   /usr/bin/dbus-uuidgen					Px,
   /usr/bin/dbus-daemon					Px,
@@ -154,7 +154,7 @@ profile dbus.init.d /etc/init.d/dbus {
   /run/dbus/						w,
   /run/dbus/system_bus_socket				rwk,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

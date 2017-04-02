@@ -16,11 +16,11 @@ profile usr_local.bin.symlink_ondesktop /usr/local/bin/symlink_ondesktop.sh {
   /dev/tty rw,
   
   /usr/local/bin/symlink_ondesktop.sh r,
-  /bin/bash mr,
-  /bin/ln Cx -> ln,
+  @{shell} mr,
+  /bin/ln Cx,
   
   
-  profile ln {
+  profile ln /bin/ln {
    #include <abstractions/base>
     
     /dev/tty[0-9]* w,
@@ -40,7 +40,7 @@ profile usr_local.bin.sync_googledrive /usr/local/bin/sync_googledrive.sh {
   /dev/tty[0-9] w,
   
   /usr/local/bin/sync_googledrive.sh r,
-  /bin/bash mr,
+  @{shell} mr,
   /usr/bin/grive Px,
   
 }

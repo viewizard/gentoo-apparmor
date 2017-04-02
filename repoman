@@ -28,8 +28,8 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cx -> shell,
-  /usr/bin/sandbox					cx -> sandboxed_shell,
+  @{shell}						Cx,
+  /usr/bin/sandbox					cx,
   /bin/basename						ix,
   /usr/bin/git						ix,	# не используем Px и Px -> git_root.
   /usr/bin/id						ix,
@@ -55,14 +55,14 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
   owner /tmp/tmp_*					rw,
   owner /var/tmp/portage/tmp*/{,**}			rw,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/uname						ix,
     /bin/rm						ix,
     /sbin/ldconfig					ix,
@@ -72,7 +72,7 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
     /var/cache/ldconfig/aux-cache*			rw,
   }
   
-  profile sandboxed_shell flags=(complain) {
+  profile sandbox /usr/bin/sandbox flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -81,7 +81,7 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/sandbox					mr,
-    /bin/bash						ixr,	# FIX ME! почему он в профиле с ix?
+    @{shell}						ixr,	# FIX ME! почему он в профиле с ix?
     /bin/sed						ixr,
     /bin/basename					ixr,
     /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh	ix,

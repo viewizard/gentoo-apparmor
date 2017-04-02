@@ -10,8 +10,7 @@
 
 #include <tunables/global>
 
-# /usr/bin/eselect for root RBAC role only, should be used with Px->profile only
-profile eselect_root flags=(complain) {
+profile eselect /usr/bin/eselect flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/user-systemwide-files>
   
@@ -25,7 +24,7 @@ profile eselect_root flags=(complain) {
   /dev/pts/[0-9]*					w,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						m,
+  @{shell}						mr,
   /bin/readlink						ix,
   /bin/ln						ix,
   /bin/mv						ix,

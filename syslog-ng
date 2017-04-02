@@ -76,7 +76,7 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/syslog-ng					Px,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /bin/sleep						ix,
   
   # READS/WRITES ---------------------------------------
@@ -86,7 +86,7 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng {
   /run/syslog-ng.pid					rwk,
   /run/utmp						rk,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

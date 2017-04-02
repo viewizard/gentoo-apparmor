@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile ima_evm_utils_evmctl_root {
+profile ima-evm-utils.evmctl /usr/bin/evmctl {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -23,12 +23,12 @@ profile ima_evm_utils_evmctl_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/evmctl					mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /**							r,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -40,7 +40,7 @@ profile ima_evm_utils_evmctl_root {
     /dev/pts/[0-9]*					w,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /sbin/blkid						Px,
   }
 }

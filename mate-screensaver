@@ -47,7 +47,7 @@ profile mate-screensaver.sh /usr/bin/mate-screensaver.sh {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mate-screensaver.sh				r,
-  /bin/bash						mr,
+  @{shell}						mr,
   /bin/grep						ix,
   /bin/sleep						ixr,
   /bin/ps						Px,
@@ -147,7 +147,7 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/mate-screensaver-dialog			mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /sbin/unix_chkpwd					Px,
   
   # READS/WRITES ---------------------------------------
@@ -158,7 +158,7 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
   # USERS ----------------------------------------------
   owner @{HOME}/.face					r,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/authentication-pam_usb>
     
@@ -166,7 +166,7 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/wc						ix,
     /usr/bin/pidof					Px,
   }

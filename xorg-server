@@ -50,7 +50,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/Xorg						mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /bin/kmod						Px,
   
   # READS/WRITES ---------------------------------------
@@ -74,14 +74,14 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   owner /tmp/.X11-unix/X[0-9]				w,	# 0-9 ONLY!
   /tmp/server-[0-9].xkm					rw,	# 0-9 ONLY!
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /usr/bin/xkbcomp					Px,
   }
 }
@@ -95,7 +95,7 @@ profile xorg-server.Xephyr /usr/bin/Xephyr flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/Xephyr					mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /usr/lib64/mesa/swrastg_dri.so			m,
@@ -107,14 +107,14 @@ profile xorg-server.Xephyr /usr/bin/Xephyr flags=(complain) {
   # TEMP -----------------------------------------------
   # tmp работать только с дисплеями 10 и выше, 0-9 закреплены за xorg-server
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /usr/bin/xkbcomp					Px,
   }
 }

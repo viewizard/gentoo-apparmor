@@ -29,10 +29,10 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-terminal				mr,
-  /bin/bash						Px -> bash_users,  # By default, must be bash_users only.
+  @{shell}						Px -> shell_users,	# Должен быть пользовательский профиль.
   /usr/bin/sudo						Px,
   /usr/bin/htop						Px,
-  /usr/libexec/gnome-pty-helper				Cx -> gnome_pty_helper,
+  /usr/libexec/gnome-pty-helper				Cx,
   /usr/bin/passwd.sh					Px,
   /bin/rc-status					Px,
   
@@ -54,7 +54,7 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
   # TEMP -----------------------------------------------
   owner /tmp/vte*					rw,
   
-  profile gnome_pty_helper {
+  profile gnome-pty-helper /usr/libexec/gnome-pty-helper {
     #include <abstractions/base>
     #include <abstractions/freedesktop.org>
     #include <abstractions/nvidia>

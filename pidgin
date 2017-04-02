@@ -16,8 +16,8 @@ profile pidgin /usr/bin/pidgin {
   #include <abstractions/fonts>
   #include <abstractions/audio>
   #include <abstractions/enchant>
-  #include <abstractions/bash>
-  #include <abstractions/consoles>
+  #include <abstractions/shell>		# FIX ME! Действительно он тут нужен?
+  #include <abstractions/consoles>	# FIX ME! Действительно он тут нужен?
   #include <abstractions/dbus>
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
@@ -50,7 +50,7 @@ profile pidgin /usr/bin/pidgin {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.purple/				rw,
-  owner @{HOME}/.purple/**				mrwk,	# FIX ME! разве это будет работать с IMA/EVM?
+  owner @{HOME}/.purple/**				mrwk,	# FIX ME! mr - разве это будет работать с IMA/EVM?
   
   # TEMP -----------------------------------------------
   /tmp/							r,

@@ -31,7 +31,7 @@ profile filezilla /usr/bin/filezilla {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/filezilla					mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /usr/bin/fzsftp					ix,
   
   # READS/WRITES ---------------------------------------
@@ -44,7 +44,7 @@ profile filezilla /usr/bin/filezilla {
   deny /*/						r,	# если нужно будет работать под root с системными
   								# файлами - сделать профиль filezilla_root
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/program-work-with-disk-rwk>
@@ -53,7 +53,7 @@ profile filezilla /usr/bin/filezilla {
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/uname						ix,
     /bin/ls						ix,
     /usr/bin/lsb_release				Pxr,

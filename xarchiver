@@ -8,6 +8,20 @@
 #
 # ------------------------------------------------------------------
 
+# BUG!
+# Важно! app-arch/xarchiver-0.5.4 при отмене распаковки, убивает
+# родительские процессы (вместо дочерних).
+
+# BUG!
+# Важно! app-arch/xarchiver-0.5.4.8 порт на GTK3, отображение
+# распаковки постоянно меняет размер в соотв. с выводом имени
+# извлекаемого файла, из-за чего "скачет" кнопка отмены распаковки.
+# По какой-то причине не тянет русский язык (хотя файлы po есть).
+# Вероятно, при портировании на GTK3 что-то не доделали.
+
+# Используем app-arch/engrampa, произведены корректировки в:
+# thunar_root, abstractions/executable-binary-helper_root
+
 #include <tunables/global>
 
 # config for abstractions/program-work-with-disk-** (**-rk,rwk,rwkl)
@@ -35,7 +49,7 @@ profile xarchiver /usr/bin/xarchiver {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xarchiver					mr,
-  /bin/bash						Cx,
+  @{shell}						Cx,
   /bin/mv						ix,
   /bin/rm						ix,
   /bin/cp						ix,
@@ -62,7 +76,7 @@ profile xarchiver /usr/bin/xarchiver {
   owner /tmp/xarchiver_*_socket				rw,
   owner /tmp/xa-*/{,**}					rw,
   
-  profile /bin/bash {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/program-work-with-disk-rwkl-strict>
     
@@ -70,14 +84,14 @@ profile xarchiver /usr/bin/xarchiver {
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/bzip2						ix,
     /bin/gzip						ix,
     /usr/bin/xz						ix,
     /bin/gunzip						ix,
   }
   
-  profile /opt/rar/rar {
+  profile rar /opt/rar/rar {
     #include <abstractions/base>
     #include <abstractions/program-work-with-disk-rwkl-strict>
     
@@ -120,7 +134,7 @@ profile xarchiver_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xarchiver					mr,
-  /bin/bash						Cx,
+  @{shell}						Cx,
   /bin/mv						ix,
   /bin/rm						ix,
   /bin/cp						ix,
@@ -148,7 +162,7 @@ profile xarchiver_root {
   owner /tmp/xarchiver_*_socket				rw,
   /tmp/xa-*/{,**}					rw,
   
-  profile /bin/bash {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/program-work-with-disk-rwkl-strict>
     #include <abstractions/user-systemwide-files>
@@ -157,14 +171,14 @@ profile xarchiver_root {
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/bzip2						ix,
     /bin/gzip						ix,
     /usr/bin/xz						ix,
     /bin/gunzip						ix,
   }
   
-  profile /opt/rar/rar {
+  profile rar /opt/rar/rar {
     #include <abstractions/base>
     #include <abstractions/program-work-with-disk-rwkl-strict>
     #include <abstractions/user-systemwide-files>
@@ -187,7 +201,7 @@ profile xarchiver_tap /usr/libexec/thunar-archive-plugin/xarchiver.tap {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/thunar-archive-plugin/xarchiver.tap	r,
-  /bin/bash						mr,
+  @{shell}						mr,
   /usr/bin/xarchiver					Px,
 }
 
@@ -200,6 +214,6 @@ profile xarchiver_tap_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/thunar-archive-plugin/xarchiver.tap	r,
-  /bin/bash						mr,
+  @{shell}						mr,
   /usr/bin/xarchiver					Px -> xarchiver_root,
 }

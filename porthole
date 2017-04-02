@@ -27,7 +27,7 @@ profile porthole @{PYTHON_EXEC}/porthole {
   /dev/ptmx						rw,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						cx -> shell,
+  @{shell}						cx,
   /bin/bzip2						ix,
   /usr/bin/sandbox					ixr,
   
@@ -50,14 +50,14 @@ profile porthole @{PYTHON_EXEC}/porthole {
   # USERS ----------------------------------------------
   owner @{HOME}/.porthole/{,prefs.xml}			rw,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/uname						ix,
     /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh	ix,
     

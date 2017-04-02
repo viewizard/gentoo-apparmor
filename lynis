@@ -24,7 +24,7 @@ profile lynis /usr/sbin/lynis {
   /dev/mapper/control					w,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						Cxmr -> shell,	# Все правильно, запуск и mmap
+  @{shell}						Cxmr,	# Все правильно, запуск и mmap
   /bin/date						ix,
   /bin/expr						ix,
   /bin/ls						ix,
@@ -67,8 +67,8 @@ profile lynis /usr/sbin/lynis {
   /usr/bin/dig						ix,
   /usr/bin/ntpq						Px,
   /usr/bin/shasum-*-perl-*				ix,
-  /usr/sbin/smbd					Cx -> smbd,
-  /usr/sbin/sshd					Cx -> sshd,
+  /usr/sbin/smbd					Cx,
+  /usr/sbin/sshd					Cx,
   /usr/sbin/sysctl					Px,
   /usr/sbin/syslog-ng					Px,
   /usr/bin/logrotate					Px,
@@ -91,7 +91,7 @@ profile lynis /usr/sbin/lynis {
   # NOISY ----------------------------------------------
   deny /*						w,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -102,7 +102,7 @@ profile lynis /usr/sbin/lynis {
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						ixmr,	# Все правильно, запуск и mmap
+    @{shell}						ixmr,	# Все правильно, запуск и mmap
     /bin/grep						ix,
     /bin/env						ix,
     /bin/rm						ix,
@@ -114,7 +114,7 @@ profile lynis /usr/sbin/lynis {
     owner /tmp/lynis-shellshock-test.*			rw,
   }
   
-  profile smbd {
+  profile smbd /usr/sbin/smbd {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -124,7 +124,7 @@ profile lynis /usr/sbin/lynis {
     /usr/share/samba/{,**}				r,
   }
   
-  profile sshd {
+  profile sshd /usr/sbin/sshd {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     

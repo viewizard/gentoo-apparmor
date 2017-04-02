@@ -30,7 +30,7 @@ profile codeblocks /usr/bin/codeblocks {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/codeblocks					mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /usr/bin/gcc						ix,
   /usr/bin/g++						ix,
   /usr/bin/llvm-ar					ix,
@@ -58,7 +58,7 @@ profile codeblocks /usr/bin/codeblocks {
   owner /tmp/CODEBLOCKS*.socket rw,
   owner /tmp/Code::Blocks-* rwk,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/program-work-with-disk-rwk-strict>
@@ -69,7 +69,7 @@ profile codeblocks /usr/bin/codeblocks {
     @{PROC}/@{pid}/fd/					r,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /{bin,sbin}/**					ixr,
     /usr/{bin,sbin}/**					ixr,
     /usr/{lib{,32,64,exec},@{CHOST}}/**			ixr,

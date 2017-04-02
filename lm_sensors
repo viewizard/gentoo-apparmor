@@ -25,7 +25,7 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/sensors					Px,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /bin/kmod						Px,
   /bin/mount						Px,
   /bin/grep						ix,
@@ -33,7 +33,7 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors {
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/lm_sensors				r,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

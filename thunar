@@ -29,14 +29,6 @@ profile thunar /usr/bin/{Thunar,thunar} {
   #include <abstractions/executable-binary-programs>
   #include <local/thunar-custom-exec>
   
-  # CAPABILITIES ---------------------------------------
-  capability dac_override,
-  capability dac_read_search,
-  capability sys_resource,
-  capability fowner,
-  capability fsetid,
-  capability sys_admin,
-  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					w,
@@ -47,7 +39,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar					mr,
-  /bin/bash						Cx,
+  @{shell}						Cx,
   /bin/env						Cx,
   /bin/umount						Px,
   /usr/libexec/thunar-archive-plugin/xarchiver.tap	Px,
@@ -70,28 +62,20 @@ profile thunar /usr/bin/{Thunar,thunar} {
   owner @{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
   owner @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   
-  profile /bin/bash {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <local/thunar-custom-actions>
-    
-    # CAPABILITIES -------------------------------------
-    capability dac_read_search,
-    capability dac_override,
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					w,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
   }
   
-  profile /bin/env {
+  profile env /bin/env {
     #include <abstractions/base>
-    
-    # CAPABILITIES -------------------------------------
-    capability dac_override,
-    capability dac_read_search,
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					w,
@@ -136,7 +120,7 @@ profile thunar_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar					mr,
-  /bin/bash						Cx,
+  @{shell}						Cx,
   /bin/env						Cx,
   /bin/umount						Px,
 #  /usr/libexec/thunar-archive-plugin/xarchiver.tap	Px -> xarchiver_tap_root,	# RBAC!
@@ -160,7 +144,7 @@ profile thunar_root {
   owner @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   @{HOME}/.Xauthority					r,
   
-  profile /bin/bash {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <local/thunar_root-custom-actions>
     
@@ -172,10 +156,10 @@ profile thunar_root {
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
   }
   
-  profile /bin/env {
+  profile env /bin/env {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -200,7 +184,7 @@ profile thunar-settings /usr/bin/thunar-settings {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar-settings				r,
-  /bin/bash						mr,
+  @{shell}						mr,
   /usr/bin/dbus-send					Pxr,
 }
 
@@ -211,6 +195,6 @@ profile thunar-ThunarBulkRename /usr/lib{,32,64}/Thunar/ThunarBulkRename {
   /dev/tty						rw,
   
   # EXECUTABLES ----------------------------------------
-  /bin/bash						mr,
+  @{shell}						mr,
   /usr/bin/thunar					Px,
 }

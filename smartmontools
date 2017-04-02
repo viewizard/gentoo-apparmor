@@ -24,21 +24,21 @@ profile smartmontools.smartd /usr/sbin/smartd {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/smartd					mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/smartd.conf					r,
   /usr/share/smartmontools/**				r,
   /run/smartd.pid					rwk,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
   }
 }
 
@@ -66,13 +66,13 @@ profile smartmontools.init.d /etc/init.d/smartd {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/smartd					Px,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/smartd				r,
   /run/smartd.pid					rwk,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

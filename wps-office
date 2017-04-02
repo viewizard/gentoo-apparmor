@@ -34,7 +34,7 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/{et,wpp,wps}					r,
-  /bin/bash						Cxmr -> shell,	# Все правильно, права на запуск и на mmap.
+  @{shell}						Cxmr,	# Все правильно, запуск и mmap.
   /bin/dirname						ix,
   /opt/kingsoft/wps-office/office6/{et,wpp,wps}		ix,
   
@@ -64,14 +64,14 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   deny /opt/kingsoft/wps-office/office6/startup/	w,
   deny /etc/xdg/kingsoft.conf				w,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/uname						ix,
   }
 }

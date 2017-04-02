@@ -28,8 +28,8 @@ profile xfce4-session /usr/bin/xfce4-session {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-session				Pxmr,	# Все правильно, запуск и mmap.
-  /bin/bash						Cx -> shell,
-  /bin/env						Cx -> env,
+  @{shell}						Cx,
+  /bin/env						Cx,
   /bin/true						ix,
   /bin/rm						ixr,
   /usr/bin/ssh-agent					Px,
@@ -64,7 +64,7 @@ profile xfce4-session /usr/bin/xfce4-session {
   owner /tmp/.ICE-unix/*				w,
   owner /tmp/.xfsm-ICE-*				rw,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -72,14 +72,14 @@ profile xfce4-session /usr/bin/xfce4-session {
     /dev/tty[0-9]*					w,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/sleep						ix,
     /usr/bin/iceauth					Px,
     /usr/bin/cairo-clock				Px,
     /usr/bin/conky					Px,
   }
   
-  profile env {
+  profile env /bin/env {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -142,7 +142,7 @@ profile xfce4-session.xflock4 /usr/bin/xflock4 {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xflock4					r,
-  /bin/bash						mr,
+  @{shell}						mr,
   /usr/bin/mate-screensaver-command			Px,	# MATE
 }
 
@@ -156,10 +156,10 @@ profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/startxfce4					r,
-  /bin/bash						Cxmr -> shell,	# Все правильно, запуск и mmap.
+  @{shell}						Cxmr,	# Все правильно, запуск и mmap.
   /usr/bin/xinit					Px,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -167,7 +167,7 @@ profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
     /dev/tty[0-9]*					w,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/cat						ix,
     /bin/grep						ix,
     /bin/sed						ix,
@@ -188,5 +188,5 @@ profile xfce4-session.Xfce4 /etc/X11/Sessions/Xfce4 {
   
   # EXECUTABLES --------------------------------------
   /etc/X11/Sessions/Xfce4				r,
-  /bin/bash						mr,
+  @{shell}						mr,
 }

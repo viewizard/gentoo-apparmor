@@ -17,21 +17,21 @@ profile eselect-python.python-wrapper /usr/bin/python-wrapper flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/python-wrapper				mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/env.d/python/config				r,
   /etc/profile.env					r,
   /{etc,usr,usr/local,usr/share}/portage/{,**}		r,
   
-  profile shell flags=(complain) {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/uname						ix,
   }
 }

@@ -35,7 +35,7 @@ profile engrampa /usr/bin/engrampa {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/engrampa					mr,
-  /bin/bash						Cx,
+  @{shell}						Cx,
   /bin/mv						ix,
   /bin/rm						ix,
   /bin/cp						ix,
@@ -62,7 +62,7 @@ profile engrampa /usr/bin/engrampa {
   owner @{HOME}/.config/mimeapps.list*			rw,
   owner @{HOME_CACHE}/.fr-*/{,**}			rw,
   
-  profile /bin/bash {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/program-work-with-disk-rwkl-strict>
     
@@ -70,14 +70,14 @@ profile engrampa /usr/bin/engrampa {
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/gzip						ix,
     /bin/bzip2						ix,
     /usr/bin/lzip					ix,
     /usr/bin/xz						ix,
   }
   
-  profile /opt/rar/rar {
+  profile rar /opt/rar/rar {
     #include <abstractions/base>
     #include <abstractions/program-work-with-disk-rwkl-strict>
     
@@ -119,7 +119,7 @@ profile engrampa_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/engrampa					mr,
-  /bin/bash						Cx,
+  @{shell}						Cx,
   /bin/mv						ix,
   /bin/rm						ix,
   /bin/cp						ix,
@@ -147,7 +147,7 @@ profile engrampa_root {
   @{HOME_CACHE}/.fr-*/{,**}				rw,
   @{HOME}/.Xauthority					r,
   
-  profile /bin/bash {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/program-work-with-disk-rwkl-strict>
     #include <abstractions/user-systemwide-files>
@@ -156,14 +156,14 @@ profile engrampa_root {
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/gzip						ix,
     /bin/bzip2						ix,
     /usr/bin/lzip					ix,
     /usr/bin/xz						ix,
   }
   
-  profile /opt/rar/rar {
+  profile rar /opt/rar/rar {
     #include <abstractions/base>
     #include <abstractions/program-work-with-disk-rwkl-strict>
     #include <abstractions/user-systemwide-files>
@@ -186,7 +186,7 @@ profile engrampa_tap /usr/libexec/thunar-archive-plugin/engrampa.tap {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/thunar-archive-plugin/engrampa.tap	r,
-  /bin/bash						mr,
+  @{shell}						mr,
   /usr/bin/engrampa					Px,
 }
 
@@ -199,6 +199,6 @@ profile engrampa_tap_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/thunar-archive-plugin/engrampa.tap	r,
-  /bin/bash						mr,
+  @{shell}						mr,
   /usr/bin/engrampa					Px -> engrampa_root,
 }

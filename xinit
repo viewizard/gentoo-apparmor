@@ -24,10 +24,10 @@ profile xinit /usr/bin/xinit {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xinit					mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /etc/X11/xinit/xserverrc				Px,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -35,7 +35,7 @@ profile xinit /usr/bin/xinit {
     /dev/tty[0-9]*					w,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
     /bin/cat						ix,
     /bin/grep						ix,
     /bin/sed						ix,
@@ -67,7 +67,7 @@ profile xinit.xserverrc /etc/X11/xinit/xserverrc {
   
   # EXECUTABLES ----------------------------------------
   /etc/X11/xinit/xserverrc				r,
-  /bin/bash						mr,
+  @{shell}						mr,
   /usr/bin/Xorg						Px,
 }
 
@@ -84,7 +84,7 @@ profile xinit.startx /usr/bin/startx {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/startx					r,
-  /bin/bash						mr,
+  @{shell}						mr,
   /bin/uname						ix,
   /bin/hostname						ix,
   /bin/grep						ix,

@@ -90,7 +90,7 @@ profile nullmailer.init.d /etc/init.d/nullmailer {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/nullmailer-send				Px,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/environment					r,
@@ -99,7 +99,7 @@ profile nullmailer.init.d /etc/init.d/nullmailer {
   /run/nullmailer.pid					rwk,
   /run/utmp						rk,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>

@@ -28,7 +28,7 @@ profile alock /usr/bin/alock {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/alock					mr,
-  /bin/bash						Cx -> shell,
+  @{shell}						Cx,
   /sbin/unix_chkpwd					Px,
   
   # READS/WRITES ---------------------------------------
@@ -37,7 +37,7 @@ profile alock /usr/bin/alock {
   /usr/local/share/backgrounds/**.@{local_ext}		r,
   /run/utmp						rk,
   
-  profile shell {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/authentication-pam_usb>
     
@@ -45,6 +45,6 @@ profile alock /usr/bin/alock {
     /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/bash						mr,
+    @{shell}						mr,
   }
 }
