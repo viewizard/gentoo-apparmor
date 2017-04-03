@@ -1,0 +1,64 @@
+1) Базовый deny на неподдерживаемые файлы.
+У программ, с явным перечнем расширений, блокировать через deny обращение к открытию файлов не имеющие расширений вообще, начинающиеся с точки. Уменьшить вывод предупреждений в лог.
+(?) делать по фиксированным путям, чтобы исключить блокировку нужных файлов?
+
+
+2) portage.emerge улучшение ограничений в следующих версиях AppArmor.
+Когда будет введен режим исключения в правилах, откорректировать:
+/usr/** rwl, # FIX ME! exclude "/usr/local" with {*^}/{**^}, when this features will be available
+/var/** rwk, # FIX ME! exclude "/var/log" (allow only subfolder creation and .keep* files) with {*^}/{**^}, when this features will be available
+
+
+3) network улучшение ограничений в следующих версиях AppArmor.
+<address_expr> ::= [('source'|'src') <domain_addr> ['on' <iface>]] [('destination'|'dst' <domain_addr>]
+<domain_addr> ::= (<ipv4_addr> | <ipv6_addr> | ..)
+ network tcp src 192.168.1.1:80 dst 170.1.1.0:80,
+ <ipv4_addr> ::= [<ipv4_??>['/'(<ipv_??>|<num>)]][':'<ports>]
+ <ipv4_??> ::= <??_expr>'.'<??_expr>'.'<??_expr>'.'<??_expr>
+ <??_expr> ::= (<num>|<range>|'*')
+ <ports> ::= (<num>|<range>)(','<num>|<range>])*
+ <range> ::= <num> '-' <num>
+ 192.168.1.1
+ 192.168.1.1-254
+ 192.168.1.1:80
+ 192.168.1.1:80,81
+ 192.168.1.1:80,81,100-200
+
+
+4) "owner" улучшение ограничений в следующих версиях AppArmor.
+extended ownership tests (not currently supported)
+ eg.
+ owner=fred
+ owner=1001
+ owner=(fred)
+ owner=(fred george)
+ owner=(fred 1001)
+/etc/apparmor.d/abstractions/authentication, например, хорошо бы сделать с owner=0
+
+
+5) network не работает в поддерживаемой kernel.org версии ядра
+network не работает в поддерживаемой kernel.org версии ядра. Нужно использовать переработанную каноникал часть кода в ./security/apparmor/, которая значительно отличается от основной ветки ядра.
+
+
+6 mount улучшение ограничений в следующих версиях AppArmor.
+Add the ability for apparmor to do mediation of mount operations. Mount
+rules require an updated apparmor_parser (2.8 series) for policy compilation.
+The basic form of the rules are.
+  [audit] [deny] mount [conds]* [device] [ -> [conds] path],
+  [audit] [deny] remount [conds]* [path],
+  [audit] [deny] umount [conds]* [path],
+  [audit] [deny] pivotroot [oldroot=<value>] <path>
+  remount is just a short cut for mount options=remount
+  where [conds] can be
+    fstype=<expr>
+    options=<expr>
+Example mount commands
+  mount,        # allow all mounts, but not umount or pivotroot
+  mount fstype=procfs,  # allow mounting procfs anywhere
+  mount options=(bind, ro) /foo -> /bar,  # readonly bind mount
+  mount /dev/sda -> /mnt,
+  mount /dev/sd** -> /mnt/**,
+  mount fstype=overlayfs options=(rw,upperdir=/tmp/upper/,lowerdir=/) -> /mnt/
+  umount,
+  umount /m*,
+

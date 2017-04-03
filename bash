@@ -74,7 +74,7 @@ profile shell_users {
   /usr/bin/clear					ixr,
   /usr/bin/wine						Pxr,
   /usr/bin/winecfg					Pxr,
-  /usr/bin/pamusb-agent					Pxr,
+  /usr/bin/pamusb-agent					Pxr,	# pam_usb
   /usr/bin/libnotify-notify-send			Pxr,
   
   # READS/WRITES ---------------------------------------
@@ -125,6 +125,7 @@ profile shell_root {
   /bin/sleep						ixr,
   /bin/passwd						Pxr,
   /bin/uname						ixr,
+  /bin/su						Pxr,
   /bin/cp						ixr,
   /bin/mv						ixr,
   /bin/chown						ixr,
@@ -172,7 +173,6 @@ profile shell_root {
   /usr/bin/git						Pxr -> git_root,
   /usr/bin/exo-open					Pxr,
   /usr/bin/killall					Pxr,
-  /usr/bin/pamusb-check					Pxr,
   /usr/bin/gsettings					Pxr,
   /usr/bin/revdep-rebuild{,.sh}				Pxr,
   /usr/bin/whoami					ixr,
@@ -189,7 +189,8 @@ profile shell_root {
   /usr/bin/lsusb					Pxr,
   /usr/bin/gpg{,2,-static}				Pxr,
   /usr/bin/find						ixr,
-  /usr/bin/pamusb-agent					Pxr,
+  /usr/bin/pamusb-check					Pxr,	# pam_usb
+  /usr/bin/pamusb-agent					Pxr,	# pam_usb
   /usr/bin/nmap						Pxr,
   /usr/bin/wget						Pxr -> wget_root,
   /usr/bin/man						Pxr,

@@ -74,6 +74,7 @@ profile sudo /usr/bin/sudo {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/authentication>
+    #include <abstractions/authentication-pam_mount>
     #include <local/sudo-custom>
     
     # CAPABILITIES -------------------------------------
@@ -87,19 +88,14 @@ profile sudo /usr/bin/sudo {
     # PSEUDO -------------------------------------------
     /dev/pts/[0-9]*					w,
     @{PROC}/@{pid}/fd/					r,
-    @{PROC}/@{pid}/mountinfo				r,
     
     # EXECUTABLES --------------------------------------
     @{shell}						Px -> shell_root,
-    /bin/mount						Px,
-    /bin/umount						Px,
     /sbin/xtables-multi					Px,
-    /usr/bin/ofl					Px,
     /usr/bin/thunar					Px -> thunar_root,	# XFCE4
     /usr/bin/dbus-daemon				Px,
     /usr/bin/gksu_askpass.sh				Px,
     /usr/bin/gsmartcontrol				Px,
-    /usr/sbin/pmvarrun					Px,
     /usr/sbin/firewall					Px,
     
     # READS/WRITES -------------------------------------

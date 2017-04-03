@@ -80,6 +80,7 @@ profile polkit.pkexec /usr/bin/pkexec flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/authentication>
+    #include <abstractions/authentication-pam_mount>
     
     # CAPABILITIES -------------------------------------
     capability setuid,
@@ -89,7 +90,6 @@ profile polkit.pkexec /usr/bin/pkexec flags=(complain) {
     /dev/tty[0-9]*					w,
     
     # EXECUTABLES ----------------------------------------
-    /usr/sbin/pmvarrun					Px,
     /usr/sbin/gparted					Px,
   }
 }

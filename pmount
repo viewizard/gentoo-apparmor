@@ -38,8 +38,8 @@ profile pmount /usr/bin/pmount flags=(complain) {
   /etc/pmount.conf					r,
   /etc/pmount.allow					r,
   /etc/fstab						r,
-  /media/pam_usb*/{,**}					rw,
-  /run/lock/pmount__media_pam_usb*			rwk,
+  /media/pam_usb*/{,**}					rw,	# pam_usb
+  /run/lock/pmount__media_pam_usb*			rwk,	# pam_usb
 }
 
 profile pmount.pumount /usr/bin/pumount flags=(complain) {
@@ -63,5 +63,5 @@ profile pmount.pumount /usr/bin/pumount flags=(complain) {
   # READS/WRITES ---------------------------------------
   /etc/pmount.conf					r,
   /etc/fstab						r,
-  /media/pam_usb*/{,**}					rw,
+  /media/pam_usb*/{,**}					rw,	# pam_usb
 }
