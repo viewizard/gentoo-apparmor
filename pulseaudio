@@ -14,7 +14,6 @@ profile pulseaudio /usr/bin/pulseaudio {
   #include <abstractions/base>
   #include <abstractions/audio>
   #include <abstractions/dbus-session>
-  #include <abstractions/X>
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
@@ -44,9 +43,8 @@ profile pulseaudio /usr/bin/pulseaudio {
   # USERS ----------------------------------------------
   owner @{HOME}/.config/pulse/				rw,
   owner @{HOME}/.config/pulse/**			rwk,
-  
-  # TEMP -----------------------------------------------
-  owner /tmp/pulse-*/autospawn.lock			rwk,
+  owner @{HOME}/.Xauthority				r,
+  owner @{HOME}/.ICEauthority				r,
 }
 
 profile pulseaudio.start-pulseaudio-x11 /usr/bin/start-pulseaudio-x11 {
