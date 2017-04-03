@@ -58,6 +58,7 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
   /dev/disk/{,**}					rw,
   /dev/input/{,**}					w,
   /dev/{block,char,mapper}/{,*}				w,
+  /dev/v4l/{,**}					w,
   /dev/bus/usb/**					w,
   /sys/bus/pci/slots/					r,
   /sys/**/uevent					rw,
@@ -83,6 +84,8 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
   /lib{,32,64}/udev/nvidia-udev.sh			Px,
   /lib{,32,64}/udev/ata_id				Px,
   /lib{,32,64}/udev/scsi_id				Px,
+  /lib{,32,64}/udev/v4l_id				Px,
+  /usr/lib{,32,64}/ConsoleKit/udev-acl			Px,
   
   # READS/WRITES ---------------------------------------
   /etc/group						r,
@@ -97,6 +100,9 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
   /run/udev/tags/{,**}					w,
   /run/udev/{data,watch,links}/**			rw,
   /run/udev/watch{,.old}/{,[0-9]*}			rw,
+  
+  # NOISY ----------------------------------------------
+  deny /dev/						w,
   
   profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
@@ -133,6 +139,17 @@ profile eudev.scsi_id /lib{,32,64}/udev/scsi_id flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/udev/scsi_id				mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/udev/udev.conf					r,
+}
+
+profile eudev.v4l_id /lib{,32,64}/udev/v4l_id flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/camera>
+  
+  # EXECUTABLES ----------------------------------------
+  /lib{,32,64}/udev/v4l_id				mr,
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
