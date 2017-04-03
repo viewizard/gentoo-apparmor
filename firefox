@@ -10,12 +10,29 @@
 
 #include <tunables/global>
 
-profile firefox /usr/{bin/firefox,lib{,32,64}/firefox/firefox{,-bin}} {
+# FIX ME! Скрипт запуска для управления доступом к интернету
+profile firefox.start_script /usr/bin/firefox {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/firefox					r,
+  @{shell}						mr,
+  /usr/bin/id						ix,
+  /usr/bin/newgrp					Px,
+  /usr/lib{,32,64}/firefox/firefox			Px,
+}
+
+profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/enchant>
   #include <abstractions/audio>
+  #include <abstractions/camera>
   #include <abstractions/cups-client>
   #include <abstractions/gtk>
   #include <abstractions/nameservice>
@@ -28,7 +45,6 @@ profile firefox /usr/{bin/firefox,lib{,32,64}/firefox/firefox{,-bin}} {
   #include <abstractions/executable-binary-helper>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty						rw,
   /dev/tty[0-9]*					w,
   owner /dev/shm/org.chromium.*				rw,
   /sys/devices/system/cpu/{,**}				r,
@@ -50,9 +66,7 @@ profile firefox /usr/{bin/firefox,lib{,32,64}/firefox/firefox{,-bin}} {
   owner @{PROC}/@{pid}/auxv				r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/firefox					mr,
   /usr/lib{,32,64}/firefox/firefox{,-bin}		mr,
-  @{shell}						mr,
   /bin/which						ixr,
   /bin/ps						Pxr,
   /bin/uname						ixr,
