@@ -59,3 +59,13 @@ profile coreutils.uname /bin/uname flags=(complain) {		# FIX ME! 04.04.2014 flag
   # EXECUTABLES ----------------------------------------
   /bin/uname						mr,
 }
+
+profile coreutils.tty /bin/tty flags=(complain) {		# FIX ME! 04.04.2014 flags=(complain)
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/tty						mr,
+}
