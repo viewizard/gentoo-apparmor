@@ -32,8 +32,8 @@ profile thunar /usr/bin/{Thunar,thunar} {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					w,
-  /sys/devices/pci[0-9]*/**/uevent			r,
-  /sys/devices/virtual/block/md[0-9]*/uevent		r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
   @{PROC}/@{pid}/fd/					r,
   owner @{PROC}/@{pid}/mountinfo			r,
   
@@ -55,6 +55,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   /usr/share/Thunar/sendto/*.desktop			r,
   /opt/*/**.png						r,
   /run/udev/data/*					r,
+  /run/mount/utab					r,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/Thunar/				rw,
@@ -113,8 +114,8 @@ profile thunar_root {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					w,
-  /sys/devices/pci[0-9]*/**/uevent			r,
-  /sys/devices/virtual/block/md[0-9]*/uevent		r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
   @{PROC}/@{pid}/fd/					r,
   owner @{PROC}/@{pid}/mountinfo			r,
   
@@ -136,6 +137,7 @@ profile thunar_root {
   /usr/share/Thunar/sendto/*.desktop			r,
   /opt/*/**.png						r,
   /run/udev/data/*					r,
+  /run/mount/utab					r,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/Thunar/				rw,

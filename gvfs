@@ -23,10 +23,11 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
   capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}uevent	r,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   @{PROC}/@{pid}/fd/					r,
   @{PROC}/@{pid}/mounts					r,
+  owner @{PROC}/@{pid}/mountinfo			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfs-udisks2-volume-monitor		mr,
@@ -38,6 +39,7 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
   /usr/share/mime/treemagic				r,
   /media/*/{,**/}					r,
   /run/udev/data/*					r,
+  /run/mount/utab					r,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.local/share/mime/treemagic		r,
@@ -217,13 +219,16 @@ profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   #include <abstractions/program-work-with-disk-rwk>
   
   # PSEUDO ---------------------------------------------
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}name	r,
   @{PROC}/@{pid}/mounts					r,
+  owner @{PROC}/@{pid}/mountinfo			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-trash				mr,
   
   # READS/WRITES ---------------------------------------
   /usr/share/mime/mime.cache				r,
+  /run/mount/utab					r,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.local/share/mime/mime.cache		r,
