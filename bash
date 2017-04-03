@@ -27,7 +27,7 @@ profile shell_service @{shell} {
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
   /bin/sed						ixr,
-  /bin/uname						ixr,
+  /bin/uname						Pxr,
   /sbin/mdadm						Pxr,
   /usr/sbin/logcheck					Pxr,
 }
@@ -61,7 +61,7 @@ profile shell_users {
   /bin/grep						ixr,
   /bin/ps						Pxr,
   /bin/passwd						Pxr,
-  /bin/uname						ixr,
+  /bin/uname						Pxr,
   /bin/su						Pxr,
   /bin/rc-status					Pxr,
   /bin/sleep						ixr,
@@ -124,7 +124,7 @@ profile shell_root {
   /bin/umount						Pxr,
   /bin/sleep						ixr,
   /bin/passwd						Pxr,
-  /bin/uname						ixr,
+  /bin/uname						Pxr,
   /bin/su						Pxr,
   /bin/cp						ixr,
   /bin/mv						ixr,

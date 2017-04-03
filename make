@@ -20,7 +20,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /usr/bin/{,g}make					ixmr,	# Все правильно, запуск и mmap.
   @{shell}						Cx,
-  /bin/uname						ix,
+  /bin/uname						Px,
   /bin/rm						ix,
   /bin/ln						ix,
   /bin/cp						ix,
@@ -53,7 +53,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     
     # EXECUTABLES --------------------------------------
     @{shell}						ixmr,	# Все правильно, запуск и mmap.
-    /bin/uname						ix,
+    /bin/uname						Px,
     /bin/sed						ix,
     /bin/rm						ix,
     /bin/wc						ix,

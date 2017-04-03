@@ -34,18 +34,28 @@ profile coreutils.stat /usr/bin/stat {
   capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]* w,
+  /dev/pts/[0-9]*					w,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/stat mr,
+  /usr/bin/stat						mr,
 }
 
 profile coreutils.date /bin/date {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]* w,
+  /dev/pts/[0-9]*					w,
   
   # EXECUTABLES ----------------------------------------
-  /bin/date mr,
+  /bin/date						mr,
+}
+
+profile coreutils.uname /bin/uname flags=(complain) {		# FIX ME! 04.04.2014 flags=(complain)
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/uname						mr,
 }
