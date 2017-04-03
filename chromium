@@ -99,7 +99,7 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   
   # EXECUTABLES ----------------------------------------
   /bin/ps						Pxr,
-  /usr/bin/xdg-settings					Cxr,
+  /usr/bin/xdg-settings					Pxr,
   /usr/bin/lsb_release					Pxr,
   /usr/bin/gvfs-open					Pxr,
   # Allow transitions to ourself and our sandbox
@@ -143,46 +143,6 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   deny /dev/bus/usb/					r,
   deny /usr/lib{,32,64}/chromium-browser/**		w,
   deny owner @{HOME}/.mozilla/{,**}			r,
-  
-  profile xdg-settings /usr/bin/xdg-settings {
-    #include <abstractions/base>
-    #include <abstractions/freedesktop.org>
-    #include <abstractions/fonts>
-    #include <abstractions/shell>
-    #include <abstractions/gtk>
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty						rw,
-    
-    # EXECUTABLES --------------------------------------
-    /usr/bin/xdg-settings				mr,
-    # Checking default browser
-    @{shell}						mr,
-    /bin/grep						ixr,
-    /bin/readlink					ixr,
-    /bin/sed						ixr,
-    /bin/which						ixr,
-    /usr/bin/basename					ixr,
-    /usr/bin/cut					ixr,
-    # Setting the default browser
-    /bin/mkdir						ix,
-    /bin/mv						ix,
-    /bin/touch						ix,
-    /bin/cut						ix,
-    /usr/bin/dirname					ix,
-    /usr/bin/gconftool-2				ix,
-    /usr/bin/[gm]awk					ixr,
-    /usr/bin/xdg-mime					ixr,
-    
-    # READS/WRITES -------------------------------------
-    /etc/xdg/xfce4/helpers.rc				r,
-    owner @{HOME}/.config/xfce4/helpers.rc		r,
-    owner @{HOME}/.local/share/applications/		w,
-    owner @{HOME}/.local/share/applications/mimeapps.list* rw,
-    
-    # NOISY --------------------------------------------
-    deny @{shell}					x,	# checking default browser
-  }
   
   profile chrome-sandbox /usr/lib{,32,64}/chromium-browser/chrome-sandbox {
     # Be fanatical since it is setuid root and don't use an abstraction

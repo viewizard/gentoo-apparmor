@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile xdg-open /usr/bin/xdg-open {
+profile xdg-utils.xdg-open /usr/bin/xdg-open {
   #include <abstractions/base>
   #include <abstractions/dbus>
   #include <abstractions/dbus-session>
@@ -30,7 +30,7 @@ profile xdg-open /usr/bin/xdg-open {
   /usr/bin/xprop					ix,
 }
 
-profile xdg-email /usr/bin/xdg-email {
+profile xdg-utils.xdg-email /usr/bin/xdg-email {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -44,7 +44,7 @@ profile xdg-email /usr/bin/xdg-email {
   /usr/bin/exo-open					Px,
 }
 
-profile xdg-screensaver /usr/bin/xdg-screensaver {
+profile xdg-utils.xdg-screensaver /usr/bin/xdg-screensaver {
   #include <abstractions/base>
   #include <abstractions/dbus-session>
   #include <abstractions/X>
@@ -63,6 +63,48 @@ profile xdg-screensaver /usr/bin/xdg-screensaver {
   /usr/bin/dbus-send					Px,
   /usr/bin/xset						ix,
   /usr/bin/xautolock					Px,
+}
+
+# Первоначально был дочерним профилем chromium, требует доработки.
+# Тестировать с chromium.
+profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/shell>
+  #include <abstractions/gtk>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/xdg-settings					mr,
+  # Checking default browser
+  @{shell}						mr,
+  /bin/grep						ixr,
+  /bin/readlink						ixr,
+  /bin/sed						ixr,
+  /bin/which						ixr,
+  /usr/bin/basename					ixr,
+  /usr/bin/cut						ixr,
+  # Setting the default browser
+  /bin/mkdir						ix,
+  /bin/mv						ix,
+  /bin/touch						ix,
+  /bin/cut						ix,
+  /usr/bin/dirname					ix,
+  /usr/bin/gconftool-2					ix,
+  /usr/bin/[gm]awk					ixr,
+  /usr/bin/xdg-mime					ixr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/xdg/xfce4/helpers.rc				r,
+  owner @{HOME}/.config/xfce4/helpers.rc		r,
+  owner @{HOME}/.local/share/applications/		w,
+  owner @{HOME}/.local/share/applications/mimeapps.list* rw,
+  
+  # NOISY ----------------------------------------------
+  deny @{shell}						x,	# checking default browser
 }
 
 profile xdg_open_root {
