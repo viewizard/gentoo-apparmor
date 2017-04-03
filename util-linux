@@ -23,12 +23,15 @@ profile util-linux.mount /bin/mount flags=(complain) {
   capability setuid,
   
   # PSEUDO ---------------------------------------------
+  /dev/							r,
   /dev/tty[0-9]*					w,
   /dev/pts/[0-9]*					w,
   /dev/@{BLOCK_ALL}					r,
   /dev/loop-control					rw,
+  /sys/block/						r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
+  @{PROC}/partitions					r,
   @{PROC}/@{pid}/mountinfo				r,
   
   # EXECUTABLES ----------------------------------------
@@ -42,6 +45,7 @@ profile util-linux.mount /bin/mount flags=(complain) {
   /run/mount/						w,
   /run/mount/utab					rw,
   /run/mount/utab.*					rwk,
+  /run/blkid/blkid.tab*					rwl,
 }
 
 profile util-linux.umount /bin/umount flags=(complain) {

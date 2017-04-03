@@ -18,6 +18,11 @@ profile xfce4-notifyd /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   
+  # CAPABILITIES ---------------------------------------
+  capability dac_read_search,					# RBAC! Нужно для запуска запущенным под root-ом
+  capability dac_override,					# dbus-daemon, чтобы сделал вывод в сессию пользователя.
+  								# Временно делаем одним профилем.
+  
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd		mr,
   
@@ -27,6 +32,9 @@ profile xfce4-notifyd /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd {
   
   # USERS ----------------------------------------------
   owner @{HOME_CACHE}/xfce4-notifyd-theme.rc*		rw,
+  @{HOME}/.Xauthority					r,	# RBAC! Нужно для запуска запущенным под root-ом
+  								# dbus-daemon, чтобы сделал вывод в сессию пользователя.
+  								# Временно делаем одним профилем.
   
   # TEMP -----------------------------------------------
   owner /tmp/gnotifier/gnotifier-*			r,
