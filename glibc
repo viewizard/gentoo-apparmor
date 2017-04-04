@@ -48,3 +48,10 @@ profile glibc.locale /usr/bin/locale flags=(complain) {		# FIX ME! 04.04.2014 fl
   # READS/WRITES ---------------------------------------
   /usr/share/i18n/charmaps/{,*}				r,
 }
+
+profile glibc.ldconfig /sbin/ldconfig flags=(complain) {	# FIX ME! 04.04.2014 flags=(complain)
+  #include <abstractions/base>
+  
+  # EXECUTABLES ----------------------------------------
+  /sbin/ldconfig					mr,
+}
