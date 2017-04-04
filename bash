@@ -71,7 +71,7 @@ profile shell_users {
   /usr/bin/whoami					Pxr,
   /usr/bin/id						Pxr,
   /usr/bin/startx{,fce4}				Pxr,
-  /usr/bin/clear					ixr,
+  /usr/bin/clear					Pxr,
   /usr/bin/wine						Pxr,
   /usr/bin/winecfg					Pxr,
   /usr/bin/pamusb-agent					Pxr,	# pam_usb

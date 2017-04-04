@@ -1,0 +1,24 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+profile ncurses.clear /usr/bin/clear flags=(complain) {		# FIX ME! 04.04.2014 flags=(complain)
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/clear					mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/terminfo/x/xterm					r,
+}
