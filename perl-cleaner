@@ -36,7 +36,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
   /usr/bin/q						ix,
   /usr/bin/xargs					ix,
   /usr/bin/gawk						ix,
-  /usr/bin/tput						ix,
+  /usr/bin/tput						Px,
   /usr/bin/scanelf					ix,
   /usr/bin/find						ix,
   /usr/bin/realpath					ix,
@@ -44,11 +44,9 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
   @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
   
   # READS/WRITES ---------------------------------------
-  /etc/terminfo/x/xterm					r,
-  /etc/portage/{,**}					r,
   /							r,
   /{bin,sbin,usr,opt,var}/{,**}				r,
-  /etc/portage/bin/{,**}				r,
+  /etc/portage/{,**}					r,
   /etc/env.d/cblas/lib64/{,**}				r,
   /usr/lib{,32,64}/perl**				w,
   

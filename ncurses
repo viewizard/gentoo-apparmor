@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile ncurses.clear /usr/bin/clear flags=(complain) {		# FIX ME! 04.04.2014 flags=(complain)
+profile ncurses.clear /usr/bin/clear flags=(complain) {		# FIX ME! 04.04.2017 flags=(complain)
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -21,4 +21,18 @@ profile ncurses.clear /usr/bin/clear flags=(complain) {		# FIX ME! 04.04.2014 fl
   
   # READS/WRITES ---------------------------------------
   /etc/terminfo/x/xterm					r,
+}
+
+profile ncurses.tput /usr/bin/tput flags=(complain) {		# FIX ME! 04.04.2017 flags=(complain)
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/tput						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/terminfo/x/xterm					r,
+#  /etc/terminfo/l/linux				r,	# FIX ME! пока не будет явного запроса, комментируем
 }

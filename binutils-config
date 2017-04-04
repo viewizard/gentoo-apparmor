@@ -33,13 +33,12 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
   /bin/cat						ix,
   /sbin/consoletype					Px,
   /usr/bin/find						ix,
-  /usr/bin/tput						ix,
+  /usr/bin/tput						Px,
   /usr/bin/scanelf					ix,
   /usr/bin/cmp						ix,
   @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,
   
   # READS/WRITES ---------------------------------------
-  /etc/terminfo/x/xterm					r,
   /etc/env.d/**						rw,
   /usr/bin/*						rw,
   /usr/@{CHOST}/**					rw,

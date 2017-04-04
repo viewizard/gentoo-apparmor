@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile onboard /usr/bin/onboard {
+profile onboard /usr/bin/onboard flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -25,11 +25,9 @@ profile onboard /usr/bin/onboard {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/onboard					mr,
-  /usr/bin/tput						ix,
+  /usr/bin/tput						Px,	# FIX ME! 05.04.2017 изменен c ix, flags=(complain)
   
   # READS/WRITES ---------------------------------------
-  /etc/terminfo/l/linux					r,
-  /etc/terminfo/x/xterm					r,
   /usr/bin/						r,
   /usr/share/onboard/{,**}				r,
   /usr/share/xml/iso-codes/{,*}				r,
@@ -42,7 +40,7 @@ profile onboard /usr/bin/onboard {
   deny @{HOME}/						r,
 }
 
-profile onboard-settings /usr/bin/onboard-settings {
+profile onboard-settings /usr/bin/onboard-settings flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -57,10 +55,9 @@ profile onboard-settings /usr/bin/onboard-settings {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/onboard-settings				mr,
-  /usr/bin/tput						ix,
+  /usr/bin/tput						Px,	# FIX ME! 05.04.2017 изменен c ix, flags=(complain)
   
   # READS/WRITES ---------------------------------------
-  /etc/terminfo/l/linux					r,
   /usr/bin/						r,
   /usr/share/onboard/{,**}				r,
   @{PYTHON_PACKAGES}/cairo/**.pyc{,.*}			w,
