@@ -49,17 +49,17 @@ profile acpid /usr/sbin/acpid {
     /bin/ps						Px,
     /bin/sed						ix,
     /sbin/shutdown					Px,
-    /usr/bin/fgconsole					ix,
+    /usr/bin/fgconsole					Px,
     /usr/bin/gawk					ix,
     /usr/bin/logger					Px,
-    /usr/bin/pinky					ix,
+    /usr/bin/pinky					Px,
     /usr/bin/pgrep					Px,
     /usr/bin/pidof					Px,
     /etc/acpi/default.sh				ixr,
     /etc/acpi/actions/powerbtn.sh			ixr,
     
     # READS/WRITES -------------------------------------
-    /run/utmp						rk,
+#    /run/utmp						rk,	# /usr/bin/pinky
   }
 }
 

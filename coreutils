@@ -111,3 +111,18 @@ profile coreutils.id /usr/bin/id flags=(complain) {		# FIX ME! 04.04.2014 flags=
   # EXECUTABLES ----------------------------------------
   /usr/bin/id						mr,
 }
+
+profile coreutils.pinky /usr/bin/pinky flags=(complain) {	# FIX ME! 04.04.2014 flags=(complain)
+								# изменять с корректировкой acpid.shell
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/pinky					mr,
+  
+  # READS/WRITES ---------------------------------------
+  /run/utmp						rk,
+}
