@@ -126,3 +126,13 @@ profile coreutils.pinky /usr/bin/pinky flags=(complain) {	# FIX ME! 04.04.2014 f
   # READS/WRITES ---------------------------------------
   /run/utmp						rk,
 }
+
+profile coreutils.stty /bin/stty flags=(complain) {		# FIX ME! 04.04.2014 flags=(complain)
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/stty						mr,
+}
