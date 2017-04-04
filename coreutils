@@ -136,3 +136,13 @@ profile coreutils.stty /bin/stty flags=(complain) {		# FIX ME! 04.04.2017 flags=
   # EXECUTABLES ----------------------------------------
   /bin/stty						mr,
 }
+
+profile coreutils.basename /bin/basename flags=(complain) {	# FIX ME! 05.04.2017 flags=(complain)
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/basename						mr,
+}

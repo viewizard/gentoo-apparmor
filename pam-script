@@ -24,7 +24,7 @@ profile pam-script /etc/security/pam-script/pam_script* flags=(complain) {
   /etc/security/pam-script/pam_script*			r,
   @{shell}						Cxmr,	# Все правильно, запуск и mmap.
   /bin/dirname						ix,
-  /bin/basename						ix,
+  /bin/basename						Px,
   
   # READS/WRITES ---------------------------------------
   /etc/security/pam-script/pam-script.d/{,**} r,
