@@ -24,9 +24,6 @@ profile apparmor-utils.aa-status @{PYTHON_EXEC}/aa-status {
   @{PROC}/@{pid}/attr/{current,prev,exec}		r,
   @{PROC}/@{pid}/mounts					r,
   
-  # EXECUTABLES ----------------------------------------
-  /bin/env						ixr,
-  
   # READS/WRITES ---------------------------------------
   @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
 }

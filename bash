@@ -117,7 +117,8 @@ profile shell_root {
   /bin/tr						Pxr,
   /bin/grep						ixr,
   /bin/ps						Pxr,
-  /bin/env						ixr,
+  /bin/env						ixr,	# ix в основном профиле, т.к. через него
+  								# можем запускать другие разрешенные процессы.
   /bin/sed						ixr,
   /bin/gzip						ixr,
   /bin/mount						Pxr,
@@ -177,7 +178,7 @@ profile shell_root {
   /usr/bin/revdep-rebuild{,.sh}				Pxr,
   /usr/bin/whoami					Pxr,
   /usr/bin/id						Pxr,
-  /usr/bin/rsync					ixr,	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/rsync					ixr,
   /usr/bin/htop						Pxr,
   /usr/bin/mc						Pxr -> mc_root,
   /usr/bin/eselect					Pxr,
