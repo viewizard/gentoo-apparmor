@@ -79,3 +79,13 @@ profile coreutils.tr /bin/tr flags=(complain) {			# FIX ME! 04.04.2014 flags=(co
   # EXECUTABLES ----------------------------------------
   /bin/tr						mr,
 }
+
+profile coreutils.sleep /bin/sleep flags=(complain) {		# FIX ME! 04.04.2014 flags=(complain)
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/sleep						mr,
+}
