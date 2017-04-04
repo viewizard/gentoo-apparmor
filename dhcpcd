@@ -27,18 +27,17 @@ profile dhcpcd /sbin/dhcpcd {
   @{PROC}/sys/net/ipv4/conf/*/promote_secondaries	rwk,
   
   # EXECUTABLES ----------------------------------------
+  /sbin/dhcpcd						mr,
   @{shell}						mr,
-  /bin/touch						ixmr,
-  /bin/mkdir						ixmr,
-  /bin/rm						ixmr,
-  /bin/sed						ixmr,
-  /bin/cat						ixmr,
-  /bin/chmod						ixmr,
-  /bin/hostname						ixmr,
-  /sbin/dhcpcd						ixmr,
-  /sbin/modify_resolvconf				ixmr,
-  /usr/bin/cmp						ixmr,
-  /lib{,32,64}/dhcpcd/dhcpcd-run-hooks			ixmr,
+  /bin/touch						ix,
+  /bin/mkdir						ix,
+  /bin/rm						ix,
+  /bin/sed						ix,
+  /bin/cat						ix,
+  /bin/chmod						ix,
+  /bin/hostname						ix,
+  /usr/bin/cmp						ix,
+  /lib{,32,64}/dhcpcd/dhcpcd-run-hooks			ix,
   
   # READS/WRITES ---------------------------------------
   /etc/resolv.conf{,.sv}				rwl,
