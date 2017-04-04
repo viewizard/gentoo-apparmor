@@ -114,7 +114,7 @@ profile shell_root {
   /bin/rm						ixr,
   /bin/cut						ixr,
   /bin/tty						Pxr,
-  /bin/tr						ixr,
+  /bin/tr						Pxr,
   /bin/grep						ixr,
   /bin/ps						Pxr,
   /bin/env						ixr,

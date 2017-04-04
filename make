@@ -58,7 +58,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /bin/rm						ix,
     /bin/wc						ix,
     /bin/mv						ix,
-    /bin/tr						ix,
+    /bin/tr						Px,
     /bin/ln						ix,
     /bin/cp						ix,
     /bin/pwd						ix,
