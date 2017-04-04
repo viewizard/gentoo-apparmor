@@ -34,3 +34,17 @@ profile glibc.ldd /usr/bin/ldd {
   /etc/ld.so.cache					mr,
   /var/cache/revdep-rebuild/*errors*			rw,	# gentoolkit.revdep-rebuild.sh
 }
+
+profile glibc.locale /usr/bin/locale flags=(complain) {		# FIX ME! 04.04.2014 flags=(complain)
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/locale					mr,
+  /bin/gzip						ix,
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/i18n/charmaps/{,*}				r,
+}

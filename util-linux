@@ -112,6 +112,7 @@ profile util-linux.lsblk /bin/lsblk flags=(complain) {
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					w,
   /sys/block/						r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/type	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   @{PROC}/swaps 					r,

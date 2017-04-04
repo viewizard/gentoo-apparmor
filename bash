@@ -128,8 +128,8 @@ profile shell_root {
   /bin/su						Pxr,
   /bin/cp						ixr,
   /bin/mv						ixr,
-  /bin/chown						ixr,
-  /bin/chmod						ixr,
+  /bin/chown						ixr,	# FIX ME! Вынести в отдельный профиль.
+  /bin/chmod						ixr,	# FIX ME! Вынести в отдельный профиль.
   /bin/nano						ixr,
   /bin/kmod						Pxr,
   /bin/cat						ixr,
@@ -144,19 +144,19 @@ profile shell_root {
   /bin/tar						ixr,
   /bin/head						ixr,
   /bin/tail						ixr,
-  /bin/getfattr						ixr,
-  /bin/setfattr						ixr,
+  /bin/getfattr						ixr,	# FIX ME! Вынести в отдельный профиль.
+  /bin/setfattr						ixr,	# FIX ME! Вынести в отдельный профиль.
   /bin/cpio						ixr,
   /bin/keyctl						ixr,
   /bin/mkdir						ixr,
   /bin/touch						ixr,
-  /bin/lsblk						ixr,
+  /bin/lsblk						Pxr,
   /sbin/mdadm						Pxr,
   /sbin/shutdown					Pxr,
   /sbin/{halt,poweroff,reboot}				Pxr,
   /sbin/cryptsetup					Pxr,
   /sbin/apparmor_parser					Pxr,
-  /sbin/paxctl						ixr,
+  /sbin/paxctl						ixr,	# FIX ME! Вынести в отдельный профиль.
   /sbin/gradm						Pxr,
   /sbin/{,c}fdisk					Pxr,
   /sbin/lvm						Pxr,
@@ -177,7 +177,7 @@ profile shell_root {
   /usr/bin/revdep-rebuild{,.sh}				Pxr,
   /usr/bin/whoami					Pxr,
   /usr/bin/id						Pxr,
-  /usr/bin/rsync					ixr,
+  /usr/bin/rsync					ixr,	# FIX ME! Вынести в отдельный профиль.
   /usr/bin/htop						Pxr,
   /usr/bin/mc						Pxr -> mc_root,
   /usr/bin/eselect					Pxr,
@@ -194,7 +194,7 @@ profile shell_root {
   /usr/bin/nmap						Pxr,
   /usr/bin/wget						Pxr -> wget_root,
   /usr/bin/man						Pxr,
-  /usr/bin/locale					ixr,
+  /usr/bin/locale					Pxr,
   /usr/bin/ldd						Pxr,
   /usr/bin/evmctl					Pxr,
   /usr/bin/gawk						ixr,
@@ -211,7 +211,7 @@ profile shell_root {
   /usr/sbin/etc-update					Pxr,
   /usr/sbin/migrate-pax					Pxr,
   /usr/sbin/revdep-pax					Pxr,
-  /usr/sbin/paxctl-ng					ixr,
+  /usr/sbin/paxctl-ng					ixr,	# FIX ME! Вынести в отдельный профиль.
   /usr/sbin/grub-mkconfig				Pxr,
   /usr/sbin/grub-install				Pxr,
   /usr/sbin/perl-cleaner				Pxr,
