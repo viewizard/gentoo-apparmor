@@ -100,3 +100,14 @@ profile coreutils.whoami /usr/bin/whoami flags=(complain) {	# FIX ME! 04.04.2014
   # EXECUTABLES ----------------------------------------
   /usr/bin/whoami					mr,
 }
+
+profile coreutils.id /usr/bin/id flags=(complain) {		# FIX ME! 04.04.2014 flags=(complain)
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/id						mr,
+}
