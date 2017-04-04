@@ -89,3 +89,14 @@ profile coreutils.sleep /bin/sleep flags=(complain) {		# FIX ME! 04.04.2014 flag
   # EXECUTABLES ----------------------------------------
   /bin/sleep						mr,
 }
+
+profile coreutils.whoami /usr/bin/whoami flags=(complain) {	# FIX ME! 04.04.2014 flags=(complain)
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/whoami					mr,
+}

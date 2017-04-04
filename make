@@ -83,7 +83,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /bin/bzip2						ix,
     /usr/bin/uniq					ix,
     /usr/bin/which					Px,
-    /usr/bin/whoami					ix,
+    /usr/bin/whoami					Px,
     /usr/bin/bc						ix,
     /usr/bin/cmp					ix,
     /usr/bin/git					ix,	# не используем Px и Px -> git_root.
