@@ -24,7 +24,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
   /bin/rm						ix,
   /bin/ln						ix,
   /bin/cp						ix,
-  /bin/echo						ix,
+  /bin/echo						Px,
   /bin/expr						ix,
   /bin/grep						ix,
   /bin/mkdir						ix,

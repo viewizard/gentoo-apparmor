@@ -156,3 +156,13 @@ profile coreutils.dirname /bin/dirname flags=(complain) {	# FIX ME! 05.04.2017 f
   # EXECUTABLES ----------------------------------------
   /bin/dirname						mr,
 }
+
+profile coreutils.echo /bin/echo flags=(complain) {		# FIX ME! 05.04.2017 flags=(complain)
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/echo						mr,
+}
