@@ -1,35 +1,42 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
+# EXECUTABLES ------------------------------------------
+owner @{HOME}/**/AstroMenace				Cx -> AstroMenace,
 
-# AstroMenace
-
-#include <abstractions/audio>
-#include <abstractions/nvidia>
-
-owner @{HOME}/**/AstroMenace ix,
-
-/sys/bus/ r,
-/sys/class/ r,
-/sys/class/input/ r,
-/sys/class/sound/ r,
-/sys/devices/**/uevent r,
-/sys/devices/pci**/sound/**/capabilities/* r,
-/etc/udev/udev.conf r,
-
-owner /tmp/.gl* rw,
-/run/udev/data/* r,
-
-owner @{HOME}/.config/astromenace/ rw,
-owner @{HOME}/.config/astromenace/* rw,
-
-# Noisy
-deny @{HOMEDIRS}/* w,
-deny @{HOMEDIRS}/*/ w,
+profile AstroMenace {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/audio>
+  #include <abstractions/nvidia>
+  #include <abstractions/X>
+  #include <abstractions/program-work-with-disk-rk-strict>
+  
+  # PSEUDO ---------------------------------------------
+  /sys/bus/						r,
+  /sys/class/						r,
+  /sys/class/input/					r,
+  /sys/class/sound/					r,
+  /sys/devices/**/uevent				r,
+  /sys/devices/pci**/sound/**/capabilities/*		r,
+  
+  # EXECUTABLES ----------------------------------------
+  @{HOME}/**/AstroMenace				mr,
+  
+  # READS/WRITES ---------------------------------------
+  /run/udev/data/*					r,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/astromenace/{,*}		rw,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/.gl*					rw,
+}

@@ -14,6 +14,9 @@
 @{PROG_DIR}="[^.]**"
 @{PROG_FILE}="[^.]*"
 
+# FIX ME! Все плохо, все "/** ix" надо убирать, иначе нельзя
+# давать обычному пользователю запуск этой программы!
+
 profile codeblocks /usr/bin/codeblocks {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -35,10 +38,10 @@ profile codeblocks /usr/bin/codeblocks {
   /usr/bin/g++						ix,
   /usr/bin/llvm-ar					ix,
   /usr/bin/gfortran					ix,
-  /usr/bin/@{CHOST}-clang-*				ix,
+  /usr/bin/{,@{CHOST}-}clang-*				ix,
   /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc			ix,
   /usr/@{CHOST}/gcc-bin/*/@{CHOST}-g++			ix,
-  /usr/libexec/gcc/@{CHOST}/*/cc1plus	ix,
+  /usr/libexec/gcc/@{CHOST}/*/cc1plus			ix,
   
   # READS/WRITES ---------------------------------------
   /etc/lsb-release					r,
