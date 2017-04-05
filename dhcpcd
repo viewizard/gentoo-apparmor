@@ -35,9 +35,9 @@ profile dhcpcd /sbin/dhcpcd {
   /bin/sed						ix,
   /bin/cat						ix,
   /bin/chmod						ix,
-  /bin/hostname						ix,
+  /bin/hostname						Px,
   /usr/bin/cmp						ix,
-  /lib{,32,64}/dhcpcd/dhcpcd-run-hooks			ix,
+  /lib{,32,64}/dhcpcd/dhcpcd-run-hooks			ix,	# FIX ME! В отдельный профиль с shell.
   
   # READS/WRITES ---------------------------------------
   /etc/resolv.conf{,.sv}				rwl,

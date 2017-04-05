@@ -76,7 +76,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /bin/mkdir						ix,
     /bin/kmod						Px,
     /bin/mktemp						ix,
-    /bin/hostname					ix,
+    /bin/hostname					Px,
     /bin/touch						ix,
     /bin/head						ix,
     /bin/tar						ix,

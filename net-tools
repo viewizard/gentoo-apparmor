@@ -48,3 +48,14 @@ profile net-tools.netstat /bin/netstat flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /bin/netstat						mr,
 }
+
+profile net-tools.hostname /bin/hostname flags=(complain) {	# FIX ME! 05.04.2017 flags=(complain)
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/hostname						mr,
+}
