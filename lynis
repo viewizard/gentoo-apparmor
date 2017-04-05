@@ -82,6 +82,9 @@ profile lynis /usr/sbin/lynis {
   /var/log/lynis.log					rw,
   /var/log/lynis-report.dat				rw,
   
+  # AUDIT READS/WRITES ---------------------------------
+  audit deny @{HOME_USERS}/**				r,
+  
   # TEMP -----------------------------------------------
   owner /tmp/lynis.*					rw,
   owner /tmp/lynis2.*					rw,

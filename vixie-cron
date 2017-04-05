@@ -47,6 +47,14 @@ profile vixie-cron.cron /usr/sbin/cron {
   }
 }
 
+profile vixie-cron.crontab /usr/bin/crontab {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/crontab					mr,
+}
+
 profile vixie-cron.init.d /etc/init.d/vixie-cron {
   #include <abstractions/base>
   #include <abstractions/nameservice>
