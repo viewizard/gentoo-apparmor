@@ -67,7 +67,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /bin/cut						ix,
     /bin/gzip						ix,
     /bin/date						ix,
-    /bin/dirname					ix,
+    /bin/dirname					Px,
     /bin/basename					Px,
     /bin/tail						ix,
     /bin/sort						ix,

@@ -146,3 +146,13 @@ profile coreutils.basename /bin/basename flags=(complain) {	# FIX ME! 05.04.2017
   # EXECUTABLES ----------------------------------------
   /bin/basename						mr,
 }
+
+profile coreutils.dirname /bin/dirname flags=(complain) {	# FIX ME! 05.04.2017 flags=(complain)
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					w,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/dirname						mr,
+}
