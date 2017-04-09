@@ -12,9 +12,13 @@
 
 profile at-spi2-core.at-spi-bus-launcher /usr/libexec/at-spi-bus-launcher {
   #include <abstractions/base>
-  #include <abstractions/dbus>
   #include <abstractions/dconf>
-  #include <abstractions/gtk>
+  #include <abstractions/gtk>				# FIX ME! действительно надо?
+  #include <abstractions/dbus-session-strict>
+  #include <abstractions/X-connection-strict>
+  
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term) peer="dbus.dbus-daemon",
   
   # PSEUDO ---------------------------------------------
   owner @{PROC}/@{pid}/fd/				r,
@@ -25,19 +29,13 @@ profile at-spi2-core.at-spi-bus-launcher /usr/libexec/at-spi-bus-launcher {
   
   # READS/WRITES ---------------------------------------
   /etc/at-spi2/accessibility.conf			r,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
-  owner @{HOME}/.Xauthority				r,
 }
 
 profile at-spi2-core.at-spi2-registryd /usr/libexec/at-spi2-registryd {
   #include <abstractions/base>
+  #include <abstractions/dbus-session-strict>
+  #include <abstractions/X-connection-strict>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/at-spi2-registryd			mr,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
-  owner @{HOME}/.Xauthority				r,
 }

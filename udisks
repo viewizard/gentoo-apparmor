@@ -46,10 +46,15 @@ profile udisks.udisks-daemon /usr/lib{,32,64}/udisks/udisks-daemon {
 
 profile udisks.udisksd /usr/libexec/udisks2/udisksd {
   #include <abstractions/base>
+  #include <abstractions/dbus-strict>
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
   capability sys_rawio,
+  capability mknod,
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
   
   # PSEUDO ---------------------------------------------
   /dev/@{BLOCK_ALL}					r,

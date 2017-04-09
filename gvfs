@@ -17,10 +17,15 @@
 profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monitor {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
   
   # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
   
   # PSEUDO ---------------------------------------------
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
@@ -47,6 +52,7 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
 
 profile gvfs.gvfsd /usr/libexec/gvfsd {
   #include <abstractions/base>
+  #include <abstractions/dbus-session-strict>
   
   # PSEUDO ---------------------------------------------
   owner @{PROC}/@{pid}/fd/				rw,
@@ -101,11 +107,18 @@ profile gvfs.gvfsd-ftp /usr/libexec/gvfsd-ftp flags=(complain) {
 profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  #include <abstractions/dbus-session-strict>
   
   # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
   capability sys_admin,
+  
+  # MOUNT ----------------------------------------------
+  mount options=(rw, nosuid, nodev) -> /run/user/*/gvfs/,
+  mount options=(rw, nosuid, nodev) -> /root/.gvfs/,
+  umount /run/user/*/gvfs/,
+  umount /root/.gvfs/,
   
   # PSEUDO ---------------------------------------------
   /dev/fuse						rw,
@@ -126,6 +139,7 @@ profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
 profile gvfs.gvfsd-http /usr/libexec/gvfsd-http flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/gtk>
   #include <abstractions/dconf>
   #include <abstractions/ssl_certs>
@@ -146,6 +160,7 @@ profile gvfs.gvfsd-localtest /usr/libexec/gvfsd-localtest flags=(complain) {
 
 profile gvfs.gvfsd-metadata /usr/libexec/gvfsd-metadata {
   #include <abstractions/base>
+  #include <abstractions/dbus-session-strict>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-metadata				mr,
@@ -164,6 +179,12 @@ profile gvfs.gvfsd-network /usr/libexec/gvfsd-network flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/dconf>
   #include <abstractions/gtk>
+  #include <abstractions/dbus-session-strict>
+  
+  # UNIX -----------------------------------------------
+  unix (bind, listen, send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*",
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-network				mr,
@@ -188,7 +209,16 @@ profile gvfs.gvfsd-smb /usr/libexec/gvfsd-smb {
   #include <abstractions/freedesktop.org>
   #include <abstractions/dconf>
   #include <abstractions/gtk>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
+  
+  # UNIX -----------------------------------------------
+  unix (bind, listen, send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*",
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-smb				mr,
@@ -203,7 +233,16 @@ profile gvfs.gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse {
   #include <abstractions/base>
   #include <abstractions/dconf>
   #include <abstractions/gtk>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
+  
+  # UNIX -----------------------------------------------
+  unix (bind, listen, send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*",
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-smb-browse				mr,
@@ -216,7 +255,13 @@ profile gvfs.gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse {
 
 profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   #include <abstractions/base>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/program-work-with-disk-rwk>
+  
+  # UNIX -----------------------------------------------
+  unix (bind, listen, send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*",
   
   # PSEUDO ---------------------------------------------
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}name	r,

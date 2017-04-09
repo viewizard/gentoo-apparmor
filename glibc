@@ -32,14 +32,14 @@ profile glibc.ldd /usr/bin/ldd {
   
   # READS/WRITES ---------------------------------------
   /etc/ld.so.cache					mr,
-  /var/cache/revdep-rebuild/*errors*			rw,	# gentoolkit.revdep-rebuild.sh
+  /var/cache/revdep-rebuild/*errors*			rw,	# DELEGATION! (?) gentoolkit.revdep-rebuild.sh
 }
 
 profile glibc.locale /usr/bin/locale flags=(complain) {		# FIX ME! 04.04.2017 flags=(complain)
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/locale					mr,
@@ -52,6 +52,19 @@ profile glibc.locale /usr/bin/locale flags=(complain) {		# FIX ME! 04.04.2017 fl
 profile glibc.ldconfig /sbin/ldconfig flags=(complain) {	# FIX ME! 04.04.2017 flags=(complain)
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
+  capability sys_chroot,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
   # EXECUTABLES ----------------------------------------
   /sbin/ldconfig					mr,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.pyfa/log.txt				w,	# DELEGATION! pyfa
+  
+  # TEMP -----------------------------------------------
+  /var/tmp/portage/genkernel/**				rw,	# DELEGATION! genkernel-next
 }

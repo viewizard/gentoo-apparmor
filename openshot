@@ -23,11 +23,12 @@ profile openshot @{PYTHON2_EXEC}/openshot {
   #include <abstractions/python>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -46,6 +47,7 @@ profile openshot @{PYTHON2_EXEC}/openshot {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
@@ -53,7 +55,7 @@ profile openshot @{PYTHON2_EXEC}/openshot {
   }
 }
 
-profile openshot-render @{PYTHON2_EXEC}/openshot-render flags=(complain) {
+profile openshot.openshot-render @{PYTHON2_EXEC}/openshot-render flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
 }

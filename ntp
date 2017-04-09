@@ -20,6 +20,13 @@ profile ntp.ntpd /usr/sbin/ntpd flags=(attach_disconnected) {
   capability sys_time,
   capability dac_override,
   
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
+  
   # EXECUTABLES ----------------------------------------
   /usr/sbin/ntpd					mr,
   
@@ -45,11 +52,17 @@ profile ntp.ntpq /usr/bin/ntpq {
   capability dac_read_search,
   capability dac_override,
   
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/ntpq						mr,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
   
   # NOISY ----------------------------------------------
   deny /{,s}bin/					r,

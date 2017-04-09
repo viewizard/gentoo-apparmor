@@ -18,9 +18,14 @@ profile AstroMenace {
   #include <abstractions/audio>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/program-work-with-disk-rk-strict>
   
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /sys/bus/						r,
   /sys/class/						r,
   /sys/class/input/					r,

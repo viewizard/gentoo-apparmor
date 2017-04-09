@@ -15,13 +15,15 @@ profile chkrootkit /usr/sbin/chkrootkit {
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
-  capability sys_ptrace,
   capability dac_override,
   capability dac_read_search,
   
+  # PTRACE ---------------------------------------------
+  ptrace (trace) peer="sysvinit.init",
+  
   # PSEUDO ---------------------------------------------
   /dev/tty						w,
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/chkrootkit					r,
@@ -54,11 +56,8 @@ profile chkrootkit /usr/sbin/chkrootkit {
   # READS/WRITES ---------------------------------------
   /{,**}						r,
   
-  # AUDIT READS/WRITES ---------------------------------
-  audit deny @{HOME_USERS}/**				r,
-  
   # TEMP -----------------------------------------------
-  owner /tmp/chkrootkit.cron.*				w,	# Для /etc/cron.daily/chkrootkit скрипта.
+  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
 }
 
 profile chkrootkit.chkdirs /usr/sbin/chkdirs {
@@ -68,21 +67,24 @@ profile chkrootkit.chkdirs /usr/sbin/chkdirs {
   capability dac_override,
   capability dac_read_search,
   
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  
   # EXECUTABLES ----------------------------------------
   /usr/sbin/chkdirs					mr,
   
   # READS/WRITES ---------------------------------------
   /{,**}/						r,
   
-  # AUDIT READS/WRITES ---------------------------------
-  audit deny @{HOME_USERS}/**				r,
-  
   # TEMP -----------------------------------------------
-  owner /tmp/chkrootkit.cron.*				w,	# Для /etc/cron.daily/chkrootkit скрипта.
+  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
 }
 
 profile chkrootkit.strings-static /usr/sbin/strings-static {
   #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/strings-static				mr,
@@ -90,17 +92,18 @@ profile chkrootkit.strings-static /usr/sbin/strings-static {
   # READS/WRITES ---------------------------------------
   /{,**}						r,
   
-  # AUDIT READS/WRITES ---------------------------------
-  audit deny @{HOME_USERS}/**				r,
-  
   # TEMP -----------------------------------------------
-  owner /tmp/chkrootkit.cron.*				w,	# Для /etc/cron.daily/chkrootkit скрипта.
+  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
 }
 
 profile chkrootkit.chkproc /usr/sbin/chkproc {
   #include <abstractions/base>
   
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(xfsz) peer="sysvinit.init",
+  
   # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
   
   # EXECUTABLES ----------------------------------------
@@ -108,7 +111,7 @@ profile chkrootkit.chkproc /usr/sbin/chkproc {
   @{shell}						Cx,
   
   # TEMP -----------------------------------------------
-  owner /tmp/chkrootkit.cron.*				w,	# Для /etc/cron.daily/chkrootkit скрипта.
+  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -128,7 +131,7 @@ profile chkrootkit.chkproc /usr/sbin/chkproc {
     /bin/cut						ix,
     
     # TEMP ---------------------------------------------
-    owner /tmp/chkrootkit.cron.*			w,	# Для /etc/cron.daily/chkrootkit скрипта.
+    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
   }
 }
 
@@ -140,7 +143,14 @@ profile chkrootkit.ifpromisc /usr/sbin/ifpromisc {
   capability dac_override,
   capability dac_read_search,
   
+  # PTRACE ---------------------------------------------
+  ptrace (trace),
+  
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  
   # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
   @{PROC}/@{pid}/fd/					r,
   @{PROC}/@{pid}/net/packet				r,
@@ -149,11 +159,14 @@ profile chkrootkit.ifpromisc /usr/sbin/ifpromisc {
   /usr/sbin/ifpromisc					mr,
   
   # TEMP -----------------------------------------------
-  owner /tmp/chkrootkit.cron.*				w,	# Для /etc/cron.daily/chkrootkit скрипта.
+  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
 }
 
 profile chkrootkit.chkwtmp /usr/sbin/chkwtmp {
   #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/chkwtmp					mr,
@@ -162,12 +175,15 @@ profile chkrootkit.chkwtmp /usr/sbin/chkwtmp {
   /var/log/wtmp						r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/chkrootkit.cron.*				w,	# Для /etc/cron.daily/chkrootkit скрипта.
+  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
 }
 
 profile chkrootkit.chklastlog /usr/sbin/chklastlog {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/chklastlog					mr,
@@ -176,11 +192,14 @@ profile chkrootkit.chklastlog /usr/sbin/chklastlog {
   /var/log/**						r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/chkrootkit.cron.*				w,	# Для /etc/cron.daily/chkrootkit скрипта.
+  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
 }
 
 profile chkrootkit.chkutmp /usr/sbin/chkutmp {
   #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/chkutmp					mr,
@@ -190,7 +209,7 @@ profile chkrootkit.chkutmp /usr/sbin/chkutmp {
   /run/utmp						r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/chkrootkit.cron.*				w,	# Для /etc/cron.daily/chkrootkit скрипта.
+  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -201,9 +220,41 @@ profile chkrootkit.chkutmp /usr/sbin/chkutmp {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /bin/ps						Px,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
   }
+}
+
+# Профиль модифицированного скрипта для запуска chkrootkit по cron-у.
+profile chkrootkit.cron.daily /etc/cron.daily/chkrootkit {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability dac_override,
+  capability dac_read_search,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /etc/cron.daily/chkrootkit				r,
+  @{shell}						mr,
+  /bin/mktemp						ix,
+  /bin/cat						ix,
+  /bin/rm						ix,
+  /bin/basename						Px,
+  /usr/bin/libnotify-notify-send-users			Px,
+  /usr/bin/mail						Px,
+  /usr/bin/logger					Px,
+  /usr/sbin/chkrootkit					Px,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/chkrootkit.cron.??????			rw,
 }

@@ -16,6 +16,10 @@ profile mailx /usr/bin/{mail,Mail,mailx} {
   # CAPABILITIES ---------------------------------------
   capability setuid,
   capability setgid,
+  capability mknod,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mail						mr,
@@ -26,4 +30,13 @@ profile mailx /usr/bin/{mail,Mail,mailx} {
   
   # TEMP -----------------------------------------------
   owner /tmp/mail.*					rw,
+  owner /tmp/portage.cron.*				w,	# DELEGATION! 00_update_portage.cron.daily
+  owner /tmp/aide.cron.*				w,	# DELEGATION! aide.cron.daily
+  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
+  owner /tmp/glsa.cron.*				w,	# DELEGATION! glsa.cron.daily
+  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
+  owner /tmp/oinkmaster.cron.*				w,	# DELEGATION! oinkmaster.cron.daily
+  owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! daily_backup.sh.cron.daily
+  owner /tmp/homebackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
+  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! monthly_backup.sh.cron.weekly
 }

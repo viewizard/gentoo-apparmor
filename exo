@@ -10,18 +10,19 @@
 
 #include <tunables/global>
 
-profile exo-open /usr/bin/exo-open {
+profile exo.exo-open /usr/bin/exo-open {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/gtk>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/executable-binary-helper>
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
@@ -34,16 +35,18 @@ profile exo-open /usr/bin/exo-open {
   /usr/portage/licenses/{,*}				r,
 }
 
-profile exo-helper /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 {
+profile exo.exo-helper /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/gtk>
   #include <abstractions/fonts>
   #include <abstractions/executable-binary-helper>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
@@ -66,33 +69,40 @@ profile exo-helper /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 {
   owner @{HOME}/.local/share/applications/{,**}		r,
 }
 
-profile exo-compose-mail /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 {
+profile exo.exo-compose-mail /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 {
   #include <abstractions/base>
   #include <abstractions/perl>
   #include <abstractions/executable-binary-helper>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1	r,
   /bin/env						mr,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
-profile exo-preferred-applications /usr/bin/exo-preferred-applications {
+profile exo.exo-preferred-applications /usr/bin/exo-preferred-applications {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
   /usr/bin/exo-preferred-applications			r,
   /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1		Px,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
-profile exo-desktop-item-edit /usr/bin/exo-desktop-item-edit {
+profile exo.exo-desktop-item-edit /usr/bin/exo-desktop-item-edit {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -101,7 +111,7 @@ profile exo-desktop-item-edit /usr/bin/exo-desktop-item-edit {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/exo-desktop-item-edit			mr,
@@ -123,14 +133,14 @@ profile exo-desktop-item-edit /usr/bin/exo-desktop-item-edit {
   deny /usr/libexec/**					r,
 }
 
-profile exo_open_root {
+profile exo.exo_open_root {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/gtk>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/executable-binary-helper_root>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open_root>
@@ -139,6 +149,7 @@ profile exo_open_root {
   capability fowner,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
@@ -189,7 +200,7 @@ profile exo_compose_mail_root {
   #include <abstractions/executable-binary-helper_root>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1	r,

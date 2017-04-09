@@ -20,7 +20,9 @@ profile ifplugd /usr/sbin/ifplugd {
   capability sys_module,
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/ifplugd					mr,

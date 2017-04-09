@@ -19,7 +19,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/audio>
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
@@ -29,9 +29,12 @@ profile thunar /usr/bin/{Thunar,thunar} {
   #include <abstractions/executable-binary-programs>
   #include <local/thunar-custom-exec>
   
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
   @{PROC}/@{pid}/fd/					r,
@@ -70,17 +73,20 @@ profile thunar /usr/bin/{Thunar,thunar} {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
-    /dev/tty[0-9]*					w,
+    /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   }
   
   profile env /bin/env {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					w,
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -93,7 +99,7 @@ profile thunar_root {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/audio>
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
@@ -112,9 +118,12 @@ profile thunar_root {
   capability fsetid,
   capability sys_admin,
   
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
   @{PROC}/@{pid}/fd/					r,
@@ -147,6 +156,7 @@ profile thunar_root {
   owner @{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
   owner @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   @{HOME}/.Xauthority					r,
+  @{HOME}/.session.log					w,	# XFCE4
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -158,9 +168,13 @@ profile thunar_root {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
+    
+    # USERS --------------------------------------------
+    @{HOME}/.session.log				w,	# XFCE4
   }
   
   profile env /bin/env {
@@ -171,7 +185,7 @@ profile thunar_root {
     capability dac_read_search,
     
     # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					w,
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -180,25 +194,33 @@ profile thunar_root {
   }
 }
 
-profile thunar-settings /usr/bin/thunar-settings {
+profile thunar.thunar-settings /usr/bin/thunar-settings {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar-settings				r,
   @{shell}						mr,
   /usr/bin/dbus-send					Pxr,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
-profile thunar-ThunarBulkRename /usr/lib{,32,64}/Thunar/ThunarBulkRename {
+profile thunar.ThunarBulkRename /usr/lib{,32,64}/Thunar/ThunarBulkRename {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
   /usr/bin/thunar					Px,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }

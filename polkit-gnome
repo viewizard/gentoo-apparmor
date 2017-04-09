@@ -17,6 +17,8 @@ profile polkit-gnome /usr/libexec/polkit-gnome-authentication-agent-1 {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
   
@@ -24,7 +26,7 @@ profile polkit-gnome /usr/libexec/polkit-gnome-authentication-agent-1 {
   capability setuid,
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------

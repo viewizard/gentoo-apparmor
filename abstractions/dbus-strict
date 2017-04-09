@@ -9,11 +9,13 @@
 #
 # ------------------------------------------------------------------
 
-/{,var/}run/dbus/system_bus_socket	rw,
-
+# DBUS -------------------------------------------------
 dbus send
-     bus=system
-     path=/org/freedesktop/DBus
-     interface=org.freedesktop.DBus
-     member={Hello,AddMatch,RemoveMatch,GetNameOwner,NameHasOwner,StartServiceByName}
-     peer=(name=org.freedesktop.DBus),
+	bus=system
+	path=/org/freedesktop/DBus
+	interface=org.freedesktop.DBus
+	member={Hello,AddMatch,RemoveMatch,GetNameOwner,NameHasOwner,StartServiceByName}
+	peer=(name=org.freedesktop.DBus),
+
+# READS/WRITES -----------------------------------------
+/run/dbus/system_bus_socket				rw,

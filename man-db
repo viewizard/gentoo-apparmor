@@ -23,6 +23,9 @@ profile man-db.mandb /usr/bin/mandb {
   capability dac_override,
   capability dac_read_search,
   
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  
   # EXECUTABLES ----------------------------------------
   /usr/bin/mandb					mr,
   /bin/bzip2						ix,
@@ -44,7 +47,7 @@ profile man-db.man /usr/bin/man flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/man						mr,
@@ -68,4 +71,22 @@ profile man-db.man /usr/bin/man flags=(complain) {
   /usr/share/man/{,**}					r,
   /var/cache/man/					r,
   /var/cache/man/**					rwk,
+}
+
+profile man-db.cron.daily /etc/cron.daily/man-db {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability dac_override,
+  capability dac_read_search,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /etc/cron.daily/man-db				r,
+  @{shell}						mr,
+  /usr/bin/nice						ix,
+  /usr/bin/mandb					Px,
 }

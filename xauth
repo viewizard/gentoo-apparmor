@@ -14,7 +14,7 @@ profile xauth /usr/bin/xauth {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xauth					mr,
@@ -23,6 +23,7 @@ profile xauth /usr/bin/xauth {
   owner @{HOME}/.Xauthority*				rwl,
   owner @{HOME}/.serverauth.*				rwl,
   owner @{HOME}/.xauth*					rwl,
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.*					rw,

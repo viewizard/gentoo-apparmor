@@ -22,16 +22,22 @@ profile util-linux.mount /bin/mount flags=(complain) {
   capability setgid,
   capability setuid,
   
+  # MOUNT ----------------------------------------------
+#  mount fstype=ext2 options=ro /dev/sd[a-z][0-2]* -> /run/openrc/dm-crypt-remdev.*/,	# cryptsetup
+  mount,	# FIX ME!
+  
   # PSEUDO ---------------------------------------------
   /dev/							r,
-  /dev/tty[0-9]*					w,
-  /dev/pts/[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					r,
   /dev/loop-control					rw,
   /sys/block/						r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
   @{PROC}/partitions					r,
+  @{PROC}/cgroups					r,
   @{PROC}/@{pid}/mountinfo				r,
   
   # EXECUTABLES ----------------------------------------
@@ -42,10 +48,17 @@ profile util-linux.mount /bin/mount flags=(complain) {
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
   /etc/filesystems					r,
+  /etc/conf.d/dmcrypt					r,	# DELEGATION! cryptsetup.init.d
   /run/mount/						w,
   /run/mount/utab					rw,
   /run/mount/utab.*					rwk,
   /run/blkid/blkid.tab*					rwl,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
+  owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! daily_backup.sh.cron.daily
+  owner /tmp/homebackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
+  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! monthly_backup.sh.cron.monthly
 }
 
 profile util-linux.umount /bin/umount flags=(complain) {
@@ -57,9 +70,15 @@ profile util-linux.umount /bin/umount flags=(complain) {
   capability dac_override,
   capability dac_read_search,
   
+  # MOUNT ----------------------------------------------
+#  umount /run/openrc/dm-crypt-remdev.*/,			# cryptsetup
+#  umount /tmp/tmp.*/,						# ???
+  umount,	# FIX ME!
+  
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
-  /dev/pts/[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
   @{PROC}/@{pid}/mountinfo				r,
@@ -68,15 +87,21 @@ profile util-linux.umount /bin/umount flags=(complain) {
   /bin/umount						mr,
   
   # READS/WRITES ---------------------------------------
+  /etc/conf.d/dmcrypt					r,	# DELEGATION! cryptsetup.init.d
   /run/mount/utab					rw,
   /run/mount/utab.*					rwk,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! daily_backup.sh.cron.daily
+  owner /tmp/homebackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
+  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! monthly_backup.sh.cron.monthly
 }
 
 profile util-linux.mkswap /sbin/mkswap flags=(complain) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rw,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
@@ -94,6 +119,8 @@ profile util-linux.swapon /sbin/swap{on,off} flags=(complain) {
   capability sys_admin,
   
   # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rw,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
@@ -110,7 +137,7 @@ profile util-linux.lsblk /bin/lsblk flags=(complain) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   /sys/block/						r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/type	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
@@ -120,6 +147,11 @@ profile util-linux.lsblk /bin/lsblk flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /bin/lsblk						mr,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! daily_backup.sh.cron.daily
+  owner /tmp/homebackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
+  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! monthly_backup.sh.cron.monthly
 }
 
 profile util-linux.agetty /sbin/agetty {
@@ -136,6 +168,7 @@ profile util-linux.agetty /sbin/agetty {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/console						rw,
   
   # EXECUTABLES ----------------------------------------
   /sbin/agetty						mr,
@@ -153,7 +186,8 @@ profile util-linux.fsck /sbin/fsck flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
-  /dev/pts/[0-9]*					w,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					r,
   /sys/block/						r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
@@ -177,6 +211,7 @@ profile util-linux.hwclock /sbin/hwclock flags=(complain) {
   capability sys_time,
   
   # PSEUDO ---------------------------------------------
+  /dev/console						rw,
   /dev/rtc0						rw,
   
   # EXECUTABLES ----------------------------------------
@@ -187,6 +222,8 @@ profile util-linux.logger /usr/bin/logger flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/loginuid r,
   
   # EXECUTABLES ----------------------------------------
@@ -234,6 +271,8 @@ profile util-linux.blkid /sbin/blkid flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					r,
   /sys/block/						r,
   /sys/devices/virtual/block/**				r,

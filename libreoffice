@@ -20,7 +20,7 @@ profile libreoffice /usr/{bin,lib64/libreoffice/program}/soffice {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
@@ -31,23 +31,24 @@ profile libreoffice /usr/{bin,lib64/libreoffice/program}/soffice {
   /bin/ls						ix,
   /bin/sed						ix,
   /usr/lib{,32,64}/libreoffice/program/oosplash		Px,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile libreoffice.oosplash /usr/lib{,32,64}/libreoffice/program/oosplash {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  #include <abstractions/X-connection-strict>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/queue/rotational r,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/libreoffice/program/oosplash		m,
   /usr/lib{,32,64}/libreoffice/program/javaldx		Px,
   /usr/lib{,32,64}/libreoffice/program/soffice.bin	Px,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.Xauthority				r,
 }
 
 profile libreoffice.javaldx /usr/lib{,32,64}/libreoffice/program/javaldx {
@@ -55,7 +56,7 @@ profile libreoffice.javaldx /usr/lib{,32,64}/libreoffice/program/javaldx {
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/libreoffice/program/javaldx		m,
@@ -77,6 +78,7 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   #include <abstractions/qt>	# GTK and QT to draw native controls (widgets).
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/ssl_keys>
   #include <abstractions/cups-client>
   #include <abstractions/xdg-open>
@@ -84,7 +86,7 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /sys/devices/system/cpu/				r,
   @{PROC}/version					r,
@@ -130,6 +132,7 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,

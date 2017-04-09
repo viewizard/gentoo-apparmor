@@ -23,6 +23,9 @@ profile mpv /usr/bin/mpv {
   #include <abstractions/X>
   #include <abstractions/program-work-with-disk-rk-strict>
   
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  
   # EXECUTABLES ----------------------------------------
   /usr/bin/mpv						mr,
   /usr/bin/xdg-screensaver				Pxr,

@@ -22,13 +22,22 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   #include <abstractions/nvidia>
   #include <abstractions/cups-client>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/xdg-open>
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/nameservice>
   
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  		type=stream
+  		peer=(label="wps-office//shell"),
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/shm/*						rwl,
   owner @{PROC}/@{pid}/auxv				r,
   
@@ -67,11 +76,21 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   profile shell @{shell} {
     #include <abstractions/base>
     
+    # UNIX -----------------------------------------------
+    unix (send, receive)
+    		type=stream
+    		peer=(label="wps-office"),
+    
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,
+    /bin/uname						ix,	# STACKING! coreutils.uname - тянет unix сокет.
+    								# DELEGATION! (?)
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.kingsoft/office6/templates/wps/**	w,
   }
 }

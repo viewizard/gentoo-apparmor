@@ -21,7 +21,8 @@ profile opentmpfiles.tmpfiles /bin/tmpfiles flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/pts/[0-9]*					w,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /bin/tmpfiles						r,

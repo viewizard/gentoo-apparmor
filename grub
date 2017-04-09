@@ -15,7 +15,7 @@ profile grub.grub-mkconfig /usr/sbin/grub-mkconfig flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/mountinfo				r,
   
   # EXECUTABLES ----------------------------------------
@@ -84,7 +84,7 @@ profile grub.grub-install /usr/sbin/grub-install flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/{,**}						r,
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_REAL}					rw,
   /dev/mapper/control					rw,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}start r,
@@ -111,7 +111,7 @@ profile grub.grub-install /usr/sbin/grub-install flags=(complain) {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
-    /dev/pts/[0-9]*					w,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,

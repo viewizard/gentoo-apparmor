@@ -18,7 +18,7 @@ profile coreutils.df /bin/df {
   capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/mount{s,info}				r,
   
   # EXECUTABLES ----------------------------------------
@@ -34,7 +34,7 @@ profile coreutils.stat /usr/bin/stat {
   capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/stat						mr,
@@ -44,7 +44,7 @@ profile coreutils.date /bin/date {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /bin/date						mr,
@@ -54,17 +54,24 @@ profile coreutils.uname /bin/uname flags=(complain) {		# FIX ME! 04.04.2017 flag
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /bin/uname						mr,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
+  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
 }
 
 profile coreutils.tty /bin/tty flags=(complain) {		# FIX ME! 04.04.2017 flags=(complain)
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /bin/tty						mr,
@@ -74,20 +81,36 @@ profile coreutils.tr /bin/tr flags=(complain) {			# FIX ME! 04.04.2017 flags=(co
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /bin/tr						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /run/user/*/poedit.lock				w,	# DELEGATION! poedit
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
+  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
 }
 
 profile coreutils.sleep /bin/sleep flags=(complain) {		# FIX ME! 04.04.2017 flags=(complain)
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /bin/sleep						mr,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
 }
 
 profile coreutils.whoami /usr/bin/whoami flags=(complain) {	# FIX ME! 04.04.2017 flags=(complain)
@@ -95,7 +118,7 @@ profile coreutils.whoami /usr/bin/whoami flags=(complain) {	# FIX ME! 04.04.2017
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/whoami					mr,
@@ -106,10 +129,15 @@ profile coreutils.id /usr/bin/id flags=(complain) {		# FIX ME! 04.04.2017 flags=
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/id						mr,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
+  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
 }
 
 profile coreutils.pinky /usr/bin/pinky flags=(complain) {	# FIX ME! 04.04.2017 flags=(complain)
@@ -118,7 +146,7 @@ profile coreutils.pinky /usr/bin/pinky flags=(complain) {	# FIX ME! 04.04.2017 f
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pinky					mr,
@@ -131,17 +159,22 @@ profile coreutils.stty /bin/stty flags=(complain) {		# FIX ME! 04.04.2017 flags=
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /bin/stty						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/conf.d/dmcrypt					r,	# DELEGATION! cryptsetup.init.d
 }
 
 profile coreutils.basename /bin/basename flags=(complain) {	# FIX ME! 05.04.2017 flags=(complain)
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /bin/basename						mr,
@@ -151,7 +184,8 @@ profile coreutils.dirname /bin/dirname flags=(complain) {	# FIX ME! 05.04.2017 f
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /bin/dirname						mr,
@@ -160,9 +194,16 @@ profile coreutils.dirname /bin/dirname flags=(complain) {	# FIX ME! 05.04.2017 f
 profile coreutils.echo /bin/echo flags=(complain) {		# FIX ME! 05.04.2017 flags=(complain)
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /bin/echo						mr,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
+  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
 }

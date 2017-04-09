@@ -17,6 +17,7 @@ profile chromium.start_script /usr/bin/chromium{,-browser} {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/chromium{,-browser}				r,
@@ -24,6 +25,9 @@ profile chromium.start_script /usr/bin/chromium{,-browser} {
   /usr/bin/id						Px,
   /usr/bin/newgrp					Px,
   /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh Px,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile chromium.chromium-launcher.sh /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh {
@@ -31,6 +35,7 @@ profile chromium.chromium-launcher.sh /usr/lib{,32,64}/chromium-browser/chromium
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh r,
@@ -40,6 +45,9 @@ profile chromium.chromium-launcher.sh /usr/lib{,32,64}/chromium-browser/chromium
   
   # READS/WRITES ---------------------------------------
   /etc/chromium/{,**}					r,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_disconnected) {
@@ -57,17 +65,30 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   #include <abstractions/user-upload>
   #include <abstractions/xdg-open>
   #include <abstractions/dconf>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
   capability sys_chroot,
+  
+  # UNIX ------------------------------------------
+  unix (send, receive)
+  	type=seqpacket
+  	peer=(label="chromium.chrome//chrome-sandbox"),
+  unix (send, receive)
+  	type=stream
+  	peer=(label="chromium.chrome//chrome-sandbox"),
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
   
   # PTRACE ---------------------------------------------
   ptrace (trace) peer=@{profile_name},
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   owner /dev/shm/{,.}org.chromium.*			rw,
   owner /dev/shm/pulse-shm*				m,
@@ -88,7 +109,6 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   @{PROC}/@{pid}/task/					r,
   @{PROC}/@{pid}/task/@{pid}/{stat,status}		r,
   owner @{PROC}/@{pid}/io				r,
-  owner @{PROC}/@{pid}/oom_{,score_}adj			w,
   @{PROC}/@{pid}/net/if_inet6				r,
   @{PROC}/@{pid}/net/ipv6_route				r,
   @{PROC}/sys/net/ipv4/tcp_fastopen			r,
@@ -96,6 +116,9 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   @{PROC}/@{pid}/setgroups				rw,
   @{PROC}/@{pid}/uid_map				rw,
   @{PROC}/@{pid}/gid_map				rw,
+  
+  # AUDIT PSEUDO ---------------------------------------
+  deny @{PROC}/@{pid}/oom_{,score_}adj			w,
   
   # EXECUTABLES ----------------------------------------
   /bin/ps						Pxr,
@@ -169,19 +192,44 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
     capability sys_ptrace,
     
     # PTRACE -------------------------------------------
-    ptrace (read, readby),
+    ptrace (read, readby, tracedby),
+    
+    # SIGNAL -------------------------------------------
+    signal (receive) peer=unconfined,
+    signal peer=@{profile_name},
+    signal (receive, send) set=("exists"),
+    signal (receive) peer="chromium.chrome",
+    
+    # UNIX ---------------------------------------------
+    unix (create, shutdown)
+    		type=stream,
+    unix (send, receive)
+    		type=stream
+    		peer=(label=@{profile_name}),
+    unix (send, receive)
+    		type=stream
+    		peer=(label="chromium.chrome"),
+    unix (send, receive)
+    		type=seqpacket
+    		peer=(label="chromium.chrome"),
     
     # PSEUDO -------------------------------------------
     /dev/null						rw,
+    /dev/tty[0-9]*					rw,
     @{PROC}/						r,
     @{PROC}/@{pid}/					r,
     @{PROC}/@{pid}/fd/					r,
-    owner @{PROC}/@{pid}/oom_{,score_}adj		w,
     @{PROC}/@{pid}/status				r,
     @{PROC}/@{pid}/task/@{pid}/stat			r,
+    
+    # AUDIT PSEUDO -------------------------------------
+    deny @{PROC}/@{pid}/oom_{,score_}adj		w,
     
     # EXECUTABLES ----------------------------------------
     /usr/lib{,32,64}/chromium-browser/chrome-sandbox	mr,
     /usr/lib{,32,64}/chromium-browser/chrome		Px,
+    
+    # USERS ----------------------------------------------
+    owner @{HOME}/.session.log				w,
   }
 }

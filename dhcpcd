@@ -21,6 +21,11 @@ profile dhcpcd /sbin/dhcpcd {
   capability sys_module,
   capability sys_tty_config,
   capability net_bind_service,
+  capability mknod,
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  network packet dgram,
   
   # PSEUDO ---------------------------------------------
   @{PROC}/sys/net/ipv4/conf/*/promote_secondaries	rwk,

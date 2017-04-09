@@ -22,12 +22,13 @@ profile keepassx /usr/bin/keepassx {
   #include <abstractions/cups-client>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/{cmdline,status}			r,
   @{PROC}/@{pid}/task/					r,
   

@@ -24,7 +24,7 @@ profile logrotate /usr/bin/logrotate {
   capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/logrotate					mr,
@@ -54,4 +54,18 @@ profile logrotate /usr/bin/logrotate {
     /bin/su						Px,
     /etc/init.d/syslog-ng				Px,
   }
+}
+
+profile logrotate.cron.daily /etc/cron.daily/logrotate {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /etc/cron.daily/logrotate				r,
+  @{shell}						mr,
+  /usr/bin/logger					ix,
+  /usr/bin/logrotate					Px,
 }

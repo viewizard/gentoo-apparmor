@@ -18,7 +18,7 @@ profile aide /usr/bin/aide {
   capability dac_override,
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -37,7 +37,7 @@ profile aide.aideinit /usr/sbin/aideinit {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -52,4 +52,48 @@ profile aide.aideinit /usr/sbin/aideinit {
   # READS/WRITES ---------------------------------------
   /etc/aide/**						r,
   /var/lib/aide/**					rwk,
+}
+
+# Профиль модифицированного скрипта для запуска aide по cron-у.
+profile aide.cron.daily /etc/cron.daily/aide {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # CAPABILITIES ---------------------------------------
+  capability dac_override,
+  capability dac_read_search,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  /dev/@{BLOCK_REAL}					r,
+  
+  # EXECUTABLES ----------------------------------------
+  /etc/cron.daily/aide					r,
+  @{shell}						mr,
+  /bin/mktemp						ix,
+  /bin/cat						ix,
+  /bin/rm						ix,
+  /bin/dd						ix,
+  /bin/sed						ix,
+  /bin/grep						ix,
+  /bin/mount						Px,
+  /bin/umount						Px,
+  /bin/basename						Px,
+  /usr/bin/libnotify-notify-send-users			Px,
+  /usr/bin/stat						ix,
+  /usr/bin/mail						Px,
+  /usr/bin/logger					Px,
+  /usr/bin/aide						Px,
+  /usr/bin/md5sum					ix,
+  /usr/bin/sha1sum					ix,
+  /usr/bin/sha512sum					ix,
+  /usr/sbin/gdisk					Px,
+  
+  # READS/WRITES ---------------------------------------
+  /var/lib/aide/{,*}					r,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/aide.cron.??????				rw,
+  owner /tmp/tmpmbr.bin					rw,
 }

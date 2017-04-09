@@ -20,6 +20,8 @@ profile mdadm /sbin/mdadm flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/{,**}						r,
+  /dev/tty[0-9]*					rw,
+  /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   /dev/.tmp.md.*					w,
   /sys/block/						r,
@@ -47,7 +49,7 @@ profile mdadm.checkarray /usr/sbin/checkarray flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   /sys/block/						r,
   /sys/devices/virtual/block/md[0-9]*/{,**}		r,
   
@@ -82,4 +84,18 @@ profile mdadm.init.d /etc/init.d/mdadm {
     #include <abstractions/nameservice>
     #include <abstractions/openrc_shell>
   }
+}
+
+profile mdadm.cron.weekly /etc/cron.weekly/mdadm {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /etc/cron.weekly/mdadm				r,
+  @{shell}						mr,
+  /bin/date						ix,
+  /usr/sbin/checkarray					Px,
 }

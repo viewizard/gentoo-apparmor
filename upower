@@ -12,9 +12,13 @@
 
 profile upower.upowerd /usr/lib{,32,64}/upower/upowerd {
   #include <abstractions/base>
+  #include <abstractions/dbus-strict>
   
   # CAPABILITIES ---------------------------------------
   capability wake_alarm,
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
   
   # PSEUDO ---------------------------------------------
   /dev/bus/usb/						r,

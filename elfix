@@ -16,7 +16,7 @@ profile elfix.migrate-pax /usr/sbin/migrate-pax flags=(complain) {
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/migrate-pax					mr,
@@ -42,7 +42,7 @@ profile elfix.migrate-pax /usr/sbin/migrate-pax flags=(complain) {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
-    /dev/pts/[0-9]*					w,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
@@ -56,7 +56,7 @@ profile elfix.revdep-pax /usr/sbin/revdep-pax flags=(complain) {
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/revdep-pax					mr,

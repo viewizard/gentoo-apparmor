@@ -26,8 +26,12 @@ profile consolekit.ck-history /usr/bin/ck-history flags=(complain) {
 
 profile consolekit.ck-launch-session /usr/bin/ck-launch-session flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/ck-launch-session				mr,
@@ -38,6 +42,7 @@ profile consolekit.ck-launch-session /usr/bin/ck-launch-session flags=(complain)
   
   # USERS ----------------------------------------------
   owner @{HOME}/.Xauthority				r,
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   
   profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
@@ -86,20 +91,32 @@ profile consolekit.ck-log-system-stop /usr/sbin/ck-log-system-stop flags=(compla
 
 profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   #include <abstractions/base>
+  #include <abstractions/dbus-strict>
   #include <abstractions/nameservice>
+  #include <abstractions/X-connection-strict>
   
   # CAPABILITIES ---------------------------------------
   capability sys_tty_config,
   capability sys_ptrace,
   capability sys_admin,
   capability chown,
+  capability mknod,
   capability setgid,
   capability setuid,
   capability dac_read_search,
   capability dac_override,
   
+  # MOUNT ----------------------------------------------
+  mount fstype=tmpfs -> /run/user/*/,
+  umount /run/user/*/,
+  
+  # PTRACE ---------------------------------------------
+  ptrace (trace),						# FIX ME!
+  
   # PSEUDO ---------------------------------------------
   /dev/tty{,[0-9]*}					rw,
+  /dev/pts/[0-9]*					rw,
+  /dev/console						rw,
   /sys/power/state					r,
   /sys/devices/virtual/tty/tty*/active			r,
   @{PROC}/@{pid}/fd/					r,
@@ -130,9 +147,6 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   /run/console/{,*}					rw,
   /var/log/ConsoleKit/					r,
   /var/log/ConsoleKit/**				rw,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.Xauthority				r,
 }
 
 profile consolekit.udev-acl /usr/lib{,32,64}/ConsoleKit/udev-acl {

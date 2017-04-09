@@ -10,11 +10,6 @@
 #
 # ------------------------------------------------------------------
 
-
-# (Note that the ldd profile has inlined this file; if you make
-# modifications here, please consider including them in the ldd
-# profile as well.)
-
 # The __canary_death_handler function writes a time-stamped log
 # message to /dev/log for logging by syslogd. So, /dev/log, timezones,
 # and localisations of date should be available EVERYWHERE, so
@@ -38,8 +33,8 @@
 # ld.so.cache and ld are used to load shared libraries; they are best
 # available everywhere
 /etc/ld.so.cache			mr,
-/lib{,32,64}/ld{,32,64}-*.so		mrix,
-/lib{,32,64}/**/ld{,32,64}-*.so		mrix,
+/lib{,32,64}/ld{,32,64}-*.so		ixmr,				# FIX ME! действительно надо ix?
+/lib{,32,64}/**/ld{,32,64}-*.so		ixmr,				# FIX ME! действительно надо ix?
 
 # we might as well allow everything to use common libraries
 /lib{,32,64}/**				r,
@@ -92,18 +87,18 @@ owner @{PROC}/@{pid}/status		r,
 # kcmp for now (they will need 'read' in the first place). Administrators can
 # override with:
 #   deny ptrace (readby) ...
-##ptrace (readby),
+ptrace (readby),
 
 # Allow other processes to trace us by default (they will need 'trace' in
 # the first place). Administrators can override with:
 #   deny ptrace (tracedby) ...
-##ptrace (tracedby),
+ptrace (tracedby),
 
 # Allow us to ptrace read ourselves
 ptrace (read) peer=@{profile_name},
 
 # Allow unconfined processes to send us signals by default
-signal (receive) peer=unconfined,
+signal (receive) peer=unconfined,				# FIX ME! убрать
 
 # Allow us to signal ourselves
 signal peer=@{profile_name},
@@ -111,11 +106,14 @@ signal peer=@{profile_name},
 # Checking for PID existence is quite common so add it by default for now
 signal (receive, send) set=("exists"),
 
+# Разрешаем получать сигналы
+signal (receive) set=(kill, term, hup, cont, stop),
+
 # Allow us to create and use abstract and anonymous sockets
 unix peer=(label=@{profile_name}),
 
 # Allow unconfined processes to us via unix sockets
-unix (receive) peer=(label=unconfined),
+unix (receive) peer=(label=unconfined),			# FIX ME! убрать
 
 # Allow us to create abstract and anonymous sockets
 unix (create),

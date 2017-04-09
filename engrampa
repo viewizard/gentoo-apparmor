@@ -21,7 +21,7 @@ profile engrampa /usr/bin/engrampa {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/dconf>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
@@ -30,7 +30,7 @@ profile engrampa /usr/bin/engrampa {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /sys/devices/system/cpu/				r,
   
   # EXECUTABLES ----------------------------------------
@@ -97,7 +97,7 @@ profile engrampa_root {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/dconf>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open_root>
@@ -114,7 +114,7 @@ profile engrampa_root {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /sys/devices/system/cpu/				r,
   
   # EXECUTABLES ----------------------------------------
@@ -146,6 +146,7 @@ profile engrampa_root {
   owner @{HOME}/.config/mimeapps.list*			rw,
   @{HOME_CACHE}/.fr-*/{,**}				rw,
   @{HOME}/.Xauthority					r,
+  @{HOME}/.session.log					w,	# XFCE4
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -182,7 +183,7 @@ profile engrampa_tap /usr/libexec/thunar-archive-plugin/engrampa.tap {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/thunar-archive-plugin/engrampa.tap	r,
@@ -195,7 +196,7 @@ profile engrampa_tap_root {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/thunar-archive-plugin/engrampa.tap	r,

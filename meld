@@ -26,11 +26,12 @@ profile meld /usr/bin/meld {
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/executable-binary-helper>
   #include <abstractions/cups-client>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/dconf>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/shm/*						rwl,
   @{PROC}/@{pid}/fd/					r,
@@ -73,7 +74,8 @@ profile meld_root {
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/executable-binary-helper_root>
   #include <abstractions/cups-client>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/dconf>
   #include <abstractions/user-systemwide-files>
   
@@ -81,9 +83,10 @@ profile meld_root {
   capability dac_override,
   capability dac_read_search,
   capability fowner,
+  capability mknod,
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/shm/*						rwl,
   @{PROC}/@{pid}/fd/					r,
@@ -109,6 +112,7 @@ profile meld_root {
   owner @{HOME}/.config/meld/{,**}			rw,
   owner @{HOME}/.local/share/meld/{,**}			rw,
   @{HOME}/.Xauthority					r,
+  @{HOME}/.session.log					w,	# XFCE4
   
   # TEMP -----------------------------------------------
   owner /tmp/??????{,_*}				rw,

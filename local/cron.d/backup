@@ -1,0 +1,161 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# Важно! Не должен содержать <tunables/global>.
+# Уже включен в тело /etc/apparmor.d/2_local профиля.
+
+# Важно! Перезагрузка профиля выполняется командой:
+# apparmor_parser -r /etc/apparmor.d/2_local
+
+profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability sys_admin,
+  capability dac_override,
+  capability dac_read_search,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/null						w,
+  /dev/pts/[0-9]*					rw,
+  @{PROC}/@{pid}/fd/					r,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
+  /bin/chmod						ix,
+  /bin/date						ix,
+  /bin/tar						ix,
+  /bin/rm						ix,
+  /bin/cat						ix,
+  /bin/mktemp						ix,
+  /bin/lsblk						Px,
+  /bin/sort						ix,
+  /bin/mount						Px,
+  /bin/umount						Px,
+  /bin/basename						Px,
+  /sbin/cryptsetup					Px,
+  /sbin/lvm						Px,
+  /usr/bin/libnotify-notify-send-users			Px,
+  /usr/bin/find						ix,
+  /usr/bin/mail						Px,
+  /usr/bin/logger					Px,
+  /usr/bin/uniq						ix,
+  
+  # READS/WRITES ---------------------------------------
+  /							r,
+  /home/{,**}						r,
+  /etc/**						r,
+  /usr/**						r,
+  /var/lib/**						r,
+  /mnt/backup/Gentoo_Backup/				r,
+  /mnt/backup/Gentoo_Backup/*				rw,
+  
+  # TEMP -----------------------------------------------
+  /tmp/dailyhomebackup.cron.??????{,/,/**}		rw,
+}
+
+profile weekly_backup.sh.cron.weekly /etc/cron.weekly/weekly_backup.sh {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability sys_admin,
+  capability dac_override,
+  capability dac_read_search,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/null						w,
+  /dev/pts/[0-9]*					rw,
+  @{PROC}/@{pid}/fd/					r,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
+  /bin/chmod						ix,
+  /bin/date						ix,
+  /bin/tar						ix,
+  /bin/rm						ix,
+  /bin/cat						ix,
+  /bin/mktemp						ix,
+  /bin/lsblk						Px,
+  /bin/sort						ix,
+  /bin/mount						Px,
+  /bin/umount						Px,
+  /bin/basename						Px,
+  /sbin/cryptsetup					Px,
+  /sbin/lvm						Px,
+  /usr/bin/libnotify-notify-send-users			Px,
+  /usr/bin/find						ix,
+  /usr/bin/mail						Px,
+  /usr/bin/logger					Px,
+  /usr/bin/uniq						ix,
+  
+  # READS/WRITES ---------------------------------------
+  /							r,
+  /home/{,**}						r,
+  /etc/**						r,
+  /usr/**						r,
+  /var/lib/**						r,
+  /mnt/backup/Gentoo_Backup/				r,
+  /mnt/backup/Gentoo_Backup/*				rw,
+  
+  # TEMP -----------------------------------------------
+  /tmp/homebackup.cron.??????{,/,/**}			rw,
+  
+}
+
+profile monthly_backup.sh.cron.monthly /etc/cron.monthly/monthly_backup.sh {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability sys_admin,
+  capability dac_override,
+  capability dac_read_search,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  @{PROC}/@{pid}/fd/					r,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
+  /bin/chmod						ix,
+  /bin/date						ix,
+  /bin/tar						ix,
+  /bin/rm						ix,
+  /bin/cat						ix,
+  /bin/mktemp						ix,
+  /bin/mount						Px,
+  /bin/umount						Px,
+  /bin/basename						Px,
+  /sbin/lvm						Px,
+  /usr/bin/libnotify-notify-send-users			Px,
+  /usr/bin/find						ix,
+  /usr/bin/mail						Px,
+  /usr/bin/logger					Px,
+  
+  # READS/WRITES ---------------------------------------
+  /							r,
+  /*/							r,
+  /bin/**						r,
+  /boot/**						r,
+  /etc/**						r,
+  /lib{,32,64}/**					r,
+  /opt/**						r,
+  /root/**						r,
+  /sbin/**						r,
+  /usr/**						r,
+  /var/**						r,
+  /mnt/backup/Gentoo_Backup/				r,
+  /mnt/backup/Gentoo_Backup/*				rw,
+  
+  # TEMP -----------------------------------------------
+  /tmp/rootbackup.cron.??????{,/,/**}			rw,
+}

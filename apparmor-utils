@@ -17,8 +17,11 @@ profile apparmor-utils.aa-status @{PYTHON_EXEC}/aa-status {
   # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   
+  # PTRACE ---------------------------------------------
+  ptrace (trace),
+  
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   /sys/kernel/security/apparmor/*			r,
   @{PROC}/						r,
   @{PROC}/@{pid}/attr/{current,prev,exec}		r,
@@ -26,6 +29,10 @@ profile apparmor-utils.aa-status @{PYTHON_EXEC}/aa-status {
   
   # READS/WRITES ---------------------------------------
   @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/????????					rw,
+  owner /tmp/lynis.cron.*				w,	# DELEGATION! cron.daily/lynis
 }
 
 profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
@@ -35,8 +42,11 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   
+  # PTRACE ---------------------------------------------
+  ptrace (trace),
+  
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   @{PROC}/@{pid}/mounts					r,
   @{PROC}/@{pid}/attr/{current,prev,exec}		r,
@@ -65,6 +75,9 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
     # CAPABILITIES -------------------------------------
     capability sys_ptrace,
     
+    # PTRACE -------------------------------------------
+    ptrace (trace),
+    
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     @{PROC}/						r,
@@ -83,7 +96,7 @@ profile apparmor-utils.aa-complain @{PYTHON_EXEC}/aa-complain {
   #include <abstractions/python>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,
@@ -107,7 +120,7 @@ profile apparmor-utils.aa-enforce @{PYTHON_EXEC}/aa-enforce {
   #include <abstractions/python>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,
@@ -131,7 +144,7 @@ profile apparmor-utils.aa-disable @{PYTHON_EXEC}/aa-disable {
   #include <abstractions/python>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,

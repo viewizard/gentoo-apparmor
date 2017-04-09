@@ -16,8 +16,12 @@ profile acpid /usr/sbin/acpid {
   # CAPABILITIES ---------------------------------------
   capability sys_tty_config,
   
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
-  /dev/console						w,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   /dev/input/						r,
   /dev/input/by-id/					r,
   /dev/input/by-path/					r,
@@ -39,15 +43,17 @@ profile acpid /usr/sbin/acpid {
     #include <abstractions/nameservice>
     
     # CAPABILITIES -------------------------------------
-    capability sys_tty_config,
+    capability mknod,
     
     # PSEUDO -------------------------------------------
-    /dev/tty{,[0-9]*}					rw,
+    /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /bin/ps						Px,
     /bin/sed						ix,
+    /bin/cut						ix,
     /sbin/shutdown					Px,
     /usr/bin/fgconsole					Px,
     /usr/bin/gawk					ix,
@@ -55,6 +61,7 @@ profile acpid /usr/sbin/acpid {
     /usr/bin/pinky					Px,
     /usr/bin/pgrep					Px,
     /usr/bin/pidof					Px,
+    /usr/bin/getent					ix,
     /etc/acpi/default.sh				ixr,
     /etc/acpi/actions/powerbtn.sh			ixr,
     

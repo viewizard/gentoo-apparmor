@@ -17,6 +17,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
   capability sys_rawio,
+  capability syslog,
   capability sys_tty_config,
   capability mknod,
   capability setuid,
@@ -24,6 +25,26 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   capability fsetid,
   capability ipc_owner,
   capability chown,
+  
+  # UNIX -----------------------------------------------
+  unix (bind)
+	type=dgram,
+  unix (receive)
+  	type=dgram
+  	peer=(addr="none"),
+  unix (bind, listen, send, receive, accept)
+	type=stream
+  	addr="@/tmp/.X11-unix/X[0-9]",
+  unix (send, receive)
+  	type=stream
+  	addr="none"
+  	peer=(addr="none"),
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(usr1) peer=xinit,
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -61,12 +82,14 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   /usr/lib{,32,64}/xorg/modules/**.so			m,
   /usr/lib{,32,64}/mesa/**.so				m,
   /usr/share/X11/{,**}					r,
+  /run/acpid.socket					rw,
   /run/udev/data/*					r,
   /var/log/Xorg.[0-9].log{,.old}			rw,
   /var/lib/xkb/server-[0-9].xkm				rw,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.serverauth*				r,
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   
   # TEMP -----------------------------------------------
   owner /tmp/.tX[0-9]-lock				w,	# 0-9 ONLY!
@@ -76,13 +99,23 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   
   profile shell @{shell} {
     #include <abstractions/base>
+    include <abstractions/X-connection-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
+    audit /dev/input/event[0-9]*			rw,	# FIX ME! кто это тянет? откуда?
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /usr/bin/xkbcomp					Px,
+    
+    # READS/WRITES -------------------------------------
+    /run/acpid.socket					rw,	# DELEGATION! xorg-server.Xorg
+    /var/log/Xorg.[0-9].log				w,	# DELEGATION! xorg-server.Xorg
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   }
 }
 
@@ -91,7 +124,7 @@ profile xorg-server.Xephyr /usr/bin/Xephyr flags=(complain) {
   #include <abstractions/fonts>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/Xephyr					mr,

@@ -20,11 +20,15 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   #include <abstractions/nvidia>
   #include <abstractions/ssl_certs>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/xdg-open>
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/shm/.org.chromium.Chromium.*			rw,
   /sys/devices/system/cpu/				r,
   /sys/devices/pci[0-9]*/**/{resource,irq,vendor,device,class,config} r,

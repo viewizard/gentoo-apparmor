@@ -14,7 +14,7 @@ profile gnome-keyring-daemon /usr/bin/gnome-keyring-daemon {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/status					r,
   
   # EXECUTABLES ----------------------------------------

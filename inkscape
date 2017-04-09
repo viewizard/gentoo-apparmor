@@ -24,11 +24,13 @@ profile inkscape /usr/bin/inkscape {
   #include <abstractions/enchant>
   #include <abstractions/python>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/xdg-open>
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /sys/devices/system/cpu/				r,
   
   # EXECUTABLES ----------------------------------------

@@ -19,6 +19,9 @@ profile dnsmasq /usr/sbin/dnsmasq {
   capability setuid,
   capability net_bind_service,
   
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # EXECUTABLES ----------------------------------------
   /usr/sbin/dnsmasq					mr,
   

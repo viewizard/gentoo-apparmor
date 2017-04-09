@@ -1,0 +1,23 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# Специальный профиль, для перекрытия в случае использования
+# опции ядра SECURITY_APPARMOR_UNCONFINED_INIT
+
+# Используем его, чтобы явно явно ограничить процессы без профилей.
+# Как вариант, добавить flag=(kill), чтобы убивать процесс,
+# пытающийся запустить процесс без профиля.
+
+# Важно!
+# Проверить, чтобы все процессы запущенные до перехода на профиль,
+# чтобы нормально работали.
+
+# проверить, надо /** указывать или нет
+#profile default /** flags=(complain) {}		# FIX ME! Убрать flags=(complain).

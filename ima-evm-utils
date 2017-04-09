@@ -19,7 +19,7 @@ profile ima-evm-utils.evmctl /usr/bin/evmctl {
   capability sys_admin,
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/evmctl					mr,
@@ -37,7 +37,7 @@ profile ima-evm-utils.evmctl /usr/bin/evmctl {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
-    /dev/pts/[0-9]*					w,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,

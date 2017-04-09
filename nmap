@@ -19,7 +19,7 @@ profile nmap /usr/bin/nmap flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
-  /dev/pts/[0-9]					w,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/net/dev				r,
   
   # EXECUTABLES ----------------------------------------
@@ -27,4 +27,7 @@ profile nmap /usr/bin/nmap flags=(complain) {
   
   # READS/WRITES ---------------------------------------
   /usr/share/nmap/{,**}					r,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/lynis.cron.*				w,	# DELEGATION! cron.daily/lynis
 }

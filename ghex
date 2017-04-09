@@ -26,10 +26,10 @@ profile ghex /usr/bin/ghex {
   #include <abstractions/executable-binary-helper>
   #include <abstractions/cups-client>
   #include <abstractions/nameservice>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
@@ -48,7 +48,7 @@ profile ghex_root {
   #include <abstractions/executable-binary-helper_root>
   #include <abstractions/cups-client>
   #include <abstractions/nameservice>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/user-systemwide-files>
   
   # CAPABILITIES ---------------------------------------
@@ -56,7 +56,7 @@ profile ghex_root {
   capability dac_override,
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
@@ -64,4 +64,5 @@ profile ghex_root {
   
   # USERS ----------------------------------------------
   @{HOME}/.Xauthority					r,
+  @{HOME}/.session.log					w,	# XFCE4
 }

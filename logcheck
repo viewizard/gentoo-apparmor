@@ -17,6 +17,7 @@ profile logcheck /usr/sbin/logcheck {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
@@ -58,4 +59,28 @@ profile logcheck /usr/sbin/logcheck {
   
   # TEMP -----------------------------------------------
   owner /tmp/logcheck.*/{,**}				rw,
+}
+
+profile logcheck.cron.hourly /etc/cron.hourly/logcheck.cron {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # CAPABILITIES ---------------------------------------
+  capability chown,
+  capability dac_read_search,
+  capability dac_override,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /etc/cron.hourly/logcheck.cron			r,
+  @{shell}						mr,
+  /bin/mkdir						ix,
+  /bin/chown						ix,
+  /bin/su						Px,
+  /usr/sbin/logcheck					Px,
+  
+  # READS/WRITES ---------------------------------------
+  /run/lock/logcheck/					rw,
 }

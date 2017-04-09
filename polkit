@@ -12,6 +12,7 @@
 
 profile polkit.polkitd /usr/lib{,32,64}/polkit-1/polkitd {
   #include <abstractions/base>
+  #include <abstractions/dbus-strict>
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
@@ -52,6 +53,7 @@ profile polkit.pkcheck /usr/bin/pkcheck flags=(complain) {
 
 profile polkit.pkexec /usr/bin/pkexec flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/dbus-strict>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
   
@@ -60,8 +62,14 @@ profile polkit.pkexec /usr/bin/pkexec flags=(complain) {
   capability setuid,
   capability setgid,
   
+  # PTRACE ---------------------------------------------
+  ptrace (trace),
+  
+  # SIGNAL ---------------------------------------------
+  signal (receive) set=(rtmin+1) peer="polkit.pkexec//root",
+  
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/stat					r,
   @{PROC}/@{pid}/attr/current				w,
   
@@ -72,6 +80,9 @@ profile polkit.pkexec /usr/bin/pkexec flags=(complain) {
   /etc/shells						r,
   /etc/environment					r,
   /etc/security/limits.d/				r,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   
   ^DEFAULT {}							# Пока нам не нужны другие пользователи,
   								# просто ставим пустой дефолтный hat.
@@ -86,8 +97,11 @@ profile polkit.pkexec /usr/bin/pkexec flags=(complain) {
     capability setuid,
     capability setgid,
     
+    # SIGNAL ---------------------------------------------
+    signal (send) set=(rtmin+1) peer="polkit.pkexec",
+    
     # PSEUDO ---------------------------------------------
-    /dev/tty[0-9]*					w,
+    /dev/tty[0-9]*					rw,
     
     # EXECUTABLES ----------------------------------------
     /usr/sbin/gparted					Px,

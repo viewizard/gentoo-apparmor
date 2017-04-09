@@ -17,11 +17,15 @@ profile mumble /usr/bin/mumble {
   #include <abstractions/qt>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
   #include <abstractions/audio>
   
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/shm/MumbleLink.*					rw,
   
   # EXECUTABLES ----------------------------------------

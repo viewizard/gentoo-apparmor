@@ -22,12 +22,13 @@ profile filezilla /usr/bin/filezilla {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/filezilla					mr,
@@ -51,6 +52,7 @@ profile filezilla /usr/bin/filezilla {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,

@@ -19,12 +19,16 @@ profile gnome-nettool /usr/bin/gnome-nettool {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/dconf>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
   
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /sys/devices/{virtual,pci**}/net/*/statistics/*	r,
   owner @{PROC}/@{pid}/fd/				r,
   @{PROC}/@{pid}/net/{dev,tcp,udp,udplite,raw,igmp}	r,

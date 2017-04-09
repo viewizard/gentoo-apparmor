@@ -8,38 +8,46 @@
 #
 # ------------------------------------------------------------------
 
-
+# CAPABILITIES -----------------------------------------
 capability kill,
 capability sys_ptrace,
 capability dac_override,
 capability sys_tty_config,
 
-/dev/tty				rw,
-/dev/ptmx				rw,
-/dev/console				rw,
-/dev/pts/[0-9]*				rw,
-/sys/fs/cgroup/				r,
-/sys/fs/cgroup/*/tasks			w,
-/sys/fs/cgroup/openrc/*/{,tasks}	w,
-@{PROC}/				r,
-@{PROC}/cmdline				r,
-@{PROC}/@{pid}/environ			r,
-@{PROC}/@{pid}/stat			r,
+# PTRACE -----------------------------------------------
+ptrace (trace),
 
-/sbin/openrc				ixr,
-/sbin/runscript				r,
-/sbin/openrc-run			mr,
-/sbin/start-stop-daemon			ixr,
-/lib{,32,64}/rc/bin/*			ixr,
-/lib{,32,64}/rc/sh/openrc-run.sh	ixr,
-/bin/mkdir				ix,
-/bin/sort				ix,
+# SIGNAL -----------------------------------------------
+signal (send) set=(term, hup),
 
-/etc/rc.conf				r,
-/etc/profile.env			r,
-/etc/init.d/				r,
-/etc/conf.d/				r,
-/etc/terminfo/x/xterm			r,
-/etc/terminfo/l/linux			r,
+# PSEUDO -----------------------------------------------
+/dev/tty						rw,
+/dev/ptmx						rw,
+/dev/console						rw,
+/dev/pts/[0-9]*						rw,
+/sys/fs/cgroup/						r,
+/sys/fs/cgroup/*/tasks					w,
+/sys/fs/cgroup/openrc/*/{,tasks}			w,
+@{PROC}/						r,
+@{PROC}/cmdline						r,
+@{PROC}/@{pid}/environ					r,
+@{PROC}/@{pid}/stat					r,
 
-/run/openrc/**				rwk,
+# EXECUTABLES ------------------------------------------
+/sbin/openrc						ixr,
+audit /sbin/runscript					r,	# FIX ME! Перешли на /sbin/openrc-run. 09.04.2017
+/sbin/openrc-run					mr,
+/sbin/start-stop-daemon					ixr,
+/lib{,32,64}/rc/bin/*					ixr,
+/lib{,32,64}/rc/sh/openrc-run.sh			ixr,
+/bin/mkdir						ix,
+/bin/sort						ix,
+
+# READS/WRITES -----------------------------------------
+/etc/rc.conf						r,
+/etc/profile.env					r,
+/etc/init.d/						r,
+/etc/conf.d/						r,
+/etc/terminfo/x/xterm					r,
+/etc/terminfo/l/linux					r,
+/run/openrc/**						rwk,

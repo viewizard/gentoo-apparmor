@@ -18,7 +18,7 @@ profile mousepad /usr/bin/mousepad {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/gtk>
   #include <abstractions/cups-client>
   #include <abstractions/nvidia>
@@ -29,7 +29,7 @@ profile mousepad /usr/bin/mousepad {
   #include <abstractions/executable-binary-helper>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
@@ -51,7 +51,7 @@ profile mousepad_root {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/gtk>
   #include <abstractions/cups-client>
   #include <abstractions/nvidia>
@@ -68,7 +68,7 @@ profile mousepad_root {
   capability fowner,
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
@@ -82,6 +82,7 @@ profile mousepad_root {
   owner @{HOME}/.config/Mousepad/			rw,
   owner @{HOME}/.config/Mousepad/*			rwk,
   @{HOME}/.Xauthority					r,
+  @{HOME}/.session.log					w,	# XFCE4
   
   # TEMP -----------------------------------------------
   /tmp/libgksu-*/.Xauthority				r,

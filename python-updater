@@ -18,7 +18,7 @@ profile python-updater /usr/sbin/python-updater flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/python-updater				r,
@@ -64,7 +64,7 @@ profile python-updater /usr/sbin/python-updater flags=(complain) {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
-    /dev/pts/[0-9]*					w,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						Px -> python_updater_shell,

@@ -18,8 +18,16 @@ profile iptables.xtables-multi /sbin/xtables-multi flags=(complain) {
   capability net_raw,
   capability net_admin,
   
+  # UNIX -----------------------------------------------
+  unix (bind) type=stream addr="@xtables",
+  
+  # NETWORK --------------------------------------------
+  network inet raw,
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/net/ip_tables_names			r,
   
   # EXECUTABLES ----------------------------------------
@@ -66,7 +74,7 @@ profile iptables.firewall /usr/sbin/firewall {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/console						rw,
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/net/ip_tables_names			r,
   
   # EXECUTABLES ----------------------------------------

@@ -17,6 +17,8 @@ profile hd-idle /usr/sbin/hd-idle {
   capability sys_rawio,
   
   # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_REAL}					r,
   @{PROC}/diskstats					r,
   

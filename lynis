@@ -21,6 +21,7 @@ profile lynis /usr/sbin/lynis {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
   /dev/mapper/control					w,
   
   # EXECUTABLES ----------------------------------------
@@ -82,13 +83,10 @@ profile lynis /usr/sbin/lynis {
   /var/log/lynis.log					rw,
   /var/log/lynis-report.dat				rw,
   
-  # AUDIT READS/WRITES ---------------------------------
-  audit deny @{HOME_USERS}/**				r,
-  
   # TEMP -----------------------------------------------
   owner /tmp/lynis.*					rw,
   owner /tmp/lynis2.*					rw,
-  owner /tmp/lynis.cron.??????				rw,
+  owner /tmp/lynis.cron.*				rw,	# DELEGATION! lynis.cron.daily
   owner /tmp/lynis-shellshock-test.*			rw,
   
   # NOISY ----------------------------------------------
@@ -103,6 +101,7 @@ profile lynis /usr/sbin/lynis {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						ixmr,	# Все правильно, запуск и mmap
@@ -120,11 +119,17 @@ profile lynis /usr/sbin/lynis {
   profile smbd /usr/sbin/smbd {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /usr/sbin/smbd					mr,
     
     # READS/WRITES -------------------------------------
     /usr/share/samba/{,**}				r,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
   }
   
   profile sshd /usr/sbin/sshd {
@@ -135,7 +140,11 @@ profile lynis /usr/sbin/lynis {
     capability setuid,
     capability setgid,
     
+    # NETWORK ------------------------------------------
+    network netlink raw,
+    
     # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
     @{PROC}/@{pid}/fd/					r,
     
     # EXECUTABLES --------------------------------------
@@ -150,7 +159,41 @@ profile lynis /usr/sbin/lynis {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/aa-status				Px,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
   }
+}
+
+# Профиль модифицированного скрипта для запуска lynis по cron-у.
+profile lynis.cron.daily /etc/cron.daily/lynis {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability dac_override,
+  capability dac_read_search,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # PSEUDO ---------------------------------------------
+  /etc/cron.daily/lynis					r,
+  @{shell}						mr,
+  /bin/mktemp						ix,
+  /bin/cat						ix,
+  /bin/rm						ix,
+  /bin/basename						Px,
+  /usr/bin/libnotify-notify-send-users			Px,
+  /usr/bin/mail						Px,
+  /usr/bin/logger					Px,
+  /usr/sbin/lynis					Px,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/lynis.cron.??????				rw,
 }

@@ -20,7 +20,7 @@ profile onboard /usr/bin/onboard flags=(complain) {
   #include <abstractions/dconf>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
@@ -50,7 +50,7 @@ profile onboard-settings /usr/bin/onboard-settings flags=(complain) {
   #include <abstractions/dconf>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------

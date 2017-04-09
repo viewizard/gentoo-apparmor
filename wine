@@ -24,8 +24,20 @@ profile wine /usr/bin/wine {
   # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  	type=stream
+  	peer=(label="evelauncher"),				# FIX ME! Подумать, как сделать IPC, не привязываясь.
+  unix (send, receive)
+  	type=seqpacket
+  	peer=(label="evelauncher"),				# FIX ME! Подумать, как сделать IPC, не привязываясь.
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/cpuinfo					r,
   @{PROC}/meminfo					r,
   @{PROC}/scsi/scsi					r,
@@ -65,11 +77,31 @@ profile wine.wine-preloader /usr/bin/wine-preloader {
   #include <abstractions/p11-kit>
   #include <abstractions/private-files-strict>
   #include <abstractions/X>
+  #include <abstractions/dbus-strict>
   #include <abstractions/nvidia>
   #include <local/wine-custom-locations>
   
+  # SIGNAL ---------------------------------------------
+  signal (receive)
+  	set=(usr1, quit)
+  	peer="wine.wineserver",
+  
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  	type=stream
+  	peer=(label="wine.wineserver"),
+  unix (send, receive)
+  	type=stream
+  	peer=(label="evelauncher"),				# FIX ME! Подумать, как сделать IPC, не привязываясь.
+  unix (send, receive)
+  	type=seqpacket
+  	peer=(label="evelauncher"),				# FIX ME! Подумать, как сделать IPC, не привязываясь.
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   owner /dev/shm/#*					rw,
   /sys/bus/						r,
@@ -106,6 +138,7 @@ profile wine.wine-preloader /usr/bin/wine-preloader {
   # TEMP -----------------------------------------------
   owner /tmp/.gl*					rw,
   owner /tmp/.wine-[0-9]*/server-*-*/{,lock}		r,
+  owner /tmp/.wine-[0-9]*/server-*-*/socket		rw,
   
   # NOISY ----------------------------------------------
   deny /						r,
@@ -121,14 +154,35 @@ profile wine.wine-preloader /usr/bin/wine-preloader {
 profile wine.wineserver /usr/bin/wineserver {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  include <abstractions/X-connection-strict>
   #include <abstractions/private-files-strict>
   #include <local/wine-custom-locations>
   
   # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   
+  # SIGNAL ---------------------------------------------
+  signal (send)
+  	set=(usr1, quit)
+  	peer="wine.wine-preloader",
+  
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  	type=stream
+  	peer=(label="wine.wine-preloader"),
+  unix (send, receive)
+  	type=stream
+  	peer=(label="evelauncher"),				# FIX ME! Подумать, как сделать IPC, не привязываясь.
+  unix (send, receive)
+  	type=seqpacket
+  	peer=(label="evelauncher"),				# FIX ME! Подумать, как сделать IPC, не привязываясь.
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   owner @{PROC}/@{pid}/mem				r,
   
   # EXECUTABLES ----------------------------------------
@@ -162,6 +216,7 @@ profile wine.notepad /usr/bin/notepad {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/notepad					r,
@@ -169,6 +224,9 @@ profile wine.notepad /usr/bin/notepad {
   /bin/basename						Px,
   /bin/dirname						Px,
   /usr/bin/wine						Px,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile wine.winecfg /usr/bin/winecfg {
@@ -176,6 +234,8 @@ profile wine.winecfg /usr/bin/winecfg {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/winecfg					r,
@@ -183,4 +243,7 @@ profile wine.winecfg /usr/bin/winecfg {
   /bin/basename						Px,
   /bin/dirname						Px,
   /usr/bin/wine						Px,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }

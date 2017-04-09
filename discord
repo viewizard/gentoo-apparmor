@@ -19,29 +19,49 @@ profile discord /opt/discord/share/discord/Discord {
   #include <abstractions/nameservice>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/xdg-open>
   
-  # CAPABILITIES ---------------------------------------
-  capability sys_ptrace,
+  # AUDIT CAPABILITIES ---------------------------------
+  deny capability sys_ptrace,
+  
+  # AUDIT PTRACE ---------------------------------------
+  deny ptrace (trace),
+  
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  	type=seqpacket
+  	peer=(label="discord//lsb-release"),
+  unix (send, receive)
+  	type=stream
+  	peer=(label="discord//lsb-release"),
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/shm/.org.chromium.Chromium.*			rw,
-  @{PROC}/						r,
-  @{PROC}/@{pid}/stat					r,
-  @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/oom_score_adj				rw,
-  @{PROC}/@{pid}/cmdline				r,
   /sys/devices/system/cpu/				r,
   /sys/devices/system/cpu/cpufreq/policy[0-9]*/cpuinfo_max_freq r,
   /sys/devices/pci[0-9]**/{device,class,irq,resource,vendor} r,
   /sys/devices/virtual/tty/tty[0-9]**/active		r,
+  @{PROC}/						r,
+  @{PROC}/@{pid}/stat					r,
+  @{PROC}/@{pid}/fd/					r,
+  @{PROC}/@{pid}/cmdline				r,
+  @{PROC}/@{pid}/auxv					r,
+  
+  # AUDIT PSEUDO ---------------------------------------
+  deny @{PROC}/@{pid}/oom_score_adj			rw,
   
   # EXECUTABLES ----------------------------------------
   /opt/discord/share/discord/Discord			Pxmr,
-  /usr/bin/lsb_release					Px,
+  /usr/bin/lsb_release					Cx,	# DELEGATION! Пока не используем Px. Потом подумать,
+  								# как реализовать IPC и не тянуть unix (Stacking?).
   
   # READS/WRITES ---------------------------------------
   /opt/discord/**					r,
@@ -60,6 +80,36 @@ profile discord /opt/discord/share/discord/Discord {
   owner /tmp/discord.sock				rw,
   owner /tmp/.gl*					rw,
   owner /tmp/.org.chromium.Chromium.*			mrw,
+  owner "/tmp/Discord Crashes/{,**}"			rw,
   /var/tmp/						r,
   owner /var/tmp/etilqs_*				rw,
+  
+  profile lsb-release /usr/bin/lsb_release {
+    #include <abstractions/base>
+    
+    # UNIX -----------------------------------------------
+    unix (send, receive)
+    		type=seqpacket
+    		peer=(label="discord"),
+    unix (send, receive)
+    		type=stream
+    		peer=(label="discord"),
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/lsb_release				r,
+    @{shell}						mr,
+    /bin/sed						ixr,
+    /bin/head						ixr,
+    /usr/bin/find					ix,
+    /usr/bin/getopt					ixr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/						r,
+    /etc/{gentoo,os,lsb}-release			r,
+    /opt/discord/**					r,
+  }
 }

@@ -36,7 +36,7 @@ profile xarchiver /usr/bin/xarchiver {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/nameservice>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/dconf>
   #include <abstractions/program-work-with-disk-rwkl-strict>
   #include <abstractions/xdg-open>
@@ -44,7 +44,7 @@ profile xarchiver /usr/bin/xarchiver {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /sys/devices/system/cpu/				r,
   
   # EXECUTABLES ----------------------------------------
@@ -112,7 +112,7 @@ profile xarchiver_root {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/nameservice>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/dconf>
   #include <abstractions/program-work-with-disk-rwkl-strict>
   #include <abstractions/xdg-open_root>
@@ -129,7 +129,7 @@ profile xarchiver_root {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /sys/devices/system/cpu/				r,
   
   # EXECUTABLES ----------------------------------------
@@ -157,6 +157,7 @@ profile xarchiver_root {
   # USERS ----------------------------------------------
   owner @{HOME}/.config/xarchiver/{,**}			rw,
   @{HOME}/.Xauthority					r,
+  @{HOME}/.session.log					w,	# XFCE4
   
   # TEMP -----------------------------------------------
   owner /tmp/xarchiver_*_socket				rw,
@@ -197,7 +198,7 @@ profile xarchiver_tap /usr/libexec/thunar-archive-plugin/xarchiver.tap {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/thunar-archive-plugin/xarchiver.tap	r,
@@ -210,7 +211,7 @@ profile xarchiver_tap_root {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/thunar-archive-plugin/xarchiver.tap	r,

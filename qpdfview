@@ -19,6 +19,7 @@ profile qpdfview /usr/bin/qpdfview {
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/qt>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/cups-client>
   #include <abstractions/nvidia>
   #include <abstractions/X>
@@ -27,7 +28,7 @@ profile qpdfview /usr/bin/qpdfview {
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/qpdfview					mr,

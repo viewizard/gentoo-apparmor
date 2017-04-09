@@ -24,10 +24,14 @@ profile cryptsetup /sbin/cryptsetup flags=(complain) {
   capability sys_nice,
   capability sys_admin,
   
+  # NETWORK --------------------------------------------
+  network alg seqpacket,					# FIX ME! может это unix, описать потробнее а не просто разрешать.
+  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/pts/[0-9]*					rw,
+  /dev/console						rw,
   /dev/null						rw,
+  /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rw,
   /dev/mapper/						r,
   /dev/mapper/control					rw,
@@ -39,13 +43,22 @@ profile cryptsetup /sbin/cryptsetup flags=(complain) {
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
+  /etc/conf.d/dmcrypt					r,	# DELEGATION! cryptsetup.init.d
   /run/openrc/dm-crypt-remdev.*/enc.key			r,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! daily_backup.sh.cron.daily
+  owner /tmp/homebackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
+  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! monthly_backup.sh.cron.monthly
 }
 
 profile cryptsetup.init.d /etc/init.d/dmcrypt {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
+  
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,

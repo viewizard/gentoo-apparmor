@@ -16,7 +16,7 @@ profile pidgin /usr/bin/pidgin {
   #include <abstractions/fonts>
   #include <abstractions/audio>
   #include <abstractions/enchant>
-  #include <abstractions/dbus>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/nameservice>
@@ -27,11 +27,17 @@ profile pidgin /usr/bin/pidgin {
   #include <abstractions/user-download>
   #include <abstractions/user-upload>
   
-  # CAPABILITIES ---------------------------------------
-  capability sys_ptrace,
+  # AUDIT CAPABILITIES ---------------------------------
+  deny capability sys_ptrace,
+  
+  # AUDIT PTRACE ---------------------------------------
+  deny ptrace (trace),
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/shm/						r,
   /dev/shm/*						rw,
   

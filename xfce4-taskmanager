@@ -17,14 +17,21 @@ profile xfce4-taskmanager /usr/bin/xfce4-taskmanager {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
   
   # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   
+  # PTRACE ---------------------------------------------
+  ptrace (trace),
+  
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term, stop, kill),
+  
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   @{PROC}/						r,
   @{PROC}/@{pid}/fd/					r,
   @{PROC}/@{pid}/{cmdline,status,stat}			r,

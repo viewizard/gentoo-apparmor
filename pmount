@@ -20,7 +20,7 @@ profile pmount /usr/bin/pmount flags=(complain) {
   capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/@{BLOCK_REAL}					r,
   /sys/class/block/					r,
   /sys/devices/virtual/block/md*/dev			r,
@@ -51,8 +51,8 @@ profile pmount.pumount /usr/bin/pumount flags=(complain) {
   capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
-  /dev/pts/[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------

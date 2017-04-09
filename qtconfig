@@ -17,7 +17,11 @@ profile qtconfig /usr/{bin/{qtconfig,qtchooser},lib{,32,64}/qt4/bin/qtconfig} fl
   #include <abstractions/qt>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/{qtconfig,qtchooser}				ixmr,

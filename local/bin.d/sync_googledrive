@@ -1,0 +1,28 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# Важно! Не должен содержать <tunables/global>.
+# Уже включен в тело /etc/apparmor.d/2_local профиля.
+
+# Важно! Перезагрузка профиля выполняется командой:
+# apparmor_parser -r /etc/apparmor.d/2_local
+
+profile local.bin.sync_googledrive /usr/local/bin/sync_googledrive.sh {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/local/bin/sync_googledrive.sh			r,
+  @{shell}						mr,
+  /usr/bin/grive					Px,
+}

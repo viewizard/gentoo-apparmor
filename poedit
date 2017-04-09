@@ -22,21 +22,23 @@ profile poedit /usr/bin/poedit {
   #include <abstractions/enchant>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/xdg-open>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /sys/devices/system/cpu/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/poedit					mr,
   @{shell}						ix,	# FIX ME! почему он в основном профиле с ix?
-  /bin/uname						Px,
+  /bin/uname						ix,	# DELEGATION! Пока не используем Px.
   /usr/bin/msgmerge					ix,
   /usr/bin/msgfmt					ix,
   /usr/bin/msgcat					ix,
-  /usr/bin/lsb_release					Pxr,
+  /usr/bin/lsb_release					Cxr,	# DELEGATION! Пока не используем Pxr.
   
   # READS/WRITES ---------------------------------------
   /usr/share/poedit/{,**}				r,
@@ -49,4 +51,29 @@ profile poedit /usr/bin/poedit {
   
   # TEMP -----------------------------------------------
   owner /tmp/poedit*/{,**}				rw,
+  
+  profile lsb-release /usr/bin/lsb_release {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/lsb_release				r,
+    @{shell}						mr,
+    /bin/sed						ixr,
+    /bin/tr						Pxr,
+    /bin/head						ixr,
+    /usr/bin/find					ix,
+    /usr/bin/getopt					ixr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/						r,
+    /etc/{gentoo,os,lsb}-release			r,
+    owner /run/user/*/poedit.*				rwk,
+    
+    # NOISY --------------------------------------------
+    deny /home/**					r,
+  }
 }

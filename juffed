@@ -22,13 +22,13 @@ profile juffed /usr/bin/juffed {
   #include <abstractions/nvidia>
   #include <abstractions/cups-client>
   #include <abstractions/X>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -57,7 +57,7 @@ profile juffed_root {
   #include <abstractions/nvidia>
   #include <abstractions/cups-client>
   #include <abstractions/X>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open_root>
@@ -69,7 +69,7 @@ profile juffed_root {
   capability sys_nice,
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -82,6 +82,7 @@ profile juffed_root {
   owner @{HOME}/.config/juff/				rw,
   owner @{HOME}/.config/juff/**				rwk,
   @{HOME}/.Xauthority					r,
+  @{HOME}/.session.log					w,	# XFCE4
   
   # TEMP -----------------------------------------------
   owner /tmp/qtsingleapp-juffed-*-*{,-lockfile}		rwk,

@@ -19,15 +19,24 @@ profile sudo /usr/bin/sudo {
   capability setuid,
   capability setgid,
   capability chown,
+  capability mknod,
   capability fowner,
   capability sys_resource,
   capability dac_read_search,
   capability dac_override,
   
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  		type=stream
+  		peer=(label="pam_mount.pmvarrun"),		# pam_mount.pmvarrun
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
   /dev/							r,
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   owner @{PROC}/@{pid}/stat				r,
@@ -51,6 +60,9 @@ profile sudo /usr/bin/sudo {
   /run/sudo/						rw,
   /run/sudo/ts/						rw,
   /run/sudo/ts/*					rwk,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -85,8 +97,11 @@ profile sudo /usr/bin/sudo {
     capability setgid,
     capability fsetid,
     
+    # SIGNAL -------------------------------------------
+    signal (send) set=(cont, hup) peer="shell_root",
+    
     # PSEUDO -------------------------------------------
-    /dev/pts/[0-9]*					w,
+    /dev/pts/[0-9]*					rw,
     @{PROC}/@{pid}/fd/					r,
     
     # EXECUTABLES --------------------------------------
@@ -110,10 +125,11 @@ profile sudo.askpass /usr/bin/gksu_askpass.sh {
   #include <abstractions/nvidia>
   #include <abstractions/gtk>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gksu_askpass.sh				r,
@@ -126,10 +142,13 @@ profile sudo.gksudo /usr/bin/{gksu,gksudo} {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
   /usr/bin/{gksu,gksudo}				mr,
   /usr/bin/sudo						Px,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }

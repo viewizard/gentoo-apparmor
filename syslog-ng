@@ -17,6 +17,7 @@ profile syslog-ng /usr/sbin/syslog-ng {
   
   # CAPABILITIES ---------------------------------------
   capability chown,
+  capability mknod,
   capability dac_override,
   capability dac_read_search,
   capability fsetid,
@@ -26,14 +27,17 @@ profile syslog-ng /usr/sbin/syslog-ng {
   capability syslog,
   capability sys_ptrace,
   
+  # PTRACE ---------------------------------------------
+  ptrace (trace),
+  
   # UNIX -----------------------------------------------
   unix (receive) type=dgram,
   unix (receive) type=stream,
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/kmsg						r,
-  /dev/log						w,
+  /dev/log						rw,
   /dev/syslog						w,
   /dev/xconsole						rw,
   /sys/devices/system/cpu/online			r,
@@ -46,7 +50,7 @@ profile syslog-ng /usr/sbin/syslog-ng {
   /usr/sbin/syslog-ng					mr,
   
   # READS/WRITES ---------------------------------------
-  /etc/syslog-ng/*					r,  
+  /etc/syslog-ng/*					r,
   /etc/hosts.{allow,deny}				r,
   /usr/share/syslog-ng/**				r,
   /usr/share/include/scl**				r,
@@ -56,6 +60,9 @@ profile syslog-ng /usr/sbin/syslog-ng {
   /run/syslog-ng.pid					rwk,
   /run/syslog-ng.ctl					rw,
   /run/syslog-ng/additional-log-sockets.conf		r,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
 }
 
 profile syslog-ng.init.d /etc/init.d/syslog-ng {
@@ -70,7 +77,7 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng {
   capability setgid,
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/uid_map				r,
   @{PROC}/@{pid}/loginuid				rw,
   

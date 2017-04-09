@@ -20,9 +20,12 @@ profile openrc /sbin/openrc flags=(complain) {
   capability dac_override,
   capability kill,
   
+  # PTRACE ---------------------------------------------
+  ptrace (trace) peer="sysvinit.init",
+  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/ptmx						rw,
   /dev/pts/[0-9]*					rw,
@@ -67,6 +70,7 @@ profile openrc /sbin/openrc flags=(complain) {
     capability dac_read_search,
     
     # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
     /dev/console					rw,
   }
 }
@@ -86,7 +90,7 @@ profile openrc.rc-update /sbin/rc-update flags=(complain) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /sbin/rc-update					mr,
@@ -108,7 +112,7 @@ profile openrc.rc-status /bin/rc-status {
   capability dac_override,
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
   @{PROC}/cmdline					r,
   @{PROC}/@{pid}/{cmdline,environ}			r,
@@ -142,9 +146,11 @@ profile openrc.gendepends.sh /lib{,32,64}/rc/sh/gendepends.sh flags=(complain) {
   capability sys_tty_config,
   capability dac_override,
   capability dac_read_search,
+  capability mknod,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
   /dev/console						rw,
   @{PROC}/@{pid}/mounts					r,
   
@@ -187,6 +193,7 @@ profile openrc.init-early.sh /lib{,32,64}/rc/sh/init-early.sh flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
   /dev/null						w,
   /dev/console						rw,
   
@@ -204,11 +211,13 @@ profile openrc.init.sh /lib{,32,64}/rc/sh/init.sh flags=(complain) {
   
   # CAPABILITIES ---------------------------------------
   capability chown,
+  capability mknod,
   capability sys_admin,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
+  /dev/console						rw,
   @{PROC}/@{pid}/mounts					r,
   @{PROC}/@{pid}/environ				r,
   
@@ -285,7 +294,9 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont {
     capability sys_tty_config,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/gzip						ix,
@@ -385,6 +396,9 @@ profile openrc.fsck.init.d /etc/init.d/fsck {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
+  
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -610,7 +624,7 @@ profile openrc.termencoding.init.d /etc/init.d/termencoding {
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -677,6 +691,7 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps {
     
     # PSEUDO -------------------------------------------
     /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/gzip						ix,
@@ -690,6 +705,9 @@ profile openrc.urandom.init.d /etc/init.d/urandom {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
+  
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
   
   # PSEUDO ---------------------------------------------
   /dev/urandom						w,
@@ -719,6 +737,9 @@ profile openrc.loopback.init.d /etc/init.d/loopback {
   
   # CAPABILITIES ---------------------------------------
   capability net_admin,
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -757,6 +778,11 @@ profile openrc.killprocs.init.d /etc/init.d/killprocs {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
+  
+  # SIGNAL ---------------------------------------------
+  signal (receive),						# FIX ME! Не удалось понять что именно получает. Выполняется
+  								# в конце выключения/перезагрузки, даже в тестовом режиме
+  								# запуска syslog-ng к этому моменту убивает процесс syslog-ng.
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -824,6 +850,9 @@ profile openrc.devfs.init.d /etc/init.d/devfs {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
+  
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
   
   # PSEUDO ---------------------------------------------
   /dev/mqueue/						rw,

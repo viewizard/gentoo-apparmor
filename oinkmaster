@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile oinkmaster.pl /usr/bin/oinkmaster.pl {
+profile oinkmaster /usr/bin/oinkmaster.pl {
   #include <abstractions/base>
   #include <abstractions/perl>
   #include <abstractions/nameservice>
@@ -18,6 +18,9 @@ profile oinkmaster.pl /usr/bin/oinkmaster.pl {
   # CAPABILITIES ---------------------------------------
   capability dac_read_search,
   capability dac_override,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/oinkmaster.pl				mr,
@@ -34,4 +37,37 @@ profile oinkmaster.pl /usr/bin/oinkmaster.pl {
   # TEMP -----------------------------------------------
   owner /tmp/oinkmaster.cron.??????{,/,/**}		rw,
   owner /tmp/oinkmaster.*/{,**}				rw,
+  
+  # NOISY ----------------------------------------------
+  deny /.wget-hsts					rw,
+  deny /root/.wget-hsts					rw,
+}
+
+# Профиль модифицированного скрипта для запуска обновления oinkmaster-а по cron-у.
+profile oinkmaster.cron.daily /etc/cron.daily/oinkmaster {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability dac_override,
+  capability dac_read_search,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /etc/cron.daily/oinkmaster				r,
+  @{shell}						mr,
+  /bin/mktemp						ix,
+  /bin/cat						ix,
+  /bin/rm						ix,
+  /bin/basename						Px,
+  /usr/bin/libnotify-notify-send-users			Px,
+  /usr/bin/mail						Px,
+  /usr/bin/logger					Px,
+  /usr/bin/oinkmaster.pl				Px,
+  /etc/init.d/suricata					Px,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/oinkmaster.cron.??????			rw,
 }

@@ -19,6 +19,10 @@ profile vixie-cron.cron /usr/sbin/cron {
   capability setuid,
   capability setgid,
   
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
+  
   # EXECUTABLES ----------------------------------------
   /usr/sbin/cron					mr,
   @{shell}						Cx,
@@ -50,6 +54,9 @@ profile vixie-cron.cron /usr/sbin/cron {
 profile vixie-cron.crontab /usr/bin/crontab {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/crontab					mr,

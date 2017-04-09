@@ -13,8 +13,11 @@
 profile make /usr/bin/{,g}make flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -45,10 +48,13 @@ profile make /usr/bin/{,g}make flags=(complain) {
     #include <abstractions/nameservice>
     #include <abstractions/perl>
     
+    # CAPABILITIES ---------------------------------------
+    capability mknod,
+    
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
-    /dev/tty[0-9]*					w,
-    /dev/pts/[0-9]*					w,
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     @{PROC}/@{pid}/fd/					r,
     
     # EXECUTABLES --------------------------------------
@@ -86,7 +92,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /usr/bin/whoami					Px,
     /usr/bin/bc						ix,
     /usr/bin/cmp					ix,
-    /usr/bin/git					ix,	# не используем Px и Px -> git_root.
+    /usr/bin/git					ix,	# Не используем Px и Px -> git_root.
     /usr/bin/svn					ix,
     /usr/bin/gawk					ix,
     /usr/bin/find					ix,

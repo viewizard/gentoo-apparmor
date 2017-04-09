@@ -23,6 +23,8 @@ profile wireshark /usr/bin/{tshark,wireshark} {
   #include <abstractions/cups-client>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
@@ -31,8 +33,13 @@ profile wireshark /usr/bin/{tshark,wireshark} {
   capability net_admin,
   capability net_raw,
   
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  network packet raw,
+  network packet dgram,
+  
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /sys/class/net/					r,
   /sys/bus/usb/devices/					r,

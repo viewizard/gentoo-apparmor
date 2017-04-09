@@ -15,10 +15,13 @@ profile kmod /{bin/kmod,sbin/modprobe,sbin/modeinfo} {
   
   # CAPABILITIES ---------------------------------------
   capability sys_module,
+  capability sys_admin,
+  capability syslog,
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
-  /dev/pts/[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   /sys/module/**					r,
   @{PROC}/{cmdline,modules}				r,
   
@@ -29,10 +32,12 @@ profile kmod /{bin/kmod,sbin/modprobe,sbin/modeinfo} {
   /etc/modprobe.d/{,*}					r,
   /lib{,32,64}/modules/*/modules.*			rw,
   /usr/src/@{kernel}/System.map				r,
-  /usr/src/@{kernel}/tar-install/lib/modules/@{kernel_ver}/ r,
-  /usr/src/@{kernel}/tar-install/lib/modules/@{kernel_ver}/** rw,
+  /usr/src/@{kernel}/tar-install/lib/modules/@{kernel_ver}/ r,		# STACKING! make 
+  /usr/src/@{kernel}/tar-install/lib/modules/@{kernel_ver}/** rw,	# STACKING! make 
   /run/tmpfiles.d/kmod.conf				w,
+  /var/log/Xorg.[0-9].log				w,	# DELEGATION! xorg-server.Xorg
   
   # TEMP -----------------------------------------------
   owner /tmp/depmod.*/{,**}				rw,
+  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
 }

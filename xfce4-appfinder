@@ -17,9 +17,11 @@ profile xfce4-appfinder /usr/bin/{xfrun4,xfce4-appfinder} {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/gtk>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/executable-binary-programs>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
@@ -41,7 +43,7 @@ profile xfce4-appfinder /usr/bin/{xfrun4,xfce4-appfinder} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					w,
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------

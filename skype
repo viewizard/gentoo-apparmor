@@ -23,10 +23,16 @@ profile skype /opt/bin/skype {
   #include <abstractions/user-download>
   #include <abstractions/user-upload>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/xdg-open>
+  
+  # NETWORK --------------------------------------------
+  network netlink dgram,
+  network netlink raw,
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
+  /dev/tty[0-9]*					rw,
   /sys/devices/**/power_supply/**/online		r,
   /sys/class/power_supply/				r,
   /sys/devices/system/cpu/				r,

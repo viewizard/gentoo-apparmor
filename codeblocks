@@ -24,12 +24,13 @@ profile codeblocks /usr/bin/codeblocks {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/nameservice>
   #include <local/codeblocks-custom-settings>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/codeblocks					mr,
@@ -57,9 +58,9 @@ profile codeblocks /usr/bin/codeblocks {
   owner @{HOME}/.local/share/codeblocks/{,**}		rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/wxbf* rw,
-  owner /tmp/CODEBLOCKS*.socket rw,
-  owner /tmp/Code::Blocks-* rwk,
+  owner /tmp/wxbf*					rw,
+  owner /tmp/CODEBLOCKS*.socket				rw,
+  owner /tmp/Code::Blocks-*				rwk,
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -88,5 +89,6 @@ profile codeblocks /usr/bin/codeblocks {
     
     # TEMP ---------------------------------------------
     owner /tmp/cc*.{s,c,res,o,le,ld}			rw,
+    owner /tmp/Code::Blocks-*				w,
   }
 }

@@ -13,8 +13,12 @@
 profile e2fsprogs.e2fsck /sbin/e2fsck flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rw,
   @{PROC}/swaps						r,
   @{PROC}/@{pid}/mounts					r,
@@ -31,6 +35,7 @@ profile e2fsprogs.mke2fs /sbin/mke2fs flags=(complain) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rw,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}uuid	r,

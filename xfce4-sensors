@@ -17,9 +17,11 @@ profile xfce4-sensors /usr/bin/xfce4-sensors {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /sys/class/i2c-adapter/				r,
   /sys/class/hwmon/					r,
   /sys/class/thermal/					r,

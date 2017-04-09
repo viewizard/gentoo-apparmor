@@ -16,6 +16,9 @@ profile openssh.ssh-agent /usr/bin/ssh-agent flags=(complain) {
   # CAPABILITIES ---------------------------------------
   capability setgid,
   
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  
   # EXECUTABLES ----------------------------------------
   /usr/bin/ssh-agent					mr,
   

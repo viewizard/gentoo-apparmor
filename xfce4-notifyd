@@ -17,6 +17,7 @@ profile xfce4-notifyd /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   
   # CAPABILITIES ---------------------------------------
   capability dac_read_search,					# RBAC! Нужно для запуска запущенным под root-ом
@@ -47,9 +48,10 @@ profile xfce4-notifyd-config /usr/bin/xfce4-notifyd-config {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-notifyd-config				mr,

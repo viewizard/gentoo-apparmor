@@ -1,0 +1,54 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# Важно! Не должен содержать <tunables/global>.
+# Уже включен в тело /etc/apparmor.d/2_local профиля.
+
+# Важно! Перезагрузка профиля выполняется командой:
+# apparmor_parser -r /etc/apparmor.d/2_local
+
+profile cron.daily/hosts.sh /etc/cron.daily/hosts.sh {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # CAPABILITIES ---------------------------------------
+  capability sys_admin,
+  capability dac_override,
+  capability dac_read_search,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /etc/cron.daily/hosts.sh				r,
+  @{shell}						mr,
+  /bin/date						ix,
+  /bin/mv						ix,
+  /bin/chmod						ix,
+  /bin/basename						Px,
+  /usr/bin/libnotify-notify-send-users			Px,
+  /usr/bin/wget						ix,
+  /usr/bin/stat						ix,
+  /usr/bin/mail						Px,
+  /usr/bin/logger					Px,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/wgetrc						r,
+  /var/lib/hosts.blacklist				w,
+  /var/log/hosts.log					w,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/hosts					rw,
+  
+  # NOISY ----------------------------------------------
+  deny /.wget-hsts					rw,
+  deny /root/.wget-hsts					rw,
+}

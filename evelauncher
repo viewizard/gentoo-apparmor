@@ -12,9 +12,11 @@
 
 profile evelauncher.sh /home/*/evelauncher/evelauncher.sh {
   #include <abstractions/base>
+  include <abstractions/X-connection-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   owner @{HOME}/evelauncher/evelauncher.sh		r,
@@ -33,20 +35,47 @@ profile evelauncher /home/*/evelauncher/evelauncher {
   #include <abstractions/qt>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   #include <abstractions/ssl_certs>
   
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  	type=stream
+  	peer=(label="wine"),
+  unix (send, receive)
+  	type=seqpacket
+  	peer=(label="wine"),
+  unix (send, receive)
+  	type=stream
+  	peer=(label="wine.wine-preloader"),
+  unix (send, receive)
+  	type=seqpacket
+  	peer=(label="wine.wine-preloader"),
+  unix (send, receive)
+  	type=stream
+  	peer=(label="wine.wineserver"),
+  unix (send, receive)
+  	type=seqpacket
+  	peer=(label="wine.wineserver"),
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/disk/by-label/					r,
   /dev/shm/.org.chromium.Chromium.*			rw,
   /sys/bus/pci/devices/					r,
   /sys/devices/system/cpu/				r,
   /sys/devices/pci[0-9]*/**/{resource,irq,vendor,device,class,config} r,
   @{PROC}/sys/kernel/shmmax				r,
-  owner @{PROC}/@{pid}/oom_score_adj			rw,
+  
+  # AUDIT PSEUDO ---------------------------------------
+  deny @{PROC}/@{pid}/oom_score_adj			rw,
   
   # EXECUTABLES ----------------------------------------
   owner @{HOME}/evelauncher/evelauncher			mr,
@@ -116,7 +145,7 @@ profile evelauncher.LogLite /home/*/evelauncher/LogLite {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   owner @{HOME}/evelauncher/LogLite			mr,

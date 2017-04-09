@@ -21,14 +21,14 @@ profile ristretto /usr/bin/ristretto {
   #include <abstractions/gtk>
   #include <abstractions/cups-client>
   #include <abstractions/nvidia>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/X>
+  #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
   #include <abstractions/program-work-with-disk-rwk-strict>
-  #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------

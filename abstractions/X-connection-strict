@@ -1,0 +1,37 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# Важно! xorg-server запускаем только на дисплеях 0-9
+# остальные могут использоваться для изоляции через Xephyr
+
+# UNIX -------------------------------------------------
+unix (connect, receive, send)
+	type=stream
+	peer=(addr="@/tmp/.X11-unix/X[0-9]",label="xorg-server.Xorg"),
+unix (send receive)
+	type=stream
+	addr="none"
+	peer=(addr="none",label="xorg-server.Xorg"),
+unix (send receive)
+	type=stream
+	addr=none
+	peer=(addr="@/tmp/.X11-unix/X[0-9]"),
+unix (send receive)
+	type=stream
+	addr="@/tmp/.X11-unix/X[0-9]"
+	peer=(addr="none"),
+unix (send)
+	type=dgram
+	addr="none"
+	peer=(label="xorg-server.Xorg"),
+
+# USERS ------------------------------------------------
+owner @{HOME}/.Xauthority				r,
+owner @{HOME}/.session.log				w,	# XFCE4

@@ -24,10 +24,11 @@ profile alacarte @{PYTHON2_EXEC}/alacarte {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/nameservice>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/program-work-with-disk-rk-strict>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/menus/{,**/,**.menu}				r,

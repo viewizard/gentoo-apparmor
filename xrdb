@@ -12,10 +12,11 @@
 
 profile xrdb /usr/bin/xrdb {
   #include <abstractions/base>
+  #include <abstractions/X-connection-strict>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xrdb						mr,
-  
-  # READS/WRITES ---------------------------------------
-  owner @{HOME}/.Xauthority				r,
 }

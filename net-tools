@@ -23,12 +23,18 @@ profile net-tools.iptunnel /sbin/iptunnel flags=(complain) {
 profile net-tools.ifconfig /bin/ifconfig flags=(complain) {
   #include <abstractions/base>
   
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/net/dev				r,
   
   # EXECUTABLES ----------------------------------------
   /bin/ifconfig						mr,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
 }
 
 profile net-tools.netstat /bin/netstat flags=(complain) {
@@ -37,9 +43,15 @@ profile net-tools.netstat /bin/netstat flags=(complain) {
   
   # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
+  capability sys_admin,
+  capability syslog,
+  capability dac_override,
+  
+  # PTRACE ---------------------------------------------
+  ptrace (trace),
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
   @{PROC}/@{pid}/fd/					r,
   @{PROC}/@{pid}/cmdline				r,
@@ -47,6 +59,10 @@ profile net-tools.netstat /bin/netstat flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /bin/netstat						mr,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
+  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
 }
 
 profile net-tools.hostname /bin/hostname flags=(complain) {	# FIX ME! 05.04.2017 flags=(complain)
@@ -57,8 +73,9 @@ profile net-tools.hostname /bin/hostname flags=(complain) {	# FIX ME! 05.04.2017
   capability sys_admin,
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
-  /dev/pts/[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /bin/hostname						mr,

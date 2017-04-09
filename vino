@@ -21,7 +21,7 @@ profile vino-server /usr/libexec/vino-server flags=(complain) {
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/vino-server				mr,
@@ -36,7 +36,7 @@ profile vino-preferences /usr/bin/vino-preferences flags=(complain) {
   #include <abstractions/dconf>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/vino-preferences				mr,

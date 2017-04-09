@@ -12,13 +12,13 @@
 
 profile xdg-utils.xdg-open /usr/bin/xdg-open {
   #include <abstractions/base>
-  #include <abstractions/dbus>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/freedesktop.org>
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
@@ -28,6 +28,9 @@ profile xdg-utils.xdg-open /usr/bin/xdg-open {
   /usr/bin/exo-open					Px,
   /usr/bin/dbus-send					Px,
   /usr/bin/xprop					ix,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile xdg-utils.xdg-email /usr/bin/xdg-email {
@@ -46,11 +49,12 @@ profile xdg-utils.xdg-email /usr/bin/xdg-email {
 
 profile xdg-utils.xdg-screensaver /usr/bin/xdg-screensaver {
   #include <abstractions/base>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/X>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-screensaver				r,
@@ -76,6 +80,7 @@ profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-settings					mr,
@@ -109,8 +114,7 @@ profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
 
 profile xdg_open_root {
   #include <abstractions/base>
-  #include <abstractions/dbus>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/freedesktop.org>
   #include <abstractions/nameservice>
   #include <abstractions/X>

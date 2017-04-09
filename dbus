@@ -24,7 +24,15 @@ profile dbus.dbus-daemon /usr/bin/dbus-daemon {
   capability setgid,
   capability setuid,
   
+  # UNIX -----------------------------------------------
+  unix (bind, listen, send, receive, accept)
+  			type=stream
+  			addr="@/tmp/dbus-*",
+  
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/cmdline				r,
   @{PROC}/@{pid}/oom_score_adj				w,
   
@@ -48,6 +56,9 @@ profile dbus.dbus-daemon /usr/bin/dbus-daemon {
   /usr/share/dbus-1/**					r,
   /usr/share/defaults/at-spi2/accessibility.conf	r,
   /run/dbus.pid						rw,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile dbus.dbus-launch /usr/bin/dbus-launch {
@@ -60,8 +71,11 @@ profile dbus.dbus-launch /usr/bin/dbus-launch {
   capability dac_read_search,
   capability dac_override,
   
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term) peer="dbus.dbus-daemon",
+  
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dbus-launch					mr,
@@ -79,11 +93,15 @@ profile dbus.dbus-launch /usr/bin/dbus-launch {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /etc/X11/Sessions/Xfce4				r,	# XFCE4
     /usr/bin/startxfce4					Px,	# XFCE4
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   }
 }
 
@@ -96,10 +114,11 @@ profile dbus.dbus-run-session /usr/bin/dbus-run-session flags=(complain) {
 
 profile dbus.dbus-send /usr/bin/dbus-send flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
@@ -109,6 +128,10 @@ profile dbus.dbus-send /usr/bin/dbus-send flags=(complain) {
 profile dbus.dbus-uuidgen /usr/bin/dbus-uuidgen flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/dbus-session-strict>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dbus-uuidgen					mr,

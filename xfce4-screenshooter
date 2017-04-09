@@ -22,11 +22,12 @@ profile xfce4-screenshooter /usr/bin/xfce4-screenshooter {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/nameservice>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/executable-binary-helper>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------

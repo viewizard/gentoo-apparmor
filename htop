@@ -20,6 +20,12 @@ profile htop /usr/bin/htop {
   capability sys_ptrace,
   capability kill,
   
+  # PTRACE ---------------------------------------------
+  ptrace (trace),
+  
+  # SIGNAL ---------------------------------------------
+  signal (send),
+  
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
   @{PROC}/sys/kernel/pid_max				r,

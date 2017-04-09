@@ -16,6 +16,10 @@ profile sysvinit.halt /sbin/{halt,poweroff,reboot} {
   # CAPABILITIES ---------------------------------------
   capability sys_boot,
   
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
+  
   # EXECUTABLES ----------------------------------------
   /sbin/{halt,poweroff,reboot}				mr,
   /sbin/shutdown					Px,
@@ -35,9 +39,9 @@ profile sysvinit.shutdown /sbin/shutdown {
   capability sys_tty_config,
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/initctl						w,
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /sbin/shutdown					mr,
@@ -56,6 +60,10 @@ profile sysvinit.init /sbin/init {
   capability sys_admin,
   capability sys_tty_config,
   capability kill,
+  
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term),
+  signal (receive) set=(xfsz),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -77,15 +85,21 @@ profile sysvinit.init /sbin/init {
   /var/log/wtmp						wk,
 }
 
-profile sysvinit.killall5 /sbin/killall5 flags=(complain) {
+profile sysvinit.killall5 /sbin/killall5 {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   
+  # PTRACE ---------------------------------------------
+  ptrace (trace),
+  
+  # SIGNAL ---------------------------------------------
+  signal (send),
+  
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   @{PROC}/						r,
   @{PROC}/@{pid}/{stat,status,cmdline}			r,
   

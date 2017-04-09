@@ -15,8 +15,11 @@ profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check flags=(complain) {
   #include <abstractions/python>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -39,10 +42,14 @@ profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check flags=(complain) {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /bin/uname						Px,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/glsa.cron.*				w,	# DELEGATION! glsa.cron.daily
   }
 }
 
@@ -51,8 +58,11 @@ profile gentoolkit.equery @{PYTHON_EXEC}/equery flags=(complain) {
   #include <abstractions/python>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
@@ -73,6 +83,7 @@ profile gentoolkit.equery @{PYTHON_EXEC}/equery flags=(complain) {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
@@ -108,6 +119,7 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean flags=(complain) {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
@@ -122,6 +134,8 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild flags=(complain)
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
+  capability dac_override,
+  capability mknod,
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
@@ -153,6 +167,7 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild flags=(complain)
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
@@ -171,7 +186,7 @@ profile gentoolkit.revdep-rebuild.sh /usr/bin/revdep-rebuild.sh flags=(complain)
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
@@ -223,7 +238,7 @@ profile gentoolkit.revdep-rebuild.sh /usr/bin/revdep-rebuild.sh flags=(complain)
     #include <abstractions/nameservice>
     
     # PSEUDO -------------------------------------------
-    /dev/pts/[0-9]*					w,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/portageq				Px,

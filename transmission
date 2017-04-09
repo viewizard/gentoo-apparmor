@@ -19,6 +19,7 @@ profile transmission /usr/bin/transmission-* {
   #include <abstractions/qt>	# (QT and GTK) for GUI.
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/dconf>
   #include <abstractions/user-download>
   #include <abstractions/user-upload>
@@ -26,7 +27,7 @@ profile transmission /usr/bin/transmission-* {
   #include <abstractions/executable-binary-helper>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,
   @{PROC}/sys/kernel/random/uuid			r,
   

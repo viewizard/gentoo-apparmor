@@ -18,9 +18,10 @@ profile cairo-clock /usr/bin/cairo-clock {
   #include <abstractions/nvidia>
   #include <abstractions/audio>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/cairo-clock					mr,

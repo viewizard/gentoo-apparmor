@@ -18,11 +18,12 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/nameservice>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/xdg-open>  # need for CUPS (web browser)
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
@@ -71,6 +72,9 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
     
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/alacarte				Px,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   }
 }
 
@@ -81,11 +85,13 @@ profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------

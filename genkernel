@@ -16,15 +16,14 @@ profile genkernel /usr/bin/genkernel flags=(complain) {
   
   # CAPABILITIES ---------------------------------------
   capability mknod,
-  capability sys_chroot,
   capability dac_override,
   capability dac_read_search,
   capability sys_admin,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
-  /dev/pts/[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   @{PROC}/@{pid}/mounts					r,
   

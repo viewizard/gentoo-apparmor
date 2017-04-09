@@ -18,11 +18,12 @@ profile porthole @{PYTHON_EXEC}/porthole {
   #include <abstractions/python>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/ptmx						rw,
   
@@ -55,6 +56,7 @@ profile porthole @{PYTHON_EXEC}/porthole {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,

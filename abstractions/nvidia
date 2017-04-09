@@ -8,41 +8,37 @@
 #
 # ------------------------------------------------------------------
 
-# nvidia access requirements
-  
-# configuration queries
+# CAPABILITIES -----------------------------------------
 capability ipc_lock,
 
-# libvdpau config file for nvidia workarounds
-/etc/vdpau_wrapper.cfg				r,
-/etc/nvidia/nvidia-application-profiles-rc	r,
+# PSEUDO -----------------------------------------------
+/dev/nvidia{0,ctl,-modeset}				rw,
+/sys/bus/pci/devices/					r,
+/sys/devices/pci**/config				r,
+/sys/devices/pci**/uevent				r,	# nouveau
+@{PROC}/interrupts					r,
+@{PROC}/sys/vm/max_map_count				r,
+@{PROC}/driver/nvidia/params				r,
+@{PROC}/modules						r,
 
-# device files
-/dev/nvidia{0,ctl,-modeset}			rw,
+# EXECUTABLES ------------------------------------------
+/{usr,opt}/bin/nvidia-modprobe				ix,	# DELEGATION! Пока не работаем с Px. С нвидией
+								# все очень плохо, надо тянуть как ix.
 
-@{PROC}/interrupts				r,
-@{PROC}/sys/vm/max_map_count			r,
-@{PROC}/driver/nvidia/params			r,
-@{PROC}/modules					r,
+# READS/WRITES -----------------------------------------
+/etc/udev/udev.conf					r,	# nouveau
+/etc/vdpau_wrapper.cfg					r,	# libvdpau
+/etc/nvidia/nvidia-application-profiles-rc		r,	# libvdpau
+/usr/lib{,32,64}/gallium-pipe/pipe_*.so			m,	# mesa opencl (nouveau/gallium-related)
+/run/udev/data/+pci:*					r,	# nouveau
 
-/sys/bus/pci/devices/				r,
-/sys/devices/pci**/config			r,
-/opt/bin/nvidia-modprobe			Px,
-
-owner @{HOME}/.nv/				rw,
-owner @{HOME}/.nv/GLCache/			rw,
-owner @{HOME}/.nv/GLCache/**			rwk,
-owner @{HOME}/.nv/ComputeCache/			rw,
-owner @{HOME}/.nv/ComputeCache/**		rwk,
-owner @{HOMEDIRS}/*.nv/				rw,
-owner @{HOMEDIRS}/*.nv/**			rwk,
-owner @{HOMEDIRS}/*.nv/.gl*			m,
-owner /tmp/.gl*					m,
-
-# nouveau
-/sys/devices/pci**/uevent			r,
-/etc/udev/udev.conf				r,
-/run/udev/data/+pci:*				r,
-
-# mesa opencl (nouveau/gallium-related)
-/usr/lib{,32,64}/gallium-pipe/pipe_*.so		m,
+# USERS ------------------------------------------------
+owner @{HOME}/.nv/					rw,
+owner @{HOME}/.nv/GLCache/				rw,
+owner @{HOME}/.nv/GLCache/**				rwk,
+owner @{HOME}/.nv/ComputeCache/				rw,
+owner @{HOME}/.nv/ComputeCache/**			rwk,
+owner @{HOMEDIRS}/*.nv/					rw,
+owner @{HOMEDIRS}/*.nv/**				rwk,
+owner @{HOMEDIRS}/*.nv/.gl*				m,
+owner /tmp/.gl*						m,

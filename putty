@@ -16,9 +16,11 @@ profile putty /usr/bin/putty flags=(complain) {
   #include <abstractions/fonts>
   #include <abstractions/X>
   #include <abstractions/gtk>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   owner @{PROC}/@{pid}/loginuid				r,
   
   # EXECUTABLES ----------------------------------------

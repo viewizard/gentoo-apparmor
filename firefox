@@ -17,6 +17,7 @@ profile firefox.start_script /usr/bin/firefox {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/firefox					r,
@@ -24,6 +25,9 @@ profile firefox.start_script /usr/bin/firefox {
   /usr/bin/id						Px,
   /usr/bin/newgrp					Px,
   /usr/lib{,32,64}/firefox/firefox			Px,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
@@ -42,10 +46,25 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   #include <abstractions/user-upload>
   #include <abstractions/dconf>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/executable-binary-helper>
   
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(kill) peer="firefox.plugin-container",
+  
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  	type=stream
+  	peer=(label="firefox.plugin-container"),
+  unix (send, receive)
+  	type=stream
+  	peer=(label="firefox.plugin-container//shell"),
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   owner /dev/shm/org.chromium.*				rw,
   /sys/devices/system/cpu/{,**}				r,
   /sys/devices/pci[0-9]*/**/uevent			r,
@@ -120,11 +139,20 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   #include <abstractions/audio>
   #include <abstractions/nvidia>
   #include <abstractions/gtk>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
+  
+  # SIGNAL ---------------------------------------------
+  signal (receive) set=(kill) peer="firefox",
+  
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  		type=stream
+  		peer=(label="firefox"),
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
-  /dev/tty[0-9]						w,
+  /dev/tty[0-9]						rw,
   owner /dev/shm/org.chromium.*				rw,
   /sys/devices/system/cpu/				r,
   owner @{PROC}/@{pid}/stat				r,
@@ -154,9 +182,14 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   profile shell @{shell} {
     #include <abstractions/base>
     
+    # UNIX -----------------------------------------------
+    unix (send, receive)
+    		type=stream
+    		peer=(label="firefox"),
+    
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
-    /dev/tty[0-9]					w,
+    /dev/tty[0-9]					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,

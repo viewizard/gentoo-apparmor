@@ -19,6 +19,8 @@ profile pam-script /etc/security/pam-script/pam_script* flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /etc/security/pam-script/pam_script*			r,
@@ -29,17 +31,23 @@ profile pam-script /etc/security/pam-script/pam_script* flags=(complain) {
   # READS/WRITES ---------------------------------------
   /etc/security/pam-script/pam-script.d/{,**} r,
   
+  # USERS ----------------------------------------------
+  @{HOME}/.session.log					w,	# XFCE4
+  
   profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
-    /dev/tty[0-9]*					w,
-    /dev/pts/[0-9]*					w,
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /etc/security/pam-script/pam-script.d/pam_script*	r,
     @{shell}						mr,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   }
 }

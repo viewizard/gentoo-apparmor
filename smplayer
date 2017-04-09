@@ -20,11 +20,13 @@ profile smplayer /usr/bin/smplayer {
   #include <abstractions/fonts>
   #include <abstractions/qt>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/program-work-with-disk-rk-strict>
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/smplayer					mr,

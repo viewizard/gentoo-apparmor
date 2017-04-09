@@ -19,9 +19,12 @@ profile procps.ps /bin/ps {
   capability dac_override,
   capability dac_read_search,
   
+  # PTRACE ---------------------------------------------
+  ptrace (trace),
+  
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
   @{PROC}/uptime					r,
@@ -36,6 +39,11 @@ profile procps.ps /bin/ps {
   
   # READS/WRITES ---------------------------------------
   /usr/src/@{kernel}/System.map				r,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
+  owner /tmp/oinkmaster.cron.*				w,	# DELEGATION! oinkmaster.cron.daily
+  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
 }
 
 profile procps.pidof /usr/bin/pidof {
@@ -45,6 +53,9 @@ profile procps.pidof /usr/bin/pidof {
   capability sys_ptrace,
   capability dac_override,
   capability dac_read_search,
+  
+  # PTRACE ---------------------------------------------
+  ptrace (trace),
   
   # PSEUDO ---------------------------------------------
   @{PROC}/						r,
@@ -63,7 +74,11 @@ profile procps.pgrep /usr/bin/pgrep {
   capability dac_override,
   capability dac_read_search,
   
+  # PTRACE ---------------------------------------------
+  ptrace (trace),
+  
   # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
   @{PROC}/@{pid}/{stat,status,cmdline,loginuid}		r,
   @{PROC}/sys/kernel/osrelease				r,
@@ -78,8 +93,10 @@ profile procps.sysctl /usr/sbin/sysctl {
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
   capability net_admin,
+  capability mac_admin,
   
   # PSEUDO ---------------------------------------------
+  /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/sys/						r,
   @{PROC}/sys/**					rw,

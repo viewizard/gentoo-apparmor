@@ -21,20 +21,23 @@ profile xfce4-panel /usr/bin/xfce4-panel {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-programs>
   #include <local/xfce4-panel-custom>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/xfce4-panel					mr,
+  /usr/bin/xfce4-panel					Pxmr,	# Все парвильно, запуск и mmap.
   /usr/lib{,32,64}/xfce4/panel/wrapper-[1-2].0		Px,
   /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-*-plugin	Px,
   /usr/bin/exo-desktop-item-edit			Px,
   /usr/bin/xfce4-session-logout				Px,
+  /usr/bin/xfce4-session-settings			Px,
+  /usr/bin/passwd.sh					Px,
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/menus/**.menu				r,
@@ -59,6 +62,8 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/X>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/gtk>
   #include <abstractions/audio>
   #include <abstractions/nameservice>
@@ -66,8 +71,11 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   #include <abstractions/program-work-with-disk-rwk-strict>  # xfce4-screenshooter
   #include <local/xfce4-panel-custom>
   
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /sys/devices/system/cpu/cpufreq/policy[0-9]*/scaling_* r,
   @{PROC}/@{pid}/fd/					r,
   
@@ -110,12 +118,15 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					w,
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/env						mr,
     /usr/bin/wine					Px,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   }
 }
 
@@ -126,11 +137,11 @@ profile xfce4-panel.wrapper-2.0 /usr/lib{,32,64}/xfce4/panel/wrapper-2.0 {
   #include <abstractions/X>
   #include <abstractions/gtk>
   #include <abstractions/audio>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/executable-binary-programs>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
@@ -145,9 +156,10 @@ profile xfce4-panel.xfce4-xkb-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-
   #include <abstractions/fonts>
   #include <abstractions/X>
   #include <abstractions/gtk>
+  #include <abstractions/dbus-session-strict>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
@@ -169,7 +181,7 @@ profile xfce4-panel.xfce4-kbdleds-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xf
   #include <abstractions/gtk>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-kbdleds-plugin m,
@@ -187,7 +199,7 @@ profile xfce4-panel.xfce4-sensors-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xf
   #include <abstractions/sensors>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------

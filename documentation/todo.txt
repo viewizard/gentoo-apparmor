@@ -1,15 +1,31 @@
-1) Базовый deny на неподдерживаемые файлы.
+- Для процессов работающих с файловой системой (ls,rm,cat,tail,head,...) продумать профиль. Возможно потом использовать Profile Stacking, чтобы некий базовый стакать с профилем доступа фс конкретно для пакета-базы. Непонятно как это будет работать, если у нас все так же ограничение всего на 12 переходов на другие профили.
+    /bin/** px -> &two,
+Will compute the profile transition as per
+    /bin/** px,
+and then stack the profile two on top of that transition.
+    /bin/** ix -> &two,
+is equivalent to
+    /bin/** px -> @{profile_name}//&two,
+Таким образом можно сделать все _root, и убрать дубликаты профилей с незначительными изменениями для запуска под root.
+См. http://wiki.apparmor.net/index.php/AppArmorStacking
+
+
+- Delegation, т.к. убунтовские патчи убирают 100% делегейшен на открытые ресурсы в дочерний процесс, надо прописывать это отдельно (указывать какие ресурсы открытые в основном процессе может использовать дочерний). Не совсем понятно, когда это будет доступно хотя бы в утилите, но описание уже есть:
+http://wiki.apparmor.net/index.php/AppArmor_Core_Policy_Reference#Delegation
+
+
+- Базовый deny на неподдерживаемые файлы.
 У программ, с явным перечнем расширений, блокировать через deny обращение к открытию файлов не имеющие расширений вообще, начинающиеся с точки. Уменьшить вывод предупреждений в лог.
 (?) делать по фиксированным путям, чтобы исключить блокировку нужных файлов?
 
 
-2) portage.emerge улучшение ограничений в следующих версиях AppArmor.
+- portage.emerge улучшение ограничений в следующих версиях AppArmor.
 Когда будет введен режим исключения в правилах, откорректировать:
 /usr/** rwl, # FIX ME! exclude "/usr/local" with {*^}/{**^}, when this features will be available
 /var/** rwk, # FIX ME! exclude "/var/log" (allow only subfolder creation and .keep* files) with {*^}/{**^}, when this features will be available
 
 
-3) network улучшение ограничений в следующих версиях AppArmor.
+- network улучшение ограничений в следующих версиях AppArmor.
 <address_expr> ::= [('source'|'src') <domain_addr> ['on' <iface>]] [('destination'|'dst' <domain_addr>]
 <domain_addr> ::= (<ipv4_addr> | <ipv6_addr> | ..)
  network tcp src 192.168.1.1:80 dst 170.1.1.0:80,
@@ -25,7 +41,7 @@
  192.168.1.1:80,81,100-200
 
 
-4) "owner" улучшение ограничений в следующих версиях AppArmor.
+- "owner" улучшение ограничений в следующих версиях AppArmor.
 extended ownership tests (not currently supported)
  eg.
  owner=fred
@@ -36,11 +52,11 @@ extended ownership tests (not currently supported)
 /etc/apparmor.d/abstractions/authentication, например, хорошо бы сделать с owner=0
 
 
-5) network не работает в поддерживаемой kernel.org версии ядра
+- network не работает в поддерживаемой kernel.org версии ядра
 network не работает в поддерживаемой kernel.org версии ядра. Нужно использовать переработанную каноникал часть кода в ./security/apparmor/, которая значительно отличается от основной ветки ядра.
 
 
-6 mount улучшение ограничений в следующих версиях AppArmor.
+- mount улучшение ограничений в следующих версиях AppArmor.
 Add the ability for apparmor to do mediation of mount operations. Mount
 rules require an updated apparmor_parser (2.8 series) for policy compilation.
 The basic form of the rules are.
@@ -61,4 +77,5 @@ Example mount commands
   mount fstype=overlayfs options=(rw,upperdir=/tmp/upper/,lowerdir=/) -> /mnt/
   umount,
   umount /m*,
+
 

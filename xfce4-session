@@ -18,12 +18,24 @@ profile xfce4-session /usr/bin/xfce4-session {
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/nameservice>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/executable-binary-programs>
   #include <local/xfce4-session-custom-exec>
   
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term),
+  
+  # UNIX -----------------------------------------------
+  unix (bind, listen)
+  			type=stream
+  			addr="@/tmp/.ICE-unix/*",
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/tmp/.ICE-unix/*",
+  
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
@@ -69,7 +81,7 @@ profile xfce4-session /usr/bin/xfce4-session {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
-    /dev/tty[0-9]*					w,
+    /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
@@ -77,13 +89,17 @@ profile xfce4-session /usr/bin/xfce4-session {
     /usr/bin/iceauth					Px,
     /usr/bin/cairo-clock				Px,
     /usr/bin/conky					Px,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.xfce4-session.verbose-log		w,
+    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   }
   
   profile env /bin/env {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					w,
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -94,32 +110,41 @@ profile xfce4-session /usr/bin/xfce4-session {
     /usr/bin/thunar					Px,
     /usr/bin/xfdesktop					Px,
     /usr/bin/cairo-clock				Px,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   }
 }
 
-profile xfce4-session-logout /usr/bin/xfce4-session-logout {
+profile xfce4-session.xfce4-session-logout /usr/bin/xfce4-session-logout {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/nvidia>
   #include <abstractions/X>
   #include <abstractions/gtk>
+  #include <abstractions/dbus-session-strict>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-session-logout				mr,
 }
 
-profile xfce4-session-settings /usr/bin/xfce4-session-settings {
+profile xfce4-session.xfce4-session-settings /usr/bin/xfce4-session-settings {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-session-settings			mr,
@@ -152,7 +177,7 @@ profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/startxfce4					r,
@@ -164,7 +189,7 @@ profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
-    /dev/tty[0-9]*					w,
+    /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
@@ -180,6 +205,9 @@ profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
     # READS/WRITES -------------------------------------
     /etc/xdg/xfce4/xinitrc				r,
     /etc/xdg/xfce4/Xft.xrdb				r,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   }
 }
 

@@ -13,10 +13,20 @@
 profile pulseaudio /usr/bin/pulseaudio {
   #include <abstractions/base>
   #include <abstractions/audio>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
+  #include <abstractions/X-authentication-strict>
+  #include <abstractions/X-connection-strict>
+  
+  # PTRACE ---------------------------------------------
+  ptrace (trace) peer=@{profile_name},
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /sys/bus/						r,
   /sys/class/						r,
   /sys/class/sound/					r,
@@ -43,7 +53,6 @@ profile pulseaudio /usr/bin/pulseaudio {
   # USERS ----------------------------------------------
   owner @{HOME}/.config/pulse/				rw,
   owner @{HOME}/.config/pulse/**			rwk,
-  owner @{HOME}/.Xauthority				r,
   owner @{HOME}/.ICEauthority				r,
 }
 
@@ -52,25 +61,29 @@ profile pulseaudio.start-pulseaudio-x11 /usr/bin/start-pulseaudio-x11 {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/start-pulseaudio-x11				r,
   @{shell}						mr,
   /usr/bin/pactl					Px,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile pulseaudio.pactl /usr/bin/pactl {
   #include <abstractions/base>
   #include <abstractions/audio>
   #include <abstractions/X>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   
 #  capability dac_read_search,					# RBAC! Нужно только для выполнения под root-ом
 #  capability dac_override,					# если сервер запущен от имени пользователя.
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
-  /dev/pts/[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------

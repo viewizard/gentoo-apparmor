@@ -18,7 +18,7 @@ profile qgit /usr/bin/qgit {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/qt>
   #include <abstractions/nvidia>
   #include <abstractions/X>
@@ -28,7 +28,7 @@ profile qgit /usr/bin/qgit {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/qgit						mr,
@@ -50,7 +50,7 @@ profile qgit_root {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/gtk>
   #include <abstractions/qt>
   #include <abstractions/nvidia>
@@ -67,7 +67,7 @@ profile qgit_root {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/qgit						mr,
@@ -80,6 +80,7 @@ profile qgit_root {
   owner @{HOME}/.config/qgit/				rw,
   owner @{HOME}/.config/qgit/**				rwk,
   @{HOME}/.Xauthority					r,
+  @{HOME}/.session.log					w,	# XFCE4
   
   # TEMP -----------------------------------------------
   owner /tmp/qgit4.*					rw,

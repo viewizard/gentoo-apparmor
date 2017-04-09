@@ -13,11 +13,16 @@
 profile iceauth /usr/bin/iceauth {
   #include <abstractions/base>
   
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  
   # EXECUTABLES ----------------------------------------
   /usr/bin/iceauth					mr,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.ICEauthority*				rwl,
+  owner @{HOME}/.xfce4-session.verbose-log		w,	# XFCE4
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   
   # TEMP -----------------------------------------------
   owner /tmp/.xfsm-ICE-*				rw,

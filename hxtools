@@ -18,6 +18,12 @@ profile hxtools.ofl /usr/bin/ofl {
   capability dac_read_search,
   capability sys_ptrace,
   
+  # PTRACE ---------------------------------------------
+  ptrace (trace),
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  
   # PSEUDO ---------------------------------------------
   @{PROC}						r,
   @{PROC}/@{pid}/task/					r,

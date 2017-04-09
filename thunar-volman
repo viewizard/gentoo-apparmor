@@ -16,7 +16,7 @@ profile thunar-volman /usr/bin/thunar-volman {
   #include <abstractions/fonts>
   #include <abstractions/X>
   #include <abstractions/gtk>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
@@ -25,8 +25,11 @@ profile thunar-volman /usr/bin/thunar-volman {
   								# Временно делаем одним профилем, чтобы уменьшить
   								# кол-во переходов из профиля thunar.
   
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /sys/devices/pci[0-9]*/**/usb[0-9]*/{,**/}uevent	rw,
   /sys/devices/pci[0-9]*/**/ata[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{,name,uevent} r,
@@ -45,17 +48,21 @@ profile thunar-volman /usr/bin/thunar-volman {
   
   # USERS ----------------------------------------------
   @{HOME}/.Xauthority					r,	# RBAC! Нужно только для выполнения под root-ом
-  								# thunar-a, например, если запускаем через sudo.
+  @{HOME}/.session.log					w,	# thunar-a, например, если запускаем через sudo.
   								# Временно делаем одним профилем, чтобы уменьшить
   								# кол-во переходов из профиля thunar.
 }
 
-profile thunar-volman-settings /usr/bin/thunar-volman-settings {
+profile thunar-volman.thunar-volman-settings /usr/bin/thunar-volman-settings {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/X>
   #include <abstractions/gtk>
+  #include <abstractions/dbus-session-strict>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar-volman-settings			mr,

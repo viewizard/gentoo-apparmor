@@ -22,10 +22,13 @@ profile audacious /usr/bin/audacious {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
+  #include <abstractions/executable-binary-helper>
   #include <abstractions/program-work-with-disk-rwk-strict>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/audacious					mr,
@@ -38,7 +41,4 @@ profile audacious /usr/bin/audacious {
   # USERS ----------------------------------------------
   owner @{HOME}/.config/audacious/			rw,
   owner @{HOME}/.config/audacious/**			rwk,
-  
-  # NOISY ----------------------------------------------
-#  deny @{HOME}/.*					r,	# 31.03.2017 @{HOME}/.Xauthority может потребоваться доступ
 }

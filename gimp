@@ -22,12 +22,13 @@ profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/executable-binary-helper>
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				rw,
   
   # EXECUTABLES ----------------------------------------

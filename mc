@@ -24,7 +24,7 @@ profile mc /usr/bin/mc {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]						w,
+  /dev/tty[0-9]						rw,
   /dev/ptmx						rw,
   /dev/pts/[0-9]*					rw,
   owner @{PROC}/@{pid}/mountinfo			r,
@@ -53,7 +53,7 @@ profile mc_root flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]						w,
+  /dev/tty[0-9]						rw,
   /dev/ptmx						rw,
   /dev/pts/[0-9]*					rw,
   owner @{PROC}/@{pid}/mountinfo			r,

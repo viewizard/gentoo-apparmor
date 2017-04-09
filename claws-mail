@@ -22,12 +22,17 @@ profile claws-mail /usr/bin/claws-mail {
   #include <abstractions/gtk>
   #include <abstractions/private-files-strict>
   #include <abstractions/X>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/user-download>
   #include <abstractions/user-upload>
   #include <abstractions/xdg-open>
   
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/claws-mail					mr,
@@ -44,7 +49,8 @@ profile claws-mail /usr/bin/claws-mail {
   owner @{HOME_CACHE}/webkit/{,**}			rwk,
   
   # TEMP -----------------------------------------------
-  owner /tmp/claws-mail-[1-9]*/{,**}			rwk,
+  owner /tmp/claws-mail-[1-9]*/				rw,
+  /tmp/claws-mail-[1-9]*/**				rwk,
   
   # NOISY ----------------------------------------------
   deny /						r,

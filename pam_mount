@@ -20,6 +20,16 @@ profile pam_mount.pmvarrun /usr/sbin/pmvarrun {
   capability dac_override,
   capability fsetid,
   
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  			type=stream
+  			peer=(label="sudo"),			# STACKING! sudo
+  								# DELEGATION! sudo (?) как-то делегировать IPC?
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
   # EXECUTABLES ----------------------------------------
   /usr/sbin/pmvarrun					mr,
   

@@ -14,6 +14,13 @@ profile kbd.fgconsole /usr/bin/fgconsole flags=(complain) {	# FIX ME! 04.04.2017
 								# изменять с корректировкой acpid.shell
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
+  capability sys_tty_config,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  
   # EXECUTABLES ----------------------------------------
   /usr/bin/fgconsole					mr,
 }

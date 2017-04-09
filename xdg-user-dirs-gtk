@@ -10,14 +10,18 @@
 
 #include <tunables/global>
 
-profile xdg-user-dirs-gtk-update /usr/bin/xdg-user-dirs-gtk-update flags=(complain) {
+profile xdg-user-dirs-gtk.xdg-user-dirs-gtk-update /usr/bin/xdg-user-dirs-gtk-update flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/gtk>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-user-dirs-gtk-update			mr,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/user-dirs.locale		r,
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }

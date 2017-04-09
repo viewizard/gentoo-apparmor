@@ -23,7 +23,7 @@ profile gsmartcontrol /usr/bin/gsmartcontrol {
   capability dac_override,
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /sys/devices/pci[0-9]*/**/usb[0-9]*/**/{idVendor,idProduct,bcdDevice} r,
   @{PROC}/@{pid}/fd/					r,
   @{PROC}/partitions					r,
@@ -41,20 +41,28 @@ profile gsmartcontrol /usr/bin/gsmartcontrol {
   # USERS ----------------------------------------------
   owner @{HOME}/.config/gsmartcontrol/{,gsmartcontrol.conf} rw,
   @{HOME}/.Xauthority					r,
+  @{HOME}/.session.log					w,	# XFCE4
 }
 
-profile gsmartcontrol-root /usr/bin/gsmartcontrol-root {
+profile gsmartcontrol.gsmartcontrol-root /usr/bin/gsmartcontrol-root {
   #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/env						mr,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   
   profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
@@ -62,5 +70,8 @@ profile gsmartcontrol-root /usr/bin/gsmartcontrol-root {
     /usr/bin/which					Px,
     /usr/bin/sudo					Px,
     /usr/bin/gksu					Px,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   }
 }

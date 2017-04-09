@@ -24,7 +24,8 @@ profile mplayer /usr/bin/mplayer {
   #include <abstractions/program-work-with-disk-rk-strict>
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mplayer					mr,

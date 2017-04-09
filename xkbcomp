@@ -12,18 +12,22 @@
 
 profile xkbcomp /usr/bin/xkbcomp {
   #include <abstractions/base>
+  include <abstractions/X-connection-strict>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  audit /dev/input/event[0-9]*				rw,	# FIX ME! 10.04.2017 кто это тянет? xorg-server.Xorg?
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xkbcomp					mr,
   
   # READS/WRITES ---------------------------------------
   /usr/share/X11/xkb/**					r,
+  /run/acpid.socket					rw,	# DELEGATION! xorg-server.Xorg
+  /var/log/Xorg.[0-9].log				w,	# DELEGATION! xorg-server.Xorg
   /var/lib/xkb/server-[0-9].xkm				w,
   
   # TEMP -----------------------------------------------
-  /tmp/server-[0-9].xkm					w,
-  owner /tmp/file*					rw,	# XFCE4, xfce4-settings.xfsettingsd
+  /tmp/server-[0-9].xkm					w,	# DELEGATION! xorg-server.Xorg
+  owner /tmp/file*					rw,	# DELEGATION! xfce4-settings.xfsettingsd
 }

@@ -17,8 +17,14 @@ profile psmisc.killall /usr/bin/killall {
   # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   
+  # PTRACE ---------------------------------------------
+  ptrace (trace),
+  
+  # SIGNAL ---------------------------------------------
+  signal (send),
+  
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   @{PROC}/						r,
   @{PROC}/@{pid}/{stat,status,cmdline}			r,
   
@@ -26,14 +32,28 @@ profile psmisc.killall /usr/bin/killall {
   /usr/bin/killall					mr,
 }
 
-profile psmisc.fuser /bin/fuser flags=(complain) {
+profile psmisc.fuser /bin/fuser {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
+  capability sys_admin,
   capability kill,
+  capability mknod,
+  capability dac_override,
+  capability syslog,
+  
+  # PTRACE ---------------------------------------------
+  ptrace (trace),
+  
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term, kill),
+  
+  # NETWORK --------------------------------------------
+  network inet dgram,
   
   # PSEUDO ---------------------------------------------
+  /dev/console						rw,
   @{PROC}/						r,
   @{PROC}/swaps						r,
   @{PROC}/@{pid}/fd/					r,

@@ -13,12 +13,16 @@
 profile lvm2.lvmetad /sbin/lvmetad flags=(complain) {
   #include <abstractions/base>
   
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
+  
   # EXECUTABLES ----------------------------------------
   /sbin/lvmetad						mr,
   
   # READS/WRITES ---------------------------------------
   /run/lvmetad.pid					rwk,
-  /run/lvm/lvmetad.socket				w,
+  /run/lvm/lvmetad.socket				rw,
 }
 
 profile lvm2.dmsetup /sbin/dmsetup flags=(complain) {
@@ -28,6 +32,7 @@ profile lvm2.dmsetup /sbin/dmsetup flags=(complain) {
   capability sys_admin,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/mapper/control					rw,
   @{PROC}/devices					r,
   
@@ -47,6 +52,10 @@ profile lvm2.dmeventd /sbin/dmeventd flags=(complain) {
   capability ipc_lock,
   
   # PSEUDO ---------------------------------------------
+  /dev/dm-[0-9]*					rw,	# DELEGATION! daily_backup.sh.cron.daily
+  								# DELEGATION! weekly_backup.sh.cron.weekly
+  								# DELEGATION! monthly_backup.sh.cron.monthly
+  /dev/pts/[0-9]*					rw,
   /dev/mapper/control					rw,
   /sys/bus/						r,
   /sys/class/						r,
@@ -67,6 +76,12 @@ profile lvm2.dmeventd /sbin/dmeventd flags=(complain) {
   /run/dmeventd-{client,server}				rwk,
   /run/lock/lvm/*					rwk,
   /run/udev/data/*					r,
+  /run/lvm/lvmetad.socket				rw,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! daily_backup.sh.cron.daily
+  owner /tmp/homebackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
+  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! monthly_backup.sh.cron.monthly
 }
 
 profile lvm2.lvm /sbin/lvm flags=(complain) {
@@ -80,7 +95,9 @@ profile lvm2.lvm /sbin/lvm flags=(complain) {
   capability sys_nice,
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rw,
   /dev/mapper/						r,
   /dev/mapper/control					rw,
@@ -110,16 +127,24 @@ profile lvm2.lvm /sbin/lvm flags=(complain) {
   /run/udev/data/*					r,
   /run/lock/lvm/					w,
   /run/lock/lvm/*					rwk,
+  /run/lvm/lvmetad.socket				rw,
   /run/dmeventd-{client,server}				rwk,
   
   # TEMP -----------------------------------------------
-  owner /tmp/{rootbackup,dailyhomebackup,homebackup}.cron.* w,
+  owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! daily_backup.sh.cron.daily
+  owner /tmp/homebackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
+  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! monthly_backup.sh.cron.monthly
+  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
 }
 
 profile lvm2.lvmetad.init.d /etc/init.d/lvmetad {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /etc/init.d/lvm					Px,

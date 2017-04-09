@@ -24,7 +24,7 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
   capability fsetid,
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
@@ -77,7 +77,7 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
-    /dev/pts/[0-9]*					w,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/sandbox					mr,

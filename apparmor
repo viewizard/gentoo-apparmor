@@ -17,8 +17,8 @@ profile apparmor.apparmor_parser /sbin/apparmor_parser flags=(complain) {
   capability mac_admin,
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
-  /dev/pts/[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   /sys/devices/system/cpu/				r,
   /sys/kernel/security/apparmor/{,**}			r,
   /sys/kernel/security/apparmor/.{load,replace,remove}	w,

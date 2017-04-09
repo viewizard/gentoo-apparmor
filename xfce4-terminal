@@ -16,14 +16,24 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
   #include <abstractions/fonts>
   #include <abstractions/gtk>
   #include <abstractions/X>
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/nvidia>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
   
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term)
+  	peer="xfce4-terminal//gnome-pty-helper",
+  signal (send) set=(hup),
+  
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  	type=stream
+  	peer=(label="xfce4-terminal//gnome-pty-helper"),
+  
   # PSEUDO ---------------------------------------------
   /dev/ptmx						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,
   
@@ -54,7 +64,7 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
   # TEMP -----------------------------------------------
   owner /tmp/vte*					rw,
   
-  profile gnome-pty-helper /usr/libexec/gnome-pty-helper {
+  profile gnome-pty-helper /usr/libexec/gnome-pty-helper flags=(complain) {	# FIX ME! 8.04.2017
     #include <abstractions/base>
     #include <abstractions/freedesktop.org>
     #include <abstractions/nvidia>
@@ -65,7 +75,13 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
     capability setgid,
     capability fsetid,
     
+    # UNIX -----------------------------------------------
+    unix (send, receive)
+    		type=stream
+    		peer=(label="xfce4-terminal"),
+    
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     /dev/ptmx						rw,
     

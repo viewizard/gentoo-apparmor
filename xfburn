@@ -21,12 +21,16 @@ profile xfburn /usr/bin/xfburn flags=(complain) {
   #include <abstractions/gtk>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/program-work-with-disk-rk-strict>
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
   
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   /dev/@{BLOCK_MEDIA}					rwk,
   /sys/bus/						r,
   /sys/class/						r,

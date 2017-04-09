@@ -14,6 +14,9 @@ profile eudev.udevadm /bin/udevadm flags=(complain) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   /dev/input/event[0-9]*				r,
   /dev/snd/**						w,
   /sys/bus/						r,
@@ -32,6 +35,7 @@ profile eudev.udevadm /bin/udevadm flags=(complain) {
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
+  /run/udev/control					rw,
   /run/udev/tags/{,**}					w,
 }
 
@@ -46,9 +50,14 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
   capability net_admin,
   capability dac_override,
   capability chown,
+  capability mknod,
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
   
   # PSEUDO ---------------------------------------------
   /dev/*						w,
+  /dev/console						r,
   /dev/pts/[0-9]*					rw,
   /dev/input/event[0-9]*				r,
   /dev/snd/**						w,

@@ -24,7 +24,11 @@ profile xsane /usr/bin/xsane flags=(complain) {
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/nameservice>
   
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/bus/usb/						r,
   /sys/bus/						r,
   /sys/bus/usb/devices/					r,

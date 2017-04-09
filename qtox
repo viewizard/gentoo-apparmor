@@ -17,14 +17,18 @@ profile qtox /usr/bin/qtox {
   #include <abstractions/qt>
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   #include <abstractions/user-download>
   #include <abstractions/user-upload>
   #include <abstractions/nameservice>
   #include <abstractions/audio>
   
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
   /dev/							r,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/qtox						mr,

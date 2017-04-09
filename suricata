@@ -24,8 +24,13 @@ profile suricata /usr/bin/suricata {
   capability sys_module,
   capability sys_nice,
   capability net_raw,
+  capability mknod,
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
   
   # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
   /sys/devices/system/cpu/				r,
   @{PROC}/@{pid}/net/dev				r,
   

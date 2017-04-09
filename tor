@@ -17,7 +17,14 @@ profile tor /usr/bin/tor {
   # CAPABILITIES ---------------------------------------
   capability setgid,
   capability setuid,
+  capability mknod,
   capability net_bind_service,
+  
+  # SIGNAL ---------------------------------------------
+  signal (receive) set=(int) peer="tor.init.d",
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
@@ -43,6 +50,9 @@ profile tor.init.d /etc/init.d/tor {
   capability fowner,
   capability fsetid,
   capability sys_resource,
+  
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(int) peer="tor",
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/tor						Px,

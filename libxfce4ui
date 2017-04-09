@@ -16,9 +16,10 @@ profile libxfce4ui.xfce4-about /usr/bin/xfce4-about {
   #include <abstractions/fonts>
   #include <abstractions/gtk>
   #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-about					mr,

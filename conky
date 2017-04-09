@@ -17,14 +17,17 @@ profile conky /usr/bin/conky {
   #include <abstractions/X>
   #include <abstractions/sensors>
   
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  
   # PSEUDO ---------------------------------------------
-  /dev/tty rw,
-  /dev/tty[0-9]* w,
-  /sys/devices/system/cpu/present r,
-  @{PROC}/ r,
-  @{PROC}/uptime r,
-  @{PROC}/@{pid}/net/dev r,
-  @{PROC}/@{pid}/mounts r,
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /sys/devices/system/cpu/present			r,
+  @{PROC}/						r,
+  @{PROC}/uptime					r,
+  @{PROC}/@{pid}/net/dev				r,
+  @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -41,9 +44,14 @@ profile conky /usr/bin/conky {
     #include <abstractions/base>
     #include <abstractions/sensors>
     
+    # NETWORK ------------------------------------------
+    network inet dgram,
+    
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
-    /dev/tty[0-9]*					w,
+    /dev/tty[0-9]*					rw,
+    @{PROC}/uptime					r,
+    @{PROC}/@{pid}/net/dev				r,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,

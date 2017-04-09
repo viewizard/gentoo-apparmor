@@ -19,8 +19,16 @@ profile xinit /usr/bin/xinit {
   capability sys_nice,
   capability setuid,
   
+  # SIGNAL ---------------------------------------------
+  signal (receive) set=(usr1) peer="xorg-server.Xorg",
+  signal (send) set=(hup),
+  signal (send) set=(term) peer="xorg-server.Xorg",
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xinit					mr,
@@ -32,7 +40,7 @@ profile xinit /usr/bin/xinit {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
-    /dev/tty[0-9]*					w,
+    /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
@@ -55,6 +63,9 @@ profile xinit /usr/bin/xinit {
     /etc/X11/xinit/xinitrc.d/{,*}			r,
     /etc/xdg/xfce4/xinitrc				r,
     /etc/xdg/xfce4/Xft.xrdb				r,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   }
 }
 
@@ -63,12 +74,15 @@ profile xinit.xserverrc /etc/X11/xinit/xserverrc {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					w,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /etc/X11/xinit/xserverrc				r,
   @{shell}						mr,
   /usr/bin/Xorg						Px,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile xinit.startx /usr/bin/startx {
@@ -97,6 +111,7 @@ profile xinit.startx /usr/bin/startx {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.serverauth*				rwl,
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.??????				rw,

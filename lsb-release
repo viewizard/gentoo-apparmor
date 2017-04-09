@@ -12,11 +12,11 @@
 
 profile lsb-release /usr/bin/lsb_release {
   #include <abstractions/base>
-  #include <abstractions/python>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/pts/[0-9]*					w,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/lsb_release					r,
@@ -24,16 +24,12 @@ profile lsb-release /usr/bin/lsb_release {
   /bin/sed						ixr,
   /bin/head						ixr,
   /bin/tr						Pxr,
-  /bin/basename						Px,
   /usr/bin/find						ix,
   /usr/bin/getopt					ixr,
-  /usr/bin/dpkg-query					ixr,
   
   # READS/WRITES ---------------------------------------
   /etc/							r,
   /etc/{gentoo,os,lsb}-release				r,
-  /usr/bin/						r,
-  /var/lib/dpkg/**					r,
   
   # NOISY ----------------------------------------------
   deny /etc/apparmor.d/					r,

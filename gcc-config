@@ -18,7 +18,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/pts/[0-9]*					w,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gcc-config					r,
@@ -62,7 +62,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
   # TEMP -----------------------------------------------
   owner /tmp/tac*					rw,
   owner /tmp/sh-thd.*					rw,
-  owner /tmp/gcc-config-ima				rw,
+  owner /tmp/gcc-config-ima				rw,	# Для работы патча по переносу xattr.
   owner /tmp/sed*					rw,
   
   profile portageq flags=(complain) {
