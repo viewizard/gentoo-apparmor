@@ -104,15 +104,15 @@ profile xorg-server.Xorg /usr/bin/Xorg {
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
-    audit /dev/input/event[0-9]*			rw,	# FIX ME! кто это тянет? откуда?
+    /dev/input/event[0-9]*				rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /usr/bin/xkbcomp					Px,
     
     # READS/WRITES -------------------------------------
-    /run/acpid.socket					rw,	# DELEGATION! xorg-server.Xorg
-    /var/log/Xorg.[0-9].log				w,	# DELEGATION! xorg-server.Xorg
+    /run/acpid.socket					rw,
+    /var/log/Xorg.[0-9].log				w,
     
     # USERS --------------------------------------------
     owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>

@@ -16,7 +16,7 @@ profile xkbcomp /usr/bin/xkbcomp {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
-  audit /dev/input/event[0-9]*				rw,	# FIX ME! 10.04.2017 кто это тянет? xorg-server.Xorg?
+  /dev/input/event[0-9]*				rw,	# DELEGATION! xorg-server.Xorg
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xkbcomp					mr,
