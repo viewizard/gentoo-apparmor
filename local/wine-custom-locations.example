@@ -1,27 +1,24 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
+# PSEUDO -----------------------------------------------
+owner /dev/shm/.org.chromium.Chromium.*			ra,
 
-owner /dev/shm/.org.chromium.Chromium.*		ra,
-
-
-owner @{HOME}/.wine*/ rw,
-owner @{HOME}/.wine*/** mrwk,
-
-owner @{HOME}/evelauncher/ r,
-owner @{HOME}/evelauncher/** mr,
-owner @{HOME}/.eve/ rw,
-owner @{HOME}/.eve/** mrwk,
-
-owner @{HOME}/.local/share/CCP/** rw,
-owner @{HOME_CACHE}/CCP/** rw,
-
-owner @{HOME}/Desktop/AstroMenace/ rwm,
-owner @{HOME}/Desktop/AstroMenace/** rwm,
+# USERS ------------------------------------------------
+owner @{HOME}/.wine/					rw,	# wine
+owner @{HOME}/.wine/**					mrwk,	# wine
+owner @{HOME}/evelauncher/				r,	# evelauncher
+owner @{HOME}/evelauncher/**				mr,	# evelauncher
+owner @{HOME}/.eve/					rw,	# evelauncher
+owner @{HOME}/.eve/**					mrwk,	# evelauncher
+owner @{HOME}/.local/share/CCP/**			rw,	# evelauncher
+owner @{HOME_CACHE}/CCP/**				rw,	# evelauncher
+owner @{HOME}/Desktop/AstroMenace/			rw,	# AstroMenace
+owner @{HOME}/Desktop/AstroMenace/**			rwm,	# AstroMenace

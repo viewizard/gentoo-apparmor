@@ -1,14 +1,14 @@
 # ------------------------------------------------------------------
 #
-#    Copyright (C) 2016 Mikhail Kurinnoi
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
 #
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of version 2 of the GNU General Public
-#    License published by the Free Software Foundation.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
 #
 # ------------------------------------------------------------------
 
-
-/mnt/backup/Gentoo_Backup/*_LUKS_* w,
-/mnt/backup/Gentoo_Backup/LUKS_* w,
-/mnt/usbcryptkey/* r,
+# READS/WRITES -----------------------------------------
+/mnt/backup/Gentoo_Backup/*_LUKS_*			w,	# DELEGATION! (?) daily_backup.sh.cron.daily
+/mnt/backup/Gentoo_Backup/LUKS_*			w,	# DELEGATION! (?) weekly_backup.sh.cron.weekly
+/mnt/usbcryptkey/*					r,

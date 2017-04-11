@@ -9,18 +9,18 @@
 # ------------------------------------------------------------------
 
 # Блочные устройства подключенные к виртуальной среде.
-  # PSEUDO ---------------------------------------------
-  /dev/zd[0-9]*						rw,
+# PSEUDO -----------------------------------------------
+/dev/zd[0-9]*						rw,
 
 # Пути размещения файлов виртуальной среды.
-  # READS/WRITES ---------------------------------------
-  /media/sdb2/VM_SERVERS/boot/kernel-x86_64*		r,
-  /media/sdb2/VM_SERVERS/swap/*				rw,
-  /media/sdb2/VM_SERVERS/*				rw,
-  /media/sdb2/VM_DESKTOP/*				rw,
-  /media/sdb2/VM_WIN/*					rw,
+# READS/WRITES -----------------------------------------
+/media/sdb2/VM_SERVERS/boot/kernel-x86_64*		r,
+/media/sdb2/VM_SERVERS/swap/*				rw,
+/media/sdb2/VM_SERVERS/*				rw,
+/media/sdb2/VM_DESKTOP/*				rw,
+/media/sdb2/VM_WIN/*					rw,
 
 # Папка обмена хост-гость для VirtFS (Plan 9 folder sharing)
-  # USERS ----------------------------------------------
-  owner @{HOME}/@{XDG_DESKTOP_DIR}/shared/		r,
-  owner @{HOME}/@{XDG_DESKTOP_DIR}/shared/**		rw,
+# USERS ------------------------------------------------
+owner @{HOME}/@{XDG_DESKTOP_DIR}/shared/		r,
+owner @{HOME}/@{XDG_DESKTOP_DIR}/shared/**		rw,
