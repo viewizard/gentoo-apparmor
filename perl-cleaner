@@ -16,6 +16,8 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
+  capability dac_override,
+  capability mknod,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -58,6 +60,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
@@ -75,6 +78,9 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
   profile portage {
     #include <abstractions/base>
     #include <abstractions/python-exec>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/emerge				Px,

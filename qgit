@@ -26,6 +26,9 @@ profile qgit /usr/bin/qgit {
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term, kill) peer="meld",
+  
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
   /dev/tty[0-9]*					rw,
@@ -64,6 +67,9 @@ profile qgit_root {
   capability sys_nice,
   capability dac_read_search,
   capability dac_override,
+  
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term, kill) peer="meld_root",
   
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
