@@ -85,6 +85,7 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   
   # PTRACE ---------------------------------------------
   ptrace (trace) peer=@{profile_name},
+  ptrace (trace) peer="chromium.start_script",
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
@@ -157,7 +158,7 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   
   # TEMP -----------------------------------------------
   /tmp/							r,
-  owner /tmp/.org.chromium.Chromium.??????{,/,/**}	rw,
+  /tmp/.org.chromium.Chromium.??????{,/,/**}	rw,
   owner /tmp/scoped_dir_**				rw,
   /var/tmp/						r,
   owner /var/tmp/etilqs_*				rw,

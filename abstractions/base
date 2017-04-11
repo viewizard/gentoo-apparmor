@@ -83,6 +83,11 @@ owner @{PROC}/@{pid}/status		r,
 # Allow determining the highest valid capability of the running kernel
 @{PROC}/sys/kernel/cap_last_cap		r,
 
+
+# FIX ME! Для неймспейсов должен быть отдельный подход к
+# ptrace, signal, unix - более ограниченый рамками неймспейса!
+
+
 # Allow other processes to read our /proc entries, futexes, perf tracing and
 # kcmp for now (they will need 'read' in the first place). Administrators can
 # override with:

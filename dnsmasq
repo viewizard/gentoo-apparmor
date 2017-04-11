@@ -22,6 +22,9 @@ profile dnsmasq /usr/sbin/dnsmasq {
   # NETWORK --------------------------------------------
   network netlink raw,
   
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  
   # EXECUTABLES ----------------------------------------
   /usr/sbin/dnsmasq					mr,
   

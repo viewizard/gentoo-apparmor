@@ -25,6 +25,31 @@ profile cups.cupsd /usr/sbin/cupsd {
   capability mknod,
   capability kill,
   
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term) peer="cups.daemon",
+  signal (send) set=(term) peer="cups.driver",
+  signal (send) set=(term) peer="cups.filter",
+  signal (send) set=(term) peer="cups.backend",
+  signal (send) set=(term) peer="cups.cgi-bin",
+  
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  			type=stream
+			addr=none
+  			peer=(label="cups.daemon"),
+  unix (send, receive)
+  			type=stream
+			addr=none
+  			peer=(label="cups.filter"),
+  unix (send, receive)
+  			type=stream
+			addr=none
+  			peer=(label="cups.backend"),
+  unix (send, receive)
+  			type=stream
+			addr=none
+  			peer=(label="poppler.pdftops"),
+  
   # PSEUDO ---------------------------------------------
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
@@ -71,6 +96,12 @@ profile cups.daemon /usr/libexec/cups/daemon/* {
   capability setgid,
   capability setuid,
   
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  			type=stream
+			addr=none
+  			peer=(label="cups.cupsd"),
+  
   # EXECUTABLES ----------------------------------------
   /usr/bin/smbspool					Px,
   /usr/libexec/cups/daemon/*				Pxmr,
@@ -82,8 +113,8 @@ profile cups.daemon /usr/libexec/cups/daemon/* {
   # READS/WRITES ---------------------------------------
   /usr/share/cups/{,**}					r,
   /usr/share/ppd/{,**}					r,
-  /var/spool/cups/{,**}					r,
-  /var/cache/cups/{,**}					r,
+  /var/spool/cups/{,**}					wr,
+  /var/cache/cups/{,**}					wr,
   /usr/libexec/cups/{backend,driver}/			r,
 }
 
@@ -97,6 +128,7 @@ profile cups.driver /usr/libexec/cups/driver/* {
   /usr/share/gutenprint/{,**}				r,
   /usr/lib{,32,64}/gutenprint/{,**}			r,
   /usr/lib{,32,64}/gutenprint/[0-9]*/modules/*.so	m,
+  /var/spool/cups/{,**}					wr,
 }
 
 profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* flags=(complain) {
@@ -110,13 +142,23 @@ profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* flags=(complain) {
   /etc/cups/{,**}					r,
   /usr/share/cups/templates/{,**}			r,
   /usr/share/cups/data/{,**}				r,
+  /run/cups/certs/{,**}					r,
+  /run/cups/cups.sock					rw,
   /var/cache/cups/*					r,
-  /{,var/}run/cups/certs/{,**}				r,
   /var/spool/cups/{,**}					r,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/?????????????				rw,
 }
 
 profile cups.filter /usr/libexec/cups/filter/* flags=(complain) {
   #include <abstractions/base>
+  
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  			type=stream
+			addr=none
+  			peer=(label="cups.cupsd"),
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/cups/filter/*				Pxmr,
@@ -134,6 +176,21 @@ profile cups.filter /usr/libexec/cups/filter/* flags=(complain) {
 
 profile cups.backend /usr/libexec/cups/backend/* {
   #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability wake_alarm,
+  
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  			type=stream
+			addr=none
+  			peer=(label="cups.cupsd"),
+  
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network netlink raw,
   
   # PSEUDO ---------------------------------------------
   /dev/bus/usb/						r,

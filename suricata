@@ -26,6 +26,9 @@ profile suricata /usr/bin/suricata {
   capability net_raw,
   capability mknod,
   
+  # SIGNAL ---------------------------------------------
+  signal (receive) set=(usr2) peer="suricata.init.d",
+  
   # NETWORK --------------------------------------------
   network netlink raw,
   
@@ -56,6 +59,9 @@ profile suricata.init.d /etc/init.d/suricata {
   # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
+  
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(usr2) peer="suricata",
   
   # PSEUDO ---------------------------------------------
   @{PROC}/@{pid}/cmdline				r,
