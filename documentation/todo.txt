@@ -1,4 +1,4 @@
-- Для процессов работающих с файловой системой (ls,rm,cat,tail,head,...) продумать профиль. Возможно потом использовать Profile Stacking, чтобы некий базовый стакать с профилем доступа фс конкретно для пакета-базы. Непонятно как это будет работать, если у нас все так же ограничение всего на 12 переходов на другие профили.
+- Stacking (примерно в 3.6+ версии изменений ядра) Для процессов работающих с файловой системой (ls,rm,cat,tail,head,...) продумать профиль. Возможно потом использовать Profile Stacking, чтобы некий базовый стакать с профилем доступа фс конкретно для пакета-базы. Непонятно как это будет работать, если у нас все так же ограничение всего на 12 переходов на другие профили.
     /bin/** px -> &two,
 Will compute the profile transition as per
     /bin/** px,
@@ -7,11 +7,25 @@ and then stack the profile two on top of that transition.
 is equivalent to
     /bin/** px -> @{profile_name}//&two,
 Таким образом можно сделать все _root, и убрать дубликаты профилей с незначительными изменениями для запуска под root.
-См. http://wiki.apparmor.net/index.php/AppArmorStacking
+http://wiki.apparmor.net/index.php/AppArmorStacking
+http://wiki.apparmor.net/index.php/StackingConfiningUsers
+** для версии 3.5 стекинг работает глючно, пробовать потом в 3.6
 
 
-- Delegation, т.к. убунтовские патчи убирают 100% делегейшен на открытые ресурсы в дочерний процесс, надо прописывать это отдельно (указывать какие ресурсы открытые в основном процессе может использовать дочерний). Не совсем понятно, когда это будет доступно хотя бы в утилите, но описание уже есть:
+- Delegation (будет примерно в 4-5 версии изменений ядра), т.к. убунтовские патчи убирают 100% делегейшен на открытые ресурсы в дочерний процесс, надо прописывать это отдельно (указывать какие ресурсы открытые в основном процессе может использовать дочерний). Не совсем понятно, когда это будет доступно хотя бы в утилите, но описание уже есть:
 http://wiki.apparmor.net/index.php/AppArmor_Core_Policy_Reference#Delegation
+http://wiki.apparmor.net/index.php/AppArmorDelegation#How_Delegation_is_Expressed
+http://wiki.apparmor.net/index.php/AppArmorProfileSpec
+
+
+- Namespaces. Работают, можно делать переходы, например:
+	/bin/sleep	Pxr -> :user:sleep,
+но зона видимости профилей - только текущий неймспейс. Т.е. если как в примере перешли в неймспейс :user:, то больше недоступны профили из базового неймспейса. Работает только в иерархической структуре, из неймспейса видно только дочерний (профили в нем).
+Возможно, если будет возможность работать с переходами в другие неймспейсы, будет иметь смысл использовать их для RBAC. Сейчас они ориентированны только на создания ограничний для контейнеров (собственно, это основная цель у разработчиков).
+** In AppArmor 4 it is possible to have the view be a namespace that is different from the current namespace.
+http://wiki.apparmor.net/index.php/AppArmorNamespaces
+http://wiki.apparmor.net/index.php/AppArmorStacking#Using_Stacking_in_combination_with_Policy_Namespaces
+** the current namespace is always the namespace of the profile in the stack having its permissions evaluated
 
 
 - Базовый deny на неподдерживаемые файлы.
@@ -50,10 +64,6 @@ extended ownership tests (not currently supported)
  owner=(fred george)
  owner=(fred 1001)
 /etc/apparmor.d/abstractions/authentication, например, хорошо бы сделать с owner=0
-
-
-- network не работает в поддерживаемой kernel.org версии ядра
-network не работает в поддерживаемой kernel.org версии ядра. Нужно использовать переработанную каноникал часть кода в ./security/apparmor/, которая значительно отличается от основной ветки ядра.
 
 
 - mount улучшение ограничений в следующих версиях AppArmor.

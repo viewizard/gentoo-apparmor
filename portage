@@ -378,6 +378,9 @@ profile portage.portageq @{PYTHON_EXEC}/portageq flags=(complain) {
   #include <abstractions/python>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
   
@@ -398,6 +401,7 @@ profile portage.portageq @{PYTHON_EXEC}/portageq flags=(complain) {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,

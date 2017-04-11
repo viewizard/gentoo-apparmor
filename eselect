@@ -55,6 +55,9 @@ profile eselect /usr/bin/eselect flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/portageq				Px,
     @{PYTHON_EXEC}/env-update				Px,

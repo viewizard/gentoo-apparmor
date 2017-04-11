@@ -12,7 +12,7 @@
 capability ipc_lock,
 
 # PSEUDO -----------------------------------------------
-/dev/nvidia{0,ctl,-modeset}				rw,
+/dev/nvidia{[0-9]*,ctl,-modeset}			rw,
 /sys/bus/pci/devices/					r,
 /sys/devices/pci**/config				r,
 /sys/devices/pci**/uevent				r,	# nouveau

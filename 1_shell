@@ -26,6 +26,18 @@ profile shell_service @{shell} {
   /bin/sed						ixr,
   /bin/uname						Pxr,
   /sbin/mdadm						Pxr,
+}
+
+# профиль для запуска logcheck
+profile shell_logcheck {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
   /usr/sbin/logcheck					Pxr,
 }
 
