@@ -9,15 +9,12 @@
 #
 # ------------------------------------------------------------------
 
-# files required by LDAP clients (e.g. nss_ldap/pam_ldap)
-/etc/ldap.conf				r,
-/etc/ldap.secret			r,
-/etc/openldap/*				r,
-/etc/openldap/cacerts/*			r,
-/etc/openldap/ssl_corp.net/ca.crt	r,
-
-# SASL plugins and config
-/etc/sasl2/*				r,
-/usr/lib{,32,64}/sasl2/*		r,
-
 #include <abstractions/ssl_certs>
+
+# READS/WRITES -----------------------------------------
+/etc/ldap.conf						r,
+/etc/ldap.secret					r,
+/etc/openldap/*						r,
+/etc/openldap/cacerts/*					r,
+/etc/sasl2/*						r,	# SASL plugins and config
+/usr/lib{,32,64}/sasl2/*				r,	# SASL plugins and config

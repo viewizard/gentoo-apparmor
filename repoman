@@ -20,6 +20,7 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
   capability setuid,
   capability setgid,
   capability chown,
+  capability mknod,
   capability fowner,
   capability fsetid,
   
@@ -60,6 +61,7 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
@@ -69,7 +71,6 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
     
     # READS/WRITES -------------------------------------
     /usr/portage/distfiles/*				w,
-    /var/cache/ldconfig/aux-cache*			rw,
   }
   
   profile sandbox /usr/bin/sandbox flags=(complain) {

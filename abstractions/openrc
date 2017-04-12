@@ -32,10 +32,10 @@ signal (send) set=(term, hup),
 @{PROC}/cmdline						r,
 @{PROC}/@{pid}/environ					r,
 @{PROC}/@{pid}/stat					r,
+owner @{PROC}/@{pid}/cmdline				r,
 
 # EXECUTABLES ------------------------------------------
 /sbin/openrc						ixr,
-audit /sbin/runscript					r,	# FIX ME! Перешли на /sbin/openrc-run. 09.04.2017
 /sbin/openrc-run					mr,
 /sbin/start-stop-daemon					ixr,
 /lib{,32,64}/rc/bin/*					ixr,

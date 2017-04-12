@@ -44,6 +44,7 @@ profile wireshark /usr/bin/{tshark,wireshark} {
   /sys/class/net/					r,
   /sys/bus/usb/devices/					r,
   @{PROC}/@{pid}/net/dev				r,
+  owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/wireshark					mr,

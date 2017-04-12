@@ -11,19 +11,14 @@
 # Since we could use QT with gtkstyle, we need GTK abstraction.
 #include <abstractions/gtk>
 
+# READS/WRITES -----------------------------------------
+/usr/share/icons/{,**}					r,
+/usr/share/qt{4,5}/**					r,
+/usr/lib{,32,64}/qt{4,5}/lib*so*			mr,
+/usr/lib{,32,64}/qt{4,5}/plugins/**			mr,
+
+# USERS ------------------------------------------------
 owner @{HOME}/.ICEauthority				r,
 owner @{HOME}/.config/Trolltech.conf			rwk,
 owner @{HOME}/.config/QtProject.conf*			rwk,
 owner @{HOME_CACHE}/qt_compose_cache_little_endian_*	rw,
-
-/usr/share/icons/{,**}					r,
-
-# qt4
-/usr/lib{,32,64}/qt4/lib*so*				mr,
-/usr/lib{,32,64}/qt4/plugins/**				mr,
-/usr/share/qt4/**					r,
-
-# qt5
-/usr/lib{,32,64}/qt5/lib*so*				mr,
-/usr/lib{,32,64}/qt5/plugins/**				mr,
-/usr/share/qt5/**					r,

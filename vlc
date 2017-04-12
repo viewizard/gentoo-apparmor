@@ -29,6 +29,7 @@ profile vlc /usr/bin/vlc {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/vlc						mr,

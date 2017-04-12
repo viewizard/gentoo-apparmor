@@ -11,28 +11,14 @@
 
 # abstraction for Enchant spellchecking frontend
 
-/usr/share/enchant/{,enchant.ordering}			r,
-
-# aspell
 #include <abstractions/aspell>
-/var/lib/dictionaries-common/aspell/{,*}		r,
 
-# hunspell
-/usr/share/hunspell/{,*}				r,
+# READS/WRITES -----------------------------------------
+/usr/share/enchant/{,enchant.ordering}			r,
+/usr/share/hunspell/{,*}				r,	# hunspell
+/usr/share/myspell/{,**}				r,	# myspell
+/usr/share/java/{,zemberek{,-tr}-[0-9]*.jar}		r,	# zemberek
 
-# ispell
-/usr/lib/ispell/{,*.hash}				r,
-/usr/share/dict/{,*}					r,
-/var/lib/dictionaries-common/				r,
-/var/lib/dictionaries-common/{ispell,wordlist}/{,*}	r,
-
-# myspell
-/usr/share/myspell/{,**}				r,
-
-# zemberek
-/usr/share/java/					r,
-/usr/share/java/zemberek{,-tr}-[0-9]*.jar		r,
-
-# per-user dictionaries
+# USERS ------------------------------------------------
 owner @{HOME}/.config/enchant/				rw,
 owner @{HOME}/.config/enchant/*				rwk,

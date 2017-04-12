@@ -33,6 +33,9 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   /sys/devices/system/cpu/				r,
   /sys/devices/pci[0-9]*/**/{resource,irq,vendor,device,class,config} r,
   
+  # AUDIT PSEUDO ---------------------------------------
+  deny @{PROC}/@{pid}/cmdline				r,
+  
   # EXECUTABLES ----------------------------------------
   /usr/bin/teamspeak3					r,
   @{shell}						mr,

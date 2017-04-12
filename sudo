@@ -42,6 +42,7 @@ profile sudo /usr/bin/sudo {
   owner @{PROC}/@{pid}/stat				r,
   @{PROC}/@{pid}/attr/{current,exec}			w,
   @{PROC}/@{pid}/attr/{current,prev,exec}		r,
+  @{PROC}/sys/kernel/ngroups_max			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/sudo						mr,

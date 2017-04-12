@@ -29,6 +29,7 @@ profile audacious /usr/bin/audacious {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/audacious					mr,

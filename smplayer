@@ -27,6 +27,7 @@ profile smplayer /usr/bin/smplayer {
   # PSEUDO ---------------------------------------------
   /dev/							r,
   /dev/tty[0-9]*					rw,
+  owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/smplayer					mr,

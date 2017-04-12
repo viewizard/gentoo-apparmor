@@ -13,40 +13,40 @@
 
 # privacy violations (don't audit files under $HOME otherwise get a
 # lot of false positives when reading contents of directories)
-deny @{HOME}/.*history				mrwkl,
-deny @{HOME}/.fetchmail*			mrwkl,
-deny @{HOME}/.viminfo*				mrwkl,
-deny @{HOME}/.*~				mrwkl,
-deny @{HOME}/.*.swp				mrwkl,
-deny @{HOME}/.*~1~				mrwkl,
-deny @{HOME}/.*.bak				mrwkl,
+deny @{HOME}/.*history					mrwkl,
+deny @{HOME}/.fetchmail*				mrwkl,
+deny @{HOME}/.viminfo*					mrwkl,
+deny @{HOME}/.*~					mrwkl,
+deny @{HOME}/.*.swp					mrwkl,
+deny @{HOME}/.*~1~					mrwkl,
+deny @{HOME}/.*.bak					mrwkl,
 
 # special attention to keepassx passwords file
-audit deny /**.kdbx				rw,
+audit deny /**.kdbx					rw,
 
 # special attention to (potentially) executable files
-audit deny @{HOME}/.local/bin/**		wl,
-audit deny @{HOME}/.local/sbin/**		wl,
-audit deny @{HOME}/.config/autostart/**		wl,
-audit deny @{HOME}/.pki/nssdb/*.so{,.[0-9]*}	wl,
+audit deny @{HOME}/.local/bin/**			wl,
+audit deny @{HOME}/.local/sbin/**			wl,
+audit deny @{HOME}/.config/autostart/**			wl,
+audit deny @{HOME}/.pki/nssdb/*.so{,.[0-9]*}		wl,
 
 # don't allow reading/updating of run control files
-deny @{HOME}/.*rc				mrk,
-audit deny @{HOME}/.*rc				wl,
+deny @{HOME}/.*rc					mrk,
+audit deny @{HOME}/.*rc					wl,
 
 # bash
-deny @{HOME}/.bash*				mrk,
-audit deny @{HOME}/.bash*			wl,
-deny @{HOME}/.inputrc				mrk,
-audit deny @{HOME}/.inputrc			wl,
+deny @{HOME}/.bash*					mrk,
+audit deny @{HOME}/.bash*				wl,
+deny @{HOME}/.inputrc					mrk,
+audit deny @{HOME}/.inputrc				wl,
 
 # sh/dash/csh/tcsh/pdksh/zsh
-deny @{HOME}/.{,z}profile*			mrk,
-audit deny @{HOME}/.{,z}profile*		wl,
-deny @{HOME}/.{,z}log{in,out}			mrk,
-audit deny @{HOME}/.{,z}log{in,out}		wl,
-deny @{HOME}/.{c,z}shrc				mrk,
-audit deny @{HOME}/.{c,z}shrc			wl,
+deny @{HOME}/.{,z}profile*				mrk,
+audit deny @{HOME}/.{,z}profile*			wl,
+deny @{HOME}/.{,z}log{in,out}				mrk,
+audit deny @{HOME}/.{,z}log{in,out}			wl,
+deny @{HOME}/.{c,z}shrc					mrk,
+audit deny @{HOME}/.{c,z}shrc				wl,
 
-deny @{HOME}/.zshenv				mrk,
-audit deny @{HOME}/.zshenv			wl,
+deny @{HOME}/.zshenv					mrk,
+audit deny @{HOME}/.zshenv				wl,

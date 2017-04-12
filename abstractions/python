@@ -8,19 +8,14 @@
 #
 # ------------------------------------------------------------------
 
+# EXECUTABLES ------------------------------------------
+/usr/bin/@{PYTHON}{,m}					ixr,
+
+# USERS ------------------------------------------------
+/etc/@{PYTHON}/**					r,
 /usr/lib{,32,64}/@{PYTHON}/**.{pyc,so}			mr,
 /usr/lib{,32,64}/@{PYTHON}/**.{egg,py,pth}		r,
 /usr/lib{,32,64}/@{PYTHON}/{site,dist}-packages/	r,
 /usr/lib{,32,64}/@{PYTHON}/lib-dynload/*.so		mr,
-
-# Site-wide configuration
-/etc/@{PYTHON}/**					r,
-
-# wx paths
-/usr/lib{,32,64}/wx/python/*.pth			r,
-
-# python build configuration and headers
-/usr/include/@{PYTHON}/pyconfig.h			r,
-
-# python binary
-/usr/bin/@{PYTHON}{,m}					rix,
+/usr/lib{,32,64}/wx/python/*.pth			r,	# wx paths
+/usr/include/@{PYTHON}/pyconfig.h			r,	# python build configuration and headers

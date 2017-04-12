@@ -10,44 +10,30 @@
 #
 # ------------------------------------------------------------------
 
-# Many programs wish to perform nameservice-like operations, such as
-# looking up users by name or id, groups by name or id, hosts by name
-# or IP, etc. These operations may be performed through files, dns,
-# NIS, NIS+, LDAP, hesiod, wins, etc. Allow them all here.
-/etc/group			r,
-/etc/host.conf			r,
-/etc/hosts			r,
-/etc/nsswitch.conf		r,
-/etc/gai.conf			r,
-/etc/passwd			r,
-/etc/protocols			r,
-/etc/resolv.conf		r,
-/etc/samba/lmhosts		r,
-/etc/services			r,
-
-# db backend
-/var/lib/misc/*.db		r,
-  
-# The nss libraries are sometimes used in addition to PAM; make sure
-# they are available
-/lib{,32,64}/libnss_*.so*	mr,
-/usr/lib{,32,64}/libnss_*.so*	mr,
-/etc/default/nss		r,
-
-# ldap
 #include <abstractions/ldapclient>
-
-# kerberos
 #include <abstractions/kerberosclient>
 
+# NETWORK ----------------------------------------------
 # TCP/UDP network access
 network inet  stream,		# FIX ME! у ldap и kerberos ограниченные локальными адресами и портами
 network inet6 stream,		# FIX ME! у ldap и kerberos ограниченные локальными адресами и портами
 network inet  dgram,		# FIX ME! у ldap и kerberos ограниченные локальными адресами и портами
 network inet6 dgram,		# FIX ME! у ldap и kerberos ограниченные локальными адресами и портами
 
-# Netlink raw needed for nscd
-## network netlink raw,
+# PSEUDO -----------------------------------------------
+@{PROC}/@{pid}/net/route				r,
 
-# interface details
-@{PROC}/@{pid}/net/route	r,
+# READS/WRITES -----------------------------------------
+/etc/group						r,
+/etc/host.conf						r,
+/etc/hosts						r,
+/etc/nsswitch.conf					r,
+/etc/gai.conf						r,
+/etc/passwd						r,
+/etc/protocols						r,
+/etc/resolv.conf					r,
+/etc/samba/lmhosts					r,
+/etc/services						r,
+/lib{,32,64}/libnss_*.so*				mr,	# The nss libraries are sometimes used in addition to PAM;
+/usr/lib{,32,64}/libnss_*.so*				mr,	# make sure they are available
+/var/lib/misc/*.db					r,	# db backend

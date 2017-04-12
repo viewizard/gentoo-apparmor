@@ -8,6 +8,9 @@
 #
 # ------------------------------------------------------------------
 
-owner @{HOME_CACHE}/dconf/{,user}	rw,
-owner /run/user/*/dconf/{,user}		rw,
-owner @{HOME}/.config/dconf/user	r, 
+# READS/WRITES -----------------------------------------
+owner /run/user/*/dconf/{,user}				rw,
+
+# USERS ------------------------------------------------
+owner @{HOME_CACHE}/dconf/{,user}			rw,
+owner @{HOME}/.config/dconf/user			r,

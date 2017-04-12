@@ -76,6 +76,7 @@ profile evelauncher /home/*/evelauncher/evelauncher {
   
   # AUDIT PSEUDO ---------------------------------------
   deny @{PROC}/@{pid}/oom_score_adj			rw,
+  deny @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   owner @{HOME}/evelauncher/evelauncher			mr,

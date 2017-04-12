@@ -8,17 +8,15 @@
 #
 # ------------------------------------------------------------------
 
+#include <abstractions/xdg-open-folders_root>
 
 # execution external programs with xdg-open
-owner @{PROC}/@{pid}/fd/	r,
-/usr/bin/xdg-open		Pxr -> xdg_open_root,
-/usr/bin/xdg-email		Pxr -> xdg_email_root,
-/usr/bin/xdg-screensaver	Pxr,
+owner @{PROC}/@{pid}/fd/				r,
+/usr/bin/xdg-open					Pxr -> xdg_open_root,
+/usr/bin/xdg-email					Pxr -> xdg_email_root,
+/usr/bin/xdg-screensaver				Pxr,
 
 # sg/newgrp for work with network connection via iptables uid/gid-owner
 # FIX ME! После возможности блокировки адресов и портов - убрать.
-/usr/bin/newgrp			Px,
-/usr/bin/id			Pxr,
-
-# program-related places for xdg-open:
-#include <abstractions/xdg-open-folders_root>
+/usr/bin/newgrp						Px,
+/usr/bin/id						Pxr,

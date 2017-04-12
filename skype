@@ -46,6 +46,9 @@ profile skype /opt/bin/skype {
   owner @{PROC}/@{pid}/task/				r,
   owner @{PROC}/@{pid}/task/@{pid}/stat			r,
   
+  # AUDIT PSEUDO ---------------------------------------
+  deny @{PROC}/@{pid}/cmdline				r,
+  
   # EXECUTABLES ----------------------------------------
   /opt/bin/skype					mr,
   

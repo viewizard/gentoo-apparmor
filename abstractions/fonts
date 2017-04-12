@@ -10,36 +10,30 @@
 #
 # ------------------------------------------------------------------
 
+# READS/WRITES -----------------------------------------
+/etc/fonts/{,**}					r,
+/usr/lib{,32,64}/libreoffice/share/fonts/{,**}		r,
+/usr/lib{,32,64}/xorg/modules/fonts/**.so*		mr,
+/usr/share/fonts/{,**}					r,
+/usr/local/share/fonts/{,**}				r,
+/usr/share/xfce/fonts/{,**}				r,
+/usr/share/ghostscript/*/Resource/Font/{,**}		r,
+/usr/share/javascript/*/fonts/{,**}			r,
+/usr/share/texmf/{,*/}fonts/{,**}			r,
+/usr/share/texlive/texmf-dist/fonts/{,**}		r,
+/usr/share/poppler/{,**}				r,	# poppler tables
+/var/cache/fonts/**					r,
+/var/cache/fontconfig/**				mr,
 
-/etc/fonts/{,**}				r,
+# USERS ------------------------------------------------
+owner @{HOME}/.fontconfig/				r,
+owner @{HOME}/.fontconfig/**				mrl,
+owner @{HOME_CACHE}/fontconfig/				r,
+owner @{HOME_CACHE}/fontconfig/**			mrl,
+owner @{HOME}/.config/fontconfig/{,**}			r,
+owner @{HOME}/.local/share/fonts/{,**}			r,
 
-/usr/lib{,32,64}/libreoffice/share/fonts/{,**}	r,
-/usr/lib{,32,64}/xorg/modules/fonts/**.so*	mr,
-/usr/share/fonts/{,**}				r,
-/usr/local/share/fonts/{,**}			r,
-/usr/share/xfce/fonts/{,**}			r,
-/usr/share/ghostscript/*/Resource/Font/{,**}	r,
-/usr/share/javascript/*/fonts/{,**}		r,
-/usr/share/texmf/{,*/}fonts/{,**}		r,
-/usr/share/texlive/texmf-dist/fonts/{,**}	r,
-
-# poppler tables
-/usr/share/poppler/{,**}			r,
-
-owner @{HOME}/.fontconfig/			r,
-owner @{HOME}/.fontconfig/**			mrl,
-owner @{HOME_CACHE}/fontconfig/			r,
-owner @{HOME_CACHE}/fontconfig/**		mrl,
-owner @{HOME}/.config/fontconfig/{,**}		r,
-owner @{HOME}/.local/share/fonts/{,**}		r,
-
-/var/cache/fonts/**				r,
-/var/cache/fontconfig/**			mr,
-
-#
-# Silence a few non-needed writes.
-# Since we don't have users fonts, we use system-wide fonts cache only.
-#
-deny /var/cache/fontconfig/			w,
-deny @{HOME}/.fontconfig/{,**}			w,
-deny @{HOME_CACHE}/fontconfig/{,**}		w,
+# NOISY ------------------------------------------------
+deny /var/cache/fontconfig/				w,	# FIX ME! Точно не нужны, если нет локальных шрифтов?
+deny @{HOME}/.fontconfig/{,**}				w,	# FIX ME! Точно не нужны, если нет локальных шрифтов?
+deny @{HOME_CACHE}/fontconfig/{,**}			w,	# FIX ME! Точно не нужны, если нет локальных шрифтов?

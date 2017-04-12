@@ -51,12 +51,12 @@ profile discord /opt/discord/share/discord/Discord {
   /sys/devices/virtual/tty/tty[0-9]**/active		r,
   @{PROC}/						r,
   @{PROC}/@{pid}/stat					r,
-  @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/cmdline				r,
+  owner @{PROC}/@{pid}/fd/				r,
   @{PROC}/@{pid}/auxv					r,
   
   # AUDIT PSEUDO ---------------------------------------
   deny @{PROC}/@{pid}/oom_score_adj			rw,
+  deny @{PROC}/@{pid}/cmdline				r,	# Лазит по процессам и смотрит параметры запуска.
   
   # EXECUTABLES ----------------------------------------
   /opt/discord/share/discord/Discord			Pxmr,

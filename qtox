@@ -29,6 +29,7 @@ profile qtox /usr/bin/qtox {
   # PSEUDO ---------------------------------------------
   /dev/							r,
   /dev/tty[0-9]*					rw,
+  owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/qtox						mr,

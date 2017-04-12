@@ -16,6 +16,7 @@ profile cronbase.run-crons /usr/sbin/run-crons {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/run-crons					r,
@@ -32,8 +33,6 @@ profile cronbase.run-crons /usr/sbin/run-crons {
   /usr/bin/find						ix,
   /usr/bin/whoami					Px,
   /usr/bin/logger					Px,
-  # Make sure, that all cron scripts have
-  # profile in "local/cron-scripts-profiles"!
   /etc/cron.{daily,hourly,monthly,weekly}/*		Pxr,
   
   # READS/WRITES ---------------------------------------

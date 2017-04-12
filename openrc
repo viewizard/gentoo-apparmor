@@ -29,14 +29,15 @@ profile openrc /sbin/openrc flags=(complain) {
   /dev/console						rw,
   /dev/ptmx						rw,
   /dev/pts/[0-9]*					rw,
+  /sys/fs/cgroup/					r,
+  /sys/fs/cgroup/**					rwkl,
   @{PROC}/						r,
   @{PROC}/cmdline					r,
   @{PROC}/@{pid}/cmdline				r,
   @{PROC}/@{pid}/environ				r,
   @{PROC}/@{pid}/stat					r,
   @{PROC}/@{pid}/mounts					r,
-  /sys/fs/cgroup/					r,
-  /sys/fs/cgroup/**					rwkl,
+  owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/openrc						mr,

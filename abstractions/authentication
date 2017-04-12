@@ -10,35 +10,25 @@
 #
 # ------------------------------------------------------------------
 
+#include <abstractions/kerberosclient>				# kerberos
+#include <abstractions/p11-kit>					# p11-kit (PKCS#11 modules configuration)
 
-# Some services need to perform authentication of users
-# Such authentication almost certainly needs access to the local users
-# databases containing passwords, PAM configuration files, PAM libraries
-/etc/pam.d/*				r,
-/etc/securetty				r,
-/etc/security/*				r,
-/etc/shadow				r,
-/etc/gshadow				r,
-/etc/passwd				r,
-/etc/login.defs				r,
+# EXECUTABLES ------------------------------------------
+/etc/security/pam-script/pam_script*			Px,	# pam-script
 
-/lib{,32,64}/security/			r,
-/lib{,32,64}/security/pam_*.so		mr,
-/lib{,32,64}/security/pam_filter/*	mr,
+# READS/WRITES -----------------------------------------
+/etc/pamusb.conf					r,	# pam_usb
+/etc/pam.d/*						r,	# PAM
+/etc/security/*						r,	# PAM
+/etc/shadow						r,	# PAM
+/etc/gshadow						r,	# PAM
+/etc/passwd						r,	# PAM
+/etc/login.defs						r,	# PAM
+/lib{,32,64}/security/					r,	# PAM
+/lib{,32,64}/security/pam_*.so				mr,	# PAM
+/lib{,32,64}/security/pam_filter/*			mr,	# PAM
+/run/pam_mount/*					rwk,	# pam_mount
+/media/*/.pamusb/*.pad					rw,	# pam_usb
 
-# kerberos
-#include <abstractions/kerberosclient>
-
-# p11-kit (PKCS#11 modules configuration)
-#include <abstractions/p11-kit>
-
-# pam_usb
-/etc/pamusb.conf			r,
-/media/*/.pamusb/*.pad			rw,
-@{HOME}/.pamusb/*.pad			rw,
-
-# pam_mount
-/run/pam_mount/*			rwk,
-
-# pam-script
-/etc/security/pam-script/pam_script*	Px,
+# USERS ------------------------------------------------
+@{HOME}/.pamusb/*.pad					rw,	# pam_usb

@@ -32,6 +32,7 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(com
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /{usr,opt}/bin/nvidia-settings			mr,

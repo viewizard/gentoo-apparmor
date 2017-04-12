@@ -10,15 +10,13 @@
 #
 # ------------------------------------------------------------------
 
-# files required by kerberos client programs
-/usr/lib{,32,64}/krb5/plugins/libkrb5/		r,
-/usr/lib{,32,64}/krb5/plugins/libkrb5/*		mr,
+# READS/WRITES -----------------------------------------
+/etc/krb5.keytab					rk,
+/etc/krb5.conf						r,
+/usr/lib{,32,64}/krb5/plugins/libkrb5/			r,
+/usr/lib{,32,64}/krb5/plugins/libkrb5/*			mr,
+/usr/lib{,32,64}/krb5/plugins/preauth/			r,
+/usr/lib{,32,64}/krb5/plugins/preauth/*			mr,
 
-/usr/lib{,32,64}/krb5/plugins/preauth/		r,
-/usr/lib{,32,64}/krb5/plugins/preauth/*		mr,
-
-/etc/krb5.keytab				rk,
-/etc/krb5.conf					r,
-
-# credential caches
-/tmp/krb5cc*					r,
+# TEMP -------------------------------------------------
+/tmp/krb5cc*						r,	# credential caches

@@ -10,30 +10,30 @@
 # ------------------------------------------------------------------
 
 # user-specific bash files
-@{HOMEDIRS}			r,
-@{HOME}/.bashrc			r,
-@{HOME}/.profile		r,
-@{HOME}/.bash_profile		r,
-@{HOME}/.bash_history		rw,
+@{HOMEDIRS}						r,
+@{HOME}/.bashrc						r,
+@{HOME}/.profile					r,
+@{HOME}/.bash_profile					r,
+@{HOME}/.bash_history					rw,
 
 # system-wide bash configuration
-/etc/profile			r,
-/etc/profile.d/{,*}		r,
-/etc/bash/bashrc		r,
-/etc/bash/bashrc.d/{,*}		r,
+/etc/profile						r,
+/etc/profile.d/{,*}					r,
+/etc/bash/bashrc					r,
+/etc/bash/bashrc.d/{,*}					r,
 
 # bash relies on system-wide readline configuration
-/etc/inputrc			r,
+/etc/inputrc						r,
 
 # bash inspects filesystems at startup
-/etc/mtab			r,
-@{PROC}/@{pid}/mounts		r,
-@{PROC}/filesystems		r,
+/etc/mtab						r,
+@{PROC}/@{pid}/mounts					r,
+@{PROC}/filesystems					r,
 
 # probably readline wants to know terminal capabilities
-/usr/share/terminfo/**		r,
+/usr/share/terminfo/**					r,
 
 # run out of /etc/bash.bashrc
-/etc/DIR_COLORS			r,
-/bin/ls				mix,
-/usr/bin/dircolors		mix,
+/etc/DIR_COLORS						r,
+/bin/ls							ixm,
+/usr/bin/dircolors					ixm,

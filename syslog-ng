@@ -45,6 +45,7 @@ profile syslog-ng /usr/sbin/syslog-ng {
   @{PROC}/uptime					r,
   @{PROC}/@{pid}/{cgroup,sessionid,loginuid}		r,
   @{PROC}/@{pid}/{status,cmdline}			r,
+  owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/syslog-ng					mr,
@@ -80,6 +81,7 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng {
   /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/uid_map				r,
   @{PROC}/@{pid}/loginuid				rw,
+  @{PROC}/sys/kernel/ngroups_max			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/syslog-ng					Px,

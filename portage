@@ -220,13 +220,13 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     @{PROC}/@{pid}/loginuid				r,
     @{PROC}/@{pid}/task/@{pid}/stat			r,
     @{PROC}/@{pid}/net/arp				r,
+    @{PROC}/tty/drivers					r,
     @{PROC}/sys/net/ipv4/ip_local_port_range		r,
     @{PROC}/sys/kernel/randomize_va_space		r,
     @{PROC}/sys/kernel/osrelease			r,
     @{PROC}/sys/kernel/pid_max				r,
-    @{PROC}/sys/kernel/osrelease			r,
     @{PROC}/sys/kernel/ostype				r,
-    @{PROC}/tty/drivers					r,
+    @{PROC}/sys/kernel/ngroups_max			r,
     
     # EXECUTABLES ----------------------------------------
     @{shell}						mr,
@@ -276,6 +276,9 @@ profile portage.env-update @{PYTHON_EXEC}/env-update flags=(complain) {
   #include <abstractions/python>
   #include <abstractions/nameservice>
   
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
   
@@ -310,15 +313,6 @@ profile portage.env-update @{PYTHON_EXEC}/env-update flags=(complain) {
     @{shell}						mr,
     /bin/uname						Px,
     /sbin/ldconfig					Px,
-    
-    # READS/WRITES -------------------------------------
-    /etc/ld.so.conf					r,
-    /etc/ld.so.cache*					rw,
-    /etc/ld.so.conf.d/{,*}				r,
-    /lib{,32,64}/					r,
-    /usr/lib{,32,64}/					r,
-    /usr/local/lib{,32,64}/				r,
-    /var/cache/ldconfig/aux-cache*			rw,
   }
 }
 
@@ -329,6 +323,7 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf flags=(complain) {
   
   # CAPABILITIES ---------------------------------------
   capability dac_override,
+  capability mknod,
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
@@ -415,6 +410,7 @@ profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
   
   # CAPABILITIES ---------------------------------------
   capability dac_override,
+  capability mknod,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -453,6 +449,9 @@ profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
   profile portageq {
     #include <abstractions/base>
     #include <abstractions/python-exec>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/portageq				Px,

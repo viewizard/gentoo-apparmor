@@ -35,6 +35,7 @@ profile dbus.dbus-daemon /usr/bin/dbus-daemon {
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/cmdline				r,
   @{PROC}/@{pid}/oom_score_adj				w,
+  owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dbus-daemon					mr,
@@ -144,6 +145,9 @@ profile dbus.dbus-daemon-launch-helper /usr/libexec/dbus-daemon-launch-helper {
   # CAPABILITIES ---------------------------------------
   capability setgid,
   capability setuid,
+  
+  # PSEUDO ---------------------------------------------
+  @{PROC}/sys/kernel/ngroups_max			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/dbus-daemon-launch-helper		mr,

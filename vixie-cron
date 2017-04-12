@@ -22,6 +22,7 @@ profile vixie-cron.cron /usr/sbin/cron {
   # PSEUDO ---------------------------------------------
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
+  @{PROC}/sys/kernel/ngroups_max			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/cron					mr,

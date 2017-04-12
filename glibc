@@ -62,6 +62,15 @@ profile glibc.ldconfig /sbin/ldconfig flags=(complain) {	# FIX ME! 04.04.2017 fl
   # EXECUTABLES ----------------------------------------
   /sbin/ldconfig					mr,
   
+  # READS/WRITES ---------------------------------------
+  /etc/ld.so.cache{,~}					rw,
+  /etc/ld.so.conf					r,
+  /etc/ld.so.conf.d/{,*}				r,
+  /lib{,32,64}/						r,
+  /usr/lib{,32,64}/					r,
+  /usr/local/lib{,32,64}/				r,
+  /var/cache/ldconfig/aux-cache{,~}			rw,
+  
   # USERS ----------------------------------------------
   owner @{HOME}/.pyfa/log.txt				w,	# DELEGATION! pyfa
   

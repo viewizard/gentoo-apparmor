@@ -9,17 +9,18 @@
 #
 # ------------------------------------------------------------------
 
-# discoverable system configuration for non-local cupsd
-/etc/cups/client.conf			r,
-# client should be able to talk the local cupsd
-/run/cups/cups.sock			rw,
-# client should be able to read user-specified cups configuration
-owner @{HOME}/.cups/client.conf		r,
-owner @{HOME}/.cups/lpoptions		r,
+# EXECUTABLES ------------------------------------------
+/usr/bin/paperconf					ix,
 
-/usr/bin/paperconf			ix,
+# READS/WRITES -----------------------------------------
+/etc/cups/client.conf					r,
+/etc/papersize						r,
+/etc/cups/ppd/{,*}					r,
+/run/cups/cups.sock					rw,
 
-/etc/papersize				r,
-/etc/cups/ppd/{,*}			r,
+# USERS ------------------------------------------------
+owner @{HOME}/.cups/client.conf				r,
+owner @{HOME}/.cups/lpoptions				r,
 
-owner /tmp/?????????????		rw,
+# TEMP -------------------------------------------------
+owner /tmp/?????????????				rw,
