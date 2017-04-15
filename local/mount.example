@@ -1,0 +1,139 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# MOUNT ------------------------------------------------
+mount
+	options=(rw, remount, noatime, iversion)
+-> /,
+mount
+	fstype=ext4
+	options=(rw, nosuid, nodev, noexec, noatime, iversion)
+	/dev/@{BLOCK_ALL}
+-> /var/,
+mount
+	fstype=ext4
+	options=(rw, noexec, noatime)
+	/dev/@{BLOCK_ALL}
+-> /home/,
+mount
+	fstype=ext4
+	options=(rw, nosuid, nodev, noexec, noatime)
+	/dev/@{BLOCK_ALL}
+-> /usr/portage/,
+mount
+	fstype=ext4
+	options=(rw, nosuid, nodev, noexec, noatime)
+	/dev/@{BLOCK_ALL}
+-> /mnt/backup/,
+mount
+	fstype=ext4
+	options=(rw, nosuid, nodev, noexec, noatime)
+	/dev/@{BLOCK_ALL}
+-> /media/sdb2/,
+mount
+	fstype=tmpfs
+	options=(rw, nosuid, nodev, noexec, noatime, nodiratime)
+	tmpfs
+-> /tmp/,
+
+mount
+	options=(rw, bind)
+	/home/*/.wine/
+-> /home/*/.wine/,
+mount
+	options=(rw, nodev, remount, bind)
+-> /home/*/.wine/,
+
+mount
+	options=(rw, bind)
+	/home/*/evelauncher/
+-> /home/*/evelauncher/,
+mount
+	options=(rw, nodev, remount, bind)
+-> /home/*/evelauncher/,
+
+mount
+	options=(rw, bind)
+	/home/*/.wine/
+-> /home/*/.eve/,
+mount
+	options=(rw, nodev, remount, bind)
+-> /home/*/.eve/,
+
+mount
+	options=(rw, bind)
+	/home/*/.config/discord/
+-> /home/*/.config/discord/,
+mount
+	options=(rw, nodev, remount, bind)
+-> /home/*/.config/discord/,
+
+mount
+	options=(rw, bind)
+	/home/*/Desktop/AstroMenace/
+-> /home/*/Desktop/AstroMenace/,
+mount
+	options=(rw, nodev, remount, bind)
+-> /home/*/Desktop/AstroMenace/,
+
+mount
+	options=(rw, bind)
+	/var/tmp/portage/
+-> /var/tmp/portage/,
+mount
+	options=(rw, nodev, remount, bind)
+-> /var/tmp/portage/,
+
+mount
+	options=(rw, bind)
+	/media/sdb2/VM_SERVERS/launch_scripts/
+-> /media/sdb2/VM_SERVERS/launch_scripts/,
+mount
+	options=(rw, nodev, remount, bind)
+-> /media/sdb2/VM_SERVERS/launch_scripts/,
+
+mount
+	options=(rw, bind)
+	/media/sdb2/VM_DESKTOP/
+-> /media/sdb2/VM_DESKTOP/,
+mount
+	options=(rw, nodev, remount, bind)
+-> /media/sdb2/VM_DESKTOP/,
+
+mount
+	options=(rw, bind)
+	/media/sdb2/VM_WIN/
+-> /media/sdb2/VM_WIN/,
+mount
+	options=(rw, nodev, remount, bind)
+-> /media/sdb2/VM_WIN/,
+
+mount
+	options=(rw, bind)
+	/
+-> /tmp/tmp.*/,							# ???
+mount
+	fstype=tmpfs
+	options=(rw, noexec)
+	none
+-> /home/*/.cache/,						# pam_mount
+mount
+	fstype=tmpfs
+	options=(rw, noexec)
+	none
+-> /home/*/.thumbnails/,					# pam_mount
+mount
+	options=ro
+	/dev/@{BLOCK_REAL}
+-> /run/openrc/dm-crypt-remdev.*/,				# cryptsetup
+mount
+	options=(rw, nosuid, nodev, noexec)
+	/dev/@{BLOCK_REAL}
+-> /media/*/,							# udisks

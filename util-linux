@@ -13,6 +13,7 @@
 profile util-linux.mount /bin/mount flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  #include <local/mount>					# fstab, pam_mount, cryptsetup, udisks и т.п.
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
@@ -23,8 +24,64 @@ profile util-linux.mount /bin/mount flags=(complain) {
   capability setuid,
   
   # MOUNT ----------------------------------------------
-#  mount fstype=ext2 options=ro /dev/sd[a-z][0-2]* -> /run/openrc/dm-crypt-remdev.*/,	# cryptsetup
-  mount,	# FIX ME!
+  mount
+  	options=(rw, nosuid, remount)
+  -> /dev/,
+  mount
+  	fstype=mqueue
+  	options=(rw, nosuid, nodev, noexec)
+  	mqueue
+  -> /dev/mqueue/,
+  mount
+  	fstype=securityfs
+  	options=(rw, nosuid, nodev, noexec)
+  	securityfs
+  -> /sys/kernel/security/,
+  mount
+  	fstype=configfs
+  	options=(rw, nosuid, nodev, noexec)
+  	configfs
+  -> /sys/kernel/config/,
+  mount
+  	fstype=fusectl
+  	options=(rw, nosuid, nodev, noexec)
+  	fusectl
+  -> /sys/fs/fuse/connections/,
+  mount
+  	fstype=tmpfs
+  	options=(rw, nosuid, nodev, noexec)
+  	cgroup_root
+  -> /sys/fs/cgroup/,
+  mount
+  	fstype=cgroup
+  	options=(rw, nosuid, nodev, noexec)
+  	openrc
+  -> /sys/fs/cgroup/openrc/,
+  mount
+  	fstype=cgroup
+  	options=(rw, nosuid, nodev, noexec)
+  	cpuset
+  -> /sys/fs/cgroup/cpuset/,
+  mount
+  	fstype=cgroup
+  	options=(rw, nosuid, nodev, noexec)
+  	cpu
+  -> /sys/fs/cgroup/cpu/,
+  mount
+  	fstype=cgroup
+  	options=(rw, nosuid, nodev, noexec)
+  	cpuacct
+  -> /sys/fs/cgroup/cpuacct/,
+  mount
+  	fstype=cgroup
+  	options=(rw, nosuid, nodev, noexec)
+  	freezer
+  -> /sys/fs/cgroup/freezer/,
+  mount
+  	fstype=cgroup
+  	options=(rw, nosuid, nodev, noexec)
+  	net_cls
+  -> /sys/fs/cgroup/net_cls/,
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
@@ -71,9 +128,7 @@ profile util-linux.umount /bin/umount flags=(complain) {
   capability dac_read_search,
   
   # MOUNT ----------------------------------------------
-#  umount /run/openrc/dm-crypt-remdev.*/,			# cryptsetup
-#  umount /tmp/tmp.*/,						# ???
-  umount,	# FIX ME!
+  umount,							# Разрешаем все размонтировать.
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
