@@ -41,6 +41,8 @@ profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
   capability sys_admin,
   capability sys_rawio,
   capability dac_override,
+  capability setuid,
+  capability setgid,
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -80,6 +82,7 @@ profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
+  /etc/mtools/mtools.conf				r,	# mlabel
   /run/blkid/blkid.tab*					rwl,
   
   # USERS ----------------------------------------------

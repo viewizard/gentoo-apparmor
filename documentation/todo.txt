@@ -1,4 +1,18 @@
-- Stacking (примерно в 3.6+ версии изменений ядра) Для процессов работающих с файловой системой (ls,rm,cat,tail,head,...) продумать профиль. Возможно потом использовать Profile Stacking, чтобы некий базовый стакать с профилем доступа фс конкретно для пакета-базы. Непонятно как это будет работать, если у нас все так же ограничение всего на 12 переходов на другие профили.
+http://wiki.apparmor.net/index.php/Documentation
+out of tree patches (kernel) git://kernel.ubuntu.com/jj/apparmor-backports
+out of tree patches (user-space) git://git.launchpad.net/~jjohansen/apparmor
+
+
+- Setuid rules (непонятно когда будет работать)
+requires capability setuid
+ setuid -> fred,
+ setuid -> (fred, george)
+2 options:
+ setuid rule embedded within the cap making it a limited cap
+   capability setuid (fred, george),  remains backwards compat
+
+
+- Stacking (примерно в 3.6+ версии изменений ядра) Работает по принципу пересечения профилей (логическое "И" для правил профилей). Непонятно как это будет работать, если у нас все так же ограничение всего на 12 переходов на другие профили.
     /bin/** px -> &two,
 Will compute the profile transition as per
     /bin/** px,
@@ -6,16 +20,21 @@ and then stack the profile two on top of that transition.
     /bin/** ix -> &two,
 is equivalent to
     /bin/** px -> @{profile_name}//&two,
-Таким образом можно сделать все _root, и убрать дубликаты профилей с незначительными изменениями для запуска под root.
 http://wiki.apparmor.net/index.php/AppArmorStacking
 http://wiki.apparmor.net/index.php/StackingConfiningUsers
-** для версии 3.5 стекинг работает глючно, пробовать потом в 3.6
 
 
 - Delegation (будет примерно в 4-5 версии изменений ядра), т.к. убунтовские патчи убирают 100% делегейшен на открытые ресурсы в дочерний процесс, надо прописывать это отдельно (указывать какие ресурсы открытые в основном процессе может использовать дочерний). Не совсем понятно, когда это будет доступно хотя бы в утилите, но описание уже есть:
 http://wiki.apparmor.net/index.php/AppArmor_Core_Policy_Reference#Delegation
 http://wiki.apparmor.net/index.php/AppArmorDelegation#How_Delegation_is_Expressed
 http://wiki.apparmor.net/index.php/AppArmorProfileSpec
+Важно! Потом пересмотреть @{HOME}/.session.log, похоже это какой-то глобальный делегайшен нужен от сессии.
+
+
+- объединение профилей (пока непонятно, когда сделают)
+<path> <qualifier>'x' [[' ->' <profile name>] ['+' <profile name>]] ','
+<path> 'x' '->' <profile list> ',' (not yet supported)
+http://wiki.apparmor.net/index.php/AppArmor_Core_Policy_Reference#Execute_rules
 
 
 - Namespaces. Работают, можно делать переходы, например:
@@ -27,6 +46,15 @@ http://wiki.apparmor.net/index.php/AppArmorNamespaces
 http://wiki.apparmor.net/index.php/AppArmorStacking#Using_Stacking_in_combination_with_Policy_Namespaces
 ** the current namespace is always the namespace of the profile in the stack having its permissions evaluated
 - Позже сделать для неймспейсов ограничения в base абстракции, чтобы сингалы, и прочее не передавались туда-сюда просто так.
+
+
+- Using AppArmor to confine and secure X Windows applications (4.0 AppArmor kernel, 2.?? AppArmor user space)
+Нужен будет пропатченный иксовый сервер - git://git.launchpad.net/~jjohansen/xorg-server
+http://wiki.apparmor.net/index.php/AppArmorXace
+
+
+- Using AppArmor to confine and secure DConf/GSettings for Desktop applications (вообще непонятно когда будет)
+http://wiki.apparmor.net/index.php/AppArmorGSettings
 
 
 - Базовый deny на неподдерживаемые файлы.
