@@ -38,7 +38,8 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
-  /dev/shm/*						rwl,
+  /dev/shm/*						rw,
+  audit /dev/shm/*					l,	# FIX ME!
   owner @{PROC}/@{pid}/auxv				r,
   owner @{PROC}/@{pid}/cmdline				r,
   
@@ -76,6 +77,7 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   
   profile shell @{shell} {
     #include <abstractions/base>
+    #include <abstractions/program-work-with-disk-rwk-strict>	# DELEGATION! wps-office
     
     # UNIX -----------------------------------------------
     unix (send, receive)
@@ -92,6 +94,6 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
     								# DELEGATION! (?)
     
     # USERS --------------------------------------------
-    owner @{HOME}/.kingsoft/office6/templates/wps/**	w,
+    owner @{HOME}/.kingsoft/office6/templates/wps/**	w,	# DELEGATION! wps-office
   }
 }

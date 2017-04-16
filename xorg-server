@@ -94,7 +94,8 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   
   # TEMP -----------------------------------------------
   owner /tmp/.tX[0-9]-lock				w,	# 0-9 ONLY!
-  owner /tmp/.X[0-9]-lock				wl,	# 0-9 ONLY!
+  owner /tmp/.X[0-9]-lock				w,	# 0-9 ONLY!
+  owner link subset /tmp/.X[0-9]-lock			-> /tmp/.tX[0-9]-lock,
   owner /tmp/.X11-unix/X[0-9]				w,	# 0-9 ONLY!
   /tmp/server-[0-9].xkm					rw,	# 0-9 ONLY!
   

@@ -109,7 +109,8 @@ profile util-linux.mount /bin/mount flags=(complain) {
   /run/mount/						w,
   /run/mount/utab					rw,
   /run/mount/utab.*					rwk,
-  /run/blkid/blkid.tab*					rwl,
+  /run/blkid/blkid.tab*					rw,
+  audit /run/blkid/blkid.tab*				l,	# FIX ME!
   
   # TEMP -----------------------------------------------
   owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily

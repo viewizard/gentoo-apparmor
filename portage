@@ -35,6 +35,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /sys/fs/cgroup/portage/{,**}				rw,
+  owner @{PROC}/@{pid}/cmdline				r,
   @{PROC}/@{pid}/fd/					r,
   @{PROC}/@{pid}/mountinfo				r,
   @{PROC}/sys/kernel/osrelease				r,
@@ -71,6 +72,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
   /usr/							r,
   /usr/**						rwl,	# FIX ME! exclude "/usr/local" with {*^}/{**^},
   								# when this features will be available
+  								# l - все правильно, разрешаем на /**.
   /usr/portage/distfiles/**				rwk,
   /usr/portage/packages/**				rwk,
   /run/							r,
@@ -152,16 +154,16 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     								# when this features will be available
     /usr/portage/packages/**				rwk,
     /lib{,32,64}/					r,
-    /lib{,32,64}/*					rwl,
+    /lib{,32,64}/*					rwl,	# l - все правильно, разрешаем на /**.
     /lib{,32,64}/modules/@{kernel_ver}/modules.*	rw,
     /lib{,32,64}/rc/bin/*				ix,
     /var/db/pkg/					r,
     /var/db/pkg/**					rw,
     /var/tmp/portage/					rw,
     /var/tmp/portage/**					rwk,
-    /var/cache/**					rwl,
+    /var/cache/**					rwl,	# l - все правильно, разрешаем на /**.
     /var/lib/*/						rw,
-    /var/lib/*/**					rwkl,
+    /var/lib/*/**					rwkl,	# l - все правильно, разрешаем на /**.
     /run/mount/utab					rw,
     /run/openrc/*					r,
     /run/openrc/deptree					w,
@@ -187,6 +189,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     #include <abstractions/freedesktop.org>
     #include <abstractions/fonts>
     #include <abstractions/nameservice>
+    #include <abstractions/X-connection-strict>			# adapta-gtk-theme, рендеринг иконок через inkscape
     
     # CAPABILITIES -------------------------------------
     capability dac_override,
@@ -201,12 +204,19 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     capability mknod,
     capability sys_resource,
     
+    # PTRACE -------------------------------------------
+    ptrace (trace) peer=@{profile_name},
+    
+    # NETWORK --------------------------------------------
+    network netlink raw,
+    
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/null						k,
     /dev/pts/[0-9]*					rw,
     /dev/dri/						r,
-    /dev/shm/{,*}					rwl,
+    /dev/shm/{,*}					rw,
+    audit /dev/shm/{,*}					l,	# FIX ME!
     /dev/ptmx						rw,
     /sys/bus/pci/devices/				r,
     /sys/devices/pci[0-9]*/**/config			r,
@@ -252,7 +262,8 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     /etc/{,**}						r,
     /usr/{,**}						r,
     /usr/src/@{kernel}/tools/gcc/**.so			m,
-    /usr/portage/distfiles/{egit,git3}-src/**		rwl,
+    /usr/portage/distfiles/{egit,git3}-src/**		rw,
+    link subset /usr/portage/distfiles/{egit,git3}-src/** -> /usr/portage/distfiles/{egit,git3}-src/**,
     /usr/portage/packages/{,**}				rw,
     /var/						r,
     /var/log/sandbox/sandbox-*.log			w,
@@ -267,7 +278,8 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     /var/tmp/						r,
     owner /var/tmp/cf*/{,**}				rw,
     /var/tmp/portage/					rw,
-    /var/tmp/portage/**					rwkl,
+    /var/tmp/portage/**					rwk,
+    link subset /var/tmp/portage/**			-> /var/tmp/portage/**,
   }
 }
 

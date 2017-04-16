@@ -66,6 +66,7 @@ Profile имя_профиля has too many specified profile transitions.
 	чтение, запись и разрешение загрузки в память: mrw
 Более подробно:
 	http://wiki.apparmor.net/index.php/AppArmor_Core_Policy_Reference#File_access_rules
+* использовать "l" только в случае "/path l," = "link subset /path -> /**,". В остальных случаях указывать конечную цель линка.
 
 
 2) составление профиля
@@ -202,6 +203,10 @@ capability dac_read_search и dac_override,
 Важно!
 Нельзя совмещать в одном файле профили входящие в разные неймспейсы. На состояние версии утилиты 2.11 и ядра 3.5, после компиляции в бинарный кэш и загрузке - все профили будут в одном неймспейсе.
 
+Важно!
+Линки, если это не общие линки на всю систему делать через link, а не "l". С более жесткими ограничениями. По умолчанию,
+"/path l," = "link subset /path -> /**,"
+http://wiki.apparmor.net/index.php/AppArmor_Core_Policy_Reference#Link_Rules
 
 
 

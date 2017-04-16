@@ -55,7 +55,8 @@ profile logcheck /usr/sbin/logcheck {
   /var/lib/logcheck/					r,
   /var/lib/logcheck/*					rw,
   /run/lock/logcheck/					rw,
-  /run/lock/logcheck/*					rwl,
+  /run/lock/logcheck/*					rw,
+  link subset /run/lock/logcheck/logcheck.lock		-> /run/lock/logcheck/*,
   
   # TEMP -----------------------------------------------
   owner /tmp/logcheck.*/{,**}				rw,

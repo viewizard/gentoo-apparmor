@@ -46,7 +46,8 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} flags=(complain) {
   /etc/terminfo/x/xterm					r,
   /run/openrc/dm-crypt-remdev.*/*			r,
   /var/lib/gentoo/gkeys/keyrings/gentoo/release/	r,
-  /var/lib/gentoo/gkeys/keyrings/gentoo/release/**	rwl,
+  /var/lib/gentoo/gkeys/keyrings/gentoo/release/**	rw,
+  audit /var/lib/gentoo/gkeys/keyrings/gentoo/release/** l,	# FIX ME!
   
   # USERS ----------------------------------------------
   owner @{HOME}/.gnupg/					rw,
@@ -70,7 +71,8 @@ profile gnupg.gpgconf /usr/bin/gpgconf flags=(complain) {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.gnupg/					rw,
-  owner @{HOME}/.gnupg/**				rwl,
+  owner @{HOME}/.gnupg/**				rw,
+  audit @{HOME}/.gnupg/**				l,	# FIX ME!
 }
 
 profile gnupg.gpgsm /usr/bin/gpgsm flags=(complain) {

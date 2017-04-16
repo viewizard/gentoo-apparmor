@@ -12,8 +12,6 @@
 
 profile dhcpcd /sbin/dhcpcd {
   #include <abstractions/base>
-  #include <abstractions/nameservice>
-  #include <abstractions/consoles>
   
   # CAPABILITIES ---------------------------------------
   capability net_raw,
@@ -21,38 +19,82 @@ profile dhcpcd /sbin/dhcpcd {
   capability sys_module,
   capability sys_tty_config,
   capability net_bind_service,
-  capability mknod,
   
   # NETWORK --------------------------------------------
   network netlink raw,
   network packet dgram,
+  network inet dgram,
   
   # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  /sys/devices/virtual/net/lo/uevent			r,
+  /sys/devices/pci[0-9]*/**/net/eth[0-9]*/uevent	r,
   @{PROC}/sys/net/ipv4/conf/*/promote_secondaries	rwk,
   
   # EXECUTABLES ----------------------------------------
   /sbin/dhcpcd						mr,
-  @{shell}						mr,
-  /bin/touch						ix,
-  /bin/mkdir						ix,
-  /bin/rm						ix,
-  /bin/sed						ix,
-  /bin/cat						ix,
-  /bin/chmod						ix,
-  /bin/hostname						Px,
-  /usr/bin/cmp						ix,
-  /lib{,32,64}/dhcpcd/dhcpcd-run-hooks			ix,	# FIX ME! В отдельный профиль с shell.
+  /lib{,32,64}/dhcpcd/dhcpcd-run-hooks			Cx,
   
   # READS/WRITES ---------------------------------------
-  /etc/resolv.conf{,.sv}				rwl,
-  /etc/ntp.conf{,.sv}					rwl,
   /etc/dhcpcd.conf					r,
   /etc/dhcpcd.duid					rw,
-  /run/dhcpcd/						rw,
-  /run/dhcpcd-*.pid					rwkl,
-  /run/dhcpcd/resolv.conf{.*.dhcp,/,/*}			rw,
-  /run/dhcpcd/ntp.conf/					rw,
-  /run/dhcpcd/ntp.conf.*.{dhcp,ipv4ll}			rwk,
-  /var/lib/dhcpcd/dhcpcd-*.{cache,info,info.old}	rw,
-  /var/lib/dhcpcd/dhcpcd-*.lease			rwk,
+  /etc/udev/udev.conf					r,
+  /run/dhcpcd{,-eth[0-9]*}.pid				rw,
+  /run/dhcpcd.{unpriv.,}sock				rw,
+  /run/udev/data/*					rw,
+  /var/lib/dhcpcd/					rw,
+  /var/lib/dhcpcd/*					rwk,
+  
+  profile run-hooks /lib{,32,64}/dhcpcd/dhcpcd-run-hooks {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    # CAPABILITIES -------------------------------------
+    capability mknod,
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    @{shell}						mr,
+    /bin/sed						ix,
+    /bin/rm						ix,
+    /bin/cat						ix,
+    /bin/chmod						ix,
+    /bin/touch						ix,
+    /bin/hostname					Px,
+    /bin/mkdir						ix,
+    /usr/bin/cmp					ix,
+    
+    # READS/WRITES -------------------------------------
+    /etc/resolv.conf					rw,
+    /etc/ntp.conf					r,
+    /run/dhcpcd/					rw,
+    /run/dhcpcd/**					rwk,
+    
+  }
+}
+
+profile dhcpcd.init.d /etc/init.d/dhcpcd {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						Cx,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/dhcpcd				r,
+  /sbin/dhcpcd						Px,
+  
+  # READS/WRITES ---------------------------------------
+  /run/dhcpcd.pid					rw,
+  
+  profile shell @{shell} {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/openrc_shell>
+  }
 }

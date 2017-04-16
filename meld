@@ -33,7 +33,8 @@ profile meld /usr/bin/meld {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  /dev/shm/*						rwl,
+  /dev/shm/*						rw,
+  audit /dev/shm/*					l,	# FIX ME!
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
@@ -88,7 +89,8 @@ profile meld_root {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  /dev/shm/*						rwl,
+  /dev/shm/*						rw,
+  audit /dev/shm/*					l,	# FIX ME!
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
