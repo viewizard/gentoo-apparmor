@@ -262,6 +262,10 @@ profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   unix (bind, listen, send, receive, accept)
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*",
+  unix (send, receive, connect)
+			type=stream
+			addr=none
+			peer=(label="tumbler"),
   
   # PSEUDO ---------------------------------------------
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}name	r,
