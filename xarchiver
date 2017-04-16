@@ -204,6 +204,9 @@ profile xarchiver_tap /usr/libexec/thunar-archive-plugin/xarchiver.tap {
   /usr/libexec/thunar-archive-plugin/xarchiver.tap	r,
   @{shell}						mr,
   /usr/bin/xarchiver					Px,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile xarchiver_tap_root {
@@ -217,4 +220,7 @@ profile xarchiver_tap_root {
   /usr/libexec/thunar-archive-plugin/xarchiver.tap	r,
   @{shell}						mr,
   /usr/bin/xarchiver					Px -> xarchiver_root,
+  
+  # USERS ----------------------------------------------
+  @{HOME}/.session.log					w,	# XFCE4
 }

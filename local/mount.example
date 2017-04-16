@@ -14,6 +14,11 @@ mount
 -> /,
 mount
 	fstype=ext4
+	options=(rw, noatime, iversion)
+	/dev/@{BLOCK_ALL}
+-> /boot/,
+mount
+	fstype=ext4
 	options=(rw, nosuid, nodev, noexec, noatime, iversion)
 	/dev/@{BLOCK_ALL}
 -> /var/,
