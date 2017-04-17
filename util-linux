@@ -82,6 +82,11 @@ profile util-linux.mount /bin/mount flags=(complain) {
   	options=(rw, nosuid, nodev, noexec)
   	net_cls
   -> /sys/fs/cgroup/net_cls/,
+  mount
+  	fstype=cgroup
+  	options=(rw, nosuid, nodev, noexec)
+  	tmpfs
+  -> /sys/fs/cgroup/portage/,
   
   # PSEUDO ---------------------------------------------
   /dev/							r,

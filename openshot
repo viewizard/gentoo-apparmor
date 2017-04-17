@@ -29,6 +29,7 @@ profile openshot @{PYTHON2_EXEC}/openshot {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,

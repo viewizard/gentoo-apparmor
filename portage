@@ -69,7 +69,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
   /opt/{,**}						rw,
   /sbin/						r,
   /sbin/**						rw,
-  /usr/							r,
+  /usr/							rw,
   /usr/**						rwl,	# FIX ME! exclude "/usr/local" with {*^}/{**^},
   								# when this features will be available
   								# l - все правильно, разрешаем на /**.
@@ -83,13 +83,6 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
   
   # TEMP -----------------------------------------------
   /tmp/*						rwk,
-  
-  # NOISY ----------------------------------------------
-  deny /root/						r,
-  deny @{HOMEDIRS}/**					r,
-  deny /etc/						w,
-  deny /usr/						w,
-  deny /lib64/						w,
   
   profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
@@ -106,7 +99,12 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     capability setfcap,
     capability sys_admin,
     capability sys_ptrace,
+    capability setuid,
+    capability setgid,
     capability kill,
+    
+    # PTRACE -------------------------------------------
+    ptrace (trace) peer="sysvinit.init",
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -236,6 +234,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     @{PROC}/sys/kernel/pid_max				r,
     @{PROC}/sys/kernel/ostype				r,
     @{PROC}/sys/kernel/ngroups_max			r,
+    owner @{PROC}/@{pid}/cmdline			r,
     
     # EXECUTABLES ----------------------------------------
     @{shell}						mr,
@@ -373,9 +372,6 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf flags=(complain) {
     
     # READS/WRITES -------------------------------------
     /etc/{,**}						r,
-    
-    # NOISY --------------------------------------------
-    deny @{HOME}/					r,
   }
 }
 

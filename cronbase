@@ -36,10 +36,10 @@ profile cronbase.run-crons /usr/sbin/run-crons {
   /etc/cron.{daily,hourly,monthly,weekly}/*		Pxr,
   
   # READS/WRITES ---------------------------------------
-  /etc/cron.*/ r,
-  /run/lock/cron.* rw,
-  /var/spool/cron/lastrun/{,*} rw,
+  /etc/cron.*/						r,
+  /run/lock/cron.*					rw,
+  /var/spool/cron/lastrun/{,*}				rw,
   
   # NOISY ----------------------------------------------
-  deny / r,
+  deny /						r,
 }
