@@ -20,6 +20,7 @@ profile smplayer /usr/bin/smplayer {
   #include <abstractions/fonts>
   #include <abstractions/qt>
   #include <abstractions/X>
+  #include <abstractions/nvidia>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/program-work-with-disk-rk-strict>
   #include <abstractions/nameservice>
@@ -40,6 +41,7 @@ profile smplayer /usr/bin/smplayer {
   /usr/share/smplayer/{,**}				r,
   
   # USERS ----------------------------------------------
+  owner @{HOME}/.config/.??????				rw,
   owner @{HOME}/.config/smplayer/			rw,
   owner @{HOME}/.config/smplayer/**			rwk,
   owner @{HOME}/mplayer.log				rw,	# mplayer

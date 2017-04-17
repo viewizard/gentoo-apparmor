@@ -76,7 +76,7 @@ profile nullmailer.nullmailer-queue /usr/sbin/nullmailer-queue {
   /etc/nullmailer/{,*}					r,
   /var/nullmailer/					r,
   /var/nullmailer/**					rw,
-  audit /var/nullmailer/**				l,	# FIX ME!
+  link subset /var/nullmailer/queue/[0-9]*.@{pid}	-> /var/nullmailer/tmp/@{pid},
   
   # TEMP -----------------------------------------------
   owner /tmp/portage.cron.*				w,	# DELEGATION! 00_update_portage.cron.daily

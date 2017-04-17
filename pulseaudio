@@ -54,6 +54,9 @@ profile pulseaudio /usr/bin/pulseaudio {
   owner @{HOME}/.config/pulse/				rw,
   owner @{HOME}/.config/pulse/**			rwk,
   owner @{HOME}/.ICEauthority				r,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/pulse-*/{,*}				rw,
 }
 
 profile pulseaudio.start-pulseaudio-x11 /usr/bin/start-pulseaudio-x11 {

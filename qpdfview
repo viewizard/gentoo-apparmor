@@ -28,6 +28,7 @@ profile qpdfview /usr/bin/qpdfview {
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty						r,
   /dev/tty[0-9]*					rw,
   owner @{PROC}/@{pid}/cmdline				r,
   
@@ -39,8 +40,7 @@ profile qpdfview /usr/bin/qpdfview {
   /usr/share/misc/magic.mgc				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.local/share/data/qpdfview/		rw,
-  owner @{HOME}/.local/share/data/qpdfview/**		rwk,
+  owner @{HOME}/.local/share/qpdfview/{,**}		rw,
   owner @{HOME}/.config/qpdfview/			rw,
   owner @{HOME}/.config/qpdfview/*			rwk,
   
