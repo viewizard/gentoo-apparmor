@@ -26,7 +26,7 @@ profile mumble /usr/bin/mumble {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
-  /dev/shm/MumbleLink.*					rw,
+  owner /dev/shm/MumbleLink.[0-9]*			rw,	# [0-9]* - UID пользователя.
   owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------

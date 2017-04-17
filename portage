@@ -215,8 +215,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     /dev/null						k,
     /dev/pts/[0-9]*					rw,
     /dev/dri/						r,
-    /dev/shm/{,*}					rw,
-    audit /dev/shm/{,*}					l,	# FIX ME!
+    owner /dev/shm/*					rw,	# Все правильно, полный доступ.
     /dev/ptmx						rw,
     /sys/bus/pci/devices/				r,
     /sys/devices/pci[0-9]*/**/config			r,

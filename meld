@@ -33,8 +33,9 @@ profile meld /usr/bin/meld {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  /dev/shm/*						rw,
-  audit /dev/shm/*					l,	# FIX ME!
+  owner /dev/shm/??????					rw,
+  owner /dev/shm/sem.???????-[0-9]*			rw,
+  owner link subset /dev/shm/sem.???????-[0-9]*		-> /dev/shm/??????,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
@@ -89,8 +90,9 @@ profile meld_root {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  /dev/shm/*						rw,
-  audit /dev/shm/*					l,	# FIX ME!
+  owner /dev/shm/??????					rw,
+  owner /dev/shm/sem.???????-[0-9]*			rw,
+  owner link subset /dev/shm/sem.???????-[0-9]*		-> /dev/shm/??????,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------

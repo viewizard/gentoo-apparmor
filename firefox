@@ -65,7 +65,7 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
-  owner /dev/shm/org.chromium.*				rw,
+  owner /dev/shm/org.chromium.??????			rw,	# Нужено для adobe-flash (ppapi).
   /sys/devices/system/cpu/{,**}				r,
   /sys/devices/pci[0-9]*/**/uevent			r,
   @{PROC}/						r,
@@ -83,6 +83,7 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   owner @{PROC}/@{pid}/smaps				r,
   owner @{PROC}/@{pid}/environ				r,
   owner @{PROC}/@{pid}/auxv				r,
+  owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/firefox/firefox{,-bin}		mr,
@@ -153,7 +154,7 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   # PSEUDO ---------------------------------------------
   /dev/							r,
   /dev/tty[0-9]						rw,
-  owner /dev/shm/org.chromium.*				rw,
+  owner /dev/shm/org.chromium.??????			rw,	# Нужено для adobe-flash (ppapi).
   /sys/devices/system/cpu/				r,
   owner @{PROC}/@{pid}/stat				r,
   owner @{PROC}/@{pid}/cmdline				r,
@@ -199,5 +200,8 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
     
     # USERS --------------------------------------------
     owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
+    
+    # TEMP -----------------------------------------------
+    owner /tmp/FreshStream*				rw,	# DELEGATION! firefox.plugin-container
   }
 }
