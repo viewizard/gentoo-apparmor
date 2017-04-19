@@ -38,8 +38,8 @@ profile evelauncher /home/*/evelauncher/evelauncher {
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
-  #include <abstractions/xdg-open>
   #include <abstractions/ssl_certs>
+# #include <abstractions/xdg-open>				# Не разрешаем открытие внешних ссылок.
   
   # UNIX -----------------------------------------------
   unix (send, receive)
@@ -106,6 +106,9 @@ profile evelauncher /home/*/evelauncher/evelauncher {
   owner /tmp/.gl*					rw,
   /var/tmp/						r,
   owner /var/tmp/etilqs_*				rw,
+  
+  # NOISY ----------------------------------------------
+  deny /usr/bin/xdg-open				x,	# Не разрешаем открытие внешних ссылок.
 }
 
 profile evelauncher.updater /home/*/{.eve,evelauncher}/updater {

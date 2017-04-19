@@ -60,15 +60,11 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
   
   # READS/WRITES ---------------------------------------
   /							r,
-  /bin/							r,
-  /bin/**						rw,
-  /etc/							r,
-  /etc/**						rw,
-  /lib{,32,64}/						r,
-  /lib{,32,64}/**					rw,
+  /bin/{,**}						rw,
+  /etc/{,**}						rw,
+  /lib{,32,64}/{,**}					rw,
   /opt/{,**}						rw,
-  /sbin/						r,
-  /sbin/**						rw,
+  /sbin/{,**}						rw,
   /usr/							rw,
   /usr/**						rwl,	# FIX ME! exclude "/usr/local" with {*^}/{**^},
   								# when this features will be available
@@ -155,18 +151,21 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     /lib{,32,64}/*					rwl,	# l - все правильно, разрешаем на /**.
     /lib{,32,64}/modules/@{kernel_ver}/modules.*	rw,
     /lib{,32,64}/rc/bin/*				ix,
+    /var/						r,
     /var/db/pkg/					r,
     /var/db/pkg/**					rw,
     /var/tmp/portage/					rw,
     /var/tmp/portage/**					rwk,
     /var/cache/**					rwl,	# l - все правильно, разрешаем на /**.
+    /var/log/nullmailer/				w,
+    /var/nullmailer/{,**}				w,
     /var/lib/*/						rw,
     /var/lib/*/**					rwkl,	# l - все правильно, разрешаем на /**.
     /run/mount/utab					rw,
     /run/openrc/*					r,
     /run/openrc/deptree					w,
     /run/openrc/depconfig				w,
-    /var/						r,
+    /run/udev/control					rw,
     
     # TEMP ---------------------------------------------
     /var/tmp/						r,
@@ -176,6 +175,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     owner /tmp/gcc-config-ima				rw,
     owner /tmp/??????					rw,
     owner /tmp/tmp??????				rwk,
+    owner /tmp/tac??????				rw,
     
     # NOISY --------------------------------------------
     /.wget-hsts						rw,
@@ -201,6 +201,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     capability setgid,
     capability mknod,
     capability sys_resource,
+    capability sys_ptrace,
     
     # PTRACE -------------------------------------------
     ptrace (trace) peer=@{profile_name},
@@ -213,7 +214,8 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     /dev/null						k,
     /dev/pts/[0-9]*					rw,
     /dev/dri/						r,
-    owner /dev/shm/*					rw,	# Все правильно, полный доступ.
+    owner /dev/shm/??????				rw,	# Все правильно, полный доступ.
+    owner link subset /dev/shm/sem.???????-[0-9]*	-> /dev/shm/??????,
     /dev/ptmx						rw,
     /sys/bus/pci/devices/				r,
     /sys/devices/pci[0-9]*/**/config			r,
@@ -318,6 +320,7 @@ profile portage.env-update @{PYTHON_EXEC}/env-update flags=(complain) {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,

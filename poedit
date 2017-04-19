@@ -38,7 +38,7 @@ profile poedit /usr/bin/poedit {
   /usr/bin/msgmerge					ix,
   /usr/bin/msgfmt					ix,
   /usr/bin/msgcat					ix,
-  /usr/bin/lsb_release					Cxr,	# DELEGATION! Пока не используем Pxr.
+  /usr/bin/lsb_release					Pxr,
   
   # READS/WRITES ---------------------------------------
   /usr/share/poedit/{,**}				r,
@@ -51,29 +51,4 @@ profile poedit /usr/bin/poedit {
   
   # TEMP -----------------------------------------------
   owner /tmp/poedit*/{,**}				rw,
-  
-  profile lsb-release /usr/bin/lsb_release {
-    #include <abstractions/base>
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty						rw,
-    /dev/tty[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /usr/bin/lsb_release				r,
-    @{shell}						mr,
-    /bin/sed						ixr,
-    /bin/tr						Pxr,
-    /bin/head						ixr,
-    /usr/bin/find					ix,
-    /usr/bin/getopt					ixr,
-    
-    # READS/WRITES -------------------------------------
-    /etc/						r,
-    /etc/{gentoo,os,lsb}-release			r,
-    owner /run/user/*/poedit.*				rwk,
-    
-    # NOISY --------------------------------------------
-    deny /home/**					r,
-  }
 }

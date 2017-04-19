@@ -32,6 +32,7 @@ profile qgit /usr/bin/qgit {
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
   /dev/tty[0-9]*					rw,
+  owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/qgit						mr,
@@ -68,12 +69,16 @@ profile qgit_root {
   capability dac_read_search,
   capability dac_override,
   
+  # PTRACE ---------------------------------------------
+  ptrace (trace) peer=@{profile_name},
+  
   # SIGNAL ---------------------------------------------
   signal (send) set=(term, kill) peer="meld_root",
   
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
   /dev/tty[0-9]*					rw,
+  owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/qgit						mr,

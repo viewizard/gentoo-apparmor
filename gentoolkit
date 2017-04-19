@@ -146,8 +146,8 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild flags=(complain)
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
+  @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
   /usr/bin/scanelf					ix,
-  # FIX ME! должен вызывать emerge (?)
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -163,6 +163,8 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild flags=(complain)
   /usr/portage/{,**}					r,
   /usr/share/portage/{,**}				r,
   /usr/local/portage/{,**}				r,
+  /var/db/pkg/{,**}					r,
+  /var/cache/edb/dep/usr/local/portage/{,**}		r,
   /var/cache/revdep-rebuild/{,**}			rw,
   
   profile shell @{shell} flags=(complain) {
@@ -175,6 +177,17 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild flags=(complain)
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /bin/uname						Px,
+  }
+  
+  profile portage {
+    #include <abstractions/base>
+    #include <abstractions/python-exec>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    @{PYTHON_EXEC}/emerge				Px,
   }
 }
 

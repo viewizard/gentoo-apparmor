@@ -51,6 +51,9 @@ profile eselect /usr/bin/eselect flags=(complain) {
   /lib{,32,64}/rc/bin/service_hotplugged		ix,
   @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
   
+  # READS/WRITES ---------------------------------------
+  /							r,
+  
   profile portage {
     #include <abstractions/base>
     #include <abstractions/python-exec>

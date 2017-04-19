@@ -12,7 +12,7 @@ requires capability setuid
    capability setuid (fred, george),  remains backwards compat
 
 
-- Stacking (примерно в 3.6+ версии изменений ядра) Работает по принципу пересечения профилей (логическое "И" для правил профилей). Непонятно как это будет работать, если у нас все так же ограничение всего на 12 переходов на другие профили.
+- Stacking (уже доступен с 3.5 версии изменений ядра, 2.11 утилиты) Работает по принципу пересечения профилей (логическое "И" для правил профилей). Непонятно как это будет работать, если у нас все так же ограничение всего на 12 переходов на другие профили.
     /bin/** px -> &two,
 Will compute the profile transition as per
     /bin/** px,
@@ -25,16 +25,15 @@ http://wiki.apparmor.net/index.php/StackingConfiningUsers
 
 
 - Delegation (будет примерно в 4-5 версии изменений ядра), т.к. убунтовские патчи убирают 100% делегейшен на открытые ресурсы в дочерний процесс, надо прописывать это отдельно (указывать какие ресурсы открытые в основном процессе может использовать дочерний). Не совсем понятно, когда это будет доступно хотя бы в утилите, но описание уже есть:
-http://wiki.apparmor.net/index.php/AppArmor_Core_Policy_Reference#Delegation
-http://wiki.apparmor.net/index.php/AppArmorDelegation#How_Delegation_is_Expressed
-http://wiki.apparmor.net/index.php/AppArmorProfileSpec
-Важно! Потом пересмотреть @{HOME}/.session.log, похоже это какой-то глобальный делегайшен нужен от сессии.
-
-
-- объединение профилей (пока непонятно, когда сделают)
+1) указываем ресурс для любого профиля который в последствии может быть вызван
+	http://wiki.apparmor.net/index.php/AppArmor_Core_Policy_Reference#Delegation
+2) при вызове на исполнение, объединение профилей
 <path> <qualifier>'x' [[' ->' <profile name>] ['+' <profile name>]] ','
 <path> 'x' '->' <profile list> ',' (not yet supported)
+http://wiki.apparmor.net/index.php/AppArmorDelegation#How_Delegation_is_Expressed
 http://wiki.apparmor.net/index.php/AppArmor_Core_Policy_Reference#Execute_rules
+http://wiki.apparmor.net/index.php/AppArmorProfileSpec
+Важно! Потом пересмотреть @{HOME}/.session.log, похоже это какой-то глобальный делегайшен нужен от сессии.
 
 
 - Namespaces. Работают, можно делать переходы, например:
