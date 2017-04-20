@@ -56,5 +56,5 @@ profile claws-mail /usr/bin/claws-mail {
   deny /						r,
   deny /etc/pulse/client.conf				r,	# (?) Не очень понятно почему, но при выключении
   deny /dev/shm/					r,	# (?) лезет к данным пульсаудио. Хотя не использует
-  deny /run/user/[0-9]*/pulse/native			r,	# (?) звук.
+  deny /run/user/[0-9]*/pulse/native			rw,	# (?) звук.
 }

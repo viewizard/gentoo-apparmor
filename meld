@@ -36,7 +36,7 @@ profile meld /usr/bin/meld {
   owner /dev/shm/??????					rw,
   owner /dev/shm/sem.???????-[0-9]*			rw,
   owner link subset /dev/shm/sem.???????-[0-9]*		-> /dev/shm/??????,
-  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/meld						mr,
@@ -93,7 +93,7 @@ profile meld_root {
   owner /dev/shm/??????					rw,
   owner /dev/shm/sem.???????-[0-9]*			rw,
   owner link subset /dev/shm/sem.???????-[0-9]*		-> /dev/shm/??????,
-  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/meld						mr,

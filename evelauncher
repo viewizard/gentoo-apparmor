@@ -39,7 +39,7 @@ profile evelauncher /home/*/evelauncher/evelauncher {
   #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
   #include <abstractions/ssl_certs>
-# #include <abstractions/xdg-open>				# Не разрешаем открытие внешних ссылок.
+  #include <abstractions/xdg-open>
   
   # UNIX -----------------------------------------------
   unix (send, receive)
@@ -73,6 +73,7 @@ profile evelauncher /home/*/evelauncher/evelauncher {
   /sys/devices/system/cpu/				r,
   /sys/devices/pci[0-9]*/**/{resource,irq,vendor,device,class,config} r,
   @{PROC}/sys/kernel/shmmax				r,
+  owner /proc/@{pid}/fd/				r,
   
   # AUDIT PSEUDO ---------------------------------------
   deny @{PROC}/@{pid}/oom_score_adj			rw,
@@ -106,9 +107,6 @@ profile evelauncher /home/*/evelauncher/evelauncher {
   owner /tmp/.gl*					rw,
   /var/tmp/						r,
   owner /var/tmp/etilqs_*				rw,
-  
-  # NOISY ----------------------------------------------
-  deny /usr/bin/xdg-open				x,	# Не разрешаем открытие внешних ссылок.
 }
 
 profile evelauncher.updater /home/*/{.eve,evelauncher}/updater {

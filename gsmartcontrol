@@ -25,10 +25,10 @@ profile gsmartcontrol /usr/bin/gsmartcontrol {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /sys/devices/pci[0-9]*/**/usb[0-9]*/**/{idVendor,idProduct,bcdDevice} r,
-  @{PROC}/@{pid}/fd/					r,
   @{PROC}/partitions					r,
   @{PROC}/devices					r,
   @{PROC}/scsi/scsi					r,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gsmartcontrol				mr,

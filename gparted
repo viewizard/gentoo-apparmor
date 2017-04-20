@@ -51,12 +51,12 @@ profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]**/host*/target**/{vendor,model} r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-  @{PROC}/@{pid}/fd/					r,
   @{PROC}/swaps						r,
   @{PROC}/devices					r,
   @{PROC}/mdstat					r,
   @{PROC}/partitions					r,
   @{PROC}/version					r,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/gpartedbin					mr,

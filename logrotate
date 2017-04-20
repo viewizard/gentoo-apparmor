@@ -42,6 +42,7 @@ profile logrotate /usr/bin/logrotate {
   
   # NOISY ----------------------------------------------
   deny @{HOME}/						r,
+  deny /etc/apparmor.d/					r,
   
   profile shell @{shell} {
     #include <abstractions/base>

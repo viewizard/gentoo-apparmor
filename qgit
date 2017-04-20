@@ -28,6 +28,7 @@ profile qgit /usr/bin/qgit {
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(term, kill) peer="meld",
+  signal (send) set=(term, kill) peer="git",
   
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
@@ -74,6 +75,7 @@ profile qgit_root {
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(term, kill) peer="meld_root",
+  signal (send) set=(term, kill) peer="git_root",
   
   # PSEUDO ---------------------------------------------
   /dev/tty						r,

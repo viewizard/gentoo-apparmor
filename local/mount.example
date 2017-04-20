@@ -142,3 +142,19 @@ mount
 	options=(rw, nosuid, nodev, noexec)
 	/dev/@{BLOCK_REAL}
 -> /media/*/,							# udisks
+
+mount
+	fstype=ext4
+	options=(ro)
+	/dev/@{BLOCK_ALL}
+-> /tmp/dailyhomebackup.cron.*/,				# daily_backup.sh.cron.daily
+mount
+	fstype=ext4
+	options=(ro)
+	/dev/@{BLOCK_ALL}
+-> /tmp/homebackup.cron.*/,					# weekly_backup.sh.cron.weekly
+mount
+	fstype=ext4
+	options=(ro)
+	/dev/@{BLOCK_ALL}
+-> /tmp/rootbackup.cron.*/,					# monthly_backup.sh.cron.daily

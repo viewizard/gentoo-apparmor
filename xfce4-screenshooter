@@ -28,7 +28,7 @@ profile xfce4-screenshooter /usr/bin/xfce4-screenshooter {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-screenshooter				mr,

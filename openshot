@@ -26,10 +26,12 @@ profile openshot @{PYTHON2_EXEC}/openshot {
   #include <abstractions/dbus-session-strict>
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/nameservice>
+  #include <abstractions/executable-binary-helper>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   owner @{PROC}/@{pid}/cmdline				r,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,

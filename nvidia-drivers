@@ -26,8 +26,9 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(com
   #include <abstractions/dbus-session-strict>
   
   # CAPABILITIES ---------------------------------------
-#  capability sys_admin,					# FIX ME! /{usr,opt}/bin/nvidia-modprobe, не включать.
-#  capability syslog,						# FIX ME! /{usr,opt}/bin/nvidia-modprobe, не включать.
+  capability sys_admin,						# для nvidia-modprobe, если стоит как ix в abstractions/nvidia.
+  capability syslog,						# для nvidia-modprobe, если стоит как ix в abstractions/nvidia.
+  capability mknod,						# для nvidia-modprobe, если стоит как ix в abstractions/nvidia.
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -63,25 +64,28 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(com
   }
 }
 
+# Не используем профиль, запускаем через ix в abstractions/nvidia.
+# Нужна интеграция + при запуске хромиума с Px, вываливается в kernel.log
+# дамп на AA_BUG: security/apparmor/file.c:136 aa_audit_file
 profile nvidia-drivers.nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe {
-  #include <abstractions/base>
-  #include <abstractions/nvidia>
-  
+#  #include <abstractions/base>
+#  #include <abstractions/nvidia>
+#  
   # CAPABILITIES ---------------------------------------
-  capability sys_admin,
-  capability syslog,
-  capability mknod,
-  
+#  capability sys_admin,
+#  capability syslog,
+#  capability mknod,
+#  
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					rw,
-  @{PROC}/sys/kernel/modprobe				r,
-  
+#  /dev/tty[0-9]*					rw,
+#  @{PROC}/sys/kernel/modprobe				r,
+#  
   # EXECUTABLES ----------------------------------------
-  /{usr,opt}/bin/nvidia-modprobe			mr,
-  /bin/kmod						Px,
-  
+#  /{usr,opt}/bin/nvidia-modprobe			mr,
+#  /bin/kmod						Px,
+#  
   # USERS ----------------------------------------------
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
+#  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile nvidia-drivers.nvidia-smi /opt/bin/nvidia-smi {
