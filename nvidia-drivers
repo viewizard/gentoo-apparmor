@@ -19,16 +19,16 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(com
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/gtk>
-  #include <abstractions/nvidia>
+  #include <abstractions/video-nvidia>
   #include <abstractions/X>
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/nameservice>
   #include <abstractions/dbus-session-strict>
   
   # CAPABILITIES ---------------------------------------
-  capability sys_admin,						# для nvidia-modprobe, если стоит как ix в abstractions/nvidia.
-  capability syslog,						# для nvidia-modprobe, если стоит как ix в abstractions/nvidia.
-  capability mknod,						# для nvidia-modprobe, если стоит как ix в abstractions/nvidia.
+  capability sys_admin,						# для nvidia-modprobe ix в abstractions/video-nvidia.
+  capability syslog,						# для nvidia-modprobe ix в abstractions/video-nvidia.
+  capability mknod,						# для nvidia-modprobe ix в abstractions/video-nvidia.
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -64,12 +64,12 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(com
   }
 }
 
-# Не используем профиль, запускаем через ix в abstractions/nvidia.
+# Не используем профиль, запускаем через ix в abstractions/video-nvidia.
 # Нужна интеграция + при запуске хромиума с Px, вываливается в kernel.log
 # дамп на AA_BUG: security/apparmor/file.c:136 aa_audit_file
 profile nvidia-drivers.nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe {
 #  #include <abstractions/base>
-#  #include <abstractions/nvidia>
+#  #include <abstractions/video-nvidia>
 #  
   # CAPABILITIES ---------------------------------------
 #  capability sys_admin,
@@ -90,7 +90,7 @@ profile nvidia-drivers.nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe {
 
 profile nvidia-drivers.nvidia-smi /opt/bin/nvidia-smi {
   #include <abstractions/base>
-  #include <abstractions/nvidia>
+  #include <abstractions/video-nvidia>
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
