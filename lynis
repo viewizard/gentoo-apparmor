@@ -128,8 +128,8 @@ profile lynis /usr/sbin/lynis {
     # READS/WRITES -------------------------------------
     /usr/share/samba/{,**}				r,
     
-    # TEMP ---------------------------------------------
-    owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
+    # DENY INHERIT -------------------------------------
+    deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
   }
   
   profile sshd /usr/sbin/sshd {
@@ -165,8 +165,8 @@ profile lynis /usr/sbin/lynis {
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/aa-status				Px,
     
-    # TEMP ---------------------------------------------
-    owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
+    # DENY INHERIT -------------------------------------
+    deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
   }
 }
 

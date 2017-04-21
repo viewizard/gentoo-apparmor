@@ -110,7 +110,6 @@ profile util-linux.mount /bin/mount flags=(complain) {
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
   /etc/filesystems					r,
-  /etc/conf.d/dmcrypt					r,	# DELEGATION! cryptsetup.init.d
   /run/mount/						w,
   /run/mount/utab					rw,
   /run/mount/utab.*					rwk,
@@ -122,6 +121,9 @@ profile util-linux.mount /bin/mount flags=(complain) {
   owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! daily_backup.sh.cron.daily
   owner /tmp/homebackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
   owner /tmp/rootbackup.cron.*				w,	# DELEGATION! monthly_backup.sh.cron.monthly
+  
+  # DENY INHERIT ---------------------------------------
+  deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d
 }
 
 profile util-linux.umount /bin/umount flags=(complain) {
@@ -148,7 +150,6 @@ profile util-linux.umount /bin/umount flags=(complain) {
   /bin/umount						mr,
   
   # READS/WRITES ---------------------------------------
-  /etc/conf.d/dmcrypt					r,	# DELEGATION! cryptsetup.init.d
   /run/mount/utab					rw,
   /run/mount/utab.*					rwk,
   
@@ -156,6 +157,9 @@ profile util-linux.umount /bin/umount flags=(complain) {
   owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! daily_backup.sh.cron.daily
   owner /tmp/homebackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
   owner /tmp/rootbackup.cron.*				w,	# DELEGATION! monthly_backup.sh.cron.monthly
+  
+  # DENY INHERIT ---------------------------------------
+  deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d
 }
 
 profile util-linux.mkswap /sbin/mkswap flags=(complain) {

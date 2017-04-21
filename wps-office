@@ -27,11 +27,6 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/nameservice>
   
-  # UNIX -----------------------------------------------
-  unix (send, receive)
-  		type=stream
-  		peer=(label="wps-office//shell"),
-  
   # NETWORK --------------------------------------------
   network netlink raw,
   
@@ -40,7 +35,9 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   /dev/tty[0-9]*					rw,
   owner /dev/shm/??????					rw,
   owner /dev/shm/sem.KCacheEngineReaderSema*		rw,
+  owner /dev/shm/sem.KCacheEngineWriterSema*		rw,
   owner link subset /dev/shm/sem.KCacheEngineReaderSema* -> /dev/shm/??????,
+  owner link subset /dev/shm/sem.KCacheEngineWriterSema* -> /dev/shm/??????,
   owner @{PROC}/@{pid}/auxv				r,
   owner @{PROC}/@{pid}/cmdline				r,
   
@@ -76,14 +73,11 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   deny /opt/kingsoft/wps-office/office6/startup/	w,
   deny /etc/xdg/kingsoft.conf				w,
   
+  # DENY INHERIT ---------------------------------------
+  deny unix (send, receive) peer=(label="wps-office//shell"),	# wps-office//shell
+  
   profile shell @{shell} {
     #include <abstractions/base>
-    #include <abstractions/program-work-with-disk-rwk-strict>	# DELEGATION! wps-office
-    
-    # UNIX -----------------------------------------------
-    unix (send, receive)
-    		type=stream
-    		peer=(label="wps-office"),
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -91,10 +85,13 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						ix,	# PROFILE LIST! coreutils.uname - тянет unix сокет.
-    								# DELEGATION! (?)
+    /bin/uname						Px,
     
-    # USERS --------------------------------------------
-    owner @{HOME}/.kingsoft/office6/templates/wps/**	w,	# DELEGATION! wps-office
+    # DENY INHERIT -------------------------------------
+    deny unix (send, receive) peer=(label="wps-office"),	# wps-office
+    deny /opt/kingsoft/wps-office/office6/**		r,	# wps-office
+    deny @{HOME}/.kingsoft/office6/templates/wps/**	w,	# wps-office
+    deny @{HOME}/**					rw,	# wps-office
+    deny /media/**					rw,	# wps-office
   }
 }

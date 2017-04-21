@@ -20,3 +20,6 @@ owner @{PROC}/@{pid}/fd/				r,
 # FIX ME! После возможности блокировки адресов и портов - убрать.
 /usr/bin/newgrp						Px,
 /usr/bin/id						Pxr,
+
+# DENY INHERIT -----------------------------------------
+deny unix peer=(label="xdg_open_root"),				# xdg_open_root

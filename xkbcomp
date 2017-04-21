@@ -16,18 +16,20 @@ profile xkbcomp /usr/bin/xkbcomp {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
-  /dev/input/event[0-9]*				rw,	# DELEGATION! xorg-server.Xorg
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xkbcomp					mr,
   
   # READS/WRITES ---------------------------------------
   /usr/share/X11/xkb/**					r,
-  /run/acpid.socket					rw,	# DELEGATION! xorg-server.Xorg
-  /var/log/Xorg.[0-9].log				w,	# DELEGATION! xorg-server.Xorg
   /var/lib/xkb/server-[0-9].xkm				w,
   
   # TEMP -----------------------------------------------
-  /tmp/server-[0-9].xkm					w,	# DELEGATION! xorg-server.Xorg
-  owner /tmp/file*					rw,	# DELEGATION! xfce4-settings.xfsettingsd
+  owner /tmp/server-[0-9].xkm				w,
+  owner /tmp/file*					rw,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /dev/input/event[0-9]*				rw,	# xorg-server.Xorg
+  deny /run/acpid.socket				rw,	# xorg-server.Xorg
+  deny /var/log/Xorg.[0-9].log				w,	# xorg-server.Xorg
 }

@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile ntp.ntpd /usr/sbin/ntpd flags=(attach_disconnected) {
+profile ntp.ntpd /usr/sbin/ntpd {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -61,14 +61,14 @@ profile ntp.ntpq /usr/bin/ntpq {
   # EXECUTABLES ----------------------------------------
   /usr/bin/ntpq						mr,
   
-  # TEMP -----------------------------------------------
-  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
-  
   # NOISY ----------------------------------------------
   deny /{,s}bin/					r,
   deny /opt/bin/					r,
   deny /usr/{,s}bin/					r,
   deny /usr/local/{,s}bin/				r,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
 }
 
 profile ntp.init.d /etc/init.d/ntpd {

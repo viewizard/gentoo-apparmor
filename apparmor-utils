@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile apparmor-utils.aa-status @{PYTHON_EXEC}/aa-status {
+profile apparmor-utils.aa-status @{PYTHON_EXEC}/aa-status flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/python>
   
@@ -32,7 +32,9 @@ profile apparmor-utils.aa-status @{PYTHON_EXEC}/aa-status {
   
   # TEMP -----------------------------------------------
   owner /tmp/????????					rw,
-  owner /tmp/lynis.cron.*				w,	# DELEGATION! cron.daily/lynis
+  
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
 profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {

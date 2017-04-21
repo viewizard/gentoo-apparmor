@@ -28,6 +28,6 @@ profile nmap /usr/bin/nmap flags=(complain) {
   # READS/WRITES ---------------------------------------
   /usr/share/nmap/{,**}					r,
   
-  # TEMP -----------------------------------------------
-  owner /tmp/lynis.cron.*				w,	# DELEGATION! cron.daily/lynis
+  # DENY INHERIT ---------------------------------------
+  deny /tmp/lynis.cron.*				w,	# cron.daily/lynis
 }

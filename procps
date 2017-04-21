@@ -40,10 +40,10 @@ profile procps.ps /bin/ps {
   # READS/WRITES ---------------------------------------
   /usr/src/@{kernel}/System.map				r,
   
-  # TEMP -----------------------------------------------
-  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
-  owner /tmp/oinkmaster.cron.*				w,	# DELEGATION! oinkmaster.cron.daily
-  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
+  # DENY INHERIT ---------------------------------------
+  deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
+  deny /tmp/oinkmaster.cron.*				w,	# oinkmaster.cron.daily
+  deny /tmp/chkrootkit.cron.*				w,	# chkrootkit.cron.daily
 }
 
 profile procps.pidof /usr/bin/pidof {

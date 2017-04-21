@@ -201,7 +201,7 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
     # USERS --------------------------------------------
     owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
     
-    # TEMP -----------------------------------------------
-    owner /tmp/FreshStream*				rw,	# DELEGATION! firefox.plugin-container
+    # DENY INHERIT -------------------------------------
+    deny /tmp/FreshStream*				rw,	# firefox.plugin-container
   }
 }

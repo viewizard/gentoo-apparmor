@@ -62,8 +62,8 @@ profile syslog-ng /usr/sbin/syslog-ng {
   /run/syslog-ng.ctl					rw,
   /run/syslog-ng/additional-log-sockets.conf		r,
   
-  # TEMP -----------------------------------------------
-  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
+  # DENY INHERIT ---------------------------------------
+  deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
 }
 
 profile syslog-ng.init.d /etc/init.d/syslog-ng {

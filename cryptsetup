@@ -43,13 +43,15 @@ profile cryptsetup /sbin/cryptsetup flags=(complain) {
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
-  /etc/conf.d/dmcrypt					r,	# DELEGATION! cryptsetup.init.d
   /run/openrc/dm-crypt-remdev.*/enc.key			r,
   
   # TEMP -----------------------------------------------
   owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! daily_backup.sh.cron.daily
   owner /tmp/homebackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
   owner /tmp/rootbackup.cron.*				w,	# DELEGATION! monthly_backup.sh.cron.monthly
+  
+  # DENY INHERIT ---------------------------------------
+  deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d
 }
 
 profile cryptsetup.init.d /etc/init.d/dmcrypt {

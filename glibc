@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile glibc.ldd /usr/bin/ldd {
+profile glibc.ldd /usr/bin/ldd flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -32,7 +32,10 @@ profile glibc.ldd /usr/bin/ldd {
   
   # READS/WRITES ---------------------------------------
   /etc/ld.so.cache					mr,
-  /var/cache/revdep-rebuild/*errors*			rw,	# DELEGATION! (?) gentoolkit.revdep-rebuild.sh
+  
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					r,	# flags=(attach_disconnected)
+  deny /var/cache/revdep-rebuild/*errors*		rw,	# gentoolkit.revdep-rebuild.sh
 }
 
 profile glibc.locale /usr/bin/locale flags=(complain) {		# FIX ME! 04.04.2017 flags=(complain)
@@ -71,9 +74,10 @@ profile glibc.ldconfig /sbin/ldconfig flags=(complain) {	# FIX ME! 04.04.2017 fl
   /usr/local/lib{,32,64}/				r,
   /var/cache/ldconfig/aux-cache{,~}			rw,
   
-  # USERS ----------------------------------------------
-  owner @{HOME}/.pyfa/log.txt				w,	# DELEGATION! pyfa
-  
   # TEMP -----------------------------------------------
-  /var/tmp/portage/genkernel/**				rw,	# DELEGATION! genkernel-next
+  /var/tmp/portage/genkernel/**				rw,	# DELEGATION! genkernel-next.genkernel
+  								# Вызывать ldconfig в genkernel через "Px + {}"
+  
+  # DENY INHERIT ---------------------------------------
+  deny @{HOME}/.pyfa/log.txt				w,	# pyfa
 }

@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile xdg-utils.xdg-open /usr/bin/xdg-open {
+profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/freedesktop.org>
@@ -31,6 +31,23 @@ profile xdg-utils.xdg-open /usr/bin/xdg-open {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
+  
+  # DENY INHERIT ---------------------------------------
+  deny unix peer=(label="wps-office"),				# wps-office
+  deny unix peer=(label="qpdfview"),				# qpdfview
+  deny unix peer=(label="evelauncher"),				# evelauncher
+  deny network netlink raw,					# skype
+  deny /dev/shm/.org.chromium.Chromium.*		ra,	# evelauncher
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
+  deny /run/user/[0-9]*/poedit.lock			w,	# poedit
+  deny /tmp/skype-[0-9]*/DbTemp./temp-*			rw,	# skype
+  deny @{HOME}/.Skype/**				rw,	# skype
+  deny @{HOME}/.local/share/poedit/TranslationMemory/*	rw,	# poedit
+  deny @{HOME}/.kingsoft/office6/**			rw,	# wps-office
+  deny @{HOME}/.ts3client/**				w,	# teamspeak-client-bin.teamspeak
+  deny @{HOME}/evelauncher/**				r,	# evelauncher
+  deny @{HOME}/.local/share/CCP/**			rw,	# evelauncher
+  deny @{HOME_CACHE}/CCP/**				rw,	# evelauncher
 }
 
 profile xdg-utils.xdg-email /usr/bin/xdg-email {
@@ -38,6 +55,7 @@ profile xdg-utils.xdg-email /usr/bin/xdg-email {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-email					r,
@@ -45,6 +63,9 @@ profile xdg-utils.xdg-email /usr/bin/xdg-email {
   /bin/sed						ix,
   /usr/bin/which					Px,
   /usr/bin/exo-open					Px,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile xdg-utils.xdg-screensaver /usr/bin/xdg-screensaver {
@@ -121,6 +142,7 @@ profile xdg_open_root {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
@@ -137,6 +159,7 @@ profile xdg_email_root {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-email					r,

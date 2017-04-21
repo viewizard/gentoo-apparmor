@@ -29,14 +29,6 @@ profile discord /opt/discord/share/discord/Discord {
   # AUDIT PTRACE ---------------------------------------
   deny ptrace (trace),
   
-  # UNIX -----------------------------------------------
-  unix (send, receive)
-  	type=seqpacket
-  	peer=(label="discord//lsb-release"),
-  unix (send, receive)
-  	type=stream
-  	peer=(label="discord//lsb-release"),
-  
   # NETWORK --------------------------------------------
   network netlink raw,
   
@@ -60,8 +52,7 @@ profile discord /opt/discord/share/discord/Discord {
   
   # EXECUTABLES ----------------------------------------
   /opt/discord/share/discord/Discord			Pxmr,
-  /usr/bin/lsb_release					Cx,	# DELEGATION! Пока не используем Px. Потом подумать,
-  								# как реализовать IPC и не тянуть unix (Stacking?).
+  /usr/bin/lsb_release					Px,
   
   # READS/WRITES ---------------------------------------
   /opt/discord/**					r,
@@ -84,32 +75,6 @@ profile discord /opt/discord/share/discord/Discord {
   /var/tmp/						r,
   owner /var/tmp/etilqs_*				rw,
   
-  profile lsb-release /usr/bin/lsb_release {
-    #include <abstractions/base>
-    
-    # UNIX -----------------------------------------------
-    unix (send, receive)
-    		type=seqpacket
-    		peer=(label="discord"),
-    unix (send, receive)
-    		type=stream
-    		peer=(label="discord"),
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty						rw,
-    /dev/tty[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /usr/bin/lsb_release				r,
-    @{shell}						mr,
-    /bin/sed						ixr,
-    /bin/head						ixr,
-    /usr/bin/find					ix,
-    /usr/bin/getopt					ixr,
-    
-    # READS/WRITES -------------------------------------
-    /etc/						r,
-    /etc/{gentoo,os,lsb}-release			r,
-    /opt/discord/**					r,
-  }
+  # DENY INHERIT ---------------------------------------
+  deny unix (send, receive) peer=(label="lsb-release"),
 }

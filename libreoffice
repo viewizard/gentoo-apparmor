@@ -49,6 +49,9 @@ profile libreoffice.oosplash /usr/lib{,32,64}/libreoffice/program/oosplash {
   /usr/lib{,32,64}/libreoffice/program/oosplash		m,
   /usr/lib{,32,64}/libreoffice/program/javaldx		Px,
   /usr/lib{,32,64}/libreoffice/program/soffice.bin	Px,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/OSL_PIPE_[0-9]*_SingleOfficeIPC_*		rw,	# [0-9]* - UID пользователя.
 }
 
 profile libreoffice.javaldx /usr/lib{,32,64}/libreoffice/program/javaldx {
@@ -78,6 +81,7 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   #include <abstractions/qt>	# GTK and QT to draw native controls (widgets).
   #include <abstractions/nvidia>
   #include <abstractions/X>
+  #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/cups-client>
   #include <abstractions/xdg-open>
@@ -120,7 +124,7 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   owner /tmp/*.tmp/					rw,
   owner /tmp/*.tmp/*.tmp				rwk,
   owner /tmp/.gl*					rw,
-  owner /tmp/OSL_PIPE_[0-9]*_SingleOfficeIPC_*		rw,
+  owner /tmp/OSL_PIPE_[0-9]*_SingleOfficeIPC_*		rw,	# [0-9]* - UID пользователя.
   
   # NOISY ----------------------------------------------
   deny /usr/lib{,32,64}/libreoffice/share/uno_packages/cache/* w,
@@ -139,5 +143,15 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
     /bin/grep						ix,
     /usr/bin/paperconf					ix,
     /usr/lib{,32,64}/libreoffice/program/open-url	ix,
+    
+    # READS/WRITES -------------------------------------
+    /etc/papersize					r,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
+    
+    # DENY INHERIT -------------------------------------
+    deny @{HOME}/.config/libreoffice/**			rw,	# libreoffice.bin
+    deny /tmp/*.tmp/*.tmp				rw,	# libreoffice.bin
   }
 }

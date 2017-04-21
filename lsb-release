@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile lsb-release /usr/bin/lsb_release {
+profile lsb-release /usr/bin/lsb_release flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -31,11 +31,13 @@ profile lsb-release /usr/bin/lsb_release {
   /etc/							r,
   /etc/{gentoo,os,lsb}-release				r,
   
-  # NOISY ----------------------------------------------
-  deny /etc/apparmor.d/					r,
-  deny /opt/discord/share/discord/			r,
-  deny /usr/share/inkscape/extensions/			r,
-  deny /opt/teamspeak3-client/				r,
-  deny /run/user/[0-9]*/poedit.*			rw,
+  # DENY INHERIT ---------------------------------------
+  deny unix (send, receive) peer=(label="discord"),		# discord
+  deny /apparmor/.null					r,	# flags=(attach_disconnected)
+  deny /etc/apparmor.d/					r,	# apparmor
+  deny /opt/discord/share/discord/{,**}			r,	# discord
+  deny /usr/share/inkscape/extensions/			r,	# inkscape
+  deny /opt/teamspeak3-client/				r,	# teamspeak-client-bin.teamspeak
+  deny /run/user/[0-9]*/poedit.*			rw,	# poedit
   deny /home/**						r,
 }

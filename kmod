@@ -32,12 +32,14 @@ profile kmod /{bin/kmod,sbin/modprobe,sbin/modeinfo} {
   /etc/modprobe.d/{,*}					r,
   /lib{,32,64}/modules/*/modules.*			rw,
   /usr/src/@{kernel}/System.map				r,
-  /usr/src/@{kernel}/tar-install/lib/modules/@{kernel_ver}/ r,		# PROFILE LIST! make 
-  /usr/src/@{kernel}/tar-install/lib/modules/@{kernel_ver}/** rw,	# PROFILE LIST! make 
+  /usr/src/@{kernel}/tar-install/lib/modules/@{kernel_ver}/ r,		# DELEGATION! make
+  /usr/src/@{kernel}/tar-install/lib/modules/@{kernel_ver}/** rw,	# Вызывать kmod в make через "Px + {}"
   /run/tmpfiles.d/kmod.conf				w,
-  /var/log/Xorg.[0-9].log				w,	# DELEGATION! xorg-server.Xorg
   
   # TEMP -----------------------------------------------
   owner /tmp/depmod.*/{,**}				rw,
-  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
+  
+  # DENY INHERIT ---------------------------------------
+  deny /var/log/Xorg.[0-9].log				w,	# xorg-server.Xorg
+  deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
 }

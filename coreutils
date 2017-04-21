@@ -50,7 +50,7 @@ profile coreutils.date /bin/date {
   /bin/date						mr,
 }
 
-profile coreutils.uname /bin/uname flags=(complain) {		# FIX ME! 04.04.2017 flags=(complain)
+profile coreutils.uname /bin/uname flags=(complain,attach_disconnected) {	# FIX ME! 04.04.2017 flags=(complain)
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -61,9 +61,11 @@ profile coreutils.uname /bin/uname flags=(complain) {		# FIX ME! 04.04.2017 flag
   # EXECUTABLES ----------------------------------------
   /bin/uname						mr,
   
-  # TEMP -----------------------------------------------
-  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
-  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
+  deny /run/user/[0-9]*/poedit.lock			w,	# poedit
+  deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
+  deny /tmp/chkrootkit.cron.*				w,	# chkrootkit.cron.daily
 }
 
 profile coreutils.tty /bin/tty flags=(complain) {		# FIX ME! 04.04.2017 flags=(complain)
@@ -77,7 +79,7 @@ profile coreutils.tty /bin/tty flags=(complain) {		# FIX ME! 04.04.2017 flags=(c
   /bin/tty						mr,
 }
 
-profile coreutils.tr /bin/tr flags=(complain) {			# FIX ME! 04.04.2017 flags=(complain)
+profile coreutils.tr /bin/tr flags=(complain,attach_disconnected) {	# FIX ME! 04.04.2017 flags=(complain)
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -87,12 +89,11 @@ profile coreutils.tr /bin/tr flags=(complain) {			# FIX ME! 04.04.2017 flags=(co
   # EXECUTABLES ----------------------------------------
   /bin/tr						mr,
   
-  # READS/WRITES ---------------------------------------
-  /run/user/*/poedit.lock				w,	# DELEGATION! poedit
-  
-  # TEMP -----------------------------------------------
-  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
-  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
+  deny /tmp/sh-thd.*					r,	# gentoolkit.revdep-rebuild.sh
+  deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
+  deny /tmp/chkrootkit.cron.*				w,	# chkrootkit.cron.daily
 }
 
 profile coreutils.sleep /bin/sleep flags=(complain) {		# FIX ME! 04.04.2017 flags=(complain)
@@ -109,8 +110,8 @@ profile coreutils.sleep /bin/sleep flags=(complain) {		# FIX ME! 04.04.2017 flag
   # USERS ----------------------------------------------
   owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   
-  # TEMP -----------------------------------------------
-  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
+  # DENY INHERIT ---------------------------------------
+  deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
 }
 
 profile coreutils.whoami /usr/bin/whoami flags=(complain) {	# FIX ME! 04.04.2017 flags=(complain)
@@ -135,9 +136,9 @@ profile coreutils.id /usr/bin/id flags=(complain) {		# FIX ME! 04.04.2017 flags=
   # EXECUTABLES ----------------------------------------
   /usr/bin/id						mr,
   
-  # TEMP -----------------------------------------------
-  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
-  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
+  # DENY INHERIT ---------------------------------------
+  deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
+  deny /tmp/chkrootkit.cron.*				w,	# chkrootkit.cron.daily
 }
 
 profile coreutils.pinky /usr/bin/pinky flags=(complain) {	# FIX ME! 04.04.2017 flags=(complain)
@@ -165,8 +166,8 @@ profile coreutils.stty /bin/stty flags=(complain) {		# FIX ME! 04.04.2017 flags=
   # EXECUTABLES ----------------------------------------
   /bin/stty						mr,
   
-  # READS/WRITES ---------------------------------------
-  /etc/conf.d/dmcrypt					r,	# DELEGATION! cryptsetup.init.d
+  # DENY INHERIT ---------------------------------------
+  deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d
 }
 
 profile coreutils.basename /bin/basename flags=(complain) {	# FIX ME! 05.04.2017 flags=(complain)
@@ -203,7 +204,7 @@ profile coreutils.echo /bin/echo flags=(complain) {		# FIX ME! 05.04.2017 flags=
   # EXECUTABLES ----------------------------------------
   /bin/echo						mr,
   
-  # TEMP -----------------------------------------------
-  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
-  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
+  # DENY INHERIT ---------------------------------------
+  deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
+  deny /tmp/chkrootkit.cron.*				w,	# chkrootkit.cron.daily
 }
