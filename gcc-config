@@ -36,8 +36,6 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
   /bin/sort						ix,
   /bin/grep						ix,
   /bin/egrep						ixr,
-  /bin/setfattr						ix,
-  /bin/getfattr						ix,
   /usr/bin/find						ix,
   /usr/bin/cmp						ix,
   /usr/bin/gawk						ix,
@@ -66,7 +64,6 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
   # TEMP -----------------------------------------------
   owner /tmp/tac*					rw,
   owner /tmp/sh-thd.*					rw,
-  owner /tmp/gcc-config-ima				rw,	# Для работы патча по переносу xattr.
   owner /tmp/sed*					rw,
   
   profile portageq flags=(complain) {
