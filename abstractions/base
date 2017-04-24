@@ -18,7 +18,7 @@ ptrace (read) peer=@{profile_name},
 signal (receive) peer=unconfined,				# FIX ME! Убрать, при переходе на confined бут.
 signal peer=@{profile_name},
 signal (receive, send) set=("exists"),
-signal (receive) set=(kill, term, hup, cont, stop),		# FIX ME! Дописать общие сигналы.
+signal (receive) set=(hup, int, kill, term, cont, stop),	# FIX ME! Дописать общие сигналы.
 
 # UNIX -----------------------------------------------
 unix (receive) peer=(label=unconfined),				# FIX ME! Убрать, при переходе на confined бут.

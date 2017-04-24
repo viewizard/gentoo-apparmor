@@ -12,6 +12,27 @@ requires capability setuid
    capability setuid (fred, george),  remains backwards compat
 
 
+- confined init (выключение SECURITY_APPARMOR_UNCONFINED_INIT на 22.04.2017 вообще не работает)
+# В коде lsm.c ошибка, не похоже, чтобы вообще кто-то собирал ядро без
+# SECURITY_APPARMOR_UNCONFINED_INIT (вообще не тестировали похоже)
+# Если выключаем SECURITY_APPARMOR_UNCONFINED_INIT не можем выполнить aa-status
+# apparmor module is loaded.
+# Traceback (most recent call last):
+#   File "/usr/lib/python-exec/python3.4/aa-status", line 255, in <module>
+#     commands[cmd]()
+#   File "/usr/lib/python-exec/python3.4/aa-status", line 59, in cmd_verbose
+#     profiles = get_profiles()
+#   File "/usr/lib/python-exec/python3.4/aa-status", line 149, in get_profiles
+#     profiles[match.group(1)] = match.group(2)
+# AttributeError: 'NoneType' object has no attribute 'group'
+
+
+- extended conditionals
+'if' <condition> '{' <rules> '}'
+Например, через tunables управлять видео, звуком, аутентификацией (kerberos,...) и т.п., открывая только нужное
+http://wiki.apparmor.net/index.php/AppArmor_Core_Policy_Reference#extended_conditionals
+
+
 - Stacking (уже доступен с 3.5 версии изменений ядра, 2.11 утилиты) Работает по принципу пересечения профилей (логическое "И" для правил профилей). Непонятно как это будет работать, если у нас все так же ограничение всего на 12 переходов на другие профили.
     /bin/** px -> &two,
 Will compute the profile transition as per

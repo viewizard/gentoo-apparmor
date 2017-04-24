@@ -32,6 +32,7 @@ profile apparmor-utils.aa-status @{PYTHON_EXEC}/aa-status flags=(attach_disconne
   
   # TEMP -----------------------------------------------
   owner /tmp/????????					rw,
+  owner /tmp/apparmor-bugreport-*.txt			rw,
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
@@ -49,6 +50,7 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
+  @{PROC}/@{pid}/cmdline				r,
   @{PROC}/@{pid}/fd/					r,
   @{PROC}/@{pid}/mounts					r,
   @{PROC}/@{pid}/attr/{current,prev,exec}		r,
@@ -69,6 +71,7 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   # TEMP -----------------------------------------------
   owner /tmp/{,tmp}??????				rw,
   owner /tmp/????????					rw,
+  owner /tmp/apparmor-bugreport-*.txt			rw,
   owner /var/tmp/????????				rw,
   
   profile shell @{shell} flags=(complain) {

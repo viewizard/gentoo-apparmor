@@ -21,7 +21,9 @@ profile psmisc.killall /usr/bin/killall {
   ptrace (trace),
   
   # SIGNAL ---------------------------------------------
-  signal (send),
+  signal (send),						# Все правильно, с опцией "-s, --signal" должны
+  								# иметь возможность передать любой сигнал любому
+  								# процессу, не только SIGTERM.
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

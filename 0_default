@@ -8,16 +8,29 @@
 #
 # ------------------------------------------------------------------
 
-# Специальный профиль, для перекрытия в случае использования
-# опции ядра SECURITY_APPARMOR_UNCONFINED_INIT
+# Специальный профиль, для перекрытия.
 
-# Используем его, чтобы явно явно ограничить процессы без профилей.
+# Используем его, чтобы явно ограничить процессы без профилей.
 # Как вариант, добавить flag=(kill), чтобы убивать процесс,
 # пытающийся запустить процесс без профиля.
 
 # Важно!
-# Проверить, чтобы все процессы запущенные до перехода на профиль,
-# чтобы нормально работали.
+# Нельзя называть "default", в случае выключенного SECURITY_APPARMOR_UNCONFINED_INIT
+# будет использоваться системный профиль "default", который нельзя заменить.
 
-# проверить, надо /** указывать или нет
-#profile default /** flags=(complain) {}		# FIX ME! Убрать flags=(complain).
+#profile default_all /** flags=(complain) {}		# FIX ME! Убрать flags=(complain).
+
+# !!!
+
+# В коде lsm.c ошибка, не похоже, чтобы вообще кто-то собирал ядро без
+# SECURITY_APPARMOR_UNCONFINED_INIT (вообще не тестировали похоже)
+# Если выключаем SECURITY_APPARMOR_UNCONFINED_INIT не можем выполнить aa-status
+# apparmor module is loaded.
+# Traceback (most recent call last):
+#   File "/usr/lib/python-exec/python3.4/aa-status", line 255, in <module>
+#     commands[cmd]()
+#   File "/usr/lib/python-exec/python3.4/aa-status", line 59, in cmd_verbose
+#     profiles = get_profiles()
+#   File "/usr/lib/python-exec/python3.4/aa-status", line 149, in get_profiles
+#     profiles[match.group(1)] = match.group(2)
+# AttributeError: 'NoneType' object has no attribute 'group'

@@ -1,0 +1,38 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# CAPABILITIES -----------------------------------------
+capability ipc_lock,
+
+# PSEUDO -----------------------------------------------
+/dev/nvidia{[0-9]*,ctl,-modeset}			rw,
+/sys/bus/pci/devices/					r,
+/sys/devices/pci**/config				r,
+@{PROC}/interrupts					r,
+@{PROC}/sys/vm/max_map_count				r,
+@{PROC}/driver/nvidia/params				r,
+@{PROC}/modules						r,
+
+# EXECUTABLES ------------------------------------------
+/{usr,opt}/bin/nvidia-modprobe				ix,
+
+# READS/WRITES -----------------------------------------
+/etc/nvidia/nvidia-application-profiles-rc		r,
+
+# USERS ------------------------------------------------
+owner @{HOME}/.nv/					rw,
+owner @{HOME}/.nv/GLCache/				rw,
+owner @{HOME}/.nv/GLCache/**				rwk,
+owner @{HOME}/.nv/ComputeCache/				rw,
+owner @{HOME}/.nv/ComputeCache/**			rwk,
+owner @{HOMEDIRS}/*.nv/					rw,
+owner @{HOMEDIRS}/*.nv/**				rwk,
+owner @{HOMEDIRS}/*.nv/.gl*				m,
+owner /tmp/.gl*						m,

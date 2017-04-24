@@ -115,7 +115,8 @@ profile shell_root {
   capability dac_override,
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(cont, hup, term),				# FIX ME! Передавать только запущенным в этом шеле.
+  signal (send) set=(hup, int, kill, term, cont),		# Реакция на нажатия комбинаций кнопок.
+  								# FIX ME! Отсылать запущенным в этом шеле.
   
   # EXECUTABLES ----------------------------------------
   @{shell}						ixmr,

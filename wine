@@ -84,9 +84,7 @@ profile wine.wine-preloader /usr/bin/wine-preloader {
   #include <local/wine-custom-locations>
   
   # SIGNAL ---------------------------------------------
-  signal (receive)
-  	set=(usr1, quit)
-  	peer="wine.wineserver",
+  signal (receive) set=(usr1, quit) peer="wine.wineserver",
   
   # UNIX -----------------------------------------------
   unix (send, receive)
@@ -167,9 +165,7 @@ profile wine.wineserver /usr/bin/wineserver {
   capability sys_ptrace,
   
   # SIGNAL ---------------------------------------------
-  signal (send)
-  	set=(usr1, quit)
-  	peer="wine.wine-preloader",
+  signal (send) set=(usr1, quit) peer="wine.wine-preloader",
   
   # UNIX -----------------------------------------------
   unix (send, receive)

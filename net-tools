@@ -13,6 +13,9 @@
 profile net-tools.iptunnel /sbin/iptunnel flags=(complain) {
   #include <abstractions/base>
   
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  
   # PSEUDO ---------------------------------------------
   @{PROC}/@{pid}/net/dev				r,
   

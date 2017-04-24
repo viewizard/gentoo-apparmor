@@ -168,7 +168,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     /run/udev/control					rw,
     
     # TEMP ---------------------------------------------
-    /var/tmp/						r,
+    /tmp/						r,
     owner /tmp/sh-thd.*					rw,
     owner /tmp/portage.cron.*				rw,
     owner /tmp/sed*					rw,
@@ -176,6 +176,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     owner /tmp/??????					rw,
     owner /tmp/tmp??????				rwk,
     owner /tmp/tac??????				rw,
+    /var/tmp/						r,
     
     # NOISY --------------------------------------------
     /.wget-hsts						rw,
