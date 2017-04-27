@@ -27,7 +27,7 @@ profile evelauncher.sh /home/*/evelauncher/evelauncher.sh {
   /bin/dirname						Px,
 }
 
-profile evelauncher /home/*/evelauncher/evelauncher {
+profile evelauncher /home/*/evelauncher/evelauncher flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -43,23 +43,7 @@ profile evelauncher /home/*/evelauncher/evelauncher {
   
   # UNIX -----------------------------------------------
   unix (send, receive)
-  	type=stream
-  	peer=(label="wine"),
-  unix (send, receive)
-  	type=seqpacket
-  	peer=(label="wine"),
-  unix (send, receive)
-  	type=stream
-  	peer=(label="wine.wine-preloader"),
-  unix (send, receive)
-  	type=seqpacket
-  	peer=(label="wine.wine-preloader"),
-  unix (send, receive)
-  	type=stream
-  	peer=(label="wine.wineserver"),
-  unix (send, receive)
-  	type=seqpacket
-  	peer=(label="wine.wineserver"),
+  		peer=(label="evelauncher.updater"),
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -107,11 +91,22 @@ profile evelauncher /home/*/evelauncher/evelauncher {
   owner /tmp/.gl*					rw,
   /var/tmp/						r,
   owner /var/tmp/etilqs_*				rw,
+  
+  # DENY INHERIT ---------------------------------------
+  deny unix (send, receive) peer=(label="wine*"),		# wine
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
 profile evelauncher.updater /home/*/{.eve,evelauncher}/updater {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  		peer=(label="evelauncher"),
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   owner @{HOME}/{.eve,evelauncher}/updater		mr,
@@ -120,6 +115,12 @@ profile evelauncher.updater /home/*/{.eve,evelauncher}/updater {
   # USERS ----------------------------------------------
   owner @{HOME}/evelauncher/{,**}			rw,
   owner @{HOME}/.eve/{,**}				rw,
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
+  
+  # DENY INHERIT ---------------------------------------
+  deny /dev/shm/.org.chromium.Chromium.??????		ra,		# evelauncher
+  deny @{HOME_CACHE}/CCP/EVE/QtWebEngine/Default/Cache/{,**} rw,	# evelauncher
+  deny @{HOME}/.local/share/CCP/EVE/QtWebEngine/Default/{,**} rw,	# evelauncher
 }
 
 profile evelauncher.LogLite.sh /home/*/evelauncher/LogLite.sh {

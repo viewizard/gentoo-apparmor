@@ -74,7 +74,7 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   owner /tmp/apparmor-bugreport-*.txt			rw,
   owner /var/tmp/????????				rw,
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -166,4 +166,25 @@ profile apparmor-utils.aa-disable @{PYTHON_EXEC}/aa-disable {
   
   # TEMP -----------------------------------------------
   owner /tmp/{,tmp}??????				rw,
+}
+
+profile apparmor-utils.aa-logprof @{PYTHON_EXEC}/aa-logprof {
+  #include <abstractions/base>
+  #include <abstractions/python>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  @{PROC}/@{pid}/mounts					r,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/env						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/inputrc						r,
+  /etc/apparmor/logprof.conf				r,
+  /etc/terminfo/x/xterm					r,
+  /etc/apparmor.d/{,**}					r,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/????????					rw,
 }

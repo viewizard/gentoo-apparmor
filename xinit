@@ -116,3 +116,20 @@ profile xinit.startx /usr/bin/startx {
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.??????				rw,
 }
+
+profile xinit.startDM.sh /etc/X11/startDM.sh {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  # EXECUTABLES ----------------------------------------
+  /etc/X11/startDM.sh					r,
+  @{shell}						mr,
+  /usr/bin/sddm						Px,	# sddm
+  
+  # READS/WRITES ---------------------------------------
+  /etc/profile						r,
+  /etc/profile.d/{,*}					r,
+  /etc/bash/bashrc					r,
+  /run/sddm.pid						rw,	# sddm
+}

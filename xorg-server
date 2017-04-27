@@ -153,3 +153,54 @@ profile xorg-server.Xephyr /usr/bin/Xephyr flags=(complain) {
     /usr/bin/xkbcomp					Px,
   }
 }
+
+profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						Cx,
+  /bin/cat						ix,
+  /bin/tr						Px,
+  /bin/grep						ix,
+  /etc/X11/startDM.sh					Px,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/xdm-setup				r,
+  
+  profile shell @{shell} {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/openrc_shell>
+  }
+}
+
+profile xorg-server.xdm.init.d /etc/init.d/xdm flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						Cx,
+  /bin/tr						Px,
+  /bin/grep						ix,
+  /usr/bin/fgconsole					Px,
+  /usr/bin/chvt						ix,
+  /etc/init.d/xdm-setup					Px,
+  /etc/X11/startDM.sh					Px,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/xdm				r,
+  /etc/inittab						r,
+  /run/sddm.pid						rw,	# sddm
+  
+  profile shell @{shell} {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/openrc_shell>
+  }
+}

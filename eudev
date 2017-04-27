@@ -56,7 +56,7 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
   network netlink raw,
   
   # PSEUDO ---------------------------------------------
-  /dev/*						w,
+  /dev/{,*}						w,
   /dev/console						r,
   /dev/pts/[0-9]*					rw,
   /dev/input/event[0-9]*				r,
@@ -109,9 +109,6 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
   /run/udev/tags/{,**}					w,
   /run/udev/{data,watch,links}/**			rw,
   /run/udev/watch{,.old}/{,[0-9]*}			rw,
-  
-  # NOISY ----------------------------------------------
-  deny /dev/						w,
   
   profile shell @{shell} flags=(complain) {
     #include <abstractions/base>

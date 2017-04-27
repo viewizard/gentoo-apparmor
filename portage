@@ -166,11 +166,12 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     /run/openrc/deptree					w,
     /run/openrc/depconfig				w,
     /run/udev/control					rw,
+    /var/log/emerge-fetch.log				a,	# DELEGATION! portage.emerge
     
     # TEMP ---------------------------------------------
     /tmp/						r,
     owner /tmp/sh-thd.*					rw,
-    owner /tmp/portage.cron.*				rw,
+    owner /tmp/portage.cron.*				rw,	# DELEGATION! 00_update_portage.cron.daily
     owner /tmp/sed*					rw,
     owner /tmp/gcc-config-ima				rw,
     owner /tmp/??????					rw,
@@ -215,7 +216,8 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     /dev/null						k,
     /dev/pts/[0-9]*					rw,
     /dev/dri/						r,
-    owner /dev/shm/??????				rw,	# Все правильно, полный доступ.
+    owner /dev/shm/??????				rw,
+    owner /dev/shm/sem.???????-[0-9]*			w,
     owner link subset /dev/shm/sem.???????-[0-9]*	-> /dev/shm/??????,
     /dev/ptmx						rw,
     /sys/bus/pci/devices/				r,
@@ -276,6 +278,8 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     owner /tmp/cf*/{,**}				rw,
     owner /tmp/test.*					rw,
     owner /tmp/tmp*					rw,
+    owner /tmp/portage.cron.*				w,	# DELEGATION! 00_update_portage.cron.daily
+    owner /tmp/glew.??????/				w,
     /var/tmp/						r,
     owner /var/tmp/cf*/{,**}				rw,
     /var/tmp/portage/					rw,

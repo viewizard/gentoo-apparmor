@@ -135,7 +135,15 @@ profile chkrootkit.chkproc /usr/sbin/chkproc {
   }
 }
 
-profile chkrootkit.ifpromisc /usr/sbin/ifpromisc {
+profile chkrootkit.ifpromisc /usr/sbin/ifpromisc flags=(attach_disconnected) {
+				# в аудит выводит:
+				# operation="getattr" info="Failed name lookup - disconnected path" name="apparmor/.null"
+				# По почте приходит с ошибками "/proc/20978/fd/26: Permission denied"
+				# /proc/20978/fd/26 UID/GID = 1000
+				# Добавляем flags=(attach_disconnected), но при этом
+				# не надо добавлять "deny /apparmor/.null r," достаточно
+				# просто добавить "flags=(attach_disconnected)"
+				# Непонятно какой fd выходит в chkrootkit и возвращается туда же.
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------

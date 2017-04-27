@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile wine /usr/bin/wine {
+profile wine /usr/bin/wine flags=(attach_disconnected) {
   #include <abstractions/X>
   #include <abstractions/audio>
   #include <abstractions/base>
@@ -23,14 +23,6 @@ profile wine /usr/bin/wine {
   
   # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
-  
-  # UNIX -----------------------------------------------
-  unix (send, receive)
-  	type=stream
-  	peer=(label="evelauncher"),				# FIX ME! Подумать, как сделать IPC, не привязываясь.
-  unix (send, receive)
-  	type=seqpacket
-  	peer=(label="evelauncher"),				# FIX ME! Подумать, как сделать IPC, не привязываясь.
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -54,6 +46,10 @@ profile wine /usr/bin/wine {
   
   # NOISY ----------------------------------------------
   deny /						r,
+  
+  # DENY INHERIT ---------------------------------------
+  deny unix (send, receive) peer=(label="evelauncher"),		# evelauncher
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
 profile wine.ntlm_auth /usr/bin/ntlm_auth {
@@ -69,7 +65,7 @@ profile wine.ntlm_auth /usr/bin/ntlm_auth {
 
 # FIX ME! В идеале, иметь профиль на каждую программу, см.
 # http://wiki.apparmor.net/index.php/AppArmorWine
-profile wine.wine-preloader /usr/bin/wine-preloader {
+profile wine.wine-preloader /usr/bin/wine-preloader flags=(attach_disconnected) {
   #include <abstractions/X>
   #include <abstractions/audio>
   #include <abstractions/base>
@@ -90,12 +86,6 @@ profile wine.wine-preloader /usr/bin/wine-preloader {
   unix (send, receive)
   	type=stream
   	peer=(label="wine.wineserver"),
-  unix (send, receive)
-  	type=stream
-  	peer=(label="evelauncher"),				# FIX ME! Подумать, как сделать IPC, не привязываясь.
-  unix (send, receive)
-  	type=seqpacket
-  	peer=(label="evelauncher"),				# FIX ME! Подумать, как сделать IPC, не привязываясь.
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -152,9 +142,13 @@ profile wine.wine-preloader /usr/bin/wine-preloader {
   deny /etc/						r,
   deny /usr/local/					r,
   deny /usr/local/lib{,32,64}/				r,
+  
+  # DENY INHERIT ---------------------------------------
+  deny unix (send, receive) peer=(label="evelauncher"),		# evelauncher
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile wine.wineserver /usr/bin/wineserver {
+profile wine.wineserver /usr/bin/wineserver flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   include <abstractions/X-connection-strict>
@@ -171,12 +165,6 @@ profile wine.wineserver /usr/bin/wineserver {
   unix (send, receive)
   	type=stream
   	peer=(label="wine.wine-preloader"),
-  unix (send, receive)
-  	type=stream
-  	peer=(label="evelauncher"),				# FIX ME! Подумать, как сделать IPC, не привязываясь.
-  unix (send, receive)
-  	type=seqpacket
-  	peer=(label="evelauncher"),				# FIX ME! Подумать, как сделать IPC, не привязываясь.
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -210,6 +198,10 @@ profile wine.wineserver /usr/bin/wineserver {
   deny /mnt/*/						r,
   deny @{HOME}/						r,
   deny /dev/@{BLOCK_REAL}				r,
+  
+  # DENY INHERIT ---------------------------------------
+  deny unix (send, receive) peer=(label="evelauncher"),		# evelauncher
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
 profile wine.notepad /usr/bin/notepad {

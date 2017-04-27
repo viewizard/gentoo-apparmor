@@ -24,6 +24,7 @@ profile xfdesktop /usr/bin/xfdesktop {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}name	r,
   @{PROC}/@{pid}/fd/					r,
   owner @{PROC}/@{pid}/mountinfo			r,

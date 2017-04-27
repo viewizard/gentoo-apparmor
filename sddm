@@ -1,0 +1,38 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+profile sddm /usr/bin/sddm {
+  #include <abstractions/base>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/nameservice>
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/sddm						mr,
+  @{shell}						Cx,
+  /usr/bin/Xorg						Px,
+  
+  # READS/WRITES ---------------------------------------
+  /							r,
+  /etc/sddm.conf					r,
+  /var/log/sddm.log					rw,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/sddm-auth*					rw,
+  owner /tmp/??????/					rw,
+  
+  profile shell @{shell} {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    @{shell}						rm,
+  }
+}
