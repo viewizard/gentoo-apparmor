@@ -49,7 +49,7 @@ profile xfburn /usr/bin/xfburn flags=(complain) {
   /etc/udev/udev.conf					r,
   /usr/share/xfburn/{,**}				r,
   /run/udev/data/*					r,
-  owner /run/user/*/gvfs-burn/				rw,
+  owner /run/user/[0-9]*/gvfs-burn/			rw,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/xfburn/{,**}			rw,

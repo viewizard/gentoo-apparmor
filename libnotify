@@ -15,10 +15,14 @@ profile libnotify.libnotify-notify-send /usr/bin/libnotify-notify-send {
   #include <abstractions/dbus-session-strict>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/libnotify-notify-send			mr,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 # Профиль дополнительного скрипта для отсылки уведомлений всем активным пользователям DE.

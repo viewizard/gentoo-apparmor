@@ -108,8 +108,8 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   capability dac_override,
   
   # MOUNT ----------------------------------------------
-  mount fstype=tmpfs -> /run/user/*/,
-  umount /run/user/*/,
+  mount fstype=tmpfs -> /run/user/[0-9]*/,
+  umount /run/user/[0-9]*/,
   
   # PTRACE ---------------------------------------------
   ptrace (trace),						# FIX ME!
@@ -143,7 +143,7 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   # READS/WRITES ---------------------------------------
   /etc/ConsoleKit/{,**}					r,
   /etc/pm/config.d/{,**}				r,
-  /run/ConsoleKit/{,*}					rw,
+  /run/ConsoleKit/{,**}					rw,
   /run/user/{,**}					rw,
   /run/console/{,*}					rw,
   /var/log/ConsoleKit/					r,

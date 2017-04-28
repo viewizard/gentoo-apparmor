@@ -42,7 +42,7 @@ profile poedit /usr/bin/poedit {
   
   # READS/WRITES ---------------------------------------
   /usr/share/poedit/{,**}				r,
-  owner /run/user/*/poedit.*				rwk,
+  owner /run/user/[0-9]*/poedit.*			rwk,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.poedit/{,**}				rw,

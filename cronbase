@@ -38,7 +38,7 @@ profile cronbase.run-crons /usr/sbin/run-crons {
   # READS/WRITES ---------------------------------------
   /etc/cron.*/						r,
   /run/lock/cron.*					rw,
-  /var/spool/cron/lastrun/{,*}				rw,
+  /var/spool/cron/lastrun{,/,/*}			rw,
   
   # NOISY ----------------------------------------------
   deny /						r,

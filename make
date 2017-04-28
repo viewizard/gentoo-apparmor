@@ -16,6 +16,9 @@ profile make /usr/bin/{,g}make flags=(complain) {
   # CAPABILITIES ---------------------------------------
   capability mknod,
   
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term) peer="make//shell",
+  
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,

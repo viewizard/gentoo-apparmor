@@ -33,6 +33,7 @@ profile suricata /usr/bin/suricata {
   network netlink raw,
   
   # PSEUDO ---------------------------------------------
+  /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   /sys/devices/system/cpu/				r,
   @{PROC}/@{pid}/net/dev				r,
@@ -57,6 +58,7 @@ profile suricata.init.d /etc/init.d/suricata {
   #include <abstractions/openrc>
   
   # CAPABILITIES ---------------------------------------
+  capability mknod,
   capability dac_override,
   capability dac_read_search,
   

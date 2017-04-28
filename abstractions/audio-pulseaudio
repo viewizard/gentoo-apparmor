@@ -15,8 +15,8 @@ owner /dev/shm/pulse-shm*				rwk,
 # READS/WRITES -----------------------------------------
 /etc/machine-id						r,
 /etc/pulse/{,*}						r,
-owner /run/user/*/pulse/				rw,
-owner /run/user/*/pulse/{native,pid}			rwk,
+owner /run/user/[0-9]*/pulse/				rw,
+owner /run/user/[0-9]*/pulse/{native,pid}		rwk,
 
 # USERS ------------------------------------------------
 owner @{HOME}/.config/pulse/				rw,

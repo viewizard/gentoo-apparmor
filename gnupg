@@ -23,7 +23,7 @@ profile gnupg.gpg-agent /usr/bin/gpg-agent flags=(complain) {
   /usr/bin/pinentry-*					Px,
   
   # READS/WRITES ---------------------------------------
-  owner /run/user/*/gnupg/{,**}				rw,
+  owner /run/user/[0-9]*/gnupg/{,**}			rw,
   
   # USERS ----------------------------------------------
   owner @{HOME_CACHE}/gpg-agent-info			rw,
@@ -35,6 +35,7 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -45,6 +46,7 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} flags=(complain) {
   /etc/inputrc						r,
   /etc/terminfo/x/xterm					r,
   /run/openrc/dm-crypt-remdev.*/*			r,
+  /run/user/[0-9]*/gnupg/{,*}				rw,
   /var/lib/gentoo/gkeys/keyrings/gentoo/release/	r,
   /var/lib/gentoo/gkeys/keyrings/gentoo/release/**	rw,
 #  /var/lib/gentoo/gkeys/keyrings/gentoo/release/**	l,	# FIX ME!
@@ -61,13 +63,14 @@ profile gnupg.gpgconf /usr/bin/gpgconf flags=(complain) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gpgconf					mr,
   
   # READS/WRITES ---------------------------------------
-  /run/user/*/gnupg/{,**}				w,
+  /run/user/[0-9]*/gnupg/{,**}				w,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.gnupg/					rw,
@@ -77,6 +80,9 @@ profile gnupg.gpgconf /usr/bin/gpgconf flags=(complain) {
 
 profile gnupg.gpgsm /usr/bin/gpgsm flags=(complain) {
   #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gpgsm					mr,
