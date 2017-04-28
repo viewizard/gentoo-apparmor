@@ -201,6 +201,7 @@ profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
     /usr/bin/xrdb					Px,
     /usr/bin/xfce4-session				Px,
     /usr/bin/xdg-user-dirs-update			Px,
+    /etc/xdg/xfce4/xfce4-session-fix			Px,	# временный скрипт-фикс для xfce4 4.12
     
     # READS/WRITES -------------------------------------
     /etc/xdg/xfce4/xinitrc				r,
@@ -209,6 +210,37 @@ profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
     # USERS --------------------------------------------
     owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   }
+}
+
+# Временный скрипт-фикс для xfce4 4.12, сохраняющий расположение иконок на
+# рабочем столе во время логофа-логина. Возможно, в будущем xfce4-session
+# будет пофикшен на предмет отслеживания запуска xfdesktop после того,
+# как уже запущен wm и панель.
+profile xfce4-session.xfce4-session-fix /etc/xdg/xfce4/xfce4-session-fix {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /etc/xdg/xfce4/xfce4-session-fix			r,
+  @{shell}						mr,
+  /bin/rm						ix,
+  /bin/cp						ix,
+  /bin/sleep						Px,
+  /bin/mkdir						ix,
+  /usr/bin/cmp						ix,
+  /usr/bin/diff						ix,
+  /usr/bin/xfdesktop					Px,
+  /usr/bin/libnotify-notify-send			Px,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/xfce4/desktop/{,*}		rw,
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/xfdesktop-*/{,**}				rw,
 }
 
 profile xfce4-session.Xfce4 /etc/X11/Sessions/Xfce4 {
