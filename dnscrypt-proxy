@@ -22,6 +22,12 @@ profile dnscrypt-proxy /usr/sbin/dnscrypt-proxy {
   capability net_bind_service,
   capability dac_override,
   
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
+  
   # PSEUDO ---------------------------------------------
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,

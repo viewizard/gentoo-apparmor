@@ -20,6 +20,10 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
   capability dac_read_search,
   capability sys_admin,
   
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  network inet6 dgram,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,

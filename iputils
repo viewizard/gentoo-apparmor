@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile ping /bin/ping {
+profile iputils.ping /bin/ping {
   #include <abstractions/base>
   #include <abstractions/consoles>
   #include <abstractions/nameservice>
@@ -18,6 +18,12 @@ profile ping /bin/ping {
   # CAPABILITIES ---------------------------------------
   capability net_raw,
   capability setuid,
+  
+  # NETWORK --------------------------------------------
+  network inet raw,
+  network inet6 raw,
+  network inet dgram,
+  network inet6 dgram,
   
   # EXECUTABLES ----------------------------------------
   /bin/ping						mr,

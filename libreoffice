@@ -88,6 +88,16 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/nameservice>
   
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  			type=stream
+  			addr=none
+  			peer=(label="gvfs.gvfsd-smb"),
+  
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  network inet6 dgram,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,

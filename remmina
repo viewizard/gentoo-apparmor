@@ -27,6 +27,12 @@ profile remmina /usr/bin/remmina {
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk-strict>
   
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   

@@ -19,6 +19,12 @@ profile putty /usr/bin/putty flags=(complain) {
   #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
   
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   owner @{PROC}/@{pid}/loginuid				r,

@@ -29,8 +29,15 @@ profile discord /opt/discord/share/discord/Discord {
   # AUDIT PTRACE ---------------------------------------
   deny ptrace (trace),
   
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term) peer="lsb-release",
+  
   # NETWORK --------------------------------------------
   network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
   
   # PSEUDO ---------------------------------------------
   /dev/							r,

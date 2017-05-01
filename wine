@@ -26,6 +26,8 @@ profile wine /usr/bin/wine flags=(attach_disconnected) {
   
   # NETWORK --------------------------------------------
   network netlink raw,
+  network inet stream,
+  network inet6 stream,
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -89,6 +91,10 @@ profile wine.wine-preloader /usr/bin/wine-preloader flags=(attach_disconnected) 
   
   # NETWORK --------------------------------------------
   network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -137,7 +143,6 @@ profile wine.wine-preloader /usr/bin/wine-preloader flags=(attach_disconnected) 
   deny /						r,
   deny /etc/fstab					r,
   deny @{HOME}/						r,
-#  deny @{HOME}/.*					w,	# 31.03.2017 @{HOME}/.Xauthority может потребоваться доступ
   deny @{HOME}/.glvnd*					w,
   deny /etc/						r,
   deny /usr/local/					r,
@@ -168,6 +173,8 @@ profile wine.wineserver /usr/bin/wineserver flags=(attach_disconnected) {
   
   # NETWORK --------------------------------------------
   network netlink raw,
+  network inet stream,
+  network inet6 stream,
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

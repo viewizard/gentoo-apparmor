@@ -25,6 +25,10 @@ profile tor /usr/bin/tor {
   
   # NETWORK --------------------------------------------
   network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
   
   # PSEUDO ---------------------------------------------
   /dev/console						rw,
@@ -48,6 +52,7 @@ profile tor.init.d /etc/init.d/tor {
   #include <abstractions/openrc>
   
   # CAPABILITIES ---------------------------------------
+  capability mknod,
   capability fowner,
   capability fsetid,
   capability sys_resource,

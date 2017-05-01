@@ -27,6 +27,12 @@ profile filezilla /usr/bin/filezilla {
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   

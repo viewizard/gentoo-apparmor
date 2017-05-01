@@ -15,6 +15,7 @@ profile net-tools.iptunnel /sbin/iptunnel flags=(complain) {
   
   # NETWORK --------------------------------------------
   network inet dgram,
+  network inet6 dgram,
   
   # PSEUDO ---------------------------------------------
   @{PROC}/@{pid}/net/dev				r,
@@ -28,6 +29,7 @@ profile net-tools.ifconfig /bin/ifconfig flags=(complain) {
   
   # NETWORK --------------------------------------------
   network inet dgram,
+  network inet6 dgram,
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
@@ -75,6 +77,10 @@ profile net-tools.hostname /bin/hostname flags=(complain) {	# FIX ME! 05.04.2017
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
+  
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  network inet6 dgram,
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

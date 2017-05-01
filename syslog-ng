@@ -34,6 +34,10 @@ profile syslog-ng /usr/sbin/syslog-ng {
   unix (receive) type=dgram,
   unix (receive) type=stream,
   
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  network inet6 dgram,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/kmsg						r,

@@ -82,6 +82,10 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   
   # NETWORK --------------------------------------------
   network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
   
   # PTRACE ---------------------------------------------
   ptrace (trace) peer=@{profile_name},

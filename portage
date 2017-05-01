@@ -28,6 +28,12 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
   capability kill,
   capability setfcap,
   
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
+  
   # PSEUDO ---------------------------------------------
   /dev/							r,
   /dev/tty						rw,
@@ -101,6 +107,12 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     
     # PTRACE -------------------------------------------
     ptrace (trace) peer="sysvinit.init",
+    
+    # NETWORK ------------------------------------------
+    network inet dgram,
+    network inet6 dgram,
+    network inet stream,
+    network inet6 stream,
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -208,8 +220,12 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     # PTRACE -------------------------------------------
     ptrace (trace) peer=@{profile_name},
     
-    # NETWORK --------------------------------------------
+    # NETWORK ------------------------------------------
     network netlink raw,
+    network inet dgram,
+    network inet6 dgram,
+    network inet stream,
+    network inet6 stream,
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,

@@ -21,6 +21,10 @@ profile dnsmasq /usr/sbin/dnsmasq {
   
   # NETWORK --------------------------------------------
   network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
@@ -40,6 +44,9 @@ profile dnsmasq.init.d /etc/init.d/dnsmasq {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
+  
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/dnsmasq					Px,

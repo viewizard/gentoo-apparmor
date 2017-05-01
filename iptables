@@ -24,6 +24,8 @@ profile iptables.xtables-multi /sbin/xtables-multi flags=(complain) {
   # NETWORK --------------------------------------------
   network inet raw,
   network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
   
   # PSEUDO ---------------------------------------------
   /dev/console						rw,
@@ -62,6 +64,7 @@ profile iptables.init.d /etc/init.d/iptables {
   }
 }
 
+# Скрипт firewall-a, добавленный через portage/env.
 profile iptables.firewall /usr/sbin/firewall {
   #include <abstractions/base>
   #include <abstractions/nameservice>

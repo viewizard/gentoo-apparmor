@@ -23,6 +23,12 @@ profile uget.uget-gtk /usr/bin/uget-gtk {
   #include <abstractions/nameservice>
   #include <abstractions/executable-binary-helper>
   
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,

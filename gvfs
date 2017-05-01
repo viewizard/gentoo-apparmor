@@ -63,7 +63,7 @@ profile gvfs.gvfsd /usr/libexec/gvfsd {
   
   # READS/WRITES ---------------------------------------
   /usr/share/gvfs/{,**}					r,
-  /run/user/*/gvfs/{,**}				rw,
+  /run/user/[0-9]*/gvfs/{,**}				rw,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.gvfs/					rw,
@@ -114,10 +114,20 @@ profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   capability dac_read_search,
   capability sys_admin,
   
+  # UNIX -----------------------------------------------
+  unix (send, receive, connect)
+  	type=stream
+  	addr=none
+  	peer=(addr="@/dbus-vfs-daemon/socket-*" label="gvfs.gvfsd-smb"),
+  unix (send, receive)
+  			type=stream
+  			addr=none
+  			peer=(label="gvfs.gvfsd-smb"),
+  
   # MOUNT ----------------------------------------------
-  mount options=(rw, nosuid, nodev) -> /run/user/*/gvfs/,
+  mount options=(rw, nosuid, nodev) -> /run/user/[0-9]*/gvfs/,
   mount options=(rw, nosuid, nodev) -> /root/.gvfs/,
-  umount /run/user/*/gvfs/,
+  umount /run/user/[0-9]*/gvfs/,
   umount /root/.gvfs/,
   
   # PSEUDO ---------------------------------------------
@@ -130,7 +140,7 @@ profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   
   # READS/WRITES ---------------------------------------
   /etc/fuse.conf					r,
-  /run/user/*/gvfs/{,**}				rw,
+  /run/user/[0-9]*/gvfs/{,**}				rw,
   
   # USERS ----------------------------------------------
   @{HOME}/.gvfs/{,**}					rw,
@@ -216,9 +226,29 @@ profile gvfs.gvfsd-smb /usr/libexec/gvfsd-smb {
   unix (bind, listen, send, receive, accept)
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*",
+  unix (send, receive)
+  			type=stream
+  			addr=none
+  			peer=(label="gvfs.gvfsd-fuse"),
+  unix (send, receive)
+  			type=stream
+  			addr=none
+  			peer=(label="libreoffice.bin"),		# libreoffice
+  unix (send, receive)
+  			type=stream
+  			addr=none
+  			peer=(label="ristretto"),		# ristretto
+  unix (send, receive)
+  			type=stream
+  			addr=none
+  			peer=(label="tumbler"),			# tumbler
   
   # NETWORK --------------------------------------------
   network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-smb				mr,
@@ -243,6 +273,10 @@ profile gvfs.gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse {
   
   # NETWORK --------------------------------------------
   network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-smb-browse				mr,
@@ -262,10 +296,10 @@ profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   unix (bind, listen, send, receive, accept)
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*",
-  unix (send, receive, connect)
+  unix (send, receive)
 			type=stream
 			addr=none
-			peer=(label="tumbler"),
+			peer=(label="tumbler"),			# tumbler
   
   # PSEUDO ---------------------------------------------
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}name	r,

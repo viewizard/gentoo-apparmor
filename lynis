@@ -19,6 +19,12 @@ profile lynis /usr/sbin/lynis {
   capability sys_ptrace,
   capability dac_read_search,
   
+  # NETWORK --------------------------------------------
+  network inet dgram,						# /usr/bin/dig
+  network inet6 dgram,						# /usr/bin/dig
+  network inet stream,						# /usr/bin/dig
+  network inet6 stream,						# /usr/bin/dig
+  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/pts/[0-9]*					rw,

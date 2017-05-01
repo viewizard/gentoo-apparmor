@@ -73,6 +73,10 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   
   # NETWORK --------------------------------------------
   network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -81,13 +85,10 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/panel/wrapper-1.0		m,
-  /usr/bin/xfce4-session-logout				Px,
   /bin/env						Cx,
   /usr/bin/xflock4					Px,
   /usr/bin/alock					Px,
   /usr/bin/passwd.sh					Px,
-  /usr/bin/xfce4-panel					Px,
-  /usr/bin/xfce4-session-settings			Px,
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/menus/**.menu				r,

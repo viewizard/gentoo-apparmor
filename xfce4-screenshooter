@@ -26,6 +26,13 @@ profile xfce4-screenshooter /usr/bin/xfce4-screenshooter {
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/executable-binary-helper>
   
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,

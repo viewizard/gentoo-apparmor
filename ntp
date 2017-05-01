@@ -22,6 +22,10 @@ profile ntp.ntpd /usr/sbin/ntpd {
   
   # NETWORK --------------------------------------------
   network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
   
   # PSEUDO ---------------------------------------------
   /dev/console						rw,
@@ -54,12 +58,20 @@ profile ntp.ntpq /usr/bin/ntpq {
   
   # NETWORK --------------------------------------------
   network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/ntpq						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/inputrc						r,
+  /etc/terminfo/x/xterm					r,
   
   # NOISY ----------------------------------------------
   deny /{,s}bin/					r,

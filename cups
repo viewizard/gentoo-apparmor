@@ -50,6 +50,10 @@ profile cups.cupsd /usr/sbin/cupsd {
 			addr=none
   			peer=(label="poppler.pdftops"),
   
+  # NETWORK --------------------------------------------
+  network inet stream,
+  network inet6 stream,
+  
   # PSEUDO ---------------------------------------------
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
@@ -71,7 +75,7 @@ profile cups.cupsd /usr/sbin/cupsd {
   /etc/cups/*.conf*					rw,
   /etc/cups/ppd/{,**}					rw,
   /usr/libexec/cups/**					r,
-  /usr/share/cups/**					r,
+  /usr/share/cups/{,**}					r,
   /run/cups/{,**}					rw,
   /var/cache/cups/{,**}					rwk,
   /var/spool/cups/{,**}					rw,
@@ -135,13 +139,16 @@ profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  network inet6 dgram,
+  
   # EXECUTABLES ----------------------------------------
   /usr/libexec/cups/cgi-bin/*				mr,
   
   # READS/WRITES ---------------------------------------
   /etc/cups/{,**}					r,
-  /usr/share/cups/templates/{,**}			r,
-  /usr/share/cups/data/{,**}				r,
+  /usr/share/cups/{,**}					r,
   /run/cups/certs/{,**}					r,
   /run/cups/cups.sock					rw,
   /var/cache/cups/*					r,
@@ -187,10 +194,11 @@ profile cups.backend /usr/libexec/cups/backend/* {
   			peer=(label="cups.cupsd"),
   
   # NETWORK --------------------------------------------
+  network netlink raw,
   network inet dgram,
   network inet6 dgram,
   network inet stream,
-  network netlink raw,
+  network inet6 stream,
   
   # PSEUDO ---------------------------------------------
   /dev/bus/usb/						r,
