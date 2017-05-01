@@ -39,6 +39,7 @@ profile dbus.dbus-daemon /usr/bin/dbus-daemon {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dbus-daemon					mr,
+  /usr/bin/gnome-keyring-daemon				Px,
   /usr/bin/thunar					Px,	# XFCE4
   /usr/lib{,32,64}/xfce4/xfconf/xfconfd			Px,	# XFCE4
   /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd		Px,	# XFCE4
@@ -57,6 +58,7 @@ profile dbus.dbus-daemon /usr/bin/dbus-daemon {
   /usr/share/dbus-1/**					r,
   /usr/share/defaults/at-spi2/accessibility.conf	r,
   /run/dbus.pid						rw,
+  /run/ConsoleKit/inhibit/inhibit.*.pipe		w,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
@@ -152,10 +154,13 @@ profile dbus.dbus-daemon-launch-helper /usr/libexec/dbus-daemon-launch-helper {
   # EXECUTABLES ----------------------------------------
   /usr/libexec/dbus-daemon-launch-helper		mr,
   /usr/sbin/console-kit-daemon				Px,
+  /usr/sbin/ModemManager				Px,
+  /usr/sbin/wpa_supplicant				Px,
   /usr/lib{,32,64}/polkit-1/polkitd			Px,
   /usr/lib{,32,64}/udisks/udisks-daemon			Px,
   /usr/lib{,32,64}/upower/upowerd			Px,
   /usr/libexec/udisks2/udisksd				Px,
+  /usr/libexec/nm-dispatcher				Px,
   
   # READS/WRITES ---------------------------------------
   /etc/dbus-1/**					r,

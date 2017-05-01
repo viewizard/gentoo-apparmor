@@ -78,7 +78,7 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
   /sys/devices/**/input/input[0-9]*/{,capabilities/}*	r,
   /sys/devices/pnp[0-9]*/*/rtc/rtc[0-9]*/hctosys	r,
   /sys/module/block/parameters/events_dfl_poll_msecs	rw,
-  /sys/module/coretemp/initstate			r,
+  /sys/module/*/initstate				r,
   @{PROC}/cmdline					r,
   @{PROC}/@{pid}/oom_score_adj				rw,
   
@@ -88,6 +88,7 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
   /sbin/dmsetup						Px,
   /sbin/mdadm						Px,
   /sbin/lvm						Px,
+  /usr/sbin/crda					Px,
   /usr/sbin/alsactl					Px,
   /lib{,32,64}/udev/net.sh				Px,
   /lib{,32,64}/udev/nvidia-udev.sh			Px,

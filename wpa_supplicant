@@ -25,3 +25,25 @@ profile wpa_supplicant.wpa_gui /usr/bin/wpa_gui flags=(complain) {
   owner @{HOME}/.config/wpa_supplicant/			rw,
   owner @{HOME}/.config/wpa_supplicant/wpa_gui.conf	rwk,
 }
+
+profile wpa_supplicant.wpa_supplicant /usr/sbin/wpa_supplicant flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/dbus-strict>
+  
+  # CAPABILITIES ---------------------------------------
+  capability sys_module,
+  capability net_admin,
+  capability net_raw,
+  capability mknod,
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  network packet dgram,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/rfkill						r,
+  @{PROC}/sys/net/ipv{4,6}/conf/wlan[0-9]*/drop_unicast_in_l2_multicast rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/wpa_supplicant				mr,
+}

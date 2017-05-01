@@ -1,0 +1,135 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+profile networkmanager.NetworkManager /usr/sbin/NetworkManager flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/nameservice>
+  
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  capability net_admin,
+  capability net_raw,
+  capability sys_ptrace,
+  capability wake_alarm,
+  capability net_bind_service,
+  capability dac_override,
+  
+  # PTRACE ---------------------------------------------
+  ptrace (trace) peer="networkmanager.nm-online",
+  ptrace (trace) peer="nm-applet",
+  ptrace (trace) peer="nm-applet.nm-connection-editor",
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  network packet dgram,
+  network inet dgram,
+  network inet6 dgram,
+  network inet raw,
+  network inet6 raw,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/rfkill						rw,
+  /dev/pts/[0-9]*					rw,
+  /sys/bus/						r,
+  /sys/class/						r,
+  /sys/class/net/					r,
+  /sys/class/rfkill/					r,
+  /sys/devices/virtual/net/lo/{,*}			r,
+  /sys/devices/pci[0-9]**/net/{,**}			r,
+  /sys/devices/pci[0-9]**/usb[0-9]*/**/uevent		r,
+  @{PROC}/@{pid}/stat					r,
+  @{PROC}/sys/kernel/random/boot_id			r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/NetworkManager				mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/machine-id					r,
+  /etc/udev/udev.conf					r,
+  /etc/NetworkManager/{,**}				r,
+  /etc/NetworkManager/system-connections/*		w,
+  /run/NetworkManager/{,**}				rw,
+  /run/udev/data/{,*}					r,
+  /run/ConsoleKit/inhibit/inhibit.*.pipe		w,
+  /run/ConsoleKit/database				r,
+  /var/lib/NetworkManager/{,**}				rw,
+}
+
+profile networkmanager.nm-online /usr/bin/nm-online flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/dbus-strict>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/nm-online					mr,
+}
+
+profile networkmanager.nm-dispatcher /usr/libexec/nm-dispatcher flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/dbus-strict>
+  
+  # PSEUDO ---------------------------------------------
+  @{PROC}/@{pid}/fd/					r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/nm-dispatcher				mr,
+  /etc/NetworkManager/dispatcher.d/10-openrc-status	Cx,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/NetworkManager/dispatcher.d/{,*}			r,
+  
+  profile 10-openrc-status /etc/NetworkManager/dispatcher.d/10-openrc-status flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    
+    # EXECUTABLES --------------------------------------
+    /etc/NetworkManager/dispatcher.d/10-openrc-status	r,
+    @{shell}						mr,
+    /bin/grep						ix,
+    /sbin/rc-service					Px,
+    /usr/bin/nm-online					Px,
+  }
+}
+
+profile networkmanager.NetworkManager.init.d /etc/init.d/NetworkManager flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						Cx,
+  /usr/bin/nm-online					Px,
+  /usr/sbin/NetworkManager				Px,
+  /etc/init.d/dnsmasq					Px,
+  /etc/init.d/netmount					Px,
+  /etc/init.d/tor					Px,
+  /etc/init.d/suricata					Px,
+  /lib{,32,64}/rc/sbin/mark_service_inactive		ix,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/{conf,init}.d/NetworkManager			r,
+  /run/NetworkManager/NetworkManager.pid		r,
+  
+  profile shell @{shell} {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/openrc_shell>
+  }
+}

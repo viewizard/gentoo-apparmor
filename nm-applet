@@ -1,0 +1,64 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+profile nm-applet /usr/bin/nm-applet flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/fonts>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/gtk>
+  #include <abstractions/X>
+  #include <abstractions/dconf>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
+  #include <abstractions/nameservice>
+  #include <abstractions/executable-binary-helper>
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /sys/devices/pci[0-9]**/net/{,**}			r,
+  /sys/devices/pci[0-9]**/uevent			r,
+  @{PROC}/@{pid}/fd/					r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/nm-applet					mr,
+  /usr/bin/nm-connection-editor				Px,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/udev/udev.conf					r,
+  /run/udev/data/{,*}					r,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
+}
+
+profile nm-applet.nm-connection-editor /usr/bin/nm-connection-editor flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/fonts>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/gtk>
+  #include <abstractions/X>
+  #include <abstractions/dconf>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/nm-connection-editor				mr,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
+}
