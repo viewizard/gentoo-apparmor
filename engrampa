@@ -103,7 +103,7 @@ profile engrampa_root {
   #include <abstractions/xdg-open_root>
   #include <abstractions/executable-binary-helper_root>
   #include <abstractions/program-work-with-disk-rwkl-strict>
-  #include <abstractions/user-systemwide-files>
+  #include <abstractions/systemwide-root-files>
   
   # CAPABILITIES ---------------------------------------
   capability chown,
@@ -151,7 +151,7 @@ profile engrampa_root {
   profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/program-work-with-disk-rwkl-strict>
-    #include <abstractions/user-systemwide-files>
+    #include <abstractions/systemwide-root-files>
     
     # PSEUDO ---------------------------------------------
     /dev/tty						rw,
@@ -167,7 +167,7 @@ profile engrampa_root {
   profile rar /opt/rar/rar {
     #include <abstractions/base>
     #include <abstractions/program-work-with-disk-rwkl-strict>
-    #include <abstractions/user-systemwide-files>
+    #include <abstractions/systemwide-root-files>
     
     # EXECUTABLES --------------------------------------
     /opt/rar/rar					mr,

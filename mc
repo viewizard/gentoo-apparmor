@@ -46,7 +46,7 @@ profile mc_root flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk>
-  #include <abstractions/user-systemwide-files>
+  #include <abstractions/systemwide-root-files>
   
   # CAPABILITIES ---------------------------------------
   capability setuid,
