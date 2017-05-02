@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile seahorse /usr/bin/seahorse flags=(complain) {
+profile seahorse /usr/bin/seahorse {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -36,8 +36,12 @@ profile seahorse /usr/bin/seahorse flags=(complain) {
   /usr/share/seahorse/{,**}				r,
   /usr/share/p11-kit/modules/{,*.module}		r,
   /usr/lib{,32,64}/pkcs11/*.so				m,
+  /run/user/[0-9]*/keyring/pkcs11			rw,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.gnupg/{,**}				r,
   owner @{HOME}/.ssh/{,**}				r,
+  
+  # TEMP -----------------------------------------------
+  /tmp/seahorse-photoid-*				rw,
 }

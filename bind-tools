@@ -10,25 +10,22 @@
 
 #include <tunables/global>
 
-profile modemmanager.ModemManager /usr/sbin/ModemManager {
+profile bind-tools.dig /usr/bin/dig {
   #include <abstractions/base>
-  #include <abstractions/dbus-strict>
+  #include <abstractions/nameservice>
+  #include <abstractions/ssl_certs>
   
   # NETWORK --------------------------------------------
-  network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
   
-  # PSEUDO ---------------------------------------------
-  /sys/bus/						r,
-  /sys/bus/usb/devices/					r,
-  /sys/class/						r,
-  /sys/class/tty/					r,
-  /sys/class/net/					r,
-  /sys/devices/**/uevent				r,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /usr/sbin/ModemManager				mr,
+  /usr/bin/dig						mr,
   
-  # READS/WRITES ---------------------------------------
-  /etc/udev/udev.conf					r,
-  /run/udev/data/{,*}					r,
+  # DENY INHERIT ---------------------------------------
+  deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
 }

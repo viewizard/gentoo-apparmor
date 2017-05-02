@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile nm-applet /usr/bin/nm-applet flags=(complain) {
+profile nm-applet /usr/bin/nm-applet {
   #include <abstractions/base>
   #include <abstractions/fonts>
   #include <abstractions/freedesktop.org>
@@ -43,7 +43,7 @@ profile nm-applet /usr/bin/nm-applet flags=(complain) {
   owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
-profile nm-applet.nm-connection-editor /usr/bin/nm-connection-editor flags=(complain) {
+profile nm-applet.nm-connection-editor /usr/bin/nm-connection-editor {
   #include <abstractions/base>
   #include <abstractions/fonts>
   #include <abstractions/freedesktop.org>
@@ -52,6 +52,7 @@ profile nm-applet.nm-connection-editor /usr/bin/nm-connection-editor flags=(comp
   #include <abstractions/dconf>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

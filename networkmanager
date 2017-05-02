@@ -10,13 +10,14 @@
 
 #include <tunables/global>
 
-profile networkmanager.NetworkManager /usr/sbin/NetworkManager flags=(complain) {
+profile networkmanager.NetworkManager /usr/sbin/NetworkManager {
   #include <abstractions/base>
   #include <abstractions/dbus-strict>
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
   capability mknod,
+  capability kill,
   capability net_admin,
   capability net_raw,
   capability sys_ptrace,
@@ -28,6 +29,12 @@ profile networkmanager.NetworkManager /usr/sbin/NetworkManager flags=(complain) 
   ptrace (trace) peer="networkmanager.nm-online",
   ptrace (trace) peer="nm-applet",
   ptrace (trace) peer="nm-applet.nm-connection-editor",
+  ptrace (trace) peer="dnsmasq",				# dnsmasq
+  ptrace (trace) peer="evelauncher",				# evelauncher
+  ptrace (trace) peer="teamspeak-client-bin.teamspeak",		# teamspeak-client-bin
+  
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(kill) peer="dnsmasq",
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -50,12 +57,17 @@ profile networkmanager.NetworkManager /usr/sbin/NetworkManager flags=(complain) 
   /sys/devices/pci[0-9]**/usb[0-9]*/**/uevent		r,
   @{PROC}/@{pid}/stat					r,
   @{PROC}/sys/kernel/random/boot_id			r,
+  @{PROC}/@{pid}/fd/					r,
+  @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/NetworkManager				mr,
+  /usr/sbin/dnsmasq					Px,
   
   # READS/WRITES ---------------------------------------
   /etc/machine-id					r,
+  /etc/resolv.conf{,.*}					rw,
+  /etc/.resolv.conf.NetworkManager			rw,
   /etc/udev/udev.conf					r,
   /etc/NetworkManager/{,**}				r,
   /etc/NetworkManager/system-connections/*		w,
@@ -66,7 +78,7 @@ profile networkmanager.NetworkManager /usr/sbin/NetworkManager flags=(complain) 
   /var/lib/NetworkManager/{,**}				rw,
 }
 
-profile networkmanager.nm-online /usr/bin/nm-online flags=(complain) {
+profile networkmanager.nm-online /usr/bin/nm-online {
   #include <abstractions/base>
   #include <abstractions/dbus-strict>
   
@@ -78,7 +90,7 @@ profile networkmanager.nm-online /usr/bin/nm-online flags=(complain) {
   /usr/bin/nm-online					mr,
 }
 
-profile networkmanager.nm-dispatcher /usr/libexec/nm-dispatcher flags=(complain) {
+profile networkmanager.nm-dispatcher /usr/libexec/nm-dispatcher {
   #include <abstractions/base>
   #include <abstractions/dbus-strict>
   
@@ -92,7 +104,7 @@ profile networkmanager.nm-dispatcher /usr/libexec/nm-dispatcher flags=(complain)
   # READS/WRITES ---------------------------------------
   /etc/NetworkManager/dispatcher.d/{,*}			r,
   
-  profile 10-openrc-status /etc/NetworkManager/dispatcher.d/10-openrc-status flags=(complain) {
+  profile 10-openrc-status /etc/NetworkManager/dispatcher.d/10-openrc-status {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
@@ -108,7 +120,7 @@ profile networkmanager.nm-dispatcher /usr/libexec/nm-dispatcher flags=(complain)
   }
 }
 
-profile networkmanager.NetworkManager.init.d /etc/init.d/NetworkManager flags=(complain) {
+profile networkmanager.NetworkManager.init.d /etc/init.d/NetworkManager {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>

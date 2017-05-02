@@ -12,11 +12,13 @@
 
 profile dnsmasq /usr/sbin/dnsmasq {
   #include <abstractions/base>
+  #include <abstractions/dbus-strict>
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
   capability setgid,
   capability setuid,
+  capability net_raw,
   capability net_bind_service,
   
   # NETWORK --------------------------------------------
@@ -34,8 +36,10 @@ profile dnsmasq /usr/sbin/dnsmasq {
   
   # READS/WRITES ---------------------------------------
   /etc/dnsmasq.conf					r,
+  /etc/NetworkManager/dnsmasq.d/{,*}			r,	# networkmanager
   /usr/share/dnsmasq/{,*}				r,
   /run/dnsmasq.pid					rw,
+  /run/NetworkManager/dnsmasq.pid			rw,	# networkmanager
   /var/lib/hosts.blacklist				r,
   /var/lib/misc/dnsmasq.leases				rw,
 }

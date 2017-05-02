@@ -26,7 +26,7 @@ profile wpa_supplicant.wpa_gui /usr/bin/wpa_gui flags=(complain) {
   owner @{HOME}/.config/wpa_supplicant/wpa_gui.conf	rwk,
 }
 
-profile wpa_supplicant.wpa_supplicant /usr/sbin/wpa_supplicant flags=(complain) {
+profile wpa_supplicant.wpa_supplicant /usr/sbin/wpa_supplicant {
   #include <abstractions/base>
   #include <abstractions/dbus-strict>
   
@@ -39,6 +39,8 @@ profile wpa_supplicant.wpa_supplicant /usr/sbin/wpa_supplicant flags=(complain) 
   # NETWORK --------------------------------------------
   network netlink raw,
   network packet dgram,
+  network inet dgram,
+  network inet6 dgram,
   
   # PSEUDO ---------------------------------------------
   /dev/rfkill						r,
