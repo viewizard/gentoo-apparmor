@@ -10,26 +10,18 @@
 
 #include <tunables/global>
 
-profile modemmanager.ModemManager /usr/sbin/ModemManager {
+profile xfce4-volumed-pulse /usr/bin/xfce4-volumed-pulse {
   #include <abstractions/base>
-  #include <abstractions/dbus-strict>
-  
-  # NETWORK --------------------------------------------
-  network netlink raw,
+  #include <abstractions/gtk>
+  #include <abstractions/X-connection-strict>
+  #include <abstractions/audio-pulseaudio>
+  #include <abstractions/dbus-session-strict>
   
   # PSEUDO ---------------------------------------------
-  /sys/bus/						r,
-  /sys/bus/usb/devices/					r,
-  /sys/class/						r,
-  /sys/class/tty/					r,
-  /sys/class/net/					r,
-  /sys/class/usbmisc/					r,
-  /sys/devices/**/uevent				r,
+  /dev/tty[0-9]*					rw,
+  @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/sbin/ModemManager				mr,
-  
-  # READS/WRITES ---------------------------------------
-  /etc/udev/udev.conf					r,
-  /run/udev/data/{,*}					r,
+  /usr/bin/xfce4-volumed-pulse				mr,
+  /usr/bin/pulseaudio					Px,
 }

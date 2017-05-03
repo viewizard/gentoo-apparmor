@@ -29,12 +29,14 @@ profile networkmanager.NetworkManager /usr/sbin/NetworkManager {
   ptrace (trace) peer="networkmanager.nm-online",
   ptrace (trace) peer="nm-applet",
   ptrace (trace) peer="nm-applet.nm-connection-editor",
-  ptrace (trace) peer="dnsmasq",				# dnsmasq
-  ptrace (trace) peer="evelauncher",				# evelauncher
-  ptrace (trace) peer="teamspeak-client-bin.teamspeak",		# teamspeak-client-bin
+  ptrace (trace) peer="dhcp.dhclient",
+  ptrace (trace) peer="dnsmasq",
+  ptrace (trace) peer="evelauncher",
+  ptrace (trace) peer="teamspeak-client-bin.teamspeak",
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(kill) peer="dnsmasq",
+  signal (send) set=(term, kill) peer="dhcp.dhclient",
+  signal (send) set=(term, kill) peer="dnsmasq",
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -62,19 +64,22 @@ profile networkmanager.NetworkManager /usr/sbin/NetworkManager {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/NetworkManager				mr,
-  /usr/sbin/dnsmasq					Px,
+  /sbin/dhclient					Px,	# dhcp.dhclient
+  /usr/sbin/dnsmasq					Px,	# dnsmasq
   
   # READS/WRITES ---------------------------------------
   /etc/machine-id					r,
   /etc/resolv.conf{,.*}					rw,
   /etc/.resolv.conf.NetworkManager			rw,
   /etc/udev/udev.conf					r,
+  /etc/dhcp/dhclient.conf				r,	# dhcp.dhclient
   /etc/NetworkManager/{,**}				r,
   /etc/NetworkManager/system-connections/*		w,
   /run/NetworkManager/{,**}				rw,
   /run/udev/data/{,*}					r,
   /run/ConsoleKit/inhibit/inhibit.*.pipe		w,
   /run/ConsoleKit/database				r,
+  /run/dhclient-*.pid					rw,	# dhcp.dhclient
   /var/lib/NetworkManager/{,**}				rw,
 }
 
@@ -88,6 +93,20 @@ profile networkmanager.nm-online /usr/bin/nm-online {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/nm-online					mr,
+}
+
+profile networkmanager.nm-dhcp-helper /usr/libexec/nm-dhcp-helper {
+  #include <abstractions/base>
+  
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  network inet6 dgram,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/nm-dhcp-helper				mr,
+  
+  # READS/WRITES ---------------------------------------
+  /run/NetworkManager/private-dhcp			rw,
 }
 
 profile networkmanager.nm-dispatcher /usr/libexec/nm-dispatcher {

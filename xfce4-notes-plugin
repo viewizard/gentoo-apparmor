@@ -10,26 +10,17 @@
 
 #include <tunables/global>
 
-profile modemmanager.ModemManager /usr/sbin/ModemManager {
+profile xfce4-notes-plugin.xfce4-notes-settings /usr/bin/xfce4-notes-settings {
   #include <abstractions/base>
-  #include <abstractions/dbus-strict>
-  
-  # NETWORK --------------------------------------------
-  network netlink raw,
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+  #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
   
   # PSEUDO ---------------------------------------------
-  /sys/bus/						r,
-  /sys/bus/usb/devices/					r,
-  /sys/class/						r,
-  /sys/class/tty/					r,
-  /sys/class/net/					r,
-  /sys/class/usbmisc/					r,
-  /sys/devices/**/uevent				r,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /usr/sbin/ModemManager				mr,
-  
-  # READS/WRITES ---------------------------------------
-  /etc/udev/udev.conf					r,
-  /run/udev/data/{,*}					r,
+  /usr/bin/xfce4-notes-settings				mr,
 }

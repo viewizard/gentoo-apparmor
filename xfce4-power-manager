@@ -1,0 +1,70 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+profile xfce4-power-manager /usr/bin/xfce4-power-manager flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+  #include <abstractions/X>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
+  #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/stat				r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/xfce4-power-manager				mr,
+  /usr/bin/pm-is-supported				Px,
+  /usr/bin/xfce4-power-manager-settings			Px,
+  /usr/sbin/xfpm-power-backlight-helper			Px,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/xdg/autostart/xfce4-power-manager.desktop	r,
+}
+
+profile xfce4-power-manager.xfpm-power-backlight-helper /usr/sbin/xfpm-power-backlight-helper flags=(complain) {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/xfpm-power-backlight-helper			mr,
+}
+
+profile xfce4-power-manager.xfce4-power-manager-settings /usr/bin/xfce4-power-manager-settings flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+  #include <abstractions/video>
+  #include <abstractions/X>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  @{PROC}/@{pid}/fd/					r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/xfce4-power-manager-settings			mr,
+  /usr/bin/xfce4-power-manager				Px,
+  /usr/bin/exo-open					Px,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/xfce4/help.rc			rw,
+  owner @{HOME}/.config/xfce4/help.rc.*.tmp		rw,
+}

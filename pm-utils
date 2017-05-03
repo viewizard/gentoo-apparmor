@@ -10,26 +10,19 @@
 
 #include <tunables/global>
 
-profile modemmanager.ModemManager /usr/sbin/ModemManager {
+profile pm-utils.pm-is-supported /usr/bin/pm-is-supported flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/dbus-strict>
-  
-  # NETWORK --------------------------------------------
-  network netlink raw,
   
   # PSEUDO ---------------------------------------------
-  /sys/bus/						r,
-  /sys/bus/usb/devices/					r,
-  /sys/class/						r,
-  /sys/class/tty/					r,
-  /sys/class/net/					r,
-  /sys/class/usbmisc/					r,
-  /sys/devices/**/uevent				r,
+  /dev/tty						rw,
+  /sys/power/state					r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/sbin/ModemManager				mr,
+  /usr/bin/pm-is-supported				r,
+  @{shell}						mr,
+  /bin/tr						ix,
+  /bin/grep						ix,
   
   # READS/WRITES ---------------------------------------
-  /etc/udev/udev.conf					r,
-  /run/udev/data/{,*}					r,
+  /etc/pm/config.d/{,**}				r,
 }

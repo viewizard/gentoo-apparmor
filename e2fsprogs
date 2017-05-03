@@ -22,6 +22,7 @@ profile e2fsprogs.e2fsck /sbin/e2fsck flags=(complain) {
   /dev/@{BLOCK_ALL}					rw,
   @{PROC}/swaps						r,
   @{PROC}/@{pid}/mounts					r,
+  @{PROC}/acpi/ac_adapter/				r,	# Опция "defer_check_on_battery" (man e2fsck.conf).
   
   # EXECUTABLES ----------------------------------------
   /sbin/e2fsck						mr,

@@ -89,6 +89,7 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   /usr/bin/xflock4					Px,
   /usr/bin/alock					Px,
   /usr/bin/passwd.sh					Px,
+  /usr/bin/xfce4-notes-settings				Px,
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/menus/**.menu				r,
@@ -139,6 +140,7 @@ profile xfce4-panel.wrapper-2.0 /usr/lib{,32,64}/xfce4/panel/wrapper-2.0 {
   #include <abstractions/X>
   #include <abstractions/gtk>
   #include <abstractions/audio>
+  #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/executable-binary-programs>
   
@@ -149,7 +151,7 @@ profile xfce4-panel.wrapper-2.0 /usr/lib{,32,64}/xfce4/panel/wrapper-2.0 {
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/panel/wrapper-2.0		m,
   /usr/bin/pulseaudio					Px,
-  /usr/bin/pavucontrol					Px,
+  /usr/sbin/xfpm-power-backlight-helper			Px,
 }
 
 profile xfce4-panel.xfce4-xkb-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-xkb-plugin {

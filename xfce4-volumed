@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2017 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,20 +10,25 @@
 
 #include <tunables/global>
 
-profile xfce4-clipman-plugin.xfce4-clipman-settings /usr/bin/xfce4-clipman-settings {
+# Важно!
+# С плагином pulse (с выводом через pulseaudio) работает не корректно,
+# надо устанавливать пакет xfce4-volumed-pulse.
+
+profile xfce4-volumed /usr/bin/xfce4-volumed {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
   #include <abstractions/gtk>
-  #include <abstractions/X>
+  #include <abstractions/X-connection-strict>
+  #include <abstractions/audio-alsa>
   #include <abstractions/dbus-session-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/xfce4-clipman-settings			mr,
+  /usr/bin/xfce4-volumed				mr,
+  /usr/lib{,32,64}/gstreamer-[0-9]*/gst-plugin-scanner	Px,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/xfce4/panel/*			rw,
+  owner @{HOME}/.gstreamer-[0-9]*/{,registry.*.bin}	rw,
 }

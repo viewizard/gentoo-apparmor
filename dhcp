@@ -10,26 +10,28 @@
 
 #include <tunables/global>
 
-profile modemmanager.ModemManager /usr/sbin/ModemManager {
+profile dhcp.dhclient /sbin/dhclient {
   #include <abstractions/base>
-  #include <abstractions/dbus-strict>
+  #include <abstractions/nameservice>
+  
+  # CAPABILITIES ---------------------------------------
+  capability net_raw,
+  capability net_bind_service,
   
   # NETWORK --------------------------------------------
-  network netlink raw,
+  network packet raw,
+  network inet dgram,
+  network inet6 dgram,
   
   # PSEUDO ---------------------------------------------
-  /sys/bus/						r,
-  /sys/bus/usb/devices/					r,
-  /sys/class/						r,
-  /sys/class/tty/					r,
-  /sys/class/net/					r,
-  /sys/class/usbmisc/					r,
-  /sys/devices/**/uevent				r,
+  @{PROC}/@{pid}/net/dev				r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/sbin/ModemManager				mr,
+  /sbin/dhclient					mr,
+  /usr/libexec/nm-dhcp-helper				Px,	# DELEGATION! networkmanager.NetworkManager
   
   # READS/WRITES ---------------------------------------
-  /etc/udev/udev.conf					r,
-  /run/udev/data/{,*}					r,
+  /run/dhclient-*.pid					rw,	# DELEGATION! networkmanager.NetworkManager
+  /var/lib/NetworkManager/dhclient-*.conf		r,	# DELEGATION! networkmanager.NetworkManager
+  /var/lib/NetworkManager/dhclient-*.lease		rw,	# DELEGATION! networkmanager.NetworkManager
 }

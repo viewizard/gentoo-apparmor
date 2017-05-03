@@ -12,7 +12,7 @@
 
 profile dnsmasq /usr/sbin/dnsmasq {
   #include <abstractions/base>
-  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-strict>				# DELEGATION! networkmanager.NetworkManager
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
@@ -36,10 +36,10 @@ profile dnsmasq /usr/sbin/dnsmasq {
   
   # READS/WRITES ---------------------------------------
   /etc/dnsmasq.conf					r,
-  /etc/NetworkManager/dnsmasq.d/{,*}			r,	# networkmanager
+  /etc/NetworkManager/dnsmasq.d/{,*}			r,	# DELEGATION! networkmanager.NetworkManager
   /usr/share/dnsmasq/{,*}				r,
   /run/dnsmasq.pid					rw,
-  /run/NetworkManager/dnsmasq.pid			rw,	# networkmanager
+  /run/NetworkManager/dnsmasq.pid			rw,	# DELEGATION! networkmanager.NetworkManager
   /var/lib/hosts.blacklist				r,
   /var/lib/misc/dnsmasq.leases				rw,
 }
