@@ -95,6 +95,7 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
   /lib{,32,64}/udev/ata_id				Px,
   /lib{,32,64}/udev/scsi_id				Px,
   /lib{,32,64}/udev/v4l_id				Px,
+  /lib{,32,64}/udev/cdrom_id				Px,
   /usr/lib{,32,64}/ConsoleKit/udev-acl			Px,
   
   # READS/WRITES ---------------------------------------
@@ -157,6 +158,24 @@ profile eudev.v4l_id /lib{,32,64}/udev/v4l_id flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/udev/v4l_id				mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/udev/udev.conf					r,
+}
+
+profile eudev.cdrom_id /lib{,32,64}/udev/cdrom_id flags=(complain) {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability sys_rawio,
+  capability sys_admin,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/@{BLOCK_MEDIA}					r,
+  @{PROC}/@{pid}/mountinfo				r,
+  
+  # EXECUTABLES ----------------------------------------
+  /lib{,32,64}/udev/cdrom_id				mr,
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,

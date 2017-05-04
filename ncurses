@@ -30,6 +30,7 @@ profile ncurses.tput /usr/bin/tput flags=(complain) {		# FIX ME! 04.04.2017 flag
   capability mknod,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -37,5 +38,5 @@ profile ncurses.tput /usr/bin/tput flags=(complain) {		# FIX ME! 04.04.2017 flag
   
   # READS/WRITES ---------------------------------------
   /etc/terminfo/x/xterm					r,
-#  /etc/terminfo/l/linux				r,	# FIX ME! пока не будет явного запроса, комментируем
+  /etc/terminfo/l/linux					r,
 }

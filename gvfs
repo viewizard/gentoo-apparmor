@@ -24,6 +24,12 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
   capability dac_override,
   capability dac_read_search,
   
+  # UNIX -----------------------------------------------
+  unix (send, receive, connect)
+  	type=stream
+  	addr=none
+  	peer=(addr="@/dbus-vfs-daemon/socket-*" label="gvfs.gvfsd-burn"),
+  
   # NETWORK --------------------------------------------
   network netlink raw,
   
@@ -78,6 +84,11 @@ profile gvfs.gvfsd-archive /usr/libexec/gvfsd-archive flags=(complain) {
 
 profile gvfs.gvfsd-burn /usr/libexec/gvfsd-burn flags=(complain) {
   #include <abstractions/base>
+  
+  # UNIX -----------------------------------------------
+  unix (bind, listen, send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*",
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-burn				mr,
