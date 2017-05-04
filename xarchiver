@@ -117,7 +117,7 @@ profile xarchiver_root {
   #include <abstractions/program-work-with-disk-rwkl-strict>
   #include <abstractions/xdg-open_root>
   #include <abstractions/executable-binary-helper_root>
-  #include <abstractions/systemwide-root-files>
+  #include <abstractions/fs-access-by-pattern-systemusers>
   
   # CAPABILITIES ---------------------------------------
   capability chown,
@@ -162,7 +162,7 @@ profile xarchiver_root {
   profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/program-work-with-disk-rwkl-strict>
-    #include <abstractions/systemwide-root-files>
+    #include <abstractions/fs-access-by-pattern-systemusers>
     
     # PSEUDO ---------------------------------------------
     /dev/tty						rw,
@@ -178,7 +178,7 @@ profile xarchiver_root {
   profile rar /opt/rar/rar {
     #include <abstractions/base>
     #include <abstractions/program-work-with-disk-rwkl-strict>
-    #include <abstractions/systemwide-root-files>
+    #include <abstractions/fs-access-by-pattern-systemusers>
     
     # EXECUTABLES --------------------------------------
     /opt/rar/rar					mr,

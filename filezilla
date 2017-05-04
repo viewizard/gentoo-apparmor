@@ -10,11 +10,6 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="**"
-# we could download folders with files, not just files...
-@{PROG_FILE}="**"
-
 profile filezilla /usr/bin/filezilla {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -23,7 +18,7 @@ profile filezilla /usr/bin/filezilla {
   #include <abstractions/video>
   #include <abstractions/X>
   #include <abstractions/dbus-session-strict>
-  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/fs-access-by-pattern-filemanager>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   
@@ -54,7 +49,7 @@ profile filezilla /usr/bin/filezilla {
   profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
-    #include <abstractions/program-work-with-disk-rwk>
+    #include <abstractions/fs-access-by-pattern-filemanager>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,

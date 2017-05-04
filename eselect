@@ -12,13 +12,11 @@
 
 profile eselect /usr/bin/eselect flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/systemwide-root-files>
+  #include <abstractions/fs-access-by-pattern-systemusers>
   
   # CAPABILITIES ---------------------------------------
   capability fsetid,
   capability sys_admin,
-  capability dac_override,
-  capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,

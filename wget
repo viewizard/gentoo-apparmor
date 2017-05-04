@@ -10,9 +10,10 @@
 
 #include <tunables/global>
 
-profile wget_root {
+# DELEGATION! Потом сделать для каждого вызывающего свои доступы.
+# Заменить вызовы черех ix на Px c делегейшеном.
+profile wget /usr/bin/wget {
   #include <abstractions/base>
-  #include <abstractions/systemwide-root-files>
   
   # NETWORK --------------------------------------------
   network inet dgram,

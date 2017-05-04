@@ -97,8 +97,8 @@ profile shell_root {
   #include <abstractions/shell>
   #include <abstractions/consoles>
   #include <abstractions/nameservice>
-  #include <abstractions/program-work-with-disk-rwk>
-  #include <abstractions/systemwide-root-files>
+  #include <abstractions/fs-access-by-pattern-filemanager>
+  #include <abstractions/fs-access-by-pattern-systemusers>
   #include <abstractions/authentication-pam_usb>
   
   # CAPABILITIES ---------------------------------------
@@ -111,8 +111,6 @@ profile shell_root {
   capability fowner,
   capability sys_tty_config,
   capability kill,
-  capability dac_read_search,
-  capability dac_override,
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(hup, int, kill, term, cont),		# Реакция на нажатия комбинаций кнопок.

@@ -10,11 +10,6 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="**"
-# we could copy folders, not just files
-@{PROG_FILE}="**"
-
 profile thunar /usr/bin/{Thunar,thunar} {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -25,7 +20,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   #include <abstractions/video>
   #include <abstractions/X>
   #include <abstractions/nameservice>
-  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/fs-access-by-pattern-filemanager>
   #include <abstractions/executable-binary-programs>
   #include <local/thunar-custom-exec>
   
@@ -102,10 +97,10 @@ profile thunar_root {
   #include <abstractions/video>
   #include <abstractions/X_sudo>
   #include <abstractions/nameservice>
-  #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/executable-binary-programs_root>
+  #include <abstractions/fs-access-by-pattern-filemanager>
+  #include <abstractions/fs-access-by-pattern-systemusers>
   #include <local/thunar_root-custom-exec>
-  #include <abstractions/systemwide-root-files>
   
   # CAPABILITIES ---------------------------------------
   capability sys_resource,

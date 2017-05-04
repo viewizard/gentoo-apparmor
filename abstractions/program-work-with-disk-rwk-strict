@@ -13,8 +13,23 @@
 # @{PROG_DIR}="[^.]**"
 # @{PROG_FILE}="{[^.]*.pdf,[^.]*.xps,qt_temp.*}"
 
-#include <abstractions/program-work-with-disk-rwk>
+#include <abstractions/xdg-open-folders>
 
 # Не разрешаем работать с доступными для интернет-программ ресурсами
 deny @{HOME}/@{XDG_PUBLICSHARE_DIR}/{,**}		rwkl,
 deny @{HOME}/@{XDG_DOWNLOAD_DIR}/{,**}			rwkl,
+
+/							r,
+@{HOMEDIRS}/						r,
+owner @{HOME}/						r,
+owner @{HOME}/@{PROG_DIR}/				r,
+owner @{HOME}/@{PROG_FILE}				rwk,
+owner @{HOME}/@{PROG_DIR}/@{PROG_FILE}			rwk,
+owner /run/user/[0-9]*/gvfs/*/				r,
+owner /run/user/[0-9]*/gvfs/*/@{PROG_DIR}/		r,
+owner /run/user/[0-9]*/gvfs/*/@{PROG_FILE}		rwk,
+owner /run/user/[0-9]*/gvfs/*/@{PROG_DIR}/@{PROG_FILE}	rwk,
+/media/							r,
+/media/@{PROG_DIR}/					r,
+/media/@{PROG_FILE}					rwk,
+/media/@{PROG_DIR}/@{PROG_FILE}				rwk,

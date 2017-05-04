@@ -10,14 +10,10 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="**"
-@{PROG_FILE}="**"
-
 profile mc /usr/bin/mc {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-  #include <abstractions/program-work-with-disk-rwk>
+  #include <abstractions/fs-access-by-pattern-filemanager>
   
   # CAPABILITIES ---------------------------------------
   capability setuid,
@@ -45,8 +41,8 @@ profile mc /usr/bin/mc {
 profile mc_root flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-  #include <abstractions/program-work-with-disk-rwk>
-  #include <abstractions/systemwide-root-files>
+  #include <abstractions/fs-access-by-pattern-filemanager>
+  #include <abstractions/fs-access-by-pattern-systemusers>
   
   # CAPABILITIES ---------------------------------------
   capability setuid,

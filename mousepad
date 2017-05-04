@@ -27,7 +27,7 @@ profile mousepad /usr/bin/mousepad {
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/executable-binary-helper>
-  #include <abstractions/systemwide-user-files>
+  #include <abstractions/fs-access-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -58,7 +58,7 @@ profile mousepad_root {
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/executable-binary-helper_root>
-  #include <abstractions/systemwide-root-files>
+  #include <abstractions/fs-access-by-pattern-systemusers>
   
   # CAPABILITIES ---------------------------------------
   capability fowner,

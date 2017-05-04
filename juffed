@@ -26,7 +26,7 @@ profile juffed /usr/bin/juffed {
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
-  #include <abstractions/systemwide-user-files>
+  #include <abstractions/fs-access-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -62,7 +62,7 @@ profile juffed_root {
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open_root>
-  #include <abstractions/systemwide-root-files>
+  #include <abstractions/fs-access-by-pattern-systemusers>
   
   # CAPABILITIES ---------------------------------------
   capability fowner,
