@@ -81,7 +81,6 @@ profile shell_users {
   /usr/bin/clear					Pxr,
   /usr/bin/wine						Pxr,
   /usr/bin/winecfg					Pxr,
-  /usr/bin/pamusb-agent					Pxr,	# pam_usb
   /usr/bin/libnotify-notify-send			Pxr,
   
   # READS/WRITES ---------------------------------------
@@ -99,7 +98,6 @@ profile shell_root {
   #include <abstractions/nameservice>
   #include <abstractions/fs-access-by-pattern-filemanager>
   #include <abstractions/fs-access-by-pattern-systemusers>
-  #include <abstractions/authentication-pam_usb>
   
   # CAPABILITIES ---------------------------------------
   capability setuid,
@@ -200,8 +198,6 @@ profile shell_root {
   /usr/bin/lsusb					Pxr,
   /usr/bin/gpg{,2,-static}				Pxr,
   /usr/bin/find						ixr,
-  /usr/bin/pamusb-check					Pxr,	# pam_usb
-  /usr/bin/pamusb-agent					Pxr,	# pam_usb
   /usr/bin/nmap						Pxr,
   /usr/bin/wget						Pxr -> wget_root,
   /usr/bin/man						Pxr,

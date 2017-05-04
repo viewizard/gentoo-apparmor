@@ -17,7 +17,6 @@
 /etc/security/pam-script/pam_script*			Px,	# pam-script
 
 # READS/WRITES -----------------------------------------
-/etc/pamusb.conf					r,	# pam_usb
 /etc/pam.d/*						r,	# PAM
 /etc/security/*						r,	# PAM
 /etc/shadow						r,	# PAM
@@ -28,7 +27,3 @@
 /lib{,32,64}/security/pam_*.so				mr,	# PAM
 /lib{,32,64}/security/pam_filter/*			mr,	# PAM
 /run/pam_mount/*					rwk,	# pam_mount
-/media/*/.pamusb/*.pad					rw,	# pam_usb
-
-# USERS ------------------------------------------------
-@{HOME}/.pamusb/*.pad					rw,	# pam_usb
