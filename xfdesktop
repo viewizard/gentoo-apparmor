@@ -36,8 +36,8 @@ profile xfdesktop /usr/bin/xfdesktop {
   /usr/bin/exo-desktop-item-edit			Px,
   /usr/bin/xfdesktop-settings				Px,
   /usr/bin/xfce4-session-logout				Px,
-  /usr/libexec/thunar-archive-plugin/xarchiver.tap	Px,	# RBAC! В случае root, вызывать xarchiver_tap_root
-  /usr/libexec/thunar-archive-plugin/engrampa.tap	Px,	# RBAC! В случае root, вызывать engrampa_tap_root
+  /usr/libexec/thunar-archive-plugin/xarchiver.tap	Px,	# RBAC! XFCE4 В случае root, вызывать xarchiver_tap_root
+  /usr/libexec/thunar-archive-plugin/engrampa.tap	Px,	# RBAC! MATE  В случае root, вызывать engrampa_tap_root
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/menus/**.menu				r,
@@ -64,7 +64,7 @@ profile xfdesktop /usr/bin/xfdesktop {
   
   profile shell @{shell} {
     #include <abstractions/base>
-    #include <local/thunar-custom-actions>  # Must be the same as thunar custom actions!
+    #include <local/thunar-custom-actions>			# Must be the same as thunar custom actions!
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -105,7 +105,4 @@ profile xfdesktop.xfdesktop-settings /usr/bin/xfdesktop-settings {
   owner @{HOME}/**.@{local_ext}				r,
   owner @{HOME}/**/					r,
   owner @{HOME}/.local/share/gvfs-metadata/{home,root}*	r,
-  
-  # NOISY ----------------------------------------------
-#  deny @{HOME}/.*					r,	# 31.03.2017 @{HOME}/.Xauthority может потребоваться доступ
 }

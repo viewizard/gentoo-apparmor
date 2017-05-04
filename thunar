@@ -46,8 +46,8 @@ profile thunar /usr/bin/{Thunar,thunar} {
   /bin/env						Cx,
   /bin/mount						Px,
   /bin/umount						Px,
-  /usr/libexec/thunar-archive-plugin/xarchiver.tap	Px,
-  /usr/libexec/thunar-archive-plugin/engrampa.tap	Px,
+  /usr/libexec/thunar-archive-plugin/xarchiver.tap	Px,	# XFCE4
+  /usr/libexec/thunar-archive-plugin/engrampa.tap	Px,	# MATE
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
@@ -135,8 +135,8 @@ profile thunar_root {
   /bin/env						Cx,
   /bin/mount						Px,
   /bin/umount						Px,
-#  /usr/libexec/thunar-archive-plugin/xarchiver.tap	Px -> xarchiver_tap_root,	# RBAC!
-  /usr/libexec/thunar-archive-plugin/engrampa.tap	Px -> engrampa_tap_root,
+#  /usr/libexec/thunar-archive-plugin/xarchiver.tap	Px -> xarchiver_tap_root,	# RBAC! XFCE4
+  /usr/libexec/thunar-archive-plugin/engrampa.tap	Px -> engrampa_tap_root,	# MATE
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
