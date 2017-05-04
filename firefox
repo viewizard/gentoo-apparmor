@@ -25,9 +25,6 @@ profile firefox.start_script /usr/bin/firefox {
   /usr/bin/id						Px,
   /usr/bin/newgrp					Px,
   /usr/lib{,32,64}/firefox/firefox			Px,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
@@ -201,9 +198,6 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
     @{shell}						mr,
     /bin/ps						Px,
     /bin/grep						ix,
-    
-    # USERS --------------------------------------------
-    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
     
     # DENY INHERIT -------------------------------------
     deny /tmp/FreshStream*				rw,	# firefox.plugin-container

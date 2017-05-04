@@ -16,11 +16,8 @@ profile gsmartcontrol /usr/bin/gsmartcontrol {
   #include <abstractions/fonts>
   #include <abstractions/gtk>
   #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions/X_sudo>
   #include <abstractions/nameservice>
-  
-  # CAPABILITIES ---------------------------------------
-  capability dac_override,
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -40,8 +37,6 @@ profile gsmartcontrol /usr/bin/gsmartcontrol {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/gsmartcontrol/{,gsmartcontrol.conf} rw,
-  @{HOME}/.Xauthority					r,
-  @{HOME}/.session.log					w,	# XFCE4
 }
 
 profile gsmartcontrol.gsmartcontrol-root /usr/bin/gsmartcontrol-root {
@@ -53,9 +48,6 @@ profile gsmartcontrol.gsmartcontrol-root /usr/bin/gsmartcontrol-root {
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/env						mr,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -70,8 +62,5 @@ profile gsmartcontrol.gsmartcontrol-root /usr/bin/gsmartcontrol-root {
     /usr/bin/which					Px,
     /usr/bin/sudo					Px,
     /usr/bin/gksu					Px,
-    
-    # USERS --------------------------------------------
-    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   }
 }

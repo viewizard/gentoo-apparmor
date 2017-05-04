@@ -62,9 +62,6 @@ profile sudo /usr/bin/sudo {
   /run/sudo/ts/						rw,
   /run/sudo/ts/*					rwk,
   
-  # USERS ----------------------------------------------
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
-  
   profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/authentication-pam_usb>
@@ -149,7 +146,4 @@ profile sudo.gksudo /usr/bin/{gksu,gksudo} {
   @{shell}						mr,
   /usr/bin/{gksu,gksudo}				mr,
   /usr/bin/sudo						Px,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }

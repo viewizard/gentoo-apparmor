@@ -25,9 +25,6 @@ profile chromium.start_script /usr/bin/chromium{,-browser} {
   /usr/bin/id						Px,
   /usr/bin/newgrp					Px,
   /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh Px,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile chromium.chromium-launcher.sh /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh {
@@ -45,9 +42,6 @@ profile chromium.chromium-launcher.sh /usr/lib{,32,64}/chromium-browser/chromium
   
   # READS/WRITES ---------------------------------------
   /etc/chromium/{,**}					r,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_disconnected) {
@@ -230,11 +224,8 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
     # AUDIT PSEUDO -------------------------------------
     deny @{PROC}/@{pid}/oom_{,score_}adj		w,
     
-    # EXECUTABLES ----------------------------------------
+    # EXECUTABLES --------------------------------------
     /usr/lib{,32,64}/chromium-browser/chrome-sandbox	mr,
     /usr/lib{,32,64}/chromium-browser/chrome		Px,
-    
-    # USERS ----------------------------------------------
-    owner @{HOME}/.session.log				w,
   }
 }

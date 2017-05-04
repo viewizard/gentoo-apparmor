@@ -77,9 +77,6 @@ profile thunar /usr/bin/{Thunar,thunar} {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    
-    # USERS --------------------------------------------
-    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   }
   
   profile env /bin/env {
@@ -103,7 +100,7 @@ profile thunar_root {
   #include <abstractions/audio>
   #include <abstractions/gtk>
   #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions/X_sudo>
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk>
   #include <abstractions/executable-binary-programs_root>
@@ -111,8 +108,6 @@ profile thunar_root {
   #include <abstractions/systemwide-root-files>
   
   # CAPABILITIES ---------------------------------------
-  capability dac_override,
-  capability dac_read_search,
   capability sys_resource,
   capability fowner,
   capability fsetid,
@@ -155,16 +150,10 @@ profile thunar_root {
   owner @{HOME}/.config/Thunar/**			rwk,
   owner @{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
   owner @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
-  @{HOME}/.Xauthority					r,
-  @{HOME}/.session.log					w,	# XFCE4
   
   profile shell @{shell} {
     #include <abstractions/base>
     #include <local/thunar_root-custom-actions>
-    
-    # CAPABILITIES -------------------------------------
-    capability dac_read_search,
-    capability dac_override,
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -172,9 +161,6 @@ profile thunar_root {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    
-    # USERS --------------------------------------------
-    @{HOME}/.session.log				w,	# XFCE4
   }
   
   profile env /bin/env {
@@ -205,9 +191,6 @@ profile thunar.thunar-settings /usr/bin/thunar-settings {
   /usr/bin/thunar-settings				r,
   @{shell}						mr,
   /usr/bin/dbus-send					Pxr,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile thunar.ThunarBulkRename /usr/lib{,32,64}/Thunar/ThunarBulkRename {
@@ -220,7 +203,4 @@ profile thunar.ThunarBulkRename /usr/lib{,32,64}/Thunar/ThunarBulkRename {
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
   /usr/bin/thunar					Px,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }

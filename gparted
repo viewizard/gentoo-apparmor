@@ -21,9 +21,6 @@ profile gparted.gparted-pkexec /usr/bin/gparted-pkexec flags=(complain) {
   /usr/bin/gparted-pkexec				r,
   @{shell}						mr,
   /usr/bin/pkexec					Px,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
@@ -32,7 +29,7 @@ profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
   #include <abstractions/fonts>
   #include <abstractions/gtk>
   #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions/X_sudo>
   #include <abstractions/nameservice>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/executable-binary-helper>
@@ -40,7 +37,6 @@ profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
   capability sys_rawio,
-  capability dac_override,
   capability setuid,
   capability setgid,
   capability mknod,
@@ -86,10 +82,6 @@ profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
   /etc/mtools/mtools.conf				r,	# mlabel
   /run/blkid/blkid.tab*					rw,
 #  /run/blkid/blkid.tab*				l,	# FIX ME!
-  
-  # USERS ----------------------------------------------
-  @{HOME}/.Xauthority					r,
-  @{HOME}/.session.log					w,	# XFCE4
 }
 
 profile gparted.gparted /usr/sbin/gparted flags=(complain) {
@@ -113,7 +105,4 @@ profile gparted.gparted /usr/sbin/gparted flags=(complain) {
   
   # READS/WRITES ---------------------------------------
   /run/udev/rules.d/{,*}				rw,
-  
-  # USERS ----------------------------------------------
-  @{HOME}/.session.log					w,	# XFCE4
 }

@@ -43,9 +43,6 @@ profile mousepad /usr/bin/mousepad {
   # USERS ----------------------------------------------
   owner @{HOME}/.config/Mousepad/			rw,
   owner @{HOME}/.config/Mousepad/*			rwk,
-  
-  # TEMP -----------------------------------------------
-  /tmp/libgksu-*/.Xauthority				r,
 }
 
 profile mousepad_root {
@@ -56,7 +53,7 @@ profile mousepad_root {
   #include <abstractions/gtk>
   #include <abstractions/cups-client>
   #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions/X_sudo>
   #include <abstractions/dconf>
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk-strict>
@@ -64,8 +61,6 @@ profile mousepad_root {
   #include <abstractions/systemwide-root-files>
   
   # CAPABILITIES ---------------------------------------
-  capability dac_override,
-  capability dac_read_search,
   capability fowner,
   
   # PSEUDO ---------------------------------------------
@@ -82,9 +77,4 @@ profile mousepad_root {
   # USERS ----------------------------------------------
   owner @{HOME}/.config/Mousepad/			rw,
   owner @{HOME}/.config/Mousepad/*			rwk,
-  @{HOME}/.Xauthority					r,
-  @{HOME}/.session.log					w,	# XFCE4
-  
-  # TEMP -----------------------------------------------
-  /tmp/libgksu-*/.Xauthority				r,
 }

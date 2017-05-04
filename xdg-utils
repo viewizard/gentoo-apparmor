@@ -29,9 +29,6 @@ profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
   /usr/bin/dbus-send					Px,
   /usr/bin/xprop					ix,
   
-  # USERS ----------------------------------------------
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
-  
   # DENY INHERIT ---------------------------------------
   deny unix peer=(label="wps-office"),				# wps-office
   deny unix peer=(label="qpdfview"),				# qpdfview
@@ -63,9 +60,6 @@ profile xdg-utils.xdg-email /usr/bin/xdg-email {
   /bin/sed						ix,
   /usr/bin/which					Px,
   /usr/bin/exo-open					Px,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile xdg-utils.xdg-screensaver /usr/bin/xdg-screensaver {

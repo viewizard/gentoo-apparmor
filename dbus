@@ -60,20 +60,13 @@ profile dbus.dbus-daemon /usr/bin/dbus-daemon {
   /usr/share/defaults/at-spi2/accessibility.conf	r,
   /run/dbus.pid						rw,
   /run/ConsoleKit/inhibit/inhibit.*.pipe		w,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile dbus.dbus-launch /usr/bin/dbus-launch {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-  #include <abstractions/X>
+  #include <abstractions/X_sudo>				# RBAC! Должен быть отдельный профиль для root.
   #include <abstractions/dbus-session>
-  
-  # CAPABILITIES ---------------------------------------
-  capability dac_read_search,
-  capability dac_override,
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(term) peer="dbus.dbus-daemon",
@@ -90,7 +83,6 @@ profile dbus.dbus-launch /usr/bin/dbus-launch {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.dbus/{,**}				rw,
-  @{HOME}/.Xauthority					r,
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -103,9 +95,6 @@ profile dbus.dbus-launch /usr/bin/dbus-launch {
     @{shell}						mr,
     /etc/X11/Sessions/Xfce4				r,	# XFCE4
     /usr/bin/startxfce4					Px,	# XFCE4
-    
-    # USERS --------------------------------------------
-    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   }
 }
 

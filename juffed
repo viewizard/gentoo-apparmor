@@ -45,7 +45,6 @@ profile juffed /usr/bin/juffed {
   
   # TEMP -----------------------------------------------
   owner /tmp/qtsingleapp-juffed-*-*{,-lockfile}		rwk,
-  /tmp/libgksu-*/.Xauthority				r,
   
   # NOISY ----------------------------------------------
   deny @{HOMEDIRS}/					r,
@@ -58,7 +57,7 @@ profile juffed_root {
   #include <abstractions/qt>
   #include <abstractions/video>
   #include <abstractions/cups-client>
-  #include <abstractions/X>
+  #include <abstractions/X_sudo>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/nameservice>
@@ -66,7 +65,6 @@ profile juffed_root {
   #include <abstractions/systemwide-root-files>
   
   # CAPABILITIES ---------------------------------------
-  capability dac_override,
   capability fowner,
   capability sys_nice,
   
@@ -84,12 +82,9 @@ profile juffed_root {
   # USERS ----------------------------------------------
   owner @{HOME}/.config/juff/				rw,
   owner @{HOME}/.config/juff/**				rwk,
-  @{HOME}/.Xauthority					r,
-  @{HOME}/.session.log					w,	# XFCE4
   
   # TEMP -----------------------------------------------
   owner /tmp/qtsingleapp-juffed-*-*{,-lockfile}		rwk,
-  /tmp/libgksu-*/.Xauthority				r,
   
   # NOISY ----------------------------------------------
   deny @{HOMEDIRS}/					r,

@@ -96,7 +96,6 @@ profile xfce4-session /usr/bin/xfce4-session {
     
     # USERS --------------------------------------------
     owner @{HOME}/.xfce4-session.verbose-log		w,
-    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   }
   
   profile env /bin/env {
@@ -114,9 +113,6 @@ profile xfce4-session /usr/bin/xfce4-session {
     /usr/bin/thunar					Px,
     /usr/bin/xfdesktop					Px,
     /usr/bin/cairo-clock				Px,
-    
-    # USERS --------------------------------------------
-    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   }
 }
 
@@ -210,9 +206,6 @@ profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
     # READS/WRITES -------------------------------------
     /etc/xdg/xfce4/xinitrc				r,
     /etc/xdg/xfce4/Xft.xrdb				r,
-    
-    # USERS --------------------------------------------
-    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   }
 }
 
@@ -241,7 +234,6 @@ profile xfce4-session.xfce4-session-fix /etc/xdg/xfce4/xfce4-session-fix {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/xfce4/desktop/{,*}		rw,
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   
   # TEMP -----------------------------------------------
   owner /tmp/xfdesktop-*/{,**}				rw,

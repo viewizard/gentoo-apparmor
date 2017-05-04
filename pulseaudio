@@ -53,7 +53,6 @@ profile pulseaudio /usr/bin/pulseaudio {
   # USERS ----------------------------------------------
   owner @{HOME}/.config/pulse/				rw,
   owner @{HOME}/.config/pulse/**			rwk,
-  owner @{HOME}/.ICEauthority				r,
   
   # TEMP -----------------------------------------------
   owner /tmp/pulse-*/{,*}				rw,
@@ -70,19 +69,13 @@ profile pulseaudio.start-pulseaudio-x11 /usr/bin/start-pulseaudio-x11 {
   /usr/bin/start-pulseaudio-x11				r,
   @{shell}						mr,
   /usr/bin/pactl					Px,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile pulseaudio.pactl /usr/bin/pactl {
   #include <abstractions/base>
   #include <abstractions/audio>
-  #include <abstractions/X>
+  #include <abstractions/X>					# RBAC! <abstractions/X_sudo> если запуск с sudo.
   #include <abstractions/dbus-session-strict>
-  
-#  capability dac_read_search,					# RBAC! Нужно только для выполнения под root-ом
-#  capability dac_override,					# если сервер запущен от имени пользователя.
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -92,8 +85,4 @@ profile pulseaudio.pactl /usr/bin/pactl {
   # EXECUTABLES ----------------------------------------
   /usr/bin/pactl					mr,
   /usr/bin/pulseaudio					Px,
-  
-  # USERS ----------------------------------------------
-#  @{HOME}/.Xauthority					r,	# RBAC! Нужно только для выполнения под root-ом
-  								# если сервер запущен от имени пользователя.
 }

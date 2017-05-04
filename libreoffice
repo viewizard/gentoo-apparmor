@@ -31,9 +31,6 @@ profile libreoffice /usr/{bin,lib{,32,64}/libreoffice/program}/soffice {
   /bin/ls						ix,
   /bin/sed						ix,
   /usr/lib{,32,64}/libreoffice/program/oosplash		Px,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile libreoffice.oosplash /usr/lib{,32,64}/libreoffice/program/oosplash {
@@ -156,9 +153,6 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
     
     # READS/WRITES -------------------------------------
     /etc/papersize					r,
-    
-    # USERS --------------------------------------------
-    owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
     
     # DENY INHERIT -------------------------------------
     deny @{HOME}/.config/libreoffice/**			rw,	# libreoffice.bin

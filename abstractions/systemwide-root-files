@@ -9,21 +9,25 @@
 # ------------------------------------------------------------------
 
 # Важно!
-# Эта абстракция должна использоваться только под root!
+# Применять только для профилей запускаемых в ветке root.
 
-# We dont care about special permision for home or
-# media/mnt folders here. This should be figured out
-# through abstractions/program-work-with-disk-{rk,rwk}
+# Не учитываем доступ к media/mnt директориям тут, эту часть
+# должны отрабатывать абстракции program-work-with-disk-{rk,rwk,rwkl}.
 
-# This file should care only about system-wide files and
-# should be used with abstractions/program-work-with-disk-...
-  
-# For root - allow all system files owned by root,
-# for regular users - hiden files in users "home"
+# CAPABILITIES -----------------------------------------
+capability dac_override,					# Может потребоваться доступ к файлам с ACL
+capability dac_read_search,					# не разрешающим доступ root (обходим DAC).
+
+# Разрешаем полный доступ root-у только к файлам которыми он владеет,
+# тем самым ограничиваем root-у доступ к пользовательским файлам.
 owner /**						rwl,	# l - все правильно, разрешаем на /**.
 
-# For root - allow files owned by system-users,
-# for regular users - DAC take care about this.
+# FIX ME! Когда будет возможность указывать явно к каким UID
+# владельцев может быть доступ - переделать. Дать доступ
+# ко всем системным пользователям (UID < 1000).
+
+# Разрешаем доступ к файлам других системных пользователей.
+# Явно перечисляем куда доступ разрешен.
 /var/log/**						r,
 /usr/share/polkit-1/**					r,
 /usr/portage/{,**}					r,
@@ -42,7 +46,7 @@ owner /**						rwl,	# l - все правильно, разрешаем на /**
 /run/{,**}						rw,
 /tmp/{,**}						rw,
 
-# need for rsync
+# нужно для общесистемного rsync
 /usr/bin/mailq						r,
 /usr/bin/man						r,
 /usr/bin/mandb						r,

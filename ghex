@@ -42,7 +42,7 @@ profile ghex_root {
   #include <abstractions/fonts>
   #include <abstractions/gtk>
   #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions/X_sudo>
   #include <abstractions/dconf>
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/executable-binary-helper_root>
@@ -51,18 +51,10 @@ profile ghex_root {
   #include <abstractions/dbus-session-strict>
   #include <abstractions/systemwide-root-files>
   
-  # CAPABILITIES ---------------------------------------
-  capability dac_read_search,
-  capability dac_override,
-  
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/ghex						mr,
-  
-  # USERS ----------------------------------------------
-  @{HOME}/.Xauthority					r,
-  @{HOME}/.session.log					w,	# XFCE4
 }

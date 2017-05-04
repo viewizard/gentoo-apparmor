@@ -110,7 +110,7 @@ profile xarchiver_root {
   #include <abstractions/fonts>
   #include <abstractions/gtk>
   #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions/X_sudo>
   #include <abstractions/nameservice>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/dconf>
@@ -120,8 +120,6 @@ profile xarchiver_root {
   #include <abstractions/systemwide-root-files>
   
   # CAPABILITIES ---------------------------------------
-  capability dac_override,
-  capability dac_read_search,
   capability chown,
   capability fowner,
   capability fsetid,
@@ -156,8 +154,6 @@ profile xarchiver_root {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/xarchiver/{,**}			rw,
-  @{HOME}/.Xauthority					r,
-  @{HOME}/.session.log					w,	# XFCE4
   
   # TEMP -----------------------------------------------
   owner /tmp/xarchiver_*_socket				rw,
@@ -204,9 +200,6 @@ profile xarchiver_tap /usr/libexec/thunar-archive-plugin/xarchiver.tap {
   /usr/libexec/thunar-archive-plugin/xarchiver.tap	r,
   @{shell}						mr,
   /usr/bin/xarchiver					Px,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile xarchiver_tap_root {
@@ -220,7 +213,4 @@ profile xarchiver_tap_root {
   /usr/libexec/thunar-archive-plugin/xarchiver.tap	r,
   @{shell}						mr,
   /usr/bin/xarchiver					Px -> xarchiver_root,
-  
-  # USERS ----------------------------------------------
-  @{HOME}/.session.log					w,	# XFCE4
 }

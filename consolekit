@@ -29,6 +29,7 @@ profile consolekit.ck-launch-session /usr/bin/ck-launch-session flags=(complain)
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
+  #include <abstractions/X-connection-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -39,10 +40,6 @@ profile consolekit.ck-launch-session /usr/bin/ck-launch-session flags=(complain)
   
   # READS/WRITES ---------------------------------------
   /etc/X11/Sessions/{,*}				r,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.Xauthority				r,
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
   
   profile shell @{shell} flags=(complain) {
     #include <abstractions/base>

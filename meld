@@ -71,7 +71,7 @@ profile meld_root {
   #include <abstractions/gtk>
   #include <abstractions/python>
   #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions/X_sudo>
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/executable-binary-helper_root>
@@ -82,8 +82,6 @@ profile meld_root {
   #include <abstractions/systemwide-root-files>
   
   # CAPABILITIES ---------------------------------------
-  capability dac_override,
-  capability dac_read_search,
   capability fowner,
   capability mknod,
   
@@ -115,8 +113,6 @@ profile meld_root {
   # USERS ----------------------------------------------
   owner @{HOME}/.config/meld/{,**}			rw,
   owner @{HOME}/.local/share/meld/{,**}			rw,
-  @{HOME}/.Xauthority					r,
-  @{HOME}/.session.log					w,	# XFCE4
   
   # TEMP -----------------------------------------------
   owner /tmp/??????{,_*}				rw,

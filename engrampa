@@ -96,7 +96,7 @@ profile engrampa_root {
   #include <abstractions/fonts>
   #include <abstractions/gtk>
   #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions/X_sudo>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/dconf>
   #include <abstractions/nameservice>
@@ -109,8 +109,6 @@ profile engrampa_root {
   capability chown,
   capability fowner,
   capability fsetid,
-  capability dac_override,
-  capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -145,8 +143,6 @@ profile engrampa_root {
   owner @{HOME}/.fr-*/{,**}				rw,
   owner @{HOME}/.config/mimeapps.list*			rw,
   @{HOME_CACHE}/.fr-*/{,**}				rw,
-  @{HOME}/.Xauthority					r,
-  @{HOME}/.session.log					w,	# XFCE4
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -189,9 +185,6 @@ profile engrampa_tap /usr/libexec/thunar-archive-plugin/engrampa.tap {
   /usr/libexec/thunar-archive-plugin/engrampa.tap	r,
   @{shell}						mr,
   /usr/bin/engrampa					Px,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.session.log				w,	# XFCE4, <abstractions/X>
 }
 
 profile engrampa_tap_root {
@@ -205,7 +198,4 @@ profile engrampa_tap_root {
   /usr/libexec/thunar-archive-plugin/engrampa.tap	r,
   @{shell}						mr,
   /usr/bin/engrampa					Px -> engrampa_root,
-  
-  # USERS ----------------------------------------------
-  @{HOME}/.session.log					w,	# XFCE4
 }
