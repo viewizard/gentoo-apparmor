@@ -24,6 +24,12 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
   capability fowner,
   capability fsetid,
   
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
+  
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,

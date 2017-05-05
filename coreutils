@@ -137,6 +137,7 @@ profile coreutils.id /usr/bin/id flags=(complain) {		# FIX ME! 04.04.2017 flags=
   # DENY INHERIT ---------------------------------------
   deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
   deny /tmp/chkrootkit.cron.*				w,	# chkrootkit.cron.daily
+  deny /var/tmp/portage/**/temp/build.log		w,	# portage.emerge
 }
 
 profile coreutils.pinky /usr/bin/pinky flags=(complain) {	# FIX ME! 04.04.2017 flags=(complain)

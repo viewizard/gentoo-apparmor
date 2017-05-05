@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile consolekit.ck-history /usr/bin/ck-history flags=(complain) {
+profile consolekit.ck-history /usr/bin/ck-history {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -24,7 +24,7 @@ profile consolekit.ck-history /usr/bin/ck-history flags=(complain) {
   /var/log/ConsoleKit/history				r,
 }
 
-profile consolekit.ck-launch-session /usr/bin/ck-launch-session flags=(complain) {
+profile consolekit.ck-launch-session /usr/bin/ck-launch-session {
   #include <abstractions/base>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
@@ -54,7 +54,7 @@ profile consolekit.ck-launch-session /usr/bin/ck-launch-session flags=(complain)
   }
 }
 
-profile consolekit.ck-list-sessions /usr/bin/ck-list-sessions flags=(complain) {
+profile consolekit.ck-list-sessions /usr/bin/ck-list-sessions {
   #include <abstractions/base>
   #include <abstractions/dbus-strict>
   #include <abstractions/nameservice>

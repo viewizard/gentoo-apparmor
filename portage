@@ -220,6 +220,11 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     # PTRACE -------------------------------------------
     ptrace (trace) peer=@{profile_name},
     
+    # UNIX ---------------------------------------------
+    unix (bind)
+    	type=stream
+    	addr="@/tmp/dbus-fake-socket-path-used-in-configure-test",	# dbus, создание тестового сокета
+    
     # NETWORK ------------------------------------------
     network netlink raw,
     network inet dgram,

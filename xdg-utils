@@ -34,6 +34,8 @@ profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
   deny unix peer=(label="qpdfview"),				# qpdfview
   deny unix peer=(label="evelauncher"),				# evelauncher
   deny network netlink raw,					# skype
+  deny network inet stream,					# evelauncher
+  deny network inet6 stream,					# evelauncher
   deny /dev/shm/.org.chromium.Chromium.*		ra,	# evelauncher
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   deny /run/user/[0-9]*/poedit.lock			w,	# poedit
