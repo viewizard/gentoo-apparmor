@@ -24,7 +24,7 @@ profile meld /usr/bin/meld {
   #include <abstractions/X>
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk-strict>
-  #include <abstractions/executable-binary-helper>
+  #include <abstractions/binary-helper-strict-web>
   #include <abstractions/cups-client>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
@@ -34,8 +34,8 @@ profile meld /usr/bin/meld {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   owner /dev/shm/??????					rw,
-  owner /dev/shm/sem.???????-[0-9]*			rw,
-  owner link subset /dev/shm/sem.???????-[0-9]*		-> /dev/shm/??????,
+  owner /dev/shm/sem.*-[0-9]*				rw,
+  owner link subset /dev/shm/sem.*-[0-9]*		-> /dev/shm/??????,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
@@ -74,7 +74,7 @@ profile meld_root {
   #include <abstractions/X_sudo>
   #include <abstractions/nameservice>
   #include <abstractions/program-work-with-disk-rwk-strict>
-  #include <abstractions/executable-binary-helper_root>
+  #include <abstractions/binary-helper-strict-web_root>
   #include <abstractions/cups-client>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
@@ -89,8 +89,8 @@ profile meld_root {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   owner /dev/shm/??????					rw,
-  owner /dev/shm/sem.???????-[0-9]*			rw,
-  owner link subset /dev/shm/sem.???????-[0-9]*		-> /dev/shm/??????,
+  owner /dev/shm/sem.*-[0-9]*				rw,
+  owner link subset /dev/shm/sem.*-[0-9]*		-> /dev/shm/??????,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------

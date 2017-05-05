@@ -8,8 +8,7 @@
 #
 # ------------------------------------------------------------------
 
-
-# program-related places for xdg-open:
+#include <abstractions/binary-helper-strict-web>
 #include <abstractions/xdg-open-folders>
 
 # sg/newgrp for work with network connection via iptables uid/gid-owner
@@ -19,8 +18,8 @@
 
 ############################################################
 # Since all programs will be able to launch this binaries
-# we can't use abstractions/executable-binary-programs
-# here, we need more strict rules with fixed programs list.
+# we can't use abstractions/binary-helper here, we need
+# more strict rules with fixed programs list.
 ############################################################
 
 /usr/bin/juffed						Px,
@@ -29,11 +28,6 @@
 /usr/bin/xarchiver					Px,	# XFCE4
 /usr/bin/thunar						Px,	# XFCE4
 
-/usr/bin/chromium-browser				Px,
-/usr/lib{,32,64}/chromium-browser/chromium-launcher.sh	Px,
-/usr/bin/firefox					Px,
-/usr/lib{,32,64}/firefox/firefox			Px,
-/usr/bin/claws-mail					Px,
 /usr/bin/transmission-*					Px,
 /usr/lib{,32,64}/libreoffice/program/soffice		Px,
 /usr/bin/{et,wpp,wps}					Px,

@@ -18,7 +18,7 @@ profile exo.exo-open /usr/bin/exo-open flags=(attach_disconnected) {
   #include <abstractions/X>
   #include <abstractions/gtk>
   #include <abstractions/dbus-session-strict>
-  #include <abstractions/executable-binary-helper>
+  #include <abstractions/binary-helper-strict>
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
@@ -46,7 +46,7 @@ profile exo.exo-helper /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 {
   #include <abstractions/dbus-session-strict>
   #include <abstractions/gtk>
   #include <abstractions/fonts>
-  #include <abstractions/executable-binary-helper>
+  #include <abstractions/binary-helper-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -75,7 +75,7 @@ profile exo.exo-helper /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 {
 profile exo.exo-compose-mail /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 {
   #include <abstractions/base>
   #include <abstractions/perl>
-  #include <abstractions/executable-binary-helper>
+  #include <abstractions/binary-helper-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -139,7 +139,7 @@ profile exo_open_root flags=(attach_disconnected) {
   #include <abstractions/X>
   #include <abstractions/gtk>
   #include <abstractions/dbus-session-strict>
-  #include <abstractions/executable-binary-helper_root>
+  #include <abstractions/binary-helper-strict_root>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open_root>
   
@@ -170,7 +170,7 @@ profile exo_helper_root {
   #include <abstractions/X>
   #include <abstractions/gtk>
   #include <abstractions/fonts>
-  #include <abstractions/executable-binary-helper_root>
+  #include <abstractions/binary-helper-strict_root>
   
   # PSEUDO ---------------------------------------------
   owner @{PROC}/@{pid}/fd/				r,
@@ -198,7 +198,7 @@ profile exo_helper_root {
 profile exo_compose_mail_root {
   #include <abstractions/base>
   #include <abstractions/perl>
-  #include <abstractions/executable-binary-helper_root>
+  #include <abstractions/binary-helper-strict_root>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

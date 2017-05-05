@@ -20,7 +20,7 @@
 # Вероятно, при портировании на GTK3 что-то не доделали.
 
 # Используем app-arch/engrampa, произведены корректировки в:
-# thunar_root, abstractions/executable-binary-helper_root
+# thunar_root, abstractions/binary-helper-strict_root
 
 #include <tunables/global>
 
@@ -40,7 +40,7 @@ profile xarchiver /usr/bin/xarchiver {
   #include <abstractions/dconf>
   #include <abstractions/program-work-with-disk-rwkl-strict>
   #include <abstractions/xdg-open>
-  #include <abstractions/executable-binary-helper>
+  #include <abstractions/binary-helper-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -116,7 +116,7 @@ profile xarchiver_root {
   #include <abstractions/dconf>
   #include <abstractions/program-work-with-disk-rwkl-strict>
   #include <abstractions/xdg-open_root>
-  #include <abstractions/executable-binary-helper_root>
+  #include <abstractions/binary-helper-strict_root>
   #include <abstractions/fs-access-by-pattern-systemusers>
   
   # CAPABILITIES ---------------------------------------

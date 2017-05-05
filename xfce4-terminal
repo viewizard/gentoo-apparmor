@@ -19,7 +19,7 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
   #include <abstractions/dbus-session-strict>
   #include <abstractions/video>
   #include <abstractions/nameservice>
-  #include <abstractions/executable-binary-helper>
+  #include <abstractions/binary-helper-strict-web>
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(term)
@@ -40,11 +40,12 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-terminal				mr,
   @{shell}						Px -> shell_users,	# Должен быть пользовательский профиль.
+  /bin/rc-status					Px,
   /usr/bin/sudo						Px,
   /usr/bin/htop						Px,
-  /usr/libexec/gnome-pty-helper				Cx,
   /usr/bin/passwd.sh					Px,
-  /bin/rc-status					Px,
+  /usr/bin/exo-open					Px,
+  /usr/libexec/gnome-pty-helper				Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/terminfo/x/xterm					r,

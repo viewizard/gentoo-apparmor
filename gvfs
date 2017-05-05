@@ -160,10 +160,27 @@ profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
 profile gvfs.gvfsd-http /usr/libexec/gvfsd-http flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/gtk>
   #include <abstractions/dconf>
   #include <abstractions/ssl-certs>
+  
+  # UNIX -----------------------------------------------
+  unix (bind, listen, send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*",
+  unix (send, receive)
+  			type=stream
+  			addr=none
+  			peer=(label="gimp"),			# gimp
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-http				mr,

@@ -1,0 +1,20 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# sg/newgrp for work with network connection via iptables uid/gid-owner
+# FIX ME! После возможности блокировки адресов и портов - убрать.
+/usr/bin/newgrp						Px,
+/usr/bin/id						Pxr,
+
+/usr/bin/chromium-browser				Px,
+audit /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh	Px,	# FIX ME! 05.05.2017 понять, кто использует
+/usr/bin/firefox					Px,
+audit /usr/lib{,32,64}/firefox/firefox			Px,		# FIX ME! 05.05.2017 понять, кто использует
+/usr/bin/claws-mail					Px,

@@ -8,16 +8,14 @@
 #
 # ------------------------------------------------------------------
 
-
-# All programs from exo/xdg executable-binary-helper
-#include <abstractions/executable-binary-helper_root>
+#include <abstractions/binary-helper-strict>
 
 # plus, all other programs with UI/GUI
 
-/usr/bin/ghex					Px -> ghex_root,
-/usr/bin/meld					Px -> meld_root,
-/usr/bin/qgit					Px -> qgit_root,
-@{PYTHON_EXEC_WRAPPER}				Px -> python_exec_root,
+/usr/bin/ghex					Px,
+/usr/bin/meld					Px,
+/usr/bin/qgit					Px,
+@{PYTHON_EXEC_WRAPPER}				Px,
 
 /usr/bin/pidgin					Px,
 /usr/bin/gtkevemon				Px,
@@ -80,7 +78,6 @@
 /usr/bin/xfce4-taskmanager			Px,	# XFCE4
 /usr/lib{,32,64}/Thunar/ThunarBulkRename	Px,	# XFCE4
 /usr/bin/exo-open				Px,	# XFCE4
-							# RBAC! exo_open_root (пока не будет полной ветки - не нужен)
 /usr/bin/xfwm4{,-tweaks,-workspace}-settings	Px,	# XFCE4
 /usr/bin/xfce4-clipman-settings			Px,	# XFCE4
 /usr/bin/xfdesktop-settings			Px,	# XFCE4
