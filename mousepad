@@ -10,9 +10,9 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*"
+# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+@{USERS_DIR}="[^.]**"
+@{USERS_FILE}="[^.]*"
 
 profile mousepad /usr/bin/mousepad {
   #include <abstractions/base>
@@ -25,8 +25,8 @@ profile mousepad /usr/bin/mousepad {
   #include <abstractions/X>
   #include <abstractions/dconf>
   #include <abstractions/nameservice>
-  #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/binary-helper-strict-web>
+  #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/fs-access-strict>
   
   # PSEUDO ---------------------------------------------
@@ -56,8 +56,8 @@ profile mousepad_root {
   #include <abstractions/X_sudo>
   #include <abstractions/dconf>
   #include <abstractions/nameservice>
-  #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/binary-helper-strict-web_root>
+  #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/fs-access-by-pattern-systemusers>
   
   # CAPABILITIES ---------------------------------------

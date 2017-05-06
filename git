@@ -10,15 +10,15 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]**"
+# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+@{USERS_DIR}="[^.]**"
+@{USERS_FILE}="[^.]**"
 
 profile git /usr/bin/git {
   #include <abstractions/base>
-  #include <abstractions/program-work-with-disk-rwkl-strict>
   #include <abstractions/nameservice>
   #include <abstractions/ssl-certs>
+  #include <abstractions/fs-access-by-users-preset-rwkl>
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -51,9 +51,9 @@ profile git /usr/bin/git {
 
 profile git_root {
   #include <abstractions/base>
-  #include <abstractions/program-work-with-disk-rwkl-strict>
   #include <abstractions/nameservice>
   #include <abstractions/ssl-certs>
+  #include <abstractions/fs-access-by-users-preset-rwkl>
   #include <abstractions/fs-access-by-pattern-systemusers>
   
   # CAPABILITIES ---------------------------------------

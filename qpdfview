@@ -10,9 +10,10 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*.{pdf,ps,eps,djvu,djv,PDF,PS,EPS,DJVU,DJV}"
+@{local_ext}="{pdf,ps,eps,djvu,djv,PDF,PS,EPS,DJVU,DJV}"
+# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+@{USERS_DIR}="[^.]**"
+@{USERS_FILE}="[^.]*.@{local_ext}"
 
 profile qpdfview /usr/bin/qpdfview {
   #include <abstractions/base>
@@ -24,7 +25,7 @@ profile qpdfview /usr/bin/qpdfview {
   #include <abstractions/video>
   #include <abstractions/X>
   #include <abstractions/xdg-open>
-  #include <abstractions/program-work-with-disk-rwk-strict>
+  #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
@@ -45,6 +46,6 @@ profile qpdfview /usr/bin/qpdfview {
   owner @{HOME}/.config/qpdfview/*			rwk,
   
   # TEMP -----------------------------------------------
-  owner /tmp/qt_temp.@{PROG_FILE}			rw,
-  owner /tmp/qpdfview.@{PROG_FILE}			rw,
+  owner /tmp/qt_temp.*.@{local_ext}			rw,
+  owner /tmp/qpdfview.*.@{local_ext}			rw,
 }

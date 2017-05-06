@@ -1,0 +1,40 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# доступ к файлам в @{HOME}, gvfs и /media с пользовательской
+# предустановкой для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+
+#include <abstractions/fs-access-by-pattern-xdg-open>
+
+# Не разрешаем работать с доступными для интернет-программ ресурсами
+deny @{HOME}/@{XDG_PUBLICSHARE_DIR}/{,**}		rwkl,
+deny @{HOME}/@{XDG_DOWNLOAD_DIR}/{,**}			rwkl,
+
+/							r,
+@{HOMEDIRS}/						r,
+owner @{HOME}/						r,
+owner @{HOME}/@{USERS_DIR}/				r,
+owner @{HOME}/@{USERS_FILE}				rwk,
+owner @{HOME}/@{USERS_DIR}/@{USERS_FILE}		rwk,
+owner /run/user/[0-9]*/gvfs/*/				r,
+owner /run/user/[0-9]*/gvfs/*/@{USERS_DIR}/		r,
+owner /run/user/[0-9]*/gvfs/*/@{USERS_FILE}		rwk,
+owner /run/user/[0-9]*/gvfs/*/@{USERS_DIR}/@{USERS_FILE} rwk,
+/media/							r,
+/media/@{USERS_DIR}/					r,
+/media/@{USERS_FILE}					rwk,
+/media/@{USERS_DIR}/@{USERS_FILE}			rwk,
+
+owner link subset @{HOME}/@{USERS_FILE}			-> @{HOME}/@{USERS_FILE},
+owner link subset @{HOME}/@{USERS_DIR}/@{USERS_FILE}	-> @{HOME}/@{USERS_DIR}/@{USERS_FILE},
+owner link subset /run/user/[0-9]*/gvfs/*/@{USERS_FILE}	-> /run/user/[0-9]*/gvfs/*/@{USERS_FILE},
+owner link subset /run/user/[0-9]*/gvfs/*/@{USERS_DIR}/@{USERS_FILE}	-> /run/user/[0-9]*/gvfs/*/@{USERS_DIR}/@{USERS_FILE},
+link subset /media/@{USERS_FILE}			-> /media/@{USERS_FILE},
+link subset /media/@{USERS_DIR}/@{USERS_FILE}		-> /media/@{USERS_DIR}/@{USERS_FILE},

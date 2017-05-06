@@ -10,9 +10,9 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*.{emp,xml,txt,EMP,XML,TXT}"
+# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+@{USERS_DIR}="[^.]**"
+@{USERS_FILE}="[^.]*.{emp,xml,txt,EMP,XML,TXT}"
 
 profile pyfa @{PYTHON2_EXEC}/pyfa {
   #include <abstractions/base>
@@ -24,7 +24,7 @@ profile pyfa @{PYTHON2_EXEC}/pyfa {
   #include <abstractions/X>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/nameservice>
-  #include <abstractions/program-work-with-disk-rwk-strict>
+  #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/xdg-open>
   
   # NETWORK --------------------------------------------

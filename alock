@@ -11,16 +11,16 @@
 #include <tunables/global>
 
 @{local_ext}="{xpm,tiff,tga,pnm,jpeg,jpg,gif,XPM,TIFF,TGA,PNM,JPEG,JPG,GIF}"
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*.@{local_ext}"
+# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+@{USERS_DIR}="[^.]**"
+@{USERS_FILE}="[^.]*.@{local_ext}"
 
 profile alock /usr/bin/alock {
   #include <abstractions/base>
   #include <abstractions/X>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
-  #include <abstractions/program-work-with-disk-rk-strict>
+  #include <abstractions/fs-access-by-users-preset-rk>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

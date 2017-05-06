@@ -10,9 +10,9 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*"
+# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+@{USERS_DIR}="[^.]**"
+@{USERS_FILE}="[^.]*"
 
 profile juffed /usr/bin/juffed {
   #include <abstractions/base>
@@ -23,10 +23,10 @@ profile juffed /usr/bin/juffed {
   #include <abstractions/cups-client>
   #include <abstractions/X>
   #include <abstractions/dbus-session-strict>
-  #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   #include <abstractions/fs-access-strict>
+  #include <abstractions/fs-access-by-users-preset-rwk>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -59,9 +59,9 @@ profile juffed_root {
   #include <abstractions/cups-client>
   #include <abstractions/X_sudo>
   #include <abstractions/dbus-session-strict>
-  #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open_root>
+  #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/fs-access-by-pattern-systemusers>
   
   # CAPABILITIES ---------------------------------------

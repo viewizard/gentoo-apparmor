@@ -10,9 +10,9 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*.{png,PNG}"  # xfce4-screenshooter
+# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+@{USERS_DIR}="[^.]**"
+@{USERS_FILE}="[^.]*.{png,PNG}"  # xfce4-screenshooter
 
 profile xfce4-panel /usr/bin/xfce4-panel {
   #include <abstractions/base>
@@ -68,7 +68,7 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   #include <abstractions/audio>
   #include <abstractions/nameservice>
   #include <abstractions/binary-helper>
-  #include <abstractions/program-work-with-disk-rwk-strict>  # xfce4-screenshooter
+  #include <abstractions/fs-access-by-users-preset-rwk>		# xfce4-screenshooter
   #include <local/xfce4-panel-custom>
   
   # NETWORK --------------------------------------------

@@ -24,9 +24,9 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk,rwkl)
-@{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]**"
+# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+@{USERS_DIR}="[^.]**"
+@{USERS_FILE}="[^.]**"
 
 profile xarchiver /usr/bin/xarchiver {
   #include <abstractions/base>
@@ -38,7 +38,7 @@ profile xarchiver /usr/bin/xarchiver {
   #include <abstractions/nameservice>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/dconf>
-  #include <abstractions/program-work-with-disk-rwkl-strict>
+  #include <abstractions/fs-access-by-users-preset-rwkl>
   #include <abstractions/xdg-open>
   #include <abstractions/binary-helper-strict>
   
@@ -78,7 +78,7 @@ profile xarchiver /usr/bin/xarchiver {
   
   profile shell @{shell} {
     #include <abstractions/base>
-    #include <abstractions/program-work-with-disk-rwkl-strict>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
     
     # PSEUDO ---------------------------------------------
     /dev/tty						rw,
@@ -93,7 +93,7 @@ profile xarchiver /usr/bin/xarchiver {
   
   profile rar /opt/rar/rar {
     #include <abstractions/base>
-    #include <abstractions/program-work-with-disk-rwkl-strict>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
     
     # EXECUTABLES --------------------------------------
     /opt/rar/rar					mr,
@@ -114,9 +114,9 @@ profile xarchiver_root {
   #include <abstractions/nameservice>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/dconf>
-  #include <abstractions/program-work-with-disk-rwkl-strict>
   #include <abstractions/xdg-open_root>
   #include <abstractions/binary-helper-strict_root>
+  #include <abstractions/fs-access-by-users-preset-rwkl>
   #include <abstractions/fs-access-by-pattern-systemusers>
   
   # CAPABILITIES ---------------------------------------
@@ -161,7 +161,7 @@ profile xarchiver_root {
   
   profile shell @{shell} {
     #include <abstractions/base>
-    #include <abstractions/program-work-with-disk-rwkl-strict>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
     
     # PSEUDO ---------------------------------------------
@@ -177,7 +177,7 @@ profile xarchiver_root {
   
   profile rar /opt/rar/rar {
     #include <abstractions/base>
-    #include <abstractions/program-work-with-disk-rwkl-strict>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
     
     # EXECUTABLES --------------------------------------

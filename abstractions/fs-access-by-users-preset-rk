@@ -8,10 +8,8 @@
 #
 # ------------------------------------------------------------------
 
-# Some programs should work with disk - read user data, store results.
-# Don't forget, provide configuration in profile, like:
-# @{PROG_DIR}="[^.]**"
-# @{PROG_FILE}="{[^.]*.pdf,[^.]*.xps,qt_temp.*}"
+# доступ к файлам в @{HOME}, gvfs и /media с пользовательской
+# предустановкой для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
 
 #include <abstractions/fs-access-by-pattern-xdg-open>
 
@@ -22,14 +20,14 @@ deny @{HOME}/@{XDG_DOWNLOAD_DIR}/{,**}			rwkl,
 /							r,
 @{HOMEDIRS}/						r,
 owner @{HOME}/						r,
-owner @{HOME}/@{PROG_DIR}/				r,
-owner @{HOME}/@{PROG_FILE}				rwk,
-owner @{HOME}/@{PROG_DIR}/@{PROG_FILE}			rwk,
+owner @{HOME}/@{USERS_DIR}/				r,
+owner @{HOME}/@{USERS_FILE}				rk,
+owner @{HOME}/@{USERS_DIR}/@{USERS_FILE}		rk,
 owner /run/user/[0-9]*/gvfs/*/				r,
-owner /run/user/[0-9]*/gvfs/*/@{PROG_DIR}/		r,
-owner /run/user/[0-9]*/gvfs/*/@{PROG_FILE}		rwk,
-owner /run/user/[0-9]*/gvfs/*/@{PROG_DIR}/@{PROG_FILE}	rwk,
+owner /run/user/[0-9]*/gvfs/*/@{USERS_DIR}/		r,
+owner /run/user/[0-9]*/gvfs/*/@{USERS_FILE}		rk,
+owner /run/user/[0-9]*/gvfs/*/@{USERS_DIR}/@{USERS_FILE} rk,
 /media/							r,
-/media/@{PROG_DIR}/					r,
-/media/@{PROG_FILE}					rwk,
-/media/@{PROG_DIR}/@{PROG_FILE}				rwk,
+/media/@{USERS_DIR}/					r,
+/media/@{USERS_FILE}					rk,
+/media/@{USERS_DIR}/@{USERS_FILE}			rk,

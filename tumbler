@@ -10,9 +10,9 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*"
+# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+@{USERS_DIR}="[^.]**"
+@{USERS_FILE}="[^.]*"
 
 profile tumbler /usr/lib{,32,64}/tumbler-1/tumblerd {
   #include <abstractions/base>
@@ -20,7 +20,7 @@ profile tumbler /usr/lib{,32,64}/tumbler-1/tumblerd {
   #include <abstractions/fonts>
   #include <abstractions/video>
   #include <abstractions/dbus-session-strict>
-  #include <abstractions/program-work-with-disk-rk-strict>
+  #include <abstractions/fs-access-by-users-preset-rk>
   
   # UNIX -----------------------------------------------
   unix (send, receive, connect)

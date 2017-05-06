@@ -10,9 +10,9 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*"
+# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+@{USERS_DIR}="[^.]**"
+@{USERS_FILE}="[^.]*"
 
 profile meld /usr/bin/meld {
   #include <abstractions/base>
@@ -23,12 +23,12 @@ profile meld /usr/bin/meld {
   #include <abstractions/video>
   #include <abstractions/X>
   #include <abstractions/nameservice>
-  #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/binary-helper-strict-web>
   #include <abstractions/cups-client>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/dconf>
+  #include <abstractions/fs-access-by-users-preset-rwk>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -73,12 +73,12 @@ profile meld_root {
   #include <abstractions/video>
   #include <abstractions/X_sudo>
   #include <abstractions/nameservice>
-  #include <abstractions/program-work-with-disk-rwk-strict>
   #include <abstractions/binary-helper-strict-web_root>
   #include <abstractions/cups-client>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/dconf>
+  #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/fs-access-by-pattern-systemusers>
   
   # CAPABILITIES ---------------------------------------

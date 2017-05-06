@@ -10,9 +10,9 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*.*"
+# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+@{USERS_DIR}="[^.]**"
+@{USERS_FILE}="[^.]*.*"
 
 profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   #include <abstractions/base>
@@ -24,7 +24,7 @@ profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   #include <abstractions/X>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/binary-helper-strict-web>
-  #include <abstractions/program-work-with-disk-rwk-strict>
+  #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/nameservice>
   
   # UNIX -----------------------------------------------

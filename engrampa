@@ -10,9 +10,9 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk,rwkl)
-@{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]**"
+# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+@{USERS_DIR}="[^.]**"
+@{USERS_FILE}="[^.]**"
 
 profile engrampa /usr/bin/engrampa {
   #include <abstractions/base>
@@ -26,7 +26,7 @@ profile engrampa /usr/bin/engrampa {
   #include <abstractions/nameservice>
   #include <abstractions/binary-helper-strict>
   #include <abstractions/xdg-open>
-  #include <abstractions/program-work-with-disk-rwkl-strict>
+  #include <abstractions/fs-access-by-users-preset-rwkl>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -64,7 +64,7 @@ profile engrampa /usr/bin/engrampa {
   
   profile shell @{shell} {
     #include <abstractions/base>
-    #include <abstractions/program-work-with-disk-rwkl-strict>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
     
     # PSEUDO ---------------------------------------------
     /dev/tty						rw,
@@ -79,7 +79,7 @@ profile engrampa /usr/bin/engrampa {
   
   profile rar /opt/rar/rar {
     #include <abstractions/base>
-    #include <abstractions/program-work-with-disk-rwkl-strict>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
     
     # EXECUTABLES --------------------------------------
     /opt/rar/rar					mr,
@@ -102,7 +102,7 @@ profile engrampa_root {
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open_root>
   #include <abstractions/binary-helper-strict_root>
-  #include <abstractions/program-work-with-disk-rwkl-strict>
+  #include <abstractions/fs-access-by-users-preset-rwkl>
   #include <abstractions/fs-access-by-pattern-systemusers>
   
   # CAPABILITIES ---------------------------------------
@@ -146,7 +146,7 @@ profile engrampa_root {
   
   profile shell @{shell} {
     #include <abstractions/base>
-    #include <abstractions/program-work-with-disk-rwkl-strict>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
     
     # PSEUDO ---------------------------------------------
@@ -162,7 +162,7 @@ profile engrampa_root {
   
   profile rar /opt/rar/rar {
     #include <abstractions/base>
-    #include <abstractions/program-work-with-disk-rwkl-strict>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
     
     # EXECUTABLES --------------------------------------

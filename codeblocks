@@ -10,9 +10,9 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*"
+# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+@{USERS_DIR}="[^.]**"
+@{USERS_FILE}="[^.]*"
 
 # FIX ME! Все плохо, все "/** ix" надо убирать, иначе нельзя
 # давать обычному пользователю запуск этой программы!
@@ -25,7 +25,7 @@ profile codeblocks /usr/bin/codeblocks {
   #include <abstractions/video>
   #include <abstractions/X>
   #include <abstractions/dbus-session-strict>
-  #include <abstractions/program-work-with-disk-rwk-strict>
+  #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/nameservice>
   #include <local/codeblocks-custom-settings>
   
@@ -65,7 +65,7 @@ profile codeblocks /usr/bin/codeblocks {
   profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
-    #include <abstractions/program-work-with-disk-rwk-strict>
+    #include <abstractions/fs-access-by-users-preset-rwk>
     #include <abstractions/python-exec>
     
     # PSEUDO -------------------------------------------

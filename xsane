@@ -10,9 +10,9 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*.{jpg,jpeg,tif,tiff,png,pnm,ps,pdf,rgba,txt,JPG,JPEG,TIF,TIFF,PNG,PNM,PS,PDF,RGBA,TXT}"
+# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+@{USERS_DIR}="[^.]**"
+@{USERS_FILE}="[^.]*.{jpg,jpeg,tif,tiff,png,pnm,ps,pdf,rgba,txt,JPG,JPEG,TIF,TIFF,PNG,PNM,PS,PDF,RGBA,TXT}"
 
 profile xsane /usr/bin/xsane flags=(complain) {
   #include <abstractions/base>
@@ -21,7 +21,7 @@ profile xsane /usr/bin/xsane flags=(complain) {
   #include <abstractions/gtk>
   #include <abstractions/video>
   #include <abstractions/X>
-  #include <abstractions/program-work-with-disk-rwk-strict>
+  #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/nameservice>
   
   # NETWORK --------------------------------------------

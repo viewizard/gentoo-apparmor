@@ -10,10 +10,10 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="[^.]**"
-# we also need create subfolders, not just files
-@{PROG_FILE}="{*/,[^.]*.{wav,ogg,mp3,WAV,OGG,MP3}}"
+# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+@{USERS_DIR}="[^.]**"
+# разрешаем создавать поддиректории, не только файлы
+@{USERS_FILE}="{*/,[^.]*.{wav,ogg,mp3,WAV,OGG,MP3}}"
 
 profile skype-call-recorder /usr/bin/skype-call-recorder {
   #include <abstractions/base>
@@ -22,7 +22,7 @@ profile skype-call-recorder /usr/bin/skype-call-recorder {
   #include <abstractions/X>
   #include <abstractions/qt>
   #include <abstractions/video>
-  #include <abstractions/program-work-with-disk-rwk-strict>
+  #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   

@@ -10,9 +10,9 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]*.{png,PNG}"
+# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+@{USERS_DIR}="[^.]**"
+@{USERS_FILE}="[^.]*.{png,PNG}"
 
 profile alacarte @{PYTHON2_EXEC}/alacarte {
   #include <abstractions/base>
@@ -25,7 +25,7 @@ profile alacarte @{PYTHON2_EXEC}/alacarte {
   #include <abstractions/X>
   #include <abstractions/nameservice>
   #include <abstractions/dbus-session-strict>
-  #include <abstractions/program-work-with-disk-rk-strict>
+  #include <abstractions/fs-access-by-users-preset-rk>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

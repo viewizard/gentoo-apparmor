@@ -10,9 +10,9 @@
 
 #include <tunables/global>
 
-# config for abstractions/program-work-with-disk-** (**-rk,rwk)
-@{PROG_DIR}="[^.]**"
-@{PROG_FILE}="[^.]**"
+# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+@{USERS_DIR}="[^.]**"
+@{USERS_FILE}="[^.]**"
 
 profile qgit /usr/bin/qgit {
   #include <abstractions/base>
@@ -22,9 +22,9 @@ profile qgit /usr/bin/qgit {
   #include <abstractions/qt>
   #include <abstractions/video>
   #include <abstractions/X>
-  #include <abstractions/program-work-with-disk-rwkl-strict>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
+  #include <abstractions/fs-access-by-users-preset-rwkl>
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(term, kill) peer="meld",
@@ -60,9 +60,9 @@ profile qgit_root {
   #include <abstractions/qt>
   #include <abstractions/video>
   #include <abstractions/X_sudo>
-  #include <abstractions/program-work-with-disk-rwkl-strict>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open_root>
+  #include <abstractions/fs-access-by-users-preset-rwkl>
   #include <abstractions/fs-access-by-pattern-systemusers>
   
   # CAPABILITIES ---------------------------------------
