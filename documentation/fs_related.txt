@@ -1,4 +1,6 @@
 Список процессов, профили ктоторых должны соответствовать по доступу к фс вызывающего профиля.
+Потом сделать базовый профиль для каждого + из точки вызова через делегейшен передавать доступ
+к файловой системе.
 
 /bin/date
 /bin/tail
@@ -18,18 +20,18 @@
 /bin/gzip
 /bin/tar
 /bin/cpio
-/bin/chown	?
-/bin/chmod	?
-/bin/getfattr	?
-/bin/setfattr	?
-/bin/nano	?
+/bin/chown	? меняет только мета данные файла
+/bin/chmod	? меняет только мета данные файла
+/bin/getfattr	? меняет только мета данные файла
+/bin/setfattr	? меняет только мета данные файла
+/bin/nano	? отдельный профиль (?)
 /bin/dd
 /bin/keyctl
 /bin/mkdir
 /bin/rmdir
 /bin/touch
 
-/sbin/paxctl	?
+/sbin/paxctl	? меняет только мета данные файла
 
 /usr/bin/gawk
 /usr/bin/rsync
@@ -40,6 +42,7 @@
 /usr/bin/scanelf
 /usr/bin/cmp
 /usr/bin/dig
+/usr/bin/wget
 
-/usr/sbin/paxctl-ng	?
+/usr/sbin/paxctl-ng	? меняет только мета данные файла
 

@@ -17,8 +17,15 @@ profile nmap /usr/bin/nmap flags=(complain) {
   # CAPABILITIES ---------------------------------------
   capability net_raw,
   
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/net/dev				r,
   

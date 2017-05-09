@@ -23,7 +23,9 @@ dbus send
 	peer=(name=org.freedesktop.DBus),
 
 # EXECUTABLES ------------------------------------------
-/usr/bin/dbus-launch					Px,
+/usr/bin/dbus-launch					Px,	# Все правильно, запускаем из "-strict", т.к.
+								# почти везде используем именно "-strict".
+								# Ограничиваем профилем + саму сессию dbus.
 
 # READS/WRITES -----------------------------------------
 /etc/machine-id						r,
