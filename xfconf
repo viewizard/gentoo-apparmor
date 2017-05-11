@@ -14,6 +14,19 @@ profile xfconf /usr/lib{,32,64}/xfce4/xfconf/xfconfd {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-pattern/session-bind>
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/org/xfce/Xfconf"
+  	interface="org.xfce.Xfconf"
+  	peer=(name="org.freedesktop.DBus"),
+  dbus receive
+  	bus=session
+  	path="/org/xfce/Xfconf"
+  	interface="org.xfce.Xfconf"
+  	peer=(name=":[0-9]*.[0-9]*"),
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/xfconf/xfconfd			m,

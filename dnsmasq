@@ -12,14 +12,34 @@
 
 profile dnsmasq /usr/sbin/dnsmasq {
   #include <abstractions/base>
-  #include <abstractions/dbus-strict>				# DELEGATION! networkmanager.NetworkManager
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-pattern/system-bind>
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
   capability setgid,
   capability setuid,
+  capability mknod,
   capability net_raw,
   capability net_bind_service,
+  
+  # DBUS -----------------------------------------------
+  dbus receive
+  	bus=system
+  	path="/uk/org/thekelleys/dnsmasq"
+  	interface="org.freedesktop.DBus.Properties"
+	member="GetAll"
+  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),
+  dbus send
+  	bus=system
+  	path="/uk/org/thekelleys/dnsmasq"
+  	interface="org.freedesktop.NetworkManager.dnsmasq"
+  	peer=(name="org.freedesktop.DBus",label="networkmanager.NetworkManager"),
+  dbus receive
+  	bus=system
+  	path="/uk/org/thekelleys/dnsmasq"
+  	interface="org.freedesktop.NetworkManager.dnsmasq"
+  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),
   
   # NETWORK --------------------------------------------
   network netlink raw,

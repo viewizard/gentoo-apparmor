@@ -32,4 +32,5 @@ profile xkbcomp /usr/bin/xkbcomp {
   deny /dev/input/event[0-9]*				rw,	# xorg-server.Xorg
   deny /run/acpid.socket				rw,	# xorg-server.Xorg
   deny /var/log/Xorg.[0-9].log				w,	# xorg-server.Xorg
+  owner @{HOME}/.xfce4-session.verbose-log		w,	# xfce4-session
 }

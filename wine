@@ -78,6 +78,7 @@ profile wine.wine-preloader /usr/bin/wine-preloader flags=(attach_disconnected) 
   #include <abstractions/private-files-strict>
   #include <abstractions/X>
   #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-pattern/udisks>
   #include <abstractions/video>
   #include <local/wine-custom-locations>
   
@@ -88,6 +89,14 @@ profile wine.wine-preloader /usr/bin/wine-preloader flags=(attach_disconnected) 
   unix (send, receive)
   	type=stream
   	peer=(label="wine.wineserver"),
+  
+  # DBUS -----------------------------------------------
+  dbus receive
+  	bus=system
+  	path="/org/freedesktop/NetworkManager{,/**}"
+  	interface="org.freedesktop.DBus.Properties"
+  	member=PropertiesChanged
+  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -173,6 +182,8 @@ profile wine.wineserver /usr/bin/wineserver flags=(attach_disconnected) {
   
   # NETWORK --------------------------------------------
   network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
   network inet stream,
   network inet6 stream,
   

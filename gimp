@@ -22,7 +22,12 @@ profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   #include <abstractions/gtk>
   #include <abstractions/video>
   #include <abstractions/X>
+  #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/binary-helper-strict-web>
   #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/nameservice>
@@ -32,6 +37,18 @@ profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   			type=stream
   			addr=none
   			peer=(label="gvfs.gvfsd-http"),
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/org/gimp/GIMP/UI"
+  	interface="org.gimp.GIMP.UI"
+  	peer=(name="org.gimp.GIMP.UI",label=@{profile_name}),
+  dbus receive
+  	bus=session
+  	path="/org/gimp/GIMP/UI"
+  	interface="org.gimp.GIMP.UI"
+  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -54,4 +71,8 @@ profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   owner @{HOME}/.local/share/gegl-[0-9].[0-9]/{,**}	rw,
   owner @{HOME}/.gimp-[0-9].[0-9]/			rw,
   owner @{HOME}/.gimp-[0-9].[0-9]/**			rwk,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/gdkpixbuf-save-tmp.*			rw,
+  owner /tmp/gtkprint_*					rw,
 }

@@ -17,10 +17,19 @@ profile libxfce4ui.xfce4-about /usr/bin/xfce4-about {
   #include <abstractions/gtk>
   #include <abstractions/X>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-about					mr,
+  /usr/bin/exo-open					Px,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/xfce4/help.rc			rw,
+  owner @{HOME}/.config/xfce4/help.rc.*.tmp		rw,
 }

@@ -13,6 +13,40 @@
 profile gnome-keyring.gnome-keyring-daemon /usr/bin/gnome-keyring-daemon {
   #include <abstractions/base>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-pattern/session-bind>
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/org/freedesktop/secrets{,/**}"
+  	interface="org.freedesktop.DBus.Properties"
+  	peer=(name="org.freedesktop.DBus"),
+  dbus receive
+  	bus=session
+  	path="/org/freedesktop/secrets{,/**}"
+  	interface="org.freedesktop.DBus.Properties"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  dbus (send, receive)
+  	bus=session
+  	path="/org/freedesktop/secrets{,/**}"
+  	interface="org.freedesktop.Secret.*"
+  	peer=(name="{:[0-9]*.[0-9]*,org.freedesktop.DBus}"),
+  dbus receive
+  	bus=session
+  	path="/org/freedesktop/secrets"
+  	interface="org.gnome.keyring.InternalUnsupportedGuiltRiddenInterface"
+  	member=ChangeWithPrompt
+  	peer=(name=":[0-9]*.[0-9]*"),
+  dbus (send, receive)
+  	bus=session
+  	path="/org/gnome/keyring/Prompt**"
+  	interface="org.gnome.keyring.internal.Prompter{,.*}"
+  	peer=(name="{:[0-9]*.[0-9]*,org.gnome.keyring.SystemPrompter}"),
+  dbus (send, receive)
+  	bus=session
+  	path="/org/gnome/keyring/daemon"
+  	interface="org.gnome.keyring.Daemon"
+  	peer=(name="{:[0-9]*.[0-9]*,org.gnome.keyring}",label=@{profile_name}),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

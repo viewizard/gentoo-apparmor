@@ -1,0 +1,25 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+dbus (send, receive)
+	bus=session
+	path="/org/gtk/vfs/**"
+	interface="org.gtk.vfs.*"
+	peer=(name=":[0-9]*.[0-9]*",label="gvfs.gvfsd{,-*}"),
+dbus receive
+	bus=session
+	path="/org/gtk/gvfs/**"
+	interface="org.gtk.vfs.*"
+	peer=(name=":[0-9]*.[0-9]*",label="gvfs.gvfsd{,-*}"),
+dbus (send, receive)
+	bus=session
+	path="/org/gtk/Private/RemoteVolumeMonitor"
+	interface="org.gtk.Private.RemoteVolumeMonitor"
+	peer=(name=":[0-9]*.[0-9]*",label="gvfs.gvfs-udisks2-volume-monitor"),

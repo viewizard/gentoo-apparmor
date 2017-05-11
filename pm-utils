@@ -12,6 +12,10 @@
 
 profile pm-utils.pm-is-supported /usr/bin/pm-is-supported flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,

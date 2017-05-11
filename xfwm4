@@ -19,6 +19,10 @@ profile xfwm4 /usr/bin/xfwm4 {
   #include <abstractions/video>
   #include <abstractions/X>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/xfconf>
+  #include <abstractions/dbus-pattern/gvfs>
   #include <abstractions/nameservice>
   
   # SIGNAL ---------------------------------------------
@@ -28,12 +32,10 @@ profile xfwm4 /usr/bin/xfwm4 {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfwm4					mr,
   /usr/lib{,32,64}/xfce4/xfwm4/helper-dialog		ix,
-  /usr/bin/pulseaudio					Px,
   
   # READS/WRITES ---------------------------------------
   /usr/share/xfwm4/{,**}				r,
@@ -41,6 +43,7 @@ profile xfwm4 /usr/bin/xfwm4 {
   # USERS ----------------------------------------------
   owner @{HOME_CACHE}/sessions/{,xfwm4-*.state}		rw,
   owner @{HOME}/.config/xfce4/xfwm4/			rw,
+  owner @{HOME}/.xfce4-session.verbose-log		w,
   
   # TEMP -----------------------------------------------
   owner /tmp/.gl* rw,
@@ -54,6 +57,10 @@ profile xfwm4.xfwm4-settings /usr/bin/xfwm4{,-tweaks,-workspace}-settings {
   #include <abstractions/video>
   #include <abstractions/X>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/xfconf>
+  #include <abstractions/dbus-pattern/gvfs>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

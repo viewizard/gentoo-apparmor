@@ -18,9 +18,32 @@ profile xfdesktop /usr/bin/xfdesktop {
   #include <abstractions/fonts>
   #include <abstractions/X>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/xfconf>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/thumbnails>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/gtk>
   #include <abstractions/nameservice>
   #include <abstractions/binary-helper>
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/org/xfce/FileManager"
+  	interface="org.xfce.{FileManager,Trash}"
+  	peer=(name="org.xfce.FileManager",label="thunar"),	# RBAC! Для root ветки label="thunar_root".
+  dbus send
+  	bus=session
+  	path="/org/xfce/xfdesktop"
+  	interface="org.gtk.Actions"
+  	peer=(name="org.xfce.xfdesktop",label=@{profile_name}),
+  dbus receive
+  	bus=session
+  	path="/org/xfce/xfdesktop"
+  	interface="org.gtk.Actions"
+  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -83,6 +106,11 @@ profile xfdesktop.xfdesktop-settings /usr/bin/xfdesktop-settings {
   #include <abstractions/X>
   #include <abstractions/gtk>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/xfconf>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/thumbnails>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

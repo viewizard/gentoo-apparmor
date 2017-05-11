@@ -18,6 +18,11 @@ profile pidgin /usr/bin/pidgin {
   #include <abstractions/enchant>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/networkmanager>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/gtk>
   #include <abstractions/video>
   #include <abstractions/nameservice>
@@ -32,6 +37,18 @@ profile pidgin /usr/bin/pidgin {
   
   # AUDIT PTRACE ---------------------------------------
   deny ptrace (trace),
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/im/pidgin/purple/PurpleObject"
+  	interface="im.pidgin.purple.PurpleInterface"
+  	peer=(name="im.pidgin.purple.PurpleService",label=@{profile_name}),
+  dbus receive
+  	bus=session
+  	path="/im/pidgin/purple/PurpleObject"
+  	interface="im.pidgin.purple.PurpleInterface"
+  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
   
   # NETWORK --------------------------------------------
   network netlink raw,

@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile xfce4-power-manager /usr/bin/xfce4-power-manager flags=(complain) {
+profile xfce4-power-manager /usr/bin/xfce4-power-manager {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -18,7 +18,40 @@ profile xfce4-power-manager /usr/bin/xfce4-power-manager flags=(complain) {
   #include <abstractions/X>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/xfconf>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/notifications>
+  #include <abstractions/dbus-pattern/consolekit>
+  #include <abstractions/dbus-pattern/polkit>
+  #include <abstractions/dbus-pattern/upower>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/nameservice>
+  
+  # DBUS -----------------------------------------------
+  dbus (send, receive)
+  	bus=session
+  	path="/org/freedesktop/PowerManagement/Inhibit"
+  	interface="org.freedesktop.DBus.Properties"
+	member=GetAll
+  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
+  dbus (send, receive)
+  	bus=session
+  	path="/org/freedesktop/PowerManagement/Inhibit"
+  	interface="org.freedesktop.PowerManagement.Inhibit"
+  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
+  dbus receive
+  	bus=session
+  	path="/org/xfce/PowerManager"
+  	interface="org.xfce.Power.Manager"
+  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-power-manager.xfce4-power-manager-settings"),
+  dbus receive
+  	bus=session
+  	path="/org/xfce/PowerManager"
+  	interface="org.freedesktop.DBus.Properties"
+  	member=GetAll
+  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-power-manager.xfce4-power-manager-settings"),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -35,7 +68,7 @@ profile xfce4-power-manager /usr/bin/xfce4-power-manager flags=(complain) {
   /etc/xdg/autostart/xfce4-power-manager.desktop	r,
 }
 
-profile xfce4-power-manager.xfpm-power-backlight-helper /usr/sbin/xfpm-power-backlight-helper flags=(complain) {
+profile xfce4-power-manager.xfpm-power-backlight-helper /usr/sbin/xfpm-power-backlight-helper {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -45,7 +78,7 @@ profile xfce4-power-manager.xfpm-power-backlight-helper /usr/sbin/xfpm-power-bac
   /usr/sbin/xfpm-power-backlight-helper			mr,
 }
 
-profile xfce4-power-manager.xfce4-power-manager-settings /usr/bin/xfce4-power-manager-settings flags=(complain) {
+profile xfce4-power-manager.xfce4-power-manager-settings /usr/bin/xfce4-power-manager-settings {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -54,6 +87,35 @@ profile xfce4-power-manager.xfce4-power-manager-settings /usr/bin/xfce4-power-ma
   #include <abstractions/X>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/xfconf>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/upower>
+  #include <abstractions/dbus-pattern/session-bind>
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/org/xfce/PowerManager"
+  	interface="org.xfce.Power.Manager"
+  	peer=(name="{:[0-9]*.[0-9]*,org.xfce.PowerManager}",label="xfce4-power-manager"),
+  dbus send
+  	bus=session
+  	path="/org/xfce/PowerManager"
+  	interface="org.freedesktop.DBus.Properties"
+  	member=GetAll
+  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-power-manager"),
+  dbus send
+  	bus=session
+  	path="/org/xfce/PowerManager/Settings"
+  	interface="org.gtk.Actions"
+  	peer=(name="org.xfce.PowerManager.Settings",label=@{profile_name}),
+  dbus receive
+  	bus=session
+  	path="/org/xfce/PowerManager/Settings"
+  	interface="org.gtk.Actions"
+  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

@@ -13,11 +13,42 @@
 profile polkit.polkitd /usr/lib{,32,64}/polkit-1/polkitd {
   #include <abstractions/base>
   #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-pattern/consolekit>
+  #include <abstractions/dbus-pattern/system-bind>
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
   capability setgid,
   capability setuid,
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=system
+  	path="/org/freedesktop/DBus"
+  	interface="org.freedesktop.DBus"
+  	member={GetConnectionUnixUser,GetConnectionUnixProcessID}
+  	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon"),
+  dbus receive
+  	bus=system
+  	path="/org/freedesktop/PolicyKit[0-9]*/Authority"
+  	interface="org.freedesktop.DBus.Properties"
+  	member=GetAll
+  	peer=(name=":[0-9]*.[0-9]*"),
+  dbus send
+  	bus=system
+  	path="/org/gnome/PolicyKit[0-9]*/AuthenticationAgent"
+  	interface="org.freedesktop.PolicyKit[0-9]*.AuthenticationAgent"
+  	peer=(name=":[0-9]*.[0-9]*",label="polkit-gnome"),
+  dbus send
+  	bus=system
+  	path="/org/freedesktop/PolicyKit[0-9]*/Authority"
+  	interface="org.freedesktop.PolicyKit[0-9]*.Authority"
+  	peer=(name="org.freedesktop.DBus"),
+  dbus receive
+  	bus=system
+  	path="/org/freedesktop/PolicyKit[0-9]*/Authority"
+  	interface="org.freedesktop.PolicyKit[0-9]*.Authority"
+  	peer=(name=":[0-9]*.[0-9]*"),
   
   # PSEUDO ---------------------------------------------
   @{PROC}/sys/kernel/ngroups_max			r,
@@ -54,9 +85,10 @@ profile polkit.pkcheck /usr/bin/pkcheck flags=(complain) {
   /usr/bin/pkcheck					mr,
 }
 
-profile polkit.pkexec /usr/bin/pkexec flags=(complain) {
+profile polkit.pkexec /usr/bin/pkexec {
   #include <abstractions/base>
   #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-pattern/polkit>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
   

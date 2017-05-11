@@ -17,11 +17,9 @@ profile alsa-utils.aplay /usr/bin/aplay {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/aplay					mr,
-  /usr/bin/pulseaudio					Px,
   
   # TEMP -----------------------------------------------
   owner /tmp/pulse-*/{,*}				rw,	# pulseaudio

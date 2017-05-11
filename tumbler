@@ -20,6 +20,8 @@ profile tumbler /usr/lib{,32,64}/tumbler-1/tumblerd {
   #include <abstractions/fonts>
   #include <abstractions/video>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/fs-access-by-users-preset-rk>
   
   # UNIX -----------------------------------------------
@@ -39,6 +41,13 @@ profile tumbler /usr/lib{,32,64}/tumbler-1/tumblerd {
   			type=stream
   			addr=none
   			peer=(label="gvfs.gvfsd-smb"),
+  
+  # DBUS -----------------------------------------------
+  dbus (send, receive)
+  	bus=session
+  	path="/org/freedesktop/thumbnails/*"
+  	interface="org.freedesktop.thumbnails.*"
+  	peer=(name=":[0-9]*.[0-9]*"),
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/tumbler-1/tumblerd			mr,

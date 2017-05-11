@@ -15,6 +15,8 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
   #include <abstractions/nameservice>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-pattern/udisks>
+  #include <abstractions/dbus-pattern/session-bind>
   
   # CAPABILITIES ---------------------------------------
   capability dac_override,
@@ -25,6 +27,29 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
   	type=stream
   	addr=none
   	peer=(addr="@/dbus-vfs-daemon/socket-*" label="gvfs.gvfsd-burn"),
+  
+  # DBUS -----------------------------------------------
+  dbus (send, receive)
+  	bus=system
+  	path="/org/freedesktop/UDisks2/**"
+  	interface="org.freedesktop.UDisks2.*"
+  	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd"),
+  dbus send
+  	bus=system
+  	path="/org/freedesktop/UDisks2"
+  	interface="org.freedesktop.DBus.ObjectManager"
+	member=GetManagedObjects
+  	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd"),
+  dbus send
+  	bus=session
+  	path="/org/gtk/vfs/**"
+  	interface="org.gtk.vfs.*"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  dbus (send, receive)
+  	bus=session
+  	path="/org/gtk/Private/RemoteVolumeMonitor"
+  	interface="org.gtk.Private.RemoteVolumeMonitor"
+  	peer=(name="{:[0-9]*.[0-9]*,org.freedesktop.DBus}"),
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -55,6 +80,19 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
 profile gvfs.gvfsd /usr/libexec/gvfsd {
   #include <abstractions/base>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-pattern/session-bind>
+  
+  # DBUS -----------------------------------------------
+  dbus (send, receive)
+  	bus=session
+  	path="/org/gtk/vfs/**"
+  	interface="org.gtk.vfs.*"
+  	peer=(name="{:[0-9]*.[0-9]*,org.freedesktop.DBus}"),
+  dbus receive
+  	bus=session
+  	path="/org/gtk/gvfs/**"
+  	interface="org.gtk.vfs.*"
+  	peer=(name=":[0-9]*.[0-9]*"),
   
   # PSEUDO ---------------------------------------------
   owner @{PROC}/@{pid}/fd/				rw,
@@ -131,6 +169,13 @@ profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   			addr=none
   			peer=(label="gvfs.gvfsd-smb"),
   
+  # DBUS -----------------------------------------------
+  dbus (send, receive)
+  	bus=session
+  	path="/org/gtk/vfs/**"
+  	interface="org.gtk.vfs.*"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  
   # MOUNT ----------------------------------------------
   mount options=(rw, nosuid, nodev) -> /run/user/[0-9]*/gvfs/,
   mount options=(rw, nosuid, nodev) -> /root/.gvfs/,
@@ -153,11 +198,12 @@ profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   @{HOME}/.gvfs/{,**}					rw,
 }
 
-profile gvfs.gvfsd-http /usr/libexec/gvfsd-http flags=(complain) {
+profile gvfs.gvfsd-http /usr/libexec/gvfsd-http {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/gtk>
   #include <abstractions/dconf>
   #include <abstractions/ssl-certs>
@@ -171,6 +217,18 @@ profile gvfs.gvfsd-http /usr/libexec/gvfsd-http flags=(complain) {
   			addr=none
   			peer=(label="gimp"),			# gimp
   
+  # DBUS -----------------------------------------------
+  dbus (send, receive)
+  	bus=session
+  	path="/org/gtk/vfs/**"
+  	interface="org.gtk.vfs.*"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  dbus (send, receive)
+  	bus=session
+  	path="/org/gtk/gvfs/**"
+  	interface="org.gtk.vfs.*"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  
   # NETWORK --------------------------------------------
   network netlink raw,
   network inet dgram,
@@ -183,6 +241,12 @@ profile gvfs.gvfsd-http /usr/libexec/gvfsd-http flags=(complain) {
   
   # READS/WRITES ---------------------------------------
   /usr/lib{,32,64}/libproxy/[0-9]*.[0-9]*.[0-9]*/modules/*.so m,
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/mime/mime.cache				r,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.local/share/mime/mime.cache		r,
 }
 
 profile gvfs.gvfsd-localtest /usr/libexec/gvfsd-localtest flags=(complain) {
@@ -195,6 +259,14 @@ profile gvfs.gvfsd-localtest /usr/libexec/gvfsd-localtest flags=(complain) {
 profile gvfs.gvfsd-metadata /usr/libexec/gvfsd-metadata {
   #include <abstractions/base>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-pattern/session-bind>
+  
+  # DBUS -----------------------------------------------
+  dbus receive
+  	bus=session
+  	path="/org/gtk/vfs/metadata"
+  	interface="org.gtk.vfs.Metadata"
+  	peer=(name=":[0-9]*.[0-9]*"),
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-metadata				mr,
@@ -209,16 +281,29 @@ profile gvfs.gvfsd-metadata /usr/libexec/gvfsd-metadata {
   owner @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
 }
 
-profile gvfs.gvfsd-network /usr/libexec/gvfsd-network flags=(complain) {
+profile gvfs.gvfsd-network /usr/libexec/gvfsd-network {
   #include <abstractions/base>
   #include <abstractions/dconf>
   #include <abstractions/gtk>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-pattern/session-bind>
   
   # UNIX -----------------------------------------------
   unix (bind, listen, send, receive, accept)
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*",
+  
+  # DBUS -----------------------------------------------
+  dbus (send, receive)
+  	bus=session
+  	path="/org/gtk/vfs/**"
+  	interface="org.gtk.vfs.*"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  dbus send
+  	bus=session
+  	path="/org/gtk/gvfs/**"
+  	interface="org.gtk.vfs.*"
+  	peer=(name=":[0-9]*.[0-9]*"),
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-network				mr,
@@ -244,6 +329,7 @@ profile gvfs.gvfsd-smb /usr/libexec/gvfsd-smb {
   #include <abstractions/dconf>
   #include <abstractions/gtk>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/nameservice>
   
   # UNIX -----------------------------------------------
@@ -266,6 +352,22 @@ profile gvfs.gvfsd-smb /usr/libexec/gvfsd-smb {
   			type=stream
   			addr=none
   			peer=(label="tumbler"),			# tumbler
+  unix (send, receive)
+  			type=stream
+  			addr=none
+  			peer=(label="thunar"),			# thunar
+  
+# DBUS -----------------------------------------------
+  dbus (send, receive)
+  	bus=session
+  	path="/org/gtk/vfs/**"
+  	interface="org.gtk.vfs.*"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  dbus send
+  	bus=session
+  	path="/org/gtk/gvfs/**"
+  	interface="org.gtk.vfs.*"
+  	peer=(name=":[0-9]*.[0-9]*"),
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -288,12 +390,25 @@ profile gvfs.gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse {
   #include <abstractions/dconf>
   #include <abstractions/gtk>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/nameservice>
   
   # UNIX -----------------------------------------------
   unix (bind, listen, send, receive, accept)
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*",
+  
+  # DBUS -----------------------------------------------
+  dbus (send, receive)
+  	bus=session
+  	path="/org/gtk/vfs/**"
+  	interface="org.gtk.vfs.*"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  dbus send
+  	bus=session
+  	path="/org/gtk/gvfs/**"
+  	interface="org.gtk.vfs.*"
+  	peer=(name=":[0-9]*.[0-9]*"),
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -314,6 +429,7 @@ profile gvfs.gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse {
 profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   #include <abstractions/base>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/fs-access-by-pattern-filemanager>
   
   # UNIX -----------------------------------------------
@@ -324,6 +440,18 @@ profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
 			type=stream
 			addr=none
 			peer=(label="tumbler"),			# tumbler
+  
+  # DBUS -----------------------------------------------
+  dbus (send, receive)
+  	bus=session
+  	path="/org/gtk/vfs/**"
+  	interface="org.gtk.vfs.*"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  dbus send
+  	bus=session
+  	path="/org/gtk/gvfs/**"
+  	interface="org.gtk.vfs.*"
+  	peer=(name=":[0-9]*.[0-9]*"),
   
   # PSEUDO ---------------------------------------------
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}name	r,

@@ -20,6 +20,10 @@ profile xfce4-session /usr/bin/xfce4-session {
   #include <abstractions/nameservice>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-pattern/xfconf>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/consolekit>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/binary-helper>
   #include <local/xfce4-session-custom-exec>
   
@@ -33,6 +37,23 @@ profile xfce4-session /usr/bin/xfce4-session {
   unix (send, receive, accept)
   			type=stream
   			addr="@/tmp/.ICE-unix/*",
+  
+  # DBUS -----------------------------------------------
+  dbus receive
+  	bus=session
+  	path="/org/xfce/SessionManager"
+  	interface="org.xfce.Session.Manager"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  dbus send
+  	bus=session
+  	path="/org/xfce/SessionClients/*"
+  	interface="org.xfce.Session.Client"
+  	peer=(name="org.freedesktop.DBus"),
+  dbus receive
+  	bus=session
+  	path="/org/xfce/SessionClients/*"
+  	interface="org.xfce.Session.Client"
+  	peer=(name=":[0-9]*.[0-9]*"),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -51,7 +72,7 @@ profile xfce4-session /usr/bin/xfce4-session {
   /usr/bin/start-pulseaudio-x11				Px,
   /usr/bin/mate-screensaver{,.sh}			Px,
   /usr/bin/pkexec					Px,
-  /usr/bin/gnome-keyring-daemon				Px,
+  /usr/bin/gnome-keyring-daemon				Px,	# В случае запуска через автозагрузку.
   /usr/bin/xfdesktop					Px,
   /usr/bin/xfwm4					Px,
   /usr/bin/xfce4-panel					Px,
@@ -59,6 +80,8 @@ profile xfce4-session /usr/bin/xfce4-session {
   /usr/bin/xfce4-volumed				Px,
   /usr/bin/xfce4-volumed-pulse				Px,
   /usr/bin/xfce4-power-manager				Px,
+  /usr/bin/gsettings-data-convert			Px,
+  /usr/libexec/at-spi-bus-launcher			Px,
   /usr/libexec/polkit-gnome-authentication-agent-1	Px,
   /usr/libexec/vino-server				Px,
   
@@ -113,6 +136,9 @@ profile xfce4-session /usr/bin/xfce4-session {
     /usr/bin/thunar					Px,
     /usr/bin/xfdesktop					Px,
     /usr/bin/cairo-clock				Px,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.xfce4-session.verbose-log		w,
   }
 }
 
@@ -124,6 +150,15 @@ profile xfce4-session.xfce4-session-logout /usr/bin/xfce4-session-logout {
   #include <abstractions/X>
   #include <abstractions/gtk>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/org/xfce/SessionManager"
+  	interface="org.xfce.Session.Manager"
+  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-session"),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -141,7 +176,28 @@ profile xfce4-session.xfce4-session-settings /usr/bin/xfce4-session-settings {
   #include <abstractions/video>
   #include <abstractions/X>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/xfconf>
+  #include <abstractions/dbus-pattern/gvfs>
   #include <abstractions/nameservice>
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/org/xfce/SessionManager"
+  	interface="org.xfce.Session.Manager"
+  	peer=(name="org.xfce.SessionManager",label="xfce4-session"),
+  dbus send
+  	bus=session
+  	path="/org/xfce/SessionClients/*"
+  	interface="org.xfce.Session.Client"
+  	peer=(name="org.xfce.SessionManager",label="xfce4-session"),
+  dbus receive
+  	bus=session
+  	path="/org/xfce/SessionClients/*"
+  	interface="org.xfce.Session.Client"
+  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-session"),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

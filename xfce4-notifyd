@@ -17,9 +17,29 @@ profile xfce4-notifyd /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd {
   #include <abstractions/gtk>
   #include <abstractions/video>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/xfconf>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/X_sudo>				# RBAC! Нужно для запуска запущенным под root-ом
   								# dbus-daemon, чтобы сделал вывод в сессию пользователя.
   								# Временно делаем одним профилем.
+  
+  # DBUS -----------------------------------------------
+  dbus receive
+  	bus=session
+  	path="/org/freedesktop/Notifications"
+  	interface="org.freedesktop.DBus.Introspectable"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  dbus send
+  	bus=session
+  	path="/org/freedesktop/Notifications"
+  	interface="org.freedesktop.Notifications"
+  	peer=(name="org.freedesktop.DBus"),
+  dbus receive
+  	bus=session
+  	path="/org/freedesktop/Notifications"
+  	interface="org.freedesktop.Notifications"
+  	peer=(name=":[0-9]*.[0-9]*"),
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd		mr,
@@ -35,7 +55,7 @@ profile xfce4-notifyd /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd {
   owner /tmp/gnotifier/gnotifier-*			r,
 }
 
-profile xfce4-notifyd-config /usr/bin/xfce4-notifyd-config {
+profile xfce4-notifyd.xfce4-notifyd-config /usr/bin/xfce4-notifyd-config {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -43,6 +63,11 @@ profile xfce4-notifyd-config /usr/bin/xfce4-notifyd-config {
   #include <abstractions/video>
   #include <abstractions/X>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/xfconf>
+  #include <abstractions/dbus-pattern/notifications>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

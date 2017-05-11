@@ -15,6 +15,8 @@ profile pulseaudio /usr/bin/pulseaudio {
   #include <abstractions/audio>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-pattern/consolekit>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/nameservice>
   #include <abstractions/X-authentication-strict>
   #include <abstractions/X-connection-strict>
@@ -38,7 +40,7 @@ profile pulseaudio /usr/bin/pulseaudio {
   owner @{PROC}/@{pid}/stat				r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/pulseaudio					ixmr,
+  /usr/bin/pulseaudio					mr,
   /usr/libexec/pulse/gconf-helper			ix,
   
   # READS/WRITES ---------------------------------------
@@ -55,7 +57,7 @@ profile pulseaudio /usr/bin/pulseaudio {
   owner @{HOME}/.config/pulse/**			rwk,
   
   # TEMP -----------------------------------------------
-  owner /tmp/pulse-*/{,*}				rw,
+  owner /tmp/pulse-*/{,*}				rwk,
 }
 
 profile pulseaudio.start-pulseaudio-x11 /usr/bin/start-pulseaudio-x11 {
@@ -80,9 +82,7 @@ profile pulseaudio.pactl /usr/bin/pactl {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pactl					mr,
-  /usr/bin/pulseaudio					Px,
 }

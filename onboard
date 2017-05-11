@@ -19,6 +19,29 @@ profile onboard /usr/bin/onboard {
   #include <abstractions/X>
   #include <abstractions/dconf>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/session-bind>
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/org/freedesktop/DBus"
+  	interface="org.freedesktop.DBus.Introspectable"
+  	member=Introspect
+  	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon"),
+  dbus (send, receive)
+  	bus=session
+  	path="/org/onboard/Onboard/Keyboard"
+  	interface="org.freedesktop.DBus.Introspectable"
+  	member=Introspect
+  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
+  dbus (send, receive)
+  	bus=session
+  	path="/org/onboard/Onboard/Keyboard"
+  	interface="org.onboard.Onboard.Keyboard"
+  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -49,11 +72,22 @@ profile onboard_settings /usr/bin/onboard-settings {
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/python>
-  #include <abstractions/python-exec>				# DELEGATION! onboard, нужен только при запуске через python-exec
+  #include <abstractions/python-exec>		# DELEGATION! onboard, нужен только при запуске через python-exec
   #include <abstractions/gtk>
   #include <abstractions/X>
   #include <abstractions/dconf>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/org/freedesktop/DBus"
+  	interface="org.freedesktop.DBus.Introspectable"
+  	member=Introspect
+  	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon"),
   
   # NETWORK --------------------------------------------
   network netlink raw,

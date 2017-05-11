@@ -11,6 +11,10 @@
 # PSEUDO -----------------------------------------------
 /dev/shm/						r,
 owner /dev/shm/pulse-shm*				rwk,
+owner @{PROC}/@{pid}/fd/				r,
+
+# EXECUTABLES ------------------------------------------
+/usr/bin/pulseaudio					Px,
 
 # READS/WRITES -----------------------------------------
 /etc/machine-id						r,

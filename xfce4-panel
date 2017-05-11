@@ -22,9 +22,31 @@ profile xfce4-panel /usr/bin/xfce4-panel {
   #include <abstractions/video>
   #include <abstractions/X>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/xfconf>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/nameservice>
   #include <abstractions/binary-helper>
   #include <local/xfce4-panel-custom>
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/org/xfce/Panel/Wrapper/[0-9]*"
+  	interface="org.xfce.Panel.Wrapper"
+  	peer=(name="org.freedesktop.DBus",label="xfce4-panel*"),
+  dbus receive
+  	bus=session
+  	path="/org/xfce/Panel/Wrapper/[0-9]*"
+  	interface="org.xfce.Panel.Wrapper"
+  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-panel*"),
+  dbus (send, receive)
+  	bus=session
+  	path="/org/xfce/Panel"
+  	interface="org.xfce.Panel"
+  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -48,6 +70,7 @@ profile xfce4-panel /usr/bin/xfce4-panel {
   /opt/**.png						r,
   
   # USERS ----------------------------------------------
+  owner @{HOME}/.config/xfce4/help.rc*			rw,
   owner @{HOME}/.config/xfce4/panel/{,*.rc*}		rw,
   owner @{HOME}/.config/xfce4/panel/launcher-**.desktop	r,
   owner @{HOME}/.config/menus/**.menu			rw,
@@ -55,6 +78,7 @@ profile xfce4-panel /usr/bin/xfce4-panel {
   owner @{HOME}/.config/xfce4/panel/launcher-*/{,**}	rw,
   owner @{HOME}/.local/share/desktop-directories/*.directory r,
   owner @{HOME}/.local/share/gvfs-metadata/{,*}		r,
+  owner @{HOME}/.xfce4-session.verbose-log		w,
 }
 
 profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
@@ -64,12 +88,24 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   #include <abstractions/X>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/xfconf>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/upower>
   #include <abstractions/gtk>
   #include <abstractions/audio>
   #include <abstractions/nameservice>
   #include <abstractions/binary-helper>
   #include <abstractions/fs-access-by-users-preset-rwk>		# xfce4-screenshooter
   #include <local/xfce4-panel-custom>
+  
+  # DBUS -----------------------------------------------
+  dbus (send, receive)
+  	bus=session
+  	path="/org/xfce/Panel/Wrapper/[0-9]*"
+  	interface="org.xfce.Panel.Wrapper"
+  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-panel*"),
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -139,15 +175,25 @@ profile xfce4-panel.wrapper-2.0 /usr/lib{,32,64}/xfce4/panel/wrapper-2.0 {
   #include <abstractions/audio>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/xfconf>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/notifications>
   #include <abstractions/binary-helper>
+  
+  # DBUS -----------------------------------------------
+  dbus (send, receive)
+  	bus=session
+  	path="/org/xfce/Panel/Wrapper/[0-9]*"
+  	interface="org.xfce.Panel.Wrapper"
+  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-panel*"),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/panel/wrapper-2.0		m,
-  /usr/bin/pulseaudio					Px,
   /usr/sbin/xfpm-power-backlight-helper			Px,
 }
 
@@ -158,6 +204,9 @@ profile xfce4-panel.xfce4-xkb-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-
   #include <abstractions/X>
   #include <abstractions/gtk>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -180,6 +229,10 @@ profile xfce4-panel.xfce4-kbdleds-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xf
   #include <abstractions/fonts>
   #include <abstractions/X>
   #include <abstractions/gtk>
+  #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -198,8 +251,12 @@ profile xfce4-panel.xfce4-sensors-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xf
   #include <abstractions/X>
   #include <abstractions/gtk>
   #include <abstractions/sensors>
+  #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   

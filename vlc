@@ -23,9 +23,25 @@ profile vlc /usr/bin/vlc {
   #include <abstractions/video>
   #include <abstractions/X>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/fs-access-by-users-preset-rk>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/org/mpris/MediaPlayer[0-9]*"
+  	interface="org.mpris.MediaPlayer[0-9]*.TrackList"
+  	peer=(name="org.mpris.MediaPlayer[0-9]*.vlc",label=@{profile_name}),
+  dbus receive
+  	bus=session
+  	path="/org/mpris/MediaPlayer[0-9]*"
+  	interface="org.mpris.MediaPlayer[0-9]*.TrackList"
+  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
   
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
@@ -40,6 +56,7 @@ profile vlc /usr/bin/vlc {
   /usr/lib{,32,64}/vlc/{,**}				r,
   
   # USERS ----------------------------------------------
+  owner @{HOME}/.config/.??????				rwk,
   owner @{HOME}/.config/vlc/				rw,
   owner @{HOME}/.config/vlc/**				rwk,
   owner @{HOME}/.local/share/vlc/{,**}			rw,

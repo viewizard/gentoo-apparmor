@@ -16,12 +16,14 @@ profile xfce4-volumed-pulse /usr/bin/xfce4-volumed-pulse {
   #include <abstractions/X-connection-strict>
   #include <abstractions/audio-pulseaudio>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/xfconf>
+  #include <abstractions/dbus-pattern/notifications>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-volumed-pulse				mr,
-  /usr/bin/pulseaudio					Px,
 }

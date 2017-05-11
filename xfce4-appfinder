@@ -18,7 +18,24 @@ profile xfce4-appfinder /usr/bin/{xfrun4,xfce4-appfinder} {
   #include <abstractions/X>
   #include <abstractions/gtk>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/xfconf>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/binary-helper>
+  
+  # DBUS -----------------------------------------------
+  dbus (send, receive)
+  	bus=session
+  	path="/org/xfce/Appfinder"
+  	interface="org.xfce.Appfinder"
+  	peer=(name="org.xfce.Appfinder",label=@{profile_name}),
+  dbus (send, receive)
+  	bus=session
+  	path="/org/xfce/Appfinder"
+  	interface="org.xfce.Appfinder"
+  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

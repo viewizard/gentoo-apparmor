@@ -22,6 +22,11 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   #include <abstractions/X>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/gconf>
+  #include <abstractions/dbus-pattern/networkmanager>
   #include <abstractions/xdg-open>
   
   # NETWORK --------------------------------------------
@@ -37,13 +42,16 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   owner /dev/shm/.org.chromium.Chromium.??????		rw,
   /sys/devices/system/cpu/				r,
   /sys/devices/pci[0-9]*/**/{resource,irq,vendor,device,class,config} r,
+  @{PROC}/sys/kernel/shmmax				r,
   
   # AUDIT PSEUDO ---------------------------------------
   deny @{PROC}/@{pid}/cmdline				r,
+  deny @{PROC}/@{pid}/oom_score_adj			rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/teamspeak3					r,
   @{shell}						mr,
+  /usr/lib{,32,64}/qt[0-9]*/libexec/QtWebEngineProcess	ix,
   /opt/teamspeak3-client/ts3client			ix,
   /opt/teamspeak3-client/QtWebEngineProcess		ix,
   /opt/teamspeak3-client/package_inst			ix,	# Установка плагинов @{HOME}/.ts3client/plugins/*.so
@@ -68,4 +76,5 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   owner /tmp/*.ts3_plugin				rw,
   owner /tmp/ts3import/{,**}				rw,
   /var/tmp/						r,
+  owner /var/tmp/etilqs_*				rw,
 }

@@ -17,10 +17,21 @@ unix (send, receive, connect)
 # DBUS -------------------------------------------------
 dbus send
 	bus=session
-	path=/org/freedesktop/DBus
-	interface=org.freedesktop.DBus
+	path="/org/freedesktop/DBus"
+	interface="org.freedesktop.DBus"
 	member={Hello,AddMatch,RemoveMatch,GetNameOwner,NameHasOwner,StartServiceByName}
-	peer=(name=org.freedesktop.DBus),
+	peer=(name="org.freedesktop.DBus"),
+
+# Важно!
+# DBUS блок работы с отладочными утилитами, которых не должно быть
+# на конечных системах, т.к. используется перехват (eavesdropping).
+# Обязательно указывать peer=(label=) для связи с профилем.
+dbus send
+	bus=session
+	peer=(label="wireshark"),				# wireshark
+dbus send
+	bus=session
+	peer=(label="nettop"),					# nettop
 
 # EXECUTABLES ------------------------------------------
 /usr/bin/dbus-launch					Px,	# Все правильно, запускаем из "-strict", т.к.

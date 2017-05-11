@@ -25,6 +25,10 @@ profile wireshark /usr/bin/{tshark,wireshark} {
   #include <abstractions/X>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/gconf>
   #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
@@ -32,6 +36,20 @@ profile wireshark /usr/bin/{tshark,wireshark} {
   # CAPABILITIES ---------------------------------------
   capability net_admin,
   capability net_raw,
+  
+  # DBUS -----------------------------------------------
+  dbus eavesdrop
+  	bus=system,
+  dbus receive
+  	bus=system,
+  dbus send
+  	bus=system,
+  dbus eavesdrop
+  	bus=session,
+  dbus receive
+  	bus=session,
+  dbus send
+  	bus=session,
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -58,6 +76,7 @@ profile wireshark /usr/bin/{tshark,wireshark} {
   /usr/lib{,32,64}/wireshark/plugins/**{la,so}		m,
   
   # USERS ----------------------------------------------
+  owner @{HOME}/.config/.??????				rwk,
   owner @{HOME}/.wireshark/{,**}			rw,
   
   # TEMP -----------------------------------------------

@@ -22,6 +22,10 @@ profile smplayer /usr/bin/smplayer {
   #include <abstractions/X>
   #include <abstractions/video>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/gconf>
   #include <abstractions/fs-access-by-users-preset-rk>
   #include <abstractions/nameservice>
   
@@ -41,7 +45,7 @@ profile smplayer /usr/bin/smplayer {
   /usr/share/smplayer/{,**}				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/.??????				rw,
+  owner @{HOME}/.config/.??????				rwk,
   owner @{HOME}/.config/smplayer/			rw,
   owner @{HOME}/.config/smplayer/**			rwk,
   owner @{HOME}/mplayer.log				rw,	# mplayer

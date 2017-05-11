@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile udisks.udisks-daemon /usr/lib{,32,64}/udisks/udisks-daemon {
+profile udisks.udisks-daemon /usr/lib{,32,64}/udisks/udisks-daemon {	# Относится к версии 1.х (0-й слот).
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -44,14 +44,58 @@ profile udisks.udisks-daemon /usr/lib{,32,64}/udisks/udisks-daemon {
   /run/udev/data/*					r,
 }
 
-profile udisks.udisksd /usr/libexec/udisks2/udisksd {
+profile udisks.udisksd /usr/libexec/udisks2/udisksd {		# Относится к версии 2.х (2-й слот).
   #include <abstractions/base>
   #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-pattern/polkit>
+  #include <abstractions/dbus-pattern/system-bind>
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
   capability sys_rawio,
   capability mknod,
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=system
+  	path="/org/freedesktop/DBus"
+  	interface="org.freedesktop.DBus"
+  	member=GetConnectionUnixUser
+  	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon"),
+  dbus send
+  	bus=system
+  	path="/org/freedesktop/UDisks2/**"
+  	interface="org.freedesktop.DBus.Properties"
+  	member=PropertiesChanged
+  	peer=(name="org.freedesktop.DBus"),
+  dbus receive
+  	bus=system
+  	path="/org/freedesktop/UDisks2/**"
+  	interface="org.freedesktop.DBus.Properties"
+  	member=EnumerateDevices
+  	peer=(name=":[0-9]*.[0-9]*"),
+  dbus send
+  	bus=system
+  	path="/org/freedesktop/UDisks2/**"
+  	interface="org.freedesktop.UDisks2.*"
+  	peer=(name="org.freedesktop.DBus"),
+  dbus receive
+  	bus=system
+  	path="/org/freedesktop/UDisks2/**"
+  	interface="org.freedesktop.UDisks2.*"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  dbus send
+  	bus=system
+  	path="/org/freedesktop/UDisks2"
+  	interface="org.freedesktop.DBus.ObjectManager"
+  	member={InterfacesAdded,InterfacesRemoved}
+  	peer=(name="org.freedesktop.DBus"),
+  dbus receive
+  	bus=system
+  	path="/org/freedesktop/UDisks2"
+  	interface="org.freedesktop.DBus.ObjectManager"
+  	member=GetManagedObjects
+  	peer=(name=":[0-9]*.[0-9]*"),
   
   # NETWORK --------------------------------------------
   network netlink raw,

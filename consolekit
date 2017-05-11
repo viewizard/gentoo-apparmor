@@ -28,6 +28,7 @@ profile consolekit.ck-launch-session /usr/bin/ck-launch-session {
   #include <abstractions/base>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-pattern/consolekit>
   #include <abstractions/nameservice>
   #include <abstractions/X-connection-strict>
   
@@ -41,7 +42,7 @@ profile consolekit.ck-launch-session /usr/bin/ck-launch-session {
   # READS/WRITES ---------------------------------------
   /etc/X11/Sessions/{,*}				r,
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -90,6 +91,8 @@ profile consolekit.ck-log-system-stop /usr/sbin/ck-log-system-stop flags=(compla
 profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   #include <abstractions/base>
   #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-pattern/polkit>
+  #include <abstractions/dbus-pattern/system-bind>
   #include <abstractions/nameservice>
   #include <abstractions/X-connection-strict>
   
@@ -111,11 +114,45 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   # PTRACE ---------------------------------------------
   ptrace (trace),						# FIX ME!
   
+  # DBUS -----------------------------------------------
+  dbus send
+	bus=system
+	path="/org/freedesktop/DBus/Bus"
+	interface="org.freedesktop.DBus"
+	member={GetConnectionUnixUser,GetConnectionUnixProcessID}
+	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon"),
+  dbus send
+	bus=system
+	path="/org/freedesktop/ConsoleKit/Manager"
+	interface="org.freedesktop.ConsoleKit.Manager"
+	peer=(name="org.freedesktop.DBus"),
+  dbus send
+	bus=system
+	path="/org/freedesktop/ConsoleKit/Seat[0-9]*"
+	interface="org.freedesktop.ConsoleKit.Seat"
+	peer=(name="org.freedesktop.DBus"),
+  dbus receive
+	bus=system
+	path="/org/freedesktop/ConsoleKit/Manager"
+	interface="org.freedesktop.ConsoleKit.Manager"
+	peer=(name=":[0-9]*.[0-9]*"),
+  dbus receive
+	bus=system
+	path="/org/freedesktop/ConsoleKit/Manager"
+	interface="org.freedesktop.ConsoleKit.Manager"
+	member=GetSessionForUnixProcess
+	peer=(name=":[0-9]*.[0-9]*",label="{polkit.polkitd,polkit-gnome}"),
+  dbus receive
+	bus=system
+	path="/org/freedesktop/ConsoleKit/Session[0-9]*"
+	interface="org.freedesktop.ConsoleKit.Session"
+	peer=(name=":[0-9]*.[0-9]*"),
+  
   # PSEUDO ---------------------------------------------
   /dev/tty{,[0-9]*}					rw,
   /dev/pts/[0-9]*					rw,
   /dev/console						rw,
-  /sys/power/state					r,
+  audit /sys/power/state				r,	# FIX ME! 10.05.2017 /usr/bin/pm-is-supported -> Px ?
   /sys/devices/virtual/tty/tty*/active			r,
   @{PROC}/@{pid}/fd/					r,
   @{PROC}/@{pid}/stat					r,
@@ -125,21 +162,21 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/console-kit-daemon				mr,
-  /bin/grep						ix,
-  @{shell}						mr,
-  /bin/tr						Px,
+  audit /bin/grep					ix,	# FIX ME! 10.05.2017 /usr/bin/pm-is-supported -> Px ?
+  audit @{shell}					mr,	# FIX ME! 10.05.2017 /usr/bin/pm-is-supported -> Px ?
+  audit /bin/tr						Px,	# FIX ME! 10.05.2017 /usr/bin/pm-is-supported -> Px ?
   /bin/cut						ix,
   /bin/mkdir						ix,
   /bin/sed						ix,
   /bin/rm						ix,
   /sbin/shutdown					Pxr,
   /usr/bin/getent					ix,
-  /usr/bin/pm-is-supported				ixr,
+  /usr/bin/pm-is-supported				Pxr,
   /usr/lib{,32,64}/ConsoleKit/**			Pix,
   
   # READS/WRITES ---------------------------------------
   /etc/ConsoleKit/{,**}					r,
-  /etc/pm/config.d/{,**}				r,
+  audit /etc/pm/config.d/{,**}				r,	# FIX ME! 10.05.2017 /usr/bin/pm-is-supported -> Px ?
   /run/ConsoleKit/{,**}					rw,
   /run/user/{,**}					rw,
   /run/console/{,*}					rw,

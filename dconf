@@ -12,7 +12,6 @@
 
 profile dconf /usr/bin/dconf {
   #include <abstractions/base>
-  #include <abstractions/dconf>
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dconf					mr,
@@ -20,8 +19,20 @@ profile dconf /usr/bin/dconf {
 
 profile dconf.dconf-service /usr/libexec/dconf-service {
   #include <abstractions/base>
-  #include <abstractions/dconf>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-pattern/session-bind>
+  
+  # DBUS -----------------------------------------------
+  dbus receive
+	bus=session
+	path="/ca/desrt/dconf/Writer/user"
+	interface="ca.desrt.dconf.Writer"
+	peer=(name=":[0-9]*.[0-9]*"),
+  dbus send
+	bus=session
+	path="/ca/desrt/dconf/Writer/user"
+	interface="ca.desrt.dconf.Writer"
+	peer=(name="org.freedesktop.DBus"),
   
   # PSEUDO ---------------------------------------------
   @{PROC}/cmdline					r,
@@ -30,5 +41,9 @@ profile dconf.dconf-service /usr/libexec/dconf-service {
   /usr/libexec/dconf-service				mr,
   
   # READS/WRITES ---------------------------------------
+  owner /run/user/[0-9]*/dconf/{,user}			rw,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME_CACHE}/dconf/{,user}			rw,
   owner @{HOME}/.config/dconf/{,user*}			rw,
 }

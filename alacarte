@@ -24,7 +24,11 @@ profile alacarte @{PYTHON2_EXEC}/alacarte {
   #include <abstractions/video>
   #include <abstractions/X>
   #include <abstractions/nameservice>
+  #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
   #include <abstractions/fs-access-by-users-preset-rk>
   
   # PSEUDO ---------------------------------------------
@@ -44,5 +48,5 @@ profile alacarte @{PYTHON2_EXEC}/alacarte {
   owner @{HOME}/.local/share/icons/{,**}		r,
   owner @{HOME}/.local/share/applications/{,**/}	r,
   owner @{HOME}/.local/share/applications/**.desktop	rw,
-  owner @{HOME}/.local/share/desktop-directories/{,*.directory} r,
+  owner @{HOME}/.local/share/desktop-directories/{,*.directory} rw,
 }

@@ -13,9 +13,22 @@
 profile upower.upowerd /usr/lib{,32,64}/upower/upowerd {
   #include <abstractions/base>
   #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-pattern/system-bind>
   
   # CAPABILITIES ---------------------------------------
   capability wake_alarm,
+  
+  # DBUS -----------------------------------------------
+  dbus receive
+  	bus=system
+  	path="/org/freedesktop/UPower{,/**}"
+  	interface="org.freedesktop.DBus.Properties"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  dbus receive
+  	bus=system
+  	path="/org/freedesktop/UPower{,/**}"
+  	interface="org.freedesktop.UPower{,.*}"
+  	peer=(name=":[0-9]*.[0-9]*"),
   
   # NETWORK --------------------------------------------
   network netlink raw,

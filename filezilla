@@ -18,6 +18,9 @@ profile filezilla /usr/bin/filezilla {
   #include <abstractions/video>
   #include <abstractions/X>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
   #include <abstractions/fs-access-by-pattern-filemanager>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
@@ -41,6 +44,9 @@ profile filezilla /usr/bin/filezilla {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.filezilla/{,**}			rw,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/ssh-*/agent.*				rw,
   
   # NOISY ----------------------------------------------
   deny /*/						r,	# если нужно будет работать под root с системными

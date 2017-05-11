@@ -21,9 +21,14 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(com
   #include <abstractions/gtk>
   #include <abstractions/video-nvidia>
   #include <abstractions/X>
+  #include <abstractions/dconf>
   #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/nameservice>
+  #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,						# для nvidia-modprobe ix в abstractions/video-nvidia.
@@ -47,11 +52,15 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(com
   # USERS ----------------------------------------------
   owner @{HOME}/.nvidia-settings-rc			rw,
   
+  # TEMP -----------------------------------------------
+  owner /tmp/.xconfig.tmp.*				rw,
+  
   profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     owner @{PROC}/cmdline				r,
     
     # EXECUTABLES --------------------------------------

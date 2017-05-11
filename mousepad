@@ -19,6 +19,10 @@ profile mousepad /usr/bin/mousepad {
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/gtk>
   #include <abstractions/cups-client>
   #include <abstractions/video>
@@ -28,6 +32,18 @@ profile mousepad /usr/bin/mousepad {
   #include <abstractions/binary-helper-strict-web>
   #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/fs-access-strict>
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/org/xfce/Mousepad"
+  	interface="org.xfce.Mousepad"
+  	peer=(name="org.xfce.Mousepad",label=@{profile_name}),
+  dbus receive
+  	bus=session
+  	path="/org/xfce/Mousepad"
+  	interface="org.xfce.Mousepad"
+  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -50,6 +66,10 @@ profile mousepad_root {
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/gtk>
   #include <abstractions/cups-client>
   #include <abstractions/video>
@@ -62,6 +82,18 @@ profile mousepad_root {
   
   # CAPABILITIES ---------------------------------------
   capability fowner,
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/org/xfce/Mousepad"
+  	interface="org.xfce.Mousepad"
+  	peer=(name="org.xfce.Mousepad",label=@{profile_name}),
+  dbus receive
+  	bus=session
+  	path="/org/xfce/Mousepad"
+  	interface="org.xfce.Mousepad"
+  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

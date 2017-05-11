@@ -10,14 +10,38 @@
 
 #include <tunables/global>
 
+# В случае net-libs/libpcap c USE="dbus", используем dbus.
+
 profile nettop /usr/sbin/nettop flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
   
   # CAPABILITIES ---------------------------------------
   capability net_raw,
   capability net_admin,
+  
+  # DBUS -----------------------------------------------
+  dbus eavesdrop
+  	bus=system,
+  dbus receive
+  	bus=system,
+  dbus send
+  	bus=system,
+  dbus eavesdrop
+  	bus=session,
+  dbus receive
+  	bus=session,
+  dbus send
+  	bus=session,
+  
+  # NETWORK --------------------------------------------
+  network packet raw,
+  network packet dgram,
+  network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,

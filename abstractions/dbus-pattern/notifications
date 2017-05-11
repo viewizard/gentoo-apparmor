@@ -1,0 +1,33 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+dbus send
+	bus=session
+	path="/org/freedesktop/DBus"
+	interface=org.freedesktop.DBus
+	member=ListNames
+	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon"),
+
+dbus send
+	bus=session
+	path="/org/freedesktop/Notifications"
+	interface="org.freedesktop.DBus.Introspectable"
+	peer=(name="org.freedesktop.Notifications",label="xfce4-notifyd"),	# XFCE4 xfce4-notifyd
+
+dbus send
+	bus=session
+	path="/org/freedesktop/Notifications"
+	interface="org.freedesktop.Notifications"
+	peer=(name="org.freedesktop.Notifications",label="xfce4-notifyd"),	# XFCE4 xfce4-notifyd
+dbus (send, receive)
+	bus=session
+	path="/org/freedesktop/Notifications"
+	interface="org.freedesktop.Notifications"
+	peer=(name=":[0-9]*.[0-9]*",label="xfce4-notifyd"),			# XFCE4 xfce4-notifyd

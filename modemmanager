@@ -13,6 +13,22 @@
 profile modemmanager.ModemManager /usr/sbin/ModemManager {
   #include <abstractions/base>
   #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-pattern/polkit>
+  #include <abstractions/dbus-pattern/system-bind>
+  
+  # DBUS -----------------------------------------------
+  dbus receive
+  	bus=system
+  	path="/org/freedesktop/ModemManager[0-9]*"
+  	interface="org.freedesktop.DBus.ObjectManager"
+  	member=GetManagedObjects
+  	peer=(name=":[0-9]*.[0-9]*"),
+  dbus receive
+	bus=system
+	path="/org/freedesktop/ModemManager[0-9]*"
+	interface="org.freedesktop.DBus.Peer"
+	member=Ping
+	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),
   
   # NETWORK --------------------------------------------
   network netlink raw,

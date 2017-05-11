@@ -21,12 +21,40 @@ profile qpdfview /usr/bin/qpdfview {
   #include <abstractions/fonts>
   #include <abstractions/qt>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/cups-client>
   #include <abstractions/video>
   #include <abstractions/X>
   #include <abstractions/xdg-open>
   #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/nameservice>
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/MainWindow"
+  	interface="org.freedesktop.DBus.Introspectable"
+  	member=Introspect
+  	peer=(name="local.qpdfview",label=@{profile_name}),
+  dbus receive
+  	bus=session
+  	path="/MainWindow"
+  	interface="org.freedesktop.DBus.Introspectable"
+  	member=Introspect
+  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
+  dbus send
+  	bus=session
+  	path="/MainWindow"
+  	interface="local.qpdfview.MainWindow"
+  	peer=(name="local.qpdfview",label=@{profile_name}),
+  dbus receive
+  	bus=session
+  	path="/MainWindow"
+  	interface="local.qpdfview.MainWindow"
+  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
   
   # PSEUDO ---------------------------------------------
   /dev/tty						r,

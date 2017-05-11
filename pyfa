@@ -23,6 +23,9 @@ profile pyfa @{PYTHON2_EXEC}/pyfa {
   #include <abstractions/video>
   #include <abstractions/X>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
   #include <abstractions/nameservice>
   #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/xdg-open>
@@ -43,6 +46,7 @@ profile pyfa @{PYTHON2_EXEC}/pyfa {
   @{shell}						ix,	# FIX ME! почему он в основном профиле с ix?
   /bin/env						mr,
   /sbin/ldconfig					Px,
+  /usr/bin/fc-list					ix,
   
   # READS/WRITES ---------------------------------------
   /usr/share/pyfa/					r,
@@ -52,4 +56,9 @@ profile pyfa @{PYTHON2_EXEC}/pyfa {
   # USERS ----------------------------------------------
   owner @{HOME}/.pyfa/					rw,
   owner @{HOME}/.pyfa/**				rwk,
+  owner @{HOME}/.config/matplotlib/{,**}		rw,
+  owner @{HOME_CACHE}/matplotlib/{,**}			rw,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/??????					rw,
 }

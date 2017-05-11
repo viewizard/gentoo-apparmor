@@ -23,6 +23,10 @@ profile skype /opt/bin/skype {
   #include <abstractions/fs-access-by-pattern-internet>
   #include <abstractions/X>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gconf>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/xdg-open>
   
   # NETWORK --------------------------------------------
@@ -43,8 +47,10 @@ profile skype /opt/bin/skype {
   /sys/devices/system/cpu/cpufreq/policy*/scaling_{cur_freq,max_freq} r,
   /sys/devices/{pci[0-9]*/**,virtual}/net/*/flags	r,
   /sys/devices/pci[0-9]*/**/usb[0-9]*/**/{idVendor,idProduct} r,
+  /sys/devices/virtual/block/dm-[0-9]*/dm/name		r,
   @{PROC}/sys/kernel/{ostype,osrelease}			r,
   @{PROC}/@{pid}/net/{arp,dev}				r,
+  owner @{PROC}/@{pid}/mountinfo			r,
   owner @{PROC}/@{pid}/auxv				r,
   owner @{PROC}/@{pid}/task/				r,
   owner @{PROC}/@{pid}/task/@{pid}/stat			r,

@@ -17,7 +17,9 @@ profile dbus.dbus-cleanup-sockets /usr/bin/dbus-cleanup-sockets flags=(complain)
 profile dbus.dbus-daemon /usr/bin/dbus-daemon {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-  #include <abstractions/dbus>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
   
   # CAPABILITIES ---------------------------------------
   capability sys_resource,
@@ -29,12 +31,29 @@ profile dbus.dbus-daemon /usr/bin/dbus-daemon {
   			type=stream
   			addr="@/tmp/dbus-*",
   
+  # DBUS -----------------------------------------------
+  dbus receive
+  	bus={system,session,accessibility}
+  	path="/org/freedesktop/DBus{,/**}"
+  	interface="org.freedesktop.DBus"
+  	member=Hello
+  	peer=(name=":not.active.yet"),
+  dbus receive
+  	bus={system,session,accessibility}
+  	path="/org/freedesktop/DBus{,/**}"
+  	interface="org.freedesktop.DBus"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
+  /sys/kernel/security/apparmor/features/dbus/mask	r,	# AppArmor dbus mediation
+  /sys/kernel/security/apparmor/.access			rw,	# AppArmor dbus mediation
   @{PROC}/@{pid}/cmdline				r,
+  @{PROC}/@{pid}/mounts					r,	# AppArmor dbus mediation
   @{PROC}/@{pid}/oom_score_adj				w,
+  @{PROC}/@{pid}/attr/current				r,	# AppArmor dbus mediation
   owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
@@ -66,13 +85,14 @@ profile dbus.dbus-launch /usr/bin/dbus-launch {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/X_sudo>				# RBAC! Должен быть отдельный профиль для root.
-  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-session-strict>
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(term) peer="dbus.dbus-daemon",
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dbus-launch					mr,
@@ -105,10 +125,11 @@ profile dbus.dbus-run-session /usr/bin/dbus-run-session flags=(complain) {
   /usr/bin/dbus-run-session				mr,
 }
 
-profile dbus.dbus-send /usr/bin/dbus-send flags=(complain) {
+profile dbus.dbus-send /usr/bin/dbus-send {
   #include <abstractions/base>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-pattern/consolekit>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -118,7 +139,7 @@ profile dbus.dbus-send /usr/bin/dbus-send flags=(complain) {
   /usr/bin/dbus-send					mr,
 }
 
-profile dbus.dbus-uuidgen /usr/bin/dbus-uuidgen flags=(complain) {
+profile dbus.dbus-uuidgen /usr/bin/dbus-uuidgen {
   #include <abstractions/base>
   #include <abstractions/dbus-session-strict>
   

@@ -15,6 +15,13 @@ profile thunar /usr/bin/{Thunar,thunar} {
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/xfconf>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/thumbnails>
+  #include <abstractions/dbus-pattern/notifications>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/audio>
   #include <abstractions/gtk>
   #include <abstractions/video>
@@ -23,6 +30,29 @@ profile thunar /usr/bin/{Thunar,thunar} {
   #include <abstractions/fs-access-by-pattern-filemanager>
   #include <abstractions/binary-helper>
   #include <local/thunar-custom-exec>
+  
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  			type=stream
+  			addr=none
+  			peer=(label="gvfs.gvfsd-smb"),
+  
+  # DBUS -----------------------------------------------
+  dbus receive
+  	bus=session
+  	path="/org/xfce/FileManager"
+  	interface="org.xfce.{FileManager,Trash}"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  dbus send
+  	bus=session
+  	path="/org/xfce/FileManager"
+  	interface="org.xfce.{FileManager,Thunar}"
+  	peer=(name="org.xfce.Thunar",label=@{profile_name}),
+  dbus receive
+  	bus=session
+  	path="/org/xfce/FileManager"
+  	interface="org.xfce.{FileManager,Thunar}"
+  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -41,6 +71,8 @@ profile thunar /usr/bin/{Thunar,thunar} {
   /bin/env						Cx,
   /bin/mount						Px,
   /bin/umount						Px,
+  /usr/bin/update-desktop-database			Px,
+  /usr/lib{,32,64}/Thunar/thunar-sendto-email		Px,
   /usr/libexec/thunar-archive-plugin/xarchiver.tap	Px,	# XFCE4
   /usr/libexec/thunar-archive-plugin/engrampa.tap	Px,	# MATE
   
@@ -92,6 +124,13 @@ profile thunar_root {
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/xfconf>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/thumbnails>
+  #include <abstractions/dbus-pattern/notifications>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/audio>
   #include <abstractions/gtk>
   #include <abstractions/video>
@@ -107,6 +146,29 @@ profile thunar_root {
   capability fowner,
   capability fsetid,
   capability sys_admin,
+  
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  			type=stream
+  			addr=none
+  			peer=(label="gvfs.gvfsd-smb"),
+  
+  # DBUS -----------------------------------------------
+  dbus receive
+  	bus=session
+  	path="/org/xfce/FileManager"
+  	interface="org.xfce.{FileManager,Trash}"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  dbus send
+  	bus=session
+  	path="/org/xfce/FileManager"
+  	interface="org.xfce.{FileManager,Thunar}"
+  	peer=(name="org.xfce.Thunar",label=@{profile_name}),
+  dbus receive
+  	bus=session
+  	path="/org/xfce/FileManager"
+  	interface="org.xfce.{FileManager,Thunar}"
+  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -125,6 +187,9 @@ profile thunar_root {
   /bin/env						Cx,
   /bin/mount						Px,
   /bin/umount						Px,
+  /usr/bin/update-desktop-database			Px,
+  /usr/lib{,32,64}/Thunar/thunar-sendto-email		Px,	# RBAC! Для root ветки отдельный профиль,
+  								# вызывающий нужный профиль exo-helper-1.
 #  /usr/libexec/thunar-archive-plugin/xarchiver.tap	Px -> xarchiver_tap_root,	# RBAC! XFCE4
   /usr/libexec/thunar-archive-plugin/engrampa.tap	Px -> engrampa_tap_root,	# MATE
   
@@ -173,6 +238,31 @@ profile thunar_root {
     /bin/env						mr,
     /usr/bin/wine					Px,
   }
+}
+
+profile thunar.thunar-sendto-email /usr/lib{,32,64}/Thunar/thunar-sendto-email {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+  #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/fs-access-by-pattern-internet>
+  #include <abstractions/X>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  @{PROC}/@{pid}/fd/					r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/Thunar/thunar-sendto-email		mr,
+  /usr/bin/zip						ix,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1		Px,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/thunar-sendto-email.*/{,*}			rw,
 }
 
 profile thunar.thunar-settings /usr/bin/thunar-settings {

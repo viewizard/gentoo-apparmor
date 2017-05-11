@@ -19,6 +19,10 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
   #include <abstractions/X>
   #include <abstractions/nameservice>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/xfconf>
+  #include <abstractions/dbus-pattern/gvfs>
   #include <abstractions/xdg-open>  # need for CUPS (web browser)
   
   # PSEUDO ---------------------------------------------
@@ -86,6 +90,13 @@ profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd {
   #include <abstractions/X>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/xfconf>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/upower>
+  #include <abstractions/dbus-pattern/notifications>
+  #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
@@ -102,6 +113,9 @@ profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd {
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/autostart/xfsettingsd.desktop		r,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.xfce4-session.verbose-log		w,
   
   # TEMP -----------------------------------------------
   owner /tmp/file*					rw,

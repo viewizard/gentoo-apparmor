@@ -52,7 +52,7 @@ profile glibc.locale /usr/bin/locale flags=(complain) {		# FIX ME! 04.04.2017 fl
   /usr/share/i18n/charmaps/{,*}				r,
 }
 
-profile glibc.ldconfig /sbin/ldconfig flags=(complain) {	# FIX ME! 04.04.2017 flags=(complain)
+profile glibc.ldconfig /sbin/ldconfig {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -80,4 +80,5 @@ profile glibc.ldconfig /sbin/ldconfig flags=(complain) {	# FIX ME! 04.04.2017 fl
   
   # DENY INHERIT ---------------------------------------
   deny @{HOME}/.pyfa/log.txt				w,	# pyfa
+  deny /usr/share/pyfa/imgs.zip				r,	# pyfa
 }
