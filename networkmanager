@@ -141,20 +141,6 @@ profile networkmanager.nm-online /usr/bin/nm-online {
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-pattern/networkmanager>
   
-  # DBUS -----------------------------------------------
-  dbus send
-  	bus=system
-  	path="/org/freedesktop/NetworkManager{,/**}"
-  	interface="org.freedesktop.DBus.Properties"
-  	member=Get
-  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),
-  dbus receive
-  	bus=system
-  	path="/org/freedesktop/NetworkManager{,/**}"
-  	interface="org.freedesktop.DBus.Properties"
-  	member=PropertiesChanged
-  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),
-  
   # PSEUDO ---------------------------------------------
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
