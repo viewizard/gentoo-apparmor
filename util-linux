@@ -114,7 +114,7 @@ profile util-linux.mount /bin/mount flags=(complain) {
   /run/mount/utab					rw,
   /run/mount/utab.*					rwk,
   /run/blkid/blkid.tab*					rw,
-  audit /run/blkid/blkid.tab*				l,	# FIX ME!
+#  /run/blkid/blkid.tab*				l,	# FIX ME!
   
   # TEMP -----------------------------------------------
   owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
@@ -266,7 +266,8 @@ profile util-linux.fsck /sbin/fsck flags=(complain) {
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
-  /run/blkid/blkid.tab*					rwl,
+  /run/blkid/blkid.tab*					rw,
+  link subset /run/blkid/blkid.tab*			-> /run/blkid/blkid.tab*,
 }
 
 profile util-linux.hwclock /sbin/hwclock flags=(complain) {
@@ -348,7 +349,8 @@ profile util-linux.blkid /sbin/blkid flags=(complain) {
   /sbin/blkid						mr,
   
   # READS/WRITES ---------------------------------------
-  /run/blkid/blkid.tab*					rwl,
+  /run/blkid/blkid.tab*					rw,
+  link subset /run/blkid/blkid.tab*			-> /run/blkid/blkid.tab*,
 }
 
 profile util-linux.switch_root /sbin/switch_root flags=(complain) {

@@ -15,14 +15,18 @@ profile xauth /usr/bin/xauth {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xauth					mr,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.Xauthority*				rwl,	# l - все правильно, разрешаем на /**.
-  owner @{HOME}/.serverauth.*				rwl,	# l - все правильно, разрешаем на /**.
-  owner @{HOME}/.xauth*					rwl,	# l - все правильно, разрешаем на /**.
+  owner @{HOME}/.Xauthority*				rw,
+  owner link subset @{HOME}/.Xauthority*		-> /{home/*,root}/.Xauthority*,		# LINK! @{HOME}
+  owner @{HOME}/.serverauth.*				rw,
+  owner link subset @{HOME}/.serverauth.*		-> /{home/*,root}/.serverauth.*,	# LINK! @{HOME}
+  owner @{HOME}/.xauth*					rw,
+  owner link subset @{HOME}/.xauth*			-> /{home/*,root}/.xauth*,	# LINK! @{HOME}
   
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.*					rw,

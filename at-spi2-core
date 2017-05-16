@@ -65,6 +65,9 @@ profile at-spi2-core.at-spi2-registryd /usr/libexec/at-spi2-registryd {
   	interface="org.a11y.atspi.*"
   	peer=(name=":[0-9]*.[0-9]*"),
   
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  
   # EXECUTABLES ----------------------------------------
   /usr/libexec/at-spi2-registryd			mr,
 }

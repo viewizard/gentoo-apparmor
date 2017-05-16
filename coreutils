@@ -207,3 +207,13 @@ profile coreutils.echo /bin/echo flags=(complain) {		# FIX ME! 05.04.2017 flags=
   deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
   deny /tmp/chkrootkit.cron.*				w,	# chkrootkit.cron.daily
 }
+
+profile coreutils.sync /bin/sync flags=(complain) {		# FIX ME! 16.05.2017 flags=(complain)
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/sync						mr,
+}

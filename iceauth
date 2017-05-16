@@ -20,7 +20,8 @@ profile iceauth /usr/bin/iceauth {
   /usr/bin/iceauth					mr,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.ICEauthority*				rwl,	# l - все правильно, разрешаем на /**.
+  owner @{HOME}/.ICEauthority*				rw,
+  owner link subset @{HOME}/.ICEauthority*		-> /{home/*,root}/.ICEauthority*,	# LINK! @{HOME}
   owner @{HOME}/.xfce4-session.verbose-log		w,	# XFCE4
   
   # TEMP -----------------------------------------------

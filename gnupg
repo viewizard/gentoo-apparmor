@@ -30,7 +30,7 @@ profile gnupg.gpg-agent /usr/bin/gpg-agent {
   owner @{HOME}/.gnupg/private-keys-*/{,**}		w,
 }
 
-profile gnupg.gpg /usr/bin/gpg{,2,-static} flags=(complain) {
+profile gnupg.gpg /usr/bin/gpg{,2,-static} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -54,7 +54,8 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} flags=(complain) {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.gnupg/					rw,
-  owner @{HOME}/.gnupg/**				rwkl,	# l - все правильно, разрешаем на /**.
+  owner @{HOME}/.gnupg/**				rwk,
+#  owner @{HOME}/.gnupg/**				l,	# FIX ME!
   
   # NOISY ----------------------------------------------
   deny /.gnupg/{,**}					r,
