@@ -87,12 +87,8 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   #include <abstractions/xdg-open>
   #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/nameservice>
-  
-  # UNIX -----------------------------------------------
-  unix (send, receive)
-  			type=stream
-  			addr=none
-  			peer=(label="gvfs.gvfsd-smb"),
+  #include <abstractions/unix-pattern/gvfsd-smb>
+  #include <abstractions/unix-pattern/gvfsd-smb-virtual>
   
   # NETWORK --------------------------------------------
   network inet dgram,

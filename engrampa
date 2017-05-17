@@ -21,6 +21,7 @@ profile engrampa /usr/bin/engrampa {
   #include <abstractions/gtk>
   #include <abstractions/video>
   #include <abstractions/X>
+  #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/dbus-accessibility-strict>
   #include <abstractions/dbus-pattern/at-spi>
@@ -30,6 +31,8 @@ profile engrampa /usr/bin/engrampa {
   #include <abstractions/binary-helper-strict>
   #include <abstractions/xdg-open>
   #include <abstractions/fs-access-by-users-preset-rwkl>
+  #include <abstractions/unix-pattern/gvfsd-trash>
+  #include <abstractions/unix-pattern/gvfsd-network>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -100,6 +103,7 @@ profile engrampa_root {
   #include <abstractions/gtk>
   #include <abstractions/video>
   #include <abstractions/X_sudo>
+  #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/dbus-accessibility-strict>
   #include <abstractions/dbus-pattern/at-spi>
@@ -110,6 +114,8 @@ profile engrampa_root {
   #include <abstractions/binary-helper-strict_root>
   #include <abstractions/fs-access-by-users-preset-rwkl>
   #include <abstractions/fs-access-by-pattern-systemusers>
+  #include <abstractions/unix-pattern/gvfsd-trash>
+  #include <abstractions/unix-pattern/gvfsd-network>
   
   # CAPABILITIES ---------------------------------------
   capability chown,

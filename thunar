@@ -30,12 +30,11 @@ profile thunar /usr/bin/{Thunar,thunar} {
   #include <abstractions/fs-access-by-pattern-filemanager>
   #include <abstractions/binary-helper>
   #include <local/thunar-custom-exec>
-  
-  # UNIX -----------------------------------------------
-  unix (send, receive)
-  			type=stream
-  			addr=none
-  			peer=(label="gvfs.gvfsd-smb"),
+  #include <abstractions/unix-pattern/gvfsd-trash>
+  #include <abstractions/unix-pattern/gvfsd-network>
+  #include <abstractions/unix-pattern/gvfsd-smb-browse>
+  #include <abstractions/unix-pattern/gvfsd-smb>
+  #include <abstractions/unix-pattern/gvfsd-smb-virtual>
   
   # DBUS -----------------------------------------------
   dbus receive
@@ -63,6 +62,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
   @{PROC}/@{pid}/fd/					r,
+  @{PROC}/@{pid}/mounts					r,
   owner @{PROC}/@{pid}/mountinfo			r,
   
   # EXECUTABLES ----------------------------------------
@@ -84,6 +84,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   /usr/share/Thunar/					r,
   /usr/share/Thunar/sendto/				r,
   /usr/share/Thunar/sendto/*.desktop			r,
+  /usr/share/gvfs/remote-volume-monitors/{,*}		r,
   /opt/*/**.png						r,
   /run/udev/data/*					r,
   /run/mount/utab					r,
@@ -140,18 +141,17 @@ profile thunar_root {
   #include <abstractions/fs-access-by-pattern-filemanager>
   #include <abstractions/fs-access-by-pattern-systemusers>
   #include <local/thunar_root-custom-exec>
+  #include <abstractions/unix-pattern/gvfsd-trash>
+  #include <abstractions/unix-pattern/gvfsd-network>
+  #include <abstractions/unix-pattern/gvfsd-smb-browse>
+  #include <abstractions/unix-pattern/gvfsd-smb>
+  #include <abstractions/unix-pattern/gvfsd-smb-virtual>
   
   # CAPABILITIES ---------------------------------------
   capability sys_resource,
   capability fowner,
   capability fsetid,
   capability sys_admin,
-  
-  # UNIX -----------------------------------------------
-  unix (send, receive)
-  			type=stream
-  			addr=none
-  			peer=(label="gvfs.gvfsd-smb"),
   
   # DBUS -----------------------------------------------
   dbus receive
@@ -179,6 +179,7 @@ profile thunar_root {
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
   @{PROC}/@{pid}/fd/					r,
+  @{PROC}/@{pid}/mounts					r,
   owner @{PROC}/@{pid}/mountinfo			r,
   
   # EXECUTABLES ----------------------------------------
@@ -201,6 +202,7 @@ profile thunar_root {
   /usr/share/Thunar/					r,
   /usr/share/Thunar/sendto/				r,
   /usr/share/Thunar/sendto/*.desktop			r,
+  /usr/share/gvfs/remote-volume-monitors/{,*}		r,
   /opt/*/**.png						r,
   /run/udev/data/*					r,
   /run/mount/utab					r,

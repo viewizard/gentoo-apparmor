@@ -8,14 +8,6 @@
 #
 # ------------------------------------------------------------------
 
-# UNIX -------------------------------------------------
-unix (send, receive, connect)
-	type=stream
-	peer=(addr="@/dbus-vfs-daemon/socket-*"),		# gvfs
-
-# PSEUDO -----------------------------------------------
-@{PROC}/@{pid}/mounts					r,	# gvfs
-
 # READS/WRITES -----------------------------------------
 /etc/gtk-[0-9]*/*					r,
 /etc/fonts/*						r,
@@ -26,7 +18,6 @@ unix (send, receive, connect)
 /usr/share/themes/{,**}					r,
 /usr/share/gtk-[0-9]*/*					r,
 /usr/share/glib-[0-9]*/schemas/gschemas.compiled	r,
-/usr/share/gvfs/remote-volume-monitors/{,*}		r,	# gvfs
 /usr/share/applications/{,mimeinfo.cache}		r,
 /usr/share/**/icon-theme.cache				r,
 /var/cache/**/icon-theme.cache				r,

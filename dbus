@@ -41,7 +41,7 @@ profile dbus.dbus-daemon /usr/bin/dbus-daemon {
   dbus receive
   	bus={system,session,accessibility}
   	path="/org/freedesktop/DBus{,/**}"
-  	interface="org.freedesktop.DBus"
+  	interface="org.freedesktop.DBus{,.*}"
   	peer=(name=":[0-9]*.[0-9]*"),
   
   # PSEUDO ---------------------------------------------
@@ -130,6 +130,14 @@ profile dbus.dbus-send /usr/bin/dbus-send {
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/dbus-pattern/consolekit>
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/org/xfce/FileManager"
+  	interface="org.xfce.FileManager"
+  	peer=(name="org.xfce.FileManager",label="thunar"),	# XFCE4 (Запуск настроек thunar через менеджер настроек).
+  								# RBAC! Для root ветки label="thunar_root".
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

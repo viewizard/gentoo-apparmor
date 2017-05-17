@@ -33,6 +33,8 @@ profile meld /usr/bin/meld {
   #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/dconf>
   #include <abstractions/fs-access-by-users-preset-rwk>
+  #include <abstractions/unix-pattern/gvfsd-trash>
+  #include <abstractions/unix-pattern/gvfsd-network>
   
   # DBUS -----------------------------------------------
   dbus send
@@ -100,6 +102,8 @@ profile meld_root {
   #include <abstractions/dconf>
   #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/fs-access-by-pattern-systemusers>
+  #include <abstractions/unix-pattern/gvfsd-trash>
+  #include <abstractions/unix-pattern/gvfsd-network>
   
   # CAPABILITIES ---------------------------------------
   capability fowner,

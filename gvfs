@@ -17,16 +17,11 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
   #include <abstractions/dbus-session-strict>
   #include <abstractions/dbus-pattern/udisks>
   #include <abstractions/dbus-pattern/session-bind>
+  #include <abstractions/unix-pattern/gvfsd-burn>
   
   # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
-  
-  # UNIX -----------------------------------------------
-  unix (send, receive, connect)
-  	type=stream
-  	addr=none
-  	peer=(addr="@/dbus-vfs-daemon/socket-*" label="gvfs.gvfsd-burn"),
   
   # DBUS -----------------------------------------------
   dbus (send, receive)
@@ -38,7 +33,7 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
   	bus=system
   	path="/org/freedesktop/UDisks2"
   	interface="org.freedesktop.DBus.ObjectManager"
-	member=GetManagedObjects
+  	member=GetManagedObjects
   	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd"),
   dbus send
   	bus=session
@@ -120,7 +115,7 @@ profile gvfs.gvfsd-burn /usr/libexec/gvfsd-burn flags=(complain) {
   #include <abstractions/base>
   
   # UNIX -----------------------------------------------
-  unix (bind, listen, send, receive, accept)
+  unix (bind, listen)
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*",
   
@@ -153,21 +148,13 @@ profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/dbus-session-strict>
+  #include <abstractions/unix-pattern/gvfsd-smb>
+  #include <abstractions/unix-pattern/gvfsd-smb-virtual>
   
   # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
   capability sys_admin,
-  
-  # UNIX -----------------------------------------------
-  unix (send, receive, connect)
-  	type=stream
-  	addr=none
-  	peer=(addr="@/dbus-vfs-daemon/socket-*" label="gvfs.gvfsd-smb"),
-  unix (send, receive)
-  			type=stream
-  			addr=none
-  			peer=(label="gvfs.gvfsd-smb"),
   
   # DBUS -----------------------------------------------
   dbus (send, receive)
@@ -204,14 +191,17 @@ profile gvfs.gvfsd-http /usr/libexec/gvfsd-http {
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/dbus-pattern/session-bind>
-  #include <abstractions/gtk>
   #include <abstractions/dconf>
   #include <abstractions/ssl-certs>
   
   # UNIX -----------------------------------------------
-  unix (bind, listen, send, receive, accept)
+  unix (bind, listen)
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*",
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="gimp"),			# gimp
   unix (send, receive)
   			type=stream
   			addr=none
@@ -240,6 +230,7 @@ profile gvfs.gvfsd-http /usr/libexec/gvfsd-http {
   /usr/libexec/gvfsd-http				mr,
   
   # READS/WRITES ---------------------------------------
+  /usr/share/glib-[0-9]*/schemas/{,gschemas.compiled}	r,
   /usr/lib{,32,64}/libproxy/[0-9]*.[0-9]*.[0-9]*/modules/*.so m,
   
   # READS/WRITES ---------------------------------------
@@ -284,14 +275,34 @@ profile gvfs.gvfsd-metadata /usr/libexec/gvfsd-metadata {
 profile gvfs.gvfsd-network /usr/libexec/gvfsd-network {
   #include <abstractions/base>
   #include <abstractions/dconf>
-  #include <abstractions/gtk>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/dbus-pattern/session-bind>
+  #include <abstractions/unix-pattern/gvfsd-smb-browse>
   
   # UNIX -----------------------------------------------
-  unix (bind, listen, send, receive, accept)
+  unix (bind, listen)
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*",
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="thunar"),			# thunar
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="uget.uget-gtk"),		# uget.uget-gtk
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="engrampa"),		# engrampa
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="meld"),			# meld
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="alacarte"),		# alacarte
   
   # DBUS -----------------------------------------------
   dbus (send, receive)
@@ -307,6 +318,9 @@ profile gvfs.gvfsd-network /usr/libexec/gvfsd-network {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-network				mr,
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/glib-[0-9]*/schemas/{,gschemas.compiled}	r,
 }
 
 profile gvfs.gvfsd-recent /usr/libexec/gvfsd-recent flags=(complain) {
@@ -327,19 +341,35 @@ profile gvfs.gvfsd-smb /usr/libexec/gvfsd-smb {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/dconf>
-  #include <abstractions/gtk>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/nameservice>
+  #include <abstractions/unix-pattern/gvfsd-fuse-virtual>
   
   # UNIX -----------------------------------------------
-  unix (bind, listen, send, receive, accept)
+  unix (bind, listen)
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*",
-  unix (send, receive)
+  unix (send, receive, accept)
   			type=stream
-  			addr=none
-  			peer=(label="gvfs.gvfsd-fuse"),
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="gvfs.gvfsd-fuse"),		# gvfs.gvfsd-fuse
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="libreoffice.bin"),		# libreoffice
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="ristretto"),		# ristretto
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="tumbler"),			# tumbler
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="thunar"),			# thunar
   unix (send, receive)
   			type=stream
   			addr=none
@@ -382,21 +412,29 @@ profile gvfs.gvfsd-smb /usr/libexec/gvfsd-smb {
   # READS/WRITES ---------------------------------------
   /etc/samba/smb.conf					r,
   /usr/share/samba/codepages/**				r,
+  /usr/share/glib-[0-9]*/schemas/{,gschemas.compiled}	r,
   /var/cache/samba/{,**}				r,
 }
 
 profile gvfs.gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse {
   #include <abstractions/base>
   #include <abstractions/dconf>
-  #include <abstractions/gtk>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/nameservice>
   
   # UNIX -----------------------------------------------
-  unix (bind, listen, send, receive, accept)
+  unix (bind, listen)
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*",
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="gvfs.gvfsd-network"),	# gvfs.gvfsd-network
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="thunar"),			# thunar
   
   # DBUS -----------------------------------------------
   dbus (send, receive)
@@ -433,9 +471,33 @@ profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   #include <abstractions/fs-access-by-pattern-filemanager>
   
   # UNIX -----------------------------------------------
-  unix (bind, listen, send, receive, accept)
+  unix (bind, listen)
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*",
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="tumbler"),			# tumbler
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="thunar"),			# thunar
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="uget.uget-gtk"),		# uget.uget-gtk
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="engrampa"),		# engrampa
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="meld"),			# meld
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="alacarte"),		# alacarte
   unix (send, receive)
 			type=stream
 			addr=none

@@ -65,7 +65,8 @@ profile evelauncher /home/*/evelauncher/evelauncher flags=(attach_disconnected) 
   /sys/devices/system/cpu/				r,
   /sys/devices/pci[0-9]*/**/{resource,irq,vendor,device,class,config} r,
   @{PROC}/sys/kernel/shmmax				r,
-  owner /proc/@{pid}/fd/				r,
+  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC}/@{pid}/mounts				r,
   
   # AUDIT PSEUDO ---------------------------------------
   deny @{PROC}/@{pid}/oom_score_adj			rw,

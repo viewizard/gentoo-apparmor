@@ -23,24 +23,10 @@ profile tumbler /usr/lib{,32,64}/tumbler-1/tumblerd {
   #include <abstractions/dbus-pattern/gvfs>
   #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/fs-access-by-users-preset-rk>
-  
-  # UNIX -----------------------------------------------
-  unix (send, receive, connect)
-  	type=stream
-  	addr=none
-  	peer=(addr="@/dbus-vfs-daemon/socket-*" label="gvfs.gvfsd-trash"),
-  unix (send, receive, connect)
-  	type=stream
-  	addr=none
-  	peer=(addr="@/dbus-vfs-daemon/socket-*" label="gvfs.gvfsd-smb"),
-  unix (send, receive)
-  			type=stream
-  			addr=none
-  			peer=(label="gvfs.gvfsd-trash"),
-  unix (send, receive)
-  			type=stream
-  			addr=none
-  			peer=(label="gvfs.gvfsd-smb"),
+  #include <abstractions/unix-pattern/gvfsd-trash>
+  #include <abstractions/unix-pattern/gvfsd-smb>
+  #include <abstractions/unix-pattern/gvfsd-trash-virtual>
+  #include <abstractions/unix-pattern/gvfsd-smb-virtual>
   
   # DBUS -----------------------------------------------
   dbus (send, receive)
