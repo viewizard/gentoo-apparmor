@@ -35,19 +35,19 @@ profile cups.cupsd /usr/sbin/cupsd {
   # UNIX -----------------------------------------------
   unix (send, receive)
   			type=stream
-			addr=none
+  			addr=none
   			peer=(label="cups.daemon"),
   unix (send, receive)
   			type=stream
-			addr=none
+  			addr=none
   			peer=(label="cups.filter"),
   unix (send, receive)
   			type=stream
-			addr=none
+  			addr=none
   			peer=(label="cups.backend"),
   unix (send, receive)
   			type=stream
-			addr=none
+  			addr=none
   			peer=(label="poppler.pdftops"),
   
   # NETWORK --------------------------------------------
@@ -102,7 +102,7 @@ profile cups.daemon /usr/libexec/cups/daemon/* {
   # UNIX -----------------------------------------------
   unix (send, receive)
   			type=stream
-			addr=none
+  			addr=none
   			peer=(label="cups.cupsd"),
   
   # EXECUTABLES ----------------------------------------
@@ -163,7 +163,7 @@ profile cups.filter /usr/libexec/cups/filter/* flags=(complain) {
   # UNIX -----------------------------------------------
   unix (send, receive)
   			type=stream
-			addr=none
+  			addr=none
   			peer=(label="cups.cupsd"),
   
   # EXECUTABLES ----------------------------------------
@@ -189,7 +189,7 @@ profile cups.backend /usr/libexec/cups/backend/* {
   # UNIX -----------------------------------------------
   unix (send, receive)
   			type=stream
-			addr=none
+  			addr=none
   			peer=(label="cups.cupsd"),
   
   # NETWORK --------------------------------------------
