@@ -13,12 +13,7 @@
 profile poppler.pdftops /usr/bin/pdftops flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/fonts>
-  
-  # UNIX -----------------------------------------------
-  unix (send, receive)
-  			type=stream
-			addr=none
-  			peer=(label="cups.cupsd"),
+  #include <abstractions/unix-pattern/cupsd-virtual>
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pdftops					mr,

@@ -94,16 +94,11 @@ profile cups.cupsd /usr/sbin/cupsd {
 
 profile cups.daemon /usr/libexec/cups/daemon/* {
   #include <abstractions/base>
+  #include <abstractions/unix-pattern/cupsd-virtual>
   
   # CAPABILITIES ---------------------------------------
   capability setgid,
   capability setuid,
-  
-  # UNIX -----------------------------------------------
-  unix (send, receive)
-  			type=stream
-  			addr=none
-  			peer=(label="cups.cupsd"),
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/smbspool					Px,
@@ -159,12 +154,7 @@ profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* flags=(complain) {
 
 profile cups.filter /usr/libexec/cups/filter/* flags=(complain) {
   #include <abstractions/base>
-  
-  # UNIX -----------------------------------------------
-  unix (send, receive)
-  			type=stream
-  			addr=none
-  			peer=(label="cups.cupsd"),
+  #include <abstractions/unix-pattern/cupsd-virtual>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/cups/filter/*				Pxmr,
@@ -182,15 +172,10 @@ profile cups.filter /usr/libexec/cups/filter/* flags=(complain) {
 
 profile cups.backend /usr/libexec/cups/backend/* {
   #include <abstractions/base>
+  #include <abstractions/unix-pattern/cupsd-virtual>
   
   # CAPABILITIES ---------------------------------------
   capability wake_alarm,
-  
-  # UNIX -----------------------------------------------
-  unix (send, receive)
-  			type=stream
-  			addr=none
-  			peer=(label="cups.cupsd"),
   
   # NETWORK --------------------------------------------
   network netlink raw,
