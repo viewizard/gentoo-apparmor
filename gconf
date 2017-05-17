@@ -34,6 +34,7 @@ profile gconf.gconfd-2 /usr/libexec/gconfd-2 {
   
   # READS/WRITES ---------------------------------------
   /etc/gconf/{,**}					r,
+  /etc/gconf/gconf.xml.*/.testing.writeability		w,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/gconf/{,**}			rw,

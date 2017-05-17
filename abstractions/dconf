@@ -21,8 +21,8 @@ dbus receive
 	peer=(name=":[0-9]*.[0-9]*",label="dconf.dconf-service"),
 
 # READS/WRITES -----------------------------------------
-owner /run/user/[0-9]*/dconf/{,user}			rw,
+owner /run/user/[0-9]*/dconf/{,user}			rw,	# FIX ME! Только для пользователей (owner>=1000).
 
 # USERS ------------------------------------------------
-owner @{HOME_CACHE}/dconf/{,user}			rw,
+owner @{HOME_CACHE}/dconf/{,user}			rw,	# FIX ME! Только для root (owner==root).
 owner @{HOME}/.config/dconf/user			r,

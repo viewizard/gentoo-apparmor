@@ -1,0 +1,35 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+profile dconf-editor /usr/bin/dconf-editor flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+  #include <abstractions/X>
+  #include <abstractions/dconf>
+  #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/session-bind>
+  #include <abstractions/binary-helper-strict-web>
+  
+  # PSEUDO ---------------------------------------------
+  owner @{PROC}/@{pid}/fd/				r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/dconf-editor					mr,
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/glib-2.0/schemas/{,**}			r,
+}
