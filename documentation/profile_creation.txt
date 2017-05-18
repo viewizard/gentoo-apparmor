@@ -28,6 +28,7 @@ LINK! <Переменная> - т.к. цель линка не может сод
 		/usr/bin/thunar Px -> thunar_root,
 	скрипты в /etc/init.d/* - <название пакета>.<имя файла>.init.d
 	скрипты в /etc/cron.*/* - <название пакета>.<имя файла>.cron.{daily,hourly,monthly,weekly}
+	default профиль должен быть в /etc/apparmor.d/0_default, нельзя менять название файла с 0_default на другое (используется в скриптах инициализации initramfs).
 
 
 Важно! Правила профиля не учитывают расположения строк.
@@ -263,6 +264,11 @@ apparmor_parser -R /etc/apparmor.d/bash
 Перевести все профили в принудительный отладочный режим:
 root # cd /etc/apparmor.d/
 root # find * -maxdepth 0 -type f -exec ln -sr ./{} ./force-complain/{} \;
+
+
+Получение списка процессов, например, unconfined (запущенных без профиля):
+ps aux -Z | grep "unconfined"
+
 
 
 После добавления нового профиля - проверить по имени процесса все профили.

@@ -15,13 +15,13 @@ ptrace (readby, tracedby),
 ptrace (read) peer=@{profile_name},
 
 # SIGNAL -----------------------------------------------
-signal (receive) peer=unconfined,				# FIX ME! Убрать, при переходе на confined бут.
+#signal (receive) peer=unconfined,				# FIX ME! 18.05.2017 Не должно использоваться.
 signal peer=@{profile_name},
 signal (receive, send) set=("exists"),
-signal (receive) set=(hup, int, kill, term, cont, stop),	# FIX ME! Дописать общие сигналы.
+signal (receive) set=(hup, int, kill, term, cont, stop),
 
 # UNIX -----------------------------------------------
-unix (receive) peer=(label=unconfined),				# FIX ME! Убрать, при переходе на confined бут.
+#unix (receive) peer=(label=unconfined),			# FIX ME! 18.05.2017 Не должно использоваться.
 unix peer=(label=@{profile_name}),
 unix (create, getattr, getopt, setopt, shutdown),
 
@@ -49,14 +49,14 @@ owner @{PROC}/@{pid}/status				r,
 /usr/share/**/locale/**					r,
 /usr/share/zoneinfo/{,**}				r,
 /usr/share/X11/locale/**				r,
-/lib{,32,64}/ld{,32,64}-*.so				mr,
-/lib{,32,64}/**/ld{,32,64}-*.so				mr,
+/lib{,32,64}/ld{,32,64}-*.so{,.*}			mr,
+/lib{,32,64}/**/ld{,32,64}-*.so{,.*}			mr,
 /lib{,32,64}/**						r,
-/lib{,32,64}/lib*.so*					mr,
-/lib{,32,64}/**/lib*.so*				mr,
+/lib{,32,64}/lib*.so{,.*}				mr,
+/lib{,32,64}/**/lib*.so{,.*}				mr,
 /usr/lib{,32,64}/**					r,
-/usr/lib{,32,64}/*.so*					mr,
-/usr/lib{,32,64}/**/lib*.so*				mr,
+/usr/lib{,32,64}/*.so{,.*}				mr,
+/usr/lib{,32,64}/**/lib*.so{,.*}			mr,
 /usr/lib{,32,64}/locale/**				mr,
 /usr/lib{,32,64}/gconv/*.so				mr,
 /usr/lib{,32,64}/gconv/gconv-modules*			mr,

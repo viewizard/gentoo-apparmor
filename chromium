@@ -197,7 +197,6 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
     ptrace (read, readby, tracedby),
     
     # SIGNAL -------------------------------------------
-    signal (receive) peer=unconfined,
     signal peer=@{profile_name},
     signal (receive, send) set=("exists"),
     signal (receive) peer="chromium.chrome",

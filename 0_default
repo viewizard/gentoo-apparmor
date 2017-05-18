@@ -8,29 +8,82 @@
 #
 # ------------------------------------------------------------------
 
-# Специальный профиль, для перекрытия.
-
-# Используем его, чтобы явно ограничить процессы без профилей.
-# Как вариант, добавить flag=(kill), чтобы убивать процесс,
-# пытающийся запустить процесс без профиля.
+# Важно!
+# В случае выключенного SECURITY_APPARMOR_UNCONFINED_INIT, заменит
+# системный профиль "default".
 
 # Важно!
-# Нельзя называть "default", в случае выключенного SECURITY_APPARMOR_UNCONFINED_INIT
-# будет использоваться системный профиль "default", который нельзя заменить.
+# Обязательно сохранять имя профиля 0_default, используется в скриптах
+# initramfs для замены ("--replace") "default" профиля.
 
-#profile default_all /** flags=(complain) {}		# FIX ME! Убрать flags=(complain).
+#include <tunables/global>
 
-# !!!
-
-# В коде lsm.c ошибка, не похоже, чтобы вообще кто-то собирал ядро без
-# SECURITY_APPARMOR_UNCONFINED_INIT (вообще не тестировали похоже)
-# Если выключаем SECURITY_APPARMOR_UNCONFINED_INIT не можем выполнить aa-status
-# apparmor module is loaded.
-# Traceback (most recent call last):
-#   File "/usr/lib/python-exec/python3.4/aa-status", line 255, in <module>
-#     commands[cmd]()
-#   File "/usr/lib/python-exec/python3.4/aa-status", line 59, in cmd_verbose
-#     profiles = get_profiles()
-#   File "/usr/lib/python-exec/python3.4/aa-status", line 149, in get_profiles
-#     profiles[match.group(1)] = match.group(2)
-# AttributeError: 'NoneType' object has no attribute 'group'
+profile default flags=(complain) {				# FIX ME! 18.05.2017
+  
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  capability dac_override,
+  
+  # PTRACE ---------------------------------------------
+  ptrace (tracedby),
+  
+  # SIGNAL ---------------------------------------------
+  signal (send, receive) peer="default",
+  
+  # PSEUDO ---------------------------------------------
+  @{PROC}/sys/kernel/printk				w,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/kmod						Px,
+  /bin/busybox						Cx,
+  /bin/grep						Cx,
+  /bin/udevadm						Px,
+  /lib{,32,64}/rc/sh/cgroup-release-agent.sh		Px,	# openrc
+  /usr/lib{,32,64}/portage/@{PYTHON}/cgroup-release-agent Px,	# portage
+  
+  # READS/WRITES ---------------------------------------
+  /{,**/}						r,	# Даём доступ ко всем директориям, но не файлам.
+  								# Вероятно, как-то связано с EVM DTP (защита фс).
+  /run/udev/control					w,
+  
+  profile initramfs.grep /bin/grep flags=(complain) {
+    
+    # PSEUDO -------------------------------------------
+    @{PROC}/@{pid}/mounts				r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/ld.so.cache					r,
+    /lib{,32,64}/ld{,32,64}-*.so{,.*}			mr,
+    /lib{,32,64}/lib*.so{,.*}				mr,
+  }
+  
+  profile initramfs.busybox /bin/busybox flags=(complain) {
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    capability sys_chroot,
+    
+    # PSEUDO -------------------------------------------
+    @{PROC}/sys/kernel/printk				w,
+    
+    # MOUNT --------------------------------------------
+    mount options=(rw, move) /newroot/ -> /,
+    mount options=(rw, move) /run/ -> /newroot/run/,
+    mount options=(rw, move) /dev/ -> /newroot/dev/,
+    mount options=(rw, move) /sys/ -> /newroot/sys/,
+    mount options=(rw, move) /proc/ -> /newroot/proc/,
+    umount /sys/kernel/security/,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/busybox					mr,
+    /sbin/init						Px,
+    
+    # READS/WRITES -------------------------------------
+    /							r,
+    /{init,lib64}					w,
+    /{bin,dev,etc,lib{,32,64},mnt,proc,run,sbin,sys,tmp,temp,usr,var}/{,**} rw,
+  }
+}

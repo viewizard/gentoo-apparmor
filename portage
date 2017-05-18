@@ -528,3 +528,20 @@ profile portage.emaint @{PYTHON_EXEC}/emaint flags=(complain) {
     /bin/uname						Px,
   }
 }
+
+profile portage.cgroup-release-agent /usr/lib{,32,64}/portage/@{PYTHON}/cgroup-release-agent {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /sys/fs/cgroup/portage/{,**}				w,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/portage/@{PYTHON}/cgroup-release-agent r,
+  @{shell}						mr,
+  /bin/rmdir						ix,
+}

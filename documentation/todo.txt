@@ -3,9 +3,16 @@ out of tree patches (kernel) git://kernel.ubuntu.com/jj/apparmor-backports
 out of tree patches (user-space) git://git.launchpad.net/~jjohansen/apparmor
 
 
+- мы используем confined init (SECURITY_APPARMOR_UNCONFINED_INIT выключен)
+На ранней загрузке переключаемся на свой default профиль. Нужно как-то больше его ограничить:
+1) После переключения рут (syscall chroot, или запуска /sbin/init), перезагружать профиль default, и не давать уже запускать /bin/busybox, /bin/udevadm, /bin/grep (особенно напрягают первые 2).
+2) Если появится возможность, как-то через переменные вводить ограничения, или отслеживать что запускать /bin/busybox, /bin/udevadm, /bin/grep можно только на tmpfs (т.е. только в процессе ранней загрузки).
+
+
 - child profile names don't allow '-'
 Баг уже открыт в и процессе исправления, после этого скорректировать все профили с нижним подчеркиванием.
 https://bugs.launchpad.net/apparmor/+bug/1197145
+
 
 - Setuid rules (непонятно когда будет работать)
 requires capability setuid
@@ -14,21 +21,6 @@ requires capability setuid
 2 options:
  setuid rule embedded within the cap making it a limited cap
    capability setuid (fred, george),  remains backwards compat
-
-
-- confined init (выключение SECURITY_APPARMOR_UNCONFINED_INIT на 22.04.2017 вообще не работает)
-# В коде lsm.c ошибка, не похоже, чтобы вообще кто-то собирал ядро без
-# SECURITY_APPARMOR_UNCONFINED_INIT (вообще не тестировали похоже)
-# Если выключаем SECURITY_APPARMOR_UNCONFINED_INIT не можем выполнить aa-status
-# apparmor module is loaded.
-# Traceback (most recent call last):
-#   File "/usr/lib/python-exec/python3.4/aa-status", line 255, in <module>
-#     commands[cmd]()
-#   File "/usr/lib/python-exec/python3.4/aa-status", line 59, in cmd_verbose
-#     profiles = get_profiles()
-#   File "/usr/lib/python-exec/python3.4/aa-status", line 149, in get_profiles
-#     profiles[match.group(1)] = match.group(2)
-# AttributeError: 'NoneType' object has no attribute 'group'
 
 
 - extended conditionals
@@ -117,28 +109,3 @@ extended ownership tests (not currently supported)
  owner=(fred george)
  owner=(fred 1001)
 /etc/apparmor.d/abstractions/authentication, например, хорошо бы сделать с owner=0
-
-
-- mount улучшение ограничений в следующих версиях AppArmor.
-Add the ability for apparmor to do mediation of mount operations. Mount
-rules require an updated apparmor_parser (2.8 series) for policy compilation.
-The basic form of the rules are.
-  [audit] [deny] mount [conds]* [device] [ -> [conds] path],
-  [audit] [deny] remount [conds]* [path],
-  [audit] [deny] umount [conds]* [path],
-  [audit] [deny] pivotroot [oldroot=<value>] <path>
-  remount is just a short cut for mount options=remount
-  where [conds] can be
-    fstype=<expr>
-    options=<expr>
-Example mount commands
-  mount,        # allow all mounts, but not umount or pivotroot
-  mount fstype=procfs,  # allow mounting procfs anywhere
-  mount options=(bind, ro) /foo -> /bar,  # readonly bind mount
-  mount /dev/sda -> /mnt,
-  mount /dev/sd** -> /mnt/**,
-  mount fstype=overlayfs options=(rw,upperdir=/tmp/upper/,lowerdir=/) -> /mnt/
-  umount,
-  umount /m*,
-
-

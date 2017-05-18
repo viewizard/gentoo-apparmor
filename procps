@@ -33,6 +33,7 @@ profile procps.ps /bin/ps {
   @{PROC}/tty/drivers					r,
   @{PROC}/@{pid}/{stat,status,cmdline}			r,
   @{PROC}/@{pid}/task/{,**}				r,
+  @{PROC}/@{pid}/attr/current				r,	# Нужен для запуска с параметром -Z.
   
   # EXECUTABLES ----------------------------------------
   /bin/ps						mr,

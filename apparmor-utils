@@ -50,6 +50,7 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
+  @{PROC}/						r,
   @{PROC}/@{pid}/cmdline				r,
   @{PROC}/@{pid}/fd/					r,
   @{PROC}/@{pid}/mounts					r,

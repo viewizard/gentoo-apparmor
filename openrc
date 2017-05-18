@@ -243,6 +243,24 @@ profile openrc.init.sh /lib{,32,64}/rc/sh/init.sh flags=(complain) {
   /run/openrc/{,*}					w,
 }
 
+profile openrc.cgroup-release-agent.sh /lib{,32,64}/rc/sh/cgroup-release-agent.sh {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  capability dac_override,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /sys/fs/cgroup/openrc/{,**}				w,
+  
+  # EXECUTABLES ----------------------------------------
+  /lib{,32,64}/rc/sh/cgroup-release-agent.sh		r,
+  @{shell}						mr,
+  /bin/rmdir						ix,
+}
+
 profile openrc.netmount.init.d /etc/init.d/netmount {
   #include <abstractions/base>
   #include <abstractions/nameservice>
