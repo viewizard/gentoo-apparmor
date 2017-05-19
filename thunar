@@ -37,6 +37,11 @@ profile thunar /usr/bin/{Thunar,thunar} {
   #include <abstractions/unix-pattern/gvfsd-smb-virtual>
   
   # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/org/xfce/FileManager"
+  	interface="org.xfce.Trash"
+  	peer=(name="org.freedesktop.DBus"),
   dbus receive
   	bus=session
   	path="/org/xfce/FileManager"
@@ -154,6 +159,11 @@ profile thunar_root {
   capability sys_admin,
   
   # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/org/xfce/FileManager"
+  	interface="org.xfce.Trash"
+  	peer=(name="org.freedesktop.DBus"),
   dbus receive
   	bus=session
   	path="/org/xfce/FileManager"

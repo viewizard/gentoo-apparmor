@@ -25,6 +25,7 @@ profile dconf-editor /usr/bin/dconf-editor flags=(complain) {
   #include <abstractions/binary-helper-strict-web>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------

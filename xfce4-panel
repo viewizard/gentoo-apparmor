@@ -106,6 +106,21 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   	path="/org/xfce/Panel/Wrapper/[0-9]*"
   	interface="org.xfce.Panel.Wrapper"
   	peer=(name=":[0-9]*.[0-9]*",label="xfce4-panel*"),
+  dbus send
+  	bus=session
+  	path="/org/xfce/FileManager"
+  	interface="org.xfce.Trash"
+  	peer=(name="org.xfce.FileManager",label="thunar"),
+  dbus receive
+  	bus=session
+  	path="/org/xfce/FileManager"
+  	interface="org.xfce.Trash"
+  	peer=(name=":[0-9]*.[0-9]*",label="thunar"),
+  dbus send
+  	bus=session
+  	path="/org/xfce/SessionManager"
+  	interface="org.xfce.Session.Manager"
+  	peer=(name="org.xfce.SessionManager",label="xfce4-session"),
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -115,8 +130,10 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   network inet6 stream,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /sys/devices/system/cpu/cpufreq/policy[0-9]*/scaling_* r,
+  @{PROC}/uptime					r,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
@@ -254,6 +271,7 @@ profile xfce4-panel.xfce4-sensors-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xf
   #include <abstractions/dbus-session-strict>
   #include <abstractions/dbus-accessibility-strict>
   #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,

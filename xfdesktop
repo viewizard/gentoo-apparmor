@@ -34,6 +34,11 @@ profile xfdesktop /usr/bin/xfdesktop {
   	path="/org/xfce/FileManager"
   	interface="org.xfce.{FileManager,Trash}"
   	peer=(name="org.xfce.FileManager",label="thunar"),	# RBAC! Для root ветки label="thunar_root".
+  dbus receive
+  	bus=session
+  	path="/org/xfce/FileManager"
+  	interface="org.xfce.Trash"
+  	peer=(name=":[0-9]*.[0-9]*",label="thunar"),		# RBAC! Для root ветки label="thunar_root".
   dbus send
   	bus=session
   	path="/org/xfce/xfdesktop"
