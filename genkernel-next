@@ -33,7 +33,7 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/genkernel					r,
-  @{shell}						mr,
+  @{shell}						Cxmr,
   /bin/uname						Px,
   /bin/sed						ix,
   /bin/mv						ix,
@@ -46,6 +46,7 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
   /bin/mkdir						ix,
   /bin/ln						ix,
   /bin/wc						ix,
+  /bin/yes						ix,
   /bin/rm						ixr,
   /bin/tr						Px,
   /bin/sort						ix,
@@ -94,7 +95,8 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
   /usr/bin/hostid					ix,
   /usr/bin/gawk						r,
   /usr/bin/find						r,
-  /usr/@{CHOST}/binutils-bin/*/strings			ix,
+  /usr/@{CHOST}/binutils-bin/[0-9]*/strings		ix,
+  /usr/@{CHOST}/binutils-bin/[0-9]*/strip		ix,
   
   # READS/WRITES ---------------------------------------
   /etc/genkernel.conf					r,
@@ -116,6 +118,7 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
   /usr/share/genkernel/{,**}				r,
   /usr/share/pkgconfig/{,**}				r,
   /usr/share/misc/magic.mgc				r,
+  /usr/portage/distfiles/busybox-*.tar.bz2		r,
   /boot/initramfs-genkernel-*-@{kernel_ver}		w,
   /var/db/pkg/{,**}					r,
   /var/cache/genkernel/{,**}				rw,
@@ -123,4 +126,22 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
   
   # TEMP -----------------------------------------------
   /var/tmp/portage/genkernel/{,**}			rw,
+  
+  profile shell @{shell} flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    @{shell}						mr,
+    /bin/bzip2						ix,
+    
+    # READS/WRITES -------------------------------------
+    /var/cache/genkernel/busybox-*.tar.bz2		rw,
+    
+    # TEMP ---------------------------------------------
+    /var/tmp/portage/genkernel/{,**}			rw,
+  }
 }

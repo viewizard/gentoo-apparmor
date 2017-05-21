@@ -35,15 +35,13 @@ profile default flags=(complain) {				# FIX ME! 18.05.2017
   
   # EXECUTABLES ----------------------------------------
   /bin/kmod						Px,
-  /bin/busybox						Cx,
+  /bin/initramfs_busybox				Cx,
   /bin/grep						Cx,
   /bin/udevadm						Px,
   /lib{,32,64}/rc/sh/cgroup-release-agent.sh		Px,	# openrc
   /usr/lib{,32,64}/portage/@{PYTHON}/cgroup-release-agent Px,	# portage
   
   # READS/WRITES ---------------------------------------
-  /{,**/}						r,	# Даём доступ ко всем директориям, но не файлам.
-  								# Вероятно, как-то связано с EVM DTP (защита фс).
   /run/udev/control					w,
   
   profile initramfs.grep /bin/grep flags=(complain) {
@@ -60,7 +58,7 @@ profile default flags=(complain) {				# FIX ME! 18.05.2017
     /lib{,32,64}/lib*.so{,.*}				mr,
   }
   
-  profile initramfs.busybox /bin/busybox flags=(complain) {
+  profile initramfs.busybox /bin/initramfs_busybox flags=(complain) {
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,
@@ -78,7 +76,7 @@ profile default flags=(complain) {				# FIX ME! 18.05.2017
     umount /sys/kernel/security/,
     
     # EXECUTABLES --------------------------------------
-    /bin/busybox					mr,
+    /bin/initramfs_busybox				mr,
     /sbin/init						Px,
     
     # READS/WRITES -------------------------------------

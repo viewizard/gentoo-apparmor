@@ -15,11 +15,13 @@ profile make /usr/bin/{,g}make flags=(complain) {
   
   # CAPABILITIES ---------------------------------------
   capability mknod,
+  capability sys_admin,
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(term) peer="make//shell",
   
   # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
@@ -30,18 +32,29 @@ profile make /usr/bin/{,g}make flags=(complain) {
   /bin/rm						ix,
   /bin/ln						ix,
   /bin/cp						ix,
+  /bin/mv						ix,
   /bin/echo						Px,
   /bin/expr						ix,
   /bin/grep						ix,
+  /bin/chmod						ix,
   /bin/mkdir						ix,
+  /bin/sed						ix,
+  /bin/cat						ix,
+  /bin/touch						ix,
   /usr/bin/gcc						ix,
+  /usr/bin/cmp						ix,
+  /usr/bin/find						ix,
   /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc			ix,
+  /usr/@{CHOST}/binutils-bin/[0-9]*/strip		ix,
+  /var/tmp/portage/genkernel/*/busybox-*/scripts/**	ix,	# genkernel-next
   
   # READS/WRITES ---------------------------------------
   /etc/env.d/gcc/{,**}					r,
   /etc/terminfo/x/xterm					r,
   /lib{,32,64}/modules/{,**}				rw,
   /usr/src/@{kernel}/{,**}				ixrw,
+  owner /var/log/genkernel.log				w,	# genkernel-next
+  /var/tmp/portage/genkernel/*/busybox-*/{,**}		rw,	# genkernel-next
   
   # NOISY ----------------------------------------------
   deny /						r,
@@ -67,6 +80,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /bin/rm						ix,
     /bin/wc						ix,
     /bin/mv						ix,
+    /bin/dd						ix,
     /bin/tr						Px,
     /bin/ln						ix,
     /bin/cp						ix,
@@ -78,10 +92,12 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /bin/date						ix,
     /bin/dirname					Px,
     /bin/basename					Px,
+    /bin/echo						Px,
     /bin/tail						ix,
     /bin/sort						ix,
     /bin/grep						ix,
     /bin/expr						ix,
+    /bin/sleep						Px,
     /bin/mkdir						ix,
     /bin/kmod						Px,
     /bin/mktemp						ix,
@@ -90,6 +106,9 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /bin/head						ix,
     /bin/tar						ix,
     /bin/bzip2						ix,
+    /usr/bin/diff					ix,
+    /usr/bin/pod2html					ix,
+    /usr/bin/od						ix,
     /usr/bin/uniq					ix,
     /usr/bin/which					Px,
     /usr/bin/whoami					Px,
@@ -109,6 +128,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /usr/@{CHOST}/gcc-bin/*/*				ix,
     /usr/@{CHOST}/binutils-bin/*/*			ix,
     /usr/src/@{kernel}/{,**}				ixr,
+    /var/tmp/portage/genkernel/*/busybox-*/**		ix,	# genkernel-next
     
     # READS/WRITES -------------------------------------
     /etc/ld.so.conf					r,
@@ -126,8 +146,11 @@ profile make /usr/bin/{,g}make flags=(complain) {
     owner /tmp/sh-thd.*					rw,
     owner /tmp/cc*.{s,c,res,o,le,ld}			rw,
     owner /tmp/cpiolist.*				rw,
+    owner /tmp/tmp.*					rw,
     owner /tmp/depmod.*/{,**}				rw,
-    owner /var/tmp/portage/genkernel/initramfs-@{kernel_ver}.cpio r,
+    owner /var/tmp/portage/genkernel/*/busybox-*/{,**}	rw,	# genkernel-next
+    owner /var/tmp/portage/genkernel/initramfs-@{kernel_ver}.cpio r,	# genkernel-next
+    owner /var/log/genkernel.log			w,	# genkernel-next
     
     # NOISY --------------------------------------------
     deny /.git/{,**}					r,

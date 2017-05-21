@@ -66,6 +66,7 @@ profile coreutils.uname /bin/uname flags=(complain,attach_disconnected) {	# FIX 
   deny /run/user/[0-9]*/poedit.lock			w,	# poedit
   deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
   deny /tmp/chkrootkit.cron.*				w,	# chkrootkit.cron.daily
+  deny /var/log/genkernel.log				w,	# genkernel-next
 }
 
 profile coreutils.tty /bin/tty flags=(complain) {		# FIX ME! 04.04.2017 flags=(complain)
@@ -207,6 +208,7 @@ profile coreutils.echo /bin/echo flags=(complain) {		# FIX ME! 05.04.2017 flags=
   # DENY INHERIT ---------------------------------------
   deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
   deny /tmp/chkrootkit.cron.*				w,	# chkrootkit.cron.daily
+  deny /var/log/genkernel.log				w,	# genkernel-next
 }
 
 profile coreutils.sync /bin/sync flags=(complain) {		# FIX ME! 16.05.2017 flags=(complain)

@@ -84,7 +84,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
   								# when this features will be available
   
   # TEMP -----------------------------------------------
-  /tmp/*						rwk,
+  /tmp/*						rwk,	# FIX ME! Потом ограничить fsuid/uid == 0 или 250.
   
   profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
@@ -183,7 +183,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     # TEMP ---------------------------------------------
     /tmp/						r,
     owner /tmp/sh-thd.*					rw,
-    owner /tmp/portage.cron.*				rw,	# DELEGATION! 00_update_portage.cron.daily
+    /tmp/portage.cron.*					rw,	# DELEGATION! 00_update_portage.cron.daily
     owner /tmp/sed*					rw,
     owner /tmp/gcc-config-ima				rw,
     owner /tmp/??????					rw,
@@ -299,7 +299,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     owner /tmp/cf*/{,**}				rw,
     owner /tmp/test.*					rw,
     owner /tmp/tmp*					rw,
-    owner /tmp/portage.cron.*				w,	# DELEGATION! 00_update_portage.cron.daily
+    /tmp/portage.cron.*					w,	# DELEGATION! 00_update_portage.cron.daily
     owner /tmp/glew.??????/				w,
     owner /tmp/???????					rw,
     /var/tmp/						r,
@@ -468,6 +468,7 @@ profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
   /bin/head						ix,
   /bin/wc						ix,
   /bin/mv						ix,
+  /bin/readlink						ix,
   /usr/bin/diff						ix,
   /usr/bin/find						ix,
   @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,
