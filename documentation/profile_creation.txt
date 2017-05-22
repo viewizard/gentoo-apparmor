@@ -259,6 +259,11 @@ root # find * -maxdepth 0 -type f -exec ln -sr ./{} ./force-complain/{} \;
 Важно!
 При использовании на профиле "shadow.login" flags=(complain) или force-complain, AppArmor будет требовать hat пользователя (если в pam указан первый пользователь). Т.е. надо учитывать, что в случае обучения, AppArmor будет считать, что профиль "shadow.login" должен содержать правильный hat.
 
+Важно!
+Программы, работающие с интернетом с изолированным доступом к файловой системе должны использовать абстракцию abstractions/fs-access-by-pattern-internet.
+
+Важно!
+Если прорамма работает с интернетом и вносит изменения или создаёт файлы за пределами абстракции abstractions/fs-access-by-pattern-internet, необходимо добавить перечень этих файлов (директорий) в абстракцию abstractions/fs-deny-by-pattern-internet.
 
 
 

@@ -42,6 +42,8 @@ profile xarchiver /usr/bin/xarchiver {
   #include <abstractions/dbus-pattern/gvfs>
   #include <abstractions/dconf>
   #include <abstractions/fs-access-by-users-preset-rwkl>
+  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs-deny-private-strict>
   #include <abstractions/xdg-open>
   #include <abstractions/binary-helper-strict>
   
@@ -82,6 +84,8 @@ profile xarchiver /usr/bin/xarchiver {
   profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
     
     # PSEUDO ---------------------------------------------
     /dev/tty						rw,
@@ -97,6 +101,8 @@ profile xarchiver /usr/bin/xarchiver {
   profile rar /opt/rar/rar {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /opt/rar/rar					mr,
@@ -124,6 +130,8 @@ profile xarchiver_root {
   #include <abstractions/binary-helper-strict_root>
   #include <abstractions/fs-access-by-users-preset-rwkl>
   #include <abstractions/fs-access-by-pattern-systemusers>
+  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs-deny-private-strict>
   
   # CAPABILITIES ---------------------------------------
   capability chown,
@@ -169,6 +177,8 @@ profile xarchiver_root {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
     
     # PSEUDO ---------------------------------------------
     /dev/tty						rw,
@@ -185,6 +195,8 @@ profile xarchiver_root {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /opt/rar/rar					mr,

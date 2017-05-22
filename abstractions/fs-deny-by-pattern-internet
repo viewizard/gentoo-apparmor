@@ -1,0 +1,84 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# Важно!
+# Данная абстракция не должна работать вместе с абстракциями
+# abstractions/fs-access-by-pattern-internet и
+# abstractions/fs-access-by-pattern-filemanager
+
+# Не разрешаем работать с доступными для интернет-программ ресурсами
+deny @{HOME}/@{XDG_PUBLICSHARE_DIR}/{,**}		mrwkl,
+deny @{HOME}/@{XDG_DOWNLOAD_DIR}/{,**}			mrwkl,
+
+# qtox
+audit deny @{HOME}/.config/tox/{,**}			mrwkl,
+audit deny @{HOME_CACHE}/Tox/{,**}			mrwkl,
+
+# transmission
+audit deny @{HOME}/.config/transmission/{,**}		mrwkl,
+audit deny @{HOME_CACHE}/transmission/{,**}		mrwkl,
+
+# pidgin
+audit deny @{HOME}/.purple/**				mrwkl,
+
+# claws-mail
+audit deny @{HOME}/.claws-mail/{,**}			mrwkl,
+audit deny @{HOME}/Mail/{,**}				mrwkl,
+audit deny @{HOME_CACHE}/webkit/{,**}			mrwkl,
+
+# uget
+audit deny @{HOME}/.config/uGet/{,**}			rwkl,
+
+# firefox
+audit deny @{HOME}/.macromedia/{,**}			mrwkl,
+audit deny @{HOME}/.{firefox,mozilla}/{,**}		mrwkl,
+audit deny @{HOME}/.config/freshwrapper-data/{,**}	mrwkl,
+audit deny @{HOME_CACHE}/mozilla/firefox/{,**}		mrwkl,
+
+# chromium
+audit deny @{HOME}/.pki/nssdb/*				mrwkl,
+audit deny @{HOME}/.config/chromium/{,**}		mrwkl,
+audit deny @{HOME_CACHE}/chromium/{,**}			mrwkl,
+
+# skype
+audit deny @{HOME}/.Skype/{,**}				mrwkl,
+audit deny @{HOME}/.config/Skype/{,**}			mrwkl,
+
+# links
+audit deny @{HOME}/.links/{,**}				mrwkl,
+
+# teamspeak-client-bin
+audit deny @{HOME}/.ts3client/{,**}			mrwkl,
+audit deny @{HOME}/.pki/nssdb/*				mrwkl,
+
+# evelauncher
+audit deny @{HOME}/evelauncher/{,**}			mrwkl,
+audit deny @{HOME}/.eve/{,**}				mrwkl,
+audit deny @{HOME}/.config/CCP/{,**}			mrwkl,
+audit deny @{HOME}/.local/share/CCP/{,**}		mrwkl,
+audit deny @{HOME}/.pki/nssdb/*				mrwkl,
+audit deny @{HOME_CACHE}/CCP/{,**}			mrwkl,
+
+# discord
+audit deny @{HOME}/.config/discord/{,**}		mrwkl,
+audit deny @{HOME}/.pki/nssdb/*				mrwkl,
+
+# mumble
+audit deny @{HOME}/.local/share/data/Mumble/{,**}	mrwkl,
+audit deny @{HOME}/.config/Mumble/{,**}			mrwkl,
+audit deny @{HOME}/.MumbleSocket			mrwkl,
+audit deny @{HOME}/.MumbleOverlayPipe			mrwkl,
+
+# linphone
+audit deny @{HOME}/.linphonerc				mrwkl,
+audit deny @{HOME}/.linphone-history.db			mrwkl,
+
+# gtkevemon
+audit deny @{HOME}/.gtkevemon/{,**}			mrwkl,

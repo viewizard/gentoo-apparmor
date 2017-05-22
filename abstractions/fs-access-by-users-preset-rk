@@ -13,10 +13,6 @@
 
 #include <abstractions/fs-access-by-pattern-xdg-open>
 
-# Не разрешаем работать с доступными для интернет-программ ресурсами
-deny @{HOME}/@{XDG_PUBLICSHARE_DIR}/{,**}		rwkl,
-deny @{HOME}/@{XDG_DOWNLOAD_DIR}/{,**}			rwkl,
-
 /							r,
 @{HOMEDIRS}/						r,
 owner @{HOME}/						r,

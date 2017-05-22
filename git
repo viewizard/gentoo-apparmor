@@ -19,6 +19,8 @@ profile git /usr/bin/git {
   #include <abstractions/nameservice>
   #include <abstractions/ssl-certs>
   #include <abstractions/fs-access-by-users-preset-rwkl>
+  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs-deny-private-strict>
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -55,6 +57,8 @@ profile git_root {
   #include <abstractions/ssl-certs>
   #include <abstractions/fs-access-by-users-preset-rwkl>
   #include <abstractions/fs-access-by-pattern-systemusers>
+  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs-deny-private-strict>
   
   # CAPABILITIES ---------------------------------------
   capability fowner,

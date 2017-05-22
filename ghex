@@ -30,6 +30,8 @@ profile ghex /usr/bin/ghex {
   #include <abstractions/dbus-pattern/at-spi>
   #include <abstractions/dbus-pattern/gvfs>
   #include <abstractions/fs-access-by-users-preset-rwk>
+  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs-deny-private-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -56,6 +58,8 @@ profile ghex_root {
   #include <abstractions/dbus-pattern/gvfs>
   #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/fs-access-by-pattern-systemusers>
+  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs-deny-private-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

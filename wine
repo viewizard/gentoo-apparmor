@@ -18,7 +18,7 @@ profile wine /usr/bin/wine flags=(attach_disconnected) {
   #include <abstractions/freedesktop.org>
   #include <abstractions/nameservice>
   #include <abstractions/p11-kit>
-  #include <abstractions/private-files-strict>
+  #include <abstractions/fs-deny-private-strict>
   #include <local/wine-custom-locations>
   
   # CAPABILITIES ---------------------------------------
@@ -56,7 +56,7 @@ profile wine /usr/bin/wine flags=(attach_disconnected) {
 
 profile wine.ntlm_auth /usr/bin/ntlm_auth {
   #include <abstractions/base>
-  #include <abstractions/private-files-strict>
+  #include <abstractions/fs-deny-private-strict>
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/ntlm_auth					mr,
@@ -75,7 +75,7 @@ profile wine.wine-preloader /usr/bin/wine-preloader flags=(attach_disconnected) 
   #include <abstractions/freedesktop.org>
   #include <abstractions/nameservice>
   #include <abstractions/p11-kit>
-  #include <abstractions/private-files-strict>
+  #include <abstractions/fs-deny-private-strict>
   #include <abstractions/X>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-pattern/udisks>
@@ -166,7 +166,7 @@ profile wine.wineserver /usr/bin/wineserver flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   include <abstractions/X-connection-strict>
-  #include <abstractions/private-files-strict>
+  #include <abstractions/fs-deny-private-strict>
   #include <local/wine-custom-locations>
   
   # CAPABILITIES ---------------------------------------

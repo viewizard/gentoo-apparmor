@@ -32,6 +32,8 @@ profile mousepad /usr/bin/mousepad {
   #include <abstractions/binary-helper-strict-web>
   #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/fs-access-strict>
+  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs-deny-private-strict>
   
   # DBUS -----------------------------------------------
   dbus send
@@ -79,6 +81,8 @@ profile mousepad_root {
   #include <abstractions/binary-helper-strict-web_root>
   #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/fs-access-by-pattern-systemusers>
+  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs-deny-private-strict>
   
   # CAPABILITIES ---------------------------------------
   capability fowner,
