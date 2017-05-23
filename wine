@@ -67,6 +67,7 @@ profile wine.ntlm_auth /usr/bin/ntlm_auth {
 
 # FIX ME! В идеале, иметь профиль на каждую программу, см.
 # http://wiki.apparmor.net/index.php/AppArmorWine
+# Можно реализовать только в случае использования binfmt_misc.
 profile wine.wine-preloader /usr/bin/wine-preloader flags=(attach_disconnected) {
   #include <abstractions/X>
   #include <abstractions/audio>

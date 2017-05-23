@@ -24,7 +24,7 @@ mount
 -> /var/,
 mount
 	fstype=ext4
-	options=(rw, noexec, noatime)
+	options=(rw, noatime)
 	/dev/@{BLOCK_ALL}
 -> /home/,
 mount
@@ -49,44 +49,10 @@ mount
 -> /tmp/,
 
 mount
-	options=(rw, bind)
-	/home/*/.wine/
--> /home/*/.wine/,
-mount
-	options=(rw, nodev, remount, bind)
--> /home/*/.wine/,
-
-mount
-	options=(rw, bind)
-	/home/*/evelauncher/
--> /home/*/evelauncher/,
-mount
-	options=(rw, nodev, remount, bind)
--> /home/*/evelauncher/,
-
-mount
-	options=(rw, bind)
-	/home/*/.wine/
--> /home/*/.eve/,
-mount
-	options=(rw, nodev, remount, bind)
--> /home/*/.eve/,
-
-mount
-	options=(rw, bind)
-	/home/*/.config/discord/
--> /home/*/.config/discord/,
-mount
-	options=(rw, nodev, remount, bind)
--> /home/*/.config/discord/,
-
-mount
-	options=(rw, bind)
-	/home/*/Desktop/AstroMenace/
--> /home/*/Desktop/AstroMenace/,
-mount
-	options=(rw, nodev, remount, bind)
--> /home/*/Desktop/AstroMenace/,
+	fstype=ext2
+	options=(rw, nosuid, nodev, noexec, noatime)
+	/dev/@{BLOCK_ALL}
+-> /mnt/usbcryptkey/,
 
 mount
 	options=(rw, bind)

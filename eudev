@@ -15,6 +15,7 @@ profile eudev.udevadm /bin/udevadm flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/@{BLOCK_REAL}					r,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   /dev/input/event[0-9]*				r,

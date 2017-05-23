@@ -35,11 +35,16 @@ profile e2fsprogs.e2fsck /sbin/e2fsck flags=(complain) {
 profile e2fsprogs.mke2fs /sbin/mke2fs flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rw,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/		r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}uuid	r,
+  /sys/devices/pci[0-9]**/ata[0-9]**/block/@{BLOCK_REAL}/** r,
   @{PROC}/swaps						r,
   @{PROC}/@{pid}/mounts					r,
   
@@ -48,6 +53,7 @@ profile e2fsprogs.mke2fs /sbin/mke2fs flags=(complain) {
   
   # READS/WRITES ---------------------------------------
   /etc/mke2fs.conf					r,
-  /run/blkid/blkid.tab*					rw,
-#  /run/blkid/blkid.tab*				l,	# FIX ME!
+  /usr/share/misc/magic.mgc				r,
+  /run/blkid/blkid.tab{,.*}				rw,
+  owner link subset /run/blkid/blkid.tab.*		-> /run/blkid/blkid.tab,
 }

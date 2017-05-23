@@ -265,6 +265,10 @@ root # find * -maxdepth 0 -type f -exec ln -sr ./{} ./force-complain/{} \;
 Важно!
 Если прорамма работает с интернетом и вносит изменения или создаёт файлы за пределами абстракции abstractions/fs-access-by-pattern-internet, необходимо добавить перечень этих файлов (директорий) в абстракцию abstractions/fs-deny-by-pattern-internet.
 
+Важно!
+Для программ, использующих доступ к пользовательским файлам без ограничений (например, используется abstractions/fs-access-by-users-preset-r* с @{USERS_FILE}="**") обязательно использовать абстракции abstractions/fs-deny-private или abstractions/fs-deny-private-strict. Исключения - работа с файлами из этих абстракций.
+
+
 
 
 Отладка.

@@ -61,17 +61,23 @@ profile lvm2.dmeventd /sbin/dmeventd flags=(complain) {
   /sys/class/						r,
   /sys/class/block/					r,
   /sys/devices/**/uevent				r,
+  /sys/devices/virtual/bdi/[0-9]*:[0-9]*/read_ahead_kb	r,
   @{PROC}/devices					r,
   @{PROC}/@{pid}/mounts					r,
   @{PROC}/@{pid}/oom_score_adj				w,
   
   # EXECUTABLES ----------------------------------------
   /sbin/dmeventd					mr,
+  /bin/umount						Px,
   
   # READS/WRITES ---------------------------------------
+  /etc/udev/udev.conf					r,
   /etc/lvm/lvm.conf					r,
   /etc/lvm/lvmlocal.conf				r,
-  /etc/udev/udev.conf					r,
+  /etc/lvm/archive/					r,
+  /etc/lvm/archive/*					rwk,
+  /etc/lvm/backup/					r,
+  /etc/lvm/backup/*					rwk,
   /run/dmeventd.pid					rwk,
   /run/dmeventd-{client,server}				rwk,
   /run/lock/lvm/*					rwk,
@@ -101,6 +107,7 @@ profile lvm2.lvm /sbin/lvm flags=(complain) {
   /dev/@{BLOCK_ALL}					rw,
   /dev/mapper/						r,
   /dev/mapper/control					rw,
+  /sys/fs/						r,
   /sys/bus/						r,
   /sys/class/						r,
   /sys/class/block/					r,
