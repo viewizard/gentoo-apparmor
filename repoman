@@ -24,12 +24,6 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
   capability fowner,
   capability fsetid,
   
-  # NETWORK --------------------------------------------
-  network inet dgram,
-  network inet6 dgram,
-  network inet stream,
-  network inet6 stream,
-  
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
@@ -40,11 +34,10 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
   /bin/basename						Px,
   /usr/bin/git						ix,	# не используем Px и Px -> git_root.
   /usr/bin/id						Px,
-  /usr/bin/wget						ix,
+  /usr/bin/wget						Px,
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
-  /etc/wgetrc						r,
   /etc/terminfo/x/xterm					r,
   /etc/portage/{,**}					r,
   /usr/portage/{,**}					r,

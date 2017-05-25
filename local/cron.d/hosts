@@ -16,18 +16,11 @@
 
 profile hosts.sh.cron.daily /etc/cron.daily/hosts.sh {
   #include <abstractions/base>
-  #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
   capability dac_override,
   capability dac_read_search,
-  
-  # NETWORK --------------------------------------------
-  network inet dgram,
-  network inet6 dgram,
-  network inet stream,
-  network inet6 stream,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -41,20 +34,15 @@ profile hosts.sh.cron.daily /etc/cron.daily/hosts.sh {
   /bin/chmod						ix,
   /bin/basename						Px,
   /usr/bin/libnotify-notify-send-users			Px,
-  /usr/bin/wget						ix,
+  /usr/bin/wget						Px,
   /usr/bin/stat						ix,
   /usr/bin/mail						Px,
   /usr/bin/logger					Px,
   
   # READS/WRITES ---------------------------------------
-  /etc/wgetrc						r,
   /var/lib/hosts.blacklist				w,
   /var/log/hosts.log					w,
   
   # TEMP -----------------------------------------------
   owner /tmp/hosts					rw,
-  
-  # NOISY ----------------------------------------------
-  deny /.wget-hsts					rw,
-  deny /root/.wget-hsts					rw,
 }
