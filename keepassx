@@ -37,13 +37,14 @@ profile keepassx /usr/bin/keepassx {
   @{PROC}/@{pid}/task/					r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/keepassx mr,
+  /usr/bin/keepassx					mr,
   
   # READS/WRITES ---------------------------------------
-  /usr/bin/ r,
-  /usr/share/keepassx/{,**} r,
+  /usr/bin/						r,
+  /usr/share/keepassx/{,**}				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/keepassx/ rw,
-  owner @{HOME}/.config/keepassx/** rwk,
+  owner @{HOME}/.config/				r,
+  owner @{HOME}/.config/keepassx/			rw,
+  owner @{HOME}/.config/keepassx/**			rwk,
 }
