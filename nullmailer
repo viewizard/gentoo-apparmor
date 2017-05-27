@@ -62,15 +62,15 @@ profile nullmailer.nullmailer-queue /usr/sbin/nullmailer-queue flags=(attach_dis
   
   # READS/WRITES ---------------------------------------
   /etc/nullmailer/{,*}					r,
-  /var/nullmailer/					r,
-  /var/nullmailer/**					rw,
-  link subset /var/nullmailer/queue/[0-9]*.@{pid}	-> /var/nullmailer/tmp/@{pid},
+  /var/spool/nullmailer/				r,
+  /var/spool/nullmailer/**				rw,
+  link subset /var/spool/nullmailer/queue/[0-9]*.@{pid}	-> /var/spool/nullmailer/tmp/@{pid},
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile nullmailer.smtp /usr/libexec/nullmailer/smtp {
+profile nullmailer.smtp /usr/libexec/nullmailer/smtp flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ssl-certs>
@@ -86,8 +86,11 @@ profile nullmailer.smtp /usr/libexec/nullmailer/smtp {
   /usr/libexec/nullmailer/smtp				mr,
   
   # READS/WRITES ---------------------------------------
-  /var/nullmailer/trigger				r,
-  /var/nullmailer/queue/**				rw,
+  /var/spool/nullmailer/trigger				r,
+  /var/spool/nullmailer/queue/**			rw,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
 profile nullmailer.nullmailer-send /usr/sbin/nullmailer-send {
@@ -99,8 +102,11 @@ profile nullmailer.nullmailer-send /usr/sbin/nullmailer-send {
   
   # READS/WRITES ---------------------------------------
   /etc/nullmailer/**					r,
-  /var/nullmailer/{,**}					r,
-  /var/nullmailer/queue/**				rw,
+  /var/spool/nullmailer/{,**}				r,
+  /var/spool/nullmailer/queue/**			rw,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /var/log/nullmailer/nullmailer.log		w,	# nullmailer.init.d
 }
 
 profile nullmailer.init.d /etc/init.d/nullmailer {
@@ -129,6 +135,7 @@ profile nullmailer.init.d /etc/init.d/nullmailer {
   /etc/security/limits.d/{,*}				r,
   /run/nullmailer.pid					rwk,
   /run/utmp						rk,
+  /var/log/nullmailer/nullmailer.log			w,
   
   profile shell @{shell} {
     #include <abstractions/base>

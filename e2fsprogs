@@ -54,6 +54,6 @@ profile e2fsprogs.mke2fs /sbin/mke2fs flags=(complain) {
   # READS/WRITES ---------------------------------------
   /etc/mke2fs.conf					r,
   /usr/share/misc/magic.mgc				r,
-  /run/blkid/blkid.tab{,.*}				rw,
-  owner link subset /run/blkid/blkid.tab.*		-> /run/blkid/blkid.tab,
+  /run/blkid/blkid.tab*					rw,
+  owner link subset /run/blkid/blkid.tab*		-> /run/blkid/blkid.tab,
 }

@@ -10,10 +10,13 @@
 
 #include <tunables/global>
 
-# DELEGATION! Потом сделать для каждого вызывающего свои доступы.
-# Заменить вызовы черех ix на Px c делегейшеном.
-profile wget /usr/bin/wget {
+profile wget /usr/bin/wget flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/ssl-certs>
+  
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
   
   # NETWORK --------------------------------------------
   network inet dgram,
@@ -26,4 +29,55 @@ profile wget /usr/bin/wget {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/wget						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/wgetrc						r,
+  /usr/portage/distfiles/**				rw,	# DELEGATION! portage
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.wget-hsts				rw,
+  
+  # READS/WRITES ---------------------------------------
+  /.wget-hsts						rwk,	# Мусорит в корень, использовать --hsts-file=file.
+  								# Процессы запущенные из cron работают некорректно с wget.
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/hosts					rwk,	# DELEGATION! hosts.sh.cron.daily
+  owner /tmp/oinkmaster.*/**				w,	# DELEGATION! oinkmaster.cron.daily
+  
+  # DENY INHERIT ---------------------------------------
+  deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
+  deny /tmp/oinkmaster.cron.*				w,	# oinkmaster.cron.daily
+}
+
+# Профиль должен вызываться только из shell_root,
+# для остального использовать профиль wget с делегейшен.
+profile wget_root {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/ssl-certs>
+  #include <abstractions/fs-access-by-pattern-filemanager>
+  #include <abstractions/fs-access-by-pattern-systemusers>
+  
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/wget						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /.wget-hsts						rwk,	# Мусорит в корень, использовать --hsts-file=file.
+  								# Процессы запущенные из cron работают некорректно с wget.
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.wget-hsts				rwk,
 }

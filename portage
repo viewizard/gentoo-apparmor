@@ -57,7 +57,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
   /usr/bin/id						Px,
   /usr/bin/install-info					ix,
   /usr/bin/scanelf					ix,
-  /usr/bin/wget						ix,
+  /usr/bin/wget						Px,
   /usr/bin/desktop-file-validate			ix,
   /usr/bin/rsync					ix,
   /usr/bin/gcc-config					Px,
@@ -121,6 +121,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     /sys/devices/system/cpu/				r,
     @{PROC}/						r,
     @{PROC}/cmdline					r,
+    @{PROC}/vmstat					r,
     @{PROC}/@{pid}/{environ,cmdline,status}		r,
     @{PROC}/@{pid}/fd/					r,
     @{PROC}/@{pid}/fd/[0-9]*				w,
@@ -170,7 +171,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     /var/tmp/portage/**					rwk,
     /var/cache/**					rwl,	# l - все правильно, разрешаем на /**.
     /var/log/nullmailer/				w,
-    /var/nullmailer/{,**}				w,
+    /var/spool/nullmailer/{,**}				w,
     /var/lib/*/						rw,
     /var/lib/*/**					rwkl,	# l - все правильно, разрешаем на /**.
     /run/mount/utab					rw,
@@ -178,6 +179,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     /run/openrc/deptree					w,
     /run/openrc/depconfig				w,
     /run/udev/control					rw,
+    /var/spool/**					rw,
     /var/log/emerge-fetch.log				a,	# DELEGATION! portage.emerge
     
     # TEMP ---------------------------------------------
@@ -192,8 +194,8 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     /var/tmp/						r,
     
     # NOISY --------------------------------------------
-    /.wget-hsts						rw,
-    /root/.wget-hsts					rw,
+#    deny /.wget-hsts					rw,	# FIX ME! 23.05.2017 перенесено в профиль wget.
+#    deny /root/.wget-hsts				rw,	# FIX ME! 23.05.2017 перенесено в профиль wget.
   }
   
   profile sandbox /usr/bin/sandbox flags=(complain) {
