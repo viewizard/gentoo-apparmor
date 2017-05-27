@@ -37,6 +37,7 @@ profile keepassxc /usr/bin/keepassxc {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
+  /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/{cmdline,status}			r,
   
   # EXECUTABLES ----------------------------------------

@@ -13,6 +13,9 @@
 profile grub.grub-mkconfig /usr/sbin/grub-mkconfig flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/pts/[0-9]*					rw,
@@ -59,8 +62,11 @@ profile grub.grub-probe /usr/sbin/grub-probe flags=(complain) {
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
   capability sys_rawio,
+  capability mknod,
   
   # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  /dev/@{BLOCK_ALL}					r,
   /dev/{,**/}						r,
   /dev/@{BLOCK_REAL}					r,
   /dev/mapper/control					rw,
