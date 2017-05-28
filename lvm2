@@ -123,6 +123,7 @@ profile lvm2.lvm /sbin/lvm flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /sbin/lvm						mr,
   /sbin/dmeventd					Px,
+  /sbin/fsadm						Px,
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
@@ -133,7 +134,6 @@ profile lvm2.lvm /sbin/lvm flags=(complain) {
   link subset /etc/lvm/archive/*			-> /etc/lvm/archive/*,
   /etc/lvm/backup/					rw,
   /etc/lvm/backup/*					rwk,
-#  audit /etc/lvm/backup/*				l,	# FIX ME!
   /run/udev/data/*					r,
   /run/lock/lvm/					w,
   /run/lock/lvm/*					rwk,
@@ -145,6 +145,25 @@ profile lvm2.lvm /sbin/lvm flags=(complain) {
   owner /tmp/homebackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
   owner /tmp/rootbackup.cron.*				w,	# DELEGATION! monthly_backup.sh.cron.monthly
   owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
+}
+
+profile lvm2.fsadm /sbin/fsadm flags=(complain) {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /sbin/fsadm						r,
+  @{shell}						mr,
+  /bin/grep						ix,
+  /bin/readlink						ix,
+  /bin/date						ix,
+  /bin/mount						Px,
+  /sbin/blkid						Px,
+  /sbin/tune2fs						Px,
+  /sbin/fsck						Px,
+  /sbin/e2fsck						Px,
 }
 
 profile lvm2.lvmetad.init.d /etc/init.d/lvmetad {

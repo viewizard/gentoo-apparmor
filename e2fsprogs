@@ -57,3 +57,19 @@ profile e2fsprogs.mke2fs /sbin/mke2fs flags=(complain) {
   /run/blkid/blkid.tab*					rw,
   owner link subset /run/blkid/blkid.tab*		-> /run/blkid/blkid.tab,
 }
+
+profile e2fsprogs.tune2fs /sbin/tune2fs flags=(complain) {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  /dev/@{BLOCK_ALL}					rw,
+  @{PROC}/swaps						r,
+  @{PROC}/@{pid}/mounts					r,
+  
+  # EXECUTABLES ----------------------------------------
+  /sbin/tune2fs						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /run/blkid/blkid.tab*					r,
+}

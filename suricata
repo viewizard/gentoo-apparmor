@@ -82,8 +82,8 @@ profile suricata.init.d /etc/init.d/suricata {
   /run/suricata/					rw,
   /run/suricata/suricata.pid				rwk,
   
-  # TEMP -----------------------------------------------
-  owner /tmp/oinkmaster.cron.??????			w,
+  # DENY INHERIT ---------------------------------------
+  deny /tmp/oinkmaster.cron.*				w,	# oinkmaster.cron.daily
   
   profile shell @{shell} {
     #include <abstractions/base>

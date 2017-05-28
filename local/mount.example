@@ -34,6 +34,11 @@ mount
 -> /usr/portage/,
 mount
 	fstype=ext4
+	options=(rw, nosuid, nodev, noatime)
+	/dev/@{BLOCK_ALL}
+-> /usr/src/,
+mount
+	fstype=ext4
 	options=(rw, nosuid, nodev, noexec, noatime)
 	/dev/@{BLOCK_ALL}
 -> /mnt/backup/,
