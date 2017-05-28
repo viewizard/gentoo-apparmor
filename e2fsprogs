@@ -60,6 +60,7 @@ profile e2fsprogs.mke2fs /sbin/mke2fs flags=(complain) {
 
 profile e2fsprogs.tune2fs /sbin/tune2fs flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
@@ -72,4 +73,17 @@ profile e2fsprogs.tune2fs /sbin/tune2fs flags=(complain) {
   
   # READS/WRITES ---------------------------------------
   /run/blkid/blkid.tab*					r,
+}
+
+profile e2fsprogs.resize2fs /sbin/resize2fs flags=(complain) {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  /dev/@{BLOCK_ALL}					rw,
+  @{PROC}/swaps						r,
+  @{PROC}/@{pid}/mounts					r,
+  
+  # EXECUTABLES ----------------------------------------
+  /sbin/resize2fs					mr,
 }

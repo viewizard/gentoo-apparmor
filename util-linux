@@ -345,6 +345,9 @@ profile util-linux.eject /usr/bin/eject flags=(complain) {
 profile util-linux.blkid /sbin/blkid flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  
   # PSEUDO ---------------------------------------------
   /dev/							r,
   /dev/tty[0-9]*					rw,
@@ -369,4 +372,14 @@ profile util-linux.switch_root /sbin/switch_root flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /sbin/switch_root					mr,
   /sbin/init						Px,
+}
+
+profile util-linux.blockdev /sbin/blockdev flags=(complain) {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/@{BLOCK_ALL}					r,
+  
+  # EXECUTABLES ----------------------------------------
+  /sbin/blockdev					mr,
 }

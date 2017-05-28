@@ -150,8 +150,13 @@ profile lvm2.lvm /sbin/lvm flags=(complain) {
 profile lvm2.fsadm /sbin/fsadm flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/**/name	r,
+  @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/fsadm						r,
@@ -164,6 +169,9 @@ profile lvm2.fsadm /sbin/fsadm flags=(complain) {
   /sbin/tune2fs						Px,
   /sbin/fsck						Px,
   /sbin/e2fsck						Px,
+  /sbin/resize2fs					Px,
+  /sbin/blockdev					Px,
+  /sbin/lvm						Px,
 }
 
 profile lvm2.lvmetad.init.d /etc/init.d/lvmetad {
