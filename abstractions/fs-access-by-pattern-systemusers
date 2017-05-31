@@ -21,7 +21,7 @@ capability dac_read_search,					# не разрешающим доступ root 
 
 # Разрешаем полный доступ root-у только к файлам которыми он владеет,
 # тем самым ограничиваем root-у доступ к пользовательским файлам.
-owner /**						rwl,	# l - все правильно, разрешаем на /**.
+owner /**						rw,
 
 # FIX ME! Когда будет возможность указывать явно к каким UID
 # владельцев может быть доступ - переделать. Дать доступ
@@ -29,25 +29,29 @@ owner /**						rwl,	# l - все правильно, разрешаем на /**
 
 # Разрешаем доступ к файлам других системных пользователей.
 # Явно перечисляем куда доступ разрешен.
-/var/log/**						r,
+
+/etc/suricata/{,**}					rw,
+/etc/polkit-1/rules.d/{,*}				rw,
+/etc/logcheck/{,**}					rw,
+
 /usr/share/polkit-1/**					r,
 /usr/portage/{,**}					r,
-/usr/portage/distfiles/{,**}				rwl,	# l - все правильно, разрешаем на /**.
-/usr/portage/packages/{,**}				rwl,	# l - все правильно, разрешаем на /**.
-/usr/local/portage/{,**}				rwl,	# l - все правильно, разрешаем на /**.
-/etc/suricata/{,**}					rwl,	# l - все правильно, разрешаем на /**.
-/etc/polkit-1/rules.d/{,*}				rwl,	# l - все правильно, разрешаем на /**.
-/etc/logcheck/{,**}					rwl,	# l - все правильно, разрешаем на /**.
-/var/cache/{,**}					rwl,	# l - все правильно, разрешаем на /**.
-/var/spool/nullmailer/{,**}				rwl,	# l - все правильно, разрешаем на /**.
-/var/lib/{,**}						rwl,	# l - все правильно, разрешаем на /**.
-/var/log/{,**}						rwl,	# l - все правильно, разрешаем на /**.
-/var/lib/tor/{,**}					rwl,	# l - все правильно, разрешаем на /**.
-/var/tmp/portage/{,**}					rwl,	# l - все правильно, разрешаем на /**.
+/usr/portage/distfiles/{,**}				rw,
+/usr/portage/packages/{,**}				rw,
+/usr/local/portage/{,**}				rw,
+
+/var/log/**						r,
+audit deny /var/log/**					w,
+
+/var/cache/{,**}					rw,
+/var/spool/nullmailer/{,**}				rw,
+/var/lib/{,**}						rw,
+/var/tmp/portage/{,**}					rw,
+
 /run/{,**}						rw,
 /tmp/{,**}						rw,
 
-# нужно для общесистемного rsync
+# FIX ME! нужно для общесистемного rsync (убрать в профиль)
 /usr/bin/mailq						r,
 /usr/bin/man						r,
 /usr/bin/mandb						r,

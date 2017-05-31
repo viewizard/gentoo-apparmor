@@ -14,6 +14,11 @@ out of tree patches (user-space) git://git.launchpad.net/~jjohansen/apparmor
 https://bugs.launchpad.net/apparmor/+bug/1197145
 
 
+- когда Apparmor сможет ставить маркеры на файлы по условию (xattr), сделать интеграцию с IMA/EVM,
+чтобы эффективно обходить подпись лог файлов (/var/log/*).
+Фактически, нужно как-то подписывать лог файлы, чтобы не проверять их на чтении-записи (только запуск, ммеп и прочее).
+
+
 - Setuid rules (непонятно когда будет работать)
 requires capability setuid
  setuid -> fred,

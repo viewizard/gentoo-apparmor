@@ -91,6 +91,9 @@ profile xfdesktop /usr/bin/xfdesktop {
   owner @{HOME}/.local/share/gvfs-metadata/{,*}		r,
   owner @{HOME}/.xfce4-session.verbose-log		rw,
   
+  # TEMP -----------------------------------------------
+  owner /tmp/gdkpixbuf-xpm-tmp.*			rw,
+  
   profile shell @{shell} {
     #include <abstractions/base>
     #include <local/thunar-custom-actions>			# Must be the same as thunar custom actions!

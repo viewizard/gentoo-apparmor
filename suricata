@@ -52,7 +52,7 @@ profile suricata /usr/bin/suricata {
   /var/tmp/						r,
 }
 
-profile suricata.init.d /etc/init.d/suricata {
+profile suricata.init.d /etc/init.d/suricata flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -83,6 +83,7 @@ profile suricata.init.d /etc/init.d/suricata {
   /run/suricata/suricata.pid				rwk,
   
   # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected), перезапуск из oinkmaster скрипта
   deny /tmp/oinkmaster.cron.*				w,	# oinkmaster.cron.daily
   
   profile shell @{shell} {
