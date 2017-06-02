@@ -145,15 +145,12 @@ profile wine.wine-preloader /usr/bin/wine-preloader flags=(attach_disconnected) 
   owner @{HOME_CACHE}/winetricks/**			rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/.gl*					rw,
   owner /tmp/.wine-[0-9]*/server-*-*/{,lock}		r,
   owner /tmp/.wine-[0-9]*/server-*-*/socket		rw,
   
   # NOISY ----------------------------------------------
   deny /						r,
   deny /etc/fstab					r,
-  deny @{HOME}/						r,
-  deny @{HOME}/.glvnd*					w,
   deny /etc/						r,
   deny /usr/local/					r,
   deny /usr/local/lib{,32,64}/				r,
