@@ -19,11 +19,15 @@ owner @{HOME}/						r,
 owner @{HOME}/@{USERS_DIR}/				r,
 owner @{HOME}/@{USERS_FILE}				rk,
 owner @{HOME}/@{USERS_DIR}/@{USERS_FILE}		rk,
-owner /run/user/[0-9]*/gvfs/*/				r,
-owner /run/user/[0-9]*/gvfs/*/@{USERS_DIR}/		r,
-owner /run/user/[0-9]*/gvfs/*/@{USERS_FILE}		rk,
-owner /run/user/[0-9]*/gvfs/*/@{USERS_DIR}/@{USERS_FILE} rk,
-/media/							r,
-/media/@{USERS_DIR}/					r,
-/media/@{USERS_FILE}					rk,
-/media/@{USERS_DIR}/@{USERS_FILE}			rk,
+owner /run/user/[0-9]*/gvfs/				r,	# gvfs
+owner /run/user/[0-9]*/gvfs/*/@{USERS_DIR}/		r,	# gvfs
+owner /run/user/[0-9]*/gvfs/*/@{USERS_FILE}		rk,	# gvfs
+owner /run/user/[0-9]*/gvfs/*/@{USERS_DIR}/@{USERS_FILE} rk,	# gvfs
+/media/{,*/}						r,
+/media/*/@{USERS_DIR}/					r,
+/media/*/@{USERS_FILE}					rk,
+/media/*/@{USERS_DIR}/@{USERS_FILE}			rk,
+/run/media/*/{,*/}					r,	# udisks2, /run/media/$USER/VolumeName/
+/run/media/*/*/@{USERS_DIR}/				r,	# udisks2, /run/media/$USER/VolumeName/
+/run/media/*/*/@{USERS_FILE}				rk,	# udisks2, /run/media/$USER/VolumeName/
+/run/media/*/*/@{USERS_DIR}/@{USERS_FILE}		rk,	# udisks2, /run/media/$USER/VolumeName/
