@@ -287,6 +287,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {
     /lib{,32,64}/{,**}					r,
     /etc/{,**}						r,
     /usr/{,**}						r,
+    /usr/portage/distfiles/*/				w,	# git/cvs/svn
     /usr/src/@{kernel}/tools/gcc/**.so			m,
     /usr/portage/distfiles/{egit,git3}-src/**		rw,
     link subset /usr/portage/distfiles/{egit,git3}-src/** -> /usr/portage/distfiles/{egit,git3}-src/**,

@@ -28,6 +28,7 @@ profile psmisc.killall /usr/bin/killall {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
   @{PROC}/@{pid}/{stat,status,cmdline}			r,
   
