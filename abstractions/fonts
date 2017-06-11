@@ -23,19 +23,16 @@
 /usr/share/texlive/texmf-dist/fonts/{,**}		r,
 /usr/share/poppler/{,**}				r,	# poppler tables
 /var/cache/fonts/**					r,
+/var/cache/fontconfig/					rw,
 /var/cache/fontconfig/**				mr,
+link subset /var/cache/fontconfig/**			-> /var/cache/fontconfig/**,
 
 # USERS ------------------------------------------------
 owner @{HOME}/.fontconfig/				r,
-owner @{HOME}/.fontconfig/**				mr,
-#owner @{HOME}/.fontconfig/**				l,	# FIX ME!
-owner @{HOME_CACHE}/fontconfig/				r,
-owner @{HOME_CACHE}/fontconfig/**			mr,
-#owner @{HOME_CACHE}/fontconfig/**			l,	# FIX ME!
+owner @{HOME}/.fontconfig/**				mrw,
+owner link subset @{HOME}/.fontconfig/**		-> /{home/*,root}/.fontconfig/**,	# LINK! @{HOME}
+owner @{HOME_CACHE}/fontconfig/				rw,
+owner @{HOME_CACHE}/fontconfig/**			mrw,
+owner link subset @{HOME_CACHE}/fontconfig/**		-> /{home/*/.cache,root/.cache,tmp/*}/fontconfig/**,	# LINK! @{HOME_CACHE}
 owner @{HOME}/.config/fontconfig/{,**}			r,
 owner @{HOME}/.local/share/fonts/{,**}			r,
-
-# NOISY ------------------------------------------------
-deny /var/cache/fontconfig/				w,	# FIX ME! Точно не нужны, если нет локальных шрифтов?
-deny @{HOME}/.fontconfig/{,**}				w,	# FIX ME! Точно не нужны, если нет локальных шрифтов?
-deny @{HOME_CACHE}/fontconfig/{,**}			w,	# FIX ME! Точно не нужны, если нет локальных шрифтов?
