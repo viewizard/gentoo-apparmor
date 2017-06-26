@@ -23,17 +23,11 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
   #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/video>
   #include <abstractions/nameservice>
+  #include <abstractions/ncurses>
   #include <abstractions/binary-helper-strict-web>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term)
-  	peer="xfce4-terminal//gnome-pty-helper",
   signal (send) set=(hup),
-  
-  # UNIX -----------------------------------------------
-  unix (send, receive)
-  	type=stream
-  	peer=(label="xfce4-terminal//gnome-pty-helper"),
   
   # DBUS -----------------------------------------------
   dbus send
@@ -61,10 +55,8 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
   /usr/bin/htop						Px,
   /usr/bin/passwd.sh					Px,
   /usr/bin/exo-open					Px,
-  /usr/libexec/gnome-pty-helper				Cx,
   
   # READS/WRITES ---------------------------------------
-  /etc/terminfo/x/xterm					r,
   /usr/share/						r,
   /usr/share/xfce4/					r,
   /usr/share/xfce4/terminal/{,**}			r,
@@ -80,33 +72,5 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
   
   # TEMP -----------------------------------------------
   owner /tmp/vte*					rw,
-  
-  profile gnome-pty-helper /usr/libexec/gnome-pty-helper {
-    #include <abstractions/base>
-    #include <abstractions/freedesktop.org>
-    #include <abstractions/video>
-    #include <abstractions/nameservice>
-    
-    # CAPABILITIES -------------------------------------
-    capability setuid,
-    capability setgid,
-    capability fsetid,
-    
-    # UNIX -----------------------------------------------
-    unix (send, receive)
-    		type=stream
-    		peer=(label="xfce4-terminal"),
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					rw,
-    /dev/pts/[0-9]*					rw,
-    /dev/ptmx						rw,
-    
-    # EXECUTABLES --------------------------------------
-    /usr/libexec/gnome-pty-helper			mr,
-    
-    # READS/WRITES -------------------------------------
-    /run/utmp						rwk,
-    /var/log/wtmp					wk,
-  }
+  owner /tmp/#*						rw,
 }
