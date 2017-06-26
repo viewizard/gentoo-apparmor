@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2017 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,37 +10,21 @@
 
 #include <tunables/global>
 
-profile polkit-gnome /usr/libexec/polkit-gnome-authentication-agent-1 {
+profile zenity /usr/bin/zenity {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
-  #include <abstractions/gtk>
   #include <abstractions/video>
+  #include <abstractions/gtk>
   #include <abstractions/X>
-  #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/dbus-accessibility-strict>
   #include <abstractions/dbus-pattern/at-spi>
   #include <abstractions/dbus-pattern/gvfs>
-  #include <abstractions/dbus-pattern/consolekit>
-  #include <abstractions/dbus-pattern/polkit>
-  #include <abstractions/nameservice>
-  
-  # SIGNAL ---------------------------------------------
-  signal (send) set=(term) peer="polkit.polkit-agent-helper",
-  
-  # DBUS -----------------------------------------------
-  dbus receive
-  	bus=system
-  	path="/org/gnome/PolicyKit[0-9]*/AuthenticationAgent"
-  	interface="org.freedesktop.PolicyKit[0-9]*.AuthenticationAgent"
-  	peer=(name=":[0-9]*.[0-9]*",label="polkit.polkitd"),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/libexec/polkit-gnome-authentication-agent-1	mr,
-  /usr/lib{,32,64}/polkit-1/polkit-agent-helper-1	Px,
+  /usr/bin/zenity					mr,
 }

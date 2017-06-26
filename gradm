@@ -56,8 +56,12 @@ profile gradm.init.d /etc/init.d/gradm {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/gradm/tasks			w,
+  
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   /sbin/gradm						Px,
   
   # READS/WRITES ---------------------------------------
@@ -67,5 +71,20 @@ profile gradm.init.d /etc/init.d/gradm {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/gradm/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
   }
 }

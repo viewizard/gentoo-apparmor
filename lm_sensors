@@ -15,10 +15,18 @@ profile lm_sensors.sensors /usr/bin/sensors {
   #include <abstractions/sensors>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/sensors					mr,
+  
+  # DENY INHERIT ---------------------------------------
+  deny network inet dgram,					# conky_shell
+  deny network inet6 dgram,					# conky_shell
+  deny @{PROC}/uptime					r,	# conky_shell
+  deny @{PROC}/@{pid}/net/dev				r,	# conky_shell
 }
 
 profile lm_sensors.init.d /etc/init.d/lm_sensors {
@@ -26,12 +34,16 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/lm_sensors/tasks		w,
+  
   # EXECUTABLES ----------------------------------------
   /usr/bin/sensors					Px,
   @{shell}						Cx,
   /bin/kmod						Px,
   /bin/mount						Px,
-  /bin/grep						ix,
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/lm_sensors				r,
@@ -40,5 +52,27 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/lm_sensors/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
   }
 }

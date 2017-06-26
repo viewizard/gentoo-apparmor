@@ -59,22 +59,61 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy {
   #include <abstractions/openrc>
   
   # CAPABILITIES ---------------------------------------
-  capability chown,
   capability dac_override,
   capability dac_read_search,
+  
+  # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/dnscrypt-proxy/tasks		w,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/dnscrypt-proxy				Px,
   @{shell}						Cx,
-  /bin/chown						ix,
+  /bin/chown						Cxr,	# FS ACCESS! chown
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/dnscrypt-proxy			r,
-  /run/dnscrypt-proxy/					rw,
+  /run/dnscrypt-proxy/					rw,	# FIX ME! должно уйти в mkdir.
   
   profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile chown /bin/chown {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    # CAPABILITIES -------------------------------------
+    capability chown,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chown						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/dnscrypt-proxy/				rw,
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES ---------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/dnscrypt-proxy/		w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/dnscrypt-proxy/				w,
   }
 }

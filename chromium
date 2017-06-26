@@ -37,11 +37,21 @@ profile chromium.chromium-launcher.sh /usr/lib{,32,64}/chromium-browser/chromium
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh r,
   @{shell}						mr,
-  /bin/readlink						ix,
+  /bin/readlink						Cx,	# FS ACCESS! readlink
   /usr/lib{,32,64}/chromium-browser/chrome		Px,
   
   # READS/WRITES ---------------------------------------
   /etc/chromium/{,**}					r,
+  
+  profile readlink /bin/readlink {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/readlink					mr,
+  }
 }
 
 profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_disconnected) {

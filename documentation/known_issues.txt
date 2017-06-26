@@ -1,0 +1,122 @@
+Известные проблемы.
+
+
+1) chromium + nvidia-drivers.nvidia-modprobe
+
+На работу не влияет, только выводит в лог файл ядра предупреждение.
+
+(модуль v3.6) При запуске nvidia-modprobe в chromium с Px, выводит
+в kernel.log дамп на AA_BUG: security/apparmor/file.c:136 aa_audit_file
+если в настройках хромиума указано использование аппаратного ускорителя
+(данный функционал все равно не работает с блобом от нвидия, только с 
+видео модулями ядра поддерживаемые встроенной в хромиум версией mesa).
+
+Jun 26 04:13:26 totoro kernel: ------------[ cut here ]------------
+Jun 26 04:13:26 totoro kernel: WARNING: CPU: 1 PID: 10097 at security/apparmor/file.c:136 aa_audit_file+0x1ae/0x1c0
+Jun 26 04:13:26 totoro kernel: AppArmor WARN aa_audit_file: ((!(&sa)->apparmor_audit_data->request)):
+Jun 26 04:13:26 totoro kernel: Modules linked in:
+Jun 26 04:13:26 totoro kernel:  nvidia_modeset(PO) nvidia(PO) coretemp nvidia_drm(PO)
+Jun 26 04:13:26 totoro kernel: CPU: 1 PID: 10097 Comm: Chrome_FileThre Tainted: P        W  O    4.8.17-hardened-r2 #9
+Jun 26 04:13:26 totoro kernel: Hardware name: Gigabyte Technology Co., Ltd. EP35-DS3L/EP35-DS3L, BIOS F6 06/19/2009
+Jun 26 04:13:26 totoro kernel:  0000000000000000 8e23c301867b3828 0000000000000286 0000000000000000
+Jun 26 04:13:26 totoro kernel:  ffffffff8143cd9e ffffffff81148b8e 8e23c301867b3828 ffffc9000cbfb928
+Jun 26 04:13:26 totoro kernel:  0000000000000000 ffffffff810d4c24 ffffffff81ba8cc4 ffffc9000cbfb998
+Jun 26 04:13:26 totoro kernel: Call Trace:
+Jun 26 04:13:26 totoro kernel:  [<ffffffff8143cd9e>] ? dump_stack+0x64/0xa6
+Jun 26 04:13:26 totoro kernel:  [<ffffffff81148b8e>] ? print_modules+0x5e/0xb0
+Jun 26 04:13:26 totoro kernel:  [<ffffffff810d4c24>] ? __warn+0xb4/0xd0
+Jun 26 04:13:26 totoro kernel:  [<ffffffff810d4cae>] ? warn_slowpath_fmt+0x6e/0x90
+Jun 26 04:13:26 totoro kernel:  [<ffffffff813cf13e>] ? aa_audit_file+0x1ae/0x1c0
+Jun 26 04:13:26 totoro kernel:  [<ffffffff813c2373>] ? profile_transition+0x3e3/0xb90
+Jun 26 04:13:26 totoro kernel:  [<ffffffff813c4365>] ? apparmor_bprm_set_creds+0x875/0x960
+Jun 26 04:13:26 totoro kernel:  [<ffffffff8129c03a>] ? ext4_xattr_get+0x7a/0x240
+Jun 26 04:13:26 totoro kernel:  [<ffffffff813b3e69>] ? get_vfs_caps_from_disk+0x69/0x110
+Jun 26 04:13:26 totoro kernel:  [<ffffffff811dc2f0>] ? do_execveat_common.isra.43+0x3c0/0x980
+Jun 26 04:13:26 totoro kernel:  [<ffffffff813b3fa6>] ? cap_bprm_set_creds+0x96/0x5d0
+Jun 26 04:13:26 totoro kernel:  [<ffffffff813b5b19>] ? security_bprm_set_creds+0x29/0x40
+Jun 26 04:13:26 totoro kernel:  [<ffffffff811da99b>] ? prepare_binprm+0x8b/0x1b0
+Jun 26 04:13:26 totoro kernel:  [<ffffffff811b1206>] ? insert_vm_struct+0x86/0xf0
+Jun 26 04:13:26 totoro kernel:  [<ffffffff811dc437>] ? do_execveat_common.isra.43+0x507/0x980
+Jun 26 04:13:26 totoro kernel:  [<ffffffff811e4dae>] ? getname_flags+0x4e/0x1d0
+Jun 26 04:13:26 totoro kernel:  [<ffffffff811e4dae>] ? getname_flags+0x4e/0x1d0
+Jun 26 04:13:26 totoro kernel:  [<ffffffff811e4dae>] ? getname_flags+0x4e/0x1d0
+Jun 26 04:13:26 totoro kernel:  [<ffffffff811ca2a9>] ? kmem_cache_alloc+0xc9/0x100
+Jun 26 04:13:26 totoro kernel:  [<ffffffff811dcb2d>] ? sys_execve+0x3d/0x50
+Jun 26 04:13:26 totoro kernel:  [<ffffffff810016b4>] ? do_syscall_64+0x44/0xc0
+Jun 26 04:13:26 totoro kernel:  [<ffffffff818f0909>] ? entry_SYSCALL64_slow_path+0x25/0x25
+Jun 26 04:13:26 totoro kernel: ---[ end trace f68728a0d3053b54 ]---
+
+
+2) chromium + xdg-utils.xdg-settings
+
+На работу не влияет, только выводит в лог файл ядра предупреждение.
+
+(модуль v3.6) При запуске xdg-settings в chromium с Px, выводит
+в kernel.log дамп на AA_BUG: security/apparmor/file.c:136 aa_audit_file
+если в настройках хромиума попытаться установить хромиум браузером
+по умолчанию (в любом случае, в XFCE4 такой метод не работает).
+
+Jun 26 00:33:17 totoro kernel: ------------[ cut here ]------------
+Jun 26 00:33:17 totoro kernel: WARNING: CPU: 3 PID: 43994 at security/apparmor/file.c:136 aa_audit_file+0x1ae/0x1c0
+Jun 26 00:33:17 totoro kernel: AppArmor WARN aa_audit_file: ((!(&sa)->apparmor_audit_data->request)):
+Jun 26 00:33:17 totoro kernel: Modules linked in:
+Jun 26 00:33:17 totoro kernel:  nvidia_modeset(PO) nvidia(PO) coretemp nvidia_drm(PO)
+Jun 26 00:33:17 totoro kernel: CPU: 3 PID: 43994 Comm: Chrome_FileThre Tainted: P        W  O    4.8.17-hardened-r2 #6
+Jun 26 00:33:17 totoro kernel: Hardware name: Gigabyte Technology Co., Ltd. EP35-DS3L/EP35-DS3L, BIOS F6 06/19/2009
+Jun 26 00:33:17 totoro kernel:  0000000000000000 228560049e16396f 0000000000000286 0000000000000000
+Jun 26 00:33:17 totoro kernel:  ffffffff8143cd9e ffffffff81148b8e 228560049e16396f ffffc9000381b9a8
+Jun 26 00:33:17 totoro kernel:  0000000000000000 ffffffff810d4c24 ffffffff81ba8cc4 ffffc9000381ba18
+Jun 26 00:33:17 totoro kernel: Call Trace:
+Jun 26 00:33:17 totoro kernel:  [<ffffffff8143cd9e>] ? dump_stack+0x64/0xa6
+Jun 26 00:33:17 totoro kernel:  [<ffffffff81148b8e>] ? print_modules+0x5e/0xb0
+Jun 26 00:33:17 totoro kernel:  [<ffffffff810d4c24>] ? __warn+0xb4/0xd0
+Jun 26 00:33:17 totoro kernel:  [<ffffffff810d4cae>] ? warn_slowpath_fmt+0x6e/0x90
+Jun 26 00:33:17 totoro kernel:  [<ffffffff813cf13e>] ? aa_audit_file+0x1ae/0x1c0
+Jun 26 00:33:17 totoro kernel:  [<ffffffff813c2373>] ? profile_transition+0x3e3/0xb90
+Jun 26 00:33:17 totoro kernel:  [<ffffffff813c4365>] ? apparmor_bprm_set_creds+0x875/0x960
+Jun 26 00:33:17 totoro kernel:  [<ffffffff8129c03a>] ? ext4_xattr_get+0x7a/0x240
+Jun 26 00:33:17 totoro kernel:  [<ffffffff813b3e69>] ? get_vfs_caps_from_disk+0x69/0x110
+Jun 26 00:33:17 totoro kernel:  [<ffffffff811dc2f0>] ? do_execveat_common.isra.43+0x3c0/0x980
+Jun 26 00:33:17 totoro kernel:  [<ffffffff813b3fa6>] ? cap_bprm_set_creds+0x96/0x5d0
+Jun 26 00:33:17 totoro kernel:  [<ffffffff813b5b19>] ? security_bprm_set_creds+0x29/0x40
+Jun 26 00:33:17 totoro kernel:  [<ffffffff811da99b>] ? prepare_binprm+0x8b/0x1b0
+Jun 26 00:33:17 totoro kernel:  [<ffffffff811b1206>] ? insert_vm_struct+0x86/0xf0
+Jun 26 00:33:17 totoro kernel:  [<ffffffff811dc437>] ? do_execveat_common.isra.43+0x507/0x980
+Jun 26 00:33:17 totoro kernel:  [<ffffffff811e4dae>] ? getname_flags+0x4e/0x1d0
+Jun 26 00:33:17 totoro kernel:  [<ffffffff811e4dae>] ? getname_flags+0x4e/0x1d0
+Jun 26 00:33:17 totoro kernel:  [<ffffffff811e4dae>] ? getname_flags+0x4e/0x1d0
+Jun 26 00:33:17 totoro kernel:  [<ffffffff811ca2a9>] ? kmem_cache_alloc+0xc9/0x100
+Jun 26 00:33:17 totoro kernel:  [<ffffffff811dcb2d>] ? sys_execve+0x3d/0x50
+Jun 26 00:33:17 totoro kernel:  [<ffffffff810016b4>] ? do_syscall_64+0x44/0xc0
+Jun 26 00:33:17 totoro kernel:  [<ffffffff818f0909>] ? entry_SYSCALL64_slow_path+0x25/0x25
+Jun 26 00:33:17 totoro kernel: ---[ end trace f68728a0d3053b54 ]---
+
+
+3) включение confined init (SECURITY_APPARMOR_UNCONFINED_INIT в настройках ядра ВЫКЛЮЧЕН)
+
+На работу не влияет, только выводит в лог файл ядра предупреждение.
+(модуль v3.6)
+
+May 22 13:44:01 totoro kernel: [ 0.023219] ------------[ cut here ]------------
+May 22 13:44:01 totoro kernel: [ 0.023225] WARNING: CPU: 0 PID: 0 at security/apparmor/policy.c:136 __add_profile+0x180/0x1b0
+May 22 13:44:01 totoro kernel: [ 0.023226] AppArmor WARN __add_profile: ((!mutex_is_locked(&profile->ns->lock))):
+May 22 13:44:01 totoro kernel: [ 0.023227] Modules linked in:
+May 22 13:44:01 totoro kernel: [ 0.023229] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 4.8.17-hardened-r2 #844
+May 22 13:44:01 totoro kernel: [ 0.023230] Hardware name: Gigabyte Technology Co., Ltd. EP35-DS3L/EP35-DS3L, BIOS F6 06/19/2009
+May 22 13:44:01 totoro kernel: [ 0.023233] 0000000000000000 ca094ea0ca094e88 0000000000000286 0000000000000000
+May 22 13:44:01 totoro kernel: [ 0.023235] ffffffff8143ce0e ffffffff81148b8e ca094ea0ca094e88 ffffffff81e03e48
+May 22 13:44:01 totoro kernel: [ 0.023237] 0000000000000000 ffffffff810d4c24 ffffffff81ba88c3 ffffffff81e03eb8
+May 22 13:44:01 totoro kernel: [ 0.023239] Call Trace:
+May 22 13:44:01 totoro kernel: [ 0.023245] [<ffffffff8143ce0e>] ? dump_stack+0x64/0xa6
+May 22 13:44:01 totoro kernel: [ 0.023248] [<ffffffff81148b8e>] ? print_modules+0x5e/0xb0
+May 22 13:44:01 totoro kernel: [ 0.023251] [<ffffffff810d4c24>] ? __warn+0xb4/0xd0
+May 22 13:44:01 totoro kernel: [ 0.023253] [<ffffffff810d4cae>] ? warn_slowpath_fmt+0x6e/0x90
+May 22 13:44:01 totoro kernel: [ 0.023254] [<ffffffff813c5e30>] ? __add_profile+0x180/0x1b0
+May 22 13:44:01 totoro kernel: [ 0.023255] [<ffffffff813c668b>] ? aa_setup_default_label+0x7b/0xb0
+May 22 13:44:01 totoro kernel: [ 0.023259] [<ffffffff81fea3b8>] ? apparmor_init+0x398/0x5ca
+May 22 13:44:01 totoro kernel: [ 0.023261] [<ffffffff81fe96c5>] ? security_init+0x53/0x83
+May 22 13:44:01 totoro kernel: [ 0.023264] [<ffffffff81fa8b82>] ? start_kernel+0x566/0x5df
+May 22 13:44:01 totoro kernel: [ 0.023265] [<ffffffff81fa7120>] ? early_idt_handler_array+0x120/0x120
+May 22 13:44:01 totoro kernel: [ 0.023267] [<ffffffff81fa74b7>] ? x86_64_start_kernel+0x10c/0x14d
+May 22 13:44:01 totoro kernel: [ 0.023269] ---[ end trace f68728a0d3053b52 ]---
+

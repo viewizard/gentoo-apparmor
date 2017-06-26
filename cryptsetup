@@ -65,13 +65,17 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
   # CAPABILITIES ---------------------------------------
   capability mknod,
   
+  # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/dmcrypt/tasks			w,
+  
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/rmdir						ix,
-  /bin/egrep						ixr,
-  /bin/grep						ix,
-  /bin/cat						ix,
-  /bin/dd						ix,
+  /bin/rmdir						Cx,	# FS ACCESS! rmdir
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/egrep						Cx,	# FS ACCESS! egrep
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/dd						Cx,	# FS ACCESS! dd
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   /bin/stty						Px,
   /bin/mount						Px,
   /bin/umount						Px,
@@ -86,5 +90,89 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+     /dev/console					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/openrc/dm-crypt-remdev.[0-9]*/			w,
+    
+    # DENY INHERIT -------------------------------------
+    deny /etc/conf.d/dmcrypt				r,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/conf.d/dmcrypt					r,
+  }
+  
+  profile egrep /bin/egrep {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/egrep						r,
+    @{shell}						mr,
+    /bin/grep						ix,	# FS ACCESS!
+    
+    # READS/WRITES -------------------------------------
+    /etc/conf.d/dmcrypt					r,	# (?) /bin/grep
+  }
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    @{PROC}/cmdline					r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+  }
+  
+  profile dd /bin/dd {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/dd						mr,
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/dmcrypt/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/openrc/dm-crypt-remdev.[0-9]*/			w,
+    
+    # DENY INHERIT -------------------------------------
+    deny /etc/conf.d/dmcrypt				r,
   }
 }

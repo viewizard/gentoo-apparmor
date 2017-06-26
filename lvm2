@@ -161,9 +161,9 @@ profile lvm2.fsadm /sbin/fsadm flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /sbin/fsadm						r,
   @{shell}						mr,
-  /bin/grep						ix,
-  /bin/readlink						ix,
-  /bin/date						ix,
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/readlink						Cx,	# FS ACCESS! readlink
+  /bin/date						Cx,	# FS ACCESS! date
   /bin/mount						Px,
   /sbin/blkid						Px,
   /sbin/tune2fs						Px,
@@ -172,6 +172,27 @@ profile lvm2.fsadm /sbin/fsadm flags=(complain) {
   /sbin/resize2fs					Px,
   /sbin/blockdev					Px,
   /sbin/lvm						Px,
+  
+  profile grep /bin/grep flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile readlink /bin/readlink flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/readlink					mr,
+  }
+  
+  profile date /bin/date flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/date						mr,
+  }
 }
 
 profile lvm2.lvmetad.init.d /etc/init.d/lvmetad {
@@ -182,10 +203,12 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad {
   # PSEUDO ---------------------------------------------
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
+  /sys/fs/cgroup/openrc/lvmetad/tasks			w,
   
   # EXECUTABLES ----------------------------------------
   /etc/init.d/lvm					Px,
   @{shell}						Cx,
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   /sbin/lvmetad						Px,
   
   # READS/WRITES ---------------------------------------
@@ -198,6 +221,21 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad {
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/lvmetad/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+  }
 }
 
 profile lvm2.lvm.init.d /etc/init.d/lvm {
@@ -206,13 +244,13 @@ profile lvm2.lvm.init.d /etc/init.d/lvm {
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{PROC}/misc						r,
-  @{PROC}/devices					r,
+  /sys/fs/cgroup/openrc/lvm/tasks			w,
   
   # EXECUTABLES ----------------------------------------
   /sbin/lvm						Px,
   @{shell}						Cx,
-  /bin/grep						ix,
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/lvm				r,
@@ -221,5 +259,33 @@ profile lvm2.lvm.init.d /etc/init.d/lvm {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    @{PROC}/misc					r,
+    @{PROC}/devices					r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/lvm/				w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
   }
 }

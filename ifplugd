@@ -43,13 +43,20 @@ profile ifplugd.action /etc/ifplugd/ifplugd.action {
   # EXECUTABLES ----------------------------------------
   /etc/ifplugd/ifplugd.action				r,
   @{shell}						mr,
-  /bin/grep						ix,
+  /bin/grep						Cx,	# FS ACCESS! grep
   /bin/rc-status					Px,
   /etc/init.d/net.lo					Px,
   /etc/init.d/dnsmasq					Px,
   /etc/init.d/netmount					Px,
   /etc/init.d/tor					Px,
   /etc/init.d/suricata					Px,
+  
+  profile grep /bin/grep flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
 }
 
 profile ifplugd.ifplugstatus /usr/sbin/ifplugstatus flags=(complain) {

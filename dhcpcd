@@ -34,7 +34,7 @@ profile dhcpcd /sbin/dhcpcd {
   
   # EXECUTABLES ----------------------------------------
   /sbin/dhcpcd						mr,
-  /lib{,32,64}/dhcpcd/dhcpcd-run-hooks			Cx,
+  /lib{,32,64}/dhcpcd/dhcpcd-run-hooks			Px,
   
   # READS/WRITES ---------------------------------------
   /etc/dhcpcd.conf					r,
@@ -45,36 +45,84 @@ profile dhcpcd /sbin/dhcpcd {
   /run/udev/data/*					rw,
   /var/lib/dhcpcd/					rw,
   /var/lib/dhcpcd/*					rwk,
+}
+
+profile run-hooks /lib{,32,64}/dhcpcd/dhcpcd-run-hooks {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
   
-  profile run-hooks /lib{,32,64}/dhcpcd/dhcpcd-run-hooks {
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  capability dac_override,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
+  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/chmod						Cx,	# FS ACCESS! chmod
+  /bin/touch						Cx,	# FS ACCESS! touch
+  /bin/hostname						Px,
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /usr/bin/cmp						Cx,	# FS ACCESS! cmp
+  
+  # READS/WRITES ---------------------------------------
+  /etc/resolv.conf					rw,
+  /etc/ntp.conf						r,
+  /run/dhcpcd/						rw,
+  /run/dhcpcd/**					rwk,
+  
+  profile sed /bin/sed flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/nameservice>
-    
-    # CAPABILITIES -------------------------------------
-    capability mknod,
-    capability dac_override,
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty						rw,
-    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
-    @{shell}						mr,
-    /bin/sed						ix,
-    /bin/rm						ix,
-    /bin/cat						ix,
-    /bin/chmod						ix,
-    /bin/touch						ix,
-    /bin/hostname					Px,
-    /bin/mkdir						ix,
-    /usr/bin/cmp					ix,
+    /bin/sed						mr,
+  }
+  
+  profile rm /bin/rm flags=(complain) {
+    #include <abstractions/base>
     
-    # READS/WRITES -------------------------------------
-    /etc/resolv.conf					rw,
-    /etc/ntp.conf					r,
-    /run/dhcpcd/					rw,
-    /run/dhcpcd/**					rwk,
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+  }
+  
+  profile cat /bin/cat flags=(complain) {
+    #include <abstractions/base>
     
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+  }
+  
+  profile chmod /bin/chmod flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chmod						mr,
+  }
+  
+  profile touch /bin/touch flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/touch						mr,
+  }
+  
+  profile mkdir /bin/mkdir flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+  }
+  
+  profile cmp /usr/bin/cmp flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/cmp					mr,
   }
 }
 
@@ -83,12 +131,16 @@ profile dhcpcd.init.d /etc/init.d/dhcpcd {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/dhcpcd/tasks			w,
+  
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /sbin/dhcpcd						Px,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/dhcpcd				r,
-  /sbin/dhcpcd						Px,
   
   # READS/WRITES ---------------------------------------
   /run/dhcpcd.pid					rw,
@@ -97,5 +149,20 @@ profile dhcpcd.init.d /etc/init.d/dhcpcd {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/dhcpcd/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
   }
 }

@@ -64,8 +64,18 @@ profile polkit.polkitd /usr/lib{,32,64}/polkit-1/polkitd {
   /var/lib/polkit-1/.cache/{,**}			w,
 }
 
-profile polkit.polkit-agent-helper /usr/lib{,32,64}/polkit-1/polkit-agent-helper-1 flags=(complain) {
+profile polkit.polkit-agent-helper /usr/lib{,32,64}/polkit-1/polkit-agent-helper-1 {
   #include <abstractions/base>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-pattern/polkit>
+  #include <abstractions/nameservice>
+  #include <abstractions/authentication>
+  
+  # CAPABILITIES ---------------------------------------
+  capability setuid,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/polkit-1/polkit-agent-helper-1	mr,
@@ -104,6 +114,7 @@ profile polkit.pkexec /usr/bin/pkexec {
   signal (receive) set=(rtmin+1) peer="polkit.pkexec//root",
   
   # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   @{PROC}/@{pid}/stat					r,
   @{PROC}/@{pid}/attr/current				w,

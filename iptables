@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile iptables.xtables-multi /sbin/xtables-multi flags=(complain) {
+profile iptables.xtables-multi /sbin/xtables-multi {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -45,12 +45,13 @@ profile iptables.init.d /etc/init.d/iptables {
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{PROC}/@{pid}/net/ip_tables_names			r,
+  /sys/fs/cgroup/openrc/iptables/tasks			w,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/dirname						Px,
-  /bin/cat						ix,
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   /sbin/xtables-multi					Px,
   
   # READS/WRITES ---------------------------------------
@@ -61,6 +62,33 @@ profile iptables.init.d /etc/init.d/iptables {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    @{PROC}/@{pid}/net/ip{,6}_tables_names		r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/iptables/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
   }
 }
 
@@ -78,15 +106,25 @@ profile iptables.firewall /usr/sbin/firewall {
   /dev/tty						rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/net/ip_tables_names			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/firewall					r,
   @{shell}						mr,
-  /bin/cat						ix,
+  /bin/cat						Cx,	# FS ACCESS! cat
   /sbin/xtables-multi					Px,
   /etc/init.d/iptables					Px,
   
   # READS/WRITES ---------------------------------------
   /etc/firewall.conf					r,
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    @{PROC}/@{pid}/net/ip_tables_names			r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+  }
 }

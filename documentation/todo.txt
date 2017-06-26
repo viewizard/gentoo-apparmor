@@ -56,6 +56,7 @@ http://wiki.apparmor.net/index.php/StackingConfiningUsers
 http://wiki.apparmor.net/index.php/AppArmorDelegation#How_Delegation_is_Expressed
 http://wiki.apparmor.net/index.php/AppArmor_Core_Policy_Reference#Execute_rules
 http://wiki.apparmor.net/index.php/AppArmorProfileSpec
+3) Все профили с маркеровкой FS ACCESS! переработать (вынести во внешние профили с делегейшеном убрав ix, в самих профилях, возможно, убрать какие-то элементы, например, доступ к какой-то части фс), профили с DELEGATION! переработать, давая из переключающего на Px профиля нужные делегейшены. Важно - непонятно как отслеживать откуда был вызов (где добавлять блоки), использовать только именованные или дочерние профили (?), или делать все вызовы через audit.
 
 
 - Namespaces. Работают, можно делать переходы, например:

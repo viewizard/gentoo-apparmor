@@ -308,6 +308,7 @@ profile util-linux.logger /usr/bin/logger flags=(complain) {
 
 profile util-linux.fdisk /sbin/{,c}fdisk flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/ncurses>
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
@@ -317,9 +318,6 @@ profile util-linux.fdisk /sbin/{,c}fdisk flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /sbin/{,c}fdisk					mr,
-  
-  # READS/WRITES ---------------------------------------
-  /etc/terminfo/x/xterm					r,
 }
 
 profile util-linux.eject /usr/bin/eject flags=(complain) {
@@ -382,4 +380,45 @@ profile util-linux.blockdev /sbin/blockdev flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /sbin/blockdev					mr,
+}
+
+profile util-linux.mcookie /usr/bin/mcookie {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/mcookie					mr,
+}
+
+profile util-linux.cal /usr/bin/cal {
+  #include <abstractions/base>
+  #include <abstractions/ncurses>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/cal						mr,
+  
+  # DENY INHERIT ---------------------------------------
+  deny network inet dgram,					# conky_shell
+  deny network inet6 dgram,					# conky_shell
+  deny @{PROC}/uptime					r,	# conky_shell
+  deny @{PROC}/@{pid}/net/dev				r,	# conky_shell
+}
+
+profile util-linux.getopt /usr/bin/getopt flags=(complain,attach_disconnected) {	# FIX ME! 23.06.2017 flags=(complain)
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/getopt					mr,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }

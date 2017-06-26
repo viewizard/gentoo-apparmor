@@ -220,3 +220,13 @@ profile coreutils.sync /bin/sync flags=(complain) {		# FIX ME! 16.05.2017 flags=
   # EXECUTABLES ----------------------------------------
   /bin/sync						mr,
 }
+
+profile coreutils.true /bin/true flags=(complain) {		# FIX ME! 22.06.2017 flags=(complain)
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/true						mr,
+}

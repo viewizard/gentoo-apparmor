@@ -8,6 +8,8 @@
 #
 # ------------------------------------------------------------------
 
+#include <abstractions/ncurses>
+
 # CAPABILITIES -----------------------------------------
 capability kill,
 capability sys_ptrace,
@@ -22,12 +24,11 @@ signal (send) set=(term, hup),
 
 # PSEUDO -----------------------------------------------
 /dev/tty						rw,
-/dev/ptmx						rw,
+audit /dev/ptmx						rw,	# FIX ME! audit 16.06.2017
 /dev/console						rw,
 /dev/pts/[0-9]*						rw,
 /sys/fs/cgroup/						r,
 /sys/fs/cgroup/*/tasks					w,
-/sys/fs/cgroup/openrc/*/{,tasks}			w,
 @{PROC}/						r,
 @{PROC}/cmdline						r,
 @{PROC}/@{pid}/environ					r,
@@ -35,19 +36,14 @@ signal (send) set=(term, hup),
 owner @{PROC}/@{pid}/cmdline				r,
 
 # EXECUTABLES ------------------------------------------
-/sbin/openrc						ixr,
 /sbin/openrc-run					mr,
-/sbin/start-stop-daemon					ixr,
-/lib{,32,64}/rc/bin/*					ixr,
-/lib{,32,64}/rc/sh/openrc-run.sh			ixr,
-/bin/mkdir						ix,
-/bin/sort						ix,
+audit /sbin/openrc					Px,	# FIX ME! audit 16.06.2017
+/sbin/start-stop-daemon					ix,	# openrc-run.sh и start-stop-daemon запускаем в профиле
+/lib{,32,64}/rc/sh/openrc-run.sh			ix,	# скрипта, чтобы все уникальные части были в скрипте пакета.
+/lib{,32,64}/rc/bin/*					ix,	# FIX ME! (?) Вынести в отдельный профиль.
 
 # READS/WRITES -----------------------------------------
 /etc/rc.conf						r,
 /etc/profile.env					r,
-/etc/init.d/						r,
-/etc/conf.d/						r,
-/etc/terminfo/x/xterm					r,
-/etc/terminfo/l/linux					r,
+/etc/{conf,init}.d/					r,
 /run/openrc/**						rwk,

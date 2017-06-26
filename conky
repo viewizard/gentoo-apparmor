@@ -16,6 +16,7 @@ profile conky /usr/bin/conky {
   #include <abstractions/fonts>
   #include <abstractions/X>
   #include <abstractions/sensors>
+  #include <abstractions/ncurses>
   
   # NETWORK --------------------------------------------
   network inet dgram,
@@ -31,45 +32,185 @@ profile conky /usr/bin/conky {
   @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
+  @{shell}						Px -> conky_shell,
   /usr/bin/conky					mr,
   
   # READS/WRITES ---------------------------------------
   /etc/conky/{,*}					r,
-  /etc/terminfo/l/linux					r,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.conkyrc				r,
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile conky_shell {
+  #include <abstractions/base>
   
-  profile shell @{shell} {
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  network inet6 dgram,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /sys/devices/system/cpu/cpufreq/policy[0-9]*/scaling_governor r,
+  @{PROC}/uptime					r,
+  @{PROC}/@{pid}/net/dev				r,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
+  /bin/tail						Cx,	# FS ACCESS! tail
+  /bin/head						Cx,	# FS ACCESS! head
+  /bin/date						Cx,	# FS ACCESS! date
+  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/cut						Cx,	# FS ACCESS! cut
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/wc						Cx,	# FS ACCESS! wc
+  /usr/bin/cal						Px,
+  /usr/bin/sensors					Px,
+  
+  # READS/WRITES ---------------------------------------
+  /usr/portage/metadata/timestamp			r,
+  
+  profile tail /bin/tail {
     #include <abstractions/base>
-    #include <abstractions/sensors>
-    
-    # NETWORK ------------------------------------------
-    network inet dgram,
-    network inet6 dgram,
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
-    @{PROC}/uptime					r,
-    @{PROC}/@{pid}/net/dev				r,
     
     # EXECUTABLES --------------------------------------
-    @{shell}						mr,
-    /bin/tail						ix,
-    /bin/head						ix,
-    /bin/date						ix,
-    /bin/sed						ix,
-    /bin/cat						ix,
-    /bin/cut						ix,
-    /bin/grep						ix,
-    /bin/wc						ix,
-    /usr/bin/cal					ix,
-    /usr/bin/sensors					ix,
+    /bin/tail						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny network inet dgram,					# conky_shell
+    deny network inet6 dgram,					# conky_shell
+    deny @{PROC}/uptime					r,	# conky_shell
+    deny @{PROC}/@{pid}/net/dev				r,	# conky_shell
+  }
+  
+  profile head /bin/head {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/head						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny network inet dgram,					# conky_shell
+    deny network inet6 dgram,					# conky_shell
+    deny @{PROC}/uptime					r,	# conky_shell
+    deny @{PROC}/@{pid}/net/dev				r,	# conky_shell
+  }
+  
+  profile date /bin/date {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/date						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny network inet dgram,					# conky_shell
+    deny network inet6 dgram,					# conky_shell
+    deny @{PROC}/uptime					r,	# conky_shell
+    deny @{PROC}/@{pid}/net/dev				r,	# conky_shell
+  }
+  
+  profile sed /bin/sed {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny network inet dgram,					# conky_shell
+    deny network inet6 dgram,					# conky_shell
+    deny @{PROC}/uptime					r,	# conky_shell
+    deny @{PROC}/@{pid}/net/dev				r,	# conky_shell
+  }
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
+    /sys/devices/system/cpu/cpufreq/policy[0-9]*/scaling_governor r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
     
     # READS/WRITES -------------------------------------
-    /etc/terminfo/l/linux				r,
     /usr/portage/metadata/timestamp			r,
+    
+    # DENY INHERIT -------------------------------------
+    deny network inet dgram,					# conky_shell
+    deny network inet6 dgram,					# conky_shell
+    deny @{PROC}/uptime					r,	# conky_shell
+    deny @{PROC}/@{pid}/net/dev				r,	# conky_shell
+  }
+  
+  profile cut /bin/cut {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cut						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny network inet dgram,					# conky_shell
+    deny network inet6 dgram,					# conky_shell
+    deny @{PROC}/uptime					r,	# conky_shell
+    deny @{PROC}/@{pid}/net/dev				r,	# conky_shell
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny network inet dgram,					# conky_shell
+    deny network inet6 dgram,					# conky_shell
+    deny @{PROC}/uptime					r,	# conky_shell
+    deny @{PROC}/@{pid}/net/dev				r,	# conky_shell
+  }
+  
+  profile wc /bin/wc {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/wc						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny network inet dgram,					# conky_shell
+    deny network inet6 dgram,					# conky_shell
+    deny @{PROC}/uptime					r,	# conky_shell
+    deny @{PROC}/@{pid}/net/dev				r,	# conky_shell
   }
 }

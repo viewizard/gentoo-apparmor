@@ -23,9 +23,16 @@ profile shell_service @{shell} {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/sed						ixr,
+  /bin/sed						Cxr,	# FS ACCESS! sed
   /bin/uname						Pxr,
   /sbin/mdadm						Pxr,
+  
+  profile sed /bin/sed {
+    #include <abstractions/base>
+    
+    # EXECUTABLES ----------------------------------------
+    /bin/sed						mr,
+  }
 }
 
 # профиль для запуска logcheck
@@ -61,12 +68,12 @@ profile shell_users {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						ixmr,
-  /bin/ls						ixr,
-  /bin/ln						ixr,
+  /bin/ls						Cxr,	# FS ACCESS! ls
+  /bin/ln						Cxr,	# FS ACCESS! ln
   /bin/df						Pxr,
-  /bin/rm						ixr,
+  /bin/rm						Cxr,	# FS ACCESS! rm
   /bin/tty						Pxr,
-  /bin/grep						ixr,
+  /bin/grep						Cxr,	# FS ACCESS! grep
   /bin/ps						Pxr,
   /bin/passwd						Pxr,
   /bin/uname						Pxr,
@@ -83,12 +90,64 @@ profile shell_users {
   /usr/bin/wine						Pxr,
   /usr/bin/winecfg					Pxr,
   /usr/bin/libnotify-notify-send			Pxr,
+  /usr/bin/dircolors					ixr,	# FIX ME! Вынести в отдельный профиль.
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
   /etc/bash/bash_logout					r,
-  /etc/terminfo/l/linux					r,
-  /etc/terminfo/x/xterm					r,
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwk>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile ln /bin/ln {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwk>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/ln						mr,
+  }
+  
+  profile rm /bin/rm {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwk>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+  }
+  
+  profile ls /bin/ls {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/fs-access-by-users-preset-rwk>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/ls						mr,
+  }
 }
 
 # профиль специального пользователя root
@@ -118,49 +177,49 @@ profile shell_root {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						ixmr,
-  /bin/ls						ixr,
-  /bin/ln						ixr,
+  /bin/ls						ixr,	# FS ACCESS!
+  /bin/ln						ixr,	# FS ACCESS!
   /bin/df						Pxr,
-  /bin/rm						ixr,
-  /bin/cut						ixr,
+  /bin/rm						ixr,	# FS ACCESS!
+  /bin/cut						ixr,	# FS ACCESS!
   /bin/tty						Pxr,
   /bin/tr						Pxr,
-  /bin/grep						ixr,
+  /bin/grep						ixr,	# FS ACCESS!
   /bin/ps						Pxr,
   /bin/env						ixr,	# ix в основном профиле, т.к. через него
   								# можем запускать другие разрешенные процессы.
-  /bin/sed						ixr,
-  /bin/gzip						ixr,
+  /bin/sed						ixr,	# FS ACCESS!
+  /bin/gzip						ixr,	# FS ACCESS!
   /bin/mount						Pxr,
   /bin/umount						Pxr,
   /bin/sleep						Pxr,
   /bin/passwd						Pxr,
   /bin/uname						Pxr,
   /bin/su						Pxr,
-  /bin/cp						ixr,
-  /bin/mv						ixr,
+  /bin/cp						ixr,	# FS ACCESS!
+  /bin/mv						ixr,	# FS ACCESS!
   /bin/chown						ixr,	# FIX ME! Вынести в отдельный профиль.
   /bin/chmod						ixr,	# FIX ME! Вынести в отдельный профиль.
   /bin/nano						ixr,
   /bin/kmod						Pxr,
-  /bin/cat						ixr,
-  /bin/dd						ixr,
+  /bin/cat						ixr,	# FS ACCESS!
+  /bin/dd						ixr,	# FS ACCESS!
   /bin/ping						Pxr,
   /bin/ifconfig						Pxr,
   /bin/rc-status					Pxr,
   /bin/date						Pxr,
-  /bin/tail						ixr,
+  /bin/tail						ixr,	# FS ACCESS!
   /bin/netstat						Pxr,
   /bin/getfacl						Pxr,
   /bin/tar						ixr,
-  /bin/head						ixr,
-  /bin/tail						ixr,
+  /bin/head						ixr,	# FS ACCESS!
+  /bin/tail						ixr,	# FS ACCESS!
   /bin/getfattr						ixr,	# FIX ME! Вынести в отдельный профиль.
   /bin/setfattr						ixr,	# FIX ME! Вынести в отдельный профиль.
-  /bin/cpio						ixr,
-  /bin/keyctl						ixr,
-  /bin/mkdir						ixr,
-  /bin/touch						ixr,
+  /bin/cpio						ixr,	# FS ACCESS!
+  /bin/keyctl						ixr,	# FS ACCESS!
+  /bin/mkdir						ixr,	# FS ACCESS!
+  /bin/touch						ixr,	# FS ACCESS!
   /bin/lsblk						Pxr,
   /bin/sync						Pxr,
   /bin/udevadm						Pxr,
@@ -192,7 +251,7 @@ profile shell_root {
   /usr/bin/revdep-rebuild{,.sh}				Pxr,
   /usr/bin/whoami					Pxr,
   /usr/bin/id						Pxr,
-  /usr/bin/rsync					ixr,
+  /usr/bin/rsync					ixr,	# FS ACCESS!
   /usr/bin/htop						Pxr,
   /usr/bin/mc						Pxr -> mc_root,
   /usr/bin/eselect					Pxr,
@@ -200,23 +259,24 @@ profile shell_root {
   /usr/bin/genkernel					Pxr,
   /usr/bin/{,g}make					Pxr,
   /usr/bin/stat						Pxr,
-  /usr/bin/file						ixr,
+  /usr/bin/file						ixr,	# FS ACCESS!
   /usr/bin/lsusb					Pxr,
   /usr/bin/gpg{,2,-static}				Pxr,
-  /usr/bin/find						ixr,
+  /usr/bin/find						ixr,	# FS ACCESS!
   /usr/bin/nmap						Pxr,
   /usr/bin/wget						Pxr -> wget_root,
   /usr/bin/man						Pxr,
   /usr/bin/locale					Pxr,
   /usr/bin/ldd						Pxr,
   /usr/bin/evmctl					Pxr,
-  /usr/bin/gawk						ixr,
-  /usr/bin/patch					ixr,
-  /usr/bin/diff						ixr,
+  /usr/bin/gawk						ixr,	# FS ACCESS!
+  /usr/bin/patch					ixr,	# FS ACCESS!
+  /usr/bin/diff						ixr,	# FS ACCESS!
   /usr/bin/gcc-config					Pxr,
   /usr/bin/libnotify-notify-send			Pxr,
   /usr/bin/ck-list-sessions				Pxr,
   /usr/bin/dig						Pxr,
+  /usr/bin/dircolors					ixr,	# FIX ME! Вынести в отдельный профиль.
   /usr/sbin/logcheck					Pxr,
   /usr/sbin/aideinit					Pxr,
   /usr/sbin/gdisk					Pxr,
@@ -250,6 +310,4 @@ profile shell_root {
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
-  /etc/terminfo/l/linux					r,
-  /etc/terminfo/x/xterm					r,
 }

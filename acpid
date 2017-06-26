@@ -38,35 +38,85 @@ profile acpid /usr/sbin/acpid {
   /run/acpid.pid					rw,
   /run/acpid.socket					rw,
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    
+    # EXECUTABLES --------------------------------------
+    @{shell}						mr,
+    /etc/acpi/default.sh				Px,
+  }
+}
+
+profile acpid.default.sh /etc/acpi/default.sh {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /etc/acpi/default.sh					r,
+  @{shell}						mr,
+  /usr/bin/logger					Px,
+  /etc/acpi/actions/powerbtn.sh				Px,
+}
+
+profile acpid.powerbtn.sh /etc/acpi/actions/powerbtn.sh {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /etc/acpi/actions/powerbtn.sh				r,
+  @{shell}						mr,
+  /bin/ps						Px,
+  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/cut						Cx,	# FS ACCESS! cut
+  /sbin/shutdown					Px,
+  /usr/bin/fgconsole					Px,
+  /usr/bin/gawk						Cx,	# FS ACCESS! gawk
+  /usr/bin/pinky					Px,
+  /usr/bin/pgrep					Px,
+  /usr/bin/pidof					Px,
+  /usr/bin/getent					Px,
+  
+  profile sed /bin/sed {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+  }
+  
+  profile cut /bin/cut {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cut						mr,
+  }
+  
+  profile gawk /usr/bin/gawk {
+    #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
     capability mknod,
     
     # PSEUDO -------------------------------------------
-    /dev/tty						rw,
     /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
-    @{shell}						mr,
-    /bin/ps						Px,
-    /bin/sed						ix,
-    /bin/cut						ix,
-    /sbin/shutdown					Px,
-    /usr/bin/fgconsole					Px,
-    /usr/bin/gawk					ix,
-    /usr/bin/logger					Px,
-    /usr/bin/pinky					Px,
-    /usr/bin/pgrep					Px,
-    /usr/bin/pidof					Px,
-    /usr/bin/getent					ix,
-    /etc/acpi/default.sh				ixr,
-    /etc/acpi/actions/powerbtn.sh			ixr,
-    
-    # READS/WRITES -------------------------------------
-#    /run/utmp						rk,	# /usr/bin/pinky
+    /usr/bin/gawk					mr,
   }
 }
 
@@ -93,9 +143,13 @@ profile acpid.init.d /etc/init.d/acpid {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/acpid/tasks			w,
+  
   # EXECUTABLES ----------------------------------------
   /usr/sbin/acpid					Px,
   @{shell}						Cx,
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/acpid				r,
@@ -104,5 +158,20 @@ profile acpid.init.d /etc/init.d/acpid {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/acpid/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
   }
 }

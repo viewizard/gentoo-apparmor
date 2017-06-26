@@ -1,0 +1,54 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+profile fuse.fusermount /usr/bin/fusermount {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # CAPABILITIES ---------------------------------------
+  capability sys_admin,
+  capability dac_override,
+  
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  			type=stream
+			addr=none
+  			peer=(addr=none,label="gvfs.gvfsd-fuse"),
+  
+  # MOUNT ----------------------------------------------
+  mount
+  	fstype="fuse.gvfsd-fuse"
+  	options=(rw, nosuid, nodev)
+  	gvfsd-fuse
+  -> /run/user/[0-9]*/gvfs/,
+  mount
+  	fstype="fuse.gvfsd-fuse"
+  	options=(rw, nosuid, nodev)
+  	gvfsd-fuse
+  -> /root/.gvfs/,
+  umount /run/user/[0-9]*/gvfs/,
+  umount /root/.gvfs/,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/fuse						rw,
+  @{PROC}/@{pid}/mounts					r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/fusermount					mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/fuse.conf					r,
+  /run/user/[0-9]*/gvfs/				r,
+  
+  # USERS ----------------------------------------------
+  owner /root/.gvfs/					r,
+}

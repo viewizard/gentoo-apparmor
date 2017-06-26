@@ -191,10 +191,14 @@ profile dbus.init.d /etc/init.d/dbus {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/dbus/tasks			w,
+  
   # EXECUTABLES ----------------------------------------
   /etc/init.d/{cupsd,consolekit,xdm,net.*}		Px,
   @{shell}						Cx,
-  /bin/rm						ix,
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   /usr/bin/dbus-uuidgen					Px,
   /usr/bin/dbus-daemon					Px,
   /usr/bin/dbus-send					Px,
@@ -209,5 +213,37 @@ profile dbus.init.d /etc/init.d/dbus {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile rm /bin/rm {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_tty_config,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/dbus/system_bus_socket				w,
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/dbus/				w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
   }
 }

@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile udev-init-scripts.udev.init.d /etc/init.d/udev flags=(complain) {
+profile udev-init-scripts.udev.init.d /etc/init.d/udev {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -19,12 +19,14 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev flags=(complain) {
   capability sys_admin,
   
   # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/udev/tasks			w,
   @{PROC}/@{pid}/mounts					r,
   @{PROC}/sys/kernel/hotplug				w,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/grep						ix,
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   /bin/udevadm						Px,
   /sbin/udevd						Px,
   
@@ -37,17 +39,49 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev flags=(complain) {
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    @{PROC}/filesystems					r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /dev/pts/						w,
+    /sys/fs/cgroup/openrc/udev/				w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+  }
 }
 
-profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger flags=(complain) {
+profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/udev-trigger/tasks		w,
+  
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/udevadm						Px,
-  /bin/cat						ix,
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/cat						Cx,	# FS ACCESS! cat
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/udev-trigger			r,
@@ -58,16 +92,50 @@ profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger flags=(co
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/udev-trigger/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/udev/rules.d/					w,
+  }
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    @{PROC}/cmdline					r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+  }
 }
 
-profile udev-init-scripts.udev-settle.init.d /etc/init.d/udev-settle flags=(complain) {
+profile udev-init-scripts.udev-settle.init.d /etc/init.d/udev-settle {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/udev-settle/tasks		w,
+  
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/udevadm						Px,
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/udev-settle			r,
@@ -76,5 +144,20 @@ profile udev-init-scripts.udev-settle.init.d /etc/init.d/udev-settle flags=(comp
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/udev-settle/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
   }
 }

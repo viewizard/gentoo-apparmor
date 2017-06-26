@@ -121,6 +121,7 @@ profile nullmailer.init.d /etc/init.d/nullmailer {
   capability setgid,
   
   # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/nullmailer/tasks		w,
   @{PROC}/@{pid}/uid_map				r,
   @{PROC}/@{pid}/loginuid				wr,
   @{PROC}/sys/kernel/ngroups_max			r,
@@ -128,6 +129,7 @@ profile nullmailer.init.d /etc/init.d/nullmailer {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/nullmailer-send				Px,
   @{shell}						Cx,
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   
   # READS/WRITES ---------------------------------------
   /etc/environment					r,
@@ -141,5 +143,20 @@ profile nullmailer.init.d /etc/init.d/nullmailer {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/nullmailer/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
   }
 }

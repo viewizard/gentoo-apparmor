@@ -32,38 +32,107 @@ profile xinit /usr/bin/xinit {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xinit					mr,
-  @{shell}						Cx,
+  @{shell}						Px -> xinit_shell,
   /etc/X11/xinit/xserverrc				Px,
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile xinit_shell {
+  #include <abstractions/base>
   
-  profile shell @{shell} {
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/sed						Cx,	# FS ACCESS! sed
+  /usr/bin/which					Px,
+  /usr/bin/gawk						Cx,	# FS ACCESS! gawk
+  /usr/bin/xrdb						Px,
+  /usr/bin/dbus-send					Px,
+  /usr/bin/nvidia-settings				Px,
+  /usr/bin/xfce4-session				Px,	# XFCE4
+  /usr/bin/ck-launch-session				Px,
+  /usr/bin/xdg-user-dirs-update				Px,
+  /etc/xdg/xfce4/xfce4-session-fix			Px,	# XFCE4
+  /etc/X11/chooser.sh					Px,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/X11/xinit/xinitrc				r,
+  /etc/X11/xinit/xinitrc.d/{,*}				r,
+  /etc/xdg/xfce4/xinitrc				r,
+  
+  profile cat /bin/cat {					# Используется при запуске через startxfce4.
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
-    /dev/tty						rw,
     /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
-    @{shell}						mr,
-    /bin/cat						ix,
-    /bin/grep						ix,
-    /bin/sed						ix,
-    /usr/bin/which					Px,
-    /usr/bin/gawk					ix,
-    /usr/bin/xrdb					Px,
-    /usr/bin/dbus-send					Px,
-    /usr/bin/nvidia-settings				Px,
-    /usr/bin/xfce4-session				Px,	# XFCE4
-    /usr/bin/ck-launch-session				Px,
-    /usr/bin/xdg-user-dirs-update			Px,
-    /etc/xdg/xfce4/xfce4-session-fix			Px,	# XFCE4
-    /etc/X11/chooser.sh					ixr,
+    /bin/cat						mr,
     
     # READS/WRITES -------------------------------------
-    /etc/X11/xinit/xinitrc				r,
-    /etc/X11/Sessions/{,*}				r,
-    /etc/X11/xinit/xinitrc.d/{,*}			r,
-    /etc/xdg/xfce4/xinitrc				r,
     /etc/xdg/xfce4/Xft.xrdb				r,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile sed /bin/sed {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+  }
+  
+  profile gawk /usr/bin/gawk {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/gawk					mr,
+  }
+}
+
+profile xinit.chooser.sh /etc/X11/chooser.sh {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /etc/X11/chooser.sh					r,
+  @{shell}						mr,
+  /usr/bin/gawk						Cx,	# FS ACCESS! gawk
+  
+  # READS/WRITES ---------------------------------------
+  /etc/X11/Sessions/{,*}				r,
+  
+  profile gawk /usr/bin/gawk {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/gawk					mr,
   }
 }
 
@@ -96,19 +165,49 @@ profile xinit.startx /usr/bin/startx {
   @{shell}						mr,
   /bin/uname						Px,
   /bin/hostname						Px,
-  /bin/grep						ix,
-  /bin/sed						ix,
-  /bin/rm						ixr,
-  /usr/bin/mcookie					ix,
-  /usr/bin/deallocvt					ixr,
-  /usr/bin/xauth					Pxr,
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /usr/bin/mcookie					Px,
+  /usr/bin/deallocvt					Px,
+  /usr/bin/xauth					Px,
   /usr/bin/xinit					Px,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.serverauth.*				rw,
   
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.??????				rw,
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile sed /bin/sed {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+  }
+  
+  profile rm /bin/rm {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.serverauth.*				w,
+  }
 }
 
 profile xinit.startDM.sh /etc/X11/startDM.sh {

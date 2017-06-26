@@ -9,6 +9,8 @@
 #
 # ------------------------------------------------------------------
 
+#include <abstractions/ncurses>
+
 # user-specific bash files
 @{HOMEDIRS}						r,
 @{HOME}/.bashrc						r,
@@ -30,10 +32,5 @@
 @{PROC}/@{pid}/mounts					r,
 @{PROC}/filesystems					r,
 
-# probably readline wants to know terminal capabilities
-/usr/share/terminfo/**					r,
-
 # run out of /etc/bash.bashrc
 /etc/DIR_COLORS						r,
-/bin/ls							ixm,
-/usr/bin/dircolors					ixm,

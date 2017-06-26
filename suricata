@@ -52,7 +52,7 @@ profile suricata /usr/bin/suricata {
   /var/tmp/						r,
 }
 
-profile suricata.init.d /etc/init.d/suricata flags=(attach_disconnected) {
+profile suricata.init.d /etc/init.d/suricata {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -66,14 +66,16 @@ profile suricata.init.d /etc/init.d/suricata flags=(attach_disconnected) {
   signal (send) set=(usr2) peer="suricata",
   
   # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/suricata/tasks			w,
   @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/cat						ixr,
-  /bin/ps						Pxr,
-  /bin/sleep						Pxr,
-  /bin/grep						ixr,
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/ps						Px,
+  /bin/sleep						Px,
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   /usr/bin/suricata					Px,
   
   # READS/WRITES ---------------------------------------
@@ -83,12 +85,52 @@ profile suricata.init.d /etc/init.d/suricata flags=(attach_disconnected) {
   /run/suricata/suricata.pid				rwk,
   
   # DENY INHERIT ---------------------------------------
-  deny /apparmor/.null					rw,	# flags=(attach_disconnected), перезапуск из oinkmaster скрипта
   deny /tmp/oinkmaster.cron.*				w,	# oinkmaster.cron.daily
   
   profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/suricata/suricata.pid				r,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile mkdir /bin/mkdir flags=(attach_disconnected) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/suricata/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				rw,	# flags=(attach_disconnected), перезапуск из oinkmaster скрипта
   }
 }

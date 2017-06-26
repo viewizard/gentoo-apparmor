@@ -24,6 +24,9 @@ profile pulseaudio /usr/bin/pulseaudio {
   # PTRACE ---------------------------------------------
   ptrace (trace) peer=@{profile_name},
   
+  # SIGNAL ---------------------------------------------
+  signal (receive) set=(usr2) peer="pulseaudio.pacmd",
+  
   # NETWORK --------------------------------------------
   network netlink raw,
   
@@ -41,7 +44,6 @@ profile pulseaudio /usr/bin/pulseaudio {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pulseaudio					mr,
-  /usr/libexec/pulse/gconf-helper			ix,
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
@@ -51,6 +53,7 @@ profile pulseaudio /usr/bin/pulseaudio {
   /usr/share/applications/{,*}				r,
   /run/udev/data/+sound:card*				r,
   owner /run/user/[0-9]*/pulse/autospawn.lock		rwk,
+  owner /run/user/[0-9]*/pulse/cli			rw,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/pulse/				rw,
@@ -85,4 +88,26 @@ profile pulseaudio.pactl /usr/bin/pactl {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pactl					mr,
+}
+
+profile pulseaudio.pacmd /usr/bin/pacmd {
+  #include <abstractions/base>
+  
+  # PTRACE ---------------------------------------------
+  ptrace (trace) peer="pulseaudio",
+  
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(usr2) peer="pulseaudio",
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  owner @{PROC}/@{pid}/stat				r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/pacmd					mr,
+  
+  # READS/WRITES ---------------------------------------
+  owner /run/user/[0-9]*/pulse/				r,
+  owner /run/user/[0-9]*/pulse/pid			rk,
+  owner /run/user/[0-9]*/pulse/cli			rw,
 }

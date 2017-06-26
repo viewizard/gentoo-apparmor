@@ -220,9 +220,13 @@ profile cups.init.d /etc/init.d/cupsd {
   capability dac_override,
   capability dac_read_search,
   
+  # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/cupsd/tasks			w,
+  
   # EXECUTABLES ----------------------------------------
   /usr/sbin/cupsd					Px,
   @{shell}						Cx,
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/cupsd				r,
@@ -234,5 +238,20 @@ profile cups.init.d /etc/init.d/cupsd {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/cupsd/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
   }
 }

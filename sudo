@@ -117,15 +117,6 @@ profile sudo /usr/bin/sudo {
 
 profile sudo.askpass /usr/bin/gksu_askpass.sh {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/video>
-  #include <abstractions/gtk>
-  #include <abstractions/X>
-  #include <abstractions/dbus-session-strict>
-  #include <abstractions/dbus-accessibility-strict>
-  #include <abstractions/dbus-pattern/at-spi>
-  #include <abstractions/dbus-pattern/gvfs>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -133,8 +124,8 @@ profile sudo.askpass /usr/bin/gksu_askpass.sh {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gksu_askpass.sh				r,
-  /usr/bin/zenity					ixr,
-  @{shell}						ixmr,	# FIX ME! почему он в основном профиле с ix?
+  @{shell}						mr,
+  /usr/bin/zenity					Px,
 }
 
 profile sudo.gksudo /usr/bin/{gksu,gksudo} {

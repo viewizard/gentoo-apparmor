@@ -94,7 +94,6 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   #include <abstractions/dbus-pattern/polkit>
   #include <abstractions/dbus-pattern/system-bind>
   #include <abstractions/nameservice>
-  #include <abstractions/X-connection-strict>
   
   # CAPABILITIES ---------------------------------------
   capability sys_tty_config,
@@ -102,8 +101,6 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   capability sys_admin,
   capability chown,
   capability mknod,
-  capability setgid,
-  capability setuid,
   capability dac_read_search,
   capability dac_override,
   
@@ -112,7 +109,7 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   umount /run/user/[0-9]*/,
   
   # PTRACE ---------------------------------------------
-  ptrace (trace),						# FIX ME!
+  ptrace (trace),
   
   # DBUS -----------------------------------------------
   dbus send
@@ -152,36 +149,80 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   /dev/tty{,[0-9]*}					rw,
   /dev/pts/[0-9]*					rw,
   /dev/console						rw,
-  audit /sys/power/state				r,	# FIX ME! 10.05.2017 /usr/bin/pm-is-supported -> Px ?
   /sys/devices/virtual/tty/tty*/active			r,
   @{PROC}/@{pid}/fd/					r,
   @{PROC}/@{pid}/stat					r,
+  @{PROC}/@{pid}/environ				r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/console-kit-daemon				mr,
+  /sbin/shutdown					Px,
+  /usr/bin/pm-is-supported				Px,
+  /usr/lib{,32,64}/ConsoleKit/**			Px,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/ConsoleKit/{,**}					r,
+  /run/ConsoleKit/{,**}					rw,
+  /run/user/{,**}					rw,
+  /var/log/ConsoleKit/					r,
+  /var/log/ConsoleKit/**				rw,
+}
+
+profile consolekit.ck-collect-session-info /usr/lib{,32,64}/ConsoleKit/ck-collect-session-info {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # CAPABILITIES ---------------------------------------
+  capability sys_ptrace,
+  capability setgid,
+  capability setuid,
+  capability dac_override,
+  
+  # PTRACE ---------------------------------------------
+  ptrace (trace) peer="consolekit.ck-launch-session",
+  ptrace (trace) peer="xorg-server.Xorg",
+  ptrace (trace) peer="shadow.login//*",
+  
+  # PSEUDO ---------------------------------------------
   @{PROC}/tty/drivers					r,
+  @{PROC}/@{pid}/fd/					r,
+  @{PROC}/@{pid}/stat					r,
   @{PROC}/@{pid}/environ				r,
   @{PROC}/@{pid}/sessionid				r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/sbin/console-kit-daemon				mr,
-  audit /bin/grep					ix,	# FIX ME! 10.05.2017 /usr/bin/pm-is-supported -> Px ?
-  audit @{shell}					mr,	# FIX ME! 10.05.2017 /usr/bin/pm-is-supported -> Px ?
-  audit /bin/tr						Px,	# FIX ME! 10.05.2017 /usr/bin/pm-is-supported -> Px ?
-  /bin/cut						ix,
-  /bin/mkdir						ix,
-  /bin/sed						ix,
-  /bin/rm						ix,
-  /sbin/shutdown					Pxr,
-  /usr/bin/getent					ix,
-  /usr/bin/pm-is-supported				Pxr,
-  /usr/lib{,32,64}/ConsoleKit/**			Pix,
+  /usr/lib{,32,64}/ConsoleKit/ck-collect-session-info	m,
+  /usr/lib{,32,64}/ConsoleKit/ck-get-x11-server-pid	Px,
+}
+
+profile consolekit.ck-get-x11-display-device /usr/lib{,32,64}/ConsoleKit/ck-get-x11-display-device flags=(complain) {
+  #include <abstractions/base>
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/ConsoleKit/ck-get-x11-display-device	m,
+}
+
+profile consolekit.ck-remove-directory /usr/lib{,32,64}/ConsoleKit/ck-remove-directory {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # CAPABILITIES ---------------------------------------
+  capability setgid,
+  capability setuid,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/ConsoleKit/ck-remove-directory	m,
   
   # READS/WRITES ---------------------------------------
-  /etc/ConsoleKit/{,**}					r,
-  audit /etc/pm/config.d/{,**}				r,	# FIX ME! 10.05.2017 /usr/bin/pm-is-supported -> Px ?
-  /run/ConsoleKit/{,**}					rw,
-  /run/user/{,**}					rw,
-  /run/console/{,*}					rw,
-  /var/log/ConsoleKit/					r,
-  /var/log/ConsoleKit/**				rw,
+  /run/user/[0-9]*/{,**}				rw,
+}
+
+profile consolekit.ck-get-x11-server-pid /usr/lib{,32,64}/ConsoleKit/ck-get-x11-server-pid {
+  #include <abstractions/base>
+  #include <abstractions/X-connection-strict>
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/ConsoleKit/ck-get-x11-server-pid	m,
 }
 
 profile consolekit.udev-acl /usr/lib{,32,64}/ConsoleKit/udev-acl {
@@ -203,14 +244,146 @@ profile consolekit.udev-acl /usr/lib{,32,64}/ConsoleKit/udev-acl {
   /run/ConsoleKit/database				r,
 }
 
+profile consolekit.ck-system-hibernate /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-hibernate {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-hibernate r,
+  @{shell}						mr,
+  /usr/sbin/pm-hibernate				Px,
+}
+
+profile consolekit.ck-system-hybridsleep /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-hybridsleep {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-hybridsleep r,
+  @{shell}						mr,
+  /usr/sbin/pm-suspend-hybrid				Px,
+}
+
+profile consolekit.ck-system-restart /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-restart {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-restart	r,
+  @{shell}						mr,
+  /sbin/shutdown					Px,
+}
+
+profile consolekit.ck-system-stop /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-stop {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-stop	r,
+  @{shell}						mr,
+  /sbin/shutdown					Px,
+}
+
+profile consolekit.ck-system-suspend /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-suspend {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-suspend	r,
+  @{shell}						mr,
+  /usr/sbin/pm-suspend					Px,
+}
+
+profile consolekit.pam-foreground-compat.ck /usr/lib{,32,64}/ConsoleKit/run-session.d/pam-foreground-compat.ck {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/ConsoleKit/run-session.d/pam-foreground-compat.ck r,
+  @{shell}						mr,
+  /bin/cut						Cx,	# FS ACCESS! cut
+  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /usr/bin/getent					Px,
+  
+  # READS/WRITES ---------------------------------------
+  /run/ConsoleKit/{,**}					rw,
+  /run/console/{,*}					w,
+  
+  profile cut /bin/cut {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cut						mr,
+  }
+  
+  profile sed /bin/sed {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/ConsoleKit/{,**}				rw,
+    /run/console/{,*}					rw,
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/console/					w,
+  }
+  
+  profile rm /bin/rm {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/console/{,*}					w,
+  }
+}
+
 profile consolekit.init.d /etc/init.d/consolekit {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/consolekit/tasks		w,
+  
   # EXECUTABLES ----------------------------------------
   /usr/sbin/console-kit-daemon				Px,
   @{shell}						Cx,
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/consolekit				r,
@@ -221,5 +394,20 @@ profile consolekit.init.d /etc/init.d/consolekit {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/consolekit/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
   }
 }

@@ -55,14 +55,19 @@ profile tor.init.d /etc/init.d/tor {
   capability mknod,
   capability fowner,
   capability fsetid,
+  capability chown,
   capability sys_resource,
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(int) peer="tor",
   
+  # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/tor/tasks			w,
+  
   # EXECUTABLES ----------------------------------------
   /usr/bin/tor						Px,
   @{shell}						Cx,
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/tor				r,
@@ -73,5 +78,20 @@ profile tor.init.d /etc/init.d/tor {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/tor/				w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
   }
 }

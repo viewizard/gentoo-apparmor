@@ -155,11 +155,15 @@ profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/xdm-setup/tasks			w,
+  
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/cat						ix,
+  /bin/cat						Cx,	# FS ACCESS! cat
   /bin/tr						Px,
-  /bin/grep						ix,
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   /etc/X11/startDM.sh					Px,
   
   # READS/WRITES ---------------------------------------
@@ -170,22 +174,53 @@ profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup {
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/xdm-setup/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+  }
+  
+  profile cat /bin/cat flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+  }
+  
+  profile grep /bin/grep flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
 }
 
-profile xorg-server.xdm.init.d /etc/init.d/xdm flags=(complain) {
+profile xorg-server.xdm.init.d /etc/init.d/xdm {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /sys/fs/cgroup/openrc/xdm/tasks			w,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/tr						Px,
-  /bin/grep						ix,
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   /usr/bin/fgconsole					Px,
-  /usr/bin/chvt						ix,
+  /usr/bin/chvt						Px,
   /etc/init.d/xdm-setup					Px,
   /etc/X11/startDM.sh					Px,
   
@@ -198,5 +233,27 @@ profile xorg-server.xdm.init.d /etc/init.d/xdm flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/xdm/				w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
   }
 }

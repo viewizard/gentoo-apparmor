@@ -16,6 +16,9 @@ profile modemmanager.ModemManager /usr/sbin/ModemManager {
   #include <abstractions/dbus-pattern/polkit>
   #include <abstractions/dbus-pattern/system-bind>
   
+  # CAPABILITIES ---------------------------------------
+  capability sys_tty_config,
+  
   # DBUS -----------------------------------------------
   dbus receive
   	bus=system
@@ -33,7 +36,8 @@ profile modemmanager.ModemManager /usr/sbin/ModemManager {
   # NETWORK --------------------------------------------
   network netlink raw,
   
-  # PSEUDO ---------------------------------------------
+  # PSEUDO -------------------------------------------
+  /dev/console						w,
   /sys/bus/						r,
   /sys/bus/usb/devices/					r,
   /sys/class/						r,

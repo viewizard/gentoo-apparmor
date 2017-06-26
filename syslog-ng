@@ -83,6 +83,7 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /sys/fs/cgroup/openrc/syslog-ng/tasks			w,
   @{PROC}/@{pid}/uid_map				r,
   @{PROC}/@{pid}/loginuid				rw,
   @{PROC}/sys/kernel/ngroups_max			r,
@@ -91,6 +92,7 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng {
   /usr/sbin/syslog-ng					Px,
   @{shell}						Cx,
   /bin/sleep						Px,
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   
   # READS/WRITES ---------------------------------------
   /etc/environment					r,
@@ -103,5 +105,20 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/syslog-ng/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
   }
 }

@@ -98,10 +98,11 @@ profile gvfs.gvfsd /usr/libexec/gvfsd {
   
   # READS/WRITES ---------------------------------------
   /usr/share/gvfs/{,**}					r,
-  /run/user/[0-9]*/gvfs/{,**}				rw,
+  /run/user/[0-9]*/gvfs/				rw,
+  audit /run/user/[0-9]*/gvfs/**			rw,	# FIX ME! audit 18.07.2017 когда используется?
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.gvfs/					rw,
+  owner /root/.gvfs/					rw,
 }
 
 profile gvfs.gvfsd-archive /usr/libexec/gvfsd-archive flags=(complain) {
@@ -146,14 +147,11 @@ profile gvfs.gvfsd-ftp /usr/libexec/gvfsd-ftp flags=(complain) {
 
 profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   #include <abstractions/base>
-  #include <abstractions/nameservice>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/unix-pattern/gvfsd-smb>
   #include <abstractions/unix-pattern/gvfsd-smb-virtual>
   
   # CAPABILITIES ---------------------------------------
-  capability dac_override,
-  capability dac_read_search,
   capability sys_admin,
   
   # DBUS -----------------------------------------------
@@ -163,26 +161,40 @@ profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   	interface="org.gtk.vfs.*"
   	peer=(name=":[0-9]*.[0-9]*"),
   
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  			type=stream
+			addr=none
+  			peer=(addr=none,label="fuse.fusermount"),
+  
   # MOUNT ----------------------------------------------
-  mount options=(rw, nosuid, nodev) -> /run/user/[0-9]*/gvfs/,
-  mount options=(rw, nosuid, nodev) -> /root/.gvfs/,
+  mount
+  	fstype="fuse.gvfsd-fuse"
+  	options=(rw, nosuid, nodev)
+  	gvfsd-fuse
+  -> /run/user/[0-9]*/gvfs/,
+  mount
+  	fstype="fuse.gvfsd-fuse"
+  	options=(rw, nosuid, nodev)
+  	gvfsd-fuse
+  -> /root/.gvfs/,
   umount /run/user/[0-9]*/gvfs/,
   umount /root/.gvfs/,
   
   # PSEUDO ---------------------------------------------
   /dev/fuse						rw,
-  @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-fuse				mr,
-  /usr/bin/fusermount					ixr,
+  /usr/bin/fusermount					Px,
   
   # READS/WRITES ---------------------------------------
-  /etc/fuse.conf					r,
-  /run/user/[0-9]*/gvfs/{,**}				rw,
+  /run/user/[0-9]*/gvfs/				r,
+  audit /run/user/[0-9]*/gvfs/**			rw,	# FIX ME! 17.06.2017 fusermount > Px (было ix)
   
   # USERS ----------------------------------------------
-  @{HOME}/.gvfs/{,**}					rw,
+  owner /root/.gvfs/					r,
+  audit owner /root/.gvfs/**				rw,	# FIX ME! 17.06.2017 fusermount > Px (было ix)
 }
 
 profile gvfs.gvfsd-http /usr/libexec/gvfsd-http {
@@ -307,6 +319,14 @@ profile gvfs.gvfsd-network /usr/libexec/gvfsd-network {
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*"
   			peer=(label="transmission"),		# transmission
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="mousepad"),		# mousepad
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="nvidia-drivers.nvidia-settings"),	# nvidia-drivers.nvidia-settings
   
   # DBUS -----------------------------------------------
   dbus (send, receive)
@@ -507,6 +527,14 @@ profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*"
   			peer=(label="transmission"),		# transmission
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="mousepad"),		# mousepad
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="nvidia-drivers.nvidia-settings"),	# nvidia-drivers.nvidia-settings
   unix (send, receive)
 			type=stream
 			addr=none

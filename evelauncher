@@ -22,9 +22,16 @@ profile evelauncher.sh /home/*/evelauncher/evelauncher.sh {
   owner @{HOME}/evelauncher/evelauncher.sh		r,
   owner @{HOME}/evelauncher/evelauncher			px,
   @{shell}						mr,
-  /bin/sed						ix,
+  /bin/sed						Cx,	# FS ACCESS! sed
   /bin/basename						Px,
   /bin/dirname						Px,
+  
+  profile sed /bin/sed flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+  }
 }
 
 profile evelauncher /home/*/evelauncher/evelauncher flags=(attach_disconnected) {
@@ -102,6 +109,7 @@ profile evelauncher /home/*/evelauncher/evelauncher flags=(attach_disconnected) 
   
   # DENY INHERIT ---------------------------------------
   deny unix (send, receive) peer=(label="wine*"),		# wine
+  deny unix (send, receive) peer=(label="nvidia-drivers.nvidia-modprobe"),	# nvidia-drivers.nvidia-modprobe
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
@@ -140,9 +148,16 @@ profile evelauncher.LogLite.sh /home/*/evelauncher/LogLite.sh {
   # EXECUTABLES ----------------------------------------
   owner @{HOME}/evelauncher/LogLite			px,
   @{shell}						mr,
-  /bin/sed						ix,
+  /bin/sed						Cx,	# FS ACCESS! sed
   /bin/basename						Px,
   /bin/dirname						Px,
+  
+  profile sed /bin/sed flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+  }
 }
 
 profile evelauncher.LogLite /home/*/evelauncher/LogLite {

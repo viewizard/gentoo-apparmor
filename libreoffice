@@ -16,7 +16,6 @@
 
 profile libreoffice /usr/{bin,lib{,32,64}/libreoffice/program}/soffice {
   #include <abstractions/base>
-  #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -26,11 +25,42 @@ profile libreoffice /usr/{bin,lib{,32,64}/libreoffice/program}/soffice {
   @{shell}						mr,
   /bin/dirname						Px,
   /bin/basename						Px,
-  /bin/grep						ix,
+  /bin/grep						Cx,	# FS ACCESS! grep
   /bin/uname						Px,
-  /bin/ls						ix,
-  /bin/sed						ix,
+  /bin/ls						Cx,	# FS ACCESS! ls
+  /bin/sed						Cx,	# FS ACCESS! sed
   /usr/lib{,32,64}/libreoffice/program/oosplash		Px,
+  
+  profile ls /bin/ls {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/ls						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile sed /bin/sed {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+  }
 }
 
 profile libreoffice.oosplash /usr/lib{,32,64}/libreoffice/program/oosplash {
@@ -140,6 +170,7 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/xdg-open>
+    #include <abstractions/cups-client>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -147,14 +178,9 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/sed						ix,
-    /bin/grep						ix,
-    /bin/uname						ix,
-    /usr/bin/paperconf					ix,
-    /usr/lib{,32,64}/libreoffice/program/open-url	ix,
-    
-    # READS/WRITES -------------------------------------
-    /etc/papersize					r,
+    audit /bin/sed					ix,	# FS ACCESS! audit 12.06.2017 - непонятно где иcпользуются.
+    audit /bin/grep					ix,	# FS ACCESS! audit 12.06.2017 - непонятно где используются.
+    /bin/uname						Px,
     
     # DENY INHERIT -------------------------------------
     deny @{HOME}/.config/libreoffice/**			rw,	# libreoffice.bin

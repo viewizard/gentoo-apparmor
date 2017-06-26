@@ -123,9 +123,18 @@ profile eudev.udevd /sbin/udevd flags=(complain) {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/sed						ix,
+    /bin/sed						Px -> eudev_udevd_sed,	# FS ACCESS! eudev_udevd_sed
     /sbin/mdadm						Px,
   }
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile eudev_udevd_sed {
+  #include <abstractions/base>
+  
+  # EXECUTABLES --------------------------------------
+  /bin/sed						mr,
 }
 
 profile eudev.ata_id /lib{,32,64}/udev/ata_id flags=(complain) {
