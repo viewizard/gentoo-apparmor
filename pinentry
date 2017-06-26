@@ -19,6 +19,7 @@ profile pinentry /usr/bin/pinentry-* flags=(complain) {
   #include <abstractions/qt>	# (QT and GTK) for GUI.
   #include <abstractions/X>
   #include <abstractions/nameservice>
+  #include <abstractions/ncurses>
   
   # CAPABILITIES ---------------------------------------
   capability dac_override,
@@ -32,8 +33,4 @@ profile pinentry /usr/bin/pinentry-* flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pinentry-*					mr,
-  
-  # READS/WRITES ---------------------------------------
-  /etc/terminfo/x/xterm					r,
-  /etc/terminfo/l/linux					r,
 }

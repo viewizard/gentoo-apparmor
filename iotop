@@ -14,6 +14,7 @@ profile iotop @{PYTHON_EXEC}/iotop flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
+  #include <abstractions/ncurses>
   
   # CAPABILITIES ---------------------------------------
   capability net_admin,
@@ -27,9 +28,8 @@ profile iotop @{PYTHON_EXEC}/iotop flags=(complain) {
   @{PROC}/@{pid}/{cmdline,status}			r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/file						ix,
+  /usr/bin/file						ix,	# FS ACCESS!
   
   # READS/WRITES ---------------------------------------
-  /etc/terminfo/x/xterm					r,
   /usr/share/misc/magic.mgc				r,
 }

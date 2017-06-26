@@ -12,19 +12,18 @@
 
 profile ncurses.clear /usr/bin/clear flags=(complain) {		# FIX ME! 04.04.2017 flags=(complain)
   #include <abstractions/base>
+  #include <abstractions/ncurses>
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/clear					mr,
-  
-  # READS/WRITES ---------------------------------------
-  /etc/terminfo/x/xterm					r,
 }
 
 profile ncurses.tput /usr/bin/tput flags=(complain) {		# FIX ME! 04.04.2017 flags=(complain)
   #include <abstractions/base>
+  #include <abstractions/ncurses>
   
   # CAPABILITIES ---------------------------------------
   capability mknod,
@@ -35,8 +34,4 @@ profile ncurses.tput /usr/bin/tput flags=(complain) {		# FIX ME! 04.04.2017 flag
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/tput						mr,
-  
-  # READS/WRITES ---------------------------------------
-  /etc/terminfo/x/xterm					r,
-  /etc/terminfo/l/linux					r,
 }

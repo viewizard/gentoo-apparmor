@@ -13,6 +13,7 @@
 profile iftop /usr/sbin/iftop flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  #include <abstractions/ncurses>
   
   # CAPABILITIES ---------------------------------------
   capability net_raw,
@@ -22,7 +23,4 @@ profile iftop /usr/sbin/iftop flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/iftop					mr,
-  
-  # READS/WRITES ---------------------------------------
-  /etc/terminfo/x/xterm					r,
 }

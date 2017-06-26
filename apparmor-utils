@@ -41,6 +41,7 @@ profile apparmor-utils.aa-status @{PYTHON_EXEC}/aa-status flags=(attach_disconne
 profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   #include <abstractions/base>
   #include <abstractions/python>
+  #include <abstractions/ncurses>
   
   # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
@@ -59,13 +60,12 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,
   @{shell}						Cx,
-  /bin/cat						ix,
+  /bin/cat						ix,	# FS ACCESS!
   /bin/netstat						Px,
   
   # READS/WRITES ---------------------------------------
   /etc/apparmor/logprof.conf				r,
   /etc/inputrc						r,
-  /etc/terminfo/x/xterm					r,
   @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
   @{PYTHON_PACKAGES}/LibAppArmor/**.pyc{,.*}		w,
   
@@ -100,6 +100,7 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
 profile apparmor-utils.aa-complain @{PYTHON_EXEC}/aa-complain {
   #include <abstractions/base>
   #include <abstractions/python>
+  #include <abstractions/ncurses>
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
@@ -110,7 +111,6 @@ profile apparmor-utils.aa-complain @{PYTHON_EXEC}/aa-complain {
   
   # READS/WRITES ---------------------------------------
   /etc/inputrc						r,
-  /etc/terminfo/x/xterm					r,
   /etc/apparmor/logprof.conf				r,
   /etc/apparmor.d/{,**}					r,
   /etc/apparmor.d/*					w,
@@ -124,6 +124,7 @@ profile apparmor-utils.aa-complain @{PYTHON_EXEC}/aa-complain {
 profile apparmor-utils.aa-enforce @{PYTHON_EXEC}/aa-enforce {
   #include <abstractions/base>
   #include <abstractions/python>
+  #include <abstractions/ncurses>
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
@@ -134,7 +135,6 @@ profile apparmor-utils.aa-enforce @{PYTHON_EXEC}/aa-enforce {
   
   # READS/WRITES ---------------------------------------
   /etc/inputrc						r,
-  /etc/terminfo/x/xterm					r,
   /etc/apparmor/logprof.conf				r,
   /etc/apparmor.d/{,**}					r,
   /etc/apparmor.d/*					w,
@@ -148,6 +148,7 @@ profile apparmor-utils.aa-enforce @{PYTHON_EXEC}/aa-enforce {
 profile apparmor-utils.aa-disable @{PYTHON_EXEC}/aa-disable {
   #include <abstractions/base>
   #include <abstractions/python>
+  #include <abstractions/ncurses>
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
@@ -158,7 +159,6 @@ profile apparmor-utils.aa-disable @{PYTHON_EXEC}/aa-disable {
   
   # READS/WRITES ---------------------------------------
   /etc/inputrc						r,
-  /etc/terminfo/x/xterm					r,
   /etc/apparmor/logprof.conf				r,
   /etc/apparmor.d/{,**}					r,
   /etc/apparmor.d/disable/*				w,
@@ -172,6 +172,7 @@ profile apparmor-utils.aa-disable @{PYTHON_EXEC}/aa-disable {
 profile apparmor-utils.aa-logprof @{PYTHON_EXEC}/aa-logprof {
   #include <abstractions/base>
   #include <abstractions/python>
+  #include <abstractions/ncurses>
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
@@ -183,7 +184,6 @@ profile apparmor-utils.aa-logprof @{PYTHON_EXEC}/aa-logprof {
   # READS/WRITES ---------------------------------------
   /etc/inputrc						r,
   /etc/apparmor/logprof.conf				r,
-  /etc/terminfo/x/xterm					r,
   /etc/apparmor.d/{,**}					r,
   
   # TEMP -----------------------------------------------

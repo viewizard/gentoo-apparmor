@@ -23,6 +23,7 @@ profile porthole @{PYTHON_EXEC}/porthole {
   #include <abstractions/dbus-pattern/at-spi>
   #include <abstractions/dbus-pattern/gvfs>
   #include <abstractions/nameservice>
+  #include <abstractions/ncurses>
   #include <abstractions/xdg-open>
   
   # PSEUDO ---------------------------------------------
@@ -33,15 +34,14 @@ profile porthole @{PYTHON_EXEC}/porthole {
   # EXECUTABLES ----------------------------------------
   @{shell}						cx,
   /bin/stty						Px,
-  /bin/bzip2						ix,
-  /usr/bin/sandbox					ixr,
+  /bin/bzip2						ix,	# FS ACCESS!
+  /usr/bin/sandbox					ixr,	# FIX ME! Вынести в отдельный профиль.
   
   # READS/WRITES ---------------------------------------
   /etc/sandbox.conf					r,
   /etc/sandbox.d/{,*}					r,
   /etc/portage/**					r,
   /etc/profile.env					r,
-  /etc/terminfo/l/linux					r,
   /usr/portage/**					r,
   /usr/local/portage/**					r,
   /usr/share/portage/**					r,
@@ -66,7 +66,7 @@ profile porthole @{PYTHON_EXEC}/porthole {
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /bin/uname						Px,
-    /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh	ix,
+    /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh	ix,	# FS ACCESS! Пока оставляем все ix в portage.emerge
     
     # READS/WRITES -------------------------------------
     /usr/portage/**					r,

@@ -32,6 +32,7 @@ profile gnupg.gpg-agent /usr/bin/gpg-agent {
 
 profile gnupg.gpg /usr/bin/gpg{,2,-static} {
   #include <abstractions/base>
+  #include <abstractions/ncurses>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -45,7 +46,6 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} {
   
   # READS/WRITES ---------------------------------------
   /etc/inputrc						r,
-  /etc/terminfo/x/xterm					r,
   /run/openrc/dm-crypt-remdev.*/*			r,
   /run/user/[0-9]*/gnupg/{,*}				rw,
   /var/lib/gentoo/gkeys/keyrings/gentoo/release/	r,

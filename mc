@@ -13,6 +13,7 @@
 profile mc /usr/bin/mc {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  #include <abstractions/ncurses>
   #include <abstractions/fs-access-by-pattern-filemanager>
   
   # CAPABILITIES ---------------------------------------
@@ -27,13 +28,11 @@ profile mc /usr/bin/mc {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mc						mr,
-  /usr/libexec/mc/cons.saver				ix,
+  /usr/libexec/mc/cons.saver				ix,	# FIX ME! Вынести в отдельный профиль.
   @{shell}						Px -> shell_users,
   
   # READS/WRITES ---------------------------------------
   /etc/mc/{,**}						r,
-  /etc/terminfo/x/xterm					r,
-  /etc/terminfo/l/linux					r,
   /usr/libexec/mc/{,**}					r,
   /usr/share/mc/{,**}					r,
 }
@@ -41,6 +40,7 @@ profile mc /usr/bin/mc {
 profile mc_root flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  #include <abstractions/ncurses>
   #include <abstractions/fs-access-by-pattern-filemanager>
   #include <abstractions/fs-access-by-pattern-systemusers>
   
@@ -56,13 +56,11 @@ profile mc_root flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mc						mr,
-  /usr/libexec/mc/cons.saver				ix,
+  /usr/libexec/mc/cons.saver				ix,	# FIX ME! Вынести в отдельный профиль.
   @{shell}						Px -> shell_root,
   
   # READS/WRITES ---------------------------------------
   /etc/mc/{,**}						r,
-  /etc/terminfo/x/xterm					r,
-  /etc/terminfo/l/linux					r,
   /usr/libexec/mc/{,**}					r,
   /usr/share/mc/{,**}					r,
 }

@@ -51,6 +51,7 @@ profile ntp.ntpd /usr/sbin/ntpd {
 profile ntp.ntpq /usr/bin/ntpq {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  #include <abstractions/ncurses>
   
   # CAPABILITIES ---------------------------------------
   capability dac_read_search,
@@ -71,7 +72,6 @@ profile ntp.ntpq /usr/bin/ntpq {
   
   # READS/WRITES ---------------------------------------
   /etc/inputrc						r,
-  /etc/terminfo/x/xterm					r,
   
   # NOISY ----------------------------------------------
   deny /{,s}bin/					r,
@@ -88,9 +88,13 @@ profile ntp.init.d /etc/init.d/ntpd {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/ntpd/tasks			w,
+  
   # EXECUTABLES ----------------------------------------
   /usr/sbin/ntpd					Px,
   @{shell}						Cx,
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/ntpd				r,
@@ -100,5 +104,20 @@ profile ntp.init.d /etc/init.d/ntpd {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/ntpd/				w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
   }
 }

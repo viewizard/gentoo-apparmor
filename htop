@@ -15,6 +15,7 @@ profile htop /usr/bin/htop {
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/nameservice>
+  #include <abstractions/ncurses>
   
   # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
@@ -39,9 +40,6 @@ profile htop /usr/bin/htop {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/htop mr,
-  
-  # READS/WRITES ---------------------------------------
-  /etc/terminfo/x/xterm r,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/htop/{,htoprc} rw,

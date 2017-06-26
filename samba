@@ -13,6 +13,7 @@
 profile samba.smbclient /usr/bin/smbclient flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  #include <abstractions/ncurses>
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
@@ -23,7 +24,6 @@ profile samba.smbclient /usr/bin/smbclient flags=(complain) {
   # READS/WRITES ---------------------------------------
   /etc/inputrc						r,
   /etc/samba/smb.conf					r,
-  /etc/terminfo/x/xterm					r,
   /usr/share/samba/{,**}				r,
   /var/cache/samba/					rw,
   /var/cache/samba/**					rwk,
