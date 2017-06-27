@@ -13,19 +13,117 @@
 profile timezone-data.tzselect /usr/bin/tzselect {
   #include <abstractions/base>
   
-  # CAPABILITIES ---------------------------------------
-  capability mknod,
-  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/tzselect					r,
   @{shell}						mr,
-  /bin/expr						ix,
+  /bin/expr						Cx,	# FS ACCESS! expr
   /bin/tr						Px,
-  /bin/sort						ix,
-  /bin/date						ix,
-  /usr/bin/gawk						ix,
+  /bin/sort						Cx,	# FS ACCESS! sort
+  /bin/date						Cx,	# FS ACCESS! date
+  /bin/mktemp						Cx,	# FS ACCESS! mktemp
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /usr/bin/gawk						Cx,	# FS ACCESS! gawk
+  /usr/bin/iconv					Cx,	# FS ACCESS! iconv
+  
+  # TEMP -----------------------------------------------
+  /tmp/tmp.*/*						rw,
+  
+  profile expr /bin/expr {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/expr						mr,
+  }
+  
+  profile sort /bin/sort {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sort						mr,
+  }
+  
+  profile date /bin/date {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/date						mr,
+  }
+  
+  profile mktemp /bin/mktemp {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mktemp						mr,
+    
+    # TEMP ---------------------------------------------
+    /tmp/tmp.*/						w,
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+  }
+  
+  profile rm /bin/rm flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # TEMP ---------------------------------------------
+    /tmp/tmp.*/{,*}					rw,
+  }
+  
+  profile gawk /usr/bin/gawk {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability mknod,
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/gawk					mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /tmp/tmp.*/*					rw,	# timezone-data.tzselect
+  }
+  
+  profile iconv /usr/bin/iconv flags=(attach_disconnected) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability mknod,
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/iconv					mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				r,	# flags=(attach_disconnected)
+    deny /tmp/tmp.*/*					rw,	# timezone-data.tzselect
+ }
 }
