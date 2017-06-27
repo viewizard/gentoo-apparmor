@@ -35,9 +35,50 @@ profile wireshark /usr/bin/{tshark,wireshark} {
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(int,term) peer="wireshark.dumpcap",
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  @{PROC}/@{pid}/net/dev				r,
+  owner @{PROC}/@{pid}/cmdline				r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/wireshark					mr,
+  /usr/bin/dumpcap					Px,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/libnl/classid					r,
+  /usr/share/wireshark/{,**}				r,
+  /usr/lib{,32,64}/wireshark/plugins/**{la,so}		m,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/.??????				rwk,
+  owner @{HOME}/.wireshark/{,**}			rw,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/wireshark_*_*_*.pcapng			rw,
+}
+
+profile wireshark.dumpcap /usr/bin/dumpcap {
+  #include <abstractions/base>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
+  
   # CAPABILITIES ---------------------------------------
   capability net_admin,
   capability net_raw,
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  network packet raw,
+  network packet dgram,
+  network inet dgram,
+  network inet6 dgram,
   
   # DBUS -----------------------------------------------
   dbus eavesdrop
@@ -53,33 +94,14 @@ profile wireshark /usr/bin/{tshark,wireshark} {
   dbus send
   	bus=session,
   
-  # NETWORK --------------------------------------------
-  network netlink raw,
-  network packet raw,
-  network packet dgram,
-  network inet dgram,
-  network inet6 dgram,
-  
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
-  /dev/pts/[0-9]*					rw,
   /sys/class/net/					r,
   /sys/bus/usb/devices/					r,
   @{PROC}/@{pid}/net/dev				r,
-  owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/wireshark					mr,
-  /usr/bin/dumpcap					ix,
-  
-  # READS/WRITES ---------------------------------------
-  /etc/libnl/classid					r,
-  /usr/share/wireshark/{,**}				r,
-  /usr/lib{,32,64}/wireshark/plugins/**{la,so}		m,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.config/.??????				rwk,
-  owner @{HOME}/.wireshark/{,**}			rw,
+  /usr/bin/dumpcap					mr,
   
   # TEMP -----------------------------------------------
   owner /tmp/wireshark_*_*_*.pcapng			rw,
