@@ -31,18 +31,15 @@ profile poedit /usr/bin/poedit {
   #include <abstractions/xdg-open>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /sys/devices/system/cpu/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/poedit					mr,
-  @{shell}						ix,	# FIX ME! почему он в основном профиле с ix?
-  /bin/uname						Px,
-  /usr/bin/msgmerge					ix,
-  /usr/bin/msgfmt					ix,
-  /usr/bin/msgcat					ix,
-  /usr/bin/lsb_release					Pxr,
+  @{shell}						Cx,
+  /usr/bin/msgmerge					Cx,	# FS ACCESS! msgmerge
+  /usr/bin/msgfmt					Cx,	# FS ACCESS! msgfmt
+  /usr/bin/msgcat					Cx,	# FS ACCESS! msgcat
   
   # READS/WRITES ---------------------------------------
   /usr/share/poedit/{,**}				r,
@@ -55,4 +52,70 @@ profile poedit /usr/bin/poedit {
   
   # TEMP -----------------------------------------------
   owner /tmp/poedit*/{,**}				rw,
+  
+  profile shell @{shell} {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    
+    # EXECUTABLES --------------------------------------
+    @{shell}						mr,
+    /bin/uname						Px,
+    /usr/bin/lsb_release				Px,
+    
+    # DENY INHERIT -------------------------------------
+    deny /run/user/[0-9]*/poedit.lock			w,
+  }
+  
+  profile msgmerge /usr/bin/msgmerge flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwk>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/msgmerge					mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /run/user/[0-9]*/poedit.lock			w,
+    deny @{HOME}/.local/share/poedit/{,**}		rw,
+  }
+  
+  profile msgfmt /usr/bin/msgfmt {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwk>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/msgfmt					mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/poedit*/**				r,
+    
+    # DENY INHERIT -------------------------------------
+    deny /run/user/[0-9]*/poedit.lock			w,
+    deny @{HOME}/.local/share/poedit/{,**}		rw,
+  }
+  
+  profile msgcat /usr/bin/msgcat {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwk>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/msgcat					mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /run/user/[0-9]*/poedit.lock			w,
+    deny @{HOME}/.local/share/poedit/{,**}		rw,
+  }
 }
