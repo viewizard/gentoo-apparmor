@@ -1,0 +1,27 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+profile libcanberra.canberra-gtk-play /usr/bin/canberra-gtk-play {
+  #include <abstractions/base>
+  #include <abstractions/gtk>
+  #include <abstractions/X-connection-strict>
+  #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/canberra-gtk-play				mr,
+}
