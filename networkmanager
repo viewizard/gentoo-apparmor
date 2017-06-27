@@ -189,24 +189,31 @@ profile networkmanager.nm-dispatcher /usr/libexec/nm-dispatcher {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/nm-dispatcher				mr,
-  /etc/NetworkManager/dispatcher.d/10-openrc-status	Cx,
+  /etc/NetworkManager/dispatcher.d/10-openrc-status	Px,
   
   # READS/WRITES ---------------------------------------
   /etc/NetworkManager/dispatcher.d/{,*}			r,
+}
+
+profile networkmanager.10-openrc-status /etc/NetworkManager/dispatcher.d/10-openrc-status {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
   
-  profile 10-openrc-status /etc/NetworkManager/dispatcher.d/10-openrc-status {
+  # PSEUDO -------------------------------------------
+  /dev/tty						rw,
+  
+  # EXECUTABLES --------------------------------------
+  /etc/NetworkManager/dispatcher.d/10-openrc-status	r,
+  @{shell}						mr,
+  /bin/grep						Cx,
+  /sbin/rc-service					Px,
+  /usr/bin/nm-online					Px,
+  
+  profile grep /bin/grep {
     #include <abstractions/base>
-    #include <abstractions/nameservice>
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty						rw,
     
     # EXECUTABLES --------------------------------------
-    /etc/NetworkManager/dispatcher.d/10-openrc-status	r,
-    @{shell}						mr,
-    /bin/grep						ix,
-    /sbin/rc-service					Px,
-    /usr/bin/nm-online					Px,
+    /bin/grep						mr,
   }
 }
 
@@ -215,15 +222,19 @@ profile networkmanager.NetworkManager.init.d /etc/init.d/NetworkManager {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/NetworkManager/tasks		w,
+  
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   /usr/bin/nm-online					Px,
   /usr/sbin/NetworkManager				Px,
   /etc/init.d/dnsmasq					Px,
   /etc/init.d/netmount					Px,
   /etc/init.d/tor					Px,
   /etc/init.d/suricata					Px,
-  /lib{,32,64}/rc/sbin/mark_service_inactive		ix,
+  /lib{,32,64}/rc/sbin/mark_service_inactive		Px,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/NetworkManager			r,
@@ -233,5 +244,20 @@ profile networkmanager.NetworkManager.init.d /etc/init.d/NetworkManager {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/NetworkManager/		w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
   }
 }
