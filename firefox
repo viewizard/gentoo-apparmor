@@ -96,13 +96,10 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   /bin/dirname						Pxr,
   /sbin/killall5					Pxr,
   /usr/bin/which					Pxr,
-  /usr/bin/pwd						ixr,
-  /usr/bin/expr						ix,
   /usr/lib{,32,64}/firefox/firefox			Px,	# Перезапуск, после установки обновлений.
   /usr/lib{,32,64}/firefox/plugin-container		Px,
-  # Allow 'x' for downloaded extensions, but inherit policy for safety
-  owner @{HOME}/.mozilla/**/extensions/**		ixmr,
-  /usr/lib{,32,64}/firefox/browser/extensions/**	ixmr,
+  owner @{HOME}/.mozilla/**/extensions/**		Px,	# Пользовательские расширения.
+  /usr/lib{,32,64}/firefox/browser/extensions/**	Px,	# Системные расширения.
   
   # READS/WRITES ---------------------------------------
   /etc/							r,
@@ -134,6 +131,21 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   owner /tmp/gnotifier/{,**}				rw,
   /var/tmp/						r,
   owner /var/tmp/etilqs_*				rw,
+  
+  # DENY INHERIT ---------------------------------------
+  deny unix peer=(label="nvidia-drivers.nvidia-modprobe"),		# nvidia-drivers.nvidia-modprobe
+}
+
+profile firefox.user_extensions @{HOME}/.mozilla/**/extensions/** {
+  #include <abstractions/base>
+  
+  
+}
+
+profile firefox.system_extensions /usr/lib{,32,64}/firefox/browser/extensions/** {
+  #include <abstractions/base>
+  
+  
 }
 
 profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
@@ -201,9 +213,18 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /bin/ps						Px,
-    /bin/grep						ix,
+    audit /bin/grep					Px -> firefox_shell_grep,	# FS ACCESS! grep	# FIX ME! audit 28.06.2017
     
     # DENY INHERIT -------------------------------------
     deny /tmp/FreshStream*				rw,	# firefox.plugin-container
   }
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile firefox_shell_grep {
+  #include <abstractions/base>
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/grep						mr,
 }
