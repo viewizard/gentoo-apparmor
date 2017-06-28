@@ -60,7 +60,7 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,
   @{shell}						Cx,
-  /bin/cat						ix,	# FS ACCESS!
+  audit /bin/cat					Cx,	# FS ACCESS! cat	# FIX ME! audit 28.06.2017
   /bin/netstat						Px,
   
   # READS/WRITES ---------------------------------------
@@ -94,6 +94,13 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /bin/netstat					Px,
+  }
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
   }
 }
 
