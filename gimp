@@ -36,6 +36,9 @@ profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   #include <abstractions/unix-pattern/gvfsd-http>
   #include <abstractions/unix-pattern/gvfsd-http-virtual>
   
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(kill) peer="gimp.plug-ins",
+  
   # DBUS -----------------------------------------------
   dbus send
   	bus=session
@@ -55,7 +58,7 @@ profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   # EXECUTABLES ----------------------------------------
   /usr/bin/gimp-*					rm,
   /usr/bin/gimp-console-*				mr,
-  /usr/lib{,32,64}/gimp/[0-9].[0-9]/plug-ins/*		ix,
+  /usr/lib{,32,64}/gimp/[0-9].[0-9]/plug-ins/*		Px,
   
   # READS/WRITES ---------------------------------------
   /etc/gimp/{,**}					r,
@@ -73,4 +76,26 @@ profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   # TEMP -----------------------------------------------
   owner /tmp/gdkpixbuf-save-tmp.*			rw,
   owner /tmp/gtkprint_*					rw,
+}
+
+profile gimp.plug-ins /usr/lib{,32,64}/gimp/[0-9].[0-9]/plug-ins/* {
+  #include <abstractions/base>
+  #include <abstractions/fonts>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/gtk>
+  #include <abstractions/video>
+  #include <abstractions/X>
+  #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/gimp/[0-9].[0-9]/plug-ins/*		mr,
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/gimp/[0-9].[0-9]/scripts/{,*}		r,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.gimp-[0-9].[0-9]/**			rw,
 }
