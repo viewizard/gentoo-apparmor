@@ -43,7 +43,7 @@ profile qgit /usr/bin/qgit {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/qgit						mr,
-  /bin/cat						ix,	# FS ACCESS!
+  /bin/cat						Cx,	# FS ACCESS! cat
   /usr/bin/git						Px,
   /usr/bin/meld						Px,	# Выбирается пользователем через настройки.
   /usr/bin/juffed					Px,	# Выбирается пользователем через настройки.
@@ -56,6 +56,19 @@ profile qgit /usr/bin/qgit {
   # TEMP -----------------------------------------------
   owner /tmp/qgit4.*					rw,
   owner /tmp/??????_*					rw,
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rk>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+  }
 }
 
 profile qgit_root {
@@ -95,7 +108,7 @@ profile qgit_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/qgit						mr,
-  /bin/cat						ix,	# FS ACCESS!
+  /bin/cat						Cx,	# FS ACCESS! cat
   /usr/bin/git						Px -> git_root,
   /usr/bin/meld						Px -> meld_root,	# Выбирается пользователем через настройки.
   /usr/bin/juffed					Px -> juffed_root,	# Выбирается пользователем через настройки.
@@ -108,4 +121,18 @@ profile qgit_root {
   # TEMP -----------------------------------------------
   owner /tmp/qgit4.*					rw,
   owner /tmp/??????_*					rw,
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rk>
+    #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+  }
 }
