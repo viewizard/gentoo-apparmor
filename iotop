@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile iotop @{PYTHON_EXEC}/iotop flags=(complain) {
+profile iotop @{PYTHON_EXEC}/iotop {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -18,6 +18,9 @@ profile iotop @{PYTHON_EXEC}/iotop flags=(complain) {
   
   # CAPABILITIES ---------------------------------------
   capability net_admin,
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
@@ -28,8 +31,22 @@ profile iotop @{PYTHON_EXEC}/iotop flags=(complain) {
   @{PROC}/@{pid}/{cmdline,status}			r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/file						ix,	# FS ACCESS!
+  /usr/bin/file						Cx,	# FS ACCESS! file
   
   # READS/WRITES ---------------------------------------
-  /usr/share/misc/magic.mgc				r,
+#  /usr/share/misc/magic.mgc				r,
+  
+  profile file /usr/bin/file {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    @{PROC}/vmstat					r,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/file					mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/bin/@{PYTHON}					r,
+    /usr/share/misc/magic.mgc				r,
+  }
 }
