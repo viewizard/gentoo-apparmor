@@ -41,17 +41,47 @@ profile aide.aideinit /usr/sbin/aideinit {
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						mr,
   /usr/sbin/aideinit					r,
-  /bin/cut						ix,
-  /bin/grep						ix,
-  /bin/egrep						ixr,
-  /bin/cp						ix,
+  @{shell}						mr,
+  /bin/cut						Cx,	# FS ACCESS! cut
+  audit /bin/grep					Cx,	# FS ACCESS! grep	# FIX ME! Вызывается именно grep?
+  /bin/egrep						Cx,	# FS ACCESS! egrep
+  /bin/cp						Cx,	# FS ACCESS! cp
   /usr/bin/aide						Px,
   
   # READS/WRITES ---------------------------------------
   /etc/aide/**						r,
   /var/lib/aide/**					rwk,
+  
+  profile cut /bin/cut flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cut						mr,
+  }
+  
+  profile grep /bin/grep flags=(complain) {			# FIX ME! Вызывается именно grep?
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile egrep /bin/egrep flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/egrep						r,
+    @{shell}						mr,
+    /bin/grep						ix,	# FS ACCESS!
+  }
+  
+  profile cp /bin/cp flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cp						mr,
+  }
 }
 
 # Профиль модифицированного скрипта для запуска aide по cron-у.
@@ -71,23 +101,23 @@ profile aide.cron.daily /etc/cron.daily/aide {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/aide					r,
   @{shell}						mr,
-  /bin/mktemp						ix,
-  /bin/cat						ix,
-  /bin/rm						ix,
-  /bin/dd						ix,
-  /bin/sed						ix,
-  /bin/grep						ix,
+  /bin/mktemp						Cx,	# FS ACCESS! mktemp
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/dd						Cx,	# FS ACCESS! dd
+  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/grep						Cx,	# FS ACCESS! grep
   /bin/mount						Px,
   /bin/umount						Px,
   /bin/basename						Px,
   /usr/bin/libnotify-notify-send-users			Px,
-  /usr/bin/stat						ix,
+  /usr/bin/stat						Cx,	# FS ACCESS! stat
   /usr/bin/mail						Px,
   /usr/bin/logger					Px,
   /usr/bin/aide						Px,
-  /usr/bin/md5sum					ix,
-  /usr/bin/sha1sum					ix,
-  /usr/bin/sha512sum					ix,
+  /usr/bin/md5sum					Cx,	# FS ACCESS! md5sum
+  /usr/bin/sha1sum					Cx,	# FS ACCESS! sha1sum
+  /usr/bin/sha512sum					Cx,	# FS ACCESS! sha512sum
   /usr/sbin/gdisk					Px,
   
   # READS/WRITES ---------------------------------------
@@ -96,4 +126,74 @@ profile aide.cron.daily /etc/cron.daily/aide {
   # TEMP -----------------------------------------------
   owner /tmp/aide.cron.??????				rw,
   owner /tmp/tmpmbr.bin					rw,
+  
+  profile mktemp /bin/mktemp flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mktemp						mr,
+  }
+  
+  profile cat /bin/cat flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+  }
+  
+  profile rm /bin/rm flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+  }
+  
+  profile dd /bin/dd flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/dd						mr,
+  }
+  
+  profile sed /bin/sed flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+  }
+  
+  profile grep /bin/grep flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile stat /usr/bin/stat flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/stat					mr,
+  }
+  
+  profile md5sum /usr/bin/md5sum flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/md5sum					mr,
+  }
+  
+  profile sha1sum /usr/bin/sha1sum flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/sha1sum					mr,
+  }
+  
+  profile sha512sum /usr/bin/sha512sum flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/sha512sum					mr,
+  }
 }

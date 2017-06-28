@@ -43,14 +43,15 @@ profile apparmor.init.d /etc/init.d/apparmor {
   capability mac_admin,
   
   # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/apparmor/tasks			w,
   /sys/kernel/security/apparmor/*			rw,
   @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/grep						ix,
-  /bin/sed						ix,
-  /bin/sort						ix,
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
@@ -61,5 +62,34 @@ profile apparmor.init.d /etc/init.d/apparmor {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile grep /bin/grep flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile sed /bin/sed flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+  }
+  
+  profile mkdir /bin/mkdir flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/apparmor/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
   }
 }

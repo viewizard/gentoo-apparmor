@@ -29,6 +29,9 @@ profile evelauncher.sh /home/*/evelauncher/evelauncher.sh {
   profile sed /bin/sed flags=(complain) {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/sed						mr,
   }
@@ -47,6 +50,7 @@ profile evelauncher /home/*/evelauncher/evelauncher flags=(attach_disconnected) 
   #include <abstractions/dbus-accessibility-strict>
   #include <abstractions/dbus-pattern/at-spi>
   #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/gconf>
   #include <abstractions/dbus-pattern/networkmanager>
   #include <abstractions/nameservice>
   #include <abstractions/ssl-certs>

@@ -14,7 +14,7 @@
 @{USERS_DIR}="[^.]**"
 @{USERS_FILE}="[^.]*"
 
-profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(complain) {
+profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -31,11 +31,8 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(com
   #include <abstractions/dbus-accessibility-strict>
   #include <abstractions/dbus-pattern/at-spi>
   #include <abstractions/dbus-pattern/gvfs>
-  
-  # CAPABILITIES ---------------------------------------
-  capability sys_admin,						# для nvidia-modprobe ix в abstractions/video-nvidia.
-  capability syslog,						# для nvidia-modprobe ix в abstractions/video-nvidia.
-  capability mknod,						# для nvidia-modprobe ix в abstractions/video-nvidia.
+  #include <abstractions/unix-pattern/gvfsd-trash>
+  #include <abstractions/unix-pattern/gvfsd-network>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -64,38 +61,60 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings flags=(com
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
-    owner @{PROC}/cmdline				r,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /bin/ps						Px,
-    /usr/bin/Xorg					ix,	# Не используем Px.
-    /usr/bin/pkg-config					ix,
-    
-    # READS/WRITES -------------------------------------
-    /usr/share/pkgconfig/				r,
+    /usr/bin/Xorg					Px -> nvidia_drivers_Xorg,	# Только создание xorg.conf.
+    /usr/bin/pkg-config					Px,
   }
 }
 
-# Не используем профиль, запускаем через ix в abstractions/video-nvidia.
-# Нужна интеграция + при запуске хромиума с Px, вываливается в kernel.log
-# дамп на AA_BUG: security/apparmor/file.c:136 aa_audit_file
-profile nvidia-drivers.nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe {
-#  #include <abstractions/base>
-#  #include <abstractions/video-nvidia>
-#  
-  # CAPABILITIES ---------------------------------------
-#  capability sys_admin,
-#  capability syslog,
-#  capability mknod,
-#  
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile nvidia_drivers_Xorg {
+  #include <abstractions/base>
+  
   # PSEUDO ---------------------------------------------
-#  /dev/tty[0-9]*					rw,
-#  @{PROC}/sys/kernel/modprobe				r,
-#  
+  /dev/tty[0-9]*					rw,
+  owner @{PROC}/cmdline				r,
+  
   # EXECUTABLES ----------------------------------------
-#  /{usr,opt}/bin/nvidia-modprobe			mr,
-#  /bin/kmod						Px,
+  /usr/bin/Xorg						mr,
+}
+
+# BUG! (модуль v3.6) При запуске nvidia-modprobe в chromium с Px, выводит
+# в kernel.log дамп на AA_BUG: security/apparmor/file.c:136 aa_audit_file
+# если в настройках хромиума указано использование аппаратного ускорителя
+# (данный функционал все равно не работает с блобом от нвидия, только с 
+# видео модулями ядра поддерживаемые встроенной в хромиум версией mesa).
+profile nvidia-drivers.nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe flags=(attach_disconnected) {
+  #include <abstractions/base>
+  #include <abstractions/video-nvidia>
+  
+  # CAPABILITIES ---------------------------------------
+  capability sys_admin,
+  capability syslog,
+  capability mknod,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  @{PROC}/sys/kernel/modprobe				r,
+  
+  # EXECUTABLES ----------------------------------------
+  /{usr,opt}/bin/nvidia-modprobe			mr,
+  /bin/kmod						Px,
+  
+  # DENY INHERIT ---------------------------------------
+  deny network,							# evelauncher
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
+  deny /dev/shm/.org.chromium.Chromium.*		rw,	# evelauncher
+  deny @{HOME}/evelauncher/{,**}			rw,	# evelauncher
+  deny @{HOME}/.eve/{,**}				rw,	# evelauncher
+  deny @{HOME}/.local/share/CCP/{,**}			rw,	# evelauncher
+  deny @{HOME_CACHE}/CCP/{,**}				rw,	# evelauncher
+  deny /media/{,**}					rw,
+  deny /mnt/{,**}					rw,
 }
 
 profile nvidia-drivers.nvidia-smi /opt/bin/nvidia-smi {
@@ -129,6 +148,13 @@ profile nvidia-drivers.nvidia-udev.sh /lib{,32,64}/udev/nvidia-udev.sh {
   /lib{,32,64}/udev/nvidia-udev.sh			r,
   @{shell}						mr,
   /bin/kmod						Px,
-  /bin/grep						ix,
+  /bin/grep						Cx,	# FS ACCESS! grep
   /opt/bin/nvidia-smi					Px,
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
 }

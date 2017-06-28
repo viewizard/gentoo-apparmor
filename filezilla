@@ -21,16 +21,14 @@ profile filezilla /usr/bin/filezilla {
   #include <abstractions/dbus-accessibility-strict>
   #include <abstractions/dbus-pattern/at-spi>
   #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus-pattern/notifications>
   #include <abstractions/fs-access-by-pattern-filemanager>
   #include <abstractions/fs-deny-private-strict>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   
-  # NETWORK --------------------------------------------
-  network inet dgram,
-  network inet6 dgram,
-  network inet stream,
-  network inet6 stream,
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term) peer="filezilla.fzsftp",
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -38,7 +36,7 @@ profile filezilla /usr/bin/filezilla {
   # EXECUTABLES ----------------------------------------
   /usr/bin/filezilla					mr,
   @{shell}						Cx,
-  /usr/bin/fzsftp					ix,
+  /usr/bin/fzsftp					Px,
   
   # READS/WRITES ---------------------------------------
   /usr/share/filezilla/{,**}				r,
@@ -46,34 +44,73 @@ profile filezilla /usr/bin/filezilla {
   # USERS ----------------------------------------------
   owner @{HOME}/.filezilla/{,**}			rw,
   
-  # TEMP -----------------------------------------------
-  owner /tmp/ssh-*/agent.*				rw,
-  
   # NOISY ----------------------------------------------
   deny /*/						r,	# если нужно будет работать под root с системными
   								# файлами - сделать профиль filezilla_root
   
   profile shell @{shell} {
     #include <abstractions/base>
-    #include <abstractions/nameservice>
-    #include <abstractions/fs-access-by-pattern-filemanager>
-    #include <abstractions/fs-deny-private-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
-    /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /bin/uname						Px,
-    /bin/ls						ix,
-    /usr/bin/lsb_release				Pxr,
-    /bin/ps						Px,
+    /usr/bin/lsb_release				Px,
+  }
+}
+
+profile filezilla.fzsftp /usr/bin/fzsftp {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/fs-access-by-pattern-filemanager>
+  #include <abstractions/fs-deny-private-strict>
+  
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/fzsftp					mr,
+  @{shell}						Cx,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.putty/{,**}				rw,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/ssh-*/agent.*				rw,
+  
+  profile shell @{shell} {
+    #include <abstractions/base>
     
-    # TEMP ---------------------------------------------
-    /tmp/						r,
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    
+    # EXECUTABLES --------------------------------------
+    @{shell}						mr,
+    /bin/ls						Px -> filezilla_fzsftp_ls,	# FS ACCESS! filezilla_fzsftp_ls
+    /bin/ps						Px,
     
     # NOISY --------------------------------------------
     deny /etc/						r,
   }
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile filezilla_fzsftp_ls {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/ls						mr,
+  
+  # TEMP -----------------------------------------------
+  /tmp/							r,
 }
