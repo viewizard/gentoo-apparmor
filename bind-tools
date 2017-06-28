@@ -21,6 +21,8 @@ profile bind-tools.dig /usr/bin/dig {
   network inet stream,
   network inet6 stream,
   
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------

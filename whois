@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2017 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,27 +10,23 @@
 
 #include <tunables/global>
 
-profile iputils.ping /bin/ping {
+profile whois /usr/bin/whois {
   #include <abstractions/base>
-  #include <abstractions/consoles>
   #include <abstractions/nameservice>
   
-  # CAPABILITIES ---------------------------------------
-  capability net_raw,
-  capability setuid,
-  
   # NETWORK --------------------------------------------
-  network inet raw,
-  network inet6 raw,
+  network netlink raw,
   network inet dgram,
   network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /bin/ping						mr,
+  /usr/bin/whois					mr,
   
   # READS/WRITES ---------------------------------------
-  /etc/modules.conf					r,
+  /etc/whois.conf					r,
 }
