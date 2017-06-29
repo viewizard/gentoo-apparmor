@@ -21,6 +21,7 @@ profile keepassxc /usr/bin/keepassxc {
   #include <abstractions/qt>
   #include <abstractions/video>
   #include <abstractions/X>
+  #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/dbus-accessibility-strict>
   #include <abstractions/dbus-pattern/at-spi>
@@ -46,6 +47,12 @@ profile keepassxc /usr/bin/keepassxc {
   # READS/WRITES ---------------------------------------
   /usr/bin/						r,
   /usr/share/keepassxc/{,**}				r,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/keepassxc-*.lock				rwk,
+  owner /tmp/keepassxc-*.socket				rw,
+  owner /tmp/.??????					rwk,
+  owner /tmp/??????/{,*}				rw,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/				r,
