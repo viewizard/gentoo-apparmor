@@ -39,15 +39,12 @@ profile pyfa @{PYTHON2_EXEC}/pyfa {
   network inet6 stream,
   
   # PSEUDO ---------------------------------------------
-  /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						ix,	# FIX ME! почему он в основном профиле с ix?
+  @{shell}						Cx,
   /bin/env						mr,
-  /sbin/ldconfig					Px,
-  /usr/bin/fc-list					ix,
   
   # READS/WRITES ---------------------------------------
   /usr/share/pyfa/					r,
@@ -62,4 +59,19 @@ profile pyfa @{PYTHON2_EXEC}/pyfa {
   
   # TEMP -----------------------------------------------
   owner /tmp/??????					rw,
+  
+  profile shell @{shell} {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    @{shell}						mr,
+    /sbin/ldconfig					Px,
+    
+    # DENY INHERIT -------------------------------------
+    deny /usr/share/pyfa/{,**}				r,
+  }
 }
