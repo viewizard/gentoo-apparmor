@@ -17,25 +17,57 @@
 profile local.sbin.relabel_evm_dtp /usr/local/sbin/relabel_evm_dtp.sh {
   #include <abstractions/base>
   
-  # CAPABILITIES ---------------------------------------
-  capability dac_read_search,
-  capability dac_override,
-  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/mounts					r,
-  @{PROC}/@{pid}/mountinfo				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/local/sbin/relabel_evm_dtp.sh			r,
   @{shell}						mr,
-  /bin/grep						ix,
-  /bin/touch						ix,
-  /bin/rm						ix,
-  /usr/bin/find						ix,
+  /bin/touch						Cx,	# FS ACCESS! touch
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /usr/bin/find						Cx,	# FS ACCESS! find
   
-  # READS/WRITES ---------------------------------------
-  /{,**/}						r,
-  /**.evmdtpcreate.xattr				rw,
+  profile touch /bin/touch {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/touch						mr,
+    
+    # READS/WRITES -------------------------------------
+    /**.evmdtpcreate.xattr				w,
+  }
+  
+  profile rm /bin/rm {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # READS/WRITES -------------------------------------
+    /**.evmdtpcreate.xattr				w,
+  }
+  
+  profile find /usr/bin/find {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    @{PROC}/@{pid}/mountinfo				r,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/find					mr,
+    
+    # READS/WRITES -------------------------------------
+    /{,**/}						r,
+  }
 }

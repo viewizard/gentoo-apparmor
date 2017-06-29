@@ -17,10 +17,6 @@
 profile local.sbin.relabel_ima_evm /usr/local/sbin/relabel_ima_evm.sh {
   #include <abstractions/base>
   
-  # CAPABILITIES ---------------------------------------
-  capability dac_read_search,
-  capability dac_override,
-  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/pts/[0-9]*					rw,
@@ -28,10 +24,33 @@ profile local.sbin.relabel_ima_evm /usr/local/sbin/relabel_ima_evm.sh {
   # EXECUTABLES ----------------------------------------
   /usr/local/sbin/relabel_ima_evm.sh			r,
   @{shell}						mr,
-  /bin/grep						ix,
-  /usr/bin/find						ix,
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /usr/bin/find						Cx,	# FS ACCESS! find
   /usr/bin/evmctl					Px,
   
-  # READS/WRITES ---------------------------------------
-  /{,**}						r,
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /dev/pts/[0-9]*				rw,
+  }
+  
+  profile find /usr/bin/find {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/find					mr,
+    
+    # READS/WRITES -------------------------------------
+    /{,**}						r,
+    
+    # DENY INHERIT -------------------------------------
+    deny /dev/pts/[0-9]*				rw,
+  }
 }
