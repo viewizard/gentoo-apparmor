@@ -270,11 +270,25 @@ profile thunar.thunar-sendto-email /usr/lib{,32,64}/Thunar/thunar-sendto-email {
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/Thunar/thunar-sendto-email		mr,
-  /usr/bin/zip						ix,
+  /usr/bin/zip						Cx,	# FS ACCESS! zip
   /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1		Px,
   
   # TEMP -----------------------------------------------
   owner /tmp/thunar-sendto-email.*/{,*}			rw,
+  
+  profile zip /usr/bin/zip {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-pattern-internet>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/zip					mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/thunar-sendto-email.*/{,*}		rw,
+  }
 }
 
 profile thunar.thunar-settings /usr/bin/thunar-settings {

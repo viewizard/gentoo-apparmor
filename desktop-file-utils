@@ -10,8 +10,11 @@
 
 #include <tunables/global>
 
-profile desktop-file-utils.update-desktop-database /usr/bin/update-desktop-database flags=(complain) {
+profile desktop-file-utils.update-desktop-database /usr/bin/update-desktop-database {
   #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/update-desktop-database			mr,
