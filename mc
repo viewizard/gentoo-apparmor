@@ -16,9 +16,6 @@ profile mc /usr/bin/mc {
   #include <abstractions/ncurses>
   #include <abstractions/fs-access-by-pattern-filemanager>
   
-  # CAPABILITIES ---------------------------------------
-  capability setuid,
-  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]						rw,
@@ -28,13 +25,26 @@ profile mc /usr/bin/mc {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mc						mr,
-  /usr/libexec/mc/cons.saver				ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/libexec/mc/cons.saver				Px,
   @{shell}						Px -> shell_users,
   
   # READS/WRITES ---------------------------------------
   /etc/mc/{,**}						r,
   /usr/libexec/mc/{,**}					r,
   /usr/share/mc/{,**}					r,
+}
+
+profile mc.cons.saver /usr/libexec/mc/cons.saver flags=(complain) {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability setuid,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/mc/cons.saver				mr,
 }
 
 profile mc_root flags=(complain) {
@@ -44,9 +54,6 @@ profile mc_root flags=(complain) {
   #include <abstractions/fs-access-by-pattern-filemanager>
   #include <abstractions/fs-access-by-pattern-systemusers>
   
-  # CAPABILITIES ---------------------------------------
-  capability setuid,
-  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]						rw,
@@ -56,7 +63,7 @@ profile mc_root flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mc						mr,
-  /usr/libexec/mc/cons.saver				ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/libexec/mc/cons.saver				Px,
   @{shell}						Px -> shell_root,
   
   # READS/WRITES ---------------------------------------
