@@ -24,8 +24,8 @@ profile oinkmaster /usr/bin/oinkmaster.pl {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/oinkmaster.pl				mr,
-  /bin/gzip						ix,
-  /bin/tar						ix,
+  /bin/gzip						Cx,	# FS ACCESS! gzip
+  /bin/tar						Cx,	# FS ACCESS! tar
   /usr/bin/wget						Px,
   
   # READS/WRITES ---------------------------------------
@@ -36,6 +36,29 @@ profile oinkmaster /usr/bin/oinkmaster.pl {
   # TEMP -----------------------------------------------
   owner /tmp/oinkmaster.cron.??????{,/,/**}		rw,
   owner /tmp/oinkmaster.*/{,**}				rw,
+  
+  profile gzip /bin/gzip {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/gzip						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/oinkmaster.cron.??????			rw,
+    owner /tmp/oinkmaster.*/{,**}			rw,
+  }
+  
+  profile tar /bin/tar {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/tar						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/oinkmaster.cron.??????			rw,
+    owner /tmp/oinkmaster.*/{,**}			rw,
+  }
 }
 
 # Профиль модифицированного скрипта для запуска обновления oinkmaster-а по cron-у.
@@ -53,9 +76,9 @@ profile oinkmaster.cron.daily /etc/cron.daily/oinkmaster {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/oinkmaster				r,
   @{shell}						mr,
-  /bin/mktemp						ix,
-  /bin/cat						ix,
-  /bin/rm						ix,
+  /bin/mktemp						Cx,	# FS ACCESS! mktemp
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/rm						Cx,	# FS ACCESS! rm
   /bin/basename						Px,
   /usr/bin/libnotify-notify-send-users			Px,
   /usr/bin/mail						Px,
@@ -65,4 +88,34 @@ profile oinkmaster.cron.daily /etc/cron.daily/oinkmaster {
   
   # TEMP -----------------------------------------------
   owner /tmp/oinkmaster.cron.??????			rw,
+  
+  profile mktemp /bin/mktemp {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mktemp						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/oinkmaster.cron.??????			rw,
+  }
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/oinkmaster.cron.??????			rw,
+  }
+  
+  profile rm /bin/rm {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/oinkmaster.cron.??????			w,
+  }
 }
