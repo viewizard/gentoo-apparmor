@@ -14,6 +14,7 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
+  capability mknod,
   capability sys_admin,
   
   # PSEUDO ---------------------------------------------
@@ -25,27 +26,116 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
   @{shell}						mr,
   /bin/stty						Px,
   /bin/tr						Px,
-  /bin/ln						ix,
-  /bin/mv						ix,
-  /bin/rm						ix,
-  /bin/rmdir						ix,
-  /bin/mkdir						ix,
-  /bin/cat						ix,
+  /bin/ln						Cx,	# FS ACCESS! ln
+  /bin/mv						Cx,	# FS ACCESS! mv
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/rmdir						Cx,	# FS ACCESS! rmdir
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/cat						Cx,	# FS ACCESS! cat
   /sbin/consoletype					Px,
-  /usr/bin/find						ix,
+  /usr/bin/find						Cx,	# FS ACCESS! find
   /usr/bin/tput						Px,
-  /usr/bin/scanelf					ix,
-  /usr/bin/cmp						ix,
+  /usr/bin/scanelf					Cx,	# FS ACCESS! scanelf
+  /usr/bin/cmp						Cx,	# FS ACCESS! cmp
   @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,
   
   # READS/WRITES ---------------------------------------
-  /etc/env.d/**						rw,
-  /usr/bin/*						rw,
-  /usr/@{CHOST}/**					rw,
+  /etc/env.d/**						r,
+  /etc/env.d/[0-9]*binutils.tmp				w,
+  /etc/env.d/binutils/config-@{CHOST}.tmp		w,
   /usr/@{CHOST}/binutils-bin/{,**}			r,
   
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.*					rw,
+  
+  profile ln /bin/ln flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/ln						mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/bin/*						w,
+    /usr/@{CHOST}/**					w,
+  }
+  
+  profile mv /bin/mv flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mv						mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/bin/*						rw,
+    /usr/@{CHOST}/**					rw,
+  }
+  
+  profile rm /bin/rm flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/env.d/[0-9]*binutils.tmp			w,
+    /etc/env.d/binutils/config-@{CHOST}.tmp		w,
+  }
+  
+  profile rmdir /bin/rmdir flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/@{CHOST}/**/					w,
+  }
+  
+  profile mkdir /bin/mkdir flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/@{CHOST}/**/					w,
+  }
+  
+  profile cat /bin/cat flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+  }
+  
+  profile find /usr/bin/find flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/find					mr,
+    /bin/rm						Px -> binutils_config_rm,	# FS ACCESS! binutils_config_rm
+    
+    # READS/WRITES -------------------------------------
+    /usr/@{CHOST}/**					r,
+  }
+  
+  profile scanelf /usr/bin/scanelf flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/scanelf					mr,
+  }
+  
+  profile cmp /usr/bin/cmp flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/cmp					mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/env.d/[0-9]*binutils{,.tmp}			r,
+    /etc/env.d/binutils/config-@{CHOST}{,.tmp}		r,
+  }
   
   profile portageq flags=(complain) {
     #include <abstractions/base>
@@ -55,4 +145,13 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
     @{PYTHON_EXEC}/portageq				Px,
     @{PYTHON_EXEC}/env-update				Px,
   }
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile binutils_config_rm flags=(complain) {
+  #include <abstractions/base>
+  
+  # EXECUTABLES --------------------------------------
+  /bin/rm						mr,
 }
