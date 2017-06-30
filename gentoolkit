@@ -56,6 +56,7 @@ profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check flags=(complain) {
 profile gentoolkit.equery @{PYTHON_EXEC}/equery flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
+  #include <abstractions/ncurses>
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
@@ -70,7 +71,6 @@ profile gentoolkit.equery @{PYTHON_EXEC}/equery flags=(complain) {
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
-  /etc/terminfo/x/xterm					r,
   /etc/portage/**					r,
   /usr/portage/**					r,
   /usr/local/portage/**					r,
@@ -130,14 +130,12 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean flags=(complain) {
   }
 }
 
-profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild flags=(complain) {
+profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
-  capability sys_admin,
-  capability dac_override,
   capability mknod,
   
   # PSEUDO ---------------------------------------------
@@ -147,7 +145,7 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild flags=(complain)
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
-  /usr/bin/scanelf					ix,
+  /usr/bin/scanelf					Cx,	# FS ACCESS! scanelf
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -167,7 +165,7 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild flags=(complain)
   /var/cache/edb/dep/usr/local/portage/{,**}		r,
   /var/cache/revdep-rebuild/{,**}			rw,
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -189,12 +187,31 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild flags=(complain)
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/emerge				Px,
   }
+  
+  profile scanelf /usr/bin/scanelf {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    capability dac_override,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/scanelf					mr,
+    
+    # READS/WRITES -------------------------------------
+    /							r,
+    /{bin,sbin,opt,lib{,32,64}}/**			r,
+    /usr/{bin,sbin,lib{,32,64,exec},@{CHOST}}/**	r,
+    /usr/local/lib{,32,64}/**				r,
+  }
 }
 
 # FIX ME! Устаревший, будет заменен на gentoolkit.revdep-rebuild
+# BUG! Работает некорректно, пересустанавливает постоянно samba.
 profile gentoolkit.revdep-rebuild.sh /usr/bin/revdep-rebuild.sh flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  #include <abstractions/ncurses>
   
   # CAPABILITIES ---------------------------------------
   capability fsetid,
@@ -208,26 +225,26 @@ profile gentoolkit.revdep-rebuild.sh /usr/bin/revdep-rebuild.sh flags=(complain)
   # EXECUTABLES ----------------------------------------
   @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
   @{shell}						mr,
-  /bin/chown						ix,
-  /bin/chmod						ix,
-  /bin/grep						ix,
-  /bin/sort						ix,
-  /bin/rm						ix,
-  /bin/cat						ix,
-  /bin/sed						ix,
+  /bin/chown						ix,	# FS ACCESS!
+  /bin/chmod						ix,	# FS ACCESS!
+  /bin/grep						ix,	# FS ACCESS!
+  /bin/sort						ix,	# FS ACCESS!
+  /bin/rm						ix,	# FS ACCESS!
+  /bin/cat						ix,	# FS ACCESS!
+  /bin/sed						ix,	# FS ACCESS!
   /bin/tr						Px,
   /bin/stty						Px,
   /bin/sleep						Px,
   /sbin/consoletype					Px,
-  /usr/bin/find						ix,
+  /usr/bin/find						ix,	# FS ACCESS!
   /usr/bin/tput						Px,
-  /usr/bin/gawk						ix,
-  /usr/bin/renice					ix,
-  /usr/bin/nice						ix,
-  /usr/bin/xargs					ix,
-  /usr/bin/realpath					ix,
+  /usr/bin/gawk						ix,	# FS ACCESS!
+  /usr/bin/renice					ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/nice						ix,	# FS ACCESS!
+  /usr/bin/xargs					ix,	# FS ACCESS!
+  /usr/bin/realpath					ix,	# FS ACCESS!
   /usr/bin/ldd						Px,
-  /usr/@{CHOST}/binutils-bin/*/objdump			ix,
+  /usr/@{CHOST}/binutils-bin/*/objdump			ix,	# FIX ME! Вынести в отдельный профиль.
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -240,7 +257,6 @@ profile gentoolkit.revdep-rebuild.sh /usr/bin/revdep-rebuild.sh flags=(complain)
   /etc/ld.so.conf.d/{,*}				r,
   /etc/revdep-rebuild/{,*}				r,
   /etc/env.d/python/config				r,
-  /etc/terminfo/x/xterm					r,
   /var/db/pkg/{,**}					r,
   /var/cache/revdep-rebuild/{,**}			rw,
   
