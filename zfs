@@ -101,11 +101,15 @@ profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed {
   capability dac_override,
   capability dac_read_search,
   
+  # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/zfs-zed/tasks			w,
+  
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /sbin/zpool						Px,
   /sbin/zed						Px,
-  /bin/rm						ix,
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   /bin/kmod						Pxr,
   
   # READS/WRITES ---------------------------------------
@@ -120,6 +124,28 @@ profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed {
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
+  
+  profile rm /bin/rm flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+  }
+  
+  profile mkdir /bin/mkdir flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/zfs-zed/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+  }
 }
 
 profile zfs.zfs-import.init.d /etc/init.d/zfs-import {
@@ -127,12 +153,16 @@ profile zfs.zfs-import.init.d /etc/init.d/zfs-import {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/zfs-import/tasks		w,
+  
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/grep						ix,
+  /bin/grep						ix,	# FS ACCESS!
   /bin/uname						Px,
   /bin/udevadm						Px,
   /bin/kmod						Pxr,
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   /sbin/zpool						Px,
   
   # READS/WRITES ---------------------------------------
@@ -145,5 +175,20 @@ profile zfs.zfs-import.init.d /etc/init.d/zfs-import {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile mkdir /bin/mkdir flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/zfs-import/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
   }
 }

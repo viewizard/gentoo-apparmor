@@ -28,18 +28,32 @@ profile man-db.mandb /usr/bin/mandb {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mandb					mr,
-  /bin/bzip2						ix,
-  /usr/libexec/man-db/manconv				ix,
+  /bin/bzip2						Cx,	# FS ACCESS! bzip2
+  /usr/libexec/man-db/manconv				Px,
   
   # READS/WRITES ---------------------------------------
   /etc/man_db.conf					r,
   /usr/share/man/{,**}					r,
   /var/cache/man/					r,
   /var/cache/man/**					rwk,
+  
+  profile bzip2 /bin/bzip2 flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/bzip2						mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/share/man/**.bz2				r,
+    
+    # DENY INHERIT -------------------------------------
+    deny /var/cache/man/**				rw,
+  }
 }
 
 profile man-db.man /usr/bin/man flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/ncurses>
   
   # CAPABILITIES ---------------------------------------
   capability setuid,
@@ -51,34 +65,106 @@ profile man-db.man /usr/bin/man flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/man						mr,
-  /bin/bzip2						ix,
-  /bin/gzip						ix,
-  /usr/bin/less						ix,
-  /usr/bin/preconv					ix,
-  /usr/bin/neqn						ix,
-  /usr/bin/nroff					ixr,
-  /usr/bin/groff					ix,
-  /usr/bin/troff					ix,
-  /usr/bin/grotty					ix,
-  /usr/bin/tbl						ix,
+  /bin/bzip2						Cx,	# FS ACCESS! bzip2
+  /bin/gzip						Cx,	# FS ACCESS! gzip
+  /usr/bin/less						Cx,	# FS ACCESS! less
+  /usr/bin/preconv					Cx,	# FS ACCESS! preconv
+  /usr/bin/neqn						Cx,	# FS ACCESS! neqn
+  /usr/bin/nroff					Cx,	# FS ACCESS! nroff
+  /usr/bin/groff					Cx,	# FS ACCESS! groff
+  /usr/bin/troff					Cx,	# FS ACCESS! troff
+  /usr/bin/grotty					Cx,	# FS ACCESS! grotty
+  /usr/bin/tbl						Cx,	# FS ACCESS! tbl
   /usr/bin/locale					Px,
-  /usr/libexec/man-db/manconv				ix,
+  /usr/libexec/man-db/manconv				Px,
   
   # READS/WRITES ---------------------------------------
   /etc/man_db.conf					r,
-  /etc/terminfo/x/xterm					r,
   /usr/share/groff/{,**}				r,
   /usr/share/man/{,**}					r,
   /var/cache/man/					r,
   /var/cache/man/**					rwk,
+  
+  profile bzip2 /bin/bzip2 flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/bzip2						mr,
+  }
+  
+  profile gzip /bin/gzip flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/gzip						mr,
+  }
+  
+  profile less /usr/bin/less flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/less					mr,
+  }
+  
+  profile preconv /usr/bin/preconv flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/preconv					mr,
+  }
+  
+  profile neqn /usr/bin/neqn flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/neqn					mr,
+  }
+  
+  profile nroff /usr/bin/nroff flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/nroff					mr,
+  }
+  
+  profile groff /usr/bin/groff flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/groff					mr,
+  }
+  
+  profile troff /usr/bin/troff flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/troff					mr,
+  }
+  
+  profile grotty /usr/bin/grotty flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/grotty					mr,
+  }
+  
+  profile tbl /usr/bin/tbl flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/tbl					mr,
+  }
+}
+
+profile man-db.manconv /usr/libexec/man-db/manconv flags=(complain) {
+  #include <abstractions/base>
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/man-db/manconv				mr,
 }
 
 profile man-db.cron.daily /etc/cron.daily/man-db {
   #include <abstractions/base>
-  
-  # CAPABILITIES ---------------------------------------
-  capability dac_override,
-  capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -87,6 +173,49 @@ profile man-db.cron.daily /etc/cron.daily/man-db {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/man-db				r,
   @{shell}						mr,
-  /usr/bin/nice						ix,
-  /usr/bin/mandb					Px,
+  /bin/chown						Cx,	# FS ACCESS! chown
+  /bin/chmod						Cx,	# FS ACCESS! chmod
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /usr/bin/nice						Cx,	# FS ACCESS! nice
+  
+  profile chown /bin/chown {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chown						mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/cache/man/					w,
+  }
+  
+  profile chmod /bin/chmod {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chmod						mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/cache/man/					w,
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/cache/man/					w,
+  }
+  
+  profile nice /usr/bin/nice flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/nice					mr,
+    /usr/bin/mandb					Px,
+  }
 }

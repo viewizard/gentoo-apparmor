@@ -19,14 +19,30 @@ profile pm-utils.pm-is-supported /usr/bin/pm-is-supported flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /sys/power/state					r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pm-is-supported				r,
   @{shell}						mr,
-  /bin/tr						ix,
-  /bin/grep						ix,
+  /bin/tr						Cx,	# FS ACCESS! tr
+  /bin/grep						Cx,	# FS ACCESS! grep
   
   # READS/WRITES ---------------------------------------
   /etc/pm/config.d/{,**}				r,
+  
+  profile tr /bin/tr flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/tr						mr,
+  }
+  
+  profile grep /bin/grep flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO ---------------------------------------------
+    /sys/power/state					r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
 }

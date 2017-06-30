@@ -8,6 +8,11 @@
 #
 # ------------------------------------------------------------------
 
+
+# Поддержка PAX будет убрана.
+# Профиль будет удален после оф. заявления.
+
+
 #include <tunables/global>
 
 profile elfix.migrate-pax /usr/sbin/migrate-pax flags=(complain) {
@@ -22,7 +27,7 @@ profile elfix.migrate-pax /usr/sbin/migrate-pax flags=(complain) {
   /usr/sbin/migrate-pax					mr,
   /bin/env						mr,
   @{shell}						Cx,
-  /usr/bin/python-wrapper				ix,
+  /usr/bin/python-wrapper				ix,	# FIX ME! Поменять на Px, откорректировать профиль.
   
   # READS/WRITES ---------------------------------------
   /{bin,sbin,opt,lib{,32,64}}/**			rw,
@@ -62,7 +67,7 @@ profile elfix.revdep-pax /usr/sbin/revdep-pax flags=(complain) {
   /usr/sbin/revdep-pax					mr,
   /bin/env						mr,
   @{shell}						Cx,
-  /usr/bin/python-wrapper				ix,
+  /usr/bin/python-wrapper				ix,	# FIX ME! Поменять на Px, откорректировать профиль.
   
   # READS/WRITES ---------------------------------------
   /{bin,sbin,opt,lib{,32,64}}/**			rw,

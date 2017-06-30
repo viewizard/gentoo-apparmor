@@ -18,7 +18,6 @@ profile hosts.sh.cron.daily /etc/cron.daily/hosts.sh {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
-  capability sys_admin,
   capability dac_override,
   capability dac_read_search,
   
@@ -29,13 +28,13 @@ profile hosts.sh.cron.daily /etc/cron.daily/hosts.sh {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/hosts.sh				r,
   @{shell}						mr,
-  /bin/date						ix,
-  /bin/mv						ix,
-  /bin/chmod						ix,
+  /bin/date						Cx,	# FS ACCESS! date
+  /bin/mv						Cx,	# FS ACCESS! mv
+  /bin/chmod						Cx,	# FS ACCESS! chmod
   /bin/basename						Px,
   /usr/bin/libnotify-notify-send-users			Px,
   /usr/bin/wget						Px,
-  /usr/bin/stat						ix,
+  /usr/bin/stat						Cx,	# FS ACCESS! stat
   /usr/bin/mail						Px,
   /usr/bin/logger					Px,
   
@@ -45,4 +44,44 @@ profile hosts.sh.cron.daily /etc/cron.daily/hosts.sh {
   
   # TEMP -----------------------------------------------
   owner /tmp/hosts					rw,
+  
+  profile date /bin/date {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/date						mr,
+  }
+  
+  profile mv /bin/mv {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mv						mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/lib/hosts.blacklist				w,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/hosts					rw,
+  }
+  
+  profile chmod /bin/chmod {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chmod						mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/lib/hosts.blacklist				w,
+  }
+  
+  profile stat /usr/bin/stat {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/stat					mr,
+  }
 }

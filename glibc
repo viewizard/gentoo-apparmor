@@ -24,21 +24,36 @@ profile glibc.ldd /usr/bin/ldd flags=(attach_disconnected) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/ldd						mr,
-  /bin/**						ixmr,
-  /sbin/**						ixmr,
-  /lib{,32,64,exec}/**					ixmr,
-  /opt/**						ixmr,
-  /usr/**						ixmr,
+  /bin/**						cxmr -> test_run,
+  /sbin/**						cxmr -> test_run,
+  /lib{,32,64,exec}/**					cxmr -> test_run,
+  /opt/**						cxmr -> test_run,
+  /usr/**						cxmr -> test_run,
   
   # READS/WRITES ---------------------------------------
-  /etc/ld.so.cache					mr,
+  /etc/ld.so.cache					r,
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					r,	# flags=(attach_disconnected)
   deny /var/cache/revdep-rebuild/*errors*		rw,	# gentoolkit.revdep-rebuild.sh
+  
+  profile test_run {
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/**						mr,
+    /sbin/**						mr,
+    /lib{,32,64,exec}/**				mr,
+    /opt/**						mr,
+    /usr/**						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/ld.so.cache					r,
+  }
 }
 
-profile glibc.locale /usr/bin/locale flags=(complain) {		# FIX ME! 04.04.2017 flags=(complain)
+profile glibc.locale /usr/bin/locale {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -46,13 +61,26 @@ profile glibc.locale /usr/bin/locale flags=(complain) {		# FIX ME! 04.04.2017 fl
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/locale					mr,
-  /bin/gzip						ix,
+  /bin/gzip						Cx,	# FS ACCESS! gzip
   
   # READS/WRITES ---------------------------------------
-  /usr/share/i18n/charmaps/{,*}				r,
+  /usr/share/i18n/charmaps/{,*.gz}			r,
+  
+  profile gzip /bin/gzip {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/gzip						mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/share/i18n/charmaps/*.gz			r,
+  }
 }
 
-profile glibc.ldconfig /sbin/ldconfig {
+profile glibc.ldconfig /sbin/ldconfig flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -79,6 +107,15 @@ profile glibc.ldconfig /sbin/ldconfig {
   								# Вызывать ldconfig в genkernel через "Px + {}"
   
   # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   deny @{HOME}/.pyfa/log.txt				w,	# pyfa
   deny /usr/share/pyfa/imgs.zip				r,	# pyfa
+}
+
+profile glibc.getent /usr/bin/getent {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/getent					mr,
 }

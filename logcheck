@@ -12,51 +12,227 @@
 
 profile logcheck /usr/sbin/logcheck {
   #include <abstractions/base>
-  #include <abstractions/perl>
   #include <abstractions/nameservice>
+  
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term) peer="logcheck//lockfile-create",
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
   /usr/sbin/logcheck					r,
-  /bin/egrep						r,
-  /bin/grep						ix,
-  /bin/date						ix,
+  /bin/date						Cx,	# FS ACCESS! date
   /bin/hostname						Px,
   /bin/basename						Px,
-  /bin/expr						ix,
-  /bin/mktemp						ix,
-  /bin/mkdir						ix,
-  /bin/run-parts					ix,
-  /bin/mv						ix,
-  /bin/egrep						ix,
-  /bin/cat						ix,
+  /bin/expr						Cx,	# FS ACCESS! expr
+  /bin/mktemp						Cx,	# FS ACCESS! mktemp
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/run-parts					Cx,	# FS ACCESS! run-parts
+  /bin/mv						Cx,	# FS ACCESS! mv
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/egrep						Cx,	# FS ACCESS! egrep
+  /bin/cat						Cx,	# FS ACCESS! cat
   /bin/tr						Px,
-  /bin/sed						ix,
-  /bin/ls						ix,
-  /bin/sort						ix,
-  /bin/rm						ix,
-  /bin/cp						ix,
-  /bin/wc						ix,
+  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/ls						Cx,	# FS ACCESS! ls
+  /bin/sort						Cx,	# FS ACCESS! sort
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/cp						Cx,	# FS ACCESS! cp
+  /bin/wc						Cx,	# FS ACCESS! wc
   /usr/bin/id						Px,
-  /usr/bin/lockfile-create				ix,
-  /usr/bin/mime-construct				ixr,
-  /usr/sbin/logtail2					ixr,
-  /usr/sbin/sendmail					Px,
+  /usr/bin/lockfile-create				Cx,	# FS ACCESS! lockfile-create
+  /usr/bin/mime-construct				Cx,	# FS ACCESS! mime-construct
+  /usr/sbin/logtail2					Px,
   
   # READS/WRITES ---------------------------------------
   /etc/logcheck/{,**}					r,
   /usr/share/logtail/{,**}				r,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/logcheck.*/{,**}				rw,
+  
+  profile date /bin/date {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/date						mr,
+  }
+  
+  profile expr /bin/expr {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/expr						mr,
+  }
+  
+  profile mktemp /bin/mktemp {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mktemp						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/logcheck.*/				w,
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/logcheck.*/**/				w,
+  }
+  
+  profile run-parts /bin/run-parts {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/run-parts					mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/logcheck/{,**/}				r,
+  }
+  
+  profile mv /bin/mv {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mv						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/logcheck.*/{,**}				rw,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile egrep /bin/egrep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/egrep						r,
+    @{shell}						mr,
+    /bin/grep						ix,	# Все правильно, для egrep используем с ix.
+    
+    # READS/WRITES -------------------------------------
+    /etc/logcheck/{,**}					r,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/logcheck.*/{,**}				r,
+  }
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/logcheck.*/{,**}				rw,
+  }
+  
+  profile sed /bin/sed {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+  }
+  
+  profile ls /bin/ls {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/ls						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/logcheck.*/{,**}				r,
+  }
+  
+  profile sort /bin/sort {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sort						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/logcheck.*/{,**}				r,
+  }
+  
+  profile rm /bin/rm {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/logcheck.*/{,**}				rw,
+  }
+  
+  profile cp /bin/cp {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cp						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/logcheck.*/{,**}				rw,
+  }
+  
+  profile wc /bin/wc {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/wc						mr,
+  }
+  
+  profile lockfile-create /usr/bin/lockfile-create {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/lockfile-create				mr,
+    
+    # READS/WRITES ---------------------------------------
+    /run/lock/logcheck/					rw,
+    /run/lock/logcheck/*				rw,
+    link subset /run/lock/logcheck/logcheck.lock	-> /run/lock/logcheck/*,
+  }
+  
+  profile mime-construct /usr/bin/mime-construct {
+    #include <abstractions/base>
+    #include <abstractions/perl>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/mime-construct				mr,
+    /usr/sbin/sendmail					Px,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/logcheck.*/{,**}				r,
+  }
+}
+
+profile logcheck.logtail2 /usr/sbin/logtail2 {
+  #include <abstractions/base>
+  #include <abstractions/perl>
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/logtail2					mr,
+  
+  # READS/WRITES ---------------------------------------
   /var/log/						r,
   /var/log/messages_logcheck*				r,
   /var/lib/logcheck/					r,
   /var/lib/logcheck/*					rw,
-  /run/lock/logcheck/					rw,
-  /run/lock/logcheck/*					rw,
-  link subset /run/lock/logcheck/logcheck.lock		-> /run/lock/logcheck/*,
   
   # TEMP -----------------------------------------------
   owner /tmp/logcheck.*/{,**}				rw,
@@ -64,10 +240,8 @@ profile logcheck /usr/sbin/logcheck {
 
 profile logcheck.cron.hourly /etc/cron.hourly/logcheck.cron {
   #include <abstractions/base>
-  #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
-  capability chown,
   capability dac_read_search,
   capability dac_override,
   
@@ -78,11 +252,32 @@ profile logcheck.cron.hourly /etc/cron.hourly/logcheck.cron {
   # EXECUTABLES ----------------------------------------
   /etc/cron.hourly/logcheck.cron			r,
   @{shell}						mr,
-  /bin/mkdir						ix,
-  /bin/chown						ix,
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/chown						Cx,	# FS ACCESS! chown
   /bin/su						Px,
   /usr/sbin/logcheck					Px,
   
-  # READS/WRITES ---------------------------------------
-  /run/lock/logcheck/					rw,
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/lock/logcheck/					w,
+  }
+  
+  profile chown /bin/chown {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    # CAPABILITIES -------------------------------------
+    capability chown,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chown						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/lock/logcheck/					rw,
+  }
 }

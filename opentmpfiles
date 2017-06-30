@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile opentmpfiles.tmpfiles /bin/tmpfiles flags=(complain) {
+profile opentmpfiles.tmpfiles /bin/tmpfiles {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -27,13 +27,81 @@ profile opentmpfiles.tmpfiles /bin/tmpfiles flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /bin/tmpfiles						r,
   @{shell}						mr,
-  /bin/sort						ix,
-  /bin/mkdir						ix,
-  /bin/chmod						ix,
-  /bin/chown						ix,
-  /bin/chgrp						ix,
+  /bin/sort						Cx,	# FS ACCESS! sort
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/chmod						Cx,	# FS ACCESS! chmod
+  /bin/chown						Cx,	# FS ACCESS! chown
+  /bin/chgrp						Cx,	# FS ACCESS! chgrp
   
   # READS/WRITES ---------------------------------------
-  /run/**/						w,
   /run/tmpfiles.d/{,*}					r,
+  
+  profile sort /bin/sort {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sort						mr,
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/**/						w,
+  }
+  
+  profile chmod /bin/chmod {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chmod						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/**/						w,
+  }
+  
+  profile chown /bin/chown {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chown						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/**/						w,
+  }
+  
+  profile chgrp /bin/chgrp {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chgrp						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/**/						w,
+  }
 }

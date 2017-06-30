@@ -29,7 +29,7 @@ profile logrotate /usr/bin/logrotate {
   # EXECUTABLES ----------------------------------------
   /usr/bin/logrotate					mr,
   @{shell}						Cx,
-  /usr/bin/xz						ix,
+  /usr/bin/xz						Cx,	# FS ACCESS! xz
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -55,6 +55,16 @@ profile logrotate /usr/bin/logrotate {
     /bin/su						Px,
     /etc/init.d/syslog-ng				Px,
   }
+  
+  profile xz /usr/bin/xz flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/xz						mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/log/**						rw,
+  }
 }
 
 profile logrotate.cron.daily /etc/cron.daily/logrotate {
@@ -67,6 +77,6 @@ profile logrotate.cron.daily /etc/cron.daily/logrotate {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/logrotate				r,
   @{shell}						mr,
-  /usr/bin/logger					ix,
+  /usr/bin/logger					Px,
   /usr/bin/logrotate					Px,
 }

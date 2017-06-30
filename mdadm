@@ -56,13 +56,28 @@ profile mdadm.checkarray /usr/sbin/checkarray flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/checkarray					r,
   @{shell}						mr,
-  /bin/ls						ix,
-  /bin/egrep						ixr,
-  /bin/grep						ix,
-  /usr/bin/getopt					ix,
+  /bin/ls						Cx,	# FS ACCESS! ls
+  /bin/egrep						Cx,	# FS ACCESS! egrep
+  /usr/bin/getopt					Px,
   
   # READS/WRITES ---------------------------------------
   /etc/default/mdadm					r,
+  
+  profile ls /bin/ls flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/ls						mr,
+  }
+  
+  profile egrep /bin/egrep flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/egrep						r,
+    @{shell}						mr,
+    /bin/grep						ix,	# Все правильно, для egrep используем с ix.
+  }
 }
 
 profile mdadm.init.d /etc/init.d/mdadm {
@@ -70,9 +85,13 @@ profile mdadm.init.d /etc/init.d/mdadm {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
+  # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/mdadm/tasks			w,
+  
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/rm						ix,
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   /sbin/mdadm						Px,
   
   # READS/WRITES ---------------------------------------
@@ -83,6 +102,35 @@ profile mdadm.init.d /etc/init.d/mdadm {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile rm /bin/rm flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_tty_config,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/mdadm/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
   }
 }
 
@@ -96,6 +144,13 @@ profile mdadm.cron.weekly /etc/cron.weekly/mdadm {
   # EXECUTABLES ----------------------------------------
   /etc/cron.weekly/mdadm				r,
   @{shell}						mr,
-  /bin/date						ix,
+  /bin/date						Cx,	# FS ACCESS! date
   /usr/sbin/checkarray					Px,
+  
+  profile date /bin/date {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/date						mr,
+  }
 }
