@@ -31,6 +31,7 @@ profile netifrc.init.d /etc/init.d/net.* {
   /sys/devices/virtual/net/br*/**			rw,
   /sys/devices/pci[0-9]*/**/net/eth[0-9]*/{,**}		r,
   /sys/devices/pci[0-9]*/**/usb[0-9]*/**/net/usb[0-9]*/ifindex r,
+  /sys/fs/cgroup/openrc/net.*/tasks			w,
   @{PROC}/@{pid}/mounts					r,
   @{PROC}/@{pid}/net/dev				r,
   @{PROC}/sys/net/ipv4/route/flush			w,
@@ -38,21 +39,22 @@ profile netifrc.init.d /etc/init.d/net.* {
   # EXECUTABLES ----------------------------------------
   /etc/init.d/*						Pxr,
   @{shell}						Cx,
-  /bin/ip						ix,
-  /bin/cat						ix,
-  /bin/grep						ix,
-  /bin/sed						ix,
-  /bin/chmod						ix,
+  /bin/ip						Px,
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/chmod						Cx,	# FS ACCESS! chmod
   /bin/tr						Px,
-  /bin/readlink						ix,
+  /bin/readlink						Cx,	# FS ACCESS! readlink
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
   /bin/rc-status					Px,
   /sbin/dhcpcd						Px,
   /sbin/brctl						Px,
   /sbin/iptunnel					Px,
   /sbin/iwconfig					Px,
-  /usr/bin/gawk						ix,
+  /usr/bin/gawk						Cx,	# FS ACCESS! gawk
   /usr/sbin/ifplugd					Px,
-  /lib{,32,64}/rc/sbin/mark_service_inactive		ix,
+  /lib{,32,64}/rc/sbin/mark_service_inactive		Px,
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
@@ -73,6 +75,63 @@ profile netifrc.init.d /etc/init.d/net.* {
     # PSEUDO -------------------------------------------
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
+  }
+  
+  profile cat /bin/cat flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+  }
+  
+  profile grep /bin/grep flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile sed /bin/sed flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+  }
+  
+  profile chmod /bin/chmod flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chmod						mr,
+  }
+  
+  profile readlink /bin/readlink flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/readlink					mr,
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/net.*/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+  }
+  
+  profile gawk /usr/bin/gawk flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/gawk					mr,
   }
 }
 

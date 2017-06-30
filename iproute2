@@ -1,0 +1,18 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+profile iproute2.ip /bin/ip flags=(complain) {
+  #include <abstractions/base>
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/ip						mr,
+}
