@@ -48,13 +48,20 @@ profile mate-screensaver.sh /usr/bin/mate-screensaver.sh {
   # EXECUTABLES ----------------------------------------
   /usr/bin/mate-screensaver.sh				r,
   @{shell}						mr,
-  /bin/grep						ix,
+  /bin/grep						Cx,	# FS ACCESS! grep
   /bin/sleep						Pxr,
   /bin/ps						Px,
   /usr/bin/mate-screensaver				Px,
   /usr/bin/xautolock					Px,
   /usr/bin/killall					Px,
   /usr/bin/gsettings					Px,
+  
+  profile grep /bin/grep flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
 }
 
 profile mate-screensaver-preferences /usr/bin/mate-screensaver-preferences {
@@ -166,9 +173,18 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/wc						ix,
+    /bin/wc						Px -> mate_screensaver_dialog_wc,	# FS ACCESS! mate_screensaver_dialog_wc
     /usr/bin/pidof					Px,
   }
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile mate_screensaver_dialog_wc flags=(complain) {
+  #include <abstractions/base>
+  
+  # EXECUTABLES --------------------------------------
+  /bin/wc						mr,
 }
 
 profile mate-screensaver-command /usr/bin/mate-screensaver-command {
