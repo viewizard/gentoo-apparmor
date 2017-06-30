@@ -14,7 +14,7 @@
 @{USERS_DIR}="[^.]**"
 @{USERS_FILE}="[^.]**"
 
-profile git /usr/{bin,libexec/git-core}/git flags=(complain) {
+profile git /usr/{bin,libexec/git-core}/git {
   #include <abstractions/base>
   #include <abstractions/fs-access-by-users-preset-rwkl>
   #include <abstractions/fs-deny-by-pattern-internet>
@@ -33,9 +33,8 @@ profile git /usr/{bin,libexec/git-core}/git flags=(complain) {
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/git						mr,
+  /usr/{bin,libexec/git-core}/git			Pxmr,
   /usr/bin/less						Cx,	# FS ACCESS! less
-  /usr/libexec/git-core/git				Px,
   /usr/libexec/git-core/git-remote-http			Cx,	# FS ACCESS! git-remote-http
   /usr/libexec/git-core/git-remote-https		Cx,	# FS ACCESS! git-remote-http
   
@@ -63,18 +62,19 @@ profile git /usr/{bin,libexec/git-core}/git flags=(complain) {
     #include <abstractions/fs-deny-by-pattern-internet>
     #include <abstractions/fs-deny-private-strict>
     
-    # NETWORK --------------------------------------------
+    # NETWORK ------------------------------------------
+    network netlink raw,
     network inet dgram,
     network inet6 dgram,
     network inet stream,
     network inet6 stream,
     
-    # PSEUDO ---------------------------------------------
+    # PSEUDO -------------------------------------------
     /dev/pts/[0-9]*					rw,
     
-    # EXECUTABLES ----------------------------------------
+    # EXECUTABLES --------------------------------------
     /usr/libexec/git-core/git-remote-http{,s}		mr,
-    /usr/libexec/git-core/git				Px,
+    /usr/{bin,libexec/git-core}/git			Px,
     
     # USERS --------------------------------------------
     owner @{HOME}/.gitconfig				r,
@@ -104,9 +104,8 @@ profile git_root {
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/git						mr,
+  /usr/{bin,libexec/git-core}/git			Pxmr -> git_root,
   /usr/bin/less						Cx,	# FS ACCESS! less
-  /usr/libexec/git-core/git				Px -> git_root,
   /usr/libexec/git-core/git-remote-http			Cx,	# FS ACCESS! git-remote-http
   /usr/libexec/git-core/git-remote-https		Cx,	# FS ACCESS! git-remote-http
   
@@ -137,18 +136,22 @@ profile git_root {
     #include <abstractions/fs-deny-by-pattern-internet>
     #include <abstractions/fs-deny-private-strict>
     
-    # NETWORK --------------------------------------------
+    # CAPABILITIES -------------------------------------
+    capability mknod,
+    
+    # NETWORK ------------------------------------------
+    network netlink raw,
     network inet dgram,
     network inet6 dgram,
     network inet stream,
     network inet6 stream,
     
-    # PSEUDO ---------------------------------------------
+    # PSEUDO -------------------------------------------
     /dev/pts/[0-9]*					rw,
     
-    # EXECUTABLES ----------------------------------------
+    # EXECUTABLES --------------------------------------
     /usr/libexec/git-core/git-remote-http{,s}		mr,
-    /usr/libexec/git-core/git				Px,
+    /usr/{bin,libexec/git-core}/git			Px -> git_root,
     
     # USERS --------------------------------------------
     owner @{HOME}/.gitconfig				r,
