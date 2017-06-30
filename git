@@ -48,14 +48,14 @@ profile git /usr/{bin,libexec/git-core}/git flags=(complain) {
   # TEMP -----------------------------------------------
   owner /tmp/qgit4.*					rw,	# qgit /usr/bin/qgit
   
-  profile less /usr/bin/less flags=(complain) {
+  profile less /usr/bin/less {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/less					mr,
   }
   
-  profile git-remote-http /usr/libexec/git-core/git-remote-http{,s} flags=(complain) {
+  profile git-remote-http /usr/libexec/git-core/git-remote-http{,s} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/ssl-certs>
@@ -121,14 +121,14 @@ profile git_root {
   # TEMP -----------------------------------------------
   owner /tmp/qgit4.*					rw,	# qgit /usr/bin/qgit
   
-  profile less /usr/bin/less flags=(complain) {
+  profile less /usr/bin/less {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/less					mr,
   }
   
-  profile git-remote-http /usr/libexec/git-core/git-remote-http{,s} flags=(complain) {
+  profile git-remote-http /usr/libexec/git-core/git-remote-http{,s} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/ssl-certs>
