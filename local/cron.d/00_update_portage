@@ -28,19 +28,84 @@ profile 00_update_portage.cron.daily /etc/cron.daily/00_update_portage {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/00_update_portage			r,
   @{shell}						mr,
-  /bin/mktemp						ix,
-  /bin/rm						ix,
-  /bin/cat						ix,
-  /bin/env						ix,	# FIX ME! Вынести в отдельный профиль.
+  /bin/mktemp						Cx,	# FS ACCESS! mktemp
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/env						Px -> env_00_update_portage,	# FS ACCESS! env_00_update_portage
   /bin/basename						Px,
   /usr/bin/libnotify-notify-send-users			Px,
   /usr/bin/mail						Px,
   /usr/bin/logger					Px,
-  @{PYTHON_EXEC_WRAPPER}				Cx -> emerge,
-  /lib{,32,64}/rc/bin/checkpath				ix,
+  @{PYTHON_EXEC_WRAPPER}				Cx -> emerge,	# Выполняем синхронизацию.
   
   # TEMP -----------------------------------------------
   owner /tmp/portage.cron.??????			rw,
+  
+  profile mktemp /bin/mktemp {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mktemp						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/portage.cron.??????			rw,
+  }
+  
+  profile rm /bin/rm {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/portage.cron.??????			w,
+  }
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/portage.cron.??????			rw,
+  }
+  
+  profile emerge {
+    #include <abstractions/base>
+    #include <abstractions/python-exec>
+    
+    # CAPABILITIES -------------------------------------
+    capability mknod,
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    @{PYTHON_EXEC}/emerge				Px,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/portage.cron.??????			rw,
+  }
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile env_00_update_portage {
+  #include <abstractions/base>
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/env						mr,
+  @{PYTHON_EXEC_WRAPPER}				Cx -> emerge,	# Выполняем emerge world.
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/portage.cron.??????			w,
   
   profile emerge {
     #include <abstractions/base>
