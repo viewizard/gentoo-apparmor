@@ -48,7 +48,6 @@ profile logcheck /usr/sbin/logcheck {
   
   # READS/WRITES ---------------------------------------
   /etc/logcheck/{,**}					r,
-  /usr/share/logtail/{,**}				r,
   
   # TEMP -----------------------------------------------
   owner /tmp/logcheck.*/{,**}				rw,
@@ -233,6 +232,9 @@ profile logcheck.logtail2 /usr/sbin/logtail2 {
   /var/log/messages_logcheck*				r,
   /var/lib/logcheck/					r,
   /var/lib/logcheck/*					rw,
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/logtail/{,**}				r,
   
   # TEMP -----------------------------------------------
   owner /tmp/logcheck.*/{,**}				rw,
