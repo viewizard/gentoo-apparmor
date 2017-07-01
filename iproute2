@@ -13,6 +13,16 @@
 profile iproute2.ip /bin/ip flags=(complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
+  capability net_admin,
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
+  
   # EXECUTABLES ----------------------------------------
   /bin/ip						mr,
 }

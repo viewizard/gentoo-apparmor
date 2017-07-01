@@ -24,7 +24,6 @@ signal (send) set=(term, hup),
 
 # PSEUDO -----------------------------------------------
 /dev/tty						rw,
-audit /dev/ptmx						rw,	# FIX ME! audit 16.06.2017
 /dev/console						rw,
 /dev/pts/[0-9]*						rw,
 /sys/fs/cgroup/						r,
@@ -37,10 +36,9 @@ owner @{PROC}/@{pid}/cmdline				r,
 
 # EXECUTABLES ------------------------------------------
 /sbin/openrc-run					mr,
-audit /sbin/openrc					Px,	# FIX ME! audit 16.06.2017
-/sbin/start-stop-daemon					ix,	# openrc-run.sh и start-stop-daemon запускаем в профиле
-/lib{,32,64}/rc/sh/openrc-run.sh			ix,	# скрипта, чтобы все уникальные части были в скрипте пакета.
-/lib{,32,64}/rc/bin/*					ix,	# FIX ME! (?) Вынести в отдельный профиль.
+/sbin/start-stop-daemon					ix,	# /rc/bin/*, openrc-run.sh и start-stop-daemon
+/lib{,32,64}/rc/sh/openrc-run.sh			ix,	# запускаем в профиле скрипта, чтобы все уникальные
+/lib{,32,64}/rc/bin/*					ix,	# части были в скрипте пакета.
 
 # READS/WRITES -----------------------------------------
 /etc/rc.conf						r,
