@@ -12,10 +12,9 @@
 
 profile gcc-config /usr/bin/gcc-config flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/ncurses>
   
   # CAPABILITIES ---------------------------------------
-  capability sys_admin,
-  capability dac_override,
   capability mknod,
   
   # PSEUDO ---------------------------------------------
@@ -25,46 +24,193 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /usr/bin/gcc-config					r,
   @{shell}						mr,
-  /bin/mv						ix,
-  /bin/cp						ix,
-  /bin/rm						ix,
-  /bin/ln						ix,
+  /bin/mv						Cx,	# FS ACCESS! mv
+  /bin/cp						Cx,	# FS ACCESS! cp
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/ln						Cx,	# FS ACCESS! ln
   /bin/tr						Px,
-  /bin/cat						ix,
-  /bin/sed						ix,
-  /bin/touch						ix,
-  /bin/sort						ix,
-  /bin/grep						ix,
-  /bin/egrep						ixr,
-  /usr/bin/find						ix,
-  /usr/bin/cmp						ix,
-  /usr/bin/gawk						ix,
-  /usr/bin/tac						ix,
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/touch						Cx,	# FS ACCESS! touch
+  /bin/sort						Cx,	# FS ACCESS! sort
+  /bin/egrep						Cx,	# FS ACCESS! egrep
+  /usr/bin/find						Cx,	# FS ACCESS! find
+  /usr/bin/cmp						Cx,	# FS ACCESS! cmp
+  /usr/bin/gawk						Cx,	# FS ACCESS! gawk
+  /usr/bin/tac						Cx,	# FS ACCESS! tac
   /usr/bin/python-wrapper				Px,
-  /lib{,32,64}/rc/bin/eval_ecolors			ix,
-  /lib{,32,64}/rc/bin/ebegin				ix,
-  /lib{,32,64}/rc/bin/ewarn				ix,
-  /lib{,32,64}/rc/bin/eend				ix,
-  /lib{,32,64}/rc/bin/eerror				ix,
+  /lib{,32,64}/rc/bin/eval_ecolors			Px,
+  /lib{,32,64}/rc/bin/ebegin				Px,
+  /lib{,32,64}/rc/bin/ewarn				Px,
+  /lib{,32,64}/rc/bin/eend				Px,
+  /lib{,32,64}/rc/bin/eerror				Px,
   @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,
   
   # READS/WRITES ---------------------------------------
   /							r,
   /lib{,32,64}/						r,
-  /lib{,32,64}/*					rw,
-  link subset /lib{,32,64}/*				-> /usr/lib{,32,64}/gcc/@{CHOST}/**,
   /etc/env.d/						r,
   /etc/env.d/**						rw,
   /etc/ld.so.conf.d/*					rw,
-  /etc/terminfo/x/xterm					r,
-  /usr/bin/*						rw,
   /usr/lib{,32,64}/gcc/@{CHOST}/*/libgcc.a		rw,
   /usr/@{CHOST}/gcc-bin/*/{,**}				r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/tac*					rw,
   owner /tmp/sh-thd.*					rw,
-  owner /tmp/sed*					rw,
+  
+  profile mv /bin/mv flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mv						mr,
+    
+    # READS/WRITES -------------------------------------
+    /lib{,32,64}/*					rw,
+    /usr/bin/*						rw,
+  }
+  
+  profile cp /bin/cp flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cp						mr,
+    
+    # READS/WRITES -------------------------------------
+    /lib{,32,64}/*					w,
+    /usr/bin/*						w,
+  }
+  
+  profile rm /bin/rm flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/env.d/**					w,
+    /lib{,32,64}/*					w,
+  }
+  
+  profile ln /bin/ln flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/ln						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/env.d/gcc/**					w,
+    link subset /lib{,32,64}/*				-> /usr/lib{,32,64}/gcc/@{CHOST}/**,
+  }
+  
+  profile cat /bin/cat flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+  
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/env.d/*					w,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/sh-thd.*					rw,
+  }
+  
+  profile sed /bin/sed flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/env.d/gcc/**					rw,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/sed*					rw,
+  }
+  
+  profile touch /bin/touch flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/touch						mr,
+    
+    # READS/WRITES -------------------------------------
+    /lib{,32,64}/*					w,
+    /usr/bin/*						w,
+  }
+  
+  profile sort /bin/sort flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sort						mr,
+  }
+  
+  profile egrep /bin/egrep flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/egrep						r,
+    @{shell}						mr,
+    /bin/grep						ix,	# Все правильно, для egrep используем с ix.
+    
+    # READS/WRITES -------------------------------------
+    /etc/env.d/gcc/*					r,
+  }
+  
+  profile find /usr/bin/find flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/find					mr,
+    
+    # READS/WRITES -------------------------------------
+    /							r,
+  }
+  
+  profile cmp /usr/bin/cmp flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/cmp					mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/env.d/*					r,
+  }
+  
+  profile gawk /usr/bin/gawk flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/gawk					mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/env.d/*					w,
+    /etc/env.d/gcc/**					r,
+  }
+  
+  profile tac /usr/bin/tac flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/tac					mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/tac*					rw,
+  }
   
   profile portageq flags=(complain) {
     #include <abstractions/base>
