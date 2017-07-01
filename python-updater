@@ -14,7 +14,7 @@ profile python-updater /usr/sbin/python-updater flags=(complain) {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
-  capability sys_admin,
+  capability mknod,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -24,32 +24,23 @@ profile python-updater /usr/sbin/python-updater flags=(complain) {
   /usr/sbin/python-updater				r,
   @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
   @{shell}						mr,
-  /bin/grep						ix,
-  /bin/sort						ix,
-  /bin/sed						ix,
-  /bin/bzip2						ix,
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/sort						Cx,	# FS ACCESS! sort
+  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/bzip2						Cx,	# FS ACCESS! bzip2
   /bin/stty						Px,
-  /bin/cut						ix,
-  /bin/cat						ix,
-  /bin/readlink						ix,
+  /bin/cut						Cx,	# FS ACCESS! cut
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/readlink						Cx,	# FS ACCESS! readlink
   /sbin/consoletype					Px,
   /usr/bin/python-wrapper				Px,
-  /usr/bin/find						ix,
+  /usr/bin/find						Cx,	# FS ACCESS! find
   /usr/bin/tput						Px,
-  /usr/bin/scanelf					ix,
-  /usr/bin/scanmacho					ix,
+  /usr/bin/scanelf					Cx,	# FS ACCESS! scanelf
+  /usr/bin/scanmacho					Cx,	# FS ACCESS! scanmacho
   
   # READS/WRITES ---------------------------------------
-  /							r,
-  /etc/{,**}						r,
-  /usr/{,**}						r,
-  /opt/{,**}						r,
-  /bin/{,**}						r,
-  /sbin/{,**}						r,
-  /var/lib/{,**}					r,
-  /var/db/{,**}						r,
-  /var/nullmailer/{,**}					r,
-  /var/**/.keep*					r,
+  /var/db/pkg/{,**}					r,
   
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.*					rw,
@@ -78,16 +69,131 @@ profile python-updater /usr/sbin/python-updater flags=(complain) {
     /usr/local/portage/{,**}				r,
     /usr/share/portage/{,**}				r,
   }
+  
+  profile grep /bin/grep flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/db/{,**}					r,
+  }
+  
+  profile sort /bin/sort flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sort						mr,
+  }
+  
+  profile sed /bin/sed flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+  }
+  
+  profile bzip2 /bin/bzip2 flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/bzip2						mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/db/pkg/**.bz2					r,
+  }
+  
+  profile cut /bin/cut flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cut						mr,
+  }
+  
+  profile cat /bin/cat flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+  }
+  
+  profile readlink /bin/readlink flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/readlink					mr,
+  }
+  
+  profile find /usr/bin/find flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/find					mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/db/{,**}					r,
+  }
+  
+  profile scanelf /usr/bin/scanelf flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    capability dac_override,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/scanelf					mr,
+    
+    # READS/WRITES -------------------------------------
+    /bin/{,**}						r,
+    /sbin/{,**}						r,
+    /opt/{,**}						r,
+    /etc/{,**}						r,
+    /usr/{,**}						r,
+    /var/{,**}						r,
+  }
+  
+  profile scanmacho /usr/bin/scanmacho flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    capability dac_override,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/scanmacho					mr,
+    
+    # READS/WRITES -------------------------------------
+    /bin/{,**}						r,
+    /sbin/{,**}						r,
+    /opt/{,**}						r,
+    /etc/{,**}						r,
+    /usr/{,**}						r,
+    /var/{,**}						r,
+  }
 }
 
-# FIX ME! Т.к. не поддерживаем двойные вложения профилей и не можем вызывать
-# другие вложенные профили через "профиль1//профиль2" - используем отдельный
-# внешний профиль под shell.
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
 profile python_updater_shell flags=(complain) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
