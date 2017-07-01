@@ -12,39 +12,34 @@
 
 profile chkrootkit /usr/sbin/chkrootkit {
   #include <abstractions/base>
-  #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
-  capability dac_override,
-  capability dac_read_search,
-  
-  # PTRACE ---------------------------------------------
-  ptrace (trace) peer="sysvinit.init",
+  capability mknod,
   
   # PSEUDO ---------------------------------------------
-  /dev/tty						w,
+  /dev/tty						rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/chkrootkit					r,
   @{shell}						mr,
-  /bin/sed						ix,
+  /bin/sed						Cx,	# FS ACCESS! sed
   /bin/uname						Px,
   /bin/ps						Px,
-  /bin/cut						ix,
-  /bin/egrep						ix,
-  /bin/grep						ix,
-  /bin/ls						ix,
-  /bin/head						ix,
+  /bin/cut						Cx,	# FS ACCESS! cut
+  /bin/egrep						Cx,	# FS ACCESS! egrep
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/ls						Cx,	# FS ACCESS! ls
   /bin/echo						Px,
   /bin/tr						Px,
-  /bin/wc						ix,
-  /bin/cat						ix,
+  /bin/wc						Cx,	# FS ACCESS! wc
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/head						Cx,	# FS ACCESS! head
   /bin/netstat						Px,
   /usr/bin/id						Px,
   /usr/bin/crontab					Px,
-  /usr/bin/gawk						ix,
-  /usr/bin/find						ix,
+  /usr/bin/gawk						Cx,	# FS ACCESS! gawk
+  /usr/bin/find						Cx,	# FS ACCESS! find
   /usr/sbin/chkdirs					Px,
   /usr/sbin/strings-static				Px,
   /usr/sbin/chkproc					Px,
@@ -54,7 +49,157 @@ profile chkrootkit /usr/sbin/chkrootkit {
   /usr/sbin/chkutmp					Px,
   
   # READS/WRITES ---------------------------------------
-  /{,**}						r,
+  /							r,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
+  
+  profile sed /bin/sed {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
+  }
+  
+  profile cut /bin/cut {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cut						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
+  }
+  
+  profile egrep /bin/egrep flags=(attach_disconnected) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    # CAPABILITIES ---------------------------------------
+    capability mknod,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/egrep						r,
+    @{shell}						mr,
+    /bin/grep						ix,	# Все правильно, для egrep используем с ix.
+    
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				rw,	# flags=(attach_disconnected)
+    deny /tmp/chkrootkit.cron.*				w,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability mknod,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile ls /bin/ls {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/ls						mr,
+    
+    # READS/WRITES -------------------------------------
+    /							r,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
+  }
+  
+  profile wc /bin/wc {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/wc						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
+  }
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # PTRACE -------------------------------------------
+    ptrace (trace) peer="sysvinit.init",
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/shells						r,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
+  }
+  
+   profile head /bin/head {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability mknod,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/head						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
+  }
+  
+  profile gawk /usr/bin/gawk {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/gawk					mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
+  }
+  
+  profile find /usr/bin/find {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability net_admin,
+    capability dac_override,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/find					mr,
+    /bin/head						Px -> chkrootkit_find_head,	# FS ACCESS! chkrootkit_find_head
+    
+    # READS/WRITES -------------------------------------
+    /{,**}						r,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
+  }
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile chkrootkit_find_head /bin/head {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability dac_override,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/head						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /tmp/**						r,
+  /var/tmp/**						r,
   
   # TEMP -----------------------------------------------
   owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
@@ -108,27 +253,39 @@ profile chkrootkit.chkproc /usr/sbin/chkproc {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/chkproc					mr,
-  @{shell}						Cx,
+  @{shell}						Px -> chkrootkit_chkproc_shell,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile chkrootkit_chkproc_shell {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability dac_override,
+  capability dac_read_search,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
+  /bin/ps						Px,
+  /bin/tr						Px,
+  /bin/cut						Cx,	# FS ACCESS! cut
   
   # TEMP -----------------------------------------------
   owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
   
-  profile shell @{shell} {
+  profile cut /bin/cut {
     #include <abstractions/base>
     
-    # CAPABILITIES -------------------------------------
-    capability dac_override,
-    capability dac_read_search,
-    
-    # PSEUDO ---------------------------------------------
-    /dev/tty						rw,
-    /dev/pts/[0-9]*					rw,
-    
     # EXECUTABLES --------------------------------------
-    @{shell}						mr,
-    /bin/ps						Px,
-    /bin/tr						Px,
-    /bin/cut						ix,
+    /bin/cut						mr,
     
     # TEMP ---------------------------------------------
     owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
@@ -255,9 +412,9 @@ profile chkrootkit.cron.daily /etc/cron.daily/chkrootkit {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/chkrootkit				r,
   @{shell}						mr,
-  /bin/mktemp						ix,
-  /bin/cat						ix,
-  /bin/rm						ix,
+  /bin/mktemp						Cx,	# FS ACCESS! mktemp
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/rm						Cx,	# FS ACCESS! rm
   /bin/basename						Px,
   /usr/bin/libnotify-notify-send-users			Px,
   /usr/bin/mail						Px,
@@ -265,5 +422,44 @@ profile chkrootkit.cron.daily /etc/cron.daily/chkrootkit {
   /usr/sbin/chkrootkit					Px,
   
   # TEMP -----------------------------------------------
-  owner /tmp/chkrootkit.cron.??????			rw,
+  owner /tmp/chkrootkit.cron.*				rw,	# DELEGATION! chkrootkit.cron.daily
+  
+  profile mktemp /bin/mktemp {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mktemp						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/chkrootkit.cron.*			rw,	# DELEGATION! chkrootkit.cron.daily
+  }
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/chkrootkit.cron.*			rw,	# DELEGATION! chkrootkit.cron.daily
+  }
+  
+  profile rm /bin/rm {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
+  }
 }
