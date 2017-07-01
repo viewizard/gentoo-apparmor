@@ -63,8 +63,8 @@ profile xfce4-session /usr/bin/xfce4-session {
   /usr/bin/xfce4-session				Pxmr,	# Все правильно, запуск и mmap.
   @{shell}						Cx,
   /bin/env						Cx,
-  /bin/true						ix,
-  /bin/rm						ix,
+  /bin/true						Px,
+  audit /bin/rm						Cx,	# FS ACCESS! rm		# FIX ME! audit 22.06.2017
   /usr/bin/ssh-agent					Px,
   /usr/bin/gpg-agent					Px,
   /usr/bin/xfsettingsd					Px,
@@ -139,6 +139,13 @@ profile xfce4-session /usr/bin/xfce4-session {
     
     # USERS --------------------------------------------
     owner @{HOME}/.xfce4-session.verbose-log		w,
+  }
+  
+  profile rm /bin/rm {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
   }
 }
 
@@ -237,31 +244,67 @@ profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/startxfce4					r,
-  @{shell}						Cxmr,	# Все правильно, запуск и mmap.
+  @{shell}						Pxmr -> xfce4_session_startxfce4_shell,	# Все правильно, запуск и mmap.
   /usr/bin/xinit					Px,
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile xfce4_session_startxfce4_shell {
+  #include <abstractions/base>
   
-  profile shell @{shell} {
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
+  /bin/cat						Cx,	# FS ACCESS! cat
+  audit /bin/grep					Cx,	# FS ACCESS! grep	# FIX ME! audit 22.06.2017
+  audit /bin/sed					Cx,	# FS ACCESS! sed	# FIX ME! audit 22.06.2017
+  /usr/bin/which					Px,
+  audit /usr/bin/gawk					Cx,	# FS ACCESS! gawk	# FIX ME! audit 22.06.2017
+  /usr/bin/xrdb						Px,
+  /usr/bin/xfce4-session				Px,
+  /usr/bin/xdg-user-dirs-update				Px,
+  /etc/xdg/xfce4/xfce4-session-fix			Px,	# временный скрипт-фикс для xfce4 4.12
+  
+  # READS/WRITES ---------------------------------------
+  /etc/xdg/xfce4/xinitrc				r,
+  /etc/xdg/xfce4/Xft.xrdb				r,
+  
+  profile cat /bin/cat {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
-    /dev/tty						rw,
     /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
-    @{shell}						mr,
-    /bin/cat						ix,
-    /bin/grep						ix,
-    /bin/sed						ix,
-    /usr/bin/which					Px,
-    /usr/bin/gawk					ix,
-    /usr/bin/xrdb					Px,
-    /usr/bin/xfce4-session				Px,
-    /usr/bin/xdg-user-dirs-update			Px,
-    /etc/xdg/xfce4/xfce4-session-fix			Px,	# временный скрипт-фикс для xfce4 4.12
+    /bin/cat						mr,
     
     # READS/WRITES -------------------------------------
-    /etc/xdg/xfce4/xinitrc				r,
     /etc/xdg/xfce4/Xft.xrdb				r,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile sed /bin/sed {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+  }
+  
+  profile gawk /usr/bin/gawk {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/gawk					mr,
   }
 }
 
@@ -279,20 +322,71 @@ profile xfce4-session.xfce4-session-fix /etc/xdg/xfce4/xfce4-session-fix {
   # EXECUTABLES ----------------------------------------
   /etc/xdg/xfce4/xfce4-session-fix			r,
   @{shell}						mr,
-  /bin/rm						ix,
-  /bin/cp						ix,
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/cp						Cx,	# FS ACCESS! cp
   /bin/sleep						Px,
-  /bin/mkdir						ix,
-  /usr/bin/cmp						ix,
-  /usr/bin/diff						ix,
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /usr/bin/diff						Cx,	# FS ACCESS! diff
   /usr/bin/xfdesktop					Px,
   /usr/bin/libnotify-notify-send			Px,
   
-  # USERS ----------------------------------------------
-  owner @{HOME}/.config/xfce4/desktop/{,*}		rw,
+  profile rm /bin/rm {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/xfdesktop-*/{,**}			rw,
+  }
   
-  # TEMP -----------------------------------------------
-  owner /tmp/xfdesktop-*/{,**}				rw,
+  profile cp /bin/cp {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cp						mr,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.config/xfce4/desktop/{,*}		rw,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/xfdesktop-*/desktop/{,*}			rw,
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/xfdesktop-*/				w,
+  }
+  
+  profile diff /usr/bin/diff {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/diff					mr,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.config/xfce4/desktop/{,*}		r,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/xfdesktop-*/desktop/{,*}			r,
+  }
 }
 
 profile xfce4-session.Xfce4 /etc/X11/Sessions/Xfce4 {
