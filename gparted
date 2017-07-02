@@ -32,7 +32,7 @@ profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
   #include <abstractions/X_sudo>
   #include <abstractions/nameservice>
   #include <abstractions/dbus-session-strict>
-  #include <abstractions/binary-helper-strict-web_root>		# Все правильно, т.к. polkit переключит в root.
+  #include <abstractions/binary-helper-strict-web_root>		# Все правильно, т.к. polkit переключит на root пользователя.
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
@@ -59,51 +59,106 @@ profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
   /usr/sbin/gpartedbin					mr,
   /bin/umount						Px,
   /bin/udevadm						Px,
-  /sbin/hdparm						ix,
+  /sbin/hdparm						ix,	# FIX ME! Вынести в отдельный профиль.
   /sbin/blkid						Px,
   /sbin/mdadm						Px,
-  /sbin/e2image						ix,
+  /sbin/e2image						ix,	# FIX ME! Вынести в отдельный профиль.
   /sbin/lvm						Px,
-  /sbin/tune2fs						ix,
-  /sbin/dumpe2fs					ix,
+  /sbin/tune2fs						ix,	# FIX ME! Вынести в отдельный профиль.
+  /sbin/dumpe2fs					ix,	# FIX ME! Вынести в отдельный профиль.
   /sbin/dmsetup						Px,
   /sbin/mke2fs						Px,
-  /sbin/swaplabel					ix,
+  /sbin/swaplabel					ix,	# FIX ME! Вынести в отдельный профиль.
   /sbin/mkswap						Px,
-  /usr/bin/mtools					ix,
-  /usr/bin/udisks					ix,
-  /usr/sbin/mkfs.*					ix,
-  /usr/sbin/fsck.*					ix,
-  /usr/sbin/mkntfs					ix,
-  /usr/sbin/ntfsresize					ix,
-  /usr/sbin/ntfslabel					ix,
+  /usr/bin/mtools					ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/sbin/mkfs.*					ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/sbin/fsck.*					ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/sbin/mkntfs					ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/sbin/ntfsresize					ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/sbin/ntfslabel					ix,	# FIX ME! Вынести в отдельный профиль.
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
   /etc/mtools/mtools.conf				r,	# mlabel
-  /run/blkid/blkid.tab*					rw,
-#  /run/blkid/blkid.tab*				l,	# FIX ME!
+  /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,
+  /run/blkid/blkid.tab					r,	# e2label
 }
 
 profile gparted.gparted /usr/sbin/gparted flags=(complain) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty rw,
+  /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/gparted					r,
   @{shell}						mr,
   /bin/ps						Px,
-  /bin/rm						ix,
-  /bin/grep						ix,
-  /bin/egrep						ixr,
-  /bin/touch						ix,
-  /bin/sed						ix,
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/egrep						Cx,	# FS ACCESS! egrep
+  /bin/touch						Cx,	# FS ACCESS! touch
+  /bin/sed						Cx,	# FS ACCESS! sed
   /usr/bin/id						Px,
   /usr/sbin/gpartedbin					Px,
   
   # READS/WRITES ---------------------------------------
-  /run/udev/rules.d/{,*}				rw,
+  /run/udev/rules.d/					r,
+  
+  profile rm /bin/rm flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/udev/rules.d/*					w,
+  }
+  
+  profile grep /bin/grep flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile egrep /bin/egrep flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO ---------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/egrep						r,
+    @{shell}						mr,
+    /bin/grep						ix,	# Все правильно, для egrep используем с ix.
+  }
+  
+  profile touch /bin/touch flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/touch						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/udev/rules.d/*					w,
+  }
+  
+  profile sed /bin/sed flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+  }
 }

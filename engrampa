@@ -297,6 +297,8 @@ profile engrampa /usr/bin/engrampa flags=(complain) {
   }
 }
 
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
 profile engrampa_tar_shell flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   #include <abstractions/fs-access-by-users-preset-rwkl>
@@ -666,6 +668,8 @@ profile engrampa_root flags=(complain) {
   }
 }
 
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
 profile engrampa_tar_shell_root flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   #include <abstractions/fs-access-by-users-preset-rwkl>

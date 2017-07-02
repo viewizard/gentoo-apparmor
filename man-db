@@ -161,6 +161,9 @@ profile man-db.manconv /usr/libexec/man-db/manconv flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/man-db/manconv				mr,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /var/cache/man/**				rw,	# man-db.mandb
 }
 
 profile man-db.cron.daily /etc/cron.daily/man-db {
