@@ -14,82 +14,646 @@
 @{USERS_DIR}="[^.]**"
 @{USERS_FILE}="[^.]**"
 
-profile engrampa /usr/bin/engrampa {
+profile engrampa /usr/bin/engrampa flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/gtk>
   #include <abstractions/video>
   #include <abstractions/X>
+  #include <abstractions/nameservice>
   #include <abstractions/dbus-strict>
   #include <abstractions/dbus-session-strict>
   #include <abstractions/dbus-accessibility-strict>
   #include <abstractions/dbus-pattern/at-spi>
   #include <abstractions/dbus-pattern/gvfs>
   #include <abstractions/dconf>
-  #include <abstractions/nameservice>
-  #include <abstractions/binary-helper-strict>
-  #include <abstractions/xdg-open>
   #include <abstractions/fs-access-by-users-preset-rwkl>
   #include <abstractions/fs-deny-private-strict>
   #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/unix-pattern/gvfsd-trash>
+  #include <abstractions/unix-pattern/gvfsd-network>
+  #include <abstractions/xdg-open>
+  #include <abstractions/binary-helper-strict>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/engrampa					mr,
+  /bin/mv						Cx,	# FS ACCESS! mv
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/cp						Cx,	# FS ACCESS! cp
+  /bin/tar						Cx,	# FS ACCESS! tar
+  /bin/bzip2						Cx,	# FS ACCESS! bzip2
+  /bin/gzip						Cx,	# FS ACCESS! gzip
+  /usr/bin/7z						Cx,	# FS ACCESS! 7z
+  /usr/bin/7za						Cx,	# FS ACCESS! 7za
+  /usr/bin/zip						Cx,	# FS ACCESS! zip
+  /usr/bin/unzip					Cx,	# FS ACCESS! unzip
+  /usr/bin/lzip						Cx,	# FS ACCESS! lzip
+  /usr/bin/xz						Cx,	# FS ACCESS! xz
+  /usr/@{CHOST}/binutils-bin/*/ar			Cx,	# FS ACCESS! ar
+  /opt/rar/rar						Cx,	# FS ACCESS! rar
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/engrampa/{,**}				r,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.fr-*/{,**}				rw,
+  owner @{HOME}/.config/mimeapps.list*			rw,
+  owner @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+  
+  profile mv /bin/mv flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mv						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+  }
+  
+  profile rm /bin/rm flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.fr-*/{,**}				rw,
+    
+    # DENY INHERIT -------------------------------------
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+  }
+  
+  profile cp /bin/cp flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cp						mr,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.fr-*/{,**}				rw,
+    
+    # DENY INHERIT -------------------------------------
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+  }
+  
+  profile tar /bin/tar flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/tar						mr,
+    @{shell}						Px -> engrampa_tar_shell,
+    /bin/bzip2						ix,	# Oставляем запуск через ix.
+    /bin/gzip						ix,	# Oставляем запуск через ix.
+    /usr/bin/lzip					ix,	# Oставляем запуск через ix.
+    /usr/bin/xz						ix,	# Oставляем запуск через ix.
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.fr-*/{,**}				rw,
+    
+    # DENY INHERIT -------------------------------------
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+  }
+  
+  profile bzip2 /bin/bzip2 flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/bzip2						mr,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.fr-*/{,**}				rw,
+    
+    # DENY INHERIT -------------------------------------
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+  }
+  
+  profile gzip /bin/gzip flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/gzip						mr,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.fr-*/{,**}				rw,
+    
+    # DENY INHERIT -------------------------------------
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+  }
+  
+  profile 7z /usr/bin/7z flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /sys/devices/system/cpu/				r,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/7z						r,
+    @{shell}						mr,
+    /usr/lib{,32,64}/p7zip/7z				ix,	# Все правильно, для 7z используем с ix.
+    
+    # READS/WRITES -------------------------------------
+    /usr/lib64/p7zip/7z.so				m,
+    
+    # DENY INHERIT -------------------------------------
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+  }
+  
+  profile 7za /usr/bin/7za flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /sys/devices/system/cpu/				r,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/7za					r,
+    @{shell}						mr,
+    /usr/lib{,32,64}/p7zip/7za				ix,	# Все правильно, для 7za используем с ix.
+    
+    # DENY INHERIT -------------------------------------
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+  }
+  
+  profile zip /usr/bin/zip flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/zip					mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+  }
+  
+  profile unzip /usr/bin/unzip flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/unzip					mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+  }
+  
+  profile lzip /usr/bin/lzip flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/lzip					mr,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.fr-*/{,**}				rw,
+    
+    # DENY INHERIT -------------------------------------
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+  }
+  
+  profile xz /usr/bin/xz flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/xz						mr,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.fr-*/{,**}				rw,
+    
+    # DENY INHERIT -------------------------------------
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+  }
+  
+  profile ar /usr/@{CHOST}/binutils-bin/*/ar flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/@{CHOST}/binutils-bin/*/ar			mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+  }
+  
+  profile rar /opt/rar/rar {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /opt/rar/rar					mr,
+    
+    # NOISY --------------------------------------------
+    deny /etc/						r,
+    deny /usr/{,local/}lib{,32,64}/			r,
+    
+    # DENY INHERIT -------------------------------------
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+  }
+}
+
+profile engrampa_tar_shell flags=(attach_disconnected,complain) {
+  #include <abstractions/base>
+  #include <abstractions/fs-access-by-users-preset-rwkl>
+  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs-deny-private-strict>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
+  /bin/gzip						Cx,	# FS ACCESS! gzip
+  /bin/bzip2						Cx,	# FS ACCESS! bzip2
+  /usr/bin/lzip						Cx,	# FS ACCESS! lzip
+  /usr/bin/xz						Cx,	# FS ACCESS! xz
+  
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
+  
+  profile gzip /bin/gzip flags=(attach_disconnected,complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/gzip						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				rw,	# flags=(attach_disconnected)
+  }
+  
+  profile bzip2 /bin/bzip2 flags=(attach_disconnected,complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/bzip2						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				rw,	# flags=(attach_disconnected)
+  }
+  
+  profile lzip /usr/bin/lzip flags=(attach_disconnected,complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/lzip					mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				rw,	# flags=(attach_disconnected)
+  }
+  
+  profile xz /usr/bin/xz flags=(attach_disconnected,complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/xz						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				rw,	# flags=(attach_disconnected)
+  }
+}
+
+profile engrampa_root flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/gtk>
+  #include <abstractions/video>
+  #include <abstractions/X_sudo>
+  #include <abstractions/nameservice>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus-accessibility-strict>
+  #include <abstractions/dbus-pattern/at-spi>
+  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dconf>
+  #include <abstractions/xdg-open_root>
+  #include <abstractions/binary-helper-strict_root>
+  #include <abstractions/fs-access-by-users-preset-rwkl>
+  #include <abstractions/fs-access-by-pattern-systemusers>
+  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs-deny-private-strict>
   #include <abstractions/unix-pattern/gvfsd-trash>
   #include <abstractions/unix-pattern/gvfsd-network>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
-  /sys/devices/system/cpu/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/engrampa					mr,
-  @{shell}						Cx,
-  /bin/mv						ix,
-  /bin/rm						ix,
-  /bin/cp						ix,
-  /bin/tar						ix,
-  /bin/bzip2						ix,
-  /bin/gzip						ix,
-  /usr/bin/7z						ixr,
-  /usr/bin/7za						ixr,
-  /usr/bin/zip						ix,
-  /usr/bin/unzip					ix,
-  /usr/bin/lzip						ix,
-  /usr/bin/xz						ix,
-  /usr/lib{,32,64}/p7zip/7z				ix,
-  /usr/lib{,32,64}/p7zip/7za				ix,
-  /usr/@{CHOST}/binutils-bin/*/ar			ix,
-  /opt/rar/rar						Cx,
+  /bin/mv						Cx,	# FS ACCESS! mv
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/cp						Cx,	# FS ACCESS! cp
+  /bin/tar						Cx,	# FS ACCESS! tar
+  /bin/bzip2						Cx,	# FS ACCESS! bzip2
+  /bin/gzip						Cx,	# FS ACCESS! gzip
+  /usr/bin/7z						Cx,	# FS ACCESS! 7z
+  /usr/bin/7za						Cx,	# FS ACCESS! 7za
+  /usr/bin/zip						Cx,	# FS ACCESS! zip
+  /usr/bin/unzip					Cx,	# FS ACCESS! unzip
+  /usr/bin/lzip						Cx,	# FS ACCESS! lzip
+  /usr/bin/xz						Cx,	# FS ACCESS! xz
+  /usr/@{CHOST}/binutils-bin/*/ar			Cx,	# FS ACCESS! ar
+  /opt/rar/rar						Cx,	# FS ACCESS! rar
   
   # READS/WRITES ---------------------------------------
   /usr/share/engrampa/{,**}				r,
-  /usr/lib{,32,64}/p7zip/7z.so				m,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.fr-*/{,**}				rw,
-  owner @{HOME}/.config/mimeapps.list*			rw,
-  owner @{HOME_CACHE}/.fr-*/{,**}			rw,
+  /root/.config/mimeapps.list*				rw,
+  /root/.local/share/gvfs-metadata/{,**}		rw,
+  /root/.cache/.fr-*/{,**}				rw,
   
-  profile shell @{shell} {
+  profile mv /bin/mv flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-access-by-pattern-systemusers>
     #include <abstractions/fs-deny-by-pattern-internet>
     #include <abstractions/fs-deny-private-strict>
     
-    # PSEUDO ---------------------------------------------
-    /dev/tty						rw,
+    # EXECUTABLES --------------------------------------
+    /bin/mv						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /root/.local/share/gvfs-metadata/{,**}	rw,
+  }
+  
+  profile rm /bin/rm flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
     
     # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # USERS --------------------------------------------
+    /root/.cache/.fr-*/{,**}				rw,
+    
+    # DENY INHERIT -------------------------------------
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+  }
+  
+  profile cp /bin/cp flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cp						mr,
+    
+    # USERS --------------------------------------------
+    /root/.cache/.fr-*/{,**}				rw,
+    
+    # DENY INHERIT -------------------------------------
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+  }
+  
+  profile tar /bin/tar flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # CAPABILITIES ---------------------------------------
+    capability chown,
+    capability fowner,
+    capability fsetid,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/tar						mr,
+    @{shell}						Px -> engrampa_tar_shell,
+    /bin/bzip2						ix,	# Oставляем запуск через ix.
+    /bin/gzip						ix,	# Oставляем запуск через ix.
+    /usr/bin/lzip					ix,	# Oставляем запуск через ix.
+    /usr/bin/xz						ix,	# Oставляем запуск через ix.
+    
+    # USERS --------------------------------------------
+    /root/.cache/.fr-*/{,**}				rw,
+    
+    # DENY INHERIT -------------------------------------
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+  }
+  
+  profile bzip2 /bin/bzip2 flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/bzip2						mr,
+    
+    # USERS --------------------------------------------
+    /root/.cache/.fr-*/{,**}				rw,
+    
+    # DENY INHERIT -------------------------------------
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+  }
+  
+  profile gzip /bin/gzip flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/gzip						mr,
+    
+    # USERS --------------------------------------------
+    /root/.cache/.fr-*/{,**}				rw,
+    
+    # DENY INHERIT -------------------------------------
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+  }
+  
+  profile 7z /usr/bin/7z flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /sys/devices/system/cpu/				r,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/7z						r,
     @{shell}						mr,
-    /bin/gzip						ix,
-    /bin/bzip2						ix,
-    /usr/bin/lzip					ix,
-    /usr/bin/xz						ix,
+    /usr/lib{,32,64}/p7zip/7z				ix,	# Все правильно, для 7z используем с ix.
+    
+    # READS/WRITES -------------------------------------
+    /usr/lib64/p7zip/7z.so				m,
+    
+    # DENY INHERIT -------------------------------------
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+  }
+  
+  profile 7za /usr/bin/7za flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /sys/devices/system/cpu/				r,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/7za					r,
+    @{shell}						mr,
+    /usr/lib{,32,64}/p7zip/7za				ix,	# Все правильно, для 7za используем с ix.
+    
+    # DENY INHERIT -------------------------------------
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+  }
+  
+  profile zip /usr/bin/zip flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/zip					mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+  }
+  
+  profile unzip /usr/bin/unzip flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/unzip					mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+  }
+  
+  profile lzip /usr/bin/lzip flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/lzip					mr,
+    
+    # USERS --------------------------------------------
+    /root/.cache/.fr-*/{,**}				rw,
+    
+    # DENY INHERIT -------------------------------------
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+  }
+  
+  profile xz /usr/bin/xz flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/xz						mr,
+    
+    # USERS --------------------------------------------
+    /root/.cache/.fr-*/{,**}				rw,
+    
+    # DENY INHERIT -------------------------------------
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+  }
+  
+  profile ar /usr/@{CHOST}/binutils-bin/*/ar flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/@{CHOST}/binutils-bin/*/ar			mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,
   }
   
   profile rar /opt/rar/rar {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-access-by-pattern-systemusers>
     #include <abstractions/fs-deny-by-pattern-internet>
     #include <abstractions/fs-deny-private-strict>
     
@@ -102,87 +666,41 @@ profile engrampa /usr/bin/engrampa {
   }
 }
 
-profile engrampa_root {
+profile engrampa_tar_shell_root flags=(attach_disconnected,complain) {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/gtk>
-  #include <abstractions/video>
-  #include <abstractions/X_sudo>
-  #include <abstractions/dbus-strict>
-  #include <abstractions/dbus-session-strict>
-  #include <abstractions/dbus-accessibility-strict>
-  #include <abstractions/dbus-pattern/at-spi>
-  #include <abstractions/dbus-pattern/gvfs>
-  #include <abstractions/dconf>
-  #include <abstractions/nameservice>
-  #include <abstractions/xdg-open_root>
-  #include <abstractions/binary-helper-strict_root>
   #include <abstractions/fs-access-by-users-preset-rwkl>
   #include <abstractions/fs-access-by-pattern-systemusers>
   #include <abstractions/fs-deny-by-pattern-internet>
   #include <abstractions/fs-deny-private-strict>
-  #include <abstractions/unix-pattern/gvfsd-trash>
-  #include <abstractions/unix-pattern/gvfsd-network>
-  
-  # CAPABILITIES ---------------------------------------
-  capability chown,
-  capability fowner,
-  capability fsetid,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/tty[0-9]*					rw,
-  /sys/devices/system/cpu/				r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/engrampa					mr,
-  @{shell}						Cx,
-  /bin/mv						ix,
-  /bin/rm						ix,
-  /bin/cp						ix,
-  /bin/tar						ix,
-  /bin/bzip2						ix,
-  /bin/gzip						ix,
-  /usr/bin/7z						ixr,
-  /usr/bin/7za						ixr,
-  /usr/bin/zip						ix,
-  /usr/bin/unzip					ix,
-  /usr/bin/lzip						ix,
-  /usr/bin/xz						ix,
-  /usr/lib{,32,64}/p7zip/7z				ix,
-  /usr/lib{,32,64}/p7zip/7za				ix,
-  /usr/@{CHOST}/binutils-bin/*/ar			ix,
-  /opt/rar/rar						Cx,
+  @{shell}						mr,
+  /bin/gzip						Cx,	# FS ACCESS! gzip
+  /bin/bzip2						Cx,	# FS ACCESS! bzip2
+  /usr/bin/lzip						Cx,	# FS ACCESS! lzip
+  /usr/bin/xz						Cx,	# FS ACCESS! xz
   
-  # READS/WRITES ---------------------------------------
-  /usr/share/engrampa/{,**}				r,
-  /usr/lib{,32,64}/p7zip/7z.so				m,
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   
-  # USERS ----------------------------------------------
-  owner @{HOME}/.fr-*/{,**}				rw,
-  owner @{HOME}/.config/mimeapps.list*			rw,
-  @{HOME_CACHE}/.fr-*/{,**}				rw,
-  
-  profile shell @{shell} {
+  profile gzip /bin/gzip flags=(attach_disconnected,complain) {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
     #include <abstractions/fs-deny-by-pattern-internet>
     #include <abstractions/fs-deny-private-strict>
     
-    # PSEUDO ---------------------------------------------
-    /dev/tty						rw,
-    
     # EXECUTABLES --------------------------------------
-    @{shell}						mr,
-    /bin/gzip						ix,
-    /bin/bzip2						ix,
-    /usr/bin/lzip					ix,
-    /usr/bin/xz						ix,
+    /bin/gzip						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile rar /opt/rar/rar {
+  profile bzip2 /bin/bzip2 flags=(attach_disconnected,complain) {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
@@ -190,11 +708,38 @@ profile engrampa_root {
     #include <abstractions/fs-deny-private-strict>
     
     # EXECUTABLES --------------------------------------
-    /opt/rar/rar					mr,
+    /bin/bzip2						mr,
     
-    # NOISY --------------------------------------------
-    deny /etc/						r,
-    deny /usr/{,local/}lib{,32,64}/			r,
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				rw,	# flags=(attach_disconnected)
+  }
+  
+  profile lzip /usr/bin/lzip flags=(attach_disconnected,complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/lzip					mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				rw,	# flags=(attach_disconnected)
+  }
+  
+  profile xz /usr/bin/xz flags=(attach_disconnected,complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/xz						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
 }
 
