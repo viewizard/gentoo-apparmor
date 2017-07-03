@@ -8,6 +8,10 @@
 #
 # ------------------------------------------------------------------
 
+# BUILD SYSTEM ONLY! Оставляем в профиле использование ix.
+# Не при каких обстоятельствах данный пакет не должен присутствовать в
+# конечной пользовательской системе или серверах.
+
 #include <tunables/global>
 
 profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
@@ -82,9 +86,9 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/sandbox					mr,
-    @{shell}						ixr,	# FIX ME! почему он не в отдельном профиле?
-    /bin/sed						ixr,	# FS ACCESS!
-    /bin/basename					Pxr,
+    @{shell}						ix,	# FIX ME! почему он не в отдельном профиле?
+    /bin/sed						ix,	# FS ACCESS!
+    /bin/basename					Px,
     /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh	ix,	# FIX ME! Вынести в отдельный профиль.
     
     # READS/WRITES -------------------------------------

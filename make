@@ -8,10 +8,15 @@
 #
 # ------------------------------------------------------------------
 
+# BUILD SYSTEM ONLY! Оставляем в профиле использование ix.
+# Не при каких обстоятельствах данный пакет не должен присутствовать в
+# конечной пользовательской системе или серверах.
+
 #include <tunables/global>
 
 profile make /usr/bin/{,g}make flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/ncurses>
   
   # CAPABILITIES ---------------------------------------
   capability mknod,
@@ -29,28 +34,27 @@ profile make /usr/bin/{,g}make flags=(complain) {
   /usr/bin/{,g}make					ixmr,	# Все правильно, запуск и mmap.
   @{shell}						Cx,
   /bin/uname						Px,
-  /bin/rm						ix,
-  /bin/ln						ix,
-  /bin/cp						ix,
-  /bin/mv						ix,
+  /bin/rm						ix,	# FS ACCESS!
+  /bin/ln						ix,	# FS ACCESS!
+  /bin/cp						ix,	# FS ACCESS!
+  /bin/mv						ix,	# FS ACCESS!
   /bin/echo						Px,
-  /bin/expr						ix,
-  /bin/grep						ix,
-  /bin/chmod						ix,
-  /bin/mkdir						ix,
-  /bin/sed						ix,
-  /bin/cat						ix,
-  /bin/touch						ix,
-  /usr/bin/gcc						ix,
-  /usr/bin/cmp						ix,
-  /usr/bin/find						ix,
-  /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc			ix,
-  /usr/@{CHOST}/binutils-bin/[0-9]*/strip		ix,
+  /bin/expr						ix,	# FS ACCESS!
+  /bin/grep						ix,	# FS ACCESS!
+  /bin/chmod						ix,	# FS ACCESS!
+  /bin/mkdir						ix,	# FS ACCESS!
+  /bin/sed						ix,	# FS ACCESS!
+  /bin/cat						ix,	# FS ACCESS!
+  /bin/touch						ix,	# FS ACCESS!
+  /usr/bin/gcc						ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/cmp						ix,	# FS ACCESS!
+  /usr/bin/find						ix,	# FS ACCESS!
+  /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc			ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/@{CHOST}/binutils-bin/[0-9]*/strip		ix,	# FIX ME! Вынести в отдельный профиль.
   /var/tmp/portage/genkernel/*/busybox-*/scripts/**	ix,	# genkernel-next
   
   # READS/WRITES ---------------------------------------
   /etc/env.d/gcc/{,**}					r,
-  /etc/terminfo/x/xterm					r,
   /lib{,32,64}/modules/{,**}				rw,
   /usr/src/@{kernel}/{,**}				ixrw,
   owner /var/log/genkernel.log				w,	# genkernel-next
@@ -76,58 +80,59 @@ profile make /usr/bin/{,g}make flags=(complain) {
     # EXECUTABLES --------------------------------------
     @{shell}						ixmr,	# Все правильно, запуск и mmap.
     /bin/uname						Px,
-    /bin/sed						ix,
-    /bin/rm						ix,
-    /bin/wc						ix,
-    /bin/mv						ix,
-    /bin/dd						ix,
+    /bin/sed						ix,	# FS ACCESS!
+    /bin/rm						ix,	# FS ACCESS!
+    /bin/wc						ix,	# FS ACCESS!
+    /bin/mv						ix,	# FS ACCESS!
+    /bin/dd						ix,	# FS ACCESS!
     /bin/tr						Px,
-    /bin/ln						ix,
-    /bin/cp						ix,
-    /bin/pwd						ix,
-    /bin/seq						ix,
-    /bin/cat						ix,
-    /bin/cut						ix,
-    /bin/gzip						ix,
-    /bin/date						ix,
+    /bin/ln						ix,	# FS ACCESS!
+    /bin/cp						ix,	# FS ACCESS!
+    /bin/pwd						ix,	# FS ACCESS!
+    /bin/seq						ix,	# FIX ME! Вынести в отдельный профиль.
+    /bin/cat						ix,	# FS ACCESS!
+    /bin/cut						ix,	# FS ACCESS!
+    /bin/gzip						ix,	# FS ACCESS!
+    /bin/date						ix,	# FS ACCESS!
     /bin/dirname					Px,
     /bin/basename					Px,
     /bin/echo						Px,
-    /bin/tail						ix,
-    /bin/sort						ix,
-    /bin/grep						ix,
-    /bin/expr						ix,
+    /bin/tail						ix,	# FS ACCESS!
+    /bin/sort						ix,	# FS ACCESS!
+    /bin/grep						ix,	# FS ACCESS!
+    /bin/expr						ix,	# FS ACCESS!
     /bin/sleep						Px,
-    /bin/mkdir						ix,
+    /bin/mkdir						ix,	# FS ACCESS!
     /bin/kmod						Px,
-    /bin/mktemp						ix,
+    /bin/mktemp						ix,	# FS ACCESS!
     /bin/hostname					Px,
-    /bin/touch						ix,
-    /bin/head						ix,
-    /bin/tar						ix,
-    /bin/bzip2						ix,
-    /usr/bin/diff					ix,
-    /usr/bin/pod2html					ix,
-    /usr/bin/od						ix,
-    /usr/bin/uniq					ix,
+    /bin/touch						ix,	# FS ACCESS!
+    /bin/head						ix,	# FS ACCESS!
+    /bin/tar						ix,	# FS ACCESS!
+    /bin/bzip2						ix,	# FS ACCESS!
+    /usr/bin/diff					ix,	# FS ACCESS!
+    /usr/bin/pod2html					ix,	# FIX ME! Вынести в отдельный профиль.
+    /usr/bin/od						ix,	# FS ACCESS!
+    /usr/bin/uniq					Px,
     /usr/bin/which					Px,
     /usr/bin/whoami					Px,
-    /usr/bin/bc						ix,
-    /usr/bin/cmp					ix,
+    /usr/bin/bc						ix,	# FS ACCESS!
+    /usr/bin/cmp					ix,	# FS ACCESS!
     /usr/bin/git					ix,	# Не используем Px и Px -> git_root.
-    /usr/bin/svn					ix,
-    /usr/bin/gawk					ix,
-    /usr/bin/find					ix,
-    /usr/bin/pkg-config					ix,
-    /usr/bin/xargs					ix,
+  								# FIX ME! Вынести в отдельный профиль.
+    /usr/bin/svn					ix,	# FIX ME! Вынести в отдельный профиль.
+    /usr/bin/gawk					ix,	# FS ACCESS!
+    /usr/bin/find					ix,	# FS ACCESS!
+    /usr/bin/pkg-config					Px,
+    /usr/bin/xargs					ix,	# FS ACCESS!
     /usr/bin/gmake					Px,
-    /usr/bin/gcc					ix,
-    /usr/bin/g++					ix,
-    /usr/bin/openssl					ix,
-    /usr/libexec/gcc/@{CHOST}/*/*			ix,
-    /usr/@{CHOST}/gcc-bin/*/*				ix,
-    /usr/@{CHOST}/binutils-bin/*/*			ix,
-    /usr/src/@{kernel}/{,**}				ixr,
+    /usr/bin/gcc					ix,	# FIX ME! Вынести в отдельный профиль.
+    /usr/bin/g++					ix,	# FIX ME! Вынести в отдельный профиль.
+    /usr/bin/openssl					ix,	# FIX ME! Вынести в отдельный профиль.
+    /usr/libexec/gcc/@{CHOST}/*/*			ix,	# FIX ME! Вынести в отдельный профиль.
+    /usr/@{CHOST}/gcc-bin/*/*				ix,	# FIX ME! Вынести в отдельный профиль.
+    /usr/@{CHOST}/binutils-bin/*/*			ix,	# FIX ME! Вынести в отдельный профиль.
+    /usr/src/@{kernel}/{,**}				ixr,	# FIX ME! Вынести в отдельный профиль.
     /var/tmp/portage/genkernel/*/busybox-*/**		ix,	# genkernel-next
     
     # READS/WRITES -------------------------------------
@@ -140,7 +145,6 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /usr/src/IMA/certs/*.x509				r,
     /usr/src/@{kernel}/{,**}				rw,
     /usr/src/@{kernel}/tools/gcc/**.so			m,
-    /usr/share/pkgconfig/{,**}				r,
     
     # TEMP ---------------------------------------------
     owner /tmp/sh-thd.*					rw,

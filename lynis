@@ -8,6 +8,13 @@
 #
 # ------------------------------------------------------------------
 
+# Целесообразность использование данного пакета сомнительна.
+# Используем связку IMA/EVM (+DTP) и AppArmor RBAC (systemwide).
+
+# Оставляем в профиле использование ix.
+# Предположительно, пакет никогда не будет использоваться.
+# В случае использования - скорректировать.
+
 #include <tunables/global>
 
 profile lynis /usr/sbin/lynis {
@@ -26,55 +33,55 @@ profile lynis /usr/sbin/lynis {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cxmr,	# Все правильно, запуск и mmap
-  /bin/date						ix,
-  /bin/expr						ix,
-  /bin/ls						ix,
-  /bin/egrep						ix,
-  /bin/grep						ix,
-  /bin/cut						ix,
-  /bin/wc						ix,
-  /bin/sed						ix,
+  /bin/date						ix,	# FS ACCESS!
+  /bin/expr						ix,	# FS ACCESS!
+  /bin/ls						ix,	# FS ACCESS!
+  /bin/egrep						ix,	# FS ACCESS!
+  /bin/grep						ix,	# FS ACCESS!
+  /bin/cut						ix,	# FS ACCESS!
+  /bin/wc						ix,	# FS ACCESS!
+  /bin/sed						ix,	# FS ACCESS!
   /bin/tr						Px,
-  /bin/chmod						ix,
+  /bin/chmod						ix,	# FS ACCESS!
   /bin/ps						Px,
   /bin/uname						Px,
-  /bin/head						ix,
-  /bin/cat						ix,
+  /bin/head						ix,	# FS ACCESS!
+  /bin/cat						ix,	# FS ACCESS!
   /bin/echo						Px,
   /bin/kmod						Px,
-  /bin/sort						ix,
+  /bin/sort						ix,	# FS ACCESS!
   /bin/sleep						Px,
   /bin/ifconfig						Px,
   /bin/hostname						Px,
-  /bin/readlink						ix,
-  /bin/mktemp						ix,
+  /bin/readlink						ix,	# FS ACCESS!
+  /bin/mktemp						ix,	# FS ACCESS!
   /bin/passwd						Px,
-  /bin/rm						ix,
+  /bin/rm						ix,	# FS ACCESS!
   /bin/mount						Px,
   /bin/netstat						Px,
   /sbin/lvm						Px,
-  /sbin/tune2fs						ix,
-  /sbin/rpcinfo						ix,
+  /sbin/tune2fs						ix,	# FIX ME! Вынести в отдельный профиль.
+  /sbin/rpcinfo						ix,	# FIX ME! Вынести в отдельный профиль.
   /usr/bin/aide						Px,
   /usr/bin/id						Px,
   /usr/bin/wget						Px,
-  /usr/bin/gawk						ix,
-  /usr/bin/find						ix,
+  /usr/bin/gawk						ix,	# FS ACCESS!
+  /usr/bin/find						ix,	# FS ACCESS!
   /usr/bin/nmap						Px,
-  /usr/bin/openssl					ix,
-  /usr/bin/xargs					ix,
-  /usr/bin/uniq						ix,
+  /usr/bin/openssl					ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/xargs					ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/uniq						Px,
   /usr/bin/which					Px,
   /usr/bin/dig						Px,
   /usr/bin/ntpq						Px,
-  /usr/bin/shasum-*-perl-*				ix,
+  /usr/bin/shasum-*-perl-*				ix,	# FIX ME! Вынести в отдельный профиль.
   /usr/sbin/smbd					Cx,
   /usr/sbin/sshd					Cx,
   /usr/sbin/sysctl					Px,
   /usr/sbin/syslog-ng					Px,
   /usr/bin/logrotate					Px,
-  /usr/sbin/grpck					ix,
-  /usr/sbin/pwck					ix,
+  /usr/sbin/grpck					ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/sbin/pwck					ix,	# FIX ME! Вынести в отдельный профиль.
   @{PYTHON_EXEC_WRAPPER}				Cx -> aa_status,
   
   # READS/WRITES ---------------------------------------
@@ -105,11 +112,11 @@ profile lynis /usr/sbin/lynis {
     
     # EXECUTABLES --------------------------------------
     @{shell}						ixmr,	# Все правильно, запуск и mmap
-    /bin/grep						ix,
-    /bin/env						ix,
-    /bin/rm						ix,
-    /bin/cat						ix,
-    /bin/date						ix,
+    /bin/grep						ix,	# FS ACCESS!
+    /bin/env						ix,	# FS ACCESS!
+    /bin/rm						ix,	# FS ACCESS!
+    /bin/cat						ix,	# FS ACCESS!
+    /bin/date						ix,	# FS ACCESS!
     
     # TEMP ---------------------------------------------
     owner /tmp/sh-thd.*					rw,
@@ -189,9 +196,9 @@ profile lynis.cron.daily /etc/cron.daily/lynis {
   # PSEUDO ---------------------------------------------
   /etc/cron.daily/lynis					r,
   @{shell}						mr,
-  /bin/mktemp						ix,
-  /bin/cat						ix,
-  /bin/rm						ix,
+  /bin/mktemp						ix,	# FS ACCESS!
+  /bin/cat						ix,	# FS ACCESS!
+  /bin/rm						ix,	# FS ACCESS!
   /bin/basename						Px,
   /usr/bin/libnotify-notify-send-users			Px,
   /usr/bin/mail						Px,

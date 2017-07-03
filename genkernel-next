@@ -8,6 +8,10 @@
 #
 # ------------------------------------------------------------------
 
+# BUILD SYSTEM ONLY! Оставляем в профиле использование ix.
+# Не при каких обстоятельствах данный пакет не должен присутствовать в
+# конечной пользовательской системе или серверах.
+
 #include <tunables/global>
 
 profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
@@ -35,31 +39,31 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
   /usr/bin/genkernel					r,
   @{shell}						Cxmr,
   /bin/uname						Px,
-  /bin/sed						ix,
-  /bin/mv						ix,
-  /bin/cp						ix,
-  /bin/grep						ixr,
-  /bin/egrep						ixr,
-  /bin/fgrep						ixr,
-  /bin/cat						ixr,
-  /bin/cut						ix,
-  /bin/mkdir						ix,
-  /bin/ln						ix,
-  /bin/wc						ix,
-  /bin/yes						ix,
-  /bin/rm						ixr,
+  /bin/sed						ix,	# FS ACCESS!
+  /bin/mv						ix,	# FS ACCESS!
+  /bin/cp						ix,	# FS ACCESS!
+  /bin/grep						ix,	# FS ACCESS!
+  /bin/egrep						Cx,	# FS ACCESS! egrep
+  /bin/fgrep						Cx,	# FS ACCESS! fgrep
+  /bin/cat						ix,	# FS ACCESS!
+  /bin/cut						ix,	# FS ACCESS!
+  /bin/mkdir						ix,	# FS ACCESS!
+  /bin/ln						ix,	# FS ACCESS!
+  /bin/wc						ix,	# FS ACCESS!
+  /bin/yes						ix,	# FS ACCESS!
+  /bin/rm						ix,	# FS ACCESS!
   /bin/tr						Px,
-  /bin/sort						ix,
-  /bin/tar						ix,
-  /bin/bzip2						ix,
-  /bin/cpio						ix,
-  /bin/readlink						ix,
-  /bin/mknod						ix,
-  /bin/chmod						ix,
-  /bin/date						ix,
+  /bin/sort						ix,	# FS ACCESS!
+  /bin/tar						ix,	# FS ACCESS!
+  /bin/bzip2						ix,	# FS ACCESS!
+  /bin/cpio						ix,	# FS ACCESS!
+  /bin/readlink						ix,	# FS ACCESS!
+  /bin/mknod						ix,	# FS ACCESS!
+  /bin/chmod						ix,	# FS ACCESS!
+  /bin/date						ix,	# FS ACCESS!
   /bin/dirname						Px,
   /bin/basename						Px,
-  /bin/udevadm						Pxr,
+  /bin/udevadm						Px,
   /bin/echo						Px,
   /bin/mount						Px,
   /bin/umount						Px,
@@ -74,29 +78,29 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
   /sbin/mdassemble					r,
   /sbin/blkid						r,
   /sbin/lvm						r,
-  /sbin/ldconfig					Pxr,
+  /sbin/ldconfig					Px,
   /sbin/apparmor_parser					r,
-  /usr/bin/gawk						ix,
-  /usr/bin/md5sum					ix,
-  /usr/bin/file						ix,
-  /usr/bin/find						ix,
-  /usr/bin/pkg-config					ix,
-  /usr/bin/realpath					ix,
-  /usr/bin/lddtree					ixr,
-  /usr/bin/scanelf					ix,
-  /usr/bin/uniq						ix,
-  /usr/bin/q						ix,
+  /usr/bin/gawk						ix,	# FS ACCESS!
+  /usr/bin/md5sum					ix,	# FS ACCESS!
+  /usr/bin/file						ix,	# FS ACCESS!
+  /usr/bin/find						ix,	# FS ACCESS!
+  /usr/bin/pkg-config					Px,
+  /usr/bin/realpath					ix,	# FS ACCESS!
+  /usr/bin/lddtree					ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/scanelf					ix,	# FS ACCESS!
+  /usr/bin/uniq						ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/q						ix,	# FIX ME! Вынести в отдельный профиль.
   /usr/bin/id						Px,
-  /usr/bin/xargs					ix,
-  /usr/bin/xz						ix,
+  /usr/bin/xargs					ix,	# FS ACCESS!
+  /usr/bin/xz						ix,	# FS ACCESS!
   /usr/bin/gmake					Px,
   /usr/bin/gpg{,2,-static}				r,
   /usr/bin/test						r,
-  /usr/bin/hostid					ix,
+  /usr/bin/hostid					ix,	# FIX ME! Вынести в отдельный профиль.
   /usr/bin/gawk						r,
   /usr/bin/find						r,
-  /usr/@{CHOST}/binutils-bin/[0-9]*/strings		ix,
-  /usr/@{CHOST}/binutils-bin/[0-9]*/strip		ix,
+  /usr/@{CHOST}/binutils-bin/[0-9]*/strings		ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/@{CHOST}/binutils-bin/[0-9]*/strip		ix,	# FIX ME! Вынести в отдельный профиль.
   
   # READS/WRITES ---------------------------------------
   /etc/genkernel.conf					r,
@@ -116,7 +120,6 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
   /usr/src/@{kernel}/{,**}				r,
   /usr/src/@{kernel}/{sed*,.config}			w,
   /usr/share/genkernel/{,**}				r,
-  /usr/share/pkgconfig/{,**}				r,
   /usr/share/misc/magic.mgc				r,
   /usr/portage/distfiles/busybox-*.tar.bz2		r,
   /boot/initramfs-genkernel-*-@{kernel_ver}		w,
@@ -136,12 +139,34 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/bzip2						ix,
+    /bin/bzip2						ix,	# FS ACCESS!
     
     # READS/WRITES -------------------------------------
     /var/cache/genkernel/busybox-*.tar.bz2		rw,
     
     # TEMP ---------------------------------------------
     /var/tmp/portage/genkernel/{,**}			rw,
+  }
+  
+  profile egrep /bin/egrep flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/egrep						r,
+    @{shell}						mr,
+    /bin/grep						ix,	# Все правильно, для egrep используем с ix.
+  }
+  
+  profile fgrep /bin/fgrep flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/fgrep						r,
+    @{shell}						mr,
+    /bin/grep						ix,	# Все правильно, для egrep используем с ix.
   }
 }
