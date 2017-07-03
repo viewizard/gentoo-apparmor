@@ -51,6 +51,9 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
   profile ln /bin/ln flags=(complain) {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/ln						mr,
     
@@ -61,6 +64,9 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
   
   profile mv /bin/mv flags=(complain) {
     #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/mv						mr,
@@ -73,6 +79,9 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
   profile rm /bin/rm flags=(complain) {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/rm						mr,
     
@@ -84,6 +93,9 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
   profile rmdir /bin/rmdir flags=(complain) {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
     
@@ -93,6 +105,9 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
   
   profile mkdir /bin/mkdir flags=(complain) {
     #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -110,6 +125,9 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
   
   profile find /usr/bin/find flags=(complain) {
     #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/find					mr,
@@ -129,6 +147,9 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
   profile cmp /usr/bin/cmp flags=(complain) {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /usr/bin/cmp					mr,
     
@@ -140,6 +161,9 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
   profile portageq flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/python-exec>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/portageq				Px,

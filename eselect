@@ -12,45 +12,308 @@
 
 profile eselect /usr/bin/eselect flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/fs-access-by-pattern-systemusers>
-  
-  # CAPABILITIES ---------------------------------------
-  capability fsetid,
-  capability sys_admin,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
+  /usr/bin/eselect					r,
   @{shell}						mr,
-  /bin/readlink						ix,
-  /bin/ln						ix,
-  /bin/mv						ix,
-  /bin/rm						ix,
-  /bin/sed						ix,
-  /bin/sort						ix,
-  /bin/head						ix,
-  /bin/mkdir						ix,
-  /bin/mktemp						ix,
-  /bin/cut						ix,
-  /bin/grep						ix,
-  /bin/chgrp						ix,
-  /bin/chmod						ix,
-  /bin/cat						ix,
+  /bin/readlink						Cx,	# FS ACCESS! readlink
+  /bin/ln						Cx,	# FS ACCESS! ln
+  /bin/mv						Cx,	# FS ACCESS! mv
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/sort						Cx,	# FS ACCESS! sort
+  /bin/head						Cx,	# FS ACCESS! head
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mktemp						Cx,	# FS ACCESS! mktemp
+  /bin/cut						Cx,	# FS ACCESS! cut
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/chgrp						Cx,	# FS ACCESS! chgrp
+  /bin/chmod						Cx,	# FS ACCESS! chmod
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/tr						Cx,	# FS ACCESS! tr
+  /bin/ls						Cx,	# FS ACCESS! ls
   /bin/uname						Px,
-  /usr/bin/file						ix,
-  /usr/bin/scanelf					ix,
+  /usr/bin/file						Cx,	# FS ACCESS! file
+  /usr/bin/scanelf					Cx,	# FS ACCESS! scanelf
   /usr/bin/tput						Px,
   /usr/bin/binutils-config				Px,
-  /lib{,32,64}/rc/bin/service_stopp{ing,ed}		ix,
-  /lib{,32,64}/rc/bin/service_start{ing,ed}		ix,
-  /lib{,32,64}/rc/bin/service_inactive			ix,
-  /lib{,32,64}/rc/bin/service_crashed			ix,
-  /lib{,32,64}/rc/bin/service_hotplugged		ix,
+  /usr/bin/locale					Px,	# eselect locale
+  /etc/init.d/*						Pxr,	# eselect rc
+  /lib{,32,64}/rc/bin/service_stopp{ing,ed}		Px,
+  /lib{,32,64}/rc/bin/service_start{ing,ed}		Px,
+  /lib{,32,64}/rc/bin/service_inactive			Px,
+  /lib{,32,64}/rc/bin/service_crashed			Px,
+  /lib{,32,64}/rc/bin/service_hotplugged		Px,
   @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
   
   # READS/WRITES ---------------------------------------
-  /							r,
+  /etc/env.d/000opengl					rw,	# eselect opengl
+  /etc/env.d/02locale					rw,	# eselect locale
+  /etc/env.d/03opencl					rw,	# eselect opencl
+  /etc/env.d/44qt4-graphicssystem			rw,	# eselect qtgraphicssystem
+  /etc/env.d/99editor					rw,	# eselect visual
+  /etc/env.d/99pager					rw,	# eselect pager
+  /etc/env.d/cblas/lib{,32,64}/{,*}			rw,	# eselect cblas
+  /etc/fonts/conf.avail/				r,	# eselect fontconfig
+  /etc/python-exec/python-exec.conf			r,	# eselect python
+  /etc/python-exec/python-exec.conf.new			w,	# eselect python
+  /etc/runlevels/{,**}					r,	# eselect rc
+  /etc/X11/xorg.conf.d/20opengl.conf			w,	# eselect opengl
+  /usr/lib{,32,64}/					r,	# eselect opencl
+  /usr/include/CL/					r,	# eselect opencl
+  /usr/share/eselect/{,**}				r,
+  /usr/share/man/{,**}					rw,
+  /usr/share/mesa/eselect-mesa.conf			r,	# eselect mesa
+  /usr/src/						r,	# eselect kernel
+  /var/lib/wxwidgets/{,**}				rw,	# eselect wxwidgets
+  /var/lib/gentoo/news/news-gentoo.*			rw,	# eselect news
+  
+  profile readlink /bin/readlink flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/readlink					mr,
+  }
+  
+  profile ln /bin/ln flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/ln						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/fonts/conf.d/*					w,	# eselect fontconfig
+    /etc/env.d/cblas/lib{,32,64}/gsl			r,	# eselect cblas
+    /etc/portage/make.profile				w,	# eselect profile
+    /usr/lib{,32,64}/libcblas.*				w,	# eselect cblas
+    /usr/lib{,32,64}/pkgconfig/cblas.pc			w,	# eselect cblas
+    /usr/lib{,32,64}/libOpenCL.*			w,	# eselect opencl
+    /usr/include/cblas.h				w,	# eselect cblas
+    /usr/include/CL/*					w,	# eselect opencl
+    /usr/src/linux					w,	# eselect kernel
+    /usr/lib{,32,64}/dri/swrast_dri.so			w,	# eselect mesa
+    /usr/bin/cdparanoia.new				w,	# eselect cdparanoia
+    /usr/bin/mpg123.new					w,	# eselect mpg123
+    /usr/bin/notify-send.new				w,	# eselect notify-send
+    /usr/bin/pinentry.new				w,	# eselect pinentry
+    /usr/bin/ruby					w,	# eselect ruby
+    /usr/bin/gem					w,	# eselect ruby
+    /usr/bin/irb					w,	# eselect ruby
+    /usr/bin/erb					w,	# eselect ruby
+    /usr/bin/ri						w,	# eselect ruby
+    /usr/bin/rdoc					w,	# eselect ruby
+    /usr/bin/testrb					w,	# eselect ruby
+    /usr/share/man/man1/python.1.bz2			w,	# eselect python
+    /usr/share/bakefile/presets/wx*			w,	# eselect wxwidgets
+  }
+  
+  profile mv /bin/mv flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mv						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/python-exec/python-exec.conf{,.new}		rw,	# eselect python
+    /usr/bin/cdparanoia{,.new}				rw,	# eselect cdparanoia
+    /usr/bin/mpg123{,.new}				rw,	# eselect mpg123
+    /usr/bin/notify-send{,.new}				rw,	# eselect notify-send
+    /usr/bin/pinentry{,.new}				rw,	# eselect pinentry
+  }
+  
+  profile rm /bin/rm flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/fonts/conf.d/*					w,	# eselect fontconfig
+    /etc/env.d/cblas/lib{,32,64}/gsl			r,	# eselect cblas
+    /etc/env.d/03opencl					w,	# eselect opencl
+    /etc/env.d/000opengl				w,	# eselect opengl
+    /etc/env.d/44qt4-graphicssystem			w,	# eselect qtgraphicssystem
+    /etc/X11/xorg.conf.d/20opengl.conf			w,	# eselect opengl
+    /etc/portage/make.profile				w,	# eselect profile
+    /usr/lib{,32,64}/libcblas.*				w,	# eselect cblas
+    /usr/lib{,32,64}/pkgconfig/cblas.pc			w,	# eselect cblas
+    /usr/lib{,32,64}/libOpenCL.*			w,	# eselect opencl
+    /usr/include/cblas.h				w,	# eselect cblas
+    /usr/include/CL/*					w,	# eselect opencl
+    /usr/src/linux					w,	# eselect kernel
+    /usr/share/bakefile/presets/wx*			w,	# eselect wxwidgets
+    /usr/share/man/man1/python.1.bz2			w,	# eselect python
+    /usr/share/man/man1/ruby.1				w,	# eselect ruby
+    /usr/share/man/man1/irb.1				w,	# eselect ruby
+    /usr/share/man/man1/erb.1				w,	# eselect ruby
+    /usr/share/man/man1/ri.1				w,	# eselect ruby
+    /usr/bin/ruby					w,	# eselect ruby
+    /usr/bin/gem					w,	# eselect ruby
+    /usr/bin/irb					w,	# eselect ruby
+    /usr/bin/erb					w,	# eselect ruby
+    /usr/bin/ri						w,	# eselect ruby
+    /usr/bin/rdoc					w,	# eselect ruby
+    /usr/bin/testrb					w,	# eselect ruby
+  }
+  
+  profile sed /bin/sed flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/python-exec/python-exec.conf.new		w,	# eselect python
+    /etc/python-exec/python-exec.conf			r,	# eselect python
+    /usr/portage/metadata/news/**			r,	# eselect news
+    /usr/portage/profiles/profiles.desc			r,	# eselect profile
+  }
+  
+  profile sort /bin/sort flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability mknod,
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sort						mr,
+  }
+  
+  profile head /bin/head flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/head						mr,
+  }
+  
+  profile mkdir /bin/mkdir flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+  }
+  
+  profile mktemp /bin/mktemp flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mktemp						mr,
+  }
+  
+  profile cut /bin/cut flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cut						mr,
+  }
+  
+  profile grep /bin/grep flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile chgrp /bin/chgrp flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chgrp						mr,
+  }
+  
+  profile chmod /bin/chmod flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chmod						mr,
+  }
+  
+  profile cat /bin/cat flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/share/qt4/graphicssystems/*			r,	# eselect qtgraphicssystem
+  }
+  
+  profile tr /bin/tr flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/tr						mr,
+  }
+  
+  profile ls /bin/ls flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/ls						mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/share/qt4/graphicssystems/			r,	# eselect qtgraphicssystem
+  }
+  
+  profile file /usr/bin/file flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/file					mr,
+  }
+  
+  profile scanelf /usr/bin/scanelf flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/scanelf					mr,
+  }
   
   profile portage {
     #include <abstractions/base>
