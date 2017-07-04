@@ -431,6 +431,7 @@ profile util-linux.dmesg /bin/dmesg flags=(complain) {	# FIX ME! 4.07.2017 flags
   
   # PSEUDO ---------------------------------------------
   /dev/kmsg						r,
+  /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -438,4 +439,5 @@ profile util-linux.dmesg /bin/dmesg flags=(complain) {	# FIX ME! 4.07.2017 flags
   
   # READS/WRITES ---------------------------------------
   # В общем профиле доступ к файлам (для параметра --file) не даем.
+  /var/log/dmesg					w,	# openrc.bootmisc.init.d
 }
