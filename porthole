@@ -34,12 +34,9 @@ profile porthole @{PYTHON_EXEC}/porthole {
   # EXECUTABLES ----------------------------------------
   @{shell}						cx,
   /bin/stty						Px,
-  /bin/bzip2						ix,	# FS ACCESS!
-  /usr/bin/sandbox					ixr,	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/sandbox					cx,
   
   # READS/WRITES ---------------------------------------
-  /etc/sandbox.conf					r,
-  /etc/sandbox.d/{,*}					r,
   /etc/portage/**					r,
   /etc/profile.env					r,
   /usr/portage/**					r,
@@ -47,7 +44,6 @@ profile porthole @{PYTHON_EXEC}/porthole {
   /usr/share/portage/**					r,
   /usr/share/gtksourceview-[2-9]*/**			r,
   /usr/share/porthole/**				r,
-  @{PYTHON_PACKAGES}/cairo/**.pyc{,.*}			w,
   /var/lib/portage/*					r,
   /var/cache/edb/**					r,
   /var/db/pkg/{,**}					r,
@@ -56,21 +52,41 @@ profile porthole @{PYTHON_EXEC}/porthole {
   # USERS ----------------------------------------------
   owner @{HOME}/.porthole/{,prefs.xml}			rw,
   
-  profile shell @{shell} {
+  profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
-    /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /bin/uname						Px,
-    /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh	ix,	# FS ACCESS! Пока оставляем все ix в portage.emerge
+  }
+  
+  profile sandbox /usr/bin/sandbox flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/sandbox					mr,
+    @{shell}						px -> porthole_sandbox_shell,
     
     # READS/WRITES -------------------------------------
-    /usr/portage/**					r,
-    /usr/local/portage/**				r,
-    /usr/share/sandbox/*				r,
+    /etc/sandbox.conf					r,
+    /etc/sandbox.d/{,**}				r,
   }
+}
+
+profile porthole_sandbox_shell flags=(complain) {
+  include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
+  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		ix,	# FIX ME! Вынести в отдельный профиль.
 }

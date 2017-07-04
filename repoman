@@ -37,7 +37,7 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
   @{shell}						Cx,
   /usr/bin/sandbox					cx,
   /bin/basename						Px,
-  /usr/bin/git						ix,	# не используем Px и Px -> git_root.
+  /usr/bin/git						Cx,	# не используем Px и Px -> git_root.
   /usr/bin/id						Px,
   /usr/bin/wget						Px,
   
@@ -50,9 +50,6 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
   /usr/local/portage/**/Manifest*			rw,
   /usr/share/portage/{,**}				r,
   /var/cache/edb/dep/usr/local/portage/**		rw,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.gitconfig				r,
   
   # TEMP -----------------------------------------------
   owner /tmp/??????					rw,
@@ -81,26 +78,46 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
-    /dev/tty						rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/sandbox					mr,
-    @{shell}						ix,	# FIX ME! почему он не в отдельном профиле?
-    /bin/sed						ix,	# FS ACCESS!
-    /bin/basename					Px,
-    /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh	ix,	# FIX ME! Вынести в отдельный профиль.
+    @{shell}						px -> repoman_sandbox_shell,
     
     # READS/WRITES -------------------------------------
     /etc/sandbox.conf					r,
-    /etc/sandbox.d/{,*}					r,
-    /etc/portage/{,**}					r,
-    /usr/portage/{,**}					r,
-    /usr/share/sandbox/{,**}				r,
-    /usr/local/portage/{,**}				r,
-    /var/log/sandbox/sandbox-*.log			w,
-    
-    # TEMP ---------------------------------------------
-    /var/tmp/portage/**/temp/{,**}			w,
+    /etc/sandbox.d/{,**}				r,
   }
+  
+  profile git /usr/bin/git flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/git					mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/local/portage/{,**}				r,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.gitconfig				r,
+  }
+}
+
+profile repoman_sandbox_shell flags=(complain) {
+  include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
+  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		ix,	# FIX ME! Вынести в отдельный профиль.
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/sandbox/sandbox.bashrc			r,
+  /usr/local/portage/{,**}				r,
+  /usr/portage/{,**}					r,
 }

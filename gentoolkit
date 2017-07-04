@@ -104,7 +104,7 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /usr/bin/sandbox					Cx,
+  /usr/bin/sandbox					cx,
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
@@ -139,11 +139,26 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean flags=(complain) {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/sandbox					mr,
+    @{shell}						px -> gentoolkit_eclean_sandbox_shell,
     
     # READS/WRITES -------------------------------------
     /etc/sandbox.conf					r,
     /etc/sandbox.d/{,**}				r,
   }
+}
+
+profile gentoolkit_eclean_sandbox_shell flags=(complain) {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
+  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		ix,	# FIX ME! Вынести в отдельный профиль.
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/sandbox/sandbox.bashrc			r,
 }
 
 profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
