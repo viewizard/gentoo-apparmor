@@ -37,7 +37,7 @@ profile man-db.mandb /usr/bin/mandb {
   /var/cache/man/					r,
   /var/cache/man/**					rwk,
   
-  profile bzip2 /bin/bzip2 flags=(complain) {
+  profile bzip2 /bin/bzip2 {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -51,7 +51,7 @@ profile man-db.mandb /usr/bin/mandb {
   }
 }
 
-profile man-db.man /usr/bin/man flags=(complain) {
+profile man-db.man /usr/bin/man {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -85,70 +85,70 @@ profile man-db.man /usr/bin/man flags=(complain) {
   /var/cache/man/					r,
   /var/cache/man/**					rwk,
   
-  profile bzip2 /bin/bzip2 flags=(complain) {
+  profile bzip2 /bin/bzip2 {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/bzip2						mr,
   }
   
-  profile gzip /bin/gzip flags=(complain) {
+  profile gzip /bin/gzip {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/gzip						mr,
   }
   
-  profile less /usr/bin/less flags=(complain) {
+  profile less /usr/bin/less {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/less					mr,
   }
   
-  profile preconv /usr/bin/preconv flags=(complain) {
+  profile preconv /usr/bin/preconv {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/preconv					mr,
   }
   
-  profile neqn /usr/bin/neqn flags=(complain) {
+  profile neqn /usr/bin/neqn {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/neqn					mr,
   }
   
-  profile nroff /usr/bin/nroff flags=(complain) {
+  profile nroff /usr/bin/nroff {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/nroff					mr,
   }
   
-  profile groff /usr/bin/groff flags=(complain) {
+  profile groff /usr/bin/groff {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/groff					mr,
   }
   
-  profile troff /usr/bin/troff flags=(complain) {
+  profile troff /usr/bin/troff {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/troff					mr,
   }
   
-  profile grotty /usr/bin/grotty flags=(complain) {
+  profile grotty /usr/bin/grotty {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/grotty					mr,
   }
   
-  profile tbl /usr/bin/tbl flags=(complain) {
+  profile tbl /usr/bin/tbl {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -156,7 +156,7 @@ profile man-db.man /usr/bin/man flags=(complain) {
   }
 }
 
-profile man-db.manconv /usr/libexec/man-db/manconv flags=(complain) {
+profile man-db.manconv /usr/libexec/man-db/manconv {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
@@ -211,7 +211,7 @@ profile man-db.cron.daily /etc/cron.daily/man-db {
     /var/cache/man/					w,
   }
   
-  profile nice /usr/bin/nice flags=(complain) {
+  profile nice /usr/bin/nice {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

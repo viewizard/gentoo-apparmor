@@ -42,10 +42,10 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
   /bin/sed						ix,	# FS ACCESS!
   /bin/mv						ix,	# FS ACCESS!
   /bin/cp						ix,	# FS ACCESS!
-  /bin/grep						ix,	# FS ACCESS!
+  /bin/grep						ixr,	# FS ACCESS!
   /bin/egrep						Cx,	# FS ACCESS! egrep
   /bin/fgrep						Cx,	# FS ACCESS! fgrep
-  /bin/cat						ix,	# FS ACCESS!
+  /bin/cat						ixr,	# FS ACCESS!
   /bin/cut						ix,	# FS ACCESS!
   /bin/mkdir						ix,	# FS ACCESS!
   /bin/ln						ix,	# FS ACCESS!
@@ -63,7 +63,7 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
   /bin/date						ix,	# FS ACCESS!
   /bin/dirname						Px,
   /bin/basename						Px,
-  /bin/udevadm						Px,
+  /bin/udevadm						Pxr,
   /bin/echo						Px,
   /bin/mount						Px,
   /bin/umount						Px,
@@ -78,7 +78,7 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
   /sbin/mdassemble					r,
   /sbin/blkid						r,
   /sbin/lvm						r,
-  /sbin/ldconfig					Px,
+  /sbin/ldconfig					Pxr,
   /sbin/apparmor_parser					r,
   /usr/bin/gawk						ix,	# FS ACCESS!
   /usr/bin/md5sum					ix,	# FS ACCESS!
@@ -86,7 +86,7 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
   /usr/bin/find						ix,	# FS ACCESS!
   /usr/bin/pkg-config					Px,
   /usr/bin/realpath					ix,	# FS ACCESS!
-  /usr/bin/lddtree					ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/lddtree					ixr,	# FIX ME! Вынести в отдельный профиль.
   /usr/bin/scanelf					ix,	# FS ACCESS!
   /usr/bin/uniq						ix,	# FIX ME! Вынести в отдельный профиль.
   /usr/bin/q						ix,	# FIX ME! Вынести в отдельный профиль.

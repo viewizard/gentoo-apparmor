@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check flags=(complain) {
+profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -53,7 +53,7 @@ profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check flags=(complain) {
   }
 }
 
-profile gentoolkit.equery @{PYTHON_EXEC}/equery flags=(complain) {
+profile gentoolkit.equery @{PYTHON_EXEC}/equery {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/ncurses>
@@ -104,6 +104,7 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
+  /usr/bin/sandbox					Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
@@ -115,7 +116,7 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean flags=(complain) {
   /usr/local/portage/**					r,
   /usr/share/portage/config/*				r,
   /var/db/pkg/{,**}					r,
-  /var/cache/edb/{,**}					r,
+  /var/cache/edb/{,**}					rw,
   
   profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
@@ -127,6 +128,21 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean flags=(complain) {
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /bin/uname						Px,
+  }
+  
+  profile sandbox /usr/bin/sandbox flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/sandbox					mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/sandbox.conf					r,
+    /etc/sandbox.d/{,**}				r,
   }
 }
 
@@ -208,7 +224,7 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
 
 # FIX ME! Устаревший, будет заменен на gentoolkit.revdep-rebuild
 # BUG! Работает некорректно, пересустанавливает постоянно samba.
-profile gentoolkit.revdep-rebuild.sh /usr/bin/revdep-rebuild.sh flags=(complain) {
+profile gentoolkit.revdep-rebuild.sh /usr/bin/revdep-rebuild.sh {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ncurses>

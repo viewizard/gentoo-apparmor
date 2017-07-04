@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile pam-script /etc/security/pam-script/pam_script* flags=(complain) {
+profile pam-script /etc/security/pam-script/pam_script* {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -32,7 +32,7 @@ profile pam-script /etc/security/pam-script/pam_script* flags=(complain) {
   # READS/WRITES ---------------------------------------
   /etc/security/pam-script/pam-script.d/{,**} r,
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     

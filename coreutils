@@ -50,7 +50,7 @@ profile coreutils.date /bin/date {
   /bin/date						mr,
 }
 
-profile coreutils.uname /bin/uname flags=(complain,attach_disconnected) {	# FIX ME! 04.04.2017 flags=(complain)
+profile coreutils.uname /bin/uname flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -69,7 +69,7 @@ profile coreutils.uname /bin/uname flags=(complain,attach_disconnected) {	# FIX 
   deny /var/log/genkernel.log				w,	# genkernel-next
 }
 
-profile coreutils.tty /bin/tty flags=(complain) {		# FIX ME! 04.04.2017 flags=(complain)
+profile coreutils.tty /bin/tty {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -80,7 +80,7 @@ profile coreutils.tty /bin/tty flags=(complain) {		# FIX ME! 04.04.2017 flags=(c
   /bin/tty						mr,
 }
 
-profile coreutils.tr /bin/tr flags=(complain,attach_disconnected) {	# FIX ME! 04.04.2017 flags=(complain)
+profile coreutils.tr /bin/tr flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -97,7 +97,7 @@ profile coreutils.tr /bin/tr flags=(complain,attach_disconnected) {	# FIX ME! 04
   deny /tmp/chkrootkit.cron.*				w,	# chkrootkit.cron.daily
 }
 
-profile coreutils.sleep /bin/sleep flags=(complain) {		# FIX ME! 04.04.2017 flags=(complain)
+profile coreutils.sleep /bin/sleep {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -112,7 +112,7 @@ profile coreutils.sleep /bin/sleep flags=(complain) {		# FIX ME! 04.04.2017 flag
   deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
 }
 
-profile coreutils.whoami /usr/bin/whoami flags=(complain) {	# FIX ME! 04.04.2017 flags=(complain)
+profile coreutils.whoami /usr/bin/whoami {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -123,7 +123,7 @@ profile coreutils.whoami /usr/bin/whoami flags=(complain) {	# FIX ME! 04.04.2017
   /usr/bin/whoami					mr,
 }
 
-profile coreutils.id /usr/bin/id flags=(complain) {		# FIX ME! 04.04.2017 flags=(complain)
+profile coreutils.id /usr/bin/id {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -142,8 +142,7 @@ profile coreutils.id /usr/bin/id flags=(complain) {		# FIX ME! 04.04.2017 flags=
   deny /var/log/emerge-fetch.log			a,	# portage.emerge
 }
 
-profile coreutils.pinky /usr/bin/pinky flags=(complain) {	# FIX ME! 04.04.2017 flags=(complain)
-								# изменять с корректировкой acpid.shell
+profile coreutils.pinky /usr/bin/pinky {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -157,7 +156,7 @@ profile coreutils.pinky /usr/bin/pinky flags=(complain) {	# FIX ME! 04.04.2017 f
   /run/utmp						rk,
 }
 
-profile coreutils.stty /bin/stty flags=(complain) {		# FIX ME! 04.04.2017 flags=(complain)
+profile coreutils.stty /bin/stty {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -171,7 +170,7 @@ profile coreutils.stty /bin/stty flags=(complain) {		# FIX ME! 04.04.2017 flags=
   deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d
 }
 
-profile coreutils.basename /bin/basename flags=(complain) {	# FIX ME! 05.04.2017 flags=(complain)
+profile coreutils.basename /bin/basename {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -182,7 +181,7 @@ profile coreutils.basename /bin/basename flags=(complain) {	# FIX ME! 05.04.2017
   /bin/basename						mr,
 }
 
-profile coreutils.dirname /bin/dirname flags=(complain) {	# FIX ME! 05.04.2017 flags=(complain)
+profile coreutils.dirname /bin/dirname {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -193,7 +192,7 @@ profile coreutils.dirname /bin/dirname flags=(complain) {	# FIX ME! 05.04.2017 f
   /bin/dirname						mr,
 }
 
-profile coreutils.echo /bin/echo flags=(complain) {		# FIX ME! 05.04.2017 flags=(complain)
+profile coreutils.echo /bin/echo {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -211,7 +210,7 @@ profile coreutils.echo /bin/echo flags=(complain) {		# FIX ME! 05.04.2017 flags=
   deny /var/log/genkernel.log				w,	# genkernel-next
 }
 
-profile coreutils.sync /bin/sync flags=(complain) {		# FIX ME! 16.05.2017 flags=(complain)
+profile coreutils.sync /bin/sync {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -221,7 +220,7 @@ profile coreutils.sync /bin/sync flags=(complain) {		# FIX ME! 16.05.2017 flags=
   /bin/sync						mr,
 }
 
-profile coreutils.true /bin/true flags=(complain) {		# FIX ME! 22.06.2017 flags=(complain)
+profile coreutils.true /bin/true {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -231,7 +230,7 @@ profile coreutils.true /bin/true flags=(complain) {		# FIX ME! 22.06.2017 flags=
   /bin/true						mr,
 }
 
-profile coreutils.uniq /usr/bin/uniq flags=(complain) {		# FIX ME! 30.06.2017 flags=(complain)
+profile coreutils.uniq /usr/bin/uniq {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------

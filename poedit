@@ -68,7 +68,7 @@ profile poedit /usr/bin/poedit {
     deny /run/user/[0-9]*/poedit.lock			w,
   }
   
-  profile msgmerge /usr/bin/msgmerge flags=(complain) {
+  profile msgmerge /usr/bin/msgmerge {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwk>
     #include <abstractions/fs-deny-by-pattern-internet>
