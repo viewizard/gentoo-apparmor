@@ -422,3 +422,20 @@ profile util-linux.getopt /usr/bin/getopt flags=(complain,attach_disconnected) {
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
+
+profile util-linux.dmesg /bin/dmesg flags=(complain) {	# FIX ME! 4.07.2017 flags=(complain)
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability syslog,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/kmsg						r,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/dmesg						mr,
+  
+  # READS/WRITES ---------------------------------------
+  # В общем профиле доступ к файлам (для параметра --file) не даем.
+}
