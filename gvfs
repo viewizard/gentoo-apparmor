@@ -58,7 +58,6 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfs-udisks2-volume-monitor		mr,
-  /bin/mount						Px,
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
@@ -168,16 +167,8 @@ profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   			peer=(addr=none,label="fuse.fusermount"),
   
   # MOUNT ----------------------------------------------
-  mount
-  	fstype="fuse.gvfsd-fuse"
-  	options=(rw, nosuid, nodev)
-  	gvfsd-fuse
-  -> /run/user/[0-9]*/gvfs/,
-  mount
-  	fstype="fuse.gvfsd-fuse"
-  	options=(rw, nosuid, nodev)
-  	gvfsd-fuse
-  -> /root/.gvfs/,
+  mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /run/user/[0-9]*/gvfs/,
+  mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /root/.gvfs/,
   umount /run/user/[0-9]*/gvfs/,
   umount /root/.gvfs/,
   

@@ -77,8 +77,8 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
   /bin/dd						Cx,	# FS ACCESS! dd
   /bin/mkdir						Cx,	# FS ACCESS! mkdir
   /bin/stty						Px,
-  /bin/mount						Px,
-  /bin/umount						Px,
+  /bin/mount						Cx,	# FS ACCESS! mount
+  /bin/umount						Cx,	# FS ACCESS! umount
   /sbin/mkswap						Px,
   /sbin/cryptsetup					Px,
   /usr/bin/gpg{,2,-static}				Px,
@@ -174,5 +174,45 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
     
     # DENY INHERIT -------------------------------------
     deny /etc/conf.d/dmcrypt				r,
+  }
+  
+  profile mount /bin/mount flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    
+    # MOUNT --------------------------------------------
+    mount options=ro /dev/@{BLOCK_REAL} -> /run/openrc/dm-crypt-remdev.*/,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/@{BLOCK_ALL}					r,
+    /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mount						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d
+  }
+  
+  profile umount /bin/umount flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    
+    # MOUNT --------------------------------------------
+    umount /run/openrc/dm-crypt-remdev.*/,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/umount						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d
   }
 }

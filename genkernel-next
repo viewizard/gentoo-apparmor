@@ -65,8 +65,8 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
   /bin/basename						Px,
   /bin/udevadm						Pxr,
   /bin/echo						Px,
-  /bin/mount						Px,
-  /bin/umount						Px,
+  /bin/mount						Cx,	# FS ACCESS! mount
+  /bin/umount						Cx,	# FS ACCESS! umount
   /bin/keyctl						r,
   /bin/head						r,
   /sbin/udevd						r,
@@ -168,5 +168,19 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
     /bin/fgrep						r,
     @{shell}						mr,
     /bin/grep						ix,	# Все правильно, для egrep используем с ix.
+  }
+  
+  profile mount /bin/mount flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mount						mr,
+  }
+  
+  profile umount /bin/umount flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/umount						mr,
   }
 }

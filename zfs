@@ -25,7 +25,7 @@ profile zfs /sbin/zfs flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /sbin/zfs						mr,
-  /bin/mount						Px,
+#  /bin/mount						Px,	# FS ACCESS!
   
   # READS/WRITES ---------------------------------------
   /etc/dfs/sharetab					r,
@@ -50,7 +50,7 @@ profile zfs.zpool /sbin/zpool flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /sbin/zpool						mr,
-  /bin/umount						Px,
+#  /bin/umount						Px,	# FS ACCESS!
   /usr/libexec/zfs/zed.d/all-syslog.sh			Px,
   
   # READS/WRITES ---------------------------------------

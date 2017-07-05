@@ -274,6 +274,8 @@ root # find * -maxdepth 0 -type f -exec ln -sr ./{} ./force-complain/{} \;
 Важно!
 Для программ, использующих доступ к пользовательским файлам без ограничений (например, используется abstractions/fs-access-by-users-preset-r* с @{USERS_FILE}="**") обязательно использовать абстракции abstractions/fs-deny-private или abstractions/fs-deny-private-strict. Исключения - работа с файлами из этих абстракций.
 
+Важно!
+После обновления системы, установки и/или удаления пакетов через portage - выполнять проверку скриптом /usr/local/sbin/aa_portage.sh на необходимость включения/отключения (через симлинк в /etc/apparmor.d/disable/) профилей AppArmor.
 
 
 

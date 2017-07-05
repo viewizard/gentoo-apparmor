@@ -68,7 +68,7 @@ profile lvm2.dmeventd /sbin/dmeventd flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /sbin/dmeventd					mr,
-  /bin/umount						Px,
+  /bin/umount						Cx,	# FS ACCESS! umount
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
@@ -88,6 +88,13 @@ profile lvm2.dmeventd /sbin/dmeventd flags=(complain) {
   owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! daily_backup.sh.cron.daily
   owner /tmp/homebackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
   owner /tmp/rootbackup.cron.*				w,	# DELEGATION! monthly_backup.sh.cron.monthly
+  
+  profile umount /bin/umount flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/umount						mr,
+  }
 }
 
 profile lvm2.lvm /sbin/lvm flags=(complain) {
@@ -164,7 +171,7 @@ profile lvm2.fsadm /sbin/fsadm flags=(complain) {
   /bin/grep						Cx,	# FS ACCESS! grep
   /bin/readlink						Cx,	# FS ACCESS! readlink
   /bin/date						Cx,	# FS ACCESS! date
-  /bin/mount						Px,
+  /bin/mount						Cx,	# FS ACCESS! mount
   /sbin/blkid						Px,
   /sbin/tune2fs						Px,
   /sbin/fsck						Px,
@@ -192,6 +199,13 @@ profile lvm2.fsadm /sbin/fsadm flags=(complain) {
     
     # EXECUTABLES --------------------------------------
     /bin/date						mr,
+  }
+  
+  profile mount /bin/mount flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mount						mr,
   }
 }
 

@@ -57,7 +57,7 @@ profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/gpartedbin					mr,
-  /bin/umount						Px,
+  /bin/umount						Cx,	# FS ACCESS! umount
   /bin/udevadm						Px,
   /sbin/hdparm						ix,	# FIX ME! Вынести в отдельный профиль.
   /sbin/blkid						Px,
@@ -82,6 +82,13 @@ profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
   /etc/mtools/mtools.conf				r,	# mlabel
   /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,
   /run/blkid/blkid.tab					r,	# e2label
+  
+  profile umount /bin/umount flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/umount						mr,
+  }
 }
 
 profile gparted.gparted /usr/sbin/gparted flags=(complain) {
@@ -108,6 +115,9 @@ profile gparted.gparted /usr/sbin/gparted flags=(complain) {
   
   profile rm /bin/rm flags=(complain) {
     #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/rm						mr,

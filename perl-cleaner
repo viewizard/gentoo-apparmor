@@ -27,22 +27,22 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/perl-cleaner				mr,
   @{shell}						cxmr,	# Все правильно, запуск и mmap.
-  /bin/grep						ix,
+  /bin/grep						ix,	# FS ACCESS!
   /bin/tr						Px,
-  /bin/rmdir						ix,
-  /bin/sort						ix,
+  /bin/rmdir						ix,	# FS ACCESS!
+  /bin/sort						ix,	# FS ACCESS!
   /bin/stty						Px,
-  /bin/cat						ix,
-  /bin/rm						ix,
+  /bin/cat						ix,	# FS ACCESS!
+  /bin/rm						ix,	# FS ACCESS!
   /sbin/consoletype					Px,
-  /usr/bin/q						ix,
-  /usr/bin/xargs					ix,
-  /usr/bin/gawk						ix,
+  /usr/bin/q						ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/xargs					ix,	# FS ACCESS!
+  /usr/bin/gawk						ix,	# FS ACCESS!
   /usr/bin/tput						Px,
-  /usr/bin/scanelf					ix,
-  /usr/bin/find						ix,
-  /usr/bin/realpath					ix,
-  /usr/bin/h2ph						ix,
+  /usr/bin/scanelf					ix,	# FS ACCESS!
+  /usr/bin/find						ix,	# FS ACCESS!
+  /usr/bin/realpath					ix,	# FS ACCESS!
+  /usr/bin/h2ph						ix,	# FIX ME! Вынести в отдельный профиль.
   @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
   
   # READS/WRITES ---------------------------------------
@@ -64,11 +64,11 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/grep						ix,
-    /usr/bin/gawk					ix,
-    /usr/bin/@{CHOST}-gcc				ix,
-    /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc		ix,
-    /usr/libexec/gcc/@{CHOST}/*/cc1			ix,
+    /bin/grep						ix,	# FS ACCESS!
+    /usr/bin/gawk					ix,	# FS ACCESS!
+    /usr/bin/@{CHOST}-gcc				ix,	# FIX ME! Вынести в отдельный профиль.
+    /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc		ix,	# FIX ME! Вынести в отдельный профиль.
+    /usr/libexec/gcc/@{CHOST}/*/cc1			ix,	# FIX ME! Вынести в отдельный профиль.
     
     # READS/WRITES -------------------------------------
     /etc/env.d/gcc/{,**}				r,

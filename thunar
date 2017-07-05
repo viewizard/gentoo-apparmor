@@ -74,8 +74,8 @@ profile thunar /usr/bin/{Thunar,thunar} {
   /usr/bin/thunar					mr,
   @{shell}						Cx,
   /bin/env						Cx,
-  /bin/mount						Px,
-  /bin/umount						Px,
+  /bin/mount						Cx,	# FS ACCESS! mount
+  /bin/umount						Cx,	# FS ACCESS! umount
   /usr/bin/update-desktop-database			Px,
   /usr/lib{,32,64}/Thunar/thunar-sendto-email		Px,
   /usr/libexec/thunar-archive-plugin/xarchiver.tap	Px,	# XFCE4
@@ -122,6 +122,51 @@ profile thunar /usr/bin/{Thunar,thunar} {
     # EXECUTABLES --------------------------------------
     /bin/env						mr,
     /usr/bin/wine					Px,
+  }
+  
+  profile mount /bin/mount {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    
+    # MOUNT --------------------------------------------
+    
+    # PSEUDO -------------------------------------------
+    /dev/						r,
+    /dev/tty[0-9]*					rw,
+    /dev/@{BLOCK_ALL}					r,
+    /sys/block/						r,
+    /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+    /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
+    @{PROC}/partitions					r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mount						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/fstab						r,
+    /run/mount/utab					rw,
+    /run/blkid/blkid.tab*				rw,
+    link subset /run/blkid/blkid.tab.old		-> /run/blkid/blkid.tab,
+  }
+  
+  profile umount /bin/umount {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    
+    # MOUNT --------------------------------------------
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/umount						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/mount/utab					rw,
   }
 }
 
@@ -196,8 +241,8 @@ profile thunar_root {
   /usr/bin/thunar					mr,
   @{shell}						Cx,
   /bin/env						Cx,
-  /bin/mount						Px,
-  /bin/umount						Px,
+  /bin/mount						Cx,	# FS ACCESS! mount
+  /bin/umount						Cx,	# FS ACCESS! umount
   /usr/bin/update-desktop-database			Px,
   /usr/lib{,32,64}/Thunar/thunar-sendto-email		Px,	# RBAC! Для root ветки отдельный профиль,
   								# вызывающий нужный профиль exo-helper-1.
@@ -249,6 +294,55 @@ profile thunar_root {
     # EXECUTABLES --------------------------------------
     /bin/env						mr,
     /usr/bin/wine					Px,
+  }
+  
+  profile mount /bin/mount {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    
+    # MOUNT --------------------------------------------	# FIX ME! /etc/fstab
+    mount fstype=ext4 options=(rw, noatime, iversion) /dev/@{BLOCK_ALL} -> /boot/,	# BUILD SYSTEM ONLY!
+    mount fstype=ext2 options=(rw, nosuid, nodev, noexec, noatime) /dev/@{BLOCK_ALL} -> /mnt/usbcryptkey/,	# BUILD SYSTEM ONLY!
+    
+    # PSEUDO -------------------------------------------
+    /dev/						r,
+    /dev/tty[0-9]*					rw,
+    /dev/@{BLOCK_ALL}					r,
+    /sys/block/						r,
+    /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+    /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
+    @{PROC}/partitions					r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mount						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/fstab						r,
+    /run/mount/utab					rw,
+    /run/blkid/blkid.tab*				rw,
+    link subset /run/blkid/blkid.tab.old		-> /run/blkid/blkid.tab,
+  }
+  
+  profile umount /bin/umount {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    
+    # MOUNT --------------------------------------------	# FIX ME! /etc/fstab
+    umount /boot/,						# BUILD SYSTEM ONLY!
+    umount /mnt/usbcryptkey/,					# BUILD SYSTEM ONLY!
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/umount						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/mount/utab					rw,
   }
 }
 

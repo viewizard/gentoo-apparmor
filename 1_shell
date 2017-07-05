@@ -190,8 +190,8 @@ profile shell_root {
   								# можем запускать другие разрешенные процессы.
   /bin/sed						ixr,	# FS ACCESS!
   /bin/gzip						ixr,	# FS ACCESS!
-  /bin/mount						Pxr,
-  /bin/umount						Pxr,
+  /bin/mount						Cxr,	# FS ACCESS! mount
+  /bin/umount						Cxr,	# FS ACCESS! umount
   /bin/sleep						Pxr,
   /bin/passwd						Pxr,
   /bin/uname						Pxr,
@@ -311,4 +311,45 @@ profile shell_root {
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
+  
+  profile mount /bin/mount {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    
+    # MOUNT --------------------------------------------	# FIX ME! /etc/fstab
+    mount fstype=ext4 options=(rw, noatime, iversion) /dev/@{BLOCK_ALL} -> /boot/,	# BUILD SYSTEM ONLY!
+    mount fstype=ext2 options=(rw, nosuid, nodev, noexec, noatime) /dev/@{BLOCK_ALL} -> /mnt/usbcryptkey/,	# BUILD SYSTEM ONLY!
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mount						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/fstab						r,
+    /run/mount/utab					rw,
+  }
+  
+  profile umount /bin/umount {					# BUILD SYSTEM ONLY!
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    
+    # MOUNT --------------------------------------------	# FIX ME! /etc/fstab
+    umount /boot/,						# BUILD SYSTEM ONLY!
+    umount /mnt/usbcryptkey/,					# BUILD SYSTEM ONLY!
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/umount						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/mount/utab					rw,
+  }
 }

@@ -114,8 +114,8 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {		# Относится к �
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/udisks2/udisksd				mr,
-  /bin/mount						Px,
-  /bin/umount						Px,
+  /bin/mount						Cx,	# FS ACCESS! mount
+  /bin/umount						Cx,	# FS ACCESS! umount
   /sbin/cryptsetup					Px,
   /usr/bin/eject					Px,
   
@@ -127,4 +127,45 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {		# Относится к �
   /run/udev/data/*					r,
   /run/media/{,*/,*/*/}					w,
   /media/*/						w,
+  
+  profile mount /bin/mount {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    capability dac_override,
+    
+    # MOUNT --------------------------------------------
+    mount options=(rw, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /media/*/,	# Важно! noexec - т.к. мы патчим udisks.
+    mount options=(rw, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /run/media/*/*/,	# /run/media/$USER/VolumeName/
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mount						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/fstab						r,
+    /run/mount/utab					rw,
+    /run/mount/utab.*					rwk,
+  }
+  
+  profile umount /bin/umount {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    
+    # MOUNT --------------------------------------------
+    umount /media/*/,
+    umount /run/media/*/*/,
+    
+    # PSEUDO -------------------------------------------
+    @{PROC}/@{pid}/mountinfo				r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/umount						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/mount/utab					rw,
+    /run/mount/utab.*					rwk,
+  }
 }

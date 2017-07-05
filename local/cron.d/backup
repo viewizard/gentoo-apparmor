@@ -14,52 +14,190 @@
 # Важно! Перезагрузка профиля выполняется командой:
 # apparmor_parser -r /etc/apparmor.d/2_local
 
-profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh {
+profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh flags=(complain) {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
-  capability dac_override,
-  capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/null						w,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,
+#  @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
+  /etc/cron.daily/daily_backup.sh			r,
   @{shell}						mr,
-  /bin/chmod						ix,
-  /bin/date						ix,
-  /bin/tar						ix,
-  /bin/rm						ix,
-  /bin/cat						ix,
-  /bin/mktemp						ix,
+  /bin/chmod						Cx,	# FS ACCESS! chmod
+  /bin/date						Cx,	# FS ACCESS! date
+  /bin/tar						Cx,	# FS ACCESS! tar
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/mktemp						Cx,	# FS ACCESS! mktemp
   /bin/lsblk						Px,
-  /bin/sort						ix,
-  /bin/mount						Px,
-  /bin/umount						Px,
+  /bin/sort						Cx,	# FS ACCESS! sort
+  /bin/mount						Cx,	# FS ACCESS! mount
+  /bin/umount						Cx,	# FS ACCESS! umount
   /bin/basename						Px,
   /sbin/cryptsetup					Px,
   /sbin/lvm						Px,
   /usr/bin/libnotify-notify-send-users			Px,
-  /usr/bin/find						ix,
+  /usr/bin/find						Cx,	# FS ACCESS! find
   /usr/bin/mail						Px,
   /usr/bin/logger					Px,
-  /usr/bin/uniq						ix,
-  
-  # READS/WRITES ---------------------------------------
-  /							r,
-  /home/{,**}						r,
-  /etc/**						r,
-  /usr/**						r,
-  /var/lib/**						r,
-  /mnt/backup/Gentoo_Backup/				r,
-  /mnt/backup/Gentoo_Backup/*				rw,
+  /usr/bin/uniq						Px,
   
   # TEMP -----------------------------------------------
   /tmp/dailyhomebackup.cron.??????{,/,/**}		rw,
+  
+  profile chmod /bin/chmod flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chmod						mr,
+    
+    # READS/WRITES -------------------------------------
+    /mnt/backup/Gentoo_Backup/daily_gentoo_conf_*.tar	w,
+    /mnt/backup/Gentoo_Backup/daily_gentoo_home_*.tar	w,
+    /mnt/backup/Gentoo_Backup/daily_LUKS_*		w,
+    
+    # DENY INHERIT -------------------------------------
+    deny /tmp/dailyhomebackup.cron.??????		w,
+  }
+  
+  profile date /bin/date flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/date						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /tmp/dailyhomebackup.cron.??????		w,
+  }
+  
+  profile tar /bin/tar flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    @{PROC}/@{pid}/fd/					r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/tar						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/**						r,
+    /usr/**						r,
+    /var/lib/**						r,
+    /mnt/backup/Gentoo_Backup/configs.list		r,
+    /mnt/backup/Gentoo_Backup/daily_gentoo_conf_*.tar	w,
+    /mnt/backup/Gentoo_Backup/daily_gentoo_home_*.tar	w,
+    
+    # TEMP ---------------------------------------------
+    /tmp/dailyhomebackup.cron.??????/{,**}		r,	# Точка монтирования снапшота с /home.
+    
+    # DENY INHERIT -------------------------------------
+    deny /tmp/dailyhomebackup.cron.??????		w,
+  }
+  
+  profile rm /bin/rm flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # READS/WRITES -------------------------------------
+    /tmp/dailyhomebackup.cron.??????{,/}		rw,
+  }
+  
+  profile cat /bin/cat flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+    
+    # READS/WRITES -------------------------------------
+    /tmp/dailyhomebackup.cron.??????			r,
+    
+    # DENY INHERIT -------------------------------------
+    deny /tmp/dailyhomebackup.cron.??????		w,
+  }
+  
+  profile mktemp /bin/mktemp flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mktemp						mr,
+    
+    # TEMP ---------------------------------------------
+    /tmp/dailyhomebackup.cron.??????{,/}		rw,
+  }
+  
+  profile sort /bin/sort flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sort						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /tmp/dailyhomebackup.cron.??????		w,
+  }
+  
+  profile mount /bin/mount flags=(complain) {
+    #include <abstractions/base>
+    
+    # MOUNT --------------------------------------------
+    mount fstype=ext4 options=(ro) /dev/@{BLOCK_ALL} -> /tmp/dailyhomebackup.cron.*/,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mount						mr,
+  }
+  
+  profile umount /bin/umount flags=(complain) {
+    #include <abstractions/base>
+    
+    # MOUNT --------------------------------------------
+    umount /tmp/dailyhomebackup.cron.*/,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/umount						mr,
+  }
+  
+  profile find /usr/bin/find flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/find					mr,
+    /bin/rm						Px -> daily_backup_find_rm,	# FS ACCESS! daily_backup_find_rm
+    
+    # READS/WRITES -------------------------------------
+    /							r,
+    /mnt/backup/Gentoo_Backup/				r,
+    
+    # DENY INHERIT -------------------------------------
+    deny /tmp/dailyhomebackup.cron.??????		w,
+  }
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile daily_backup_find_rm flags=(attach_disconnected,complain) {
+  #include <abstractions/base>
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/rm						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /mnt/backup/Gentoo_Backup/daily_gentoo_conf_*.tar	w,
+  /mnt/backup/Gentoo_Backup/daily_gentoo_home_*.tar	w,
+  /mnt/backup/Gentoo_Backup/daily_LUKS_*		w,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
+  deny /tmp/dailyhomebackup.cron.??????			w,
 }
 
 profile weekly_backup.sh.cron.weekly /etc/cron.weekly/weekly_backup.sh {
@@ -77,25 +215,26 @@ profile weekly_backup.sh.cron.weekly /etc/cron.weekly/weekly_backup.sh {
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
+  /etc/cron.weekly/weekly_backup.sh			r,
   @{shell}						mr,
-  /bin/chmod						ix,
-  /bin/date						ix,
-  /bin/tar						ix,
-  /bin/rm						ix,
-  /bin/cat						ix,
-  /bin/mktemp						ix,
+  /bin/chmod						ix,	# FS ACCESS!
+  /bin/date						ix,	# FS ACCESS!
+  /bin/tar						ix,	# FS ACCESS!
+  /bin/rm						ix,	# FS ACCESS!
+  /bin/cat						ix,	# FS ACCESS!
+  /bin/mktemp						ix,	# FS ACCESS!
   /bin/lsblk						Px,
-  /bin/sort						ix,
-  /bin/mount						Px,
-  /bin/umount						Px,
+  /bin/sort						ix,	# FS ACCESS!
+  /bin/mount						Cx,	# FS ACCESS! mount
+  /bin/umount						Cx,	# FS ACCESS! umount
   /bin/basename						Px,
   /sbin/cryptsetup					Px,
   /sbin/lvm						Px,
   /usr/bin/libnotify-notify-send-users			Px,
-  /usr/bin/find						ix,
+  /usr/bin/find						ix,	# FS ACCESS!
   /usr/bin/mail						Px,
   /usr/bin/logger					Px,
-  /usr/bin/uniq						ix,
+  /usr/bin/uniq						Px,
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -109,6 +248,25 @@ profile weekly_backup.sh.cron.weekly /etc/cron.weekly/weekly_backup.sh {
   # TEMP -----------------------------------------------
   /tmp/homebackup.cron.??????{,/,/**}			rw,
   
+  profile mount /bin/mount flags=(complain) {
+    #include <abstractions/base>
+    
+    # MOUNT --------------------------------------------
+    mount fstype=ext4 options=(ro) /dev/@{BLOCK_ALL} -> /tmp/homebackup.cron.*/,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mount						mr,
+  }
+  
+  profile umount /bin/umount flags=(complain) {
+    #include <abstractions/base>
+    
+    # MOUNT --------------------------------------------
+    umount /tmp/homebackup.cron.*/,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/umount						mr,
+  }
 }
 
 profile monthly_backup.sh.cron.monthly /etc/cron.monthly/monthly_backup.sh {
@@ -125,19 +283,20 @@ profile monthly_backup.sh.cron.monthly /etc/cron.monthly/monthly_backup.sh {
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
+  /etc/cron.monthly/monthly_backup.sh			r,
   @{shell}						mr,
-  /bin/chmod						ix,
-  /bin/date						ix,
-  /bin/tar						ix,
-  /bin/rm						ix,
-  /bin/cat						ix,
-  /bin/mktemp						ix,
-  /bin/mount						Px,
-  /bin/umount						Px,
+  /bin/chmod						ix,	# FS ACCESS!
+  /bin/date						ix,	# FS ACCESS!
+  /bin/tar						ix,	# FS ACCESS!
+  /bin/rm						ix,	# FS ACCESS!
+  /bin/cat						ix,	# FS ACCESS!
+  /bin/mktemp						ix,	# FS ACCESS!
+  /bin/mount						Cx,	# FS ACCESS! mount
+  /bin/umount						Cx,	# FS ACCESS! umount
   /bin/basename						Px,
   /sbin/lvm						Px,
   /usr/bin/libnotify-notify-send-users			Px,
-  /usr/bin/find						ix,
+  /usr/bin/find						ix,	# FS ACCESS!
   /usr/bin/mail						Px,
   /usr/bin/logger					Px,
   
@@ -158,4 +317,24 @@ profile monthly_backup.sh.cron.monthly /etc/cron.monthly/monthly_backup.sh {
   
   # TEMP -----------------------------------------------
   /tmp/rootbackup.cron.??????{,/,/**}			rw,
+  
+  profile mount /bin/mount flags=(complain) {
+    #include <abstractions/base>
+    
+    # MOUNT --------------------------------------------
+    mount fstype=ext4 options=(ro) /dev/@{BLOCK_ALL} -> /tmp/rootbackup.cron.*/,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mount						mr,
+  }
+  
+  profile umount /bin/umount flags=(complain) {
+    #include <abstractions/base>
+    
+    # MOUNT --------------------------------------------
+    umount /tmp/rootbackup.cron.*/,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/umount						mr,
+  }
 }

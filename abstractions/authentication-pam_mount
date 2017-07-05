@@ -12,8 +12,8 @@
 owner @{PROC}/@{pid}/mountinfo				r,
 
 # EXECUTABLES ------------------------------------------
-/bin/mount						Px,
-/bin/umount						Px,
+/bin/mount						Px -> pam_mount_mount,
+/bin/umount						Px -> pam_mount_umount,
 /usr/bin/ofl						Px,
 /usr/sbin/pmvarrun					Px,
 

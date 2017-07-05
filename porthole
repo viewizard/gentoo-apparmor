@@ -90,4 +90,9 @@ profile porthole_sandbox_shell flags=(complain) {
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
   /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		ix,	# FIX ME! Вынести в отдельный профиль.
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/sandbox/sandbox.bashrc			r,
+  /usr/portage/{,**}					r,
+  /usr/local/portage/{,**}				r,
 }

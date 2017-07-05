@@ -40,9 +40,6 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors {
   # EXECUTABLES ----------------------------------------
   /usr/bin/sensors					Px,
   @{shell}						Cx,
-  /bin/kmod						Px,
-  /bin/mount						Px,
-  /bin/grep						Cx,	# FS ACCESS! grep
   /bin/mkdir						Cx,	# FS ACCESS! mkdir
   
   # READS/WRITES ---------------------------------------
@@ -52,13 +49,6 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
-  }
-  
-  profile grep /bin/grep {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /bin/grep						mr,
   }
   
   profile mkdir /bin/mkdir {
