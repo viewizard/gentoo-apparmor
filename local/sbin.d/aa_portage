@@ -1,0 +1,84 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# Важно! Не должен содержать <tunables/global>.
+# Уже включен в тело /etc/apparmor.d/2_local профиля.
+
+# Важно! Перезагрузка профиля выполняется командой:
+# apparmor_parser -r /etc/apparmor.d/2_local
+
+profile local.sbin.aa_portage /usr/local/sbin/aa_portage.sh flags=(complain) {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/local/sbin/aa_portage.sh				r,
+  @{shell}						mr,
+  /bin/basename						Px,
+  /bin/wc						Cx,	# FS ACCESS! wc
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/ln						Cx,	# FS ACCESS! ln
+  @{PYTHON_EXEC_WRAPPER}				Cx -> equery,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/apparmor.d/{,**}					r,
+  /etc/apparmor.d/disable/*				w,
+  
+  profile wc /bin/wc flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/wc						mr,
+  }
+  
+  profile rm /bin/rm flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/apparmor.d/disable/*				w,
+  }
+  
+  profile ln /bin/ln flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/ln						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/apparmor.d/disable/*				w,
+  }
+  
+  profile equery flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/python>
+    #include <abstractions/python-exec>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    @{PYTHON_EXEC}/equery				Px,
+  }
+}

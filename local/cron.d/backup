@@ -149,21 +149,43 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh flags=(compla
   profile mount /bin/mount flags=(complain) {
     #include <abstractions/base>
     
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    
     # MOUNT --------------------------------------------
     mount fstype=ext4 options=(ro) /dev/@{BLOCK_ALL} -> /tmp/dailyhomebackup.cron.*/,
     
+    # PSEUDO -------------------------------------------
+    /dev/@{BLOCK_VIRT}					r,
+    /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+    
     # EXECUTABLES --------------------------------------
     /bin/mount						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/mount/utab					rw,
+    
+    # DENY INHERIT -------------------------------------
+    deny /tmp/dailyhomebackup.cron.??????		w,
   }
   
   profile umount /bin/umount flags=(complain) {
     #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
     
     # MOUNT --------------------------------------------
     umount /tmp/dailyhomebackup.cron.*/,
     
     # EXECUTABLES --------------------------------------
     /bin/umount						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/mount/utab					rw,
+    
+    # DENY INHERIT -------------------------------------
+    deny /tmp/dailyhomebackup.cron.??????		w,
   }
   
   profile find /usr/bin/find flags=(complain) {
@@ -251,21 +273,43 @@ profile weekly_backup.sh.cron.weekly /etc/cron.weekly/weekly_backup.sh {
   profile mount /bin/mount flags=(complain) {
     #include <abstractions/base>
     
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    
     # MOUNT --------------------------------------------
     mount fstype=ext4 options=(ro) /dev/@{BLOCK_ALL} -> /tmp/homebackup.cron.*/,
     
+    # PSEUDO -------------------------------------------
+    /dev/@{BLOCK_VIRT}					r,
+    /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+    
     # EXECUTABLES --------------------------------------
     /bin/mount						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/mount/utab					rw,
+    
+    # DENY INHERIT -------------------------------------
+    deny /tmp/homebackup.cron.??????			w,
   }
   
   profile umount /bin/umount flags=(complain) {
     #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
     
     # MOUNT --------------------------------------------
     umount /tmp/homebackup.cron.*/,
     
     # EXECUTABLES --------------------------------------
     /bin/umount						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/mount/utab					rw,
+    
+    # DENY INHERIT -------------------------------------
+    deny /tmp/homebackup.cron.??????			w,
   }
 }
 
@@ -321,20 +365,42 @@ profile monthly_backup.sh.cron.monthly /etc/cron.monthly/monthly_backup.sh {
   profile mount /bin/mount flags=(complain) {
     #include <abstractions/base>
     
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    
     # MOUNT --------------------------------------------
     mount fstype=ext4 options=(ro) /dev/@{BLOCK_ALL} -> /tmp/rootbackup.cron.*/,
     
+    # PSEUDO -------------------------------------------
+    /dev/@{BLOCK_VIRT}					r,
+    /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+    
     # EXECUTABLES --------------------------------------
     /bin/mount						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/mount/utab					rw,
+    
+    # DENY INHERIT -------------------------------------
+    deny /tmp/rootbackup.cron.??????			w,
   }
   
   profile umount /bin/umount flags=(complain) {
     #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
     
     # MOUNT --------------------------------------------
     umount /tmp/rootbackup.cron.*/,
     
     # EXECUTABLES --------------------------------------
     /bin/umount						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/mount/utab					rw,
+    
+    # DENY INHERIT -------------------------------------
+    deny /tmp/rootbackup.cron.??????			w,
   }
 }

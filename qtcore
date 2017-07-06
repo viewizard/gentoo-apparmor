@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2017 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,11 +10,9 @@
 
 #include <tunables/global>
 
-#include <local/bin.d/>
-
-# #include <local/sbin.d/>
-#include <local/sbin.d/aa_portage>		# BUILD SYSTEM ONLY!
-#include <local/sbin.d/relabel_evm_dtp>		# BUILD SYSTEM ONLY!
-#include <local/sbin.d/relabel_ima_evm>		# BUILD SYSTEM ONLY!
-
-#include <local/cron.d/>
+profile qtcore.lrelease /usr/lib{,32,64}/qt4/bin/lrelease flags=(complain) {
+  #include <abstractions/base>
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/qt4/bin/lrelease			mr,
+}

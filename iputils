@@ -34,3 +34,20 @@ profile iputils.ping /bin/ping {
   # READS/WRITES ---------------------------------------
   /etc/modules.conf					r,
 }
+
+profile iputils.arping /bin/arping {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability net_raw,
+  capability setuid,
+  
+  # NETWORK --------------------------------------------
+  network packet dgram,
+  network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/arping						mr,
+}

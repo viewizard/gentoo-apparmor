@@ -1,0 +1,28 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+profile qtchooser /usr/bin/qtchooser flags=(complain) {
+  #include <abstractions/base>
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/qtchooser					mr,
+  /usr/lib{,32,64}/qt4/bin/qtconfig			Px,
+  /usr/lib{,32,64}/qt4/bin/lrelease			Px,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/xdg/qtchooser/{,**}				r,
+  
+  # NOISY ----------------------------------------------
+  deny /usr/lib{,32,64}/qt4/bin/qmake			x,	# we don't allow this directly via qtconfig,
+  								# only qt configuration should be available,
+  								# qmake should be used only via portage (emerge)
+}

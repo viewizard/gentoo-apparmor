@@ -399,6 +399,9 @@ profile xarchiver_root flags=(complain) {
     #include <abstractions/fs-deny-by-pattern-internet>
     #include <abstractions/fs-deny-private-strict>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/rm						mr,
   }
@@ -409,6 +412,9 @@ profile xarchiver_root flags=(complain) {
     #include <abstractions/fs-access-by-pattern-systemusers>
     #include <abstractions/fs-deny-by-pattern-internet>
     #include <abstractions/fs-deny-private-strict>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
     
     # EXECUTABLES --------------------------------------
     /bin/cp						mr,

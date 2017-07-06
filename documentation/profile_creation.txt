@@ -276,6 +276,67 @@ root # find * -maxdepth 0 -type f -exec ln -sr ./{} ./force-complain/{} \;
 
 Важно!
 После обновления системы, установки и/или удаления пакетов через portage - выполнять проверку скриптом /usr/local/sbin/aa_portage.sh на необходимость включения/отключения (через симлинк в /etc/apparmor.d/disable/) профилей AppArmor.
+Скрипт автиматически создает или удаляет симлинки из директории /etc/apparmor.d/disable/. В случае, если скриптом были выполнены действия, необходимо удалить и создать новый набор бинарных кэшей профилей.
+########################################################################################
+#!/bin/bash
+
+# Скрипт проверяет соответствие рабочих и выключенных профилей AppArmor.
+
+AA_PROFILES="/etc/apparmor.d"
+
+for p in ${AA_PROFILES}/*; do
+
+	if [ ! -f $p ]; then
+		continue
+	fi
+
+	case "${p}" in
+		# Базовые профили, не имеющие пакетов.
+		${AA_PROFILES}/0_default|${AA_PROFILES}/1_shell|${AA_PROFILES}/2_local|${AA_PROFILES}/3_kernel)
+			continue
+		;;
+		# Профили пользователя (программы без пакетов, установленные в домашнюю директорию).
+		${AA_PROFILES}/evelauncher)
+			continue
+		;;
+		# Проверяем все профили.
+		*)
+			BMANE=$(basename ${p})
+			RES="$(equery list --format='$category/$name' $BMANE)"
+			#if [ "$(echo "$RES" | wc -l)" != "1" ]; then
+			#	echo "Несколько установленных пакетов соответствуют одному имени: $RES"
+			#fi
+			if [ "$RES" == "" ]; then
+				# "Пакет не установлен."
+				if [ ! -L "${AA_PROFILES}/disable/$BMANE" ]; then
+					echo "$BMANE - пакет не установлен, не обнаружен симлинк в ./disable/"
+					ln -sr "${AA_PROFILES}/$BMANE" "${AA_PROFILES}/disable/$BMANE" || \
+						echo "... ошибка создания симлинка."
+				fi
+			else
+				# "Пакет установлен."
+				if [ -L "${AA_PROFILES}/disable/$BMANE" ]; then
+					echo "$BMANE - пакет установлен, обнаружен симлинк в ./disable/"
+					rm "${AA_PROFILES}/disable/$BMANE" || \
+						echo "... ошибка удаления симлинка."
+				fi
+			fi
+		;;
+	esac
+
+done
+########################################################################################
+
+
+
+
+
+
+
+
+
+
+
 
 
 
