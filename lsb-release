@@ -31,10 +31,10 @@ profile lsb-release /usr/bin/lsb_release flags=(attach_disconnected) {
   /etc/lsb-release					r,
   
   # DENY INHERIT ---------------------------------------
-  deny unix (send, receive) peer=(label="discord"),		# discord
+  deny unix (send, receive) peer=(label="discord-bin.Discord"),	# discord-bin.Discord
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   deny /etc/apparmor.d/					r,	# apparmor
-  deny /opt/discord/share/discord/{,**}			r,	# discord
+  deny /opt/discord/share/discord/{,**}			r,	# discord-bin.Discord
   deny /usr/share/inkscape/extensions/			r,	# inkscape
   deny /opt/teamspeak3-client/				r,	# teamspeak-client-bin.teamspeak
   deny /run/user/[0-9]*/poedit.*			rw,	# poedit
@@ -86,10 +86,10 @@ profile lsb-release /usr/bin/lsb_release flags=(attach_disconnected) {
     deny @{HOMEDIRS}**					r,	# poedit
     
     # DENY INHERIT -------------------------------------
-    deny unix (send, receive) peer=(label="discord"),		# discord
+    deny unix (send, receive) peer=(label="discord-bin.Discord"),	# discord-bin.Discord
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
     deny /etc/apparmor.d/				r,	# apparmor
-    deny /opt/discord/share/discord/{,**}		r,	# discord
+    deny /opt/discord/share/discord/{,**}		r,	# discord-bin.Discord
     deny /usr/share/inkscape/extensions/		r,	# inkscape
     deny /opt/teamspeak3-client/			r,	# teamspeak-client-bin.teamspeak
     deny /run/user/[0-9]*/poedit.*			rw,	# poedit
