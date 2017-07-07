@@ -25,7 +25,8 @@ profile local.sbin.aa_portage /usr/local/sbin/aa_portage.sh flags=(complain) {
   /usr/local/sbin/aa_portage.sh				r,
   @{shell}						mr,
   /bin/basename						Px,
-  /bin/wc						Cx,	# FS ACCESS! wc
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/grep						Cx,	# FS ACCESS! grep
   /bin/rm						Cx,	# FS ACCESS! rm
   /bin/ln						Cx,	# FS ACCESS! ln
   @{PYTHON_EXEC_WRAPPER}				Cx -> equery,
@@ -34,14 +35,24 @@ profile local.sbin.aa_portage /usr/local/sbin/aa_portage.sh flags=(complain) {
   /etc/apparmor.d/{,**}					r,
   /etc/apparmor.d/disable/*				w,
   
-  profile wc /bin/wc flags=(complain) {
+  profile cat /bin/cat flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/wc						mr,
+    /bin/cat						mr,
+  }
+  
+  profile grep /bin/grep flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
   }
   
   profile rm /bin/rm flags=(complain) {

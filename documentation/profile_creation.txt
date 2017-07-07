@@ -283,6 +283,7 @@ root # find * -maxdepth 0 -type f -exec ln -sr ./{} ./force-complain/{} \;
 # Скрипт проверяет соответствие рабочих и выключенных профилей AppArmor.
 
 AA_PROFILES="/etc/apparmor.d"
+EQUERY_LIST=$(equery list --format=@'$name'@ '*')
 
 for p in ${AA_PROFILES}/*; do
 
@@ -302,10 +303,7 @@ for p in ${AA_PROFILES}/*; do
 		# Проверяем все профили.
 		*)
 			BMANE=$(basename ${p})
-			RES="$(equery list --format='$category/$name' $BMANE)"
-			#if [ "$(echo "$RES" | wc -l)" != "1" ]; then
-			#	echo "Несколько установленных пакетов соответствуют одному имени: $RES"
-			#fi
+			RES=$(echo -e "${EQUERY_LIST}" | grep @$BMANE@)
 			if [ "$RES" == "" ]; then
 				# "Пакет не установлен."
 				if [ ! -L "${AA_PROFILES}/disable/$BMANE" ]; then
