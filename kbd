@@ -44,3 +44,111 @@ profile kbd.chvt /usr/bin/chvt flags=(complain) {		# FIX ME! Корректир�
   # EXECUTABLES ----------------------------------------
   /usr/bin/chvt						mr,
 }
+
+profile kbd.kbd_mode /usr/bin/kbd_mode {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability sys_tty_config,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/kbd_mode					mr,
+}
+
+profile kbd.loadkeys /usr/bin/loadkeys {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability sys_tty_config,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/loadkeys					mr,
+  @{shell}						Cx,
+  
+  # READS/WRITES ---------------------------------------
+  /							r,
+  /usr/share/keymaps/{,**}				r,
+  
+  profile shell @{shell} {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/openrc-shell>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_tty_config,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/gzip						ix,	# Оставляем вызов через ix.
+    
+    # READS/WRITES -------------------------------------
+    /usr/share/keymaps/{,**/,**.gz}			r,
+  }
+}
+
+profile kbd.dumpkeys /usr/bin/dumpkeys {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/dumpkeys					mr,
+  
+  # READS/WRITES ---------------------------------------
+  /lib{,32,64}/rc/console/keymap			w,
+}
+
+profile kbd.setfont /usr/bin/setfont {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability sys_tty_config,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/setfont					mr,
+  @{shell}						Cx,
+  
+  # READS/WRITES ---------------------------------------
+  /							r,
+  /usr/share/consolefonts/{,**}				r,
+  /lib{,32,64}/rc/console/font				rw,
+  
+  profile shell @{shell} {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/openrc-shell>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_tty_config,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/gzip						ix,	# Оставляем вызов через ix.
+    
+    # READS/WRITES -------------------------------------
+    /usr/share/consolefonts/{,**/,**.gz}		r,
+  }
+}

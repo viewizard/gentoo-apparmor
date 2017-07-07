@@ -87,10 +87,13 @@ profile suricata.init.d /etc/init.d/suricata {
   # DENY INHERIT ---------------------------------------
   deny /tmp/oinkmaster.cron.*				w,	# oinkmaster.cron.daily
   
-  profile shell @{shell} {
+  profile shell @{shell} flags=(attach_disconnected) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+    
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
   profile cat /bin/cat {

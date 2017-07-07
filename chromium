@@ -133,10 +133,10 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   deny @{PROC}/@{pid}/oom_{,score_}adj			w,
   
   # EXECUTABLES ----------------------------------------
-  /bin/ps						Pxr,
-  /usr/bin/xdg-settings					Pxr,
-  /usr/bin/lsb_release					Pxr,
-  /usr/bin/gvfs-open					Pxr,
+  /bin/ps						Px,
+  /usr/bin/xdg-settings					Px,
+  /usr/bin/lsb_release					Px,
+  /usr/bin/gvfs-open					Px,
   # Allow transitions to ourself and our sandbox
   /usr/bin/chromium{,-browser}				Px,
   /usr/lib{,32,64}/chromium-browser/chrome		ixmr,
