@@ -33,6 +33,7 @@ profile smplayer /usr/bin/smplayer {
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
+  /dev/tty						r,
   /dev/tty[0-9]*					rw,
   owner @{PROC}/@{pid}/cmdline				r,
   
@@ -40,11 +41,11 @@ profile smplayer /usr/bin/smplayer {
   /usr/bin/smplayer					mr,
   /usr/bin/mplayer					Px,
   /usr/bin/pacmd					Px,
-  deny /usr/bin/mpv					x,	# проблемы с smplayer (pulseaudio, подвисает звук) как
-  								# самостоятельный проигрыватель, mpv работает без проблем
+  /usr/bin/mpv						Px,
   /usr/bin/aplay					Px,
   
   # READS/WRITES ---------------------------------------
+  /usr/bin/						r,
   /usr/share/smplayer/{,**}				r,
   
   # USERS ----------------------------------------------
@@ -52,6 +53,7 @@ profile smplayer /usr/bin/smplayer {
   owner @{HOME}/.config/smplayer/			rw,
   owner @{HOME}/.config/smplayer/**			rwk,
   owner @{HOME}/mplayer.log				rw,	# mplayer
+  owner @{HOME}/Pictures/smplayer_screenshots/{,*}	rw,
   
   # TEMP -----------------------------------------------
   owner /tmp/qtsingleapp-smplay-*-*{,-lockfile}		rwk,

@@ -117,6 +117,9 @@ profile xdg-utils.xdg-screensaver /usr/bin/xdg-screensaver {
   profile grep /bin/grep {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
   }
@@ -124,12 +127,18 @@ profile xdg-utils.xdg-screensaver /usr/bin/xdg-screensaver {
   profile mv /bin/mv {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/mv						mr,
   }
   
   profile sed /bin/sed {
     #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/sed						mr,

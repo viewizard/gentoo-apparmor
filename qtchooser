@@ -13,6 +13,9 @@
 profile qtchooser /usr/bin/qtchooser flags=(complain) {
   #include <abstractions/base>
   
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  
   # EXECUTABLES ----------------------------------------
   /usr/bin/qtchooser					mr,
   /usr/lib{,32,64}/qt4/bin/qtconfig			Px,
