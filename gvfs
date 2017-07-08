@@ -18,6 +18,7 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
   #include <abstractions/dbus-pattern/udisks>
   #include <abstractions/dbus-pattern/session-bind>
   #include <abstractions/unix-pattern/gvfsd-burn>
+  #include <local/gvfs-udisks2-volume-monitor>
   
   # CAPABILITIES ---------------------------------------
   capability dac_override,
@@ -63,7 +64,6 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
   /etc/fstab						r,
   /etc/udev/udev.conf					r,
   /usr/share/mime/treemagic				r,
-  /media/*/{,**/}					r,
   /run/udev/data/*					r,
   /run/mount/utab					r,
   
