@@ -1,0 +1,27 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+profile portage-utils.q /usr/bin/q flags=(complain) {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/q						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/portage/{,**}					r,
+  /usr/portage/{,**}					r,
+  /usr/share/portage/{,**}				r,
+  /var/db/pkg/{,**}					r,
+}

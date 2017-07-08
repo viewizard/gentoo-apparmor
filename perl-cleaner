@@ -15,64 +15,126 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
   #include <abstractions/perl>
   
   # CAPABILITIES ---------------------------------------
-  capability sys_admin,
-  capability dac_override,
   capability mknod,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/perl-cleaner				mr,
-  @{shell}						cxmr,	# Все правильно, запуск и mmap.
-  /bin/grep						ix,	# FS ACCESS!
+  @{shell}						pxmr -> perl_cleaner_shell,	# Все правильно, запуск и mmap.
+  /bin/grep						Cx,	# FS ACCESS! grep
   /bin/tr						Px,
-  /bin/rmdir						ix,	# FS ACCESS!
-  /bin/sort						ix,	# FS ACCESS!
+  /bin/sort						Cx,	# FS ACCESS! sort
   /bin/stty						Px,
-  /bin/cat						ix,	# FS ACCESS!
-  /bin/rm						ix,	# FS ACCESS!
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/rm						Cx,	# FS ACCESS! rm
   /sbin/consoletype					Px,
-  /usr/bin/q						ix,	# FIX ME! Вынести в отдельный профиль.
-  /usr/bin/xargs					ix,	# FS ACCESS!
-  /usr/bin/gawk						ix,	# FS ACCESS!
+  /usr/bin/q						Px,
+  /usr/bin/xargs					Cx,	# FS ACCESS! xargs
+  /usr/bin/gawk						Cx,	# FS ACCESS! gawk
   /usr/bin/tput						Px,
-  /usr/bin/scanelf					ix,	# FS ACCESS!
-  /usr/bin/find						ix,	# FS ACCESS!
-  /usr/bin/realpath					ix,	# FS ACCESS!
-  /usr/bin/h2ph						ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/scanelf					Cx,	# FS ACCESS! scanelf
+  /usr/bin/find						Cx,	# FS ACCESS! find
+  /usr/bin/realpath					Cx,	# FS ACCESS! realpath
+  /usr/bin/h2ph						Px,
   @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
   
   # READS/WRITES ---------------------------------------
-  /							r,
-  /{bin,sbin,usr,opt,var}/{,**}				r,
-  /etc/portage/{,**}					r,
-  /etc/env.d/cblas/lib{,32,64}/{,**}			r,
-  /usr/lib{,32,64}/perl**				w,
+  /var/db/pkg/{,**}					r,
   
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.*					rw,
   
-  profile shell @{shell} flags=(complain) {
+  profile grep /bin/grep flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile sort /bin/sort flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sort						mr,
+  }
+  
+  profile cat /bin/cat flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+  }
+  
+  profile rm /bin/rm flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+  }
+  
+  profile xargs /usr/bin/xargs flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
-    /dev/tty						rw,
-    /dev/pts/[0-9]*					rw,
+    @{PROC}/@{pid}/fd/					r,
     
     # EXECUTABLES --------------------------------------
-    @{shell}						mr,
-    /bin/grep						ix,	# FS ACCESS!
-    /usr/bin/gawk					ix,	# FS ACCESS!
-    /usr/bin/@{CHOST}-gcc				ix,	# FIX ME! Вынести в отдельный профиль.
-    /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc		ix,	# FIX ME! Вынести в отдельный профиль.
-    /usr/libexec/gcc/@{CHOST}/*/cc1			ix,	# FIX ME! Вынести в отдельный профиль.
+    /usr/bin/xargs					mr,
+    /bin/rmdir						ix,	# Оставляем вызов через ix.
     
     # READS/WRITES -------------------------------------
-    /etc/env.d/gcc/{,**}				r,
-    /usr/include/{,**}					r,
+    /usr/lib{,32,64}/perl[0-9]*/{,**/}			w,
+  }
+  
+  profile gawk /usr/bin/gawk flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/gawk					mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/db/pkg/{,**}					r,
+  }
+  
+  profile scanelf /usr/bin/scanelf flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    capability dac_override,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/scanelf					mr,
+    
+    # READS/WRITES -------------------------------------
+    /{bin,sbin,opt,usr}/{,**}				r,
+    /etc/env.d/cblas/lib{,32,64}/gsl			r,
+    /etc/portage/bin/{,*}				r,
+    /var/lib/{,**}					r,
+    
+    # AUDIT READS/WRITES -------------------------------
+    deny /usr/src/{,**}					r,
+  }
+  
+  profile find /usr/bin/find flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/find					mr,
+    
+    # READS/WRITES -------------------------------------
+    /							r,
+    /var/db/pkg/{,**}					r,
+  }
+  
+  profile realpath /usr/bin/realpath flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/realpath					mr,
   }
   
   profile portage {
@@ -85,5 +147,53 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/emerge				Px,
     @{PYTHON_EXEC}/portageq				Px,
+  }
+}
+
+profile perl_cleaner_shell flags=(complain) {
+  #include <abstractions/base>
+  
+  # PSEUDO -------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES --------------------------------------
+  @{shell}						mr,
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /usr/bin/gawk						Cx,	# FS ACCESS! gawk
+  /usr/bin/@{CHOST}-gcc					Cx,	# FS ACCESS! gcc
+  /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc			Cx -> gcc,	# FS ACCESS! gcc
+  /usr/libexec/gcc/@{CHOST}/*/cc1			Cx,	# FS ACCESS! cc1
+  
+  # READS/WRITES -------------------------------------
+  /etc/env.d/gcc/{,**}					r,
+  /usr/include/{,**}					r,
+  
+  profile grep /bin/grep flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile gawk /usr/bin/gawk flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/gawk					mr,
+  }
+  
+  profile gcc /usr/bin/@{CHOST}-gcc flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/@{CHOST}-gcc				mr,
+  }
+  
+  profile cc1 /usr/libexec/gcc/@{CHOST}/*/cc1 flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/libexec/gcc/@{CHOST}/*/cc1			mr,
   }
 }
