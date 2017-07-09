@@ -29,7 +29,8 @@ owner /**						rw,
 # не давать удалять файлы, создавать (копировать) файлы, создавать хардлинки.
 # Изменять файлы должны только соотв. программы обновления/изменения системы.
 # См. /etc/portage/bashrc (особенно проверять /etc/).
-audit /etc/init.d/{,**}					wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
+audit /etc/init.d/{,**}					l,	# FIX ME! audit 8.07.2017 потом добавить deny!
+								# Может потребоваться создание симлинка, разрешаем w.
 audit /etc/security/pam-script/{,**}			wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /etc/cron.daily/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /etc/cron.hourly/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!

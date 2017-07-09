@@ -35,6 +35,9 @@ profile local.sbin.relabel_evm_dtp /usr/local/sbin/relabel_evm_dtp.sh {
     # CAPABILITIES -------------------------------------
     capability dac_override,
     
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/touch						mr,
     
@@ -47,6 +50,9 @@ profile local.sbin.relabel_evm_dtp /usr/local/sbin/relabel_evm_dtp.sh {
     
     # CAPABILITIES -------------------------------------
     capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/rm						mr,

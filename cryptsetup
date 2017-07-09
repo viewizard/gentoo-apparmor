@@ -50,8 +50,7 @@ profile cryptsetup /sbin/cryptsetup flags=(complain) {
   
   # TEMP -----------------------------------------------
   owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! daily_backup.sh.cron.daily
-  owner /tmp/homebackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
-  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! monthly_backup.sh.cron.monthly
+  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
   
   # DENY INHERIT ---------------------------------------
   deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d

@@ -31,6 +31,9 @@ profile local.sbin.relabel_ima_evm /usr/local/sbin/relabel_ima_evm.sh {
   profile grep /bin/grep {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
     

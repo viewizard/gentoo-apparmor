@@ -54,7 +54,6 @@ profile lvm2.dmeventd /sbin/dmeventd flags=(complain) {
   # PSEUDO ---------------------------------------------
   /dev/dm-[0-9]*					rw,	# DELEGATION! daily_backup.sh.cron.daily
   								# DELEGATION! weekly_backup.sh.cron.weekly
-  								# DELEGATION! monthly_backup.sh.cron.monthly
   /dev/pts/[0-9]*					rw,
   /dev/mapper/control					rw,
   /sys/bus/						r,
@@ -86,8 +85,7 @@ profile lvm2.dmeventd /sbin/dmeventd flags=(complain) {
   
   # TEMP -----------------------------------------------
   owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! daily_backup.sh.cron.daily
-  owner /tmp/homebackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
-  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! monthly_backup.sh.cron.monthly
+  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
   
   profile umount /bin/umount flags=(complain) {
     #include <abstractions/base>
@@ -118,8 +116,8 @@ profile lvm2.lvm /sbin/lvm flags=(complain) {
   /sys/bus/						r,
   /sys/class/						r,
   /sys/class/block/					r,
-  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}{uevent,dev,holders/} r,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{uevent,dev,holders/} r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   /sys/devices/virtual/bdi/*/read_ahead_kb		rw,
   @{PROC}/devices					r,
   @{PROC}/@{pid}/fd/					r,
@@ -149,8 +147,7 @@ profile lvm2.lvm /sbin/lvm flags=(complain) {
   
   # TEMP -----------------------------------------------
   owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! daily_backup.sh.cron.daily
-  owner /tmp/homebackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
-  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! monthly_backup.sh.cron.monthly
+  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
   owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
 }
 

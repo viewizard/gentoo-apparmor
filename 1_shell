@@ -312,7 +312,7 @@ profile shell_root {
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
   
-  profile mount /bin/mount {
+  profile mount /bin/mount {					# BUILD SYSTEM ONLY!
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -324,6 +324,8 @@ profile shell_root {
     
     # PSEUDO -------------------------------------------
     /dev/pts/[0-9]*					rw,
+    /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+    @{PROC}/@{pid}/mount{s,info}			r,
     
     # EXECUTABLES --------------------------------------
     /bin/mount						mr,
@@ -333,7 +335,7 @@ profile shell_root {
     /run/mount/utab					rw,
   }
   
-  profile umount /bin/umount {					# BUILD SYSTEM ONLY!
+  profile umount /bin/umount f{					# BUILD SYSTEM ONLY!
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -345,6 +347,8 @@ profile shell_root {
     
     # PSEUDO -------------------------------------------
     /dev/pts/[0-9]*					rw,
+    /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+    @{PROC}/@{pid}/mountinfo				r,
     
     # EXECUTABLES --------------------------------------
     /bin/umount						mr,

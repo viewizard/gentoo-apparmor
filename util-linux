@@ -70,8 +70,7 @@ profile util-linux.lsblk /bin/lsblk flags=(complain) {
   
   # TEMP -----------------------------------------------
   owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! daily_backup.sh.cron.daily
-  owner /tmp/homebackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
-  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! monthly_backup.sh.cron.monthly
+  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
 }
 
 profile util-linux.agetty /sbin/agetty {
@@ -88,6 +87,7 @@ profile util-linux.agetty /sbin/agetty {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   /dev/console						rw,
   
   # EXECUTABLES ----------------------------------------
@@ -193,6 +193,7 @@ profile util-linux.blkid /sbin/blkid flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
+  /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					r,

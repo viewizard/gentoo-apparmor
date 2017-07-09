@@ -88,6 +88,9 @@ profile xdg-utils.xdg-email /usr/bin/xdg-email {
   profile sed /bin/sed {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/sed						mr,
   }

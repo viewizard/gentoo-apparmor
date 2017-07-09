@@ -24,7 +24,6 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh flags=(compla
   /dev/tty						rw,
   /dev/null						w,
   /dev/pts/[0-9]*					rw,
-#  @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/daily_backup.sh			r,
@@ -49,7 +48,8 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh flags=(compla
   /usr/bin/uniq						Px,
   
   # TEMP -----------------------------------------------
-  /tmp/dailyhomebackup.cron.??????{,/,/**}		rw,
+  /tmp/dailyhomebackup.cron.??????			rw,
+  /tmp/dailyhomebackup.cron.??????/			r,
   
   profile chmod /bin/chmod flags=(complain) {
     #include <abstractions/base>
@@ -232,102 +232,11 @@ profile weekly_backup.sh.cron.weekly /etc/cron.weekly/weekly_backup.sh {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/null						w,
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
   /etc/cron.weekly/weekly_backup.sh			r,
-  @{shell}						mr,
-  /bin/chmod						ix,	# FS ACCESS!
-  /bin/date						ix,	# FS ACCESS!
-  /bin/tar						ix,	# FS ACCESS!
-  /bin/rm						ix,	# FS ACCESS!
-  /bin/cat						ix,	# FS ACCESS!
-  /bin/mktemp						ix,	# FS ACCESS!
-  /bin/lsblk						Px,
-  /bin/sort						ix,	# FS ACCESS!
-  /bin/mount						Cx,	# FS ACCESS! mount
-  /bin/umount						Cx,	# FS ACCESS! umount
-  /bin/basename						Px,
-  /sbin/cryptsetup					Px,
-  /sbin/lvm						Px,
-  /usr/bin/libnotify-notify-send-users			Px,
-  /usr/bin/find						ix,	# FS ACCESS!
-  /usr/bin/mail						Px,
-  /usr/bin/logger					Px,
-  /usr/bin/uniq						Px,
-  
-  # READS/WRITES ---------------------------------------
-  /							r,
-  /home/{,**}						r,
-  /etc/**						r,
-  /usr/**						r,
-  /var/lib/**						r,
-  /mnt/backup/Gentoo_Backup/				r,
-  /mnt/backup/Gentoo_Backup/*				rw,
-  
-  # TEMP -----------------------------------------------
-  /tmp/homebackup.cron.??????{,/,/**}			rw,
-  
-  profile mount /bin/mount flags=(complain) {
-    #include <abstractions/base>
-    
-    # CAPABILITIES -------------------------------------
-    capability sys_admin,
-    
-    # MOUNT --------------------------------------------
-    mount fstype=ext4 options=(ro) /dev/@{BLOCK_ALL} -> /tmp/homebackup.cron.*/,
-    
-    # PSEUDO -------------------------------------------
-    /dev/@{BLOCK_VIRT}					r,
-    /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-    
-    # EXECUTABLES --------------------------------------
-    /bin/mount						mr,
-    
-    # READS/WRITES -------------------------------------
-    /run/mount/utab					rw,
-    
-    # DENY INHERIT -------------------------------------
-    deny /tmp/homebackup.cron.??????			w,
-  }
-  
-  profile umount /bin/umount flags=(complain) {
-    #include <abstractions/base>
-    
-    # CAPABILITIES -------------------------------------
-    capability sys_admin,
-    
-    # MOUNT --------------------------------------------
-    umount /tmp/homebackup.cron.*/,
-    
-    # EXECUTABLES --------------------------------------
-    /bin/umount						mr,
-    
-    # READS/WRITES -------------------------------------
-    /run/mount/utab					rw,
-    
-    # DENY INHERIT -------------------------------------
-    deny /tmp/homebackup.cron.??????			w,
-  }
-}
-
-profile monthly_backup.sh.cron.monthly /etc/cron.monthly/monthly_backup.sh {
-  #include <abstractions/base>
-  
-  # CAPABILITIES ---------------------------------------
-  capability sys_admin,
-  capability dac_override,
-  capability dac_read_search,
-  
-  # PSEUDO ---------------------------------------------
-  /dev/tty						rw,
-  /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,
-  
-  # EXECUTABLES ----------------------------------------
-  /etc/cron.monthly/monthly_backup.sh			r,
   @{shell}						mr,
   /bin/chmod						ix,	# FS ACCESS!
   /bin/date						ix,	# FS ACCESS!
@@ -360,7 +269,8 @@ profile monthly_backup.sh.cron.monthly /etc/cron.monthly/monthly_backup.sh {
   /mnt/backup/Gentoo_Backup/*				rw,
   
   # TEMP -----------------------------------------------
-  /tmp/rootbackup.cron.??????{,/,/**}			rw,
+  /tmp/rootbackup.cron.??????{,/}			rw,
+  /tmp/rootbackup.cron.??????/**			r,
   
   profile mount /bin/mount flags=(complain) {
     #include <abstractions/base>
