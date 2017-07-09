@@ -61,6 +61,9 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
   profile mv /bin/mv flags=(complain) {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/mv						mr,
     
@@ -75,6 +78,9 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
     # CAPABILITIES -------------------------------------
     capability sys_admin,
     
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/cp						mr,
     
@@ -86,6 +92,9 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
   profile rm /bin/rm flags=(complain) {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/rm						mr,
     
@@ -96,6 +105,9 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
   
   profile ln /bin/ln flags=(complain) {
     #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/ln						mr,
@@ -124,6 +136,9 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
   profile sed /bin/sed flags=(complain) {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/sed						mr,
     
@@ -137,6 +152,9 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
   profile touch /bin/touch flags=(complain) {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/touch						mr,
     
@@ -147,6 +165,9 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
   
   profile sort /bin/sort flags=(complain) {
     #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/sort						mr,
@@ -170,6 +191,9 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
   
   profile find /usr/bin/find flags=(complain) {
     #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/find					mr,
@@ -204,6 +228,9 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
   
   profile tac /usr/bin/tac flags=(complain) {
     #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/tac					mr,

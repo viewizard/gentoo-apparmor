@@ -109,6 +109,7 @@ profile nvidia-drivers.nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe flags=(att
   deny network,							# evelauncher
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   deny /dev/shm/.org.chromium.Chromium.*		rw,	# evelauncher
+  deny /dev/shm/org.chromium.*				rw,	# firefox
   deny @{HOME}/evelauncher/{,**}			rw,	# evelauncher
   deny @{HOME}/.eve/{,**}				rw,	# evelauncher
   deny @{HOME}/.local/share/CCP/{,**}			rw,	# evelauncher
