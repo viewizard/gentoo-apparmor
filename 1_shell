@@ -320,7 +320,7 @@ profile shell_root {
     
     # MOUNT --------------------------------------------	# FIX ME! /etc/fstab
     mount fstype=ext4 options=(rw, noatime, iversion) /dev/@{BLOCK_ALL} -> /boot/,	# BUILD SYSTEM ONLY!
-    mount fstype=ext2 options=(rw, nosuid, nodev, noexec, noatime) /dev/@{BLOCK_ALL} -> /mnt/usbcryptkey/,	# BUILD SYSTEM ONLY!
+    mount fstype=ext2 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /mnt/usbcryptkey/,	# BUILD SYSTEM ONLY!
     
     # PSEUDO -------------------------------------------
     /dev/pts/[0-9]*					rw,
@@ -335,7 +335,7 @@ profile shell_root {
     /run/mount/utab					rw,
   }
   
-  profile umount /bin/umount f{					# BUILD SYSTEM ONLY!
+  profile umount /bin/umount {					# BUILD SYSTEM ONLY!
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

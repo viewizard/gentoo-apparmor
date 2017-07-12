@@ -1189,13 +1189,13 @@ profile openrc.localmount.init.d /etc/init.d/localmount {
     
     # MOUNT --------------------------------------------	# FIX ME! /etc/fstab - локальные фс.
     mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /var/,
-    mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime) /dev/@{BLOCK_ALL} -> /var/log/,
+    mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /var/log/,
     mount fstype=ext4 options=(rw, nosuid, nodev, noatime, iversion) /dev/@{BLOCK_ALL} -> /var/tmp/portage/,	# BUILD SYSTEM ONLY!
     mount fstype=ext4 options=(rw, noatime) /dev/@{BLOCK_ALL} -> /home/,
     mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /usr/portage/,
     mount fstype=ext4 options=(rw, nosuid, nodev, noatime) /dev/@{BLOCK_ALL} -> /usr/src/,			# BUILD SYSTEM ONLY!
-    mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime) /dev/@{BLOCK_ALL} -> /mnt/backup/,
-    mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime) /dev/@{BLOCK_ALL} -> /media/sdb2/,
+    mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /mnt/backup/,
+    mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /media/sdb2/,
     mount fstype=tmpfs options=(rw, nosuid, nodev, noexec, noatime, nodiratime) tmpfs -> /tmp/,
     mount options=(rw, bind) /media/sdb2/VM_SERVERS/launch_scripts/ -> /media/sdb2/VM_SERVERS/launch_scripts/,
     mount options=(rw, nodev, remount, bind) -> /media/sdb2/VM_SERVERS/launch_scripts/,
