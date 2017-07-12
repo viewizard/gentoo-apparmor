@@ -138,7 +138,7 @@ profile openrc.rc-status /bin/rc-status {
   }
 }
 
-profile openrc.gendepends.sh /lib{,32,64}/rc/sh/gendepends.sh flags=(complain) {
+profile openrc.gendepends.sh /lib{,32,64}/rc/sh/gendepends.sh flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ncurses>
@@ -147,48 +147,87 @@ profile openrc.gendepends.sh /lib{,32,64}/rc/sh/gendepends.sh flags=(complain) {
   capability sys_tty_config,
   capability dac_override,
   capability dac_read_search,
-  capability mknod,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/pts/[0-9]*					rw,
   /dev/console						rw,
-  @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/sed						ix,	# FS ACCESS!
-  /bin/grep						ix,	# FS ACCESS!
+  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/grep						Cx,	# FS ACCESS! grep
   /sbin/openrc						Px,
   /sbin/lvm						Px,
-  /usr/bin/gawk						ix,	# FS ACCESS!
+  /usr/bin/gawk						Cx,	# FS ACCESS! gawk
   /lib{,32,64}/rc/sh/gendepends.sh			r,
-  /lib{,32,64}/rc/bin/shell_var				ix,	# FIX ME! Вынести в отдельный профиль.
+  /lib{,32,64}/rc/bin/shell_var				Px,
   /lib{,32,64}/rc/bin/service_started			Px,
   /lib{,32,64}/rc/bin/service_get_value			Px,
-  /lib{,32,64}/rc/bin/fstabinfo				ix,	# FIX ME! Вынести в отдельный профиль.
+  /lib{,32,64}/rc/bin/fstabinfo				Px,
   /lib{,32,64}/rc/bin/eval_ecolors			Px,
-  /lib{,32,64}/rc/bin/mountinfo				ix,	# FIX ME! Вынести в отдельный профиль.
   
   # READS/WRITES ---------------------------------------
   /etc/rc.conf						r,
-  /etc/fstab						r,
-  /etc/exports						r,
-  /etc/ssh/sshd_config					r,
   /etc/zfs/zfs-functions				r,
-  /etc/{conf,init}.d/{,*}				r,
   /etc/exports.d/{,*}					r,
+  /etc/{conf,init}.d/{,*}				r,
   /usr/libexec/rc.apparmor.functions			r,
-  /run/openrc/scheduled/				r,
-  /run/openrc/options/lvm/need				r,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
+  
+  profile sed /bin/sed flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+  }
+  
+  profile grep /bin/grep flags=(attach_disconnected,complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/fstab						r,
+    /etc/{conf,init}.d/{,*}				r,
+    
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				rw,	# flags=(attach_disconnected)
+  }
+  
+  profile gawk /usr/bin/gawk flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability mknod,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/gawk					mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/exports					r,
+    /etc/ssh/sshd_config				r,
+  }
 }
 
 profile openrc.init-early.sh /lib{,32,64}/rc/sh/init-early.sh flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-  
-  # CAPABILITIES ---------------------------------------
-  capability sys_tty_config,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -199,9 +238,9 @@ profile openrc.init-early.sh /lib{,32,64}/rc/sh/init-early.sh flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/rc/sh/init-early.sh			r,
   @{shell}						mr,
-  /usr/bin/setfont					ix,	# FIX ME! Вынести в отдельный профиль.
-  /usr/bin/loadkeys					ix,	# FIX ME! Вынести в отдельный профиль.
-  /usr/bin/kbd_mode					ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/setfont					Px,
+  /usr/bin/loadkeys					Px,
+  /usr/bin/kbd_mode					Px,
 }
 
 profile openrc.init.sh /lib{,32,64}/rc/sh/init.sh flags=(complain) {
@@ -211,31 +250,67 @@ profile openrc.init.sh /lib{,32,64}/rc/sh/init.sh flags=(complain) {
   
   # CAPABILITIES ---------------------------------------
   capability mknod,
-  capability sys_admin,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/pts/[0-9]*					rw,
   /dev/console						rw,
-  @{PROC}/@{pid}/mounts					r,
-  @{PROC}/@{pid}/environ				r,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						mr,
-  /bin/grep						ix,	# FS ACCESS!
-  /bin/cp						ix,	# FS ACCESS!
-  /sbin/openrc						Px,
-  /usr/bin/md5sum					ix,	# FS ACCESS!
   /lib{,32,64}/rc/sh/init.sh				r,
+  @{shell}						mr,
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/cp						Cx,	# FS ACCESS! cp
+  /sbin/openrc						Px,
+  /usr/bin/md5sum					Cx,	# FS ACCESS! md5sum
   /lib{,32,64}/rc/bin/checkpath				Px,
   /lib{,32,64}/rc/bin/eval_ecolors			Px,
-  /lib{,32,64}/rc/bin/einfo				ix,	# FIX ME! Вынести в отдельный профиль.
-  /lib{,32,64}/rc/bin/mountinfo				ix,	# FIX ME! Вынести в отдельный профиль.
+  /lib{,32,64}/rc/bin/einfo				Px,
+  /lib{,32,64}/rc/bin/mountinfo				Px,
   
   # READS/WRITES ---------------------------------------
   /etc/rc.conf						r,
-  /etc/fstab						r,
-  /run/openrc/{,*}					w,
+  /run/openrc/softlevel					w,
+  
+  profile grep /bin/grep flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile cp /bin/cp flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cp						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/openrc/{,*}					w,
+  }
+  
+  profile md5sum /usr/bin/md5sum flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    @{PROC}/@{pid}/environ				r,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/md5sum					mr,
+  }
 }
 
 profile openrc.cgroup-release-agent.sh /lib{,32,64}/rc/sh/cgroup-release-agent.sh {
@@ -244,16 +319,27 @@ profile openrc.cgroup-release-agent.sh /lib{,32,64}/rc/sh/cgroup-release-agent.s
   
   # CAPABILITIES ---------------------------------------
   capability mknod,
-  capability dac_override,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /sys/fs/cgroup/openrc/{,**}				w,
   
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/rc/sh/cgroup-release-agent.sh		r,
   @{shell}						mr,
-  /bin/rmdir						ix,	# FS ACCESS!
+  /bin/rmdir						Cx,	# FS ACCESS! rmdir
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES ---------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /sys/fs/cgroup/openrc/**				w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
+  }
 }
 
 profile openrc.checkpath /lib{,32,64}/rc/bin/checkpath flags=(complain) {
@@ -278,6 +364,42 @@ profile openrc.checkpath /lib{,32,64}/rc/bin/checkpath flags=(complain) {
   /run/lock/						w,	# DELEGATION! openrc.init.sh
 }
 
+profile openrc.mountinfo /lib{,32,64}/rc/bin/mountinfo flags=(complain) {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability dac_override,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
+  @{PROC}/@{pid}/mounts					r,
+  @{PROC}/cgroups					r,
+  
+  # EXECUTABLES ----------------------------------------
+  /lib{,32,64}/rc/bin/mountinfo				mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
+}
+
+profile openrc.fstabinfo /lib{,32,64}/rc/bin/fstabinfo flags=(attach_disconnected,complain) {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /lib{,32,64}/rc/bin/fstabinfo				mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
+}
+
 profile openrc.eval_ecolors /lib{,32,64}/rc/bin/eval_ecolors flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/ncurses>
@@ -290,7 +412,7 @@ profile openrc.eval_ecolors /lib{,32,64}/rc/bin/eval_ecolors flags=(complain) {
   /lib{,32,64}/rc/bin/eval_ecolors			mr,
 }
 
-profile openrc.ebegin /lib{,32,64}/rc/bin/ebegin flags=(complain) {
+profile openrc.ebegin /lib{,32,64}/rc/bin/ebegin flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -303,9 +425,61 @@ profile openrc.ebegin /lib{,32,64}/rc/bin/ebegin flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/rc/bin/ebegin				mr,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
+  deny /etc/conf.d/dmcrypt				r,
 }
 
-profile openrc.eend /lib{,32,64}/rc/bin/eend flags=(complain) {
+profile openrc.eend /lib{,32,64}/rc/bin/eend flags=(attach_disconnected,complain) {
+  #include <abstractions/base>
+  #include <abstractions/ncurses>
+  
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /lib{,32,64}/rc/bin/eend				mr,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
+  deny /etc/conf.d/dmcrypt				r,
+}
+
+profile openrc.ewend /lib{,32,64}/rc/bin/ewend flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/ncurses>
+  
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /lib{,32,64}/rc/bin/ewend				mr,
+}
+
+profile openrc.shell_var /lib{,32,64}/rc/bin/shell_var flags=(attach_disconnected,complain) {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /lib{,32,64}/rc/bin/shell_var				mr,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
+}
+
+profile openrc.einfo /lib{,32,64}/rc/bin/einfo flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -314,10 +488,14 @@ profile openrc.eend /lib{,32,64}/rc/bin/eend flags=(complain) {
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /lib{,32,64}/rc/bin/eend				mr,
+  /lib{,32,64}/rc/bin/einfo				mr,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
+  deny /etc/conf.d/dmcrypt				r,
 }
 
-profile openrc.ewarn /lib{,32,64}/rc/bin/ewarn flags=(complain) {
+profile openrc.ewarn /lib{,32,64}/rc/bin/ewarn flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -326,9 +504,12 @@ profile openrc.ewarn /lib{,32,64}/rc/bin/ewarn flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/rc/bin/ewarn				mr,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile openrc.eerror /lib{,32,64}/rc/bin/eerror flags=(complain) {
+profile openrc.eerror /lib{,32,64}/rc/bin/eerror flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -337,9 +518,33 @@ profile openrc.eerror /lib{,32,64}/rc/bin/eerror flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/rc/bin/eerror				mr,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile openrc.service /lib{,32,64}/rc/bin/service_* flags=(complain) {
+profile openrc.service /lib{,32,64}/rc/bin/service_* flags=(attach_disconnected,complain) {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
+  @{PROC}/						r,
+  @{PROC}/@{pid}/cmdline				r,
+  
+  # EXECUTABLES ----------------------------------------
+  /lib{,32,64}/rc/bin/service_*				mr,
+  
+  # READS/WRITES ---------------------------------------
+  /run/openrc/scheduled/				r,
+  /run/openrc/daemons/{,**}				r,
+  /run/**.pid						r,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
+}
+
+profile openrc.service_set_value /lib{,32,64}/rc/bin/service_set_value flags=(complain) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -347,10 +552,27 @@ profile openrc.service /lib{,32,64}/rc/bin/service_* flags=(complain) {
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /lib{,32,64}/rc/bin/service_*				mr,
+  /lib{,32,64}/rc/bin/service_set_value			mr,
   
   # READS/WRITES ---------------------------------------
-  /run/openrc/scheduled/				r,
+  /run/openrc/options/**				w,
+}
+
+profile openrc.service_get_value /lib{,32,64}/rc/bin/service_get_value flags=(attach_disconnected,complain) {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /lib{,32,64}/rc/bin/service_get_value			mr,
+  
+  # READS/WRITES ---------------------------------------
+  /run/openrc/options/**				r,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
 profile openrc.mark_service_inactive /lib{,32,64}/rc/sbin/mark_service_inactive flags=(complain) {
@@ -383,7 +605,6 @@ profile openrc.netmount.init.d /etc/init.d/netmount {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/netmount/tasks			w,
-  @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -393,7 +614,6 @@ profile openrc.netmount.init.d /etc/init.d/netmount {
   /bin/umount						Cx,	# FS ACCESS! umount
   
   # READS/WRITES ---------------------------------------
-  /etc/fstab						r,
   /etc/{conf,init}.d/netmount				r,
   
   profile shell @{shell} {
@@ -455,35 +675,11 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont {
   /sys/fs/cgroup/openrc/consolefont/tasks		w,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
   /bin/mkdir						Cx,	# FS ACCESS! mkdir
-  /usr/bin/setfont					ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/setfont					Px,
   
   # READS/WRITES ---------------------------------------
-  /							r,
   /etc/{conf,init}.d/consolefont			r,
-  /usr/share/consolefonts/{,**}				r,
-  /lib{,32,64}/rc/console/font				rw,
-  
-  profile shell @{shell} {
-    #include <abstractions/base>
-    #include <abstractions/nameservice>
-    #include <abstractions/openrc-shell>
-    
-    # CAPABILITIES -------------------------------------
-    capability sys_tty_config,
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					rw,
-    /dev/console					rw,
-    /dev/pts/[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /bin/gzip						ix,	# FS ACCESS!
-    
-    # READS/WRITES -------------------------------------
-    /usr/share/consolefonts/{,**}			r,
-  }
   
   profile mkdir /bin/mkdir {
     #include <abstractions/base>
@@ -551,12 +747,11 @@ profile openrc.hwclock.init.d /etc/init.d/hwclock {
   # PSEUDO ---------------------------------------------
   /dev/							r,
   /sys/fs/cgroup/openrc/hwclock/tasks			w,
-  @{PROC}/devices					r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/uname						Px,
-  /bin/grep						ix,	# FS ACCESS!
+  /bin/grep						Cx,	# FS ACCESS! grep
   /bin/mkdir						Cx,	# FS ACCESS! mkdir
   /sbin/hwclock						Px,
   
@@ -567,6 +762,18 @@ profile openrc.hwclock.init.d /etc/init.d/hwclock {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    @{PROC}/devices					r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
   }
   
   profile mkdir /bin/mkdir {
@@ -801,7 +1008,6 @@ profile openrc.root.init.d /etc/init.d/root {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/root/tasks			w,
-  @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------
   /etc/init.d/mtab					Px,
@@ -811,7 +1017,6 @@ profile openrc.root.init.d /etc/init.d/root {
   @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
-  /etc/fstab						r,
   /etc/{conf,init}.d/root				r,
   
   profile shell @{shell} {
@@ -927,28 +1132,37 @@ profile openrc.localmount.init.d /etc/init.d/localmount {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/localmount/tasks		w,
-  @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /etc/init.d/*						Px,
-  /bin/sed						ix,	# FS ACCESS!
+  /bin/sed						Cx,	# FS ACCESS! sed
   /bin/sync						Px,
   /bin/fuser						Px,
   /bin/sleep						Px,
   /bin/mkdir						Cx,	# FS ACCESS! mkdir
   /bin/mount						Cx,	# FS ACCESS! mount
   /bin/umount						Cx,	# FS ACCESS! umount
-  /usr/bin/timeout					ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/timeout					Cx,	# FS ACCESS! timeout
   
   # READS/WRITES ---------------------------------------
-  /etc/fstab						r,
   /etc/{conf,init}.d/localmount				r,
   
   profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile sed /bin/sed {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
   }
   
   profile mkdir /bin/mkdir {
@@ -975,14 +1189,14 @@ profile openrc.localmount.init.d /etc/init.d/localmount {
     
     # MOUNT --------------------------------------------	# FIX ME! /etc/fstab - локальные фс.
     mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /var/,
+    mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime) /dev/@{BLOCK_ALL} -> /var/log/,
+    mount fstype=ext4 options=(rw, nosuid, nodev, noatime, iversion) /dev/@{BLOCK_ALL} -> /var/tmp/portage/,	# BUILD SYSTEM ONLY!
     mount fstype=ext4 options=(rw, noatime) /dev/@{BLOCK_ALL} -> /home/,
-    mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime) /dev/@{BLOCK_ALL} -> /usr/portage/,
-    mount fstype=ext4 options=(rw, nosuid, nodev, noatime) /dev/@{BLOCK_ALL} -> /usr/src/,
+    mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /usr/portage/,
+    mount fstype=ext4 options=(rw, nosuid, nodev, noatime) /dev/@{BLOCK_ALL} -> /usr/src/,			# BUILD SYSTEM ONLY!
     mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime) /dev/@{BLOCK_ALL} -> /mnt/backup/,
     mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime) /dev/@{BLOCK_ALL} -> /media/sdb2/,
     mount fstype=tmpfs options=(rw, nosuid, nodev, noexec, noatime, nodiratime) tmpfs -> /tmp/,
-    mount options=(rw, bind) /var/tmp/portage/ -> /var/tmp/portage/,
-    mount options=(rw, nodev, remount, bind) -> /var/tmp/portage/,
     mount options=(rw, bind) /media/sdb2/VM_SERVERS/launch_scripts/ -> /media/sdb2/VM_SERVERS/launch_scripts/,
     mount options=(rw, nodev, remount, bind) -> /media/sdb2/VM_SERVERS/launch_scripts/,
     mount options=(rw, bind) /media/sdb2/VM_DESKTOP/ -> /media/sdb2/VM_DESKTOP/,
@@ -1029,6 +1243,18 @@ profile openrc.localmount.init.d /etc/init.d/localmount {
     # READS/WRITES -------------------------------------
     /run/mount/utab					rw,
   }
+  
+  profile timeout /usr/bin/timeout {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/timeout					mr,
+    /bin/fuser						Px,
+  }
 }
 
 profile openrc.sysctl.init.d /etc/init.d/sysctl {
@@ -1074,22 +1300,17 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc {
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
   
-  # CAPABILITIES ---------------------------------------
-  capability fsetid,
-  capability chown,
-  
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/bootmisc/tasks			w,
-  @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/rm						ix,	# FS ACCESS!
-  /bin/readlink						ix,	# FS ACCESS!
-  /bin/mktemp						ix,	# FS ACCESS!
-  /bin/rmdir						ix,	# FS ACCESS!
-  /bin/chgrp						ix,	# FS ACCESS!
-  /bin/chmod						ix,	# FS ACCESS!
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/readlink						Cx,	# FS ACCESS! readlink
+  /bin/mktemp						Cx,	# FS ACCESS! mktemp
+  /bin/rmdir						Cx,	# FS ACCESS! rmdir
+  /bin/chgrp						Cx,	# FS ACCESS! chgrp
+  /bin/chmod						Cx,	# FS ACCESS! chmod
   /bin/dmesg						Px,
   /bin/mkdir						Cx,	# FS ACCESS! mkdir
   /bin/mount						Cx,	# FS ACCESS! mount
@@ -1097,23 +1318,111 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc {
   /sbin/halt						Px,
   
   # READS/WRITES ---------------------------------------
-  /etc/fstab						r,
   /etc/{conf,init}.d/bootmisc				r,
-  /lib{,32,64}/rc/console/{font,keymap,unicode}		w,
   /run/utmp						w,
   /var/log/dmesg					w,
   /var/log/wtmp						w,
   
   # TEMP -----------------------------------------------
-  owner /tmp/tmp.*/					w,
   owner /tmp/tmp.*/run/					r,
-  owner /tmp/.ICE-unix/					w,
-  owner /tmp/.X11-unix/					w,
   
   profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile rm /bin/rm {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # READS/WRITES -------------------------------------
+    /lib{,32,64}/rc/console/{font,keymap,unicode}	w,
+  }
+  
+  profile readlink /bin/readlink {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/readlink					mr,
+  }
+  
+  profile mktemp /bin/mktemp {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mktemp						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/tmp.*/					w,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/tmp.*/					w,
+  }
+  
+  profile chgrp /bin/chgrp {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    # CAPABILITIES -------------------------------------
+    capability chown,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chgrp						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/utmp						w,
+  }
+  
+  profile chmod /bin/chmod {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability fsetid,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chmod						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/utmp						w,
+    /var/log/dmesg					w,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/.ICE-unix/				w,
+    owner /tmp/.X11-unix/				w,
   }
   
   profile mkdir /bin/mkdir {
@@ -1310,36 +1619,14 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps {
   /sys/fs/cgroup/openrc/keymaps/tasks			w,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
   /bin/mkdir						Cx,	# FS ACCESS! mkdir
-  /usr/bin/kbd_mode					ix,	# FIX ME! Вынести в отдельный профиль.
-  /usr/bin/loadkeys					ix,	# FIX ME! Вынести в отдельный профиль.
-  /usr/bin/dumpkeys					ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/kbd_mode					Px,
+  /usr/bin/loadkeys					Px,
+  /usr/bin/dumpkeys					Px,
   
   # READS/WRITES ---------------------------------------
-  /							r,
   /etc/{conf,init}.d/keymaps				r,
-  /usr/share/keymaps/{,**}				r,
   /lib{,32,64}/rc/console/keymap			w,
-  
-  profile shell @{shell} {
-    #include <abstractions/base>
-    #include <abstractions/nameservice>
-    #include <abstractions/openrc-shell>
-    
-    # CAPABILITIES -------------------------------------
-    capability sys_tty_config,
-    
-    # PSEUDO -------------------------------------------
-    /dev/console					rw,
-    /dev/pts/[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /bin/gzip						ix,	# FS ACCESS!
-    
-    # READS/WRITES -------------------------------------
-    /usr/share/keymaps/{,**}				r,
-  }
   
   profile mkdir /bin/mkdir {
     #include <abstractions/base>
@@ -1371,23 +1658,68 @@ profile openrc.urandom.init.d /etc/init.d/urandom {
   # PSEUDO ---------------------------------------------
   /dev/urandom						w,
   /sys/fs/cgroup/openrc/urandom/tasks			w,
-  @{PROC}/sys/kernel/random/poolsize			r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/cat						ix,	# FS ACCESS!
-  /bin/dd						ix,	# FS ACCESS!
-  /bin/rm						ix,	# FS ACCESS!
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/dd						Cx,	# FS ACCESS! dd
+  /bin/rm						Cx,	# FS ACCESS! rm
   /bin/mkdir						Cx,	# FS ACCESS! mkdir
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/urandom				r,
-  /var/lib/misc/random-seed				rw,
   
   profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability mknod,
+    
+    # PSEUDO -------------------------------------------
+    /dev/urandom					w,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    @{PROC}/sys/kernel/random/poolsize			r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/lib/misc/random-seed				r,
+  }
+  
+  profile dd /bin/dd {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/dd						mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/lib/misc/random-seed				w,
+  }
+  
+  profile rm /bin/rm {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/lib/misc/random-seed				w,
   }
   
   profile mkdir /bin/mkdir {
@@ -1410,12 +1742,6 @@ profile openrc.loopback.init.d /etc/init.d/loopback {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
-  
-  # CAPABILITIES ---------------------------------------
-  audit capability net_admin,					# FIX ME! audit, /bin/ip ix -> Px.
-  
-  # NETWORK --------------------------------------------
-  audit network netlink raw,					# FIX ME! audit, /bin/ip ix -> Px.
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/loopback/tasks			w,
@@ -1538,25 +1864,29 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/mount-ro/tasks			w,
-  @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/sync						Px,
-  /bin/sed						ix,	# FS ACCESS!
+  /bin/sed						Cx,	# FS ACCESS! sed
   /bin/fuser						Px,
   /bin/mkdir						Cx,	# FS ACCESS! mkdir
   /bin/umount						Cx,	# FS ACCESS! umount
-  /lib{,32,64}/rc/bin/mountinfo				ix,	# FIX ME! Вынести в отдельный профиль.
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/mount-ro				r,
-  /etc/fstab						r,
   
   profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
+  }
+  
+  profile sed /bin/sed {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
   }
   
   profile mkdir /bin/mkdir {
@@ -1669,7 +1999,6 @@ profile openrc.devfs.init.d /etc/init.d/devfs {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/devfs/tasks			w,
-  @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -1678,7 +2007,6 @@ profile openrc.devfs.init.d /etc/init.d/devfs {
   /bin/mount						Cx,	# FS ACCESS! mount
   
   # READS/WRITES ---------------------------------------
-  /etc/fstab						r,
   /etc/{conf,init}.d/devfs				r,
   
   profile shell @{shell} {
@@ -1814,7 +2142,6 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs {
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/*/{,**}				w,
   @{PROC}/cgroups					r,
-  @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -1823,7 +2150,6 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs {
   /bin/mount						Cx,	# FS ACCESS! mount
   
   # READS/WRITES ---------------------------------------
-  /etc/fstab						r,
   /etc/{conf,init}.d/sysfs				r,
   
   profile shell @{shell} {
@@ -1940,5 +2266,69 @@ profile openrc.modules-load.init.d /etc/init.d/modules-load {
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+}
+
+profile openrc.agetty.init.d /etc/init.d/agetty flags=(complain) {	# FIX ME! flags=(complain), проверить в работе!
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/openrc>
+  
+  # PSEUDO ---------------------------------------------
+  /sys/fs/cgroup/openrc/agetty.*/tasks			w,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						Cx,
+  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /sbin/supervise-daemon				Cx,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/init.d/agetty					r,
+  /etc/conf.d/agetty{,.*}				r,
+  
+  profile shell @{shell} {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/openrc-shell>
+  }
+  
+  profile mkdir /bin/mkdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/openrc/agetty.*/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+  }
+  
+  profile supervise-daemon /sbin/supervise-daemon flags=(complain) {	# FIX ME! flags=(complain), проверить в работе!
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    # SIGNAL -------------------------------------------
+    signal (send) set=(term) peer="util-linux.agetty",
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+  
+    # EXECUTABLES --------------------------------------
+    /sbin/supervise-daemon				mr,
+    /sbin/agetty					Px,
+  
+    # READS/WRITES -------------------------------------
+    /run/agetty.*.pid					rw,
+    /run/openrc/daemons/agetty.*/{,**}			rw,
+    /run/openrc/options/agetty.*/{,**}			rw,
+    /run/openrc/scheduled/				r,
+    /run/openrc/stopping/agetty.*			w,
+    /run/openrc/exclusive/agetty.*			w,
   }
 }
