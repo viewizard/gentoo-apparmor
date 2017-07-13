@@ -8,8 +8,11 @@
 #
 # ------------------------------------------------------------------
 
-# Since we could use QT with gtkstyle, we need GTK abstraction.
+# Since we could use QT with gtkstyle, we need GTK abstractions.
 #include <abstractions/gtk>
+#include <abstractions/dbus-pattern/at-spi>
+#include <abstractions/dbus-pattern/gvfs>
+#include <abstractions/dbus-pattern/gconf>			# Для QT_QPA_PLATFORMTHEME=gtk2.
 
 # READS/WRITES -----------------------------------------
 /usr/share/icons/{,**}					r,
@@ -21,6 +24,6 @@
 owner @{HOME}/.ICEauthority				r,
 owner @{HOME}/.config/Trolltech.conf			rwk,
 owner @{HOME}/.config/QtProject.conf*			rwk,
-owner @{HOME}/.config/qt5ct/qt5ct.conf			rwk,
+owner @{HOME}/.config/qt5ct/qt5ct.conf			rwk,	# qt5ct
 owner @{HOME}/.config/.??????				rwk,	# Временные файлы, Qt5
 owner @{HOME_CACHE}/qt_compose_cache_little_endian_*	rw,

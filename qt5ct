@@ -8,9 +8,16 @@
 #
 # ------------------------------------------------------------------
 
+# BUG!
+# Подставляет свой плагин, из-за чего плагин gtk2/gtk3
+# работает некорректно (не меняет стандартные диалоги).
+# Управляем плагинами без qt5ct, через env:
+# echo "QT_QPA_PLATFORMTHEME=gtk2" > /etc/env.d/98qt_platformtheme
+# evn-update
+
 #include <tunables/global>
 
-profile qt5ct /usr/bin/qt5ct flags=(complain) {
+profile qt5ct /usr/bin/qt5ct {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -24,6 +31,7 @@ profile qt5ct /usr/bin/qt5ct flags=(complain) {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/qt5ct					mr,

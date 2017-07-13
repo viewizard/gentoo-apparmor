@@ -321,6 +321,14 @@ profile gvfs.gvfsd-network /usr/libexec/gvfsd-network {
   unix (send, receive, accept)
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="wireshark"),		# wireshark
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="libreoffice.bin"),		# libreoffice.bin
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
   			peer=(label="nm-applet.nm-connection-editor"),	# nm-applet.nm-connection-editor
   unix (send, receive, accept)
   			type=stream
@@ -393,6 +401,14 @@ profile gvfs.gvfsd-smb /usr/libexec/gvfsd-smb {
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*"
   			peer=(label="thunar"),			# thunar
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="smplayer"),		# smplayer
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="vlc"),			# vlc
   unix (send, receive)
   			type=stream
   			addr=none
@@ -458,6 +474,10 @@ profile gvfs.gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse {
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*"
   			peer=(label="thunar"),			# thunar
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="libreoffice.bin"),		# libreoffice.bin
   
   # DBUS -----------------------------------------------
   dbus (send, receive)
@@ -534,6 +554,14 @@ profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*"
   			peer=(label="remmina"),			# remmina
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="wireshark"),		# wireshark
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="libreoffice.bin"),		# libreoffice.bin
   unix (send, receive, accept)
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*"
