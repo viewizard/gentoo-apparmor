@@ -57,6 +57,9 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} {
   owner @{HOME}/.gnupg/**				rwk,
 #  owner @{HOME}/.gnupg/**				l,	# FIX ME!
   
+  # TEMP -----------------------------------------------
+  owner /var/tmp/portage/webrsync-*/portage-*		r,	# DELEGATION! portage.emerge-webrsync
+  
   # NOISY ----------------------------------------------
   deny /.gnupg/{,**}					r,
 }

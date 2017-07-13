@@ -287,3 +287,16 @@ profile util-linux.dmesg /bin/dmesg flags=(complain) {	# FIX ME! 4.07.2017 flags
   # В общем профиле доступ к файлам (для параметра --file) не даем.
   /var/log/dmesg					w,	# openrc.bootmisc.init.d
 }
+
+profile util-linux.renice /usr/bin/renice flags=(complain) {	# FIX ME! 12.07.2017 flags=(complain)
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/renice					mr,
+}

@@ -44,6 +44,7 @@ profile wget /usr/bin/wget flags=(complain) {
   # TEMP -----------------------------------------------
   owner /tmp/hosts					rwk,	# DELEGATION! hosts.sh.cron.daily
   owner /tmp/oinkmaster.*/**				w,	# DELEGATION! oinkmaster.cron.daily
+  owner /var/tmp/portage/webrsync-*/**			w,	# DELEGATION! portage.emerge-webrsync
   
   # DENY INHERIT ---------------------------------------
   deny /tmp/lynis.cron.*				w,	# lynis.cron.daily

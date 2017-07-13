@@ -1197,12 +1197,6 @@ profile openrc.localmount.init.d /etc/init.d/localmount {
     mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /mnt/backup/,
     mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /media/sdb2/,
     mount fstype=tmpfs options=(rw, nosuid, nodev, noexec, noatime, nodiratime) tmpfs -> /tmp/,
-    mount options=(rw, bind) /media/sdb2/VM_SERVERS/launch_scripts/ -> /media/sdb2/VM_SERVERS/launch_scripts/,
-    mount options=(rw, nodev, remount, bind) -> /media/sdb2/VM_SERVERS/launch_scripts/,
-    mount options=(rw, bind) /media/sdb2/VM_DESKTOP/ -> /media/sdb2/VM_DESKTOP/,
-    mount options=(rw, nodev, remount, bind) -> /media/sdb2/VM_DESKTOP/,
-    mount options=(rw, bind) /media/sdb2/VM_WIN/ -> /media/sdb2/VM_WIN/,
-    mount options=(rw, nodev, remount, bind) -> /media/sdb2/VM_WIN/,
     
     # PSEUDO -------------------------------------------
     /dev/console					rw,
