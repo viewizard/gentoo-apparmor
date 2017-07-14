@@ -25,6 +25,7 @@ profile local.sbin.relabel_ima_evm /usr/local/sbin/relabel_ima_evm.sh {
   /usr/local/sbin/relabel_ima_evm.sh			r,
   @{shell}						mr,
   /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/cat						Cx,	# FS ACCESS! cat
   /usr/bin/find						Cx,	# FS ACCESS! find
   /usr/bin/evmctl					Px,
   
@@ -33,12 +34,21 @@ profile local.sbin.relabel_ima_evm /usr/local/sbin/relabel_ima_evm.sh {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
+  }
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
     
-    # DENY INHERIT -------------------------------------
-    deny /dev/pts/[0-9]*				rw,
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    @{PROC}/cmdline					r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
   }
   
   profile find /usr/bin/find {
@@ -47,13 +57,13 @@ profile local.sbin.relabel_ima_evm /usr/local/sbin/relabel_ima_evm.sh {
     # CAPABILITIES -------------------------------------
     capability dac_override,
     
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /usr/bin/find					mr,
     
     # READS/WRITES -------------------------------------
     /{,**}						r,
-    
-    # DENY INHERIT -------------------------------------
-    deny /dev/pts/[0-9]*				rw,
   }
 }

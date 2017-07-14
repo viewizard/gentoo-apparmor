@@ -27,6 +27,8 @@ profile local.sbin.relabel_evm_dtp /usr/local/sbin/relabel_evm_dtp.sh {
   @{shell}						mr,
   /bin/touch						Cx,	# FS ACCESS! touch
   /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/grep						Cx,	# FS ACCESS! grep
   /usr/bin/find						Cx,	# FS ACCESS! find
   
   profile touch /bin/touch {
@@ -61,6 +63,27 @@ profile local.sbin.relabel_evm_dtp /usr/local/sbin/relabel_evm_dtp.sh {
     /**.evmdtpcreate.xattr				w,
   }
   
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    @{PROC}/cmdline					r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
   profile find /usr/bin/find {
     #include <abstractions/base>
     
@@ -68,6 +91,7 @@ profile local.sbin.relabel_evm_dtp /usr/local/sbin/relabel_evm_dtp.sh {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
     @{PROC}/@{pid}/mountinfo				r,
     
     # EXECUTABLES --------------------------------------

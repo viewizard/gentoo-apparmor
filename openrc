@@ -500,6 +500,7 @@ profile openrc.ewarn /lib{,32,64}/rc/bin/ewarn flags=(attach_disconnected,compla
   #include <abstractions/ncurses>
   
   # PSEUDO ---------------------------------------------
+  /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -514,6 +515,7 @@ profile openrc.eerror /lib{,32,64}/rc/bin/eerror flags=(attach_disconnected,comp
   #include <abstractions/ncurses>
   
   # PSEUDO ---------------------------------------------
+  /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -1057,18 +1059,23 @@ profile openrc.root.init.d /etc/init.d/root {
     # CAPABILITIES -------------------------------------
     capability sys_admin,
     
-    # MOUNT --------------------------------------------
+    # MOUNT --------------------------------------------	# Допустимые опции перемонтирования корневого раздела.
+    mount options=(rw, remount, relatime) -> /,
+    mount options=(rw, remount, noatime) -> /,
+    mount options=(rw, remount, relatime, iversion) -> /,
     mount options=(rw, remount, noatime, iversion) -> /,
     
     # PSEUDO -------------------------------------------
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+    @{PROC}/@{pid}/mount{s,info}			r,
     
     # EXECUTABLES --------------------------------------
     /bin/mount						mr,
     
     # READS/WRITES -------------------------------------
+    /							r,
     /etc/fstab						r,
   }
 }
