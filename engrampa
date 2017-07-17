@@ -8,6 +8,10 @@
 #
 # ------------------------------------------------------------------
 
+# DELEGATION! На данный момент не можем вынести в отдельные профили все архиваторы,
+# т.к. кол-во переключений на именованные профили не может превышать 12, с root
+# будут проблемы (нужно делать больше 12 переключений профилей).
+
 #include <tunables/global>
 
 # предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
@@ -42,6 +46,7 @@ profile engrampa /usr/bin/engrampa flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/engrampa					mr,
+  @{shell}						Cx,
   /bin/mv						Cx,	# FS ACCESS! mv
   /bin/rm						Cx,	# FS ACCESS! rm
   /bin/cp						Cx,	# FS ACCESS! cp
@@ -54,6 +59,7 @@ profile engrampa /usr/bin/engrampa flags=(complain) {
   /usr/bin/unzip					Cx,	# FS ACCESS! unzip
   /usr/bin/lzip						Cx,	# FS ACCESS! lzip
   /usr/bin/xz						Cx,	# FS ACCESS! xz
+  /usr/bin/dpkg-deb					Px -> engrampa_dpkg_deb,
   /usr/@{CHOST}/binutils-bin/*/ar			Cx,	# FS ACCESS! ar
   /opt/rar/rar						Cx,	# FS ACCESS! rar
   
@@ -64,6 +70,17 @@ profile engrampa /usr/bin/engrampa flags=(complain) {
   owner @{HOME}/.fr-*/{,**}				rw,
   owner @{HOME}/.config/mimeapps.list*			rw,
   owner @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+  
+  profile shell @{shell} flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    
+    # EXECUTABLES --------------------------------------
+    @{shell}						mr,
+    /usr/libexec/engrampa/rpm2cpio			Px -> engrampa_rpm2cpio,
+  }
   
   profile mv /bin/mv flags=(complain) {
     #include <abstractions/base>
@@ -299,6 +316,121 @@ profile engrampa /usr/bin/engrampa flags=(complain) {
 
 # FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
 # множественные вложенные профили, выносим в отдельный профиль.
+profile engrampa_rpm2cpio flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/fs-access-by-users-preset-rwkl>
+  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs-deny-private-strict>
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/engrampa/rpm2cpio			mr,
+  @{shell}						Cx,
+  
+  profile shell @{shell} flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    
+    # EXECUTABLES --------------------------------------
+    @{shell}						mr,
+    @{shell}						Px -> engrampa_rpm2cpio_shell,
+  }
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile engrampa_rpm2cpio_shell flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/fs-access-by-users-preset-rwkl>
+  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs-deny-private-strict>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
+  /bin/dd						Cx,	# FS ACCESS! dd
+  /bin/gzip						Cx,	# FS ACCESS! gzip
+  /bin/cpio						Cx,	# FS ACCESS! cpio
+  
+  profile dd /bin/dd flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/dd						mr,
+  }
+  
+  profile gzip /bin/gzip flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/gzip						mr,
+  }
+  
+  profile cpio /bin/cpio flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cpio						mr,
+  }
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile engrampa_dpkg_deb flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/fs-access-by-users-preset-rwkl>
+  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs-deny-private-strict>
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/dpkg-deb					mr,
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/tar						Cx,	# FS ACCESS! tar
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/dpkg-deb.*/				rw,
+  owner /tmp/dpkg-deb.*/*				r,
+  
+  profile rm /bin/rm flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/dpkg-deb.*/{,**}				rw,
+  }
+  
+  profile tar /bin/tar flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/tar						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/dpkg-deb.*/{,**}				w,
+  }
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
 profile engrampa_tar_shell flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   #include <abstractions/fs-access-by-users-preset-rwkl>
@@ -400,6 +532,7 @@ profile engrampa_root flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/engrampa					mr,
+  @{shell}						Cx,
   /bin/mv						Cx,	# FS ACCESS! mv
   /bin/rm						Cx,	# FS ACCESS! rm
   /bin/cp						Cx,	# FS ACCESS! cp
@@ -412,6 +545,7 @@ profile engrampa_root flags=(complain) {
   /usr/bin/unzip					Cx,	# FS ACCESS! unzip
   /usr/bin/lzip						Cx,	# FS ACCESS! lzip
   /usr/bin/xz						Cx,	# FS ACCESS! xz
+  /usr/bin/dpkg-deb					Px -> engrampa_dpkg_deb_root,
   /usr/@{CHOST}/binutils-bin/*/ar			Cx,	# FS ACCESS! ar
   /opt/rar/rar						Cx,	# FS ACCESS! rar
   
@@ -422,6 +556,17 @@ profile engrampa_root flags=(complain) {
   /root/.config/mimeapps.list*				rw,
   /root/.local/share/gvfs-metadata/{,**}		rw,
   /root/.cache/.fr-*/{,**}				rw,
+  
+  profile shell @{shell} flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    
+    # EXECUTABLES --------------------------------------
+    @{shell}						mr,
+    /usr/libexec/engrampa/rpm2cpio			Px -> engrampa_rpm2cpio_root,
+  }
   
   profile mv /bin/mv flags=(complain) {
     #include <abstractions/base>
@@ -492,7 +637,7 @@ profile engrampa_root flags=(complain) {
     
     # EXECUTABLES --------------------------------------
     /bin/tar						mr,
-    @{shell}						Px -> engrampa_tar_shell,
+    @{shell}						Px -> engrampa_tar_shell_root,
     /bin/bzip2						ix,	# Oставляем запуск через ix.
     /bin/gzip						ix,	# Oставляем запуск через ix.
     /usr/bin/lzip					ix,	# Oставляем запуск через ix.
@@ -671,6 +816,128 @@ profile engrampa_root flags=(complain) {
     # NOISY --------------------------------------------
     deny /etc/						r,
     deny /usr/{,local/}lib{,32,64}/			r,
+  }
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile engrampa_rpm2cpio_root flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/fs-access-by-users-preset-rwkl>
+  #include <abstractions/fs-access-by-pattern-systemusers>
+  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs-deny-private-strict>
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/engrampa/rpm2cpio			mr,
+  @{shell}						Cx,
+  
+  profile shell @{shell} flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    
+    # EXECUTABLES --------------------------------------
+    @{shell}						mr,
+    @{shell}						Px -> engrampa_rpm2cpio_shell_root,
+  }
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile engrampa_rpm2cpio_shell_root flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/fs-access-by-users-preset-rwkl>
+  #include <abstractions/fs-access-by-pattern-systemusers>
+  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs-deny-private-strict>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
+  /bin/dd						Cx,	# FS ACCESS! dd
+  /bin/gzip						Cx,	# FS ACCESS! gzip
+  /bin/cpio						Cx,	# FS ACCESS! cpio
+  
+  profile dd /bin/dd flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/dd						mr,
+  }
+  
+  profile gzip /bin/gzip flags=(complain) {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/gzip						mr,
+  }
+  
+  profile cpio /bin/cpio flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cpio						mr,
+  }
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile engrampa_dpkg_deb_root flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/fs-access-by-users-preset-rwkl>
+  #include <abstractions/fs-access-by-pattern-systemusers>
+  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs-deny-private-strict>
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/dpkg-deb					mr,
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/tar						Cx,	# FS ACCESS! tar
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/dpkg-deb.*/				rw,
+  owner /tmp/dpkg-deb.*/*				r,
+  
+  profile rm /bin/rm flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/dpkg-deb.*/{,**}				rw,
+  }
+  
+  profile tar /bin/tar flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/fs-access-by-users-preset-rwkl>
+    #include <abstractions/fs-access-by-pattern-systemusers>
+    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs-deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/tar						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/dpkg-deb.*/{,**}				w,
   }
 }
 
