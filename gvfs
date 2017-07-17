@@ -104,14 +104,14 @@ profile gvfs.gvfsd /usr/libexec/gvfsd {
   owner /root/.gvfs/					rw,
 }
 
-profile gvfs.gvfsd-archive /usr/libexec/gvfsd-archive flags=(complain) {
+profile gvfs.gvfsd-archive /usr/libexec/gvfsd-archive {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-archive				mr,
 }
 
-profile gvfs.gvfsd-burn /usr/libexec/gvfsd-burn flags=(complain) {
+profile gvfs.gvfsd-burn /usr/libexec/gvfsd-burn {
   #include <abstractions/base>
   
   # UNIX -----------------------------------------------
@@ -123,21 +123,21 @@ profile gvfs.gvfsd-burn /usr/libexec/gvfsd-burn flags=(complain) {
   /usr/libexec/gvfsd-burn				mr,
 }
 
-profile gvfs.gvfsd-computer /usr/libexec/gvfsd-computer flags=(complain) {
+profile gvfs.gvfsd-computer /usr/libexec/gvfsd-computer {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-computer				mr,
 }
 
-profile gvfs.gvfsd-dav /usr/libexec/gvfsd-dav flags=(complain) {
+profile gvfs.gvfsd-dav /usr/libexec/gvfsd-dav {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-dav				mr,
 }
 
-profile gvfs.gvfsd-ftp /usr/libexec/gvfsd-ftp flags=(complain) {
+profile gvfs.gvfsd-ftp /usr/libexec/gvfsd-ftp {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
@@ -243,7 +243,7 @@ profile gvfs.gvfsd-http /usr/libexec/gvfsd-http {
   owner @{HOME}/.local/share/mime/mime.cache		r,
 }
 
-profile gvfs.gvfsd-localtest /usr/libexec/gvfsd-localtest flags=(complain) {
+profile gvfs.gvfsd-localtest /usr/libexec/gvfsd-localtest {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
@@ -354,14 +354,14 @@ profile gvfs.gvfsd-network /usr/libexec/gvfsd-network {
   /usr/share/glib-[0-9]*/schemas/{,gschemas.compiled}	r,
 }
 
-profile gvfs.gvfsd-recent /usr/libexec/gvfsd-recent flags=(complain) {
+profile gvfs.gvfsd-recent /usr/libexec/gvfsd-recent {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-recent				mr,
 }
 
-profile gvfs.gvfsd-sftp /usr/libexec/gvfsd-sftp flags=(complain) {
+profile gvfs.gvfsd-sftp /usr/libexec/gvfsd-sftp {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
@@ -604,7 +604,7 @@ profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   owner @{HOME}/.local/share/Trash/{,**}		rw,
 }
 
-profile gvfs.gvfs-open /usr/bin/gvfs-open flags=(complain) {
+profile gvfs.gvfs-open /usr/bin/gvfs-open {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------

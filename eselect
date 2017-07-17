@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile eselect /usr/bin/eselect flags=(complain) {
+profile eselect /usr/bin/eselect {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -72,7 +72,7 @@ profile eselect /usr/bin/eselect flags=(complain) {
   /var/lib/wxwidgets/{,**}				rw,	# eselect wxwidgets
   /var/lib/gentoo/news/news-gentoo.*			rw,	# eselect news
   
-  profile readlink /bin/readlink flags=(complain) {
+  profile readlink /bin/readlink {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -82,7 +82,7 @@ profile eselect /usr/bin/eselect flags=(complain) {
     /bin/readlink					mr,
   }
   
-  profile ln /bin/ln flags=(complain) {
+  profile ln /bin/ln {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -117,7 +117,7 @@ profile eselect /usr/bin/eselect flags=(complain) {
     /usr/share/bakefile/presets/wx*			w,	# eselect wxwidgets
   }
   
-  profile mv /bin/mv flags=(complain) {
+  profile mv /bin/mv {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -134,7 +134,7 @@ profile eselect /usr/bin/eselect flags=(complain) {
     /usr/bin/pinentry{,.new}				rw,	# eselect pinentry
   }
   
-  profile rm /bin/rm flags=(complain) {
+  profile rm /bin/rm {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -172,7 +172,7 @@ profile eselect /usr/bin/eselect flags=(complain) {
     /usr/bin/testrb					w,	# eselect ruby
   }
   
-  profile sed /bin/sed flags=(complain) {
+  profile sed /bin/sed {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -188,7 +188,7 @@ profile eselect /usr/bin/eselect flags=(complain) {
     /usr/portage/profiles/profiles.desc			r,	# eselect profile
   }
   
-  profile sort /bin/sort flags=(complain) {
+  profile sort /bin/sort {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -201,7 +201,7 @@ profile eselect /usr/bin/eselect flags=(complain) {
     /bin/sort						mr,
   }
   
-  profile head /bin/head flags=(complain) {
+  profile head /bin/head {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -211,7 +211,7 @@ profile eselect /usr/bin/eselect flags=(complain) {
     /bin/head						mr,
   }
   
-  profile mkdir /bin/mkdir flags=(complain) {
+  profile mkdir /bin/mkdir {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -221,21 +221,21 @@ profile eselect /usr/bin/eselect flags=(complain) {
     /bin/mkdir						mr,
   }
   
-  profile mktemp /bin/mktemp flags=(complain) {
+  profile mktemp /bin/mktemp {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/mktemp						mr,
   }
   
-  profile cut /bin/cut flags=(complain) {
+  profile cut /bin/cut {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/cut						mr,
   }
   
-  profile grep /bin/grep flags=(complain) {
+  profile grep /bin/grep {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -245,21 +245,21 @@ profile eselect /usr/bin/eselect flags=(complain) {
     /bin/grep						mr,
   }
   
-  profile chgrp /bin/chgrp flags=(complain) {
+  profile chgrp /bin/chgrp {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/chgrp						mr,
   }
   
-  profile chmod /bin/chmod flags=(complain) {
+  profile chmod /bin/chmod {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/chmod						mr,
   }
   
-  profile cat /bin/cat flags=(complain) {
+  profile cat /bin/cat {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -272,7 +272,7 @@ profile eselect /usr/bin/eselect flags=(complain) {
     /usr/share/qt4/graphicssystems/*			r,	# eselect qtgraphicssystem
   }
   
-  profile tr /bin/tr flags=(complain) {
+  profile tr /bin/tr {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -282,7 +282,7 @@ profile eselect /usr/bin/eselect flags=(complain) {
     /bin/tr						mr,
   }
   
-  profile ls /bin/ls flags=(complain) {
+  profile ls /bin/ls {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -295,14 +295,14 @@ profile eselect /usr/bin/eselect flags=(complain) {
     /usr/share/qt4/graphicssystems/			r,	# eselect qtgraphicssystem
   }
   
-  profile file /usr/bin/file flags=(complain) {
+  profile file /usr/bin/file {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/file					mr,
   }
   
-  profile scanelf /usr/bin/scanelf flags=(complain) {
+  profile scanelf /usr/bin/scanelf {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

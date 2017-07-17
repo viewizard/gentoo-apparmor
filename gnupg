@@ -64,7 +64,7 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} {
   deny /.gnupg/{,**}					r,
 }
 
-profile gnupg.gpgconf /usr/bin/gpgconf flags=(complain) {
+profile gnupg.gpgconf /usr/bin/gpgconf {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -83,7 +83,7 @@ profile gnupg.gpgconf /usr/bin/gpgconf flags=(complain) {
 #  owner @{HOME}/.gnupg/**				l,	# FIX ME!
 }
 
-profile gnupg.gpgsm /usr/bin/gpgsm flags=(complain) {
+profile gnupg.gpgsm /usr/bin/gpgsm {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------

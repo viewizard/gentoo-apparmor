@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile util-linux.mkswap /sbin/mkswap flags=(complain) {
+profile util-linux.mkswap /sbin/mkswap {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -28,7 +28,7 @@ profile util-linux.mkswap /sbin/mkswap flags=(complain) {
   /sbin/mkswap						mr,
 }
 
-profile util-linux.swapon /sbin/swap{on,off} flags=(complain) {
+profile util-linux.swapon /sbin/swap{on,off} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -49,7 +49,7 @@ profile util-linux.swapon /sbin/swap{on,off} flags=(complain) {
   /etc/fstab						r,
 }
 
-profile util-linux.lsblk /bin/lsblk flags=(complain) {
+profile util-linux.lsblk /bin/lsblk {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -125,7 +125,7 @@ profile util-linux.fsck /sbin/fsck flags=(complain) {
   link subset /run/blkid/blkid.tab*			-> /run/blkid/blkid.tab*,
 }
 
-profile util-linux.hwclock /sbin/hwclock flags=(complain) {
+profile util-linux.hwclock /sbin/hwclock {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -139,7 +139,7 @@ profile util-linux.hwclock /sbin/hwclock flags=(complain) {
   /sbin/hwclock						mr,
 }
 
-profile util-linux.logger /usr/bin/logger flags=(complain) {
+profile util-linux.logger /usr/bin/logger {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -185,7 +185,7 @@ profile util-linux.eject /usr/bin/eject flags=(complain) {
   /run/mount/utab					r,
 }
 
-profile util-linux.blkid /sbin/blkid flags=(complain) {
+profile util-linux.blkid /sbin/blkid {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -210,7 +210,7 @@ profile util-linux.blkid /sbin/blkid flags=(complain) {
   link subset /run/blkid/blkid.tab*			-> /run/blkid/blkid.tab*,
 }
 
-profile util-linux.switch_root /sbin/switch_root flags=(complain) {
+profile util-linux.switch_root /sbin/switch_root {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
@@ -218,7 +218,7 @@ profile util-linux.switch_root /sbin/switch_root flags=(complain) {
   /sbin/init						Px,
 }
 
-profile util-linux.blockdev /sbin/blockdev flags=(complain) {
+profile util-linux.blockdev /sbin/blockdev {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -256,7 +256,7 @@ profile util-linux.cal /usr/bin/cal {
   deny @{PROC}/@{pid}/net/dev				r,	# conky_shell
 }
 
-profile util-linux.getopt /usr/bin/getopt flags=(complain,attach_disconnected) {	# FIX ME! 23.06.2017 flags=(complain)
+profile util-linux.getopt /usr/bin/getopt flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -269,7 +269,7 @@ profile util-linux.getopt /usr/bin/getopt flags=(complain,attach_disconnected) {
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile util-linux.dmesg /bin/dmesg flags=(complain) {	# FIX ME! 4.07.2017 flags=(complain)
+profile util-linux.dmesg /bin/dmesg {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -288,7 +288,7 @@ profile util-linux.dmesg /bin/dmesg flags=(complain) {	# FIX ME! 4.07.2017 flags
   /var/log/dmesg					w,	# openrc.bootmisc.init.d
 }
 
-profile util-linux.renice /usr/bin/renice flags=(complain) {	# FIX ME! 12.07.2017 flags=(complain)
+profile util-linux.renice /usr/bin/renice {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------

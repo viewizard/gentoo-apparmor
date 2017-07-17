@@ -52,7 +52,7 @@ profile porthole @{PYTHON_EXEC}/porthole {
   # USERS ----------------------------------------------
   owner @{HOME}/.porthole/{,prefs.xml}			rw,
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -64,7 +64,7 @@ profile porthole @{PYTHON_EXEC}/porthole {
     /bin/uname						Px,
   }
   
-  profile sandbox /usr/bin/sandbox flags=(complain) {
+  profile sandbox /usr/bin/sandbox {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -81,7 +81,7 @@ profile porthole @{PYTHON_EXEC}/porthole {
   }
 }
 
-profile porthole_sandbox_shell flags=(complain) {
+profile porthole_sandbox_shell {
   include <abstractions/base>
   
   # PSEUDO ---------------------------------------------

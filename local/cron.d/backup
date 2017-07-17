@@ -14,7 +14,7 @@
 # Важно! Перезагрузка профиля выполняется командой:
 # apparmor_parser -r /etc/apparmor.d/2_local
 
-profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh flags=(complain) {
+profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -51,7 +51,7 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh flags=(compla
   /tmp/dailyhomebackup.cron.??????			rw,
   /tmp/dailyhomebackup.cron.??????/			r,
   
-  profile chmod /bin/chmod flags=(complain) {
+  profile chmod /bin/chmod {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -66,7 +66,7 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh flags=(compla
     deny /tmp/dailyhomebackup.cron.??????		w,
   }
   
-  profile date /bin/date flags=(complain) {
+  profile date /bin/date {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -76,7 +76,7 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh flags=(compla
     deny /tmp/dailyhomebackup.cron.??????		w,
   }
   
-  profile tar /bin/tar flags=(complain) {
+  profile tar /bin/tar {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -103,7 +103,7 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh flags=(compla
     deny /tmp/dailyhomebackup.cron.??????		w,
   }
   
-  profile rm /bin/rm flags=(complain) {
+  profile rm /bin/rm {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -113,7 +113,7 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh flags=(compla
     /tmp/dailyhomebackup.cron.??????{,/}		rw,
   }
   
-  profile cat /bin/cat flags=(complain) {
+  profile cat /bin/cat {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -126,7 +126,7 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh flags=(compla
     deny /tmp/dailyhomebackup.cron.??????		w,
   }
   
-  profile mktemp /bin/mktemp flags=(complain) {
+  profile mktemp /bin/mktemp {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -136,7 +136,7 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh flags=(compla
     /tmp/dailyhomebackup.cron.??????{,/}		rw,
   }
   
-  profile sort /bin/sort flags=(complain) {
+  profile sort /bin/sort {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -146,7 +146,7 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh flags=(compla
     deny /tmp/dailyhomebackup.cron.??????		w,
   }
   
-  profile mount /bin/mount flags=(complain) {
+  profile mount /bin/mount {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -169,7 +169,7 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh flags=(compla
     deny /tmp/dailyhomebackup.cron.??????		w,
   }
   
-  profile umount /bin/umount flags=(complain) {
+  profile umount /bin/umount {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -188,7 +188,7 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh flags=(compla
     deny /tmp/dailyhomebackup.cron.??????		w,
   }
   
-  profile find /usr/bin/find flags=(complain) {
+  profile find /usr/bin/find {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -206,7 +206,7 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh flags=(compla
 
 # FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
 # множественные вложенные профили, выносим в отдельный профиль.
-profile daily_backup_find_rm flags=(attach_disconnected,complain) {
+profile daily_backup_find_rm flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
@@ -272,7 +272,7 @@ profile weekly_backup.sh.cron.weekly /etc/cron.weekly/weekly_backup.sh {
   /tmp/rootbackup.cron.??????{,/}			rw,
   /tmp/rootbackup.cron.??????/**			r,
   
-  profile mount /bin/mount flags=(complain) {
+  profile mount /bin/mount {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -295,7 +295,7 @@ profile weekly_backup.sh.cron.weekly /etc/cron.weekly/weekly_backup.sh {
     deny /tmp/rootbackup.cron.??????			w,
   }
   
-  profile umount /bin/umount flags=(complain) {
+  profile umount /bin/umount {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

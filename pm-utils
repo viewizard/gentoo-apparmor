@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile pm-utils.pm-is-supported /usr/bin/pm-is-supported flags=(complain) {
+profile pm-utils.pm-is-supported /usr/bin/pm-is-supported {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -29,14 +29,14 @@ profile pm-utils.pm-is-supported /usr/bin/pm-is-supported flags=(complain) {
   # READS/WRITES ---------------------------------------
   /etc/pm/config.d/{,**}				r,
   
-  profile tr /bin/tr flags=(complain) {
+  profile tr /bin/tr {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/tr						mr,
   }
   
-  profile grep /bin/grep flags=(complain) {
+  profile grep /bin/grep {
     #include <abstractions/base>
     
     # PSEUDO ---------------------------------------------

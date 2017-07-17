@@ -129,7 +129,7 @@ profile cups.driver /usr/libexec/cups/driver/* {
   /var/spool/cups/{,**}					wr,
 }
 
-profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* flags=(complain) {
+profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -152,7 +152,7 @@ profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* flags=(complain) {
   owner /tmp/?????????????				rw,
 }
 
-profile cups.filter /usr/libexec/cups/filter/* flags=(complain) {
+profile cups.filter /usr/libexec/cups/filter/* {
   #include <abstractions/base>
   #include <abstractions/unix-pattern/cupsd-virtual>
   
@@ -202,7 +202,7 @@ profile cups.backend /usr/libexec/cups/backend/* {
   /var/cache/cups/*.snmp				r,
 }
 
-profile cups.smbspool /usr/bin/smbspool flags=(complain) {
+profile cups.smbspool /usr/bin/smbspool {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------

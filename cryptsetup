@@ -14,7 +14,7 @@
 @{USERS_DIR}="[^.]**"
 @{USERS_FILE}="[^.]*"
 
-profile cryptsetup /sbin/cryptsetup flags=(complain) {
+profile cryptsetup /sbin/cryptsetup {
   #include <abstractions/base>
   #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/fs-deny-by-pattern-internet>
@@ -175,7 +175,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
     deny /etc/conf.d/dmcrypt				r,
   }
   
-  profile mount /bin/mount flags=(complain) {
+  profile mount /bin/mount {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -196,7 +196,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
     deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d
   }
   
-  profile umount /bin/umount flags=(complain) {
+  profile umount /bin/umount {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

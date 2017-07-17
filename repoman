@@ -14,7 +14,7 @@
 
 #include <tunables/global>
 
-profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
+profile repoman @{PYTHON_EXEC}/repoman {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -57,7 +57,7 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
   owner /var/tmp/tmp*/					rw,
   owner /var/tmp/portage/tmp*/{,**}			rw,
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -74,7 +74,7 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
     /usr/portage/distfiles/*				w,
   }
   
-  profile sandbox /usr/bin/sandbox flags=(complain) {
+  profile sandbox /usr/bin/sandbox {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -89,7 +89,7 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
     /etc/sandbox.d/{,**}				r,
   }
   
-  profile git /usr/bin/git flags=(complain) {
+  profile git /usr/bin/git {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -106,7 +106,7 @@ profile repoman @{PYTHON_EXEC}/repoman flags=(complain) {
   }
 }
 
-profile repoman_sandbox_shell flags=(complain) {
+profile repoman_sandbox_shell {
   include <abstractions/base>
   
   # PSEUDO ---------------------------------------------

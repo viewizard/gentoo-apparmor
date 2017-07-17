@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile gcc-config /usr/bin/gcc-config flags=(complain) {
+profile gcc-config /usr/bin/gcc-config {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -58,7 +58,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.*					rw,
   
-  profile mv /bin/mv flags=(complain) {
+  profile mv /bin/mv {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -72,7 +72,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
     /usr/bin/*						rw,
   }
   
-  profile cp /bin/cp flags=(complain) {
+  profile cp /bin/cp {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -89,7 +89,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
     /usr/bin/*						w,
   }
   
-  profile rm /bin/rm flags=(complain) {
+  profile rm /bin/rm {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -103,7 +103,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
     /lib{,32,64}/*					w,
   }
   
-  profile ln /bin/ln flags=(complain) {
+  profile ln /bin/ln {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -117,7 +117,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
     link subset /lib{,32,64}/*				-> /usr/lib{,32,64}/gcc/@{CHOST}/**,
   }
   
-  profile cat /bin/cat flags=(complain) {
+  profile cat /bin/cat {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -133,7 +133,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
     owner /tmp/sh-thd.*					rw,
   }
   
-  profile sed /bin/sed flags=(complain) {
+  profile sed /bin/sed {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -149,7 +149,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
     owner /tmp/sed*					rw,
   }
   
-  profile touch /bin/touch flags=(complain) {
+  profile touch /bin/touch {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -163,7 +163,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
     /usr/bin/*						w,
   }
   
-  profile sort /bin/sort flags=(complain) {
+  profile sort /bin/sort {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -173,7 +173,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
     /bin/sort						mr,
   }
   
-  profile egrep /bin/egrep flags=(complain) {
+  profile egrep /bin/egrep {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -189,7 +189,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
     /etc/env.d/gcc/*					r,
   }
   
-  profile find /usr/bin/find flags=(complain) {
+  profile find /usr/bin/find {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -202,7 +202,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
     /							r,
   }
   
-  profile cmp /usr/bin/cmp flags=(complain) {
+  profile cmp /usr/bin/cmp {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -212,7 +212,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
     /etc/env.d/*					r,
   }
   
-  profile gawk /usr/bin/gawk flags=(complain) {
+  profile gawk /usr/bin/gawk {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -226,7 +226,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
     /etc/env.d/gcc/**					r,
   }
   
-  profile tac /usr/bin/tac flags=(complain) {
+  profile tac /usr/bin/tac {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -239,7 +239,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {
     owner /tmp/tac*					rw,
   }
   
-  profile portageq flags=(complain) {
+  profile portageq {
     #include <abstractions/base>
     #include <abstractions/python>
     #include <abstractions/python-exec>

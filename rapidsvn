@@ -14,7 +14,7 @@
 @{USERS_DIR}="[^.]**"
 @{USERS_FILE}="[^.]*"
 
-profile rapidsvn /usr/bin/rapidsvn flags=(complain) {
+profile rapidsvn /usr/bin/rapidsvn {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -53,7 +53,7 @@ profile rapidsvn /usr/bin/rapidsvn flags=(complain) {
   # TEMP -----------------------------------------------
   owner /tmp/*						rw,
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------

@@ -18,7 +18,7 @@
 @{USERS_DIR}="[^.]**"
 @{USERS_FILE}="[^.]**"
 
-profile engrampa /usr/bin/engrampa flags=(complain) {
+profile engrampa /usr/bin/engrampa {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -71,7 +71,7 @@ profile engrampa /usr/bin/engrampa flags=(complain) {
   owner @{HOME}/.config/mimeapps.list*			rw,
   owner @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -82,7 +82,7 @@ profile engrampa /usr/bin/engrampa flags=(complain) {
     /usr/libexec/engrampa/rpm2cpio			Px -> engrampa_rpm2cpio,
   }
   
-  profile mv /bin/mv flags=(complain) {
+  profile mv /bin/mv {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-deny-by-pattern-internet>
@@ -95,7 +95,7 @@ profile engrampa /usr/bin/engrampa flags=(complain) {
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   }
   
-  profile rm /bin/rm flags=(complain) {
+  profile rm /bin/rm {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-deny-by-pattern-internet>
@@ -114,7 +114,7 @@ profile engrampa /usr/bin/engrampa flags=(complain) {
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   }
   
-  profile cp /bin/cp flags=(complain) {
+  profile cp /bin/cp {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-deny-by-pattern-internet>
@@ -130,7 +130,7 @@ profile engrampa /usr/bin/engrampa flags=(complain) {
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   }
   
-  profile tar /bin/tar flags=(complain) {
+  profile tar /bin/tar {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/fs-access-by-users-preset-rwkl>
@@ -152,7 +152,7 @@ profile engrampa /usr/bin/engrampa flags=(complain) {
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   }
   
-  profile bzip2 /bin/bzip2 flags=(complain) {
+  profile bzip2 /bin/bzip2 {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-deny-by-pattern-internet>
@@ -168,7 +168,7 @@ profile engrampa /usr/bin/engrampa flags=(complain) {
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   }
   
-  profile gzip /bin/gzip flags=(complain) {
+  profile gzip /bin/gzip {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-deny-by-pattern-internet>
@@ -184,7 +184,7 @@ profile engrampa /usr/bin/engrampa flags=(complain) {
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   }
   
-  profile 7z /usr/bin/7z flags=(complain) {
+  profile 7z /usr/bin/7z {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-deny-by-pattern-internet>
@@ -206,7 +206,7 @@ profile engrampa /usr/bin/engrampa flags=(complain) {
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   }
   
-  profile 7za /usr/bin/7za flags=(complain) {
+  profile 7za /usr/bin/7za {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-deny-by-pattern-internet>
@@ -225,7 +225,7 @@ profile engrampa /usr/bin/engrampa flags=(complain) {
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   }
   
-  profile zip /usr/bin/zip flags=(complain) {
+  profile zip /usr/bin/zip {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-deny-by-pattern-internet>
@@ -238,7 +238,7 @@ profile engrampa /usr/bin/engrampa flags=(complain) {
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   }
   
-  profile unzip /usr/bin/unzip flags=(complain) {
+  profile unzip /usr/bin/unzip {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-deny-by-pattern-internet>
@@ -251,7 +251,7 @@ profile engrampa /usr/bin/engrampa flags=(complain) {
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   }
   
-  profile lzip /usr/bin/lzip flags=(complain) {
+  profile lzip /usr/bin/lzip {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-deny-by-pattern-internet>
@@ -267,7 +267,7 @@ profile engrampa /usr/bin/engrampa flags=(complain) {
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   }
   
-  profile xz /usr/bin/xz flags=(complain) {
+  profile xz /usr/bin/xz {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-deny-by-pattern-internet>
@@ -283,7 +283,7 @@ profile engrampa /usr/bin/engrampa flags=(complain) {
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   }
   
-  profile ar /usr/@{CHOST}/binutils-bin/*/ar flags=(complain) {
+  profile ar /usr/@{CHOST}/binutils-bin/*/ar {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-deny-by-pattern-internet>
@@ -316,7 +316,7 @@ profile engrampa /usr/bin/engrampa flags=(complain) {
 
 # FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
 # множественные вложенные профили, выносим в отдельный профиль.
-profile engrampa_rpm2cpio flags=(complain) {
+profile engrampa_rpm2cpio {
   #include <abstractions/base>
   #include <abstractions/fs-access-by-users-preset-rwkl>
   #include <abstractions/fs-deny-by-pattern-internet>
@@ -326,7 +326,7 @@ profile engrampa_rpm2cpio flags=(complain) {
   /usr/libexec/engrampa/rpm2cpio			mr,
   @{shell}						Cx,
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -340,7 +340,7 @@ profile engrampa_rpm2cpio flags=(complain) {
 
 # FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
 # множественные вложенные профили, выносим в отдельный профиль.
-profile engrampa_rpm2cpio_shell flags=(complain) {
+profile engrampa_rpm2cpio_shell {
   #include <abstractions/base>
   #include <abstractions/fs-access-by-users-preset-rwkl>
   #include <abstractions/fs-deny-by-pattern-internet>
@@ -355,7 +355,7 @@ profile engrampa_rpm2cpio_shell flags=(complain) {
   /bin/gzip						Cx,	# FS ACCESS! gzip
   /bin/cpio						Cx,	# FS ACCESS! cpio
   
-  profile dd /bin/dd flags=(complain) {
+  profile dd /bin/dd {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-deny-by-pattern-internet>
@@ -365,14 +365,14 @@ profile engrampa_rpm2cpio_shell flags=(complain) {
     /bin/dd						mr,
   }
   
-  profile gzip /bin/gzip flags=(complain) {
+  profile gzip /bin/gzip {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/gzip						mr,
   }
   
-  profile cpio /bin/cpio flags=(complain) {
+  profile cpio /bin/cpio {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/fs-access-by-users-preset-rwkl>
@@ -386,7 +386,7 @@ profile engrampa_rpm2cpio_shell flags=(complain) {
 
 # FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
 # множественные вложенные профили, выносим в отдельный профиль.
-profile engrampa_dpkg_deb flags=(complain) {
+profile engrampa_dpkg_deb {
   #include <abstractions/base>
   #include <abstractions/fs-access-by-users-preset-rwkl>
   #include <abstractions/fs-deny-by-pattern-internet>
@@ -401,7 +401,7 @@ profile engrampa_dpkg_deb flags=(complain) {
   owner /tmp/dpkg-deb.*/				rw,
   owner /tmp/dpkg-deb.*/*				r,
   
-  profile rm /bin/rm flags=(complain) {
+  profile rm /bin/rm {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-deny-by-pattern-internet>
@@ -414,7 +414,7 @@ profile engrampa_dpkg_deb flags=(complain) {
     owner /tmp/dpkg-deb.*/{,**}				rw,
   }
   
-  profile tar /bin/tar flags=(complain) {
+  profile tar /bin/tar {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/fs-access-by-users-preset-rwkl>
@@ -431,7 +431,7 @@ profile engrampa_dpkg_deb flags=(complain) {
 
 # FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
 # множественные вложенные профили, выносим в отдельный профиль.
-profile engrampa_tar_shell flags=(attach_disconnected,complain) {
+profile engrampa_tar_shell flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/fs-access-by-users-preset-rwkl>
   #include <abstractions/fs-deny-by-pattern-internet>
@@ -450,7 +450,7 @@ profile engrampa_tar_shell flags=(attach_disconnected,complain) {
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   
-  profile gzip /bin/gzip flags=(attach_disconnected,complain) {
+  profile gzip /bin/gzip flags=(attach_disconnected) {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-deny-by-pattern-internet>
@@ -463,7 +463,7 @@ profile engrampa_tar_shell flags=(attach_disconnected,complain) {
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile bzip2 /bin/bzip2 flags=(attach_disconnected,complain) {
+  profile bzip2 /bin/bzip2 flags=(attach_disconnected) {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-deny-by-pattern-internet>
@@ -476,7 +476,7 @@ profile engrampa_tar_shell flags=(attach_disconnected,complain) {
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile lzip /usr/bin/lzip flags=(attach_disconnected,complain) {
+  profile lzip /usr/bin/lzip flags=(attach_disconnected) {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-deny-by-pattern-internet>
@@ -489,7 +489,7 @@ profile engrampa_tar_shell flags=(attach_disconnected,complain) {
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile xz /usr/bin/xz flags=(attach_disconnected,complain) {
+  profile xz /usr/bin/xz flags=(attach_disconnected) {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-deny-by-pattern-internet>
@@ -503,7 +503,7 @@ profile engrampa_tar_shell flags=(attach_disconnected,complain) {
   }
 }
 
-profile engrampa_root flags=(complain) {
+profile engrampa_root {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -557,7 +557,7 @@ profile engrampa_root flags=(complain) {
   /root/.local/share/gvfs-metadata/{,**}		rw,
   /root/.cache/.fr-*/{,**}				rw,
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -568,7 +568,7 @@ profile engrampa_root flags=(complain) {
     /usr/libexec/engrampa/rpm2cpio			Px -> engrampa_rpm2cpio_root,
   }
   
-  profile mv /bin/mv flags=(complain) {
+  profile mv /bin/mv {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
@@ -582,7 +582,7 @@ profile engrampa_root flags=(complain) {
     deny /root/.local/share/gvfs-metadata/{,**}	rw,
   }
   
-  profile rm /bin/rm flags=(complain) {
+  profile rm /bin/rm {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
@@ -602,7 +602,7 @@ profile engrampa_root flags=(complain) {
     deny /root/.local/share/gvfs-metadata/{,**}		rw,
   }
   
-  profile cp /bin/cp flags=(complain) {
+  profile cp /bin/cp {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
@@ -622,7 +622,7 @@ profile engrampa_root flags=(complain) {
     deny /root/.local/share/gvfs-metadata/{,**}		rw,
   }
   
-  profile tar /bin/tar flags=(complain) {
+  profile tar /bin/tar {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/fs-access-by-users-preset-rwkl>
@@ -650,7 +650,7 @@ profile engrampa_root flags=(complain) {
     deny /root/.local/share/gvfs-metadata/{,**}		rw,
   }
   
-  profile bzip2 /bin/bzip2 flags=(complain) {
+  profile bzip2 /bin/bzip2 {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
@@ -667,7 +667,7 @@ profile engrampa_root flags=(complain) {
     deny /root/.local/share/gvfs-metadata/{,**}		rw,
   }
   
-  profile gzip /bin/gzip flags=(complain) {
+  profile gzip /bin/gzip {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
@@ -684,7 +684,7 @@ profile engrampa_root flags=(complain) {
     deny /root/.local/share/gvfs-metadata/{,**}		rw,
   }
   
-  profile 7z /usr/bin/7z flags=(complain) {
+  profile 7z /usr/bin/7z {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
@@ -707,7 +707,7 @@ profile engrampa_root flags=(complain) {
     deny /root/.local/share/gvfs-metadata/{,**}		rw,
   }
   
-  profile 7za /usr/bin/7za flags=(complain) {
+  profile 7za /usr/bin/7za {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
@@ -727,7 +727,7 @@ profile engrampa_root flags=(complain) {
     deny /root/.local/share/gvfs-metadata/{,**}		rw,
   }
   
-  profile zip /usr/bin/zip flags=(complain) {
+  profile zip /usr/bin/zip {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
@@ -741,7 +741,7 @@ profile engrampa_root flags=(complain) {
     deny /root/.local/share/gvfs-metadata/{,**}		rw,
   }
   
-  profile unzip /usr/bin/unzip flags=(complain) {
+  profile unzip /usr/bin/unzip {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
@@ -755,7 +755,7 @@ profile engrampa_root flags=(complain) {
     deny /root/.local/share/gvfs-metadata/{,**}		rw,
   }
   
-  profile lzip /usr/bin/lzip flags=(complain) {
+  profile lzip /usr/bin/lzip {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
@@ -772,7 +772,7 @@ profile engrampa_root flags=(complain) {
     deny /root/.local/share/gvfs-metadata/{,**}		rw,
   }
   
-  profile xz /usr/bin/xz flags=(complain) {
+  profile xz /usr/bin/xz {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
@@ -789,7 +789,7 @@ profile engrampa_root flags=(complain) {
     deny /root/.local/share/gvfs-metadata/{,**}		rw,
   }
   
-  profile ar /usr/@{CHOST}/binutils-bin/*/ar flags=(complain) {
+  profile ar /usr/@{CHOST}/binutils-bin/*/ar {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
@@ -821,7 +821,7 @@ profile engrampa_root flags=(complain) {
 
 # FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
 # множественные вложенные профили, выносим в отдельный профиль.
-profile engrampa_rpm2cpio_root flags=(complain) {
+profile engrampa_rpm2cpio_root {
   #include <abstractions/base>
   #include <abstractions/fs-access-by-users-preset-rwkl>
   #include <abstractions/fs-access-by-pattern-systemusers>
@@ -832,7 +832,7 @@ profile engrampa_rpm2cpio_root flags=(complain) {
   /usr/libexec/engrampa/rpm2cpio			mr,
   @{shell}						Cx,
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -846,7 +846,7 @@ profile engrampa_rpm2cpio_root flags=(complain) {
 
 # FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
 # множественные вложенные профили, выносим в отдельный профиль.
-profile engrampa_rpm2cpio_shell_root flags=(complain) {
+profile engrampa_rpm2cpio_shell_root {
   #include <abstractions/base>
   #include <abstractions/fs-access-by-users-preset-rwkl>
   #include <abstractions/fs-access-by-pattern-systemusers>
@@ -862,7 +862,7 @@ profile engrampa_rpm2cpio_shell_root flags=(complain) {
   /bin/gzip						Cx,	# FS ACCESS! gzip
   /bin/cpio						Cx,	# FS ACCESS! cpio
   
-  profile dd /bin/dd flags=(complain) {
+  profile dd /bin/dd {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
@@ -873,14 +873,14 @@ profile engrampa_rpm2cpio_shell_root flags=(complain) {
     /bin/dd						mr,
   }
   
-  profile gzip /bin/gzip flags=(complain) {
+  profile gzip /bin/gzip {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/gzip						mr,
   }
   
-  profile cpio /bin/cpio flags=(complain) {
+  profile cpio /bin/cpio {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/fs-access-by-users-preset-rwkl>
@@ -895,7 +895,7 @@ profile engrampa_rpm2cpio_shell_root flags=(complain) {
 
 # FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
 # множественные вложенные профили, выносим в отдельный профиль.
-profile engrampa_dpkg_deb_root flags=(complain) {
+profile engrampa_dpkg_deb_root {
   #include <abstractions/base>
   #include <abstractions/fs-access-by-users-preset-rwkl>
   #include <abstractions/fs-access-by-pattern-systemusers>
@@ -911,7 +911,7 @@ profile engrampa_dpkg_deb_root flags=(complain) {
   owner /tmp/dpkg-deb.*/				rw,
   owner /tmp/dpkg-deb.*/*				r,
   
-  profile rm /bin/rm flags=(complain) {
+  profile rm /bin/rm {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
@@ -925,7 +925,7 @@ profile engrampa_dpkg_deb_root flags=(complain) {
     owner /tmp/dpkg-deb.*/{,**}				rw,
   }
   
-  profile tar /bin/tar flags=(complain) {
+  profile tar /bin/tar {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/fs-access-by-users-preset-rwkl>
@@ -943,7 +943,7 @@ profile engrampa_dpkg_deb_root flags=(complain) {
 
 # FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
 # множественные вложенные профили, выносим в отдельный профиль.
-profile engrampa_tar_shell_root flags=(attach_disconnected,complain) {
+profile engrampa_tar_shell_root flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/fs-access-by-users-preset-rwkl>
   #include <abstractions/fs-access-by-pattern-systemusers>
@@ -963,7 +963,7 @@ profile engrampa_tar_shell_root flags=(attach_disconnected,complain) {
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   
-  profile gzip /bin/gzip flags=(attach_disconnected,complain) {
+  profile gzip /bin/gzip flags=(attach_disconnected) {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
@@ -977,7 +977,7 @@ profile engrampa_tar_shell_root flags=(attach_disconnected,complain) {
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile bzip2 /bin/bzip2 flags=(attach_disconnected,complain) {
+  profile bzip2 /bin/bzip2 flags=(attach_disconnected) {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
@@ -991,7 +991,7 @@ profile engrampa_tar_shell_root flags=(attach_disconnected,complain) {
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile lzip /usr/bin/lzip flags=(attach_disconnected,complain) {
+  profile lzip /usr/bin/lzip flags=(attach_disconnected) {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>
@@ -1005,7 +1005,7 @@ profile engrampa_tar_shell_root flags=(attach_disconnected,complain) {
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile xz /usr/bin/xz flags=(attach_disconnected,complain) {
+  profile xz /usr/bin/xz flags=(attach_disconnected) {
     #include <abstractions/base>
     #include <abstractions/fs-access-by-users-preset-rwkl>
     #include <abstractions/fs-access-by-pattern-systemusers>

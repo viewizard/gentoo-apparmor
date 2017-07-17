@@ -15,7 +15,7 @@
 
 #include <tunables/global>
 
-profile elfix.migrate-pax /usr/sbin/migrate-pax flags=(complain) {
+profile elfix.migrate-pax /usr/sbin/migrate-pax {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -38,7 +38,7 @@ profile elfix.migrate-pax /usr/sbin/migrate-pax flags=(complain) {
   /var/db/pkg/{,**}					r,
   /var/cache/edb/{,**}					r,
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -55,7 +55,7 @@ profile elfix.migrate-pax /usr/sbin/migrate-pax flags=(complain) {
   }
 }
 
-profile elfix.revdep-pax /usr/sbin/revdep-pax flags=(complain) {
+profile elfix.revdep-pax /usr/sbin/revdep-pax {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -78,7 +78,7 @@ profile elfix.revdep-pax /usr/sbin/revdep-pax flags=(complain) {
   /var/db/pkg/{,**}					r,
   /var/cache/edb/{,**}					r,
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------

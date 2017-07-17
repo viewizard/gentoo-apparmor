@@ -15,6 +15,10 @@ profile mc /usr/bin/mc {
   #include <abstractions/nameservice>
   #include <abstractions/ncurses>
   #include <abstractions/fs-access-by-pattern-filemanager>
+  #include <abstractions/X>
+  
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(cont) peer="shell_users",
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -32,27 +36,42 @@ profile mc /usr/bin/mc {
   /etc/mc/{,**}						r,
   /usr/libexec/mc/{,**}					r,
   /usr/share/mc/{,**}					r,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/mc-*/					w,	# * - user name.
 }
 
-profile mc.cons.saver /usr/libexec/mc/cons.saver flags=(complain) {
+profile mc.cons.saver /usr/libexec/mc/cons.saver {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
   capability setuid,
+  capability dac_read_search,					# RBAC! Вызывается через sudo в X-сессии пользователя.
+  capability dac_override,					# RBAC! Вызывается через sudo в X-сессии пользователя.
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/vcsa[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/mc/cons.saver				mr,
 }
 
-profile mc_root flags=(complain) {
+profile mc_root {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ncurses>
   #include <abstractions/fs-access-by-pattern-filemanager>
   #include <abstractions/fs-access-by-pattern-systemusers>
+  #include <abstractions/X_sudo>				# RBAC! Вызывается через sudo в X-сессии пользователя.
+  
+  # CAPABILITIES ---------------------------------------
+  capability dac_read_search,					# RBAC! Вызывается через sudo в X-сессии пользователя.
+  capability dac_override,					# RBAC! Вызывается через sudo в X-сессии пользователя.
+  
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(cont) peer="shell_root",
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,

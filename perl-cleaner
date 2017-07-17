@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
+profile perl-cleaner /usr/sbin/perl-cleaner {
   #include <abstractions/base>
   #include <abstractions/perl>
   
@@ -47,35 +47,35 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.*					rw,
   
-  profile grep /bin/grep flags=(complain) {
+  profile grep /bin/grep {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
   }
   
-  profile sort /bin/sort flags=(complain) {
+  profile sort /bin/sort {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/sort						mr,
   }
   
-  profile cat /bin/cat flags=(complain) {
+  profile cat /bin/cat {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/cat						mr,
   }
   
-  profile rm /bin/rm flags=(complain) {
+  profile rm /bin/rm {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/rm						mr,
   }
   
-  profile xargs /usr/bin/xargs flags=(complain) {
+  profile xargs /usr/bin/xargs {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -89,7 +89,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
     /usr/lib{,32,64}/perl[0-9]*/{,**/}			w,
   }
   
-  profile gawk /usr/bin/gawk flags=(complain) {
+  profile gawk /usr/bin/gawk {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -99,7 +99,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
     /var/db/pkg/{,**}					r,
   }
   
-  profile scanelf /usr/bin/scanelf flags=(complain) {
+  profile scanelf /usr/bin/scanelf {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -119,7 +119,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
     deny /usr/src/{,**}					r,
   }
   
-  profile find /usr/bin/find flags=(complain) {
+  profile find /usr/bin/find {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -130,7 +130,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
     /var/db/pkg/{,**}					r,
   }
   
-  profile realpath /usr/bin/realpath flags=(complain) {
+  profile realpath /usr/bin/realpath {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -150,7 +150,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner flags=(complain) {
   }
 }
 
-profile perl_cleaner_shell flags=(complain) {
+profile perl_cleaner_shell {
   #include <abstractions/base>
   
   # PSEUDO -------------------------------------------
@@ -169,28 +169,28 @@ profile perl_cleaner_shell flags=(complain) {
   /etc/env.d/gcc/{,**}					r,
   /usr/include/{,**}					r,
   
-  profile grep /bin/grep flags=(complain) {
+  profile grep /bin/grep {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
   }
   
-  profile gawk /usr/bin/gawk flags=(complain) {
+  profile gawk /usr/bin/gawk {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/gawk					mr,
   }
   
-  profile gcc /usr/bin/@{CHOST}-gcc flags=(complain) {
+  profile gcc /usr/bin/@{CHOST}-gcc {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/@{CHOST}-gcc				mr,
   }
   
-  profile cc1 /usr/libexec/gcc/@{CHOST}/*/cc1 flags=(complain) {
+  profile cc1 /usr/libexec/gcc/@{CHOST}/*/cc1 {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------

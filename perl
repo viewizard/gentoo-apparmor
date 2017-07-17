@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile perl.h2ph /usr/bin/h2ph flags=(complain) {
+profile perl.h2ph /usr/bin/h2ph {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------

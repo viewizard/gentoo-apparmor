@@ -14,7 +14,7 @@
 # Важно! Перезагрузка профиля выполняется командой:
 # apparmor_parser -r /etc/apparmor.d/2_local
 
-profile local.sbin.aa_portage /usr/local/sbin/aa_portage.sh flags=(complain) {
+profile local.sbin.aa_portage /usr/local/sbin/aa_portage.sh {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -35,7 +35,7 @@ profile local.sbin.aa_portage /usr/local/sbin/aa_portage.sh flags=(complain) {
   /etc/apparmor.d/{,**}					r,
   /etc/apparmor.d/disable/*				w,
   
-  profile cat /bin/cat flags=(complain) {
+  profile cat /bin/cat {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -45,7 +45,7 @@ profile local.sbin.aa_portage /usr/local/sbin/aa_portage.sh flags=(complain) {
     /bin/cat						mr,
   }
   
-  profile grep /bin/grep flags=(complain) {
+  profile grep /bin/grep {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -55,7 +55,7 @@ profile local.sbin.aa_portage /usr/local/sbin/aa_portage.sh flags=(complain) {
     /bin/grep						mr,
   }
   
-  profile rm /bin/rm flags=(complain) {
+  profile rm /bin/rm {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -68,7 +68,7 @@ profile local.sbin.aa_portage /usr/local/sbin/aa_portage.sh flags=(complain) {
     /etc/apparmor.d/disable/*				w,
   }
   
-  profile ln /bin/ln flags=(complain) {
+  profile ln /bin/ln {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -81,7 +81,7 @@ profile local.sbin.aa_portage /usr/local/sbin/aa_portage.sh flags=(complain) {
     /etc/apparmor.d/disable/*				w,
   }
   
-  profile equery flags=(complain) {
+  profile equery {
     #include <abstractions/base>
     #include <abstractions/python>
     #include <abstractions/python-exec>

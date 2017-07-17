@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile binutils-config /usr/bin/binutils-config flags=(complain) {
+profile binutils-config /usr/bin/binutils-config {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -48,7 +48,7 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.*					rw,
   
-  profile ln /bin/ln flags=(complain) {
+  profile ln /bin/ln {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -62,7 +62,7 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
     /usr/@{CHOST}/**					w,
   }
   
-  profile mv /bin/mv flags=(complain) {
+  profile mv /bin/mv {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -76,7 +76,7 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
     /usr/@{CHOST}/**					rw,
   }
   
-  profile rm /bin/rm flags=(complain) {
+  profile rm /bin/rm {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -90,7 +90,7 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
     /etc/env.d/binutils/config-@{CHOST}.tmp		w,
   }
   
-  profile rmdir /bin/rmdir flags=(complain) {
+  profile rmdir /bin/rmdir {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -103,7 +103,7 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
     /usr/@{CHOST}/**/					w,
   }
   
-  profile mkdir /bin/mkdir flags=(complain) {
+  profile mkdir /bin/mkdir {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -116,14 +116,14 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
     /usr/@{CHOST}/**/					w,
   }
   
-  profile cat /bin/cat flags=(complain) {
+  profile cat /bin/cat {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/cat						mr,
   }
   
-  profile find /usr/bin/find flags=(complain) {
+  profile find /usr/bin/find {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -137,14 +137,14 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
     /usr/@{CHOST}/**					r,
   }
   
-  profile scanelf /usr/bin/scanelf flags=(complain) {
+  profile scanelf /usr/bin/scanelf {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/scanelf					mr,
   }
   
-  profile cmp /usr/bin/cmp flags=(complain) {
+  profile cmp /usr/bin/cmp {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -158,7 +158,7 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
     /etc/env.d/binutils/config-@{CHOST}{,.tmp}		r,
   }
   
-  profile portageq flags=(complain) {
+  profile portageq {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
@@ -173,7 +173,7 @@ profile binutils-config /usr/bin/binutils-config flags=(complain) {
 
 # FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
 # множественные вложенные профили, выносим в отдельный профиль.
-profile binutils_config_rm flags=(complain) {
+profile binutils_config_rm {
   #include <abstractions/base>
   
   # EXECUTABLES --------------------------------------

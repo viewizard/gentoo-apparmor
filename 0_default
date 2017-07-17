@@ -18,7 +18,7 @@
 
 #include <tunables/global>
 
-profile default flags=(complain) {				# FIX ME! 18.05.2017
+profile default {
   
   # CAPABILITIES ---------------------------------------
   capability mknod,
@@ -44,7 +44,7 @@ profile default flags=(complain) {				# FIX ME! 18.05.2017
   # READS/WRITES ---------------------------------------
   /run/udev/control					w,
   
-  profile initramfs.grep /bin/grep flags=(complain) {
+  profile initramfs.grep /bin/grep {
     
     # PSEUDO -------------------------------------------
     @{PROC}/@{pid}/mounts				r,
@@ -58,7 +58,7 @@ profile default flags=(complain) {				# FIX ME! 18.05.2017
     /lib{,32,64}/lib*.so{,.*}				mr,
   }
   
-  profile initramfs.busybox /bin/initramfs_busybox flags=(complain) {
+  profile initramfs.busybox /bin/initramfs_busybox {
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,

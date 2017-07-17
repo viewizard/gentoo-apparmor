@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile eselect-python.python-wrapper /usr/bin/python-wrapper flags=(complain) {
+profile eselect-python.python-wrapper /usr/bin/python-wrapper {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -24,7 +24,7 @@ profile eselect-python.python-wrapper /usr/bin/python-wrapper flags=(complain) {
   /etc/profile.env					r,
   /{etc,usr,usr/local,usr/share}/portage/{,**}		r,
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------

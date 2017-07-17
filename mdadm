@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile mdadm /sbin/mdadm flags=(complain) {
+profile mdadm /sbin/mdadm {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -44,7 +44,7 @@ profile mdadm /sbin/mdadm flags=(complain) {
   owner /run/mdadm/*					rwk,
 }
 
-profile mdadm.checkarray /usr/sbin/checkarray flags=(complain) {
+profile mdadm.checkarray /usr/sbin/checkarray {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -63,14 +63,14 @@ profile mdadm.checkarray /usr/sbin/checkarray flags=(complain) {
   # READS/WRITES ---------------------------------------
   /etc/default/mdadm					r,
   
-  profile ls /bin/ls flags=(complain) {
+  profile ls /bin/ls {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/ls						mr,
   }
   
-  profile egrep /bin/egrep flags=(complain) {
+  profile egrep /bin/egrep {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -104,7 +104,7 @@ profile mdadm.init.d /etc/init.d/mdadm {
     #include <abstractions/openrc-shell>
   }
   
-  profile rm /bin/rm flags=(complain) {
+  profile rm /bin/rm {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -116,6 +116,9 @@ profile mdadm.init.d /etc/init.d/mdadm {
     
     # EXECUTABLES --------------------------------------
     /bin/rm						mr,
+    
+    # READS/WRITES -------------------------------------
+    /run/mdadm.pid					w,
   }
   
   profile mkdir /bin/mkdir {

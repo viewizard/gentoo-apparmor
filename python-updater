@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile python-updater /usr/sbin/python-updater flags=(complain) {
+profile python-updater /usr/sbin/python-updater {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -70,7 +70,7 @@ profile python-updater /usr/sbin/python-updater flags=(complain) {
     /usr/share/portage/{,**}				r,
   }
   
-  profile grep /bin/grep flags=(complain) {
+  profile grep /bin/grep {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -80,7 +80,7 @@ profile python-updater /usr/sbin/python-updater flags=(complain) {
     /var/db/{,**}					r,
   }
   
-  profile sort /bin/sort flags=(complain) {
+  profile sort /bin/sort {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -90,7 +90,7 @@ profile python-updater /usr/sbin/python-updater flags=(complain) {
     /bin/sort						mr,
   }
   
-  profile sed /bin/sed flags=(complain) {
+  profile sed /bin/sed {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -100,7 +100,7 @@ profile python-updater /usr/sbin/python-updater flags=(complain) {
     /bin/sed						mr,
   }
   
-  profile bzip2 /bin/bzip2 flags=(complain) {
+  profile bzip2 /bin/bzip2 {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -110,21 +110,21 @@ profile python-updater /usr/sbin/python-updater flags=(complain) {
     /var/db/pkg/**.bz2					r,
   }
   
-  profile cut /bin/cut flags=(complain) {
+  profile cut /bin/cut {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/cut						mr,
   }
   
-  profile cat /bin/cat flags=(complain) {
+  profile cat /bin/cat {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/cat						mr,
   }
   
-  profile readlink /bin/readlink flags=(complain) {
+  profile readlink /bin/readlink {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -134,7 +134,7 @@ profile python-updater /usr/sbin/python-updater flags=(complain) {
     /bin/readlink					mr,
   }
   
-  profile find /usr/bin/find flags=(complain) {
+  profile find /usr/bin/find {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -147,7 +147,7 @@ profile python-updater /usr/sbin/python-updater flags=(complain) {
     /var/db/{,**}					r,
   }
   
-  profile scanelf /usr/bin/scanelf flags=(complain) {
+  profile scanelf /usr/bin/scanelf {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -166,7 +166,7 @@ profile python-updater /usr/sbin/python-updater flags=(complain) {
     /var/{,**}						r,
   }
   
-  profile scanmacho /usr/bin/scanmacho flags=(complain) {
+  profile scanmacho /usr/bin/scanmacho {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -188,7 +188,7 @@ profile python-updater /usr/sbin/python-updater flags=(complain) {
 
 # FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
 # множественные вложенные профили, выносим в отдельный профиль.
-profile python_updater_shell flags=(complain) {
+profile python_updater_shell {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------

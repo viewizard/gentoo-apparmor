@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile lvm2.lvmetad /sbin/lvmetad flags=(complain) {
+profile lvm2.lvmetad /sbin/lvmetad {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -25,7 +25,7 @@ profile lvm2.lvmetad /sbin/lvmetad flags=(complain) {
   /run/lvm/lvmetad.socket				rw,
 }
 
-profile lvm2.dmsetup /sbin/dmsetup flags=(complain) {
+profile lvm2.dmsetup /sbin/dmsetup {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -43,7 +43,7 @@ profile lvm2.dmsetup /sbin/dmsetup flags=(complain) {
   /etc/udev/udev.conf					r,
 }
 
-profile lvm2.dmeventd /sbin/dmeventd flags=(complain) {
+profile lvm2.dmeventd /sbin/dmeventd {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -88,7 +88,7 @@ profile lvm2.dmeventd /sbin/dmeventd flags=(complain) {
   owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! daily_backup.sh.cron.daily
   owner /tmp/rootbackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
   
-  profile umount /bin/umount flags=(complain) {
+  profile umount /bin/umount {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -96,7 +96,7 @@ profile lvm2.dmeventd /sbin/dmeventd flags=(complain) {
   }
 }
 
-profile lvm2.lvm /sbin/lvm flags=(complain) {
+profile lvm2.lvm /sbin/lvm {
   #include <abstractions/base>
   #include <local/lvm2-user-custom>
   
@@ -152,7 +152,7 @@ profile lvm2.lvm /sbin/lvm flags=(complain) {
   owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
 }
 
-profile lvm2.fsadm /sbin/fsadm flags=(complain) {
+profile lvm2.fsadm /sbin/fsadm {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -178,28 +178,28 @@ profile lvm2.fsadm /sbin/fsadm flags=(complain) {
   /sbin/blockdev					Px,
   /sbin/lvm						Px,
   
-  profile grep /bin/grep flags=(complain) {
+  profile grep /bin/grep {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
   }
   
-  profile readlink /bin/readlink flags=(complain) {
+  profile readlink /bin/readlink {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/readlink					mr,
   }
   
-  profile date /bin/date flags=(complain) {
+  profile date /bin/date {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/date						mr,
   }
   
-  profile mount /bin/mount flags=(complain) {
+  profile mount /bin/mount {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------

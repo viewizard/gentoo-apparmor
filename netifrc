@@ -77,35 +77,35 @@ profile netifrc.init.d /etc/init.d/net.* {
     /dev/pts/[0-9]*					rw,
   }
   
-  profile cat /bin/cat flags=(complain) {
+  profile cat /bin/cat {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/cat						mr,
   }
   
-  profile grep /bin/grep flags=(complain) {
+  profile grep /bin/grep {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
   }
   
-  profile sed /bin/sed flags=(complain) {
+  profile sed /bin/sed {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/sed						mr,
   }
   
-  profile chmod /bin/chmod flags=(complain) {
+  profile chmod /bin/chmod {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/chmod						mr,
   }
   
-  profile readlink /bin/readlink flags=(complain) {
+  profile readlink /bin/readlink {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -127,7 +127,7 @@ profile netifrc.init.d /etc/init.d/net.* {
     /bin/mkdir						mr,
   }
   
-  profile gawk /usr/bin/gawk flags=(complain) {
+  profile gawk /usr/bin/gawk {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -135,7 +135,7 @@ profile netifrc.init.d /etc/init.d/net.* {
   }
 }
 
-profile netifrc.net.sh /lib{,32,64}/udev/net.sh flags=(complain) {
+profile netifrc.net.sh /lib{,32,64}/udev/net.sh {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   

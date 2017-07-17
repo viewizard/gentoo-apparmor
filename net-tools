@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-profile net-tools.iptunnel /sbin/iptunnel flags=(complain) {
+profile net-tools.iptunnel /sbin/iptunnel {
   #include <abstractions/base>
   
   # NETWORK --------------------------------------------
@@ -24,7 +24,7 @@ profile net-tools.iptunnel /sbin/iptunnel flags=(complain) {
   /sbin/iptunnel					mr,
 }
 
-profile net-tools.ifconfig /bin/ifconfig flags=(complain) {
+profile net-tools.ifconfig /bin/ifconfig {
   #include <abstractions/base>
   
   # NETWORK --------------------------------------------
@@ -42,7 +42,7 @@ profile net-tools.ifconfig /bin/ifconfig flags=(complain) {
   deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
 }
 
-profile net-tools.netstat /bin/netstat flags=(complain) {
+profile net-tools.netstat /bin/netstat {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -75,7 +75,7 @@ profile net-tools.netstat /bin/netstat flags=(complain) {
   deny /tmp/chkrootkit.cron.*				w,	# chkrootkit.cron.daily
 }
 
-profile net-tools.hostname /bin/hostname flags=(complain) {	# FIX ME! 05.04.2017 flags=(complain)
+profile net-tools.hostname /bin/hostname {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   

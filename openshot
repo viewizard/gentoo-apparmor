@@ -55,7 +55,7 @@ profile openshot @{PYTHON2_EXEC}/openshot {
   # USERS ----------------------------------------------
   owner @{HOME}/.openshot/{,**}				rw,
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -68,7 +68,7 @@ profile openshot @{PYTHON2_EXEC}/openshot {
   }
 }
 
-profile openshot.openshot-render @{PYTHON2_EXEC}/openshot-render flags=(complain) {
+profile openshot.openshot-render @{PYTHON2_EXEC}/openshot-render {
   #include <abstractions/base>
   #include <abstractions/python>
 }
