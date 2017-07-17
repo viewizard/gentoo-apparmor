@@ -22,6 +22,10 @@
 # Используем app-arch/engrampa, произведены корректировки в:
 # thunar_root, abstractions/binary-helper-strict_root
 
+# DELEGATION! На данный момент не можем вынести в отдельные профили все архиваторы,
+# т.к. кол-во переключений на именованные профили не может превышать 12, с root
+# будут проблемы (нужно делать больше 12 переключений профилей).
+
 #include <tunables/global>
 
 # предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
@@ -435,7 +439,7 @@ profile xarchiver_root flags=(complain) {
     
     # EXECUTABLES --------------------------------------
     /bin/tar						mr,
-    @{shell}						Px -> xarchiver_tar_shell,
+    @{shell}						Px -> xarchiver_tar_shell_root,
     /bin/bzip2						ix,	# Oставляем запуск через ix.
     /bin/gzip						ix,	# Oставляем запуск через ix.
     /usr/bin/lzip					ix,	# Oставляем запуск через ix.
