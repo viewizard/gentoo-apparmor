@@ -34,18 +34,18 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh {
   /bin/rm						Cx,	# FS ACCESS! rm
   /bin/cat						Cx,	# FS ACCESS! cat
   /bin/mktemp						Cx,	# FS ACCESS! mktemp
-  /bin/lsblk						Px,
   /bin/sort						Cx,	# FS ACCESS! sort
+  /bin/grep						Cx,	# FS ACCESS! grep
   /bin/mount						Cx,	# FS ACCESS! mount
   /bin/umount						Cx,	# FS ACCESS! umount
   /bin/basename						Px,
   /sbin/cryptsetup					Px,
   /sbin/lvm						Px,
   /usr/bin/libnotify-notify-send-users			Px,
+  /usr/bin/gawk						Cx,	# FS ACCESS! gawk
   /usr/bin/find						Cx,	# FS ACCESS! find
   /usr/bin/mail						Px,
   /usr/bin/logger					Px,
-  /usr/bin/uniq						Px,
   
   # TEMP -----------------------------------------------
   /tmp/dailyhomebackup.cron.??????			rw,
@@ -58,9 +58,7 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh {
     /bin/chmod						mr,
     
     # READS/WRITES -------------------------------------
-    /mnt/backup/Gentoo_Backup/daily_gentoo_conf_*.tar	w,
     /mnt/backup/Gentoo_Backup/daily_gentoo_home_*.tar	w,
-    /mnt/backup/Gentoo_Backup/daily_LUKS_*		w,
     
     # DENY INHERIT -------------------------------------
     deny /tmp/dailyhomebackup.cron.??????		w,
@@ -78,6 +76,7 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh {
   
   profile tar /bin/tar {
     #include <abstractions/base>
+    #include <abstractions/nameservice>
     
     # CAPABILITIES -------------------------------------
     capability dac_override,
@@ -89,11 +88,6 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh {
     /bin/tar						mr,
     
     # READS/WRITES -------------------------------------
-    /etc/**						r,
-    /usr/**						r,
-    /var/lib/**						r,
-    /mnt/backup/Gentoo_Backup/configs.list		r,
-    /mnt/backup/Gentoo_Backup/daily_gentoo_conf_*.tar	w,
     /mnt/backup/Gentoo_Backup/daily_gentoo_home_*.tar	w,
     
     # TEMP ---------------------------------------------
@@ -146,6 +140,16 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh {
     deny /tmp/dailyhomebackup.cron.??????		w,
   }
   
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+    
+    # TEMP ---------------------------------------------
+    /tmp/dailyhomebackup.cron.??????			w,
+  }
+  
   profile mount /bin/mount {
     #include <abstractions/base>
     
@@ -188,6 +192,16 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh {
     deny /tmp/dailyhomebackup.cron.??????		w,
   }
   
+  profile gawk /usr/bin/gawk {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/gawk					mr,
+    
+    # TEMP ---------------------------------------------
+    /tmp/dailyhomebackup.cron.??????			w,
+  }
+  
   profile find /usr/bin/find {
     #include <abstractions/base>
     
@@ -213,9 +227,7 @@ profile daily_backup_find_rm flags=(attach_disconnected) {
   /bin/rm						mr,
   
   # READS/WRITES ---------------------------------------
-  /mnt/backup/Gentoo_Backup/daily_gentoo_conf_*.tar	w,
   /mnt/backup/Gentoo_Backup/daily_gentoo_home_*.tar	w,
-  /mnt/backup/Gentoo_Backup/daily_LUKS_*		w,
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
@@ -225,11 +237,6 @@ profile daily_backup_find_rm flags=(attach_disconnected) {
 profile weekly_backup.sh.cron.weekly /etc/cron.weekly/weekly_backup.sh {
   #include <abstractions/base>
   
-  # CAPABILITIES ---------------------------------------
-  capability sys_admin,
-  capability dac_override,
-  capability dac_read_search,
-  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/pts/[0-9]*					rw,
@@ -238,39 +245,128 @@ profile weekly_backup.sh.cron.weekly /etc/cron.weekly/weekly_backup.sh {
   # EXECUTABLES ----------------------------------------
   /etc/cron.weekly/weekly_backup.sh			r,
   @{shell}						mr,
-  /bin/chmod						ix,	# FS ACCESS!
-  /bin/date						ix,	# FS ACCESS!
-  /bin/tar						ix,	# FS ACCESS!
-  /bin/rm						ix,	# FS ACCESS!
-  /bin/cat						ix,	# FS ACCESS!
-  /bin/mktemp						ix,	# FS ACCESS!
+  /bin/chmod						Cx,	# FS ACCESS! chmod
+  /bin/date						Cx,	# FS ACCESS! date
+  /bin/tar						Cx,	# FS ACCESS! tar
+  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/mktemp						Cx,	# FS ACCESS! mktemp
+  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/sort						Cx,	# FS ACCESS! sort
   /bin/mount						Cx,	# FS ACCESS! mount
   /bin/umount						Cx,	# FS ACCESS! umount
   /bin/basename						Px,
   /sbin/lvm						Px,
   /usr/bin/libnotify-notify-send-users			Px,
-  /usr/bin/find						ix,	# FS ACCESS!
+  /usr/bin/gawk						Cx,	# FS ACCESS! gawk
+  /usr/bin/find						Cx,	# FS ACCESS! find
   /usr/bin/mail						Px,
   /usr/bin/logger					Px,
   
-  # READS/WRITES ---------------------------------------
-  /							r,
-  /*/							r,
-  /bin/**						r,
-  /boot/**						r,
-  /etc/**						r,
-  /lib{,32,64}/**					r,
-  /opt/**						r,
-  /root/**						r,
-  /sbin/**						r,
-  /usr/**						r,
-  /var/**						r,
-  /mnt/backup/Gentoo_Backup/				r,
-  /mnt/backup/Gentoo_Backup/*				rw,
-  
   # TEMP -----------------------------------------------
-  /tmp/rootbackup.cron.??????{,/}			rw,
-  /tmp/rootbackup.cron.??????/**			r,
+  /tmp/rootbackup.cron.??????				rw,
+  /tmp/rootbackup.cron.??????/				r,
+  
+  profile chmod /bin/chmod {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chmod						mr,
+    
+    # READS/WRITES -------------------------------------
+    /mnt/backup/Gentoo_Backup/gentoo_root_*.tar		w,
+    /mnt/backup/Gentoo_Backup/gentoo_var_*.tar		w,
+    
+    # DENY INHERIT -------------------------------------
+    deny /tmp/rootbackup.cron.??????			w,
+  }
+  
+  profile date /bin/date {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/date						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /tmp/rootbackup.cron.??????			w,
+  }
+  
+  profile tar /bin/tar {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    @{PROC}/@{pid}/fd/					r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/tar						mr,
+    
+    # READS/WRITES -------------------------------------
+    /mnt/backup/Gentoo_Backup/gentoo_root_*.tar		w,
+    /mnt/backup/Gentoo_Backup/gentoo_var_*.tar		w,
+    
+    # TEMP ---------------------------------------------
+    /tmp/rootbackup.cron.??????/{,**}			r,	# Точка монтирования снапшота c root и var.
+    
+    # DENY INHERIT -------------------------------------
+    deny /tmp/rootbackup.cron.??????			w,
+  }
+  
+  profile rm /bin/rm {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # READS/WRITES -------------------------------------
+    /tmp/rootbackup.cron.??????{,/}			rw,
+  }
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+    
+    # READS/WRITES -------------------------------------
+    /tmp/rootbackup.cron.??????				r,
+    
+    # DENY INHERIT -------------------------------------
+    deny /tmp/rootbackup.cron.??????			w,
+  }
+  
+  profile mktemp /bin/mktemp {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mktemp						mr,
+    
+    # TEMP ---------------------------------------------
+    /tmp/rootbackup.cron.??????{,/}			rw,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+    
+    # TEMP ---------------------------------------------
+    /tmp/rootbackup.cron.??????				w,
+  }
+  
+  profile sort /bin/sort {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sort						mr,
+    
+    # TEMP ---------------------------------------------
+    /tmp/rootbackup.cron.??????				w,
+  }
   
   profile mount /bin/mount {
     #include <abstractions/base>
@@ -313,4 +409,46 @@ profile weekly_backup.sh.cron.weekly /etc/cron.weekly/weekly_backup.sh {
     # DENY INHERIT -------------------------------------
     deny /tmp/rootbackup.cron.??????			w,
   }
+  
+  profile gawk /usr/bin/gawk {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/gawk					mr,
+    
+    # TEMP ---------------------------------------------
+    /tmp/rootbackup.cron.??????				w,
+  }
+  
+  profile find /usr/bin/find {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/find					mr,
+    /bin/rm						Px -> weekly_backup_find_rm,	# FS ACCESS! weekly_backup_find_rm
+    
+    # READS/WRITES -------------------------------------
+    /							r,
+    /mnt/backup/Gentoo_Backup/				r,
+    
+    # DENY INHERIT -------------------------------------
+    deny /tmp/rootbackup.cron.??????			w,
+  }
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile weekly_backup_find_rm flags=(attach_disconnected) {
+  #include <abstractions/base>
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/rm						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /mnt/backup/Gentoo_Backup/gentoo_root_*.tar		w,
+  /mnt/backup/Gentoo_Backup/gentoo_var_*.tar		w,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
+  deny /tmp/rootbackup.cron.??????			w,
 }
