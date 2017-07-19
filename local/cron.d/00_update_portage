@@ -38,6 +38,9 @@ profile 00_update_portage.cron.daily /etc/cron.daily/00_update_portage {
   /usr/bin/logger					Px,
   @{PYTHON_EXEC_WRAPPER}				Cx -> emerge,	# Выполняем синхронизацию.
   
+  # READS/WRITES ---------------------------------------
+  /etc/portage/cron_update.conf				r,
+  
   # TEMP -----------------------------------------------
   owner /tmp/portage.cron.??????			rw,
   

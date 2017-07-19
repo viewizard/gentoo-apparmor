@@ -53,8 +53,8 @@ profile lvm2.dmeventd /sbin/dmeventd {
   capability ipc_lock,
   
   # PSEUDO ---------------------------------------------
-  /dev/dm-[0-9]*					rw,	# DELEGATION! daily_backup.sh.cron.daily
-  								# DELEGATION! weekly_backup.sh.cron.weekly
+  /dev/dm-[0-9]*					rw,	# DELEGATION! backup_daily.sh.cron.daily
+  								# DELEGATION! backup_weekly.sh.cron.weekly
   /dev/pts/[0-9]*					rw,
   /dev/mapper/control					rw,
   /sys/bus/						r,
@@ -85,8 +85,8 @@ profile lvm2.dmeventd /sbin/dmeventd {
   /run/lvm/lvmetad.socket				rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! daily_backup.sh.cron.daily
-  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
+  owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! backup_daily.sh.cron.daily
+  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! backup_weekly.sh.cron.weekly
   
   profile umount /bin/umount {
     #include <abstractions/base>
@@ -147,8 +147,8 @@ profile lvm2.lvm /sbin/lvm {
   /run/dmeventd-{client,server}				rwk,
   
   # TEMP -----------------------------------------------
-  owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! daily_backup.sh.cron.daily
-  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
+  owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! backup_daily.sh.cron.daily
+  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! backup_weekly.sh.cron.weekly
   owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
 }
 

@@ -49,8 +49,8 @@ profile cryptsetup /sbin/cryptsetup {
   /run/openrc/dm-crypt-remdev.*/enc.key			r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! daily_backup.sh.cron.daily
-  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! weekly_backup.sh.cron.weekly
+  owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! backup_daily.sh.cron.daily
+  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! backup_weekly.sh.cron.weekly
   
   # DENY INHERIT ---------------------------------------
   deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d

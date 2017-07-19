@@ -14,7 +14,7 @@
 # Важно! Перезагрузка профиля выполняется командой:
 # apparmor_parser -r /etc/apparmor.d/2_local
 
-profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh {
+profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -26,7 +26,7 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh {
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /etc/cron.daily/daily_backup.sh			r,
+  /etc/cron.daily/backup_daily.sh			r,
   @{shell}						mr,
   /bin/chmod						Cx,	# FS ACCESS! chmod
   /bin/date						Cx,	# FS ACCESS! date
@@ -44,8 +44,12 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh {
   /usr/bin/libnotify-notify-send-users			Px,
   /usr/bin/gawk						Cx,	# FS ACCESS! gawk
   /usr/bin/find						Cx,	# FS ACCESS! find
+  /usr/bin/stat						Cx,	# FS ACCESS! stat
   /usr/bin/mail						Px,
   /usr/bin/logger					Px,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/backup_daily.conf				r,
   
   # TEMP -----------------------------------------------
   /tmp/dailyhomebackup.cron.??????			rw,
@@ -104,6 +108,7 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh {
     /bin/rm						mr,
     
     # READS/WRITES -------------------------------------
+    /mnt/backup/Gentoo_Backup/daily_gentoo_home_*.tar	w,
     /tmp/dailyhomebackup.cron.??????{,/}		rw,
   }
   
@@ -207,7 +212,6 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/find					mr,
-    /bin/rm						Px -> daily_backup_find_rm,	# FS ACCESS! daily_backup_find_rm
     
     # READS/WRITES -------------------------------------
     /							r,
@@ -216,25 +220,16 @@ profile daily_backup.sh.cron.daily /etc/cron.daily/daily_backup.sh {
     # DENY INHERIT -------------------------------------
     deny /tmp/dailyhomebackup.cron.??????		w,
   }
+  
+  profile stat /usr/bin/stat {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/stat					mr,
+  }
 }
 
-# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
-# множественные вложенные профили, выносим в отдельный профиль.
-profile daily_backup_find_rm flags=(attach_disconnected) {
-  #include <abstractions/base>
-  
-  # EXECUTABLES ----------------------------------------
-  /bin/rm						mr,
-  
-  # READS/WRITES ---------------------------------------
-  /mnt/backup/Gentoo_Backup/daily_gentoo_home_*.tar	w,
-  
-  # DENY INHERIT ---------------------------------------
-  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
-  deny /tmp/dailyhomebackup.cron.??????			w,
-}
-
-profile weekly_backup.sh.cron.weekly /etc/cron.weekly/weekly_backup.sh {
+profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -243,7 +238,7 @@ profile weekly_backup.sh.cron.weekly /etc/cron.weekly/weekly_backup.sh {
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
-  /etc/cron.weekly/weekly_backup.sh			r,
+  /etc/cron.weekly/backup_weekly.sh			r,
   @{shell}						mr,
   /bin/chmod						Cx,	# FS ACCESS! chmod
   /bin/date						Cx,	# FS ACCESS! date
@@ -260,8 +255,12 @@ profile weekly_backup.sh.cron.weekly /etc/cron.weekly/weekly_backup.sh {
   /usr/bin/libnotify-notify-send-users			Px,
   /usr/bin/gawk						Cx,	# FS ACCESS! gawk
   /usr/bin/find						Cx,	# FS ACCESS! find
+  /usr/bin/stat						Cx,	# FS ACCESS! stat
   /usr/bin/mail						Px,
   /usr/bin/logger					Px,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/backup_weekly.conf				r,
   
   # TEMP -----------------------------------------------
   /tmp/rootbackup.cron.??????				rw,
@@ -322,6 +321,8 @@ profile weekly_backup.sh.cron.weekly /etc/cron.weekly/weekly_backup.sh {
     /bin/rm						mr,
     
     # READS/WRITES -------------------------------------
+    /mnt/backup/Gentoo_Backup/gentoo_root_*.tar		w,
+    /mnt/backup/Gentoo_Backup/gentoo_var_*.tar		w,
     /tmp/rootbackup.cron.??????{,/}			rw,
   }
   
@@ -425,7 +426,6 @@ profile weekly_backup.sh.cron.weekly /etc/cron.weekly/weekly_backup.sh {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/find					mr,
-    /bin/rm						Px -> weekly_backup_find_rm,	# FS ACCESS! weekly_backup_find_rm
     
     # READS/WRITES -------------------------------------
     /							r,
@@ -434,21 +434,11 @@ profile weekly_backup.sh.cron.weekly /etc/cron.weekly/weekly_backup.sh {
     # DENY INHERIT -------------------------------------
     deny /tmp/rootbackup.cron.??????			w,
   }
-}
-
-# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
-# множественные вложенные профили, выносим в отдельный профиль.
-profile weekly_backup_find_rm flags=(attach_disconnected) {
-  #include <abstractions/base>
   
-  # EXECUTABLES ----------------------------------------
-  /bin/rm						mr,
-  
-  # READS/WRITES ---------------------------------------
-  /mnt/backup/Gentoo_Backup/gentoo_root_*.tar		w,
-  /mnt/backup/Gentoo_Backup/gentoo_var_*.tar		w,
-  
-  # DENY INHERIT ---------------------------------------
-  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
-  deny /tmp/rootbackup.cron.??????			w,
+  profile stat /usr/bin/stat {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/stat					mr,
+  }
 }

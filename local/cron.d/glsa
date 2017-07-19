@@ -37,6 +37,9 @@ profile glsa.cron.daily /etc/cron.daily/glsa {
   /usr/bin/logger					Px,
   @{PYTHON_EXEC_WRAPPER}				Cx -> glsa_check,
   
+  # READS/WRITES ---------------------------------------
+  /etc/portage/cron_glsa.conf				r,
+  
   # TEMP -----------------------------------------------
   owner /tmp/glsa.cron.??????				rw,
   
