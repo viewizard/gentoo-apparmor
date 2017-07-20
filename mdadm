@@ -56,8 +56,8 @@ profile mdadm.checkarray /usr/sbin/checkarray {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/checkarray					r,
   @{shell}						mr,
-  /bin/ls						Cx,	# FS ACCESS! ls
-  /bin/egrep						Cx,	# FS ACCESS! egrep
+  /bin/ls						Cx,
+  /bin/egrep						Cx,
   /usr/bin/getopt					Px,
   
   # READS/WRITES ---------------------------------------
@@ -90,8 +90,8 @@ profile mdadm.init.d /etc/init.d/mdadm {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/rm						Cx,	# FS ACCESS! rm
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/rm						Cx,
+  /bin/mkdir						Cx,
   /sbin/mdadm						Px,
   
   # READS/WRITES ---------------------------------------
@@ -147,7 +147,7 @@ profile mdadm.cron.weekly /etc/cron.weekly/mdadm {
   # EXECUTABLES ----------------------------------------
   /etc/cron.weekly/mdadm				r,
   @{shell}						mr,
-  /bin/date						Cx,	# FS ACCESS! date
+  /bin/date						Cx,
   /usr/sbin/checkarray					Px,
   
   profile date /bin/date {

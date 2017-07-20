@@ -25,10 +25,10 @@ profile libreoffice /usr/{bin,lib{,32,64}/libreoffice/program}/soffice {
   @{shell}						mr,
   /bin/dirname						Px,
   /bin/basename						Px,
-  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/grep						Cx,
   /bin/uname						Px,
-  /bin/ls						Cx,	# FS ACCESS! ls
-  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/ls						Cx,
+  /bin/sed						Cx,
   /usr/lib{,32,64}/libreoffice/program/oosplash		Px,
   
   profile ls /bin/ls {
@@ -181,8 +181,8 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    audit /bin/sed					ix,	# FS ACCESS! audit 12.06.2017 - непонятно где иcпользуются.
-    audit /bin/grep					ix,	# FS ACCESS! audit 12.06.2017 - непонятно где используются.
+    audit /bin/sed					ix,	# FS ACCESS!	# FIX ME! audit 12.06.2017
+    audit /bin/grep					ix,	# FS ACCESS!	# FIX ME! audit 12.06.2017
     /bin/uname						Px,
     
     # DENY INHERIT -------------------------------------

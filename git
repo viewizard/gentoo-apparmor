@@ -34,9 +34,8 @@ profile git /usr/{bin,libexec/git-core}/git {
   
   # EXECUTABLES ----------------------------------------
   /usr/{bin,libexec/git-core}/git			Pxmr,
-  /usr/bin/less						Cx,	# FS ACCESS! less
-  /usr/libexec/git-core/git-remote-http			Cx,	# FS ACCESS! git-remote-http
-  /usr/libexec/git-core/git-remote-https		Cx,	# FS ACCESS! git-remote-http
+  /usr/bin/less						Cx,
+  /usr/libexec/git-core/git-remote-http{,s}		Cx,
   
   # READS/WRITES ---------------------------------------
   /usr/share/git-core/**				r,
@@ -105,9 +104,8 @@ profile git_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/{bin,libexec/git-core}/git			Pxmr -> git_root,
-  /usr/bin/less						Cx,	# FS ACCESS! less
-  /usr/libexec/git-core/git-remote-http			Cx,	# FS ACCESS! git-remote-http
-  /usr/libexec/git-core/git-remote-https		Cx,	# FS ACCESS! git-remote-http
+  /usr/bin/less						Cx,
+  /usr/libexec/git-core/git-remote-http{,s}		Cx,
   
   # READS/WRITES ---------------------------------------
   /usr/share/git-core/**				r,

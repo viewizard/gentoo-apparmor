@@ -28,10 +28,10 @@ profile 00_update_portage.cron.daily /etc/cron.daily/00_update_portage {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/00_update_portage			r,
   @{shell}						mr,
-  /bin/mktemp						Cx,	# FS ACCESS! mktemp
-  /bin/rm						Cx,	# FS ACCESS! rm
-  /bin/cat						Cx,	# FS ACCESS! cat
-  /bin/env						Px -> env_00_update_portage,	# FS ACCESS! env_00_update_portage
+  /bin/mktemp						Cx,
+  /bin/rm						Cx,
+  /bin/cat						Cx,
+  /bin/env						Px -> env_00_update_portage,
   /bin/basename						Px,
   /usr/bin/libnotify-notify-send-users			Px,
   /usr/bin/mail						Px,

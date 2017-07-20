@@ -61,14 +61,14 @@ profile run-hooks /lib{,32,64}/dhcpcd/dhcpcd-run-hooks {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/sed						Cx,	# FS ACCESS! sed
-  /bin/rm						Cx,	# FS ACCESS! rm
-  /bin/cat						Cx,	# FS ACCESS! cat
-  /bin/chmod						Cx,	# FS ACCESS! chmod
-  /bin/touch						Cx,	# FS ACCESS! touch
+  /bin/sed						Cx,
+  /bin/rm						Cx,
+  /bin/cat						Cx,
+  /bin/chmod						Cx,
+  /bin/touch						Cx,
   /bin/hostname						Px,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
-  /usr/bin/cmp						Cx,	# FS ACCESS! cmp
+  /bin/mkdir						Cx,
+  /usr/bin/cmp						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/resolv.conf					rw,
@@ -136,7 +136,7 @@ profile dhcpcd.init.d /etc/init.d/dhcpcd {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   /sbin/dhcpcd						Px,
   
   # READS/WRITES ---------------------------------------

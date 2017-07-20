@@ -68,7 +68,7 @@ profile lvm2.dmeventd /sbin/dmeventd {
   
   # EXECUTABLES ----------------------------------------
   /sbin/dmeventd					mr,
-  /bin/umount						Cx,	# FS ACCESS! umount
+  /bin/umount						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
@@ -166,10 +166,10 @@ profile lvm2.fsadm /sbin/fsadm {
   # EXECUTABLES ----------------------------------------
   /sbin/fsadm						r,
   @{shell}						mr,
-  /bin/grep						Cx,	# FS ACCESS! grep
-  /bin/readlink						Cx,	# FS ACCESS! readlink
-  /bin/date						Cx,	# FS ACCESS! date
-  /bin/mount						Cx,	# FS ACCESS! mount
+  /bin/grep						Cx,
+  /bin/readlink						Cx,
+  /bin/date						Cx,
+  /bin/mount						Cx,
   /sbin/blkid						Px,
   /sbin/tune2fs						Px,
   /sbin/fsck						Px,
@@ -220,7 +220,7 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad {
   # EXECUTABLES ----------------------------------------
   /etc/init.d/lvm					Px,
   @{shell}						Cx,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   /sbin/lvmetad						Px,
   
   # READS/WRITES ---------------------------------------
@@ -261,8 +261,8 @@ profile lvm2.lvm.init.d /etc/init.d/lvm {
   # EXECUTABLES ----------------------------------------
   /sbin/lvm						Px,
   @{shell}						Cx,
-  /bin/grep						Cx,	# FS ACCESS! grep
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/grep						Cx,
+  /bin/mkdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/lvm				r,

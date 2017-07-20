@@ -57,7 +57,7 @@ profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/gpartedbin					mr,
-  /bin/umount						Cx,	# FS ACCESS! umount
+  /bin/umount						Cx,
   /bin/udevadm						Px,
   /sbin/hdparm						ix,	# FIX ME! Вынести в отдельный профиль.
   /sbin/blkid						Px,
@@ -102,11 +102,11 @@ profile gparted.gparted /usr/sbin/gparted flags=(complain) {
   /usr/sbin/gparted					r,
   @{shell}						mr,
   /bin/ps						Px,
-  /bin/rm						Cx,	# FS ACCESS! rm
-  /bin/grep						Cx,	# FS ACCESS! grep
-  /bin/egrep						Cx,	# FS ACCESS! egrep
-  /bin/touch						Cx,	# FS ACCESS! touch
-  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/rm						Cx,
+  /bin/grep						Cx,
+  /bin/egrep						Cx,
+  /bin/touch						Cx,
+  /bin/sed						Cx,
   /usr/bin/id						Px,
   /usr/sbin/gpartedbin					Px,
   

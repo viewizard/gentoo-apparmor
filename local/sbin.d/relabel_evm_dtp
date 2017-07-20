@@ -25,11 +25,11 @@ profile local.sbin.relabel_evm_dtp /usr/local/sbin/relabel_evm_dtp.sh {
   # EXECUTABLES ----------------------------------------
   /usr/local/sbin/relabel_evm_dtp.sh			r,
   @{shell}						mr,
-  /bin/touch						Cx,	# FS ACCESS! touch
-  /bin/rm						Cx,	# FS ACCESS! rm
-  /bin/cat						Cx,	# FS ACCESS! cat
-  /bin/grep						Cx,	# FS ACCESS! grep
-  /usr/bin/find						Cx,	# FS ACCESS! find
+  /bin/touch						Cx,
+  /bin/rm						Cx,
+  /bin/cat						Cx,
+  /bin/grep						Cx,
+  /usr/bin/find						Cx,
   
   profile touch /bin/touch {
     #include <abstractions/base>

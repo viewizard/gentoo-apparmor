@@ -28,6 +28,10 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {		# FS ACCESS! П
   capability kill,
   capability setfcap,
   
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term,kill) peer="portage.emerge//shell",
+  signal (send) set=(term,kill) peer="portage.emerge//sandbox",
+  
   # NETWORK --------------------------------------------
   network inet dgram,
   network inet6 dgram,
@@ -49,20 +53,20 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {		# FS ACCESS! П
   # EXECUTABLES ----------------------------------------
   @{shell}						cx,
   /bin/stty						Px,
-  /bin/mount						Cx,	# FS ACCESS! mount
-  /bin/tar						ix,
+  /bin/mount						Cx,
+  /bin/tar						ix,	# FS ACCESS!
   /sbin/ldconfig					Px,
   /usr/bin/sandbox					cx,
-  /usr/bin/find						ix,
+  /usr/bin/find						ix,	# FS ACCESS!
   /usr/bin/id						Px,
-  /usr/bin/install-info					ix,
-  /usr/bin/scanelf					ix,
+  /usr/bin/install-info					ix,	# FS ACCESS!
+  /usr/bin/scanelf					ix,	# FS ACCESS!
   /usr/bin/wget						Px,
-  /usr/bin/desktop-file-validate			ix,
-  /usr/bin/rsync					ix,
+  /usr/bin/desktop-file-validate			ix,	# FS ACCESS!
+  /usr/bin/rsync					ix,	# FS ACCESS!
   /usr/bin/gcc-config					Px,
-  /usr/bin/free						ix,
-  /usr/@{CHOST}/binutils-bin/*/ld			ix,
+  /usr/bin/free						ix,	# FS ACCESS!
+  /usr/@{CHOST}/binutils-bin/*/ld			ix,	# FS ACCESS!
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -212,10 +216,6 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {		# FS ACCESS! П
     owner /tmp/tmp??????				rwk,
     owner /tmp/tac??????				rw,
     /var/tmp/						r,
-    
-    # NOISY --------------------------------------------
-#    deny /.wget-hsts					rw,	# FIX ME! 23.05.2017 перенесено в профиль wget.
-#    deny /root/.wget-hsts				rw,	# FIX ME! 23.05.2017 перенесено в профиль wget.
   }
   
   profile sandbox /usr/bin/sandbox flags=(complain) {		# FIX ME! Потом вызов shell в свой профиль убрать.
@@ -309,7 +309,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {		# FS ACCESS! П
     /etc/{,**}						r,
     /usr/{,**}						r,
     /usr/portage/distfiles/*/				w,	# git/cvs/svn
-    /usr/src/@{kernel}/tools/gcc/**.so			m,
+    /usr/src/@{kernel}/tools/gcc/**.so			m,	# плагины
     /usr/portage/distfiles/{egit,git3}-src/**		rw,
     link subset /usr/portage/distfiles/{egit,git3}-src/** -> /usr/portage/distfiles/{egit,git3}-src/**,
     /usr/portage/packages/{,**}				rw,
@@ -386,7 +386,6 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf flags=(complain) {
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
-  capability dac_override,
   capability mknod,
   
   # PSEUDO ---------------------------------------------
@@ -394,9 +393,9 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf flags=(complain) {
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /usr/bin/diff						ix,	# FS ACCESS!
-  /usr/bin/find						ix,	# FS ACCESS!
+  @{shell}						Px -> portage_dispatch_conf_shell,
+  audit /usr/bin/diff					Cx,	# FIX ME! audit 15.07.2017
+  /usr/bin/find						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{,**}						rw,
@@ -407,25 +406,74 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf flags=(complain) {
   # TEMP -----------------------------------------------
   owner /tmp/dispatch-conf.*/				rw,
   
-  profile shell @{shell} flags=(complain) {
+  profile diff /usr/bin/diff flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/diff					mr,
+  }
+  
+  profile find /usr/bin/find flags=(complain) {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
     capability dac_override,
-    capability dac_read_search,
     
     # PSEUDO -------------------------------------------
-    /dev/tty						rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
-    @{shell}						mr,
-    /bin/uname						Px,
-    /usr/bin/find					ix,	# FS ACCESS!
-    /usr/bin/diff					ix,	# FS ACCESS!
+    /usr/bin/find					mr,
     
     # READS/WRITES -------------------------------------
+    /							r,
     /etc/{,**}						r,
+  }
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile portage_dispatch_conf_shell flags=(complain) {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability dac_override,
+  capability dac_read_search,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
+  /bin/uname						Px,
+  audit /usr/bin/find					Cx,	# FIX ME! audit 15.07.2017
+  audit /usr/bin/diff					Cx,	# FIX ME! audit 15.07.2017
+  
+  # READS/WRITES ---------------------------------------
+  /etc/{,**}						r,
+  
+  profile diff /usr/bin/diff flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/diff					mr,
+  }
+  
+  profile find /usr/bin/find flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/find					mr,
   }
 }
 
@@ -467,10 +515,8 @@ profile portage.portageq @{PYTHON_EXEC}/portageq flags=(complain) {
 
 profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
-  capability dac_override,
   capability mknod,
   
   # PSEUDO ---------------------------------------------
@@ -480,33 +526,207 @@ profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/etc-update					r,
   @{shell}						mr,
-  /bin/cat						ix,	# FS ACCESS!
-  /bin/grep						ix,	# FS ACCESS!
-  /bin/cut						ix,	# FS ACCESS!
-  /bin/rm						ix,	# FS ACCESS!
-  /bin/mkdir						ix,	# FS ACCESS!
-  /bin/chmod						ix,	# FS ACCESS!
-  /bin/chown						ix,	# FS ACCESS!
-  /bin/sed						ix,	# FS ACCESS!
-  /bin/sort						ix,	# FS ACCESS!
-  /bin/head						ix,	# FS ACCESS!
-  /bin/wc						ix,	# FS ACCESS!
-  /bin/mv						ix,	# FS ACCESS!
-  /bin/readlink						ix,	# FS ACCESS!
-  /usr/bin/diff						ix,	# FS ACCESS!
-  /usr/bin/find						ix,	# FS ACCESS!
+  /bin/cat						Cx,
+  /bin/grep						Cx,
+  /bin/cut						Cx,
+  /bin/rm						Cx,
+  /bin/mkdir						Cx,
+  /bin/chmod						Cx,
+  /bin/chown						Cx,
+  /bin/sed						Cx,
+  /bin/sort						Cx,
+  audit /bin/head					Cx,	# FIX ME! audit 15.07.2017
+  audit /bin/wc						Cx,	# FIX ME! audit 15.07.2017
+  audit /bin/mv						Cx,	# FIX ME! audit 15.07.2017
+  audit /bin/readlink					Cx,	# FIX ME! audit 15.07.2017
+  /usr/bin/diff						Cx,
+  /usr/bin/find						Cx,
   @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,
   
-  # READS/WRITES ---------------------------------------
-  /							r,
-  /etc/							r,
-  /etc/**						rw,
-  /usr/share/gnupg/					r,
-  
   # TEMP -----------------------------------------------
-  owner /var/tmp/etc-update-*/{,**}			rw,
   owner /tmp/sh-thd.*					rw,
+  owner /var/tmp/etc-update-*/.diff-test-[0-9]*		w,
   owner /var/tmp/portage/**				rw,
+  
+  profile cat /bin/cat flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/os-release					r,
+  }
+  
+  profile grep /bin/grep flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile cut /bin/cut flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cut						mr,
+  }
+  
+  profile rm /bin/rm flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /var/tmp/etc-update-*/{,**}			rw,
+  }
+  
+  profile mkdir /bin/mkdir flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /var/tmp/etc-update-*/{,**/}			w,
+  }
+  
+  profile chmod /bin/chmod flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chmod						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /var/tmp/etc-update-*/			w,
+  }
+  
+   profile chown /bin/chown flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chown						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /var/tmp/etc-update-*/			w,
+  }
+  
+  profile sed /bin/sed flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/etc-update.conf				r,
+  }
+  
+  profile sort /bin/sort flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sort						mr,
+  }
+  
+  profile head /bin/head flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/head						mr,
+  }
+  
+  profile wc /bin/wc flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/wc						mr,
+  }
+  
+  profile mv /bin/mv flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mv						mr,
+  }
+  
+  profile readlink /bin/readlink flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/readlink					mr,
+  }
+  
+  profile diff /usr/bin/diff flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/diff					mr,
+    
+    # TEMP ---------------------------------------------
+    owner /var/tmp/etc-update-*/.diff-test-[0-9]*	r,
+  }
+  
+  profile find /usr/bin/find flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/find					mr,
+    
+    # READS/WRITES -------------------------------------
+    /							r,
+    /etc/{,**}						r,
+    /usr/share/gnupg/					r,
+  }
   
   profile portageq {
     #include <abstractions/base>
@@ -520,17 +740,240 @@ profile portage.etc-update /usr/sbin/etc-update flags=(complain) {
   }
 }
 
+profile portage.emerge-webrsync /usr/bin/emerge-webrsync flags=(complain) {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/emerge-webrsync				r,
+  @{shell}						mr,
+  /bin/date						Cx,
+  /bin/rm						Cx,
+  /bin/cut						Cx,
+  /bin/mktemp						Cx,
+  /bin/tar						Cx,
+  /bin/chown						Cx,
+  /bin/stty						Px,
+  /usr/bin/md5sum					Cx,
+  /usr/bin/xz						Cx,
+  /usr/bin/stat						Cx,
+  /usr/bin/rsync					Cx,
+  /usr/bin/fmt						Cx,
+  /usr/bin/gpg2						Px,
+  /usr/bin/renice					Px,
+  /usr/bin/wget						Px,
+  @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
+  /etc/portage/bin/post_sync				Cx,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/sh-thd.*					rw,
+  owner /var/tmp/portage/webrsync-*/portage-*.md5sum	r,
+  
+  profile date /bin/date flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/date						mr,
+  }
+  
+  profile rm /bin/rm flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # TEMP ---------------------------------------------
+    /var/tmp/portage/webrsync-*/{,**}			rw,	# FIX ME! UID может быть 250 (portage) или 0 (root).
+  }
+  
+  profile cut /bin/cut flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cut						mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/portage/metadata/timestamp.x			r,
+  }
+  
+  profile mktemp /bin/mktemp flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mktemp						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /var/tmp/portage/webrsync-*/			w,
+  }
+  
+  profile tar /bin/tar flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    # CAPABILITIES -------------------------------------
+    capability chown,
+    capability fsetid,
+    capability fowner,
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/tar						mr,
+    
+    # TEMP ---------------------------------------------
+    /var/tmp/portage/webrsync-*/**			w,	# FIX ME! UID может быть 250 (portage) или 0 (root).
+  }
+  
+  profile chown /bin/chown flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    # CAPABILITIES -------------------------------------
+    capability chown,
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chown						mr,
+    
+    # TEMP ---------------------------------------------
+    /var/tmp/portage/webrsync-*/**			rw,	# FIX ME! UID может быть 250 (portage) или 0 (root).
+  }
+  
+  profile xz /usr/bin/xz flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/xz						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /var/tmp/portage/webrsync-*/**		r,
+  }
+  
+  profile md5sum /usr/bin/md5sum flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/md5sum					mr,
+    
+    # TEMP ---------------------------------------------
+    owner /var/tmp/portage/webrsync-*/**		r,
+  }
+  
+  profile stat /usr/bin/stat flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/stat					mr,
+  }
+  
+  profile rsync /usr/bin/rsync flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/rsync					mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/portage/					r,
+    /usr/portage/**					rw,
+    
+    # TEMP ---------------------------------------------
+    owner /var/tmp/portage/webrsync-*/**		r,
+  }
+  
+  profile fmt /usr/bin/fmt flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/fmt					mr,
+  }
+  
+  profile portage {
+    #include <abstractions/base>
+    #include <abstractions/python-exec>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    @{PYTHON_EXEC}/emerge				Px,
+    @{PYTHON_EXEC}/portageq				Px,
+  }
+  
+  profile post_sync /etc/portage/bin/post_sync flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /etc/portage/bin/post_sync				r,
+    @{shell}						mr,
+    /etc/portage/postsync.d/*				Px,	# Выполняем файлы, если у них есть профили.
+    
+    # READS/WRITES -------------------------------------
+    /etc/portage/postsync.d/				r,
+  }
+}
+
 profile portage.emaint @{PYTHON_EXEC}/emaint flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
   #include <abstractions/ncurses>
   
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  capability chown,
+  
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
+  @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						cx,
+  @{shell}						Cx,
+  /usr/bin/find						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
@@ -539,18 +982,42 @@ profile portage.emaint @{PYTHON_EXEC}/emaint flags=(complain) {
   /usr/local/portage/{,**}				r,
   /usr/share/portage/{,**}				r,
   /var/lib/portage/{,**}				r,
+  /var/lib/gentoo/{,**}					rwk,
   /var/db/pkg/{,**}					r,
   /var/cache/edb/{,**}					r,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/??????					rw,
+  owner /tmp/tmp??????					rwk,
   
   profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /bin/uname						Px,
+    /usr/bin/emerge-webrsync				Px,
+  }
+  
+  profile find /usr/bin/find flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/find					mr,
+    
+    # READS/WRITES -------------------------------------
+    /							r,
+    /etc/{,**}						r,
   }
 }
 
@@ -560,14 +1027,25 @@ profile portage.cgroup-release-agent /usr/lib{,32,64}/portage/@{PYTHON}/cgroup-r
   
   # CAPABILITIES ---------------------------------------
   capability mknod,
-  capability dac_override,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /sys/fs/cgroup/portage/{,**}				w,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/portage/@{PYTHON}/cgroup-release-agent r,
   @{shell}						mr,
-  /bin/rmdir						ix,	# FS ACCESS!
+  /bin/rmdir						Cx,
+  
+  profile rmdir /bin/rmdir flags=(complain) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /sys/fs/cgroup/portage/{,**}			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
+  }
 }

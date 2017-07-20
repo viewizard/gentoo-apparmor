@@ -47,11 +47,11 @@ profile xinit_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/cat						Cx,	# FS ACCESS! cat
-  /bin/grep						Cx,	# FS ACCESS! grep
-  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/cat						Cx,
+  /bin/grep						Cx,
+  /bin/sed						Cx,
   /usr/bin/which					Px,
-  /usr/bin/gawk						Cx,	# FS ACCESS! gawk
+  /usr/bin/gawk						Cx,
   /usr/bin/xrdb						Px,
   /usr/bin/dbus-send					Px,
   /usr/bin/nvidia-settings				Px,
@@ -120,7 +120,7 @@ profile xinit.chooser.sh /etc/X11/chooser.sh {
   # EXECUTABLES ----------------------------------------
   /etc/X11/chooser.sh					r,
   @{shell}						mr,
-  /usr/bin/gawk						Cx,	# FS ACCESS! gawk
+  /usr/bin/gawk						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/X11/Sessions/{,*}				r,
@@ -165,9 +165,9 @@ profile xinit.startx /usr/bin/startx {
   @{shell}						mr,
   /bin/uname						Px,
   /bin/hostname						Px,
-  /bin/grep						Cx,	# FS ACCESS! grep
-  /bin/sed						Cx,	# FS ACCESS! sed
-  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/grep						Cx,
+  /bin/sed						Cx,
+  /bin/rm						Cx,
   /usr/bin/mcookie					Px,
   /usr/bin/deallocvt					Px,
   /usr/bin/xauth					Px,

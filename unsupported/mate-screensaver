@@ -48,8 +48,8 @@ profile mate-screensaver.sh /usr/bin/mate-screensaver.sh {
   # EXECUTABLES ----------------------------------------
   /usr/bin/mate-screensaver.sh				r,
   @{shell}						mr,
-  /bin/grep						Cx,	# FS ACCESS! grep
-  /bin/sleep						Pxr,
+  /bin/grep						Cx,
+  /bin/sleep						Px,
   /bin/ps						Px,
   /usr/bin/mate-screensaver				Px,
   /usr/bin/xautolock					Px,
@@ -173,7 +173,7 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/wc						Px -> mate_screensaver_dialog_wc,	# FS ACCESS! mate_screensaver_dialog_wc
+    /bin/wc						Px -> mate_screensaver_dialog_wc,
     /usr/bin/pidof					Px,
   }
 }

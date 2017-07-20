@@ -26,23 +26,23 @@ profile chkrootkit /usr/sbin/chkrootkit {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/chkrootkit					r,
   @{shell}						mr,
-  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/sed						Cx,
   /bin/uname						Px,
   /bin/ps						Px,
-  /bin/cut						Cx,	# FS ACCESS! cut
-  /bin/egrep						Cx,	# FS ACCESS! egrep
-  /bin/grep						Cx,	# FS ACCESS! grep
-  /bin/ls						Cx,	# FS ACCESS! ls
+  /bin/cut						Cx,
+  /bin/egrep						Cx,
+  /bin/grep						Cx,
+  /bin/ls						Cx,
   /bin/echo						Px,
   /bin/tr						Px,
-  /bin/wc						Cx,	# FS ACCESS! wc
-  /bin/cat						Cx,	# FS ACCESS! cat
-  /bin/head						Cx,	# FS ACCESS! head
+  /bin/wc						Cx,
+  /bin/cat						Cx,
+  /bin/head						Cx,
   /bin/netstat						Px,
   /usr/bin/id						Px,
   /usr/bin/crontab					Px,
-  /usr/bin/gawk						Cx,	# FS ACCESS! gawk
-  /usr/bin/find						Cx,	# FS ACCESS! find
+  /usr/bin/gawk						Cx,
+  /usr/bin/find						Cx,
   /usr/sbin/chkdirs					Px,
   /usr/sbin/strings-static				Px,
   /usr/sbin/chkproc					Px,
@@ -179,7 +179,7 @@ profile chkrootkit /usr/sbin/chkrootkit {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/find					mr,
-    /bin/head						Px -> chkrootkit_find_head,	# FS ACCESS! chkrootkit_find_head
+    /bin/head						Px -> chkrootkit_find_head,
     
     # READS/WRITES -------------------------------------
     /{,**}						r,
@@ -279,7 +279,7 @@ profile chkrootkit_chkproc_shell {
   @{shell}						mr,
   /bin/ps						Px,
   /bin/tr						Px,
-  /bin/cut						Cx,	# FS ACCESS! cut
+  /bin/cut						Cx,
   
   # TEMP -----------------------------------------------
   owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
@@ -415,9 +415,9 @@ profile chkrootkit.cron.daily /etc/cron.daily/chkrootkit {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/chkrootkit				r,
   @{shell}						mr,
-  /bin/mktemp						Cx,	# FS ACCESS! mktemp
-  /bin/cat						Cx,	# FS ACCESS! cat
-  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/mktemp						Cx,
+  /bin/cat						Cx,
+  /bin/rm						Cx,
   /bin/basename						Px,
   /usr/bin/libnotify-notify-send-users			Px,
   /usr/bin/mail						Px,

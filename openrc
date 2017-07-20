@@ -155,11 +155,11 @@ profile openrc.gendepends.sh /lib{,32,64}/rc/sh/gendepends.sh flags=(attach_disc
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/sed						Cx,	# FS ACCESS! sed
-  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/sed						Cx,
+  /bin/grep						Cx,
   /sbin/openrc						Px,
   /sbin/lvm						Px,
-  /usr/bin/gawk						Cx,	# FS ACCESS! gawk
+  /usr/bin/gawk						Cx,
   /lib{,32,64}/rc/sh/gendepends.sh			r,
   /lib{,32,64}/rc/bin/shell_var				Px,
   /lib{,32,64}/rc/bin/service_started			Px,
@@ -259,10 +259,10 @@ profile openrc.init.sh /lib{,32,64}/rc/sh/init.sh flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/rc/sh/init.sh				r,
   @{shell}						mr,
-  /bin/grep						Cx,	# FS ACCESS! grep
-  /bin/cp						Cx,	# FS ACCESS! cp
+  /bin/grep						Cx,
+  /bin/cp						Cx,
   /sbin/openrc						Px,
-  /usr/bin/md5sum					Cx,	# FS ACCESS! md5sum
+  /usr/bin/md5sum					Cx,
   /lib{,32,64}/rc/bin/checkpath				Px,
   /lib{,32,64}/rc/bin/eval_ecolors			Px,
   /lib{,32,64}/rc/bin/einfo				Px,
@@ -326,7 +326,7 @@ profile openrc.cgroup-release-agent.sh /lib{,32,64}/rc/sh/cgroup-release-agent.s
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/rc/sh/cgroup-release-agent.sh		r,
   @{shell}						mr,
-  /bin/rmdir						Cx,	# FS ACCESS! rmdir
+  /bin/rmdir						Cx,
   
   profile rmdir /bin/rmdir {
     #include <abstractions/base>
@@ -611,9 +611,9 @@ profile openrc.netmount.init.d /etc/init.d/netmount {
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /etc/init.d/dnsmasq					Px,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
-  /bin/mount						Cx,	# FS ACCESS! mount
-  /bin/umount						Cx,	# FS ACCESS! umount
+  /bin/mkdir						Cx,
+  /bin/mount						Cx,
+  /bin/umount						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/netmount				r,
@@ -677,7 +677,7 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont {
   /sys/fs/cgroup/openrc/consolefont/tasks		w,
   
   # EXECUTABLES ----------------------------------------
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   /usr/bin/setfont					Px,
   
   # READS/WRITES ---------------------------------------
@@ -713,7 +713,7 @@ profile openrc.local.init.d /etc/init.d/local {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/local				r,
@@ -753,8 +753,8 @@ profile openrc.hwclock.init.d /etc/init.d/hwclock {
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/uname						Px,
-  /bin/grep						Cx,	# FS ACCESS! grep
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/grep						Cx,
+  /bin/mkdir						Cx,
   /sbin/hwclock						Px,
   
   # READS/WRITES ---------------------------------------
@@ -804,7 +804,7 @@ profile openrc.swap.init.d /etc/init.d/swap {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   /sbin/swapon						Px,
   /sbin/swapoff						Px,
   
@@ -845,7 +845,7 @@ profile openrc.modules.init.d /etc/init.d/modules {
   @{shell}						Cx,
   /bin/uname						Px,
   /bin/kmod						Px,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/modules				r,
@@ -886,8 +886,8 @@ profile openrc.fsck.init.d /etc/init.d/fsck {
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /etc/init.d/*						Px,
-  /bin/cat						Cx,	# FS ACCESS! cat
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/cat						Cx,
+  /bin/mkdir						Cx,
   /sbin/fsck						Px,
   
   # READS/WRITES ---------------------------------------
@@ -938,7 +938,7 @@ profile openrc.opentmpfiles-dev.init.d /etc/init.d/opentmpfiles-dev {
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/tmpfiles						Px,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/opentmpfiles-dev			r,
@@ -976,7 +976,7 @@ profile openrc.opentmpfiles-setup.init.d /etc/init.d/opentmpfiles-setup {
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/tmpfiles						Px,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/opentmpfiles-setup			r,
@@ -1013,9 +1013,9 @@ profile openrc.root.init.d /etc/init.d/root {
   
   # EXECUTABLES ----------------------------------------
   /etc/init.d/mtab					Px,
-  /bin/rm						Cx,	# FS ACCESS! rm
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
-  /bin/mount						Cx,	# FS ACCESS! mount
+  /bin/rm						Cx,
+  /bin/mkdir						Cx,
+  /bin/mount						Cx,
   @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
@@ -1089,8 +1089,8 @@ profile openrc.mtab.init.d /etc/init.d/mtab {
   /sys/fs/cgroup/openrc/mtab/tasks			w,
   
   # EXECUTABLES ----------------------------------------
-  /bin/ln						Cx,	# FS ACCESS! ln
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/ln						Cx,
+  /bin/mkdir						Cx,
   @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
@@ -1143,14 +1143,14 @@ profile openrc.localmount.init.d /etc/init.d/localmount {
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /etc/init.d/*						Px,
-  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/sed						Cx,
   /bin/sync						Px,
   /bin/fuser						Px,
   /bin/sleep						Px,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
-  /bin/mount						Cx,	# FS ACCESS! mount
-  /bin/umount						Cx,	# FS ACCESS! umount
-  /usr/bin/timeout					Cx,	# FS ACCESS! timeout
+  /bin/mkdir						Cx,
+  /bin/mount						Cx,
+  /bin/umount						Cx,
+  /usr/bin/timeout					Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/localmount				r,
@@ -1268,8 +1268,8 @@ profile openrc.sysctl.init.d /etc/init.d/sysctl {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
-  /usr/sbin/sysctl					Pxr,
+  /bin/mkdir						Cx,
+  /usr/sbin/sysctl					Px,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/sysctl				r,
@@ -1306,16 +1306,16 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/rm						Cx,	# FS ACCESS! rm
-  /bin/readlink						Cx,	# FS ACCESS! readlink
-  /bin/mktemp						Cx,	# FS ACCESS! mktemp
-  /bin/rmdir						Cx,	# FS ACCESS! rmdir
-  /bin/chgrp						Cx,	# FS ACCESS! chgrp
-  /bin/chmod						Cx,	# FS ACCESS! chmod
+  /bin/rm						Cx,
+  /bin/readlink						Cx,
+  /bin/mktemp						Cx,
+  /bin/rmdir						Cx,
+  /bin/chgrp						Cx,
+  /bin/chmod						Cx,
   /bin/dmesg						Px,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
-  /bin/mount						Cx,	# FS ACCESS! mount
-  /bin/umount						Cx,	# FS ACCESS! umount
+  /bin/mkdir						Cx,
+  /bin/mount						Cx,
+  /bin/umount						Cx,
   /sbin/halt						Px,
   
   # READS/WRITES ---------------------------------------
@@ -1502,7 +1502,7 @@ profile openrc.hostname.init.d /etc/init.d/hostname {
   @{shell}						Cx,
   /etc/init.d/syslog-ng					Px,
   /bin/hostname						Px,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/hostname				r,
@@ -1539,7 +1539,7 @@ profile openrc.termencoding.init.d /etc/init.d/termencoding {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   /etc/init.d/keymaps					Px,
   /etc/init.d/consolefont				Px,
   
@@ -1582,7 +1582,7 @@ profile openrc.runsvdir.init.d /etc/init.d/runsvdir {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/runsvdir				r,
@@ -1620,7 +1620,7 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps {
   /sys/fs/cgroup/openrc/keymaps/tasks			w,
   
   # EXECUTABLES ----------------------------------------
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   /usr/bin/kbd_mode					Px,
   /usr/bin/loadkeys					Px,
   /usr/bin/dumpkeys					Px,
@@ -1662,10 +1662,10 @@ profile openrc.urandom.init.d /etc/init.d/urandom {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/cat						Cx,	# FS ACCESS! cat
-  /bin/dd						Cx,	# FS ACCESS! dd
-  /bin/rm						Cx,	# FS ACCESS! rm
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/cat						Cx,
+  /bin/dd						Cx,
+  /bin/rm						Cx,
+  /bin/mkdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/urandom				r,
@@ -1750,7 +1750,7 @@ profile openrc.loopback.init.d /etc/init.d/loopback {
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/ip						Px,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/loopback				r,
@@ -1788,7 +1788,7 @@ profile openrc.procfs.init.d /etc/init.d/procfs {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/procfs				r,
@@ -1830,7 +1830,7 @@ profile openrc.killprocs.init.d /etc/init.d/killprocs {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   /sbin/killall5					Px,
   
   # READS/WRITES ---------------------------------------
@@ -1869,10 +1869,10 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro {
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/sync						Px,
-  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/sed						Cx,
   /bin/fuser						Px,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
-  /bin/umount						Cx,	# FS ACCESS! umount
+  /bin/mkdir						Cx,
+  /bin/umount						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/mount-ro				r,
@@ -1938,9 +1938,9 @@ profile openrc.savecache.init.d /etc/init.d/savecache {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/cp						Cx,	# FS ACCESS! cp
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
-  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/cp						Cx,
+  /bin/mkdir						Cx,
+  /bin/rm						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/savecache				r,
@@ -2003,9 +2003,9 @@ profile openrc.devfs.init.d /etc/init.d/devfs {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/grep						Cx,	# FS ACCESS! grep
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
-  /bin/mount						Cx,	# FS ACCESS! mount
+  /bin/grep						Cx,
+  /bin/mkdir						Cx,
+  /bin/mount						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/devfs				r,
@@ -2069,7 +2069,7 @@ profile openrc.dmesg.init.d /etc/init.d/dmesg {
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/dmesg						Px,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/dmesg				r,
@@ -2107,7 +2107,7 @@ profile openrc.kmod-static-nodes.init.d /etc/init.d/kmod-static-nodes {
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/kmod						Px,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/kmod-static-nodes			r,
@@ -2146,9 +2146,9 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/grep						Cx,	# FS ACCESS! grep
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
-  /bin/mount						Cx,	# FS ACCESS! mount
+  /bin/grep						Cx,
+  /bin/mkdir						Cx,
+  /bin/mount						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/sysfs				r,
@@ -2231,8 +2231,8 @@ profile openrc.modules-load.init.d /etc/init.d/modules-load {
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/kmod						Px,
-  /bin/sort						Cx,	# FS ACCESS! sort
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/sort						Cx,
+  /bin/mkdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/modules-load			r,
@@ -2280,7 +2280,7 @@ profile openrc.agetty.init.d /etc/init.d/agetty flags=(complain) {	# FIX ME! fla
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   /sbin/supervise-daemon				Cx,
   
   # READS/WRITES ---------------------------------------

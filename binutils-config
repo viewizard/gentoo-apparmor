@@ -26,17 +26,17 @@ profile binutils-config /usr/bin/binutils-config {
   @{shell}						mr,
   /bin/stty						Px,
   /bin/tr						Px,
-  /bin/ln						Cx,	# FS ACCESS! ln
-  /bin/mv						Cx,	# FS ACCESS! mv
-  /bin/rm						Cx,	# FS ACCESS! rm
-  /bin/rmdir						Cx,	# FS ACCESS! rmdir
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
-  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/ln						Cx,
+  /bin/mv						Cx,
+  /bin/rm						Cx,
+  /bin/rmdir						Cx,
+  /bin/mkdir						Cx,
+  /bin/cat						Cx,
   /sbin/consoletype					Px,
-  /usr/bin/find						Cx,	# FS ACCESS! find
+  /usr/bin/find						Cx,
   /usr/bin/tput						Px,
-  /usr/bin/scanelf					Cx,	# FS ACCESS! scanelf
-  /usr/bin/cmp						Cx,	# FS ACCESS! cmp
+  /usr/bin/scanelf					Cx,
+  /usr/bin/cmp						Cx,
   @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,
   
   # READS/WRITES ---------------------------------------
@@ -131,7 +131,7 @@ profile binutils-config /usr/bin/binutils-config {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/find					mr,
-    /bin/rm						Px -> binutils_config_rm,	# FS ACCESS! binutils_config_rm
+    /bin/rm						Px -> binutils_config_rm,
     
     # READS/WRITES -------------------------------------
     /usr/@{CHOST}/**					r,

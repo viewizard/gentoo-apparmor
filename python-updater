@@ -24,20 +24,20 @@ profile python-updater /usr/sbin/python-updater {
   /usr/sbin/python-updater				r,
   @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
   @{shell}						mr,
-  /bin/grep						Cx,	# FS ACCESS! grep
-  /bin/sort						Cx,	# FS ACCESS! sort
-  /bin/sed						Cx,	# FS ACCESS! sed
-  /bin/bzip2						Cx,	# FS ACCESS! bzip2
+  /bin/grep						Cx,
+  /bin/sort						Cx,
+  /bin/sed						Cx,
+  /bin/bzip2						Cx,
   /bin/stty						Px,
-  /bin/cut						Cx,	# FS ACCESS! cut
-  /bin/cat						Cx,	# FS ACCESS! cat
-  /bin/readlink						Cx,	# FS ACCESS! readlink
+  /bin/cut						Cx,
+  /bin/cat						Cx,
+  /bin/readlink						Cx,
   /sbin/consoletype					Px,
   /usr/bin/python-wrapper				Px,
-  /usr/bin/find						Cx,	# FS ACCESS! find
+  /usr/bin/find						Cx,
   /usr/bin/tput						Px,
-  /usr/bin/scanelf					Cx,	# FS ACCESS! scanelf
-  /usr/bin/scanmacho					Cx,	# FS ACCESS! scanmacho
+  /usr/bin/scanelf					Cx,
+  /usr/bin/scanmacho					Cx,
   
   # READS/WRITES ---------------------------------------
   /var/db/pkg/{,**}					r,

@@ -320,10 +320,10 @@ profile consolekit.pam-foreground-compat.ck /usr/lib{,32,64}/ConsoleKit/run-sess
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/ConsoleKit/run-session.d/pam-foreground-compat.ck r,
   @{shell}						mr,
-  /bin/cut						Cx,	# FS ACCESS! cut
-  /bin/sed						Cx,	# FS ACCESS! sed
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
-  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/cut						Cx,
+  /bin/sed						Cx,
+  /bin/mkdir						Cx,
+  /bin/rm						Cx,
   /usr/bin/getent					Px,
   
   # READS/WRITES ---------------------------------------
@@ -383,7 +383,7 @@ profile consolekit.init.d /etc/init.d/consolekit {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/console-kit-daemon				Px,
   @{shell}						Cx,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/consolekit				r,

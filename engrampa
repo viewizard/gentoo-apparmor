@@ -47,21 +47,21 @@ profile engrampa /usr/bin/engrampa {
   # EXECUTABLES ----------------------------------------
   /usr/bin/engrampa					mr,
   @{shell}						Cx,
-  /bin/mv						Cx,	# FS ACCESS! mv
-  /bin/rm						Cx,	# FS ACCESS! rm
-  /bin/cp						Cx,	# FS ACCESS! cp
-  /bin/tar						Cx,	# FS ACCESS! tar
-  /bin/bzip2						Cx,	# FS ACCESS! bzip2
-  /bin/gzip						Cx,	# FS ACCESS! gzip
-  /usr/bin/7z						Cx,	# FS ACCESS! 7z
-  /usr/bin/7za						Cx,	# FS ACCESS! 7za
-  /usr/bin/zip						Cx,	# FS ACCESS! zip
-  /usr/bin/unzip					Cx,	# FS ACCESS! unzip
-  /usr/bin/lzip						Cx,	# FS ACCESS! lzip
-  /usr/bin/xz						Cx,	# FS ACCESS! xz
+  /bin/mv						Cx,
+  /bin/rm						Cx,
+  /bin/cp						Cx,
+  /bin/tar						Cx,
+  /bin/bzip2						Cx,
+  /bin/gzip						Cx,
+  /usr/bin/7z						Cx,
+  /usr/bin/7za						Cx,
+  /usr/bin/zip						Cx,
+  /usr/bin/unzip					Cx,
+  /usr/bin/lzip						Cx,
+  /usr/bin/xz						Cx,
   /usr/bin/dpkg-deb					Px -> engrampa_dpkg_deb,
-  /usr/@{CHOST}/binutils-bin/*/ar			Cx,	# FS ACCESS! ar
-  /opt/rar/rar						Cx,	# FS ACCESS! rar
+  /usr/@{CHOST}/binutils-bin/*/ar			Cx,
+  /opt/rar/rar						Cx,
   
   # READS/WRITES ---------------------------------------
   /usr/share/engrampa/{,**}				r,
@@ -351,9 +351,9 @@ profile engrampa_rpm2cpio_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/dd						Cx,	# FS ACCESS! dd
-  /bin/gzip						Cx,	# FS ACCESS! gzip
-  /bin/cpio						Cx,	# FS ACCESS! cpio
+  /bin/dd						Cx,
+  /bin/gzip						Cx,
+  /bin/cpio						Cx,
   
   profile dd /bin/dd {
     #include <abstractions/base>
@@ -394,8 +394,8 @@ profile engrampa_dpkg_deb {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dpkg-deb					mr,
-  /bin/rm						Cx,	# FS ACCESS! rm
-  /bin/tar						Cx,	# FS ACCESS! tar
+  /bin/rm						Cx,
+  /bin/tar						Cx,
   
   # TEMP -----------------------------------------------
   owner /tmp/dpkg-deb.*/				rw,
@@ -442,10 +442,10 @@ profile engrampa_tar_shell flags=(attach_disconnected) {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/gzip						Cx,	# FS ACCESS! gzip
-  /bin/bzip2						Cx,	# FS ACCESS! bzip2
-  /usr/bin/lzip						Cx,	# FS ACCESS! lzip
-  /usr/bin/xz						Cx,	# FS ACCESS! xz
+  /bin/gzip						Cx,
+  /bin/bzip2						Cx,
+  /usr/bin/lzip						Cx,
+  /usr/bin/xz						Cx,
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
@@ -533,21 +533,21 @@ profile engrampa_root {
   # EXECUTABLES ----------------------------------------
   /usr/bin/engrampa					mr,
   @{shell}						Cx,
-  /bin/mv						Cx,	# FS ACCESS! mv
-  /bin/rm						Cx,	# FS ACCESS! rm
-  /bin/cp						Cx,	# FS ACCESS! cp
-  /bin/tar						Cx,	# FS ACCESS! tar
-  /bin/bzip2						Cx,	# FS ACCESS! bzip2
-  /bin/gzip						Cx,	# FS ACCESS! gzip
-  /usr/bin/7z						Cx,	# FS ACCESS! 7z
-  /usr/bin/7za						Cx,	# FS ACCESS! 7za
-  /usr/bin/zip						Cx,	# FS ACCESS! zip
-  /usr/bin/unzip					Cx,	# FS ACCESS! unzip
-  /usr/bin/lzip						Cx,	# FS ACCESS! lzip
-  /usr/bin/xz						Cx,	# FS ACCESS! xz
+  /bin/mv						Cx,
+  /bin/rm						Cx,
+  /bin/cp						Cx,
+  /bin/tar						Cx,
+  /bin/bzip2						Cx,
+  /bin/gzip						Cx,
+  /usr/bin/7z						Cx,
+  /usr/bin/7za						Cx,
+  /usr/bin/zip						Cx,
+  /usr/bin/unzip					Cx,
+  /usr/bin/lzip						Cx,
+  /usr/bin/xz						Cx,
   /usr/bin/dpkg-deb					Px -> engrampa_dpkg_deb_root,
-  /usr/@{CHOST}/binutils-bin/*/ar			Cx,	# FS ACCESS! ar
-  /opt/rar/rar						Cx,	# FS ACCESS! rar
+  /usr/@{CHOST}/binutils-bin/*/ar			Cx,
+  /opt/rar/rar						Cx,
   
   # READS/WRITES ---------------------------------------
   /usr/share/engrampa/{,**}				r,
@@ -858,9 +858,9 @@ profile engrampa_rpm2cpio_shell_root {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/dd						Cx,	# FS ACCESS! dd
-  /bin/gzip						Cx,	# FS ACCESS! gzip
-  /bin/cpio						Cx,	# FS ACCESS! cpio
+  /bin/dd						Cx,
+  /bin/gzip						Cx,
+  /bin/cpio						Cx,
   
   profile dd /bin/dd {
     #include <abstractions/base>
@@ -904,8 +904,8 @@ profile engrampa_dpkg_deb_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dpkg-deb					mr,
-  /bin/rm						Cx,	# FS ACCESS! rm
-  /bin/tar						Cx,	# FS ACCESS! tar
+  /bin/rm						Cx,
+  /bin/tar						Cx,
   
   # TEMP -----------------------------------------------
   owner /tmp/dpkg-deb.*/				rw,
@@ -955,10 +955,10 @@ profile engrampa_tar_shell_root flags=(attach_disconnected) {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/gzip						Cx,	# FS ACCESS! gzip
-  /bin/bzip2						Cx,	# FS ACCESS! bzip2
-  /usr/bin/lzip						Cx,	# FS ACCESS! lzip
-  /usr/bin/xz						Cx,	# FS ACCESS! xz
+  /bin/gzip						Cx,
+  /bin/bzip2						Cx,
+  /usr/bin/lzip						Cx,
+  /usr/bin/xz						Cx,
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)

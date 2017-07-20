@@ -44,7 +44,7 @@ profile vixie-cron.cron /usr/sbin/cron {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/rm						Px -> vixie_cron_cron_shell_rm,	# FS ACCESS! vixie_cron_cron_shell_rm
+    /bin/rm						Px -> vixie_cron_cron_shell_rm,
     /usr/sbin/run-crons					Px,
     
     # READS/WRITES -------------------------------------
@@ -87,7 +87,7 @@ profile vixie-cron.init.d /etc/init.d/vixie-cron {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/cron					Px,
   @{shell}						Cx,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/vixie-cron				r,

@@ -24,8 +24,8 @@ profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-open					r,
   @{shell}						mr,
-  /bin/grep						Cx,	# FS ACCESS! grep
-  /bin/egrep						Cx,	# FS ACCESS! egrep
+  /bin/grep						Cx,
+  /bin/egrep						Cx,
   /usr/bin/exo-open					Px,
   /usr/bin/dbus-send					Px,
   audit /usr/bin/xprop					Px,	# FIX ME! audit 26.06.2017
@@ -81,7 +81,7 @@ profile xdg-utils.xdg-email /usr/bin/xdg-email {
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-email					r,
   @{shell}						mr,
-  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/sed						Cx,
   /usr/bin/which					Px,
   /usr/bin/exo-open					Px,
   
@@ -108,9 +108,9 @@ profile xdg-utils.xdg-screensaver /usr/bin/xdg-screensaver {
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-screensaver				r,
   @{shell}						mr,
-  /bin/grep						Cx,	# FS ACCESS! grep
-  /bin/mv						Cx,	# FS ACCESS! mv
-  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/grep						Cx,
+  /bin/mv						Cx,
+  /bin/sed						Cx,
   /bin/hostname						Px,
   /usr/bin/which					Px,
   /usr/bin/dbus-send					Px,
@@ -167,18 +167,18 @@ profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
   /usr/bin/xdg-settings					mr,
   # Checking default browser
   @{shell}						mr,
-  /bin/grep						Cx,	# FS ACCESS! grep
-  /bin/readlink						Cx,	# FS ACCESS! readlink
-  /bin/sed						Cx,	# FS ACCESS! sed
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
-  /bin/mv						Cx,	# FS ACCESS! mv
-  /bin/touch						Cx,	# FS ACCESS! touch
-  /bin/cut						Cx,	# FS ACCESS! cut
+  /bin/grep						Cx,
+  /bin/readlink						Cx,
+  /bin/sed						Cx,
+  /bin/mkdir						Cx,
+  /bin/mv						Cx,
+  /bin/touch						Cx,
+  /bin/cut						Cx,
   /bin/dirname						Px,
   /usr/bin/which					Px,
   /usr/bin/basename					Px,
   /usr/bin/gconftool-2					Px,	# Detect proxy settings for gnome2/gnome3.
-  /usr/bin/gawk						Cx,	# FS ACCESS! gawk
+  /usr/bin/gawk						Cx,
   /usr/bin/xdg-mime					Px,
   
   # READS/WRITES ---------------------------------------
@@ -279,8 +279,8 @@ profile xdg_open_root {
   /usr/bin/xdg-open					r,
   @{shell}						mr,
   /bin/uname						Px,
-  /bin/grep						Cx,	# FS ACCESS! grep
-  /bin/egrep						Cx,	# FS ACCESS! egrep
+  /bin/grep						Cx,
+  /bin/egrep						Cx,
   /usr/bin/exo-open					Px -> exo_open_root,
   /usr/bin/dbus-send					Px,
   audit /usr/bin/xprop					Px,	# FIX ME! audit 26.06.2017
@@ -312,7 +312,7 @@ profile xdg_email_root {
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-email					r,
   @{shell}						mr,
-  /bin/sed						Cx,	# FS ACCESS! sed
+  /bin/sed						Cx,
   /usr/bin/which					Px,
   /usr/bin/exo-open					Px -> exo_open_root,
   

@@ -64,7 +64,7 @@ profile xfce4-session /usr/bin/xfce4-session {
   @{shell}						Cx,
   /bin/env						Cx,
   /bin/true						Px,
-  audit /bin/rm						Cx,	# FS ACCESS! rm		# FIX ME! audit 22.06.2017
+  audit /bin/rm						Cx,	# FIX ME! audit 22.06.2017
   /usr/bin/ssh-agent					Px,
   /usr/bin/gpg-agent					Px,
   /usr/bin/xfsettingsd					Px,
@@ -259,11 +259,11 @@ profile xfce4_session_startxfce4_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/cat						Cx,	# FS ACCESS! cat
-  audit /bin/grep					Cx,	# FS ACCESS! grep	# FIX ME! audit 22.06.2017
-  audit /bin/sed					Cx,	# FS ACCESS! sed	# FIX ME! audit 22.06.2017
+  /bin/cat						Cx,
+  audit /bin/grep					Cx,	# FIX ME! audit 22.06.2017
+  audit /bin/sed					Cx,	# FIX ME! audit 22.06.2017
   /usr/bin/which					Px,
-  audit /usr/bin/gawk					Cx,	# FS ACCESS! gawk	# FIX ME! audit 22.06.2017
+  audit /usr/bin/gawk					Cx,	# FIX ME! audit 22.06.2017
   /usr/bin/xrdb						Px,
   /usr/bin/xfce4-session				Px,
   /usr/bin/xdg-user-dirs-update				Px,
@@ -322,11 +322,11 @@ profile xfce4-session.xfce4-session-fix /etc/xdg/xfce4/xfce4-session-fix {
   # EXECUTABLES ----------------------------------------
   /etc/xdg/xfce4/xfce4-session-fix			r,
   @{shell}						mr,
-  /bin/rm						Cx,	# FS ACCESS! rm
-  /bin/cp						Cx,	# FS ACCESS! cp
+  /bin/rm						Cx,
+  /bin/cp						Cx,
   /bin/sleep						Px,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
-  /usr/bin/diff						Cx,	# FS ACCESS! diff
+  /bin/mkdir						Cx,
+  /usr/bin/diff						Cx,
   /usr/bin/xfdesktop					Px,
   /usr/bin/libnotify-notify-send			Px,
   

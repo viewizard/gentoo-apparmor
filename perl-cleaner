@@ -24,20 +24,20 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/perl-cleaner				mr,
   @{shell}						pxmr -> perl_cleaner_shell,	# Все правильно, запуск и mmap.
-  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/grep						Cx,
   /bin/tr						Px,
-  /bin/sort						Cx,	# FS ACCESS! sort
+  /bin/sort						Cx,
   /bin/stty						Px,
-  /bin/cat						Cx,	# FS ACCESS! cat
-  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/cat						Cx,
+  /bin/rm						Cx,
   /sbin/consoletype					Px,
   /usr/bin/q						Px,
-  /usr/bin/xargs					Cx,	# FS ACCESS! xargs
-  /usr/bin/gawk						Cx,	# FS ACCESS! gawk
+  /usr/bin/xargs					Cx,
+  /usr/bin/gawk						Cx,
   /usr/bin/tput						Px,
-  /usr/bin/scanelf					Cx,	# FS ACCESS! scanelf
-  /usr/bin/find						Cx,	# FS ACCESS! find
-  /usr/bin/realpath					Cx,	# FS ACCESS! realpath
+  /usr/bin/scanelf					Cx,
+  /usr/bin/find						Cx,
+  /usr/bin/realpath					Cx,
   /usr/bin/h2ph						Px,
   @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
   
@@ -159,11 +159,11 @@ profile perl_cleaner_shell {
   
   # EXECUTABLES --------------------------------------
   @{shell}						mr,
-  /bin/grep						Cx,	# FS ACCESS! grep
-  /usr/bin/gawk						Cx,	# FS ACCESS! gawk
-  /usr/bin/@{CHOST}-gcc					Cx,	# FS ACCESS! gcc
-  /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc			Cx -> gcc,	# FS ACCESS! gcc
-  /usr/libexec/gcc/@{CHOST}/*/cc1			Cx,	# FS ACCESS! cc1
+  /bin/grep						Cx,
+  /usr/bin/gawk						Cx,
+  /usr/bin/@{CHOST}-gcc					Cx,
+  /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc			Cx -> gcc,
+  /usr/libexec/gcc/@{CHOST}/*/cc1			Cx,
   
   # READS/WRITES -------------------------------------
   /etc/env.d/gcc/{,**}					r,

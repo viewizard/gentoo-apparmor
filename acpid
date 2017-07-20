@@ -76,11 +76,11 @@ profile acpid.powerbtn.sh /etc/acpi/actions/powerbtn.sh {
   /etc/acpi/actions/powerbtn.sh				r,
   @{shell}						mr,
   /bin/ps						Px,
-  /bin/sed						Cx,	# FS ACCESS! sed
-  /bin/cut						Cx,	# FS ACCESS! cut
+  /bin/sed						Cx,
+  /bin/cut						Cx,
   /sbin/shutdown					Px,
   /usr/bin/fgconsole					Px,
-  /usr/bin/gawk						Cx,	# FS ACCESS! gawk
+  /usr/bin/gawk						Cx,
   /usr/bin/pinky					Px,
   /usr/bin/pgrep					Px,
   /usr/bin/pidof					Px,
@@ -149,7 +149,7 @@ profile acpid.init.d /etc/init.d/acpid {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/acpid					Px,
   @{shell}						Cx,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/acpid				r,

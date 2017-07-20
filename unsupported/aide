@@ -46,10 +46,10 @@ profile aide.aideinit /usr/sbin/aideinit {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/aideinit					r,
   @{shell}						mr,
-  /bin/cut						Cx,	# FS ACCESS! cut
-  audit /bin/grep					Cx,	# FS ACCESS! grep	# FIX ME! Вызывается именно grep?
-  /bin/egrep						Cx,	# FS ACCESS! egrep
-  /bin/cp						Cx,	# FS ACCESS! cp
+  /bin/cut						Cx,
+  audit /bin/grep					Cx,	# FIX ME! Вызывается именно grep?
+  /bin/egrep						Cx,
+  /bin/cp						Cx,
   /usr/bin/aide						Px,
   
   # READS/WRITES ---------------------------------------
@@ -104,23 +104,23 @@ profile aide.cron.daily /etc/cron.daily/aide {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/aide					r,
   @{shell}						mr,
-  /bin/mktemp						Cx,	# FS ACCESS! mktemp
-  /bin/cat						Cx,	# FS ACCESS! cat
-  /bin/rm						Cx,	# FS ACCESS! rm
-  /bin/dd						Cx,	# FS ACCESS! dd
-  /bin/sed						Cx,	# FS ACCESS! sed
-  /bin/grep						Cx,	# FS ACCESS! grep
+  /bin/mktemp						Cx,
+  /bin/cat						Cx,
+  /bin/rm						Cx,
+  /bin/dd						Cx,
+  /bin/sed						Cx,
+  /bin/grep						Cx,
 #  /bin/mount						Px,	# FS ACCESS!
 #  /bin/umount						Px,	# FS ACCESS!
   /bin/basename						Px,
   /usr/bin/libnotify-notify-send-users			Px,
-  /usr/bin/stat						Cx,	# FS ACCESS! stat
+  /usr/bin/stat						Cx,
   /usr/bin/mail						Px,
   /usr/bin/logger					Px,
   /usr/bin/aide						Px,
-  /usr/bin/md5sum					Cx,	# FS ACCESS! md5sum
-  /usr/bin/sha1sum					Cx,	# FS ACCESS! sha1sum
-  /usr/bin/sha512sum					Cx,	# FS ACCESS! sha512sum
+  /usr/bin/md5sum					Cx,
+  /usr/bin/sha1sum					Cx,
+  /usr/bin/sha512sum					Cx,
   /usr/sbin/gdisk					Px,
   
   # READS/WRITES ---------------------------------------

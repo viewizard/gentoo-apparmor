@@ -20,16 +20,16 @@ profile cronbase.run-crons /usr/sbin/run-crons {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/run-crons					r,
   @{shell}						mr,
-  /bin/ln						Cx,	# FS ACCESS! ln
-  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/ln						Cx,
+  /bin/cat						Cx,
   /bin/echo						Px,
-  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/rm						Cx,
   /bin/tr						Px,
-  /bin/touch						Cx,	# FS ACCESS! touch
-  /bin/readlink						Cx,	# FS ACCESS! readlink
-  audit /bin/sed					Cx,	# FS ACCESS! sed	# FIX ME! audit 14.06.2017
-  audit /usr/bin/diff					Cx,	# FS ACCESS! diff	# FIX ME! audit 14.06.2017
-  /usr/bin/find						Cx,	# FS ACCESS! find
+  /bin/touch						Cx,
+  /bin/readlink						Cx,
+  audit /bin/sed					Cx,	# FIX ME! audit 14.06.2017
+  audit /usr/bin/diff					Cx,	# FIX ME! audit 14.06.2017
+  /usr/bin/find						Cx,
   /usr/bin/whoami					Px,
   /usr/bin/logger					Px,
   /etc/cron.{daily,hourly,monthly,weekly}/*		Px,
@@ -103,7 +103,7 @@ profile cronbase.run-crons /usr/sbin/run-crons {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/find					mr,
-    /bin/rm						Px -> cronbase_rm,	# FS ACCESS! cronbase_rm
+    /bin/rm						Px -> cronbase_rm,
     
     # READS/WRITES -------------------------------------
     /var/spool/cron/lastrun/				r,

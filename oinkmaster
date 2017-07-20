@@ -24,8 +24,8 @@ profile oinkmaster /usr/bin/oinkmaster.pl {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/oinkmaster.pl				mr,
-  /bin/gzip						Cx,	# FS ACCESS! gzip
-  /bin/tar						Cx,	# FS ACCESS! tar
+  /bin/gzip						Cx,
+  /bin/tar						Cx,
   /usr/bin/wget						Px,
   
   # READS/WRITES ---------------------------------------
@@ -76,9 +76,9 @@ profile oinkmaster.cron.daily /etc/cron.daily/oinkmaster {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/oinkmaster				r,
   @{shell}						mr,
-  /bin/mktemp						Cx,	# FS ACCESS! mktemp
-  /bin/cat						Cx,	# FS ACCESS! cat
-  /bin/rm						Cx,	# FS ACCESS! rm
+  /bin/mktemp						Cx,
+  /bin/cat						Cx,
+  /bin/rm						Cx,
   /bin/basename						Px,
   /usr/bin/libnotify-notify-send-users			Px,
   /usr/bin/mail						Px,

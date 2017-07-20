@@ -50,8 +50,8 @@ profile iptables.init.d /etc/init.d/iptables {
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/dirname						Px,
-  /bin/cat						Cx,	# FS ACCESS! cat
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/cat						Cx,
+  /bin/mkdir						Cx,
   /sbin/xtables-multi					Px,
   
   # READS/WRITES ---------------------------------------
@@ -110,7 +110,7 @@ profile iptables.firewall /usr/sbin/firewall {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/firewall					r,
   @{shell}						mr,
-  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/cat						Cx,
   /sbin/xtables-multi					Px,
   /etc/init.d/iptables					Px,
   

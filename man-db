@@ -28,7 +28,7 @@ profile man-db.mandb /usr/bin/mandb {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mandb					mr,
-  /bin/bzip2						Cx,	# FS ACCESS! bzip2
+  /bin/bzip2						Cx,
   /usr/libexec/man-db/manconv				Px,
   
   # READS/WRITES ---------------------------------------
@@ -65,16 +65,16 @@ profile man-db.man /usr/bin/man {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/man						mr,
-  /bin/bzip2						Cx,	# FS ACCESS! bzip2
-  /bin/gzip						Cx,	# FS ACCESS! gzip
-  /usr/bin/less						Cx,	# FS ACCESS! less
-  /usr/bin/preconv					Cx,	# FS ACCESS! preconv
-  /usr/bin/neqn						Cx,	# FS ACCESS! neqn
-  /usr/bin/nroff					Cx,	# FS ACCESS! nroff
-  /usr/bin/groff					Cx,	# FS ACCESS! groff
-  /usr/bin/troff					Cx,	# FS ACCESS! troff
-  /usr/bin/grotty					Cx,	# FS ACCESS! grotty
-  /usr/bin/tbl						Cx,	# FS ACCESS! tbl
+  /bin/bzip2						Cx,
+  /bin/gzip						Cx,
+  /usr/bin/less						Cx,
+  /usr/bin/preconv					Cx,
+  /usr/bin/neqn						Cx,
+  /usr/bin/nroff					Cx,
+  /usr/bin/groff					Cx,
+  /usr/bin/troff					Cx,
+  /usr/bin/grotty					Cx,
+  /usr/bin/tbl						Cx,
   /usr/bin/locale					Px,
   /usr/libexec/man-db/manconv				Px,
   
@@ -176,10 +176,10 @@ profile man-db.cron.daily /etc/cron.daily/man-db {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/man-db				r,
   @{shell}						mr,
-  /bin/chown						Cx,	# FS ACCESS! chown
-  /bin/chmod						Cx,	# FS ACCESS! chmod
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
-  /usr/bin/nice						Cx,	# FS ACCESS! nice
+  /bin/chown						Cx,
+  /bin/chmod						Cx,
+  /bin/mkdir						Cx,
+  /usr/bin/nice						Cx,
   
   profile chown /bin/chown {
     #include <abstractions/base>

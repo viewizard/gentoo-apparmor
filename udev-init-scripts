@@ -25,8 +25,8 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/grep						Cx,	# FS ACCESS! grep
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/grep						Cx,
+  /bin/mkdir						Cx,
   /bin/udevadm						Px,
   /sbin/udevd						Px,
   
@@ -80,8 +80,8 @@ profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger {
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/udevadm						Px,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
-  /bin/cat						Cx,	# FS ACCESS! cat
+  /bin/mkdir						Cx,
+  /bin/cat						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/udev-trigger			r,
@@ -135,7 +135,7 @@ profile udev-init-scripts.udev-settle.init.d /etc/init.d/udev-settle {
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/udevadm						Px,
-  /bin/mkdir						Cx,	# FS ACCESS! mkdir
+  /bin/mkdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/udev-settle			r,
