@@ -226,6 +226,9 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/stat					mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /tmp/dailyhomebackup.cron.??????		w,
   }
 }
 
@@ -440,5 +443,8 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/stat					mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /tmp/rootbackup.cron.??????			w,
   }
 }
