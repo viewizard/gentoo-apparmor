@@ -22,11 +22,11 @@ profile wireshark /usr/bin/wireshark{,-gtk} {
   #include <abstractions/cups-client>
   #include <abstractions/video>
   #include <abstractions/X>
-  #include <abstractions/dbus-strict>
-  #include <abstractions/dbus-session-strict>
-  #include <abstractions/dbus-accessibility-strict>
-  #include <abstractions/dbus-pattern/at-spi>
-  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus/system-strict>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/accessibility-strict>
+  #include <abstractions/dbus/at-spi>
+  #include <abstractions/dbus/gvfs>
   #include <abstractions/unix-pattern/gvfsd-trash>
   #include <abstractions/unix-pattern/gvfsd-network>
   #include <abstractions/fs-access-by-users-preset-rwk>
@@ -66,8 +66,8 @@ profile wireshark /usr/bin/wireshark{,-gtk} {
 
 profile wireshark.dumpcap /usr/bin/dumpcap {
   #include <abstractions/base>
-  #include <abstractions/dbus-strict>
-  #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus/system-strict>
+  #include <abstractions/dbus/session-strict>
   
   # CAPABILITIES ---------------------------------------
   capability net_admin,

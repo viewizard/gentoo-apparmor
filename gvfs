@@ -13,10 +13,10 @@
 profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monitor {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-  #include <abstractions/dbus-strict>
-  #include <abstractions/dbus-session-strict>
-  #include <abstractions/dbus-pattern/udisks>
-  #include <abstractions/dbus-pattern/session-bind>
+  #include <abstractions/dbus/system-strict>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/udisks>
+  #include <abstractions/dbus/session-bind>
   #include <abstractions/unix-pattern/gvfsd-burn>
   #include <local/gvfs-udisks2-volume-monitor>
   
@@ -73,8 +73,8 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
 
 profile gvfs.gvfsd /usr/libexec/gvfsd {
   #include <abstractions/base>
-  #include <abstractions/dbus-session-strict>
-  #include <abstractions/dbus-pattern/session-bind>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/session-bind>
   
   # DBUS -----------------------------------------------
   dbus (send, receive)
@@ -146,7 +146,7 @@ profile gvfs.gvfsd-ftp /usr/libexec/gvfsd-ftp {
 
 profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   #include <abstractions/base>
-  #include <abstractions/dbus-session-strict>
+  #include <abstractions/dbus/session-strict>
   #include <abstractions/unix-pattern/gvfsd-smb>
   #include <abstractions/unix-pattern/gvfsd-smb-virtual>
   
@@ -191,9 +191,9 @@ profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
 profile gvfs.gvfsd-http /usr/libexec/gvfsd-http {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-  #include <abstractions/dbus-strict>
-  #include <abstractions/dbus-session-strict>
-  #include <abstractions/dbus-pattern/session-bind>
+  #include <abstractions/dbus/system-strict>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/session-bind>
   #include <abstractions/dconf>
   #include <abstractions/ssl-certs>
   
@@ -252,8 +252,8 @@ profile gvfs.gvfsd-localtest /usr/libexec/gvfsd-localtest {
 
 profile gvfs.gvfsd-metadata /usr/libexec/gvfsd-metadata {
   #include <abstractions/base>
-  #include <abstractions/dbus-session-strict>
-  #include <abstractions/dbus-pattern/session-bind>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/session-bind>
   
   # DBUS -----------------------------------------------
   dbus receive
@@ -278,8 +278,8 @@ profile gvfs.gvfsd-metadata /usr/libexec/gvfsd-metadata {
 profile gvfs.gvfsd-network /usr/libexec/gvfsd-network {
   #include <abstractions/base>
   #include <abstractions/dconf>
-  #include <abstractions/dbus-session-strict>
-  #include <abstractions/dbus-pattern/session-bind>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/session-bind>
   #include <abstractions/unix-pattern/gvfsd-smb-browse>
   
   # UNIX -----------------------------------------------
@@ -372,8 +372,8 @@ profile gvfs.gvfsd-smb /usr/libexec/gvfsd-smb {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/dconf>
-  #include <abstractions/dbus-session-strict>
-  #include <abstractions/dbus-pattern/session-bind>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/session-bind>
   #include <abstractions/nameservice>
   #include <abstractions/unix-pattern/gvfsd-fuse-virtual>
   
@@ -458,8 +458,8 @@ profile gvfs.gvfsd-smb /usr/libexec/gvfsd-smb {
 profile gvfs.gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse {
   #include <abstractions/base>
   #include <abstractions/dconf>
-  #include <abstractions/dbus-session-strict>
-  #include <abstractions/dbus-pattern/session-bind>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/session-bind>
   #include <abstractions/nameservice>
   
   # UNIX -----------------------------------------------
@@ -510,8 +510,8 @@ profile gvfs.gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse {
 
 profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   #include <abstractions/base>
-  #include <abstractions/dbus-session-strict>
-  #include <abstractions/dbus-pattern/session-bind>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/session-bind>
   #include <abstractions/fs-access-by-pattern-filemanager>
   
   # UNIX -----------------------------------------------

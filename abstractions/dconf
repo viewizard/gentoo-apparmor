@@ -8,17 +8,7 @@
 #
 # ------------------------------------------------------------------
 
-# DBUS -------------------------------------------------
-dbus send
-	bus=session
-	path="/ca/desrt/dconf/Writer/user"
-	interface="ca.desrt.dconf.Writer"
-	peer=(name="ca.desrt.dconf",label="dconf.dconf-service"),
-dbus receive
-	bus=session
-	path="/ca/desrt/dconf/Writer/user"
-	interface="ca.desrt.dconf.Writer"
-	peer=(name=":[0-9]*.[0-9]*",label="dconf.dconf-service"),
+#include <abstractions/dbus/dconf>
 
 # READS/WRITES -----------------------------------------
 owner /run/user/[0-9]*/dconf/{,user}			rw,	# FIX ME! Только для пользователей (owner>=1000).

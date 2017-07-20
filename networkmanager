@@ -12,10 +12,10 @@
 
 profile networkmanager.NetworkManager /usr/sbin/NetworkManager {
   #include <abstractions/base>
-  #include <abstractions/dbus-strict>
-  #include <abstractions/dbus-pattern/consolekit>
-  #include <abstractions/dbus-pattern/polkit>
-  #include <abstractions/dbus-pattern/system-bind>
+  #include <abstractions/dbus/system-strict>
+  #include <abstractions/dbus/consolekit>
+  #include <abstractions/dbus/polkit>
+  #include <abstractions/dbus/system-bind>
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
@@ -140,8 +140,8 @@ profile networkmanager.NetworkManager /usr/sbin/NetworkManager {
 
 profile networkmanager.nm-online /usr/bin/nm-online {
   #include <abstractions/base>
-  #include <abstractions/dbus-strict>
-  #include <abstractions/dbus-pattern/networkmanager>
+  #include <abstractions/dbus/system-strict>
+  #include <abstractions/dbus/networkmanager>
   
   # CAPABILITIES ---------------------------------------
   capability sys_tty_config,
@@ -170,8 +170,8 @@ profile networkmanager.nm-dhcp-helper /usr/libexec/nm-dhcp-helper {
 
 profile networkmanager.nm-dispatcher /usr/libexec/nm-dispatcher {
   #include <abstractions/base>
-  #include <abstractions/dbus-strict>
-  #include <abstractions/dbus-pattern/system-bind>
+  #include <abstractions/dbus/system-strict>
+  #include <abstractions/dbus/system-bind>
   
   # DBUS -----------------------------------------------
   dbus receive

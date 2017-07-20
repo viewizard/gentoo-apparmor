@@ -140,11 +140,11 @@ network inet6 dgram,
 Если необходимо вынести в абстракции запуск других процессов - использовать профили с запуском по Px/Cx, и только в крайнем случае использовать запуск в текущем профиле через ix (в основном, это необходимо для интерпритаторов таких как perl, python и openrc-run.sh из openrc).
 
 
-abstractions/dbus, abstractions/dbus-session, abstractions/dbus-accessibility - использовать только в процессе отладки, в конечных профилях должны использоваться ограниченные (-strict) версии.
-abstractions/dbus-pattern/session-bind - иногда используется как часть механизма проверки уже запущенной копии программы, в случае применения, необходимо проверить запуск 2 и более копий. Если используется бинд - значит в профиле должна быть секция DBUS (иначе, надо понимать, зачем программа биндит dbus).
-abstractions/dbus-pattern/at-spi - Assistive Technology Service Provider Interface, фича gnome 2+. Как правило, используется только в gnome-программах, а не во всех gtk-программах.
+abstractions/dbus/system, abstractions/dbus/session, abstractions/dbus/accessibility - использовать только в процессе отладки, в конечных профилях должны использоваться ограниченные (-strict) версии.
+abstractions/dbus/session-bind - иногда используется как часть механизма проверки уже запущенной копии программы, в случае применения, необходимо проверить запуск 2 и более копий. Если используется бинд - значит в профиле должна быть секция DBUS (иначе, надо понимать, зачем программа биндит dbus).
+abstractions/dbus/at-spi - Assistive Technology Service Provider Interface, фича gnome 2+. Как правило, используется только в gnome-программах, а не во всех gtk-программах.
 abstractions/dconf - как правило, gtk-программы работают с dconf на прямую (без gconf).
-abstractions/dbus-pattern/gconf - может использоваться qt-программами для взаимодействия по dbus с "реестром настроек" в gnome-окружении.
+abstractions/dbus/gconf - может использоваться qt-программами для взаимодействия по dbus с "реестром настроек" в gnome-окружении.
 abstractions/qt - включает в себя abstractions/gtk, т.к. нужна поддержка GTK+ стиля.
 
 

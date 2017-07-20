@@ -22,12 +22,12 @@ profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   #include <abstractions/gtk>
   #include <abstractions/video>
   #include <abstractions/X>
-  #include <abstractions/dbus-strict>
-  #include <abstractions/dbus-session-strict>
-  #include <abstractions/dbus-accessibility-strict>
-  #include <abstractions/dbus-pattern/at-spi>
-  #include <abstractions/dbus-pattern/gvfs>
-  #include <abstractions/dbus-pattern/session-bind>
+  #include <abstractions/dbus/system-strict>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/accessibility-strict>
+  #include <abstractions/dbus/at-spi>
+  #include <abstractions/dbus/gvfs>
+  #include <abstractions/dbus/session-bind>
   #include <abstractions/binary-helper-strict-web>
   #include <abstractions/fs-access-by-users-preset-rwk>
   #include <abstractions/fs-deny-by-pattern-internet>
@@ -85,10 +85,10 @@ profile gimp.plug-ins /usr/lib{,32,64}/gimp/[0-9].[0-9]/plug-ins/* {
   #include <abstractions/gtk>
   #include <abstractions/video>
   #include <abstractions/X>
-  #include <abstractions/dbus-session-strict>
-  #include <abstractions/dbus-accessibility-strict>
-  #include <abstractions/dbus-pattern/at-spi>
-  #include <abstractions/dbus-pattern/gvfs>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/accessibility-strict>
+  #include <abstractions/dbus/at-spi>
+  #include <abstractions/dbus/gvfs>
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/gimp/[0-9].[0-9]/plug-ins/*		mr,

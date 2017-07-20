@@ -46,9 +46,9 @@ profile udisks.udisks-daemon /usr/lib{,32,64}/udisks/udisks-daemon {	# Отно�
 
 profile udisks.udisksd /usr/libexec/udisks2/udisksd {		# Относится к версии 2.х (2-й слот).
   #include <abstractions/base>
-  #include <abstractions/dbus-strict>
-  #include <abstractions/dbus-pattern/polkit>
-  #include <abstractions/dbus-pattern/system-bind>
+  #include <abstractions/dbus/system-strict>
+  #include <abstractions/dbus/polkit>
+  #include <abstractions/dbus/system-bind>
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------

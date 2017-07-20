@@ -16,10 +16,10 @@ profile xfce4-notifyd /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd {
   #include <abstractions/fonts>
   #include <abstractions/gtk>
   #include <abstractions/video>
-  #include <abstractions/dbus-session-strict>
-  #include <abstractions/dbus-pattern/gvfs>
-  #include <abstractions/dbus-pattern/xfconf>
-  #include <abstractions/dbus-pattern/session-bind>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/gvfs>
+  #include <abstractions/dbus/xfconf>
+  #include <abstractions/dbus/session-bind>
   #include <abstractions/X_sudo>				# RBAC! Нужно для запуска запущенным под root-ом
   								# dbus-daemon, чтобы сделал вывод в сессию пользователя.
   								# Временно делаем одним профилем.
@@ -62,12 +62,12 @@ profile xfce4-notifyd.xfce4-notifyd-config /usr/bin/xfce4-notifyd-config {
   #include <abstractions/gtk>
   #include <abstractions/video>
   #include <abstractions/X>
-  #include <abstractions/dbus-session-strict>
-  #include <abstractions/dbus-accessibility-strict>
-  #include <abstractions/dbus-pattern/at-spi>
-  #include <abstractions/dbus-pattern/gvfs>
-  #include <abstractions/dbus-pattern/xfconf>
-  #include <abstractions/dbus-pattern/notifications>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/accessibility-strict>
+  #include <abstractions/dbus/at-spi>
+  #include <abstractions/dbus/gvfs>
+  #include <abstractions/dbus/xfconf>
+  #include <abstractions/dbus/notifications>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

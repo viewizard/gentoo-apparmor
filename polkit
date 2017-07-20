@@ -12,9 +12,9 @@
 
 profile polkit.polkitd /usr/lib{,32,64}/polkit-1/polkitd {
   #include <abstractions/base>
-  #include <abstractions/dbus-strict>
-  #include <abstractions/dbus-pattern/consolekit>
-  #include <abstractions/dbus-pattern/system-bind>
+  #include <abstractions/dbus/system-strict>
+  #include <abstractions/dbus/consolekit>
+  #include <abstractions/dbus/system-bind>
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
@@ -66,8 +66,8 @@ profile polkit.polkitd /usr/lib{,32,64}/polkit-1/polkitd {
 
 profile polkit.polkit-agent-helper /usr/lib{,32,64}/polkit-1/polkit-agent-helper-1 {
   #include <abstractions/base>
-  #include <abstractions/dbus-strict>
-  #include <abstractions/dbus-pattern/polkit>
+  #include <abstractions/dbus/system-strict>
+  #include <abstractions/dbus/polkit>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
   
@@ -97,8 +97,8 @@ profile polkit.pkcheck /usr/bin/pkcheck {
 
 profile polkit.pkexec /usr/bin/pkexec {
   #include <abstractions/base>
-  #include <abstractions/dbus-strict>
-  #include <abstractions/dbus-pattern/polkit>
+  #include <abstractions/dbus/system-strict>
+  #include <abstractions/dbus/polkit>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
   
