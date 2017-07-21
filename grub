@@ -14,53 +14,226 @@
 
 #include <tunables/global>
 
-profile grub.grub-mkconfig /usr/sbin/grub-mkconfig flags=(complain) {
+profile grub.grub-mkconfig /usr/sbin/grub-mkconfig {
   #include <abstractions/base>
-  
-  # CAPABILITIES ---------------------------------------
-  capability mknod,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/mountinfo				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/grub-mkconfig				r,
   @{shell}						mr,
   /bin/basename						Px,
-  /bin/dirname						Px,
-  /bin/rm						ix,	# FS ACCESS!
-  /bin/cat						ix,	# FS ACCESS!
-  /bin/cut						ix,	# FS ACCESS!
-  /bin/sed						ix,	# FS ACCESS!
-  /bin/tr						Px,
-  /bin/sort						ix,	# FS ACCESS!
-  /bin/head						ix,	# FS ACCESS!
-  /bin/grep						ix,	# FS ACCESS!
-  /bin/fgrep						ixr,	# FS ACCESS!
-  /bin/tail						ix,	# FS ACCESS!
-  /bin/mv						ix,	# FS ACCESS!
-  /bin/uname						Px,
+  /bin/rm						Cx,
+  /bin/cat						Cx,
+  /bin/mv						Cx,
   /usr/bin/which					Px,
-  /usr/bin/gettext					ix,	# FIX ME! Вынести в отдельный профиль.
-  /usr/bin/grub-script-check				ix,	# FIX ME! Вынести в отдельный профиль.
-  /usr/bin/grub-mkrelpath				ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/gettext					Px,
+  /usr/bin/grub-script-check				Px,
   /usr/sbin/grub-probe					Px,
-  /etc/grub.d/{,*}					ixr,	# FIX ME! Вынести в отдельный профиль.
+  /etc/grub.d/*						Px,
   
   # READS/WRITES ---------------------------------------
-  /							r,
-  /boot/						r,
-  /boot/grub/grub.cfg*					wr,
+  /boot/grub/grub.cfg.new				w,
   /etc/default/grub					r,
+  /etc/grub.d/						r,
   /usr/share/grub/{,**}					r,
   
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.*					rw,
+  
+  profile rm /bin/rm {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # READS/WRITES -------------------------------------
+    /boot/grub/grub.cfg.new				rw,
+  }
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+    
+    # READS/WRITES -------------------------------------
+    /boot/grub/grub.cfg.new				w,
+    
+    # DENY INHERIT -------------------------------------
+    /tmp/sh-thd.*					rw,
+  }
+  
+  profile mv /bin/mv {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mv						mr,
+    
+    # READS/WRITES -------------------------------------
+    /boot/grub/grub.cfg{,.new}				rw,
+  }
 }
 
-profile grub.grub-probe /usr/sbin/grub-probe flags=(complain) {
+profile grub.grub-script-check /usr/bin/grub-script-check {
+  #include <abstractions/base>
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/grub-script-check				mr,
+  
+  # READS/WRITES ---------------------------------------
+  /boot/grub/grub.cfg.new				rw,
+}
+
+profile grub.grub-mkrelpath /usr/bin/grub-mkrelpath {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  @{PROC}/@{pid}/mountinfo				r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/grub-mkrelpath				mr,
+}
+
+profile grub.grub.d /etc/grub.d/* {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /etc/grub.d/*						r,
+  @{shell}						mr,
+  /bin/tr						Px,
+  /bin/cut						Cx,
+  /bin/cat						Cx,
+  /bin/sed						Cx,
+  /bin/tail						Cx,
+  /bin/sort						Cx,
+  /bin/head						Cx,
+  /bin/grep						Cx,
+  /bin/fgrep						Cx,
+  /bin/uname						Px,
+  /bin/basename						Px,
+  /bin/dirname						Px,
+  /usr/bin/which					Px,
+  /usr/bin/gettext					Px,
+  /usr/sbin/grub-probe					Px,
+  /usr/bin/grub-mkrelpath				Px,
+  
+  # READS/WRITES ---------------------------------------
+  /							r,
+  /boot/						r,
+  /boot/grub/grub.cfg.new				w,
+  /usr/share/grub/{,**}					r,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/sh-thd.*					rw,
+  
+  profile cut /bin/cut {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cut						mr,
+    
+    # DENY INHERIT -------------------------------------
+    /boot/grub/grub.cfg.new				w,
+  }
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+    
+    # DENY INHERIT -------------------------------------
+    /boot/grub/grub.cfg.new				w,
+    /tmp/sh-thd.*					rw,
+  }
+  
+  profile sed /bin/sed {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+    
+    # DENY INHERIT -------------------------------------
+    /boot/grub/grub.cfg.new				w,
+    /tmp/sh-thd.*					rw,
+  }
+  
+  profile tail /bin/tail {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/tail						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/grub.d/40_custom				r,
+    
+    # DENY INHERIT -------------------------------------
+    /boot/grub/grub.cfg.new				w,
+  }
+  
+  profile sort /bin/sort {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability mknod,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sort						mr,
+  }
+  
+  profile head /bin/head {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/head						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+    
+    # DENY INHERIT -------------------------------------
+    /boot/grub/grub.cfg.new				w,
+  }
+  
+  profile fgrep /bin/fgrep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/fgrep						r,
+    @{shell}						mr,
+    /bin/grep						ix,	# Все правильно, для egrep используем с ix.
+  }
+}
+
+profile grub.grub-probe /usr/sbin/grub-probe {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -85,7 +258,7 @@ profile grub.grub-probe /usr/sbin/grub-probe flags=(complain) {
   /sbin/lvm						Px,
 }
 
-profile grub.grub-install /usr/sbin/grub-install flags=(complain) {
+profile grub.grub-install /usr/sbin/grub-install {
   #include <abstractions/base>
   
   # CAPABILITIES -------------------------------------
@@ -112,7 +285,7 @@ profile grub.grub-install /usr/sbin/grub-install flags=(complain) {
   /boot/grub/{,**}					rw,
   /usr/share/grub/{,**}					r,
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
