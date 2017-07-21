@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+# предустановка для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
 @{USERS_DIR}="[^.]**"
 @{USERS_FILE}="[^.]*"
 
@@ -29,10 +29,10 @@ profile ghex /usr/bin/ghex {
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
-  #include <abstractions/fs-access-by-users-preset-rwk>
-  #include <abstractions/fs-access-by-pattern-xdg-open>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions/fs/access-by-pattern-xdg-open>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -57,11 +57,11 @@ profile ghex_root {
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
-  #include <abstractions/fs-access-by-users-preset-rwk>
-  #include <abstractions/fs-access-by-pattern-systemusers>
-  #include <abstractions/fs-access-by-pattern-xdg-open_sudo>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions/fs/access-by-pattern-systemusers>
+  #include <abstractions/fs/access-by-pattern-xdg-open_sudo>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

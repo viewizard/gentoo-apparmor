@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+# предустановка для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
 @{USERS_DIR}="[^.]**"
 @{USERS_FILE}="[^.]*"
 
@@ -25,9 +25,9 @@ profile rapidsvn /usr/bin/rapidsvn {
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
-  #include <abstractions/fs-access-by-users-preset-rwk>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   #include <abstractions/nameservice>
   #include <abstractions/binary-helper-strict-web>
   

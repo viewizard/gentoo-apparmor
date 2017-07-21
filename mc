@@ -14,7 +14,7 @@ profile mc /usr/bin/mc {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ncurses>
-  #include <abstractions/fs-access-by-pattern-filemanager>
+  #include <abstractions/fs/access-by-pattern-filemanager>
   #include <abstractions/X>
   
   # SIGNAL ---------------------------------------------
@@ -62,8 +62,8 @@ profile mc_root {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ncurses>
-  #include <abstractions/fs-access-by-pattern-filemanager>
-  #include <abstractions/fs-access-by-pattern-systemusers>
+  #include <abstractions/fs/access-by-pattern-filemanager>
+  #include <abstractions/fs/access-by-pattern-systemusers>
   #include <abstractions/X_sudo>				# RBAC! Вызывается через sudo в X-сессии пользователя.
   
   # CAPABILITIES ---------------------------------------

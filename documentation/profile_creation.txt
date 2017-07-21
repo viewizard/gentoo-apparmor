@@ -270,13 +270,13 @@ root # find * -maxdepth 0 -type f -exec ln -sr ./{} ./force-complain/{} \;
 При использовании на профиле "shadow.login" flags=(complain) или force-complain, AppArmor будет требовать hat пользователя (если в pam указан первый пользователь). Т.е. надо учитывать, что в случае обучения, AppArmor будет считать, что профиль "shadow.login" должен содержать правильный hat.
 
 Важно!
-Программы, работающие с интернетом с изолированным доступом к файловой системе должны использовать абстракцию abstractions/fs-access-by-pattern-internet.
+Программы, работающие с интернетом с изолированным доступом к файловой системе должны использовать абстракцию abstractions/fs/access-by-pattern-internet.
 
 Важно!
-Если прорамма работает с интернетом и вносит изменения или создаёт файлы за пределами абстракции abstractions/fs-access-by-pattern-internet, необходимо добавить перечень этих файлов (директорий) в абстракцию abstractions/fs-deny-by-pattern-internet.
+Если прорамма работает с интернетом и вносит изменения или создаёт файлы за пределами абстракции abstractions/fs/access-by-pattern-internet, необходимо добавить перечень этих файлов (директорий) в абстракцию abstractions/fs/deny-by-pattern-internet.
 
 Важно!
-Для программ, использующих доступ к пользовательским файлам без ограничений (например, используется abstractions/fs-access-by-users-preset-r* с @{USERS_FILE}="**") обязательно использовать абстракции abstractions/fs-deny-private или abstractions/fs-deny-private-strict. Исключения - работа с файлами из этих абстракций.
+Для программ, использующих доступ к пользовательским файлам без ограничений (например, используется abstractions/fs/access-by-users-preset-r* с @{USERS_FILE}="**") обязательно использовать абстракции abstractions/fs/deny-private или abstractions/fs/deny-private-strict. Исключения - работа с файлами из этих абстракций.
 
 Важно!
 После обновления системы, установки и/или удаления пакетов через portage - выполнять проверку скриптом /usr/local/sbin/aa_portage.sh на необходимость включения/отключения (через симлинк в /etc/apparmor.d/disable/) профилей AppArmor.

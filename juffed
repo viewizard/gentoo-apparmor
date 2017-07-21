@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+# предустановка для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
 @{USERS_DIR}="[^.]**"
 @{USERS_FILE}="[^.]*"
 
@@ -26,10 +26,10 @@ profile juffed /usr/bin/juffed {
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
-  #include <abstractions/fs-access-strict>
-  #include <abstractions/fs-access-by-users-preset-rwk>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-strict>
+  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -65,10 +65,10 @@ profile juffed_root {
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open_root>
-  #include <abstractions/fs-access-by-users-preset-rwk>
-  #include <abstractions/fs-access-by-pattern-systemusers>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions/fs/access-by-pattern-systemusers>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   
   # CAPABILITIES ---------------------------------------
   capability fowner,

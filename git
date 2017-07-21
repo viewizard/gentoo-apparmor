@@ -10,15 +10,15 @@
 
 #include <tunables/global>
 
-# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+# предустановка для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
 @{USERS_DIR}="[^.]**"
 @{USERS_FILE}="[^.]**"
 
 profile git /usr/{bin,libexec/git-core}/git {
   #include <abstractions/base>
-  #include <abstractions/fs-access-by-users-preset-rwkl>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwkl>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -57,9 +57,9 @@ profile git /usr/{bin,libexec/git-core}/git {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/ssl-certs>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # NETWORK ------------------------------------------
     network netlink raw,
@@ -82,10 +82,10 @@ profile git /usr/{bin,libexec/git-core}/git {
 
 profile git_root {
   #include <abstractions/base>
-  #include <abstractions/fs-access-by-users-preset-rwkl>
-  #include <abstractions/fs-access-by-pattern-systemusers>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwkl>
+  #include <abstractions/fs/access-by-pattern-systemusers>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   
   # CAPABILITIES ---------------------------------------
   capability fowner,
@@ -129,10 +129,10 @@ profile git_root {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/ssl-certs>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # CAPABILITIES -------------------------------------
     capability mknod,

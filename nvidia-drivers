@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+# предустановка для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
 @{USERS_DIR}="[^.]**"
 @{USERS_FILE}="[^.]*"
 
@@ -22,8 +22,8 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings {
   #include <abstractions/video-nvidia>
   #include <abstractions/X>
   #include <abstractions/dconf>
-  #include <abstractions/fs-access-by-users-preset-rwk>
-  #include <abstractions/fs-deny-by-pattern-internet>		# Не ставим abstractions/fs-deny-private-strict,
+  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions/fs/deny-by-pattern-internet>		# Не ставим abstractions/fs/deny-private-strict,
   								# т.к. работает с *rc файлами.
   #include <abstractions/nameservice>
   #include <abstractions/dbus/system-strict>

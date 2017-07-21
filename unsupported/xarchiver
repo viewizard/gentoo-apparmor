@@ -28,7 +28,7 @@
 
 #include <tunables/global>
 
-# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+# предустановка для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
 @{USERS_DIR}="[^.]**"
 @{USERS_FILE}="[^.]**"
 
@@ -45,9 +45,9 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dconf>
-  #include <abstractions/fs-access-by-users-preset-rwkl>
-  #include <abstractions/fs-deny-private-strict>
-  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs/access-by-users-preset-rwkl>
+  #include <abstractions/fs/deny-private-strict>
+  #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/xdg-open>
   #include <abstractions/binary-helper-strict>
   
@@ -84,9 +84,9 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   
   profile mv /bin/mv flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/mv						mr,
@@ -97,9 +97,9 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   
   profile rm /bin/rm flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -110,9 +110,9 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   
   profile cp /bin/cp flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/cp						mr,
@@ -121,9 +121,9 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   profile tar /bin/tar flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/tar						mr,
@@ -136,9 +136,9 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   
   profile bzip2 /bin/bzip2 flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/bzip2						mr,
@@ -146,9 +146,9 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   
   profile gzip /bin/gzip flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/gzip						mr,
@@ -156,9 +156,9 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   
   profile 7z /usr/bin/7z flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -175,9 +175,9 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   
   profile 7za /usr/bin/7za flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -191,9 +191,9 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   
   profile zip /usr/bin/zip flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/zip					mr,
@@ -201,9 +201,9 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   
   profile unzip /usr/bin/unzip flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/unzip					mr,
@@ -211,9 +211,9 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   
   profile lzip /usr/bin/lzip flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/lzip					mr,
@@ -224,9 +224,9 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   
   profile xz /usr/bin/xz flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/xz						mr,
@@ -234,9 +234,9 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   
   profile ar /usr/@{CHOST}/binutils-bin/*/ar flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/@{CHOST}/binutils-bin/*/ar			mr,
@@ -244,9 +244,9 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   
   profile rar /opt/rar/rar {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /opt/rar/rar					mr,
@@ -261,9 +261,9 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
 # множественные вложенные профили, выносим в отдельный профиль.
 profile xarchiver_tar_shell flags=(attach_disconnected,complain) {
   #include <abstractions/base>
-  #include <abstractions/fs-access-by-users-preset-rwkl>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwkl>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -280,9 +280,9 @@ profile xarchiver_tar_shell flags=(attach_disconnected,complain) {
   
   profile gzip /bin/gzip flags=(attach_disconnected,complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/gzip						mr,
@@ -293,9 +293,9 @@ profile xarchiver_tar_shell flags=(attach_disconnected,complain) {
   
   profile bzip2 /bin/bzip2 flags=(attach_disconnected,complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/bzip2						mr,
@@ -306,9 +306,9 @@ profile xarchiver_tar_shell flags=(attach_disconnected,complain) {
   
   profile lzip /usr/bin/lzip flags=(attach_disconnected,complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/lzip					mr,
@@ -319,9 +319,9 @@ profile xarchiver_tar_shell flags=(attach_disconnected,complain) {
   
   profile xz /usr/bin/xz flags=(attach_disconnected,complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/xz						mr,
@@ -346,10 +346,10 @@ profile xarchiver_root flags=(complain) {
   #include <abstractions/dconf>
   #include <abstractions/xdg-open_root>
   #include <abstractions/binary-helper-strict_root>
-  #include <abstractions/fs-access-by-users-preset-rwkl>
-  #include <abstractions/fs-access-by-pattern-systemusers>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwkl>
+  #include <abstractions/fs/access-by-pattern-systemusers>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   
   # CAPABILITIES ---------------------------------------
   capability kill,
@@ -387,10 +387,10 @@ profile xarchiver_root flags=(complain) {
   
   profile mv /bin/mv flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/mv						mr,
@@ -398,10 +398,10 @@ profile xarchiver_root flags=(complain) {
   
   profile rm /bin/rm flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -412,10 +412,10 @@ profile xarchiver_root flags=(complain) {
   
   profile cp /bin/cp flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,
@@ -427,10 +427,10 @@ profile xarchiver_root flags=(complain) {
   profile tar /bin/tar flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # CAPABILITIES ---------------------------------------
     capability chown,
@@ -448,10 +448,10 @@ profile xarchiver_root flags=(complain) {
   
   profile bzip2 /bin/bzip2 flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/bzip2						mr,
@@ -459,10 +459,10 @@ profile xarchiver_root flags=(complain) {
   
   profile gzip /bin/gzip flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/gzip						mr,
@@ -470,10 +470,10 @@ profile xarchiver_root flags=(complain) {
   
   profile 7z /usr/bin/7z flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -490,10 +490,10 @@ profile xarchiver_root flags=(complain) {
   
   profile 7za /usr/bin/7za flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -507,10 +507,10 @@ profile xarchiver_root flags=(complain) {
   
   profile zip /usr/bin/zip flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/zip					mr,
@@ -518,10 +518,10 @@ profile xarchiver_root flags=(complain) {
   
   profile unzip /usr/bin/unzip flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/unzip					mr,
@@ -529,10 +529,10 @@ profile xarchiver_root flags=(complain) {
   
   profile lzip /usr/bin/lzip flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/lzip					mr,
@@ -540,10 +540,10 @@ profile xarchiver_root flags=(complain) {
   
   profile xz /usr/bin/xz flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/xz						mr,
@@ -551,10 +551,10 @@ profile xarchiver_root flags=(complain) {
   
   profile ar /usr/@{CHOST}/binutils-bin/*/ar flags=(complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/@{CHOST}/binutils-bin/*/ar			mr,
@@ -562,10 +562,10 @@ profile xarchiver_root flags=(complain) {
   
   profile rar /opt/rar/rar {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /opt/rar/rar					mr,
@@ -580,10 +580,10 @@ profile xarchiver_root flags=(complain) {
 # множественные вложенные профили, выносим в отдельный профиль.
 profile xarchiver_tar_shell_root flags=(attach_disconnected,complain) {
   #include <abstractions/base>
-  #include <abstractions/fs-access-by-users-preset-rwkl>
-  #include <abstractions/fs-access-by-pattern-systemusers>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwkl>
+  #include <abstractions/fs/access-by-pattern-systemusers>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -600,10 +600,10 @@ profile xarchiver_tar_shell_root flags=(attach_disconnected,complain) {
   
   profile gzip /bin/gzip flags=(attach_disconnected,complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/gzip						mr,
@@ -614,10 +614,10 @@ profile xarchiver_tar_shell_root flags=(attach_disconnected,complain) {
   
   profile bzip2 /bin/bzip2 flags=(attach_disconnected,complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/bzip2						mr,
@@ -628,10 +628,10 @@ profile xarchiver_tar_shell_root flags=(attach_disconnected,complain) {
   
   profile lzip /usr/bin/lzip flags=(attach_disconnected,complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/lzip					mr,
@@ -642,10 +642,10 @@ profile xarchiver_tar_shell_root flags=(attach_disconnected,complain) {
   
   profile xz /usr/bin/xz flags=(attach_disconnected,complain) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/xz						mr,

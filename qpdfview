@@ -11,7 +11,7 @@
 #include <tunables/global>
 
 @{local_ext}="{pdf,ps,eps,djvu,djv,PDF,PS,EPS,DJVU,DJV}"
-# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+# предустановка для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
 @{USERS_DIR}="[^.]**"
 @{USERS_FILE}="[^.]*.@{local_ext}"
 
@@ -27,8 +27,8 @@ profile qpdfview /usr/bin/qpdfview {
   #include <abstractions/video>
   #include <abstractions/X>
   #include <abstractions/xdg-open>
-  #include <abstractions/fs-access-by-users-preset-rwk>
-  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/nameservice>
   
   # DBUS -----------------------------------------------

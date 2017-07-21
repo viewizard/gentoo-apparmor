@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+# предустановка для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
 @{USERS_DIR}="[^.]**"
 @{USERS_FILE}="[^.]*.{jpg,jpeg,tif,tiff,png,pnm,ps,pdf,rgba,txt,JPG,JPEG,TIF,TIFF,PNG,PNM,PS,PDF,RGBA,TXT}"
 
@@ -21,8 +21,8 @@ profile xsane /usr/bin/xsane {
   #include <abstractions/gtk>
   #include <abstractions/video>
   #include <abstractions/X>
-  #include <abstractions/fs-access-by-users-preset-rwk>
-  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>

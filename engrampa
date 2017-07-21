@@ -14,7 +14,7 @@
 
 #include <tunables/global>
 
-# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+# предустановка для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
 @{USERS_DIR}="[^.]**"
 @{USERS_FILE}="[^.]**"
 
@@ -32,9 +32,9 @@ profile engrampa /usr/bin/engrampa {
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dconf>
-  #include <abstractions/fs-access-by-users-preset-rwkl>
-  #include <abstractions/fs-deny-private-strict>
-  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs/access-by-users-preset-rwkl>
+  #include <abstractions/fs/deny-private-strict>
+  #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/unix/gvfsd-trash>
   #include <abstractions/unix/gvfsd-network>
   #include <abstractions/xdg-open>
@@ -84,9 +84,9 @@ profile engrampa /usr/bin/engrampa {
   
   profile mv /bin/mv {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/mv						mr,
@@ -97,9 +97,9 @@ profile engrampa /usr/bin/engrampa {
   
   profile rm /bin/rm {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -116,9 +116,9 @@ profile engrampa /usr/bin/engrampa {
   
   profile cp /bin/cp {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/cp						mr,
@@ -133,9 +133,9 @@ profile engrampa /usr/bin/engrampa {
   profile tar /bin/tar {
     #include <abstractions/base>
     #include <abstractions/nameservice>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/tar						mr,
@@ -154,9 +154,9 @@ profile engrampa /usr/bin/engrampa {
   
   profile bzip2 /bin/bzip2 {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/bzip2						mr,
@@ -170,9 +170,9 @@ profile engrampa /usr/bin/engrampa {
   
   profile gzip /bin/gzip {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/gzip						mr,
@@ -186,9 +186,9 @@ profile engrampa /usr/bin/engrampa {
   
   profile 7z /usr/bin/7z {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -208,9 +208,9 @@ profile engrampa /usr/bin/engrampa {
   
   profile 7za /usr/bin/7za {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -227,9 +227,9 @@ profile engrampa /usr/bin/engrampa {
   
   profile zip /usr/bin/zip {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/zip					mr,
@@ -240,9 +240,9 @@ profile engrampa /usr/bin/engrampa {
   
   profile unzip /usr/bin/unzip {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/unzip					mr,
@@ -253,9 +253,9 @@ profile engrampa /usr/bin/engrampa {
   
   profile lzip /usr/bin/lzip {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/lzip					mr,
@@ -269,9 +269,9 @@ profile engrampa /usr/bin/engrampa {
   
   profile xz /usr/bin/xz {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/xz						mr,
@@ -285,9 +285,9 @@ profile engrampa /usr/bin/engrampa {
   
   profile ar /usr/@{CHOST}/binutils-bin/*/ar {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/@{CHOST}/binutils-bin/*/ar			mr,
@@ -298,9 +298,9 @@ profile engrampa /usr/bin/engrampa {
   
   profile rar /opt/rar/rar {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /opt/rar/rar					mr,
@@ -318,9 +318,9 @@ profile engrampa /usr/bin/engrampa {
 # множественные вложенные профили, выносим в отдельный профиль.
 profile engrampa_rpm2cpio {
   #include <abstractions/base>
-  #include <abstractions/fs-access-by-users-preset-rwkl>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwkl>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/engrampa/rpm2cpio			mr,
@@ -342,9 +342,9 @@ profile engrampa_rpm2cpio {
 # множественные вложенные профили, выносим в отдельный профиль.
 profile engrampa_rpm2cpio_shell {
   #include <abstractions/base>
-  #include <abstractions/fs-access-by-users-preset-rwkl>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwkl>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -357,9 +357,9 @@ profile engrampa_rpm2cpio_shell {
   
   profile dd /bin/dd {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/dd						mr,
@@ -375,9 +375,9 @@ profile engrampa_rpm2cpio_shell {
   profile cpio /bin/cpio {
     #include <abstractions/base>
     #include <abstractions/nameservice>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/cpio						mr,
@@ -388,9 +388,9 @@ profile engrampa_rpm2cpio_shell {
 # множественные вложенные профили, выносим в отдельный профиль.
 profile engrampa_dpkg_deb {
   #include <abstractions/base>
-  #include <abstractions/fs-access-by-users-preset-rwkl>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwkl>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dpkg-deb					mr,
@@ -403,9 +403,9 @@ profile engrampa_dpkg_deb {
   
   profile rm /bin/rm {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/rm						mr,
@@ -417,9 +417,9 @@ profile engrampa_dpkg_deb {
   profile tar /bin/tar {
     #include <abstractions/base>
     #include <abstractions/nameservice>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/tar						mr,
@@ -433,9 +433,9 @@ profile engrampa_dpkg_deb {
 # множественные вложенные профили, выносим в отдельный профиль.
 profile engrampa_tar_shell flags=(attach_disconnected) {
   #include <abstractions/base>
-  #include <abstractions/fs-access-by-users-preset-rwkl>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwkl>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -452,9 +452,9 @@ profile engrampa_tar_shell flags=(attach_disconnected) {
   
   profile gzip /bin/gzip flags=(attach_disconnected) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/gzip						mr,
@@ -465,9 +465,9 @@ profile engrampa_tar_shell flags=(attach_disconnected) {
   
   profile bzip2 /bin/bzip2 flags=(attach_disconnected) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/bzip2						mr,
@@ -478,9 +478,9 @@ profile engrampa_tar_shell flags=(attach_disconnected) {
   
   profile lzip /usr/bin/lzip flags=(attach_disconnected) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/lzip					mr,
@@ -491,9 +491,9 @@ profile engrampa_tar_shell flags=(attach_disconnected) {
   
   profile xz /usr/bin/xz flags=(attach_disconnected) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/xz						mr,
@@ -519,10 +519,10 @@ profile engrampa_root {
   #include <abstractions/dconf>
   #include <abstractions/xdg-open_root>
   #include <abstractions/binary-helper-strict_root>
-  #include <abstractions/fs-access-by-users-preset-rwkl>
-  #include <abstractions/fs-access-by-pattern-systemusers>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwkl>
+  #include <abstractions/fs/access-by-pattern-systemusers>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   #include <abstractions/unix/gvfsd-trash>
   #include <abstractions/unix/gvfsd-network>
   
@@ -570,10 +570,10 @@ profile engrampa_root {
   
   profile mv /bin/mv {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/mv						mr,
@@ -584,10 +584,10 @@ profile engrampa_root {
   
   profile rm /bin/rm {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -604,10 +604,10 @@ profile engrampa_root {
   
   profile cp /bin/cp {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,
@@ -625,10 +625,10 @@ profile engrampa_root {
   profile tar /bin/tar {
     #include <abstractions/base>
     #include <abstractions/nameservice>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # CAPABILITIES ---------------------------------------
     capability chown,
@@ -652,10 +652,10 @@ profile engrampa_root {
   
   profile bzip2 /bin/bzip2 {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/bzip2						mr,
@@ -669,10 +669,10 @@ profile engrampa_root {
   
   profile gzip /bin/gzip {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/gzip						mr,
@@ -686,10 +686,10 @@ profile engrampa_root {
   
   profile 7z /usr/bin/7z {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -709,10 +709,10 @@ profile engrampa_root {
   
   profile 7za /usr/bin/7za {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -729,10 +729,10 @@ profile engrampa_root {
   
   profile zip /usr/bin/zip {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/zip					mr,
@@ -743,10 +743,10 @@ profile engrampa_root {
   
   profile unzip /usr/bin/unzip {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/unzip					mr,
@@ -757,10 +757,10 @@ profile engrampa_root {
   
   profile lzip /usr/bin/lzip {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/lzip					mr,
@@ -774,10 +774,10 @@ profile engrampa_root {
   
   profile xz /usr/bin/xz {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/xz						mr,
@@ -791,10 +791,10 @@ profile engrampa_root {
   
   profile ar /usr/@{CHOST}/binutils-bin/*/ar {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/@{CHOST}/binutils-bin/*/ar			mr,
@@ -805,10 +805,10 @@ profile engrampa_root {
   
   profile rar /opt/rar/rar {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /opt/rar/rar					mr,
@@ -823,10 +823,10 @@ profile engrampa_root {
 # множественные вложенные профили, выносим в отдельный профиль.
 profile engrampa_rpm2cpio_root {
   #include <abstractions/base>
-  #include <abstractions/fs-access-by-users-preset-rwkl>
-  #include <abstractions/fs-access-by-pattern-systemusers>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwkl>
+  #include <abstractions/fs/access-by-pattern-systemusers>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/engrampa/rpm2cpio			mr,
@@ -848,10 +848,10 @@ profile engrampa_rpm2cpio_root {
 # множественные вложенные профили, выносим в отдельный профиль.
 profile engrampa_rpm2cpio_shell_root {
   #include <abstractions/base>
-  #include <abstractions/fs-access-by-users-preset-rwkl>
-  #include <abstractions/fs-access-by-pattern-systemusers>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwkl>
+  #include <abstractions/fs/access-by-pattern-systemusers>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -864,10 +864,10 @@ profile engrampa_rpm2cpio_shell_root {
   
   profile dd /bin/dd {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/dd						mr,
@@ -883,10 +883,10 @@ profile engrampa_rpm2cpio_shell_root {
   profile cpio /bin/cpio {
     #include <abstractions/base>
     #include <abstractions/nameservice>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/cpio						mr,
@@ -897,10 +897,10 @@ profile engrampa_rpm2cpio_shell_root {
 # множественные вложенные профили, выносим в отдельный профиль.
 profile engrampa_dpkg_deb_root {
   #include <abstractions/base>
-  #include <abstractions/fs-access-by-users-preset-rwkl>
-  #include <abstractions/fs-access-by-pattern-systemusers>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwkl>
+  #include <abstractions/fs/access-by-pattern-systemusers>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dpkg-deb					mr,
@@ -913,10 +913,10 @@ profile engrampa_dpkg_deb_root {
   
   profile rm /bin/rm {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/rm						mr,
@@ -928,10 +928,10 @@ profile engrampa_dpkg_deb_root {
   profile tar /bin/tar {
     #include <abstractions/base>
     #include <abstractions/nameservice>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/tar						mr,
@@ -945,10 +945,10 @@ profile engrampa_dpkg_deb_root {
 # множественные вложенные профили, выносим в отдельный профиль.
 profile engrampa_tar_shell_root flags=(attach_disconnected) {
   #include <abstractions/base>
-  #include <abstractions/fs-access-by-users-preset-rwkl>
-  #include <abstractions/fs-access-by-pattern-systemusers>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwkl>
+  #include <abstractions/fs/access-by-pattern-systemusers>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -965,10 +965,10 @@ profile engrampa_tar_shell_root flags=(attach_disconnected) {
   
   profile gzip /bin/gzip flags=(attach_disconnected) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/gzip						mr,
@@ -979,10 +979,10 @@ profile engrampa_tar_shell_root flags=(attach_disconnected) {
   
   profile bzip2 /bin/bzip2 flags=(attach_disconnected) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /bin/bzip2						mr,
@@ -993,10 +993,10 @@ profile engrampa_tar_shell_root flags=(attach_disconnected) {
   
   profile lzip /usr/bin/lzip flags=(attach_disconnected) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/lzip					mr,
@@ -1007,10 +1007,10 @@ profile engrampa_tar_shell_root flags=(attach_disconnected) {
   
   profile xz /usr/bin/xz flags=(attach_disconnected) {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwkl>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/xz						mr,

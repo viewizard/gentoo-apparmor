@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+# предустановка для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
 @{USERS_DIR}="[^.]**"
 @{USERS_FILE}="[^.]*.{po,po.*,pot,mo,c,h,cpp,hpp,PO,PO.*,POT,MO,C,H,CPP,HPP,temp*}"
 
@@ -26,8 +26,8 @@ profile poedit /usr/bin/poedit {
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
-  #include <abstractions/fs-access-by-users-preset-rwk>
-  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/xdg-open>
   
   # PSEUDO ---------------------------------------------
@@ -71,8 +71,8 @@ profile poedit /usr/bin/poedit {
   
   profile msgmerge /usr/bin/msgmerge {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwk>
-    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs/access-by-users-preset-rwk>
+    #include <abstractions/fs/deny-by-pattern-internet>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -87,8 +87,8 @@ profile poedit /usr/bin/poedit {
   
   profile msgfmt /usr/bin/msgfmt {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwk>
-    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs/access-by-users-preset-rwk>
+    #include <abstractions/fs/deny-by-pattern-internet>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -106,8 +106,8 @@ profile poedit /usr/bin/poedit {
   
   profile msgcat /usr/bin/msgcat {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwk>
-    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs/access-by-users-preset-rwk>
+    #include <abstractions/fs/deny-by-pattern-internet>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,

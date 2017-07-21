@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+# предустановка для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
 @{USERS_DIR}="[^.]**"
 @{USERS_FILE}="[^.]*"
 
@@ -22,9 +22,9 @@ profile tumbler /usr/lib{,32,64}/tumbler-1/tumblerd {
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/session-bind>
-  #include <abstractions/fs-access-by-users-preset-rk>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rk>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   #include <abstractions/unix/gvfsd-trash>
   #include <abstractions/unix/gvfsd-smb>
   #include <abstractions/unix/gvfsd-trash-virtual>

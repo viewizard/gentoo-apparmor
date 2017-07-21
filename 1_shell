@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+# предустановка для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
 @{USERS_DIR}="**"
 @{USERS_FILE}="**"
 
@@ -55,8 +55,8 @@ profile shell_users {
   #include <abstractions/shell>
   #include <abstractions/consoles>
   #include <abstractions/nameservice>
-  #include <abstractions/fs-access-by-users-preset-rwk>
-  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions/fs/deny-by-pattern-internet>
   
   # CAPABILITIES ---------------------------------------
   capability setuid,
@@ -98,8 +98,8 @@ profile shell_users {
   
   profile grep /bin/grep {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwk>
-    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs/access-by-users-preset-rwk>
+    #include <abstractions/fs/deny-by-pattern-internet>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -111,8 +111,8 @@ profile shell_users {
   
   profile ln /bin/ln {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwk>
-    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs/access-by-users-preset-rwk>
+    #include <abstractions/fs/deny-by-pattern-internet>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -124,8 +124,8 @@ profile shell_users {
   
   profile rm /bin/rm {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rwk>
-    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs/access-by-users-preset-rwk>
+    #include <abstractions/fs/deny-by-pattern-internet>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -138,8 +138,8 @@ profile shell_users {
   profile ls /bin/ls {
     #include <abstractions/base>
     #include <abstractions/nameservice>
-    #include <abstractions/fs-access-by-users-preset-rwk>
-    #include <abstractions/fs-deny-by-pattern-internet>
+    #include <abstractions/fs/access-by-users-preset-rwk>
+    #include <abstractions/fs/deny-by-pattern-internet>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -156,8 +156,8 @@ profile shell_root {
   #include <abstractions/shell>
   #include <abstractions/consoles>
   #include <abstractions/nameservice>
-  #include <abstractions/fs-access-by-pattern-filemanager>
-  #include <abstractions/fs-access-by-pattern-systemusers>
+  #include <abstractions/fs/access-by-pattern-filemanager>
+  #include <abstractions/fs/access-by-pattern-systemusers>
   
   # CAPABILITIES ---------------------------------------
   capability setuid,

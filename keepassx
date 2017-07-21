@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+# предустановка для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
 @{USERS_DIR}="**"
 @{USERS_FILE}="{,.}*.{kdbx,csv,KDBX,CSV}{,.lock}"
 
@@ -23,8 +23,8 @@ profile keepassx /usr/bin/keepassx {
   #include <abstractions/X>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
-  #include <abstractions/fs-access-by-users-preset-rwk>
-  #include <abstractions/fs-deny-by-pattern-internet>
+  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   

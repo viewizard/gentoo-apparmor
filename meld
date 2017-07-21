@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+# предустановка для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
 @{USERS_DIR}="[^.]**"
 @{USERS_FILE}="[^.]*"
 
@@ -32,9 +32,9 @@ profile meld /usr/bin/meld {
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/session-bind>
   #include <abstractions/dconf>
-  #include <abstractions/fs-access-by-users-preset-rwk>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   #include <abstractions/unix/gvfsd-trash>
   #include <abstractions/unix/gvfsd-network>
   
@@ -102,10 +102,10 @@ profile meld_root {
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/session-bind>
   #include <abstractions/dconf>
-  #include <abstractions/fs-access-by-users-preset-rwk>
-  #include <abstractions/fs-access-by-pattern-systemusers>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions/fs/access-by-pattern-systemusers>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   #include <abstractions/unix/gvfsd-trash>
   #include <abstractions/unix/gvfsd-network>
   

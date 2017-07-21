@@ -10,7 +10,7 @@
 
 #include <tunables/global>
 
-# предустановка для abstractions/fs-access-by-user-preset-{rk,rwk,rwkl}
+# предустановка для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
 @{USERS_DIR}="[^.]**"
 @{USERS_FILE}="[^.]**"
 
@@ -25,9 +25,9 @@ profile qgit /usr/bin/qgit {
   #include <abstractions/X>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
-  #include <abstractions/fs-access-by-users-preset-rwkl>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwkl>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(term, kill) peer="meld",
@@ -55,9 +55,9 @@ profile qgit /usr/bin/qgit {
   
   profile cat /bin/cat {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rk>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rk>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -79,10 +79,10 @@ profile qgit_root {
   #include <abstractions/X_sudo>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open_root>
-  #include <abstractions/fs-access-by-users-preset-rwkl>
-  #include <abstractions/fs-access-by-pattern-systemusers>
-  #include <abstractions/fs-deny-by-pattern-internet>
-  #include <abstractions/fs-deny-private-strict>
+  #include <abstractions/fs/access-by-users-preset-rwkl>
+  #include <abstractions/fs/access-by-pattern-systemusers>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   
   # CAPABILITIES ---------------------------------------
   capability sys_nice,
@@ -116,10 +116,10 @@ profile qgit_root {
   
   profile cat /bin/cat {
     #include <abstractions/base>
-    #include <abstractions/fs-access-by-users-preset-rk>
-    #include <abstractions/fs-access-by-pattern-systemusers>
-    #include <abstractions/fs-deny-by-pattern-internet>
-    #include <abstractions/fs-deny-private-strict>
+    #include <abstractions/fs/access-by-users-preset-rk>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
