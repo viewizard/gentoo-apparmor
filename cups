@@ -94,7 +94,7 @@ profile cups.cupsd /usr/sbin/cupsd {
 
 profile cups.daemon /usr/libexec/cups/daemon/* {
   #include <abstractions/base>
-  #include <abstractions/unix-pattern/cupsd-virtual>
+  #include <abstractions/unix/cupsd-virtual>
   
   # CAPABILITIES ---------------------------------------
   capability setgid,
@@ -154,7 +154,7 @@ profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* {
 
 profile cups.filter /usr/libexec/cups/filter/* {
   #include <abstractions/base>
-  #include <abstractions/unix-pattern/cupsd-virtual>
+  #include <abstractions/unix/cupsd-virtual>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/cups/filter/*				Pxmr,
@@ -172,7 +172,7 @@ profile cups.filter /usr/libexec/cups/filter/* {
 
 profile cups.backend /usr/libexec/cups/backend/* {
   #include <abstractions/base>
-  #include <abstractions/unix-pattern/cupsd-virtual>
+  #include <abstractions/unix/cupsd-virtual>
   
   # CAPABILITIES ---------------------------------------
   capability wake_alarm,

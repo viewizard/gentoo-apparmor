@@ -17,7 +17,7 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/udisks>
   #include <abstractions/dbus/session-bind>
-  #include <abstractions/unix-pattern/gvfsd-burn>
+  #include <abstractions/unix/gvfsd-burn>
   #include <local/gvfs-udisks2-volume-monitor>
   
   # CAPABILITIES ---------------------------------------
@@ -147,8 +147,8 @@ profile gvfs.gvfsd-ftp /usr/libexec/gvfsd-ftp {
 profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   #include <abstractions/base>
   #include <abstractions/dbus/session-strict>
-  #include <abstractions/unix-pattern/gvfsd-smb>
-  #include <abstractions/unix-pattern/gvfsd-smb-virtual>
+  #include <abstractions/unix/gvfsd-smb>
+  #include <abstractions/unix/gvfsd-smb-virtual>
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
@@ -280,7 +280,7 @@ profile gvfs.gvfsd-network /usr/libexec/gvfsd-network {
   #include <abstractions/dconf>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/session-bind>
-  #include <abstractions/unix-pattern/gvfsd-smb-browse>
+  #include <abstractions/unix/gvfsd-smb-browse>
   
   # UNIX -----------------------------------------------
   unix (bind, listen)
@@ -375,7 +375,7 @@ profile gvfs.gvfsd-smb /usr/libexec/gvfsd-smb {
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/session-bind>
   #include <abstractions/nameservice>
-  #include <abstractions/unix-pattern/gvfsd-fuse-virtual>
+  #include <abstractions/unix/gvfsd-fuse-virtual>
   
   # UNIX -----------------------------------------------
   unix (bind, listen)
