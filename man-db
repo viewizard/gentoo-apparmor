@@ -53,11 +53,11 @@ profile man-db.mandb /usr/bin/mandb {
 
 profile man-db.man /usr/bin/man {
   #include <abstractions/base>
-  #include <abstractions/ncurses>
   
   # CAPABILITIES ---------------------------------------
   capability setuid,
   capability setgid,
+  capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -70,17 +70,12 @@ profile man-db.man /usr/bin/man {
   /usr/bin/less						Cx,
   /usr/bin/preconv					Cx,
   /usr/bin/neqn						Cx,
-  /usr/bin/nroff					Cx,
-  /usr/bin/groff					Cx,
-  /usr/bin/troff					Cx,
-  /usr/bin/grotty					Cx,
+  /usr/bin/nroff					Px,
   /usr/bin/tbl						Cx,
-  /usr/bin/locale					Px,
   /usr/libexec/man-db/manconv				Px,
   
   # READS/WRITES ---------------------------------------
   /etc/man_db.conf					r,
-  /usr/share/groff/{,**}				r,
   /usr/share/man/{,**}					r,
   /var/cache/man/					r,
   /var/cache/man/**					rwk,
@@ -88,76 +83,87 @@ profile man-db.man /usr/bin/man {
   profile bzip2 /bin/bzip2 {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/bzip2						mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/share/man/{,**}				rw,
   }
   
   profile gzip /bin/gzip {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/gzip						mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/share/man/{,**}				r,
+    /var/cache/man/**					r,
   }
   
   profile less /usr/bin/less {
     #include <abstractions/base>
+    #include <abstractions/ncurses>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/less					mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /var/cache/man/**				rw,
   }
   
   profile preconv /usr/bin/preconv {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /usr/bin/preconv					mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /var/cache/man/**				rw,
   }
   
   profile neqn /usr/bin/neqn {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
-    /usr/bin/neqn					mr,
-  }
-  
-  profile nroff /usr/bin/nroff {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /usr/bin/nroff					mr,
-  }
-  
-  profile groff /usr/bin/groff {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /usr/bin/groff					mr,
-  }
-  
-  profile troff /usr/bin/troff {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /usr/bin/troff					mr,
-  }
-  
-  profile grotty /usr/bin/grotty {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /usr/bin/grotty					mr,
+    /usr/bin/neqn					r,
+    @{shell}						mr,
   }
   
   profile tbl /usr/bin/tbl {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /usr/bin/tbl					mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /var/cache/man/**				rw,
   }
 }
 
 profile man-db.manconv /usr/libexec/man-db/manconv {
   #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/man-db/manconv				mr,

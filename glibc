@@ -53,10 +53,11 @@ profile glibc.ldd /usr/bin/ldd flags=(attach_disconnected) {
   }
 }
 
-profile glibc.locale /usr/bin/locale {
+profile glibc.locale /usr/bin/locale flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -65,6 +66,9 @@ profile glibc.locale /usr/bin/locale {
   
   # READS/WRITES ---------------------------------------
   /usr/share/i18n/charmaps/{,*.gz}			r,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   
   profile gzip /bin/gzip {
     #include <abstractions/base>
