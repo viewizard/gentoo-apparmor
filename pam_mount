@@ -46,6 +46,8 @@ profile pam_mount_mount /bin/mount {
   # MOUNT ----------------------------------------------	# FIX ME! Вынести список в local.
   mount fstype=tmpfs options=(rw, noexec) none -> /home/*/.cache/,
   mount fstype=tmpfs options=(rw, noexec) none -> /home/*/.thumbnails/,
+  mount fstype=tmpfs options=(rw, noexec) none -> /home/*.nv/,
+  mount fstype=tmpfs options=(rw, noexec) none -> /home/*/.nv/,
   
   # EXECUTABLES ----------------------------------------
   /bin/mount						mr,

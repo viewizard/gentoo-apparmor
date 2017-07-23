@@ -40,6 +40,9 @@ profile engrampa /usr/bin/engrampa {
   #include <abstractions/xdg-open>
   #include <abstractions/binary-helper-strict>
   
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term) peer="engrampa//*",
+  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
@@ -525,6 +528,9 @@ profile engrampa_root {
   #include <abstractions/fs/deny-private-strict>
   #include <abstractions/unix/gvfsd-trash>
   #include <abstractions/unix/gvfsd-network>
+  
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term) peer="engrampa_root//*",
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
