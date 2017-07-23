@@ -37,7 +37,7 @@ profile netifrc.init.d /etc/init.d/net.* {
   @{PROC}/sys/net/ipv4/route/flush			w,
   
   # EXECUTABLES ----------------------------------------
-  /etc/init.d/*						Pxr,
+  /etc/init.d/*						Px,
   @{shell}						Cx,
   /bin/ip						Px,
   /bin/cat						Cx,
@@ -60,6 +60,7 @@ profile netifrc.init.d /etc/init.d/net.* {
   /etc/fstab						r,
   /etc/resolv.conf					w,
   /etc/conf.d/net					r,
+  /etc/init.d/net.*					r,
   /etc/iproute2/{,*}					r,
   /run/dhcpcd-*.pid					rwk,
   /run/ifplugd.*.pid					rwk,

@@ -56,7 +56,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
   # READS/WRITES ---------------------------------------
   /etc/env.d/gcc/{,**}					r,
   /lib{,32,64}/modules/{,**}				rw,
-  /usr/src/@{kernel}/{,**}				ixrw,
+  /usr/src/@{kernel}/{,**}				ixrw,	# r - т.к. могут быть скрипты.
   owner /var/log/genkernel.log				w,	# genkernel-next
   /var/tmp/portage/genkernel/*/busybox-*/{,**}		rw,	# genkernel-next
   
@@ -132,7 +132,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /usr/libexec/gcc/@{CHOST}/*/*			ix,	# FIX ME! Вынести в отдельный профиль.
     /usr/@{CHOST}/gcc-bin/*/*				ix,	# FIX ME! Вынести в отдельный профиль.
     /usr/@{CHOST}/binutils-bin/*/*			ix,	# FIX ME! Вынести в отдельный профиль.
-    /usr/src/@{kernel}/{,**}				ixr,	# FIX ME! Вынести в отдельный профиль.
+    /usr/src/@{kernel}/{,**}				ixr,	# FIX ME! Вынести в отдельный профиль. r - т.к. могут быть скрипты.
     /var/tmp/portage/genkernel/*/busybox-*/**		ix,	# genkernel-next
     
     # READS/WRITES -------------------------------------

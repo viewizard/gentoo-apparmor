@@ -81,9 +81,9 @@ profile codeblocks /usr/bin/codeblocks {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /{bin,sbin}/**					ixr,
-    /usr/{bin,sbin}/**					ixr,
-    /usr/{lib{,32,64,exec},@{CHOST}}/**			ixr,
+    /{bin,sbin}/**					ixr,	# r - т.к. могут быть скрипты.
+    /usr/{bin,sbin}/**					ixr,	# r - т.к. могут быть скрипты.
+    /usr/{lib{,32,64,exec},@{CHOST}}/**			ixr,	# r - т.к. могут быть скрипты.
     
     # READS/WRITES -------------------------------------
     /etc/profile.env					r,

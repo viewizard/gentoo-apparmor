@@ -12,14 +12,14 @@
 
 # execution external programs with xdg-open
 owner @{PROC}/@{pid}/fd/				r,
-/usr/bin/xdg-open					Pxr,
-/usr/bin/xdg-email					Pxr,
+/usr/bin/xdg-open					Px,
+/usr/bin/xdg-email					Px,
 # /usr/bin/xdg-screensaver используем непосредственно в профилях.
 
 # sg/newgrp for work with network connection via iptables uid/gid-owner
 # FIX ME! После возможности блокировки адресов и портов - убрать.
 /usr/bin/newgrp						Px,
-/usr/bin/id						Pxr,
+/usr/bin/id						Px,
 
 # DENY INHERIT -----------------------------------------
 deny unix peer=(label="xdg-utils.xdg-open"),			# xdg-utils.xdg-open

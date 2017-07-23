@@ -51,6 +51,9 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   #include <abstractions/xdg-open>
   #include <abstractions/binary-helper-strict>
   
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term) peer="xarchiver//*",
+  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
@@ -353,6 +356,9 @@ profile xarchiver_root flags=(complain) {
   
   # CAPABILITIES ---------------------------------------
   capability kill,
+  
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term) peer="xarchiver_root//*",
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,

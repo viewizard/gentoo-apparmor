@@ -39,9 +39,9 @@ profile wine /usr/bin/wine flags=(attach_disconnected) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/wine						mr,
-  /usr/bin/ntlm_auth					Pxr,
+  /usr/bin/ntlm_auth					Px,
   /usr/bin/wine-preloader				Px,
-  /usr/bin/wineserver					Pxr,
+  /usr/bin/wineserver					Px,
   
   # READS/WRITES ---------------------------------------
   /usr/share/wine/**					rk,
@@ -128,7 +128,7 @@ profile wine.wine-preloader /usr/bin/wine-preloader flags=(attach_disconnected) 
   /usr/bin/wine-preloader				Pxmr,	# Все правильно, права на запуск и на mmap.
   								# Если будут отдельные профили для программ - изменить.
   /usr/bin/wine						mr,
-  /usr/bin/ntlm_auth					Pxr,
+  /usr/bin/ntlm_auth					Px,
   /usr/bin/wineserver					Px,
   /usr/bin/xdg-open					Px,
   

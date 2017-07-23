@@ -60,7 +60,7 @@ http://wiki.apparmor.net/index.php/AppArmorProfileSpec
 
 
 - Namespaces. Работают, можно делать переходы, например:
-	/bin/sleep	Pxr -> :user:sleep,
+	/bin/sleep	Px -> :user:sleep,
 но зона видимости профилей - только текущий неймспейс. Т.е. если как в примере перешли в неймспейс :user:, то больше недоступны профили из базового неймспейса. Работает только в иерархической структуре, из неймспейса видно только дочерний (профили в нем).
 Возможно, если будет возможность работать с переходами в другие неймспейсы, будет иметь смысл использовать их для RBAC. Сейчас они ориентированны только на создания ограничний для контейнеров (собственно, это основная цель у разработчиков).
 ** In AppArmor 4 it is possible to have the view be a namespace that is different from the current namespace.
@@ -70,9 +70,14 @@ http://wiki.apparmor.net/index.php/AppArmorStacking#Using_Stacking_in_combinatio
 - Позже сделать для неймспейсов ограничения в base абстракции, чтобы сингалы, и прочее не передавались туда-сюда просто так.
 
 
+- запуск приложений через Xephyr
+Доработать профиль, сделать переменные окружения, чтобы четко указывать где xorg-server, где Xephyr.
+
+
 - Using AppArmor to confine and secure X Windows applications (4.0 AppArmor kernel, 2.?? AppArmor user space)
 Нужен будет пропатченный иксовый сервер - git://git.launchpad.net/~jjohansen/xorg-server
 http://wiki.apparmor.net/index.php/AppArmorXace
+В апстриме уже есть поддержка SELinux, вероятно, будет добавлена поддержка и AppArmor.
 
 
 - Using AppArmor to confine and secure DConf/GSettings for Desktop applications (вообще непонятно когда будет)
