@@ -10,10 +10,6 @@
 
 #include <tunables/global>
 
-# FIX ME! Убрать "r" на запусках, оставить только если ix и это скрипт,
-# а не elf, и его действительно надо давать прочитать.
-
-
 # предустановка для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
 @{USERS_DIR}="**"
 @{USERS_FILE}="**"
@@ -27,9 +23,9 @@ profile shell_service @{shell} {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/sed						Cxr,
-  /bin/uname						Pxr,
-  /sbin/mdadm						Pxr,
+  /bin/sed						Cx,
+  /bin/uname						Px,
+  /sbin/mdadm						Px,
   
   profile sed /bin/sed {
     #include <abstractions/base>
@@ -49,7 +45,7 @@ profile shell_logcheck {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /usr/sbin/logcheck					Pxr,
+  /usr/sbin/logcheck					Px,
 }
 
 # профиль всех пользователей, прошедших аутентификацию
@@ -71,30 +67,31 @@ profile shell_users {
   /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						ixmr,
-  /bin/ls						Cxr,
-  /bin/ln						Cxr,
-  /bin/df						Pxr,
-  /bin/rm						Cxr,
-  /bin/tty						Pxr,
-  /bin/grep						Cxr,
-  /bin/ps						Pxr,
-  /bin/passwd						Pxr,
-  /bin/uname						Pxr,
-  /bin/su						Pxr,
-  /bin/rc-status					Pxr,
-  /bin/sleep						Pxr,
-  /usr/bin/which					Pxr,
-  /usr/bin/git						Pxr,
-  /usr/bin/sudo						Pxr,
-  /usr/bin/whoami					Pxr,
-  /usr/bin/id						Pxr,
-  /usr/bin/startx{,fce4}				Pxr,
-  /usr/bin/clear					Pxr,
-  /usr/bin/wine						Pxr,
-  /usr/bin/winecfg					Pxr,
-  /usr/bin/libnotify-notify-send			Pxr,
-  /usr/bin/dircolors					ixr,	# FIX ME! Вынести в отдельный профиль.
+  @{shell}						mr,
+  audit @{shell}					ix,	# FIX ME! 23.07.2017 что и как вызывает?
+  /bin/ls						Cx,
+  /bin/ln						Cx,
+  /bin/df						Px,
+  /bin/rm						Cx,
+  /bin/tty						Px,
+  /bin/grep						Cx,
+  /bin/ps						Px,
+  /bin/passwd						Px,
+  /bin/uname						Px,
+  /bin/su						Px,
+  /bin/rc-status					Px,
+  /bin/sleep						Px,
+  /usr/bin/which					Px,
+  /usr/bin/git						Px,
+  /usr/bin/sudo						Px,
+  /usr/bin/whoami					Px,
+  /usr/bin/id						Px,
+  /usr/bin/startx{,fce4}				Px,
+  /usr/bin/clear					Px,
+  /usr/bin/wine						Px,
+  /usr/bin/winecfg					Px,
+  /usr/bin/libnotify-notify-send			Px,
+  /usr/bin/dircolors					Px,
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
@@ -180,133 +177,134 @@ profile shell_root {
   								# FIX ME! Отсылать запущенным в этом шеле.
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						ixmr,
-  /bin/ls						ixr,	# FS ACCESS!
-  /bin/ln						ixr,	# FS ACCESS!
-  /bin/df						Pxr,
-  /bin/rm						ixr,	# FS ACCESS!
-  /bin/cut						ixr,	# FS ACCESS!
-  /bin/tty						Pxr,
-  /bin/tr						Pxr,
-  /bin/grep						ixr,	# FS ACCESS!
-  /bin/ps						Pxr,
-  /bin/env						ixr,	# ix в основном профиле, т.к. через него
+  @{shell}						mr,
+  audit @{shell}					ix,	# FIX ME! 24.07.2017 что и как вызывает?
+  /bin/ls						ix,	# FS ACCESS!
+  /bin/ln						ix,	# FS ACCESS!
+  /bin/df						Px,
+  /bin/rm						ix,	# FS ACCESS!
+  /bin/cut						ix,	# FS ACCESS!
+  /bin/tty						Px,
+  /bin/tr						Px,
+  /bin/grep						ix,	# FS ACCESS!
+  /bin/ps						Px,
+  /bin/env						ix,	# ix в основном профиле, т.к. через него
   								# можем запускать другие разрешенные процессы.
-  /bin/sed						ixr,	# FS ACCESS!
-  /bin/gzip						ixr,	# FS ACCESS!
-  /bin/mount						Cxr,
-  /bin/umount						Cxr,
-  /bin/sleep						Pxr,
-  /bin/passwd						Pxr,
-  /bin/uname						Pxr,
-  /bin/su						Pxr,
-  /bin/cp						ixr,	# FS ACCESS!
-  /bin/mv						ixr,	# FS ACCESS!
-  /bin/chown						ixr,	# FIX ME! Вынести в отдельный профиль.
-  /bin/chmod						ixr,	# FIX ME! Вынести в отдельный профиль.
-  /bin/nano						ixr,
-  /bin/kmod						Pxr,
-  /bin/cat						ixr,	# FS ACCESS!
-  /bin/dd						ixr,	# FS ACCESS!
-  /bin/ping						Pxr,
-  /bin/ifconfig						Pxr,
-  /bin/rc-status					Pxr,
-  /bin/date						Pxr,
-  /bin/tail						ixr,	# FS ACCESS!
-  /bin/netstat						Pxr,
-  /bin/getfacl						Pxr,
-  /bin/tar						ixr,
-  /bin/head						ixr,	# FS ACCESS!
-  /bin/tail						ixr,	# FS ACCESS!
-  /bin/getfattr						ixr,	# FIX ME! Вынести в отдельный профиль.
-  /bin/setfattr						ixr,	# FIX ME! Вынести в отдельный профиль.
-  /bin/cpio						ixr,	# FS ACCESS!
-  /bin/keyctl						ixr,	# FS ACCESS!
-  /bin/mkdir						ixr,	# FS ACCESS!
-  /bin/touch						ixr,	# FS ACCESS!
-  /bin/lsblk						Pxr,
-  /bin/sync						Pxr,
-  /bin/udevadm						Pxr,
-  /bin/dmesg						Pxr,
-  /sbin/mdadm						Pxr,
-  /sbin/shutdown					Pxr,
-  /sbin/{halt,poweroff,reboot}				Pxr,
-  /sbin/cryptsetup					Pxr,
-  /sbin/apparmor_parser					Pxr,
-  /sbin/paxctl						ixr,	# FIX ME! Вынести в отдельный профиль.
-  /sbin/gradm						Pxr,
-  /sbin/{,c}fdisk					Pxr,
-  /sbin/lvm						Pxr,
-  /sbin/e2fsck						Pxr,
-  /sbin/mke2fs						Pxr,
-  /sbin/tune2fs						Pxr,
-  /sbin/mkswap						Pxr,
-  /sbin/zpool						Pxr,
-  /sbin/zfs						Pxr,
-  /sbin/rc-update					Pxr,
-  /sbin/fsck						Pxr,
-  /sbin/rc-service					Pxr,
-  /sbin/xtables-multi					Pxr,
-  /sbin/blkid						Pxr,
-  /usr/bin/which					Pxr,
-  /usr/bin/git						Pxr -> git_root,
-  /usr/bin/exo-open					Pxr,
-  /usr/bin/killall					Pxr,
-  /usr/bin/gsettings					Pxr,
-  /usr/bin/revdep-rebuild{,.sh}				Pxr,
-  /usr/bin/whoami					Pxr,
-  /usr/bin/id						Pxr,
-  /usr/bin/rsync					ixr,	# FS ACCESS!
-  /usr/bin/htop						Pxr,
-  /usr/bin/mc						Pxr -> mc_root,
-  /usr/bin/eselect					Pxr,
-  /usr/bin/ntpq						Pxr,
-  /usr/bin/genkernel					Pxr,	# BUILD SYSTEM ONLY!
-  /usr/bin/{,g}make					Pxr,	# BUILD SYSTEM ONLY!
-  /usr/bin/stat						Pxr,
-  /usr/bin/file						ixr,	# FS ACCESS!
-  /usr/bin/lsusb					Pxr,
-  /usr/bin/gpg{,2,-static}				Pxr,
-  /usr/bin/find						ixr,	# FS ACCESS!
-  /usr/bin/nmap						Pxr,
-  /usr/bin/wget						Pxr -> wget_root,
-  /usr/bin/man						Pxr,
-  /usr/bin/locale					Pxr,
-  /usr/bin/ldd						Pxr,
-  /usr/bin/evmctl					Pxr,
-  /usr/bin/gawk						ixr,	# FS ACCESS!
-  /usr/bin/patch					ixr,	# FS ACCESS!
-  /usr/bin/diff						ixr,	# FS ACCESS!
-  /usr/bin/gcc-config					Pxr,
-  /usr/bin/libnotify-notify-send			Pxr,
-  /usr/bin/ck-list-sessions				Pxr,
-  /usr/bin/dig						Pxr,
-  /usr/bin/dircolors					ixr,	# FIX ME! Вынести в отдельный профиль.
-  /usr/sbin/logcheck					Pxr,
-  /usr/sbin/aideinit					Pxr,
-  /usr/sbin/gdisk					Pxr,
-  /usr/sbin/smartctl					Pxr,
-  /usr/sbin/useradd					Pxr,
-  /usr/sbin/userdel					Pxr,
-  /usr/sbin/lspci					Pxr,
-  /usr/sbin/etc-update					Pxr,
-  /usr/sbin/migrate-pax					Pxr,
-  /usr/sbin/revdep-pax					Pxr,
-  /usr/sbin/paxctl-ng					ixr,	# FIX ME! Вынести в отдельный профиль.
-  /usr/sbin/grub-mkconfig				Pxr,
-  /usr/sbin/grub-install				Pxr,
-  /usr/sbin/perl-cleaner				Pxr,
-  /usr/sbin/python-updater				Pxr,
-  /usr/sbin/iftop					Pxr,
-  /usr/sbin/nettop					Pxr,
-  /usr/sbin/firewall					Pxr,
-  /usr/sbin/sysctl					Pxr,
-  @{PYTHON_EXEC_WRAPPER}				Pxr -> python_exec_root,
-  /usr/local/bin/**					Pxr,
-  /usr/local/sbin/**					Pxr,
-  /etc/init.d/*						Pxr,
-  /usr/src/@{kernel}/scripts/*				Pxr,	# в профиле /etc/apparmor.d/kernel
-  /usr/src/IMA/certs/*					Pxr,	# в профиле /etc/apparmor.d/kernel
+  /bin/sed						ix,	# FS ACCESS!
+  /bin/gzip						ix,	# FS ACCESS!
+  /bin/mount						Cx,
+  /bin/umount						Cx,
+  /bin/sleep						Px,
+  /bin/passwd						Px,
+  /bin/uname						Px,
+  /bin/su						Px,
+  /bin/cp						ix,	# FS ACCESS!
+  /bin/mv						ix,	# FS ACCESS!
+  /bin/chown						ix,	# FIX ME! Вынести в отдельный профиль.
+  /bin/chmod						ix,	# FIX ME! Вынести в отдельный профиль.
+  /bin/nano						ix,	# FS ACCESS!
+  /bin/kmod						Px,
+  /bin/cat						ix,	# FS ACCESS!
+  /bin/dd						ix,	# FS ACCESS!
+  /bin/ping						Px,
+  /bin/ifconfig						Px,
+  /bin/rc-status					Px,
+  /bin/date						Px,
+  /bin/tail						ix,	# FS ACCESS!
+  /bin/netstat						Px,
+  /bin/getfacl						Px,
+  /bin/tar						ix,	# FS ACCESS!
+  /bin/head						ix,	# FS ACCESS!
+  /bin/tail						ix,	# FS ACCESS!
+  /bin/getfattr						ix,	# FIX ME! Вынести в отдельный профиль.
+  /bin/setfattr						ix,	# FIX ME! Вынести в отдельный профиль.
+  /bin/cpio						ix,	# FS ACCESS!
+  /bin/keyctl						ix,	# FS ACCESS!
+  /bin/mkdir						ix,	# FS ACCESS!
+  /bin/touch						ix,	# FS ACCESS!
+  /bin/lsblk						Px,
+  /bin/sync						Px,
+  /bin/udevadm						Px,
+  /bin/dmesg						Px,
+  /sbin/mdadm						Px,
+  /sbin/shutdown					Px,
+  /sbin/{halt,poweroff,reboot}				Px,
+  /sbin/cryptsetup					Px,
+  /sbin/apparmor_parser					Px,
+  /sbin/paxctl						ix,	# FIX ME! Вынести в отдельный профиль.
+  /sbin/gradm						Px,
+  /sbin/{,c}fdisk					Px,
+  /sbin/lvm						Px,
+  /sbin/e2fsck						Px,
+  /sbin/mke2fs						Px,
+  /sbin/tune2fs						Px,
+  /sbin/mkswap						Px,
+  /sbin/zpool						Px,
+  /sbin/zfs						Px,
+  /sbin/rc-update					Px,
+  /sbin/fsck						Px,
+  /sbin/rc-service					Px,
+  /sbin/xtables-multi					Px,
+  /sbin/blkid						Px,
+  /usr/bin/which					Px,
+  /usr/bin/git						Px -> git_root,
+  /usr/bin/exo-open					Px,
+  /usr/bin/killall					Px,
+  /usr/bin/gsettings					Px,
+  /usr/bin/revdep-rebuild				Px,
+  /usr/bin/whoami					Px,
+  /usr/bin/id						Px,
+  /usr/bin/rsync					ix,	# FS ACCESS!
+  /usr/bin/htop						Px,
+  /usr/bin/mc						Px -> mc_root,
+  /usr/bin/eselect					Px,
+  /usr/bin/ntpq						Px,
+  /usr/bin/genkernel					Px,	# BUILD SYSTEM ONLY!
+  /usr/bin/{,g}make					Px,	# BUILD SYSTEM ONLY!
+  /usr/bin/stat						Px,
+  /usr/bin/file						ix,	# FS ACCESS!
+  /usr/bin/lsusb					Px,
+  /usr/bin/gpg{,2,-static}				Px,
+  /usr/bin/find						ix,	# FS ACCESS!
+  /usr/bin/nmap						Px,
+  /usr/bin/wget						Px -> wget_root,
+  /usr/bin/man						Px,
+  /usr/bin/locale					Px,
+  /usr/bin/ldd						Px,
+  /usr/bin/evmctl					Px,
+  /usr/bin/gawk						ix,	# FS ACCESS!
+  /usr/bin/patch					ix,	# FS ACCESS!
+  /usr/bin/diff						ix,	# FS ACCESS!
+  /usr/bin/gcc-config					Px,
+  /usr/bin/libnotify-notify-send			Px,
+  /usr/bin/ck-list-sessions				Px,
+  /usr/bin/dig						Px,
+  /usr/bin/dircolors					Px,
+  /usr/sbin/logcheck					Px,
+  /usr/sbin/aideinit					Px,
+  /usr/sbin/gdisk					Px,
+  /usr/sbin/smartctl					Px,
+  /usr/sbin/useradd					Px,
+  /usr/sbin/userdel					Px,
+  /usr/sbin/lspci					Px,
+  /usr/sbin/etc-update					Px,
+  /usr/sbin/migrate-pax					Px,
+  /usr/sbin/revdep-pax					Px,
+  /usr/sbin/paxctl-ng					ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/sbin/grub-mkconfig				Px,
+  /usr/sbin/grub-install				Px,
+  /usr/sbin/perl-cleaner				Px,
+  /usr/sbin/python-updater				Px,
+  /usr/sbin/iftop					Px,
+  /usr/sbin/nettop					Px,
+  /usr/sbin/firewall					Px,
+  /usr/sbin/sysctl					Px,
+  @{PYTHON_EXEC_WRAPPER}				Px -> python_exec_root,
+  /usr/local/bin/**					Px,
+  /usr/local/sbin/**					Px,
+  /etc/init.d/*						Px,
+  /usr/src/@{kernel}/scripts/*				Px,	# в профиле /etc/apparmor.d/kernel
+  /usr/src/IMA/certs/*					Px,	# в профиле /etc/apparmor.d/kernel
   
   # AUDIT EXECUTABLES ----------------------------------
   audit deny /usr/bin/startx*				x,	# RBAC! Запрещаем запуск Xorg-server под root. У нас
