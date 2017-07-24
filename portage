@@ -1052,9 +1052,11 @@ profile portage.cgroup-release-agent /usr/lib{,32,64}/portage/@{PYTHON}/cgroup-r
 
 profile portage.ebuild.sh /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh flags=(complain) {
   #include <abstractions/base>
+  #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		r,
@@ -1064,4 +1066,7 @@ profile portage.ebuild.sh /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh flags=(co
   /usr/share/sandbox/sandbox.bashrc			r,
   /usr/portage/{,**}					r,
   /usr/local/portage/{,**}				r,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/ebuild-cache.*				rw,	# DELEGATION! eix
 }

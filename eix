@@ -1,0 +1,153 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+profile eix /usr/bin/eix {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # CAPABILITIES ---------------------------------------
+  capability setuid,
+  capability setgid,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  @{PROC}/sys/kernel/ngroups_max			r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/eix						mr,
+  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		Px,
+  @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/eixrc/{,**}					r,
+  /etc/portage/{,**}					r,
+  /usr/portage/{,**}					r,
+  /usr/local/portage/{,**}				r,
+  /usr/share/portage/{,**}				r,
+  /var/lib/portage/{,**}				r,
+  /var/db/pkg/{,**}					r,
+  /var/cache/edb/{,**}					r,
+  /var/cache/eix/{,**}					rwk,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/ebuild-cache.*				rw,
+  
+  profile portageq {
+    #include <abstractions/base>
+    #include <abstractions/python-exec>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    @{PYTHON_EXEC}/portageq				Px,
+  }
+}
+
+profile eix.eix-test-obsolete /usr/bin/eix-test-obsolete {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/eix-test-obsolete				r,
+  @{shell}						mr,
+  /usr/bin/eix						Px,
+  /usr/bin/gettext					Px,
+  /usr/bin/envsubst					Px,
+  /usr/bin/push.sh					Px,
+  /usr/bin/eix-functions.sh				Px,
+}
+
+profile eix.eix-functions.sh /usr/bin/eix-functions.sh {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/eix-functions.sh				r,
+  /bin/env						mr,
+  /bin/cat						Cx,
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/bin/eix-functions.sh				r,
+  }
+}
+
+profile eix.eix-sync /usr/bin/eix-sync {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/eix-sync					r,
+  @{shell}						mr,
+  /bin/date						Px,
+  /bin/cp						Cx,
+  /usr/bin/gettext					Px,
+  /usr/bin/envsubst					Px,
+  /usr/bin/push.sh					Px,
+  /usr/bin/eix						Px,
+  /usr/bin/eix-functions.sh				Px,
+  @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
+  
+  # READS/WRITES ---------------------------------------
+  /usr/portage/metadata/timestamp.chk			r,
+  
+  profile cp /bin/cp {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability fowner,
+    capability fsetid,
+    capability sys_admin,
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cp						mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/cache/eix/portage.eix				r,
+    /var/cache/eix/previous.eix				rw,
+  }
+  
+  profile portage {
+    #include <abstractions/base>
+    #include <abstractions/python-exec>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    @{PYTHON_EXEC}/emerge				Px,
+  }
+}

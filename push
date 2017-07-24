@@ -10,26 +10,27 @@
 
 #include <tunables/global>
 
-profile gettext /usr/bin/gettext {
+profile push /usr/bin/push.sh {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/gettext					mr,
+  /usr/bin/push.sh					r,
+  /bin/env						mr,
+  /bin/cat						Cx,
   
-  # READS/WRITES ---------------------------------------
-  /usr/lib{,32,64}/locale/{,**}				r,
-  /usr/share/locale/{,**}				r,
-}
-
-profile envsubst /usr/bin/envsubst {
-  #include <abstractions/base>
-  
-  # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					rw,
-  
-  # EXECUTABLES ----------------------------------------
-  /usr/bin/envsubst					mr,
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/bin/push.sh					r,
+  }
 }
