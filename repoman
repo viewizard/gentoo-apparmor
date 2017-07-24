@@ -110,15 +110,9 @@ profile repoman_sandbox_shell {
   include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty						rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		ix,	# FIX ME! Вынести в отдельный профиль.
-  
-  # READS/WRITES ---------------------------------------
-  /usr/share/sandbox/sandbox.bashrc			r,
-  /usr/local/portage/{,**}				r,
-  /usr/portage/{,**}					r,
+  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		Px,
 }

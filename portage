@@ -314,7 +314,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {		# FS ACCESS! П
     link subset /usr/portage/distfiles/{egit,git3}-src/** -> /usr/portage/distfiles/{egit,git3}-src/**,
     /usr/portage/packages/{,**}				rw,
     /var/						r,
-    /var/log/sandbox/sandbox-*.log			w,
+    /var/log/sandbox/sandbox-*.log			rw,
     /var/db/pkg/{,**}					r,
     /var/cache/{,**}					r,
     
@@ -1048,4 +1048,20 @@ profile portage.cgroup-release-agent /usr/lib{,32,64}/portage/@{PYTHON}/cgroup-r
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
   }
+}
+
+profile portage.ebuild.sh /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh flags=(complain) {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		r,
+  @{shell}						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/sandbox/sandbox.bashrc			r,
+  /usr/portage/{,**}					r,
+  /usr/local/portage/{,**}				r,
 }

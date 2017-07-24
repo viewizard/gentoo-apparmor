@@ -94,17 +94,24 @@ profile gentoolkit.equery @{PYTHON_EXEC}/equery {
 profile gentoolkit.eclean @{PYTHON_EXEC}/eclean {
   #include <abstractions/base>
   #include <abstractions/python>
+  #include <abstractions/ncurses>
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
   capability mknod,
+  capability chown,
+  capability setuid,
+  capability setgid,
+  capability dac_override,
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
+  /bin/stty						Px,
   /usr/bin/sandbox					cx,
+  /usr/bin/id						Px,
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
@@ -112,11 +119,15 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean {
   /etc/portage/**					r,
   /usr/portage/**					r,
   /usr/portage/distfiles/**				rw,
-  /usr/portage/packages/**				rw,
+  /usr/portage/packages/**				rwk,
   /usr/local/portage/**					r,
   /usr/share/portage/config/*				r,
   /var/db/pkg/{,**}					r,
   /var/cache/edb/{,**}					rw,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/??????					rw,
+  owner /tmp/tmp??????					rwk,
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -151,14 +162,11 @@ profile gentoolkit_eclean_sandbox_shell {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		ix,	# FIX ME! Вынести в отдельный профиль.
-  
-  # READS/WRITES ---------------------------------------
-  /usr/share/sandbox/sandbox.bashrc			r,
+  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		Px,
 }
 
 profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
@@ -226,6 +234,9 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
     capability sys_admin,
     capability dac_override,
     
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /usr/bin/scanelf					mr,
     
@@ -234,78 +245,5 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
     /{bin,sbin,opt,lib{,32,64}}/**			r,
     /usr/{bin,sbin,lib{,32,64,exec},@{CHOST}}/**	r,
     /usr/local/lib{,32,64}/**				r,
-  }
-}
-
-# FIX ME! Устаревший, будет заменен на gentoolkit.revdep-rebuild
-# BUG! Работает некорректно, пересустанавливает постоянно samba.
-profile gentoolkit.revdep-rebuild.sh /usr/bin/revdep-rebuild.sh {
-  #include <abstractions/base>
-  #include <abstractions/nameservice>
-  #include <abstractions/ncurses>
-  
-  # CAPABILITIES ---------------------------------------
-  capability fsetid,
-  capability chown,
-  capability mknod,
-  
-  # PSEUDO ---------------------------------------------
-  /dev/tty						rw,
-  /dev/pts/[0-9]*					rw,
-  
-  # EXECUTABLES ----------------------------------------
-  @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
-  @{shell}						mr,
-  /bin/chown						ix,	# FS ACCESS!
-  /bin/chmod						ix,	# FS ACCESS!
-  /bin/grep						ix,	# FS ACCESS!
-  /bin/sort						ix,	# FS ACCESS!
-  /bin/rm						ix,	# FS ACCESS!
-  /bin/cat						ix,	# FS ACCESS!
-  /bin/sed						ix,	# FS ACCESS!
-  /bin/tr						Px,
-  /bin/stty						Px,
-  /bin/sleep						Px,
-  /sbin/consoletype					Px,
-  /usr/bin/find						ix,	# FS ACCESS!
-  /usr/bin/tput						Px,
-  /usr/bin/gawk						ix,	# FS ACCESS!
-  /usr/bin/renice					Px,
-  /usr/bin/nice						ix,	# FS ACCESS!
-  /usr/bin/xargs					ix,	# FS ACCESS!
-  /usr/bin/realpath					ix,	# FS ACCESS!
-  /usr/bin/ldd						Px,
-  /usr/@{CHOST}/binutils-bin/*/objdump			ix,	# FIX ME! Вынести в отдельный профиль.
-  
-  # READS/WRITES ---------------------------------------
-  /							r,
-  /{bin,sbin,usr,opt,lib{,32,64}}/			r,
-  /{bin,sbin,opt,lib{,32,64}}/**			r,
-  /usr/{bin,sbin,lib{,32,64,exec},@{CHOST}}/{,**}	r,
-  /usr/local/lib{,32,64}/{,**}				r,
-  /etc/profile.env					r,
-  /etc/ld.so.conf					r,
-  /etc/ld.so.conf.d/{,*}				r,
-  /etc/revdep-rebuild/{,*}				r,
-  /etc/env.d/python/config				r,
-  /var/db/pkg/{,**}					r,
-  /var/cache/revdep-rebuild/{,**}			rw,
-  
-  # TEMP -----------------------------------------------
-  owner /tmp/sh-thd.*					rw,
-  owner /tmp/revdep-rebuild.**				rw,
-  
-  profile portage {
-    #include <abstractions/base>
-    #include <abstractions/python>
-    #include <abstractions/python-exec>
-    #include <abstractions/nameservice>
-    
-    # PSEUDO -------------------------------------------
-    /dev/pts/[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/portageq				Px,
-    @{PYTHON_EXEC}/emerge				Px,
   }
 }
