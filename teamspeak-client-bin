@@ -25,6 +25,7 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/networkmanager>
   #include <abstractions/xdg-open>
+  #include <abstractions/fs/access-by-pattern-internet>		# Доступ к файлам для установки аватарки.
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -71,6 +72,8 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   owner /tmp/TS3Client*					rw,
   owner /tmp/*.ts3_plugin				rw,
   owner /tmp/ts3import/{,**}				rw,
+  owner /tmp/qt_temp.??????				rw,
+  owner /tmp/avatar					rw,
   /var/tmp/						r,
   owner /var/tmp/etilqs_*				rw,
 }

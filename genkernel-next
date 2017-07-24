@@ -42,10 +42,10 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
   /bin/sed						ix,	# FS ACCESS!
   /bin/mv						ix,	# FS ACCESS!
   /bin/cp						ix,	# FS ACCESS!
-  /bin/grep						ix,	# FS ACCESS!
+  /bin/grep						ixr,	# FS ACCESS!	# r - записываем в initramfs.
   /bin/egrep						Cx,
   /bin/fgrep						Cx,
-  /bin/cat						ix,	# FS ACCESS!
+  /bin/cat						ixr,	# FS ACCESS!	# r - записываем в initramfs.
   /bin/cut						ix,	# FS ACCESS!
   /bin/mkdir						ix,	# FS ACCESS!
   /bin/ln						ix,	# FS ACCESS!
@@ -63,7 +63,7 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
   /bin/date						ix,	# FS ACCESS!
   /bin/dirname						Px,
   /bin/basename						Px,
-  /bin/udevadm						Px,
+  /bin/udevadm						Pxr,	# r - записываем в initramfs.
   /bin/echo						Px,
   /bin/mount						Cx,
   /bin/umount						Cx,
@@ -78,7 +78,7 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
   /sbin/mdassemble					r,
   /sbin/blkid						r,
   /sbin/lvm						r,
-  /sbin/ldconfig					Px,
+  /sbin/ldconfig					Pxr,	# r - записываем в initramfs.
   /sbin/apparmor_parser					r,
   /usr/bin/gawk						ix,	# FS ACCESS!
   /usr/bin/md5sum					ix,	# FS ACCESS!

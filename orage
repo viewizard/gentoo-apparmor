@@ -10,6 +10,10 @@
 
 #include <tunables/global>
 
+# предустановка для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
+@{USERS_DIR}="[^.]**"
+@{USERS_FILE}="[^.]*.{ics,ics.*,orage,orage.*}"
+
 profile orage /usr/bin/orage {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -25,7 +29,19 @@ profile orage /usr/bin/orage {
   #include <abstractions/dbus/session-bind>
   #include <abstractions/dbus/notifications>
   #include <abstractions/binary-helper-strict-web>
-  #include <abstractions/xdg-open>
+  #include <abstractions/fs/access-by-users-preset-rwk>
+  
+  # DBUS -----------------------------------------------
+  dbus (send)
+  	bus=session
+  	path="/org/xfce/calendar"
+  	interface="org.xfce.calendar"
+  	peer=(name="org.xfce.calendar",label=@{profile_name}),
+  dbus (receive)
+  	bus=session
+  	path="/org/xfce/calendar"
+  	interface="org.xfce.calendar"
+  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -35,6 +51,7 @@ profile orage /usr/bin/orage {
   /usr/bin/orage					mr,
   /usr/bin/globaltime					Px,
   /usr/bin/sox						Cx,
+  /usr/bin/exo-open					Px,
   
   # READS/WRITES ---------------------------------------
   /usr/share/orage/{,**}				r,
@@ -72,6 +89,9 @@ profile orage.globaltime /usr/bin/globaltime {
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/globaltime					mr,
