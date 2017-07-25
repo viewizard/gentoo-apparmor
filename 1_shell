@@ -161,16 +161,16 @@ profile shell_root {
   #include <abstractions/fs/access-by-pattern-systemusers>
   
   # CAPABILITIES ---------------------------------------
-  capability setuid,
-  capability setgid,
-  capability sys_admin,
-  capability chown,
-  capability mknod,
-  capability fsetid,
-  capability fowner,
-  capability sys_tty_config,
-  capability kill,
-  capability setfcap,
+  audit capability setuid,					# FIX ME! audit 25.07.2017
+  audit capability setgid,					# FIX ME! audit 25.07.2017
+  audit capability sys_admin,					# FIX ME! audit 25.07.2017
+  audit capability chown,					# FIX ME! audit 25.07.2017
+  audit capability mknod,					# FIX ME! audit 25.07.2017
+  audit capability fsetid,					# FIX ME! audit 25.07.2017
+  audit capability fowner,					# FIX ME! audit 25.07.2017
+  audit capability sys_tty_config,				# FIX ME! audit 25.07.2017
+  audit capability kill,					# FIX ME! audit 25.07.2017
+  audit capability setfcap,					# FIX ME! audit 25.07.2017
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(hup, int, kill, term, cont),		# Реакция на нажатия комбинаций кнопок.
@@ -179,49 +179,45 @@ profile shell_root {
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
   audit @{shell}					ix,	# FIX ME! 24.07.2017 что и как вызывает?
-  /bin/ls						ix,	# FS ACCESS!
-  /bin/ln						ix,	# FS ACCESS!
+  /bin/ls						Cx,
+  /bin/ln						Cx,
   /bin/df						Px,
-  /bin/rm						ix,	# FS ACCESS!
-  /bin/cut						ix,	# FS ACCESS!
+  /bin/rm						Cx,
+  /bin/cut						Cx,
   /bin/tty						Px,
   /bin/tr						Px,
-  /bin/grep						ix,	# FS ACCESS!
+  /bin/grep						Cx,
   /bin/ps						Px,
-  /bin/env						ix,	# ix в основном профиле, т.к. через него
-  								# можем запускать другие разрешенные процессы.
-  /bin/sed						ix,	# FS ACCESS!
-  /bin/gzip						ix,	# FS ACCESS!
+  /bin/env						Cx,
+  /bin/sed						Cx,
+  audit /bin/gzip					Cx,	# FIX ME! audit 25.07.2017
   /bin/mount						Cx,
   /bin/umount						Cx,
   /bin/sleep						Px,
   /bin/passwd						Px,
   /bin/uname						Px,
   /bin/su						Px,
-  /bin/cp						ix,	# FS ACCESS!
-  /bin/mv						ix,	# FS ACCESS!
-  /bin/chown						ix,	# FIX ME! Вынести в отдельный профиль.
-  /bin/chmod						ix,	# FIX ME! Вынести в отдельный профиль.
-  /bin/nano						ix,	# FS ACCESS!
+  /bin/cp						Cx,
+  /bin/mv						Cx,
+  /bin/chown						Cx,
+  /bin/chmod						Cx,
+  /bin/nano						Cx,
   /bin/kmod						Px,
-  /bin/cat						ix,	# FS ACCESS!
-  /bin/dd						ix,	# FS ACCESS!
+  /bin/cat						Cx,
+  /bin/dd						Cx,
   /bin/ping						Px,
   /bin/ifconfig						Px,
   /bin/rc-status					Px,
   /bin/date						Px,
-  /bin/tail						ix,	# FS ACCESS!
   /bin/netstat						Px,
   /bin/getfacl						Px,
-  /bin/tar						ix,	# FS ACCESS!
-  /bin/head						ix,	# FS ACCESS!
-  /bin/tail						ix,	# FS ACCESS!
-  /bin/getfattr						ix,	# FIX ME! Вынести в отдельный профиль.
-  /bin/setfattr						ix,	# FIX ME! Вынести в отдельный профиль.
-  /bin/cpio						ix,	# FS ACCESS!
-  /bin/keyctl						ix,	# FS ACCESS!
-  /bin/mkdir						ix,	# FS ACCESS!
-  /bin/touch						ix,	# FS ACCESS!
+  audit /bin/tar					Cx,	# FIX ME! audit 25.07.2017
+  /bin/head						Cx,
+  /bin/tail						Cx,
+  /bin/getfattr						Px,
+  /bin/setfattr						Px,
+  /bin/mkdir						Cx,
+  /bin/touch						Cx,
   /bin/lsblk						Px,
   /bin/sync						Px,
   /bin/udevadm						Px,
@@ -231,16 +227,12 @@ profile shell_root {
   /sbin/{halt,poweroff,reboot}				Px,
   /sbin/cryptsetup					Px,
   /sbin/apparmor_parser					Px,
-  /sbin/paxctl						ix,	# FIX ME! Вынести в отдельный профиль.
-  /sbin/gradm						Px,
   /sbin/{,c}fdisk					Px,
   /sbin/lvm						Px,
   /sbin/e2fsck						Px,
   /sbin/mke2fs						Px,
   /sbin/tune2fs						Px,
   /sbin/mkswap						Px,
-  /sbin/zpool						Px,
-  /sbin/zfs						Px,
   /sbin/rc-update					Px,
   /sbin/fsck						Px,
   /sbin/rc-service					Px,
@@ -248,13 +240,13 @@ profile shell_root {
   /sbin/blkid						Px,
   /usr/bin/which					Px,
   /usr/bin/git						Px -> git_root,
-  /usr/bin/exo-open					Px,
+  audit /usr/bin/exo-open				Px,	# FIX ME! audit 25.07.2017
   /usr/bin/killall					Px,
   /usr/bin/gsettings					Px,
   /usr/bin/revdep-rebuild				Px,
   /usr/bin/whoami					Px,
   /usr/bin/id						Px,
-  /usr/bin/rsync					ix,	# FS ACCESS!
+  /usr/bin/rsync					Cx,
   /usr/bin/htop						Px,
   /usr/bin/mc						Px -> mc_root,
   /usr/bin/eselect					Px,
@@ -262,38 +254,34 @@ profile shell_root {
   /usr/bin/genkernel					Px,	# BUILD SYSTEM ONLY!
   /usr/bin/{,g}make					Px,	# BUILD SYSTEM ONLY!
   /usr/bin/stat						Px,
-  /usr/bin/file						ix,	# FS ACCESS!
+  /usr/bin/file						Cx,
   /usr/bin/lsusb					Px,
   /usr/bin/gpg{,2,-static}				Px,
-  /usr/bin/find						ix,	# FS ACCESS!
+  /usr/bin/find						Cx,
   /usr/bin/nmap						Px,
   /usr/bin/wget						Px -> wget_root,
   /usr/bin/man						Px,
   /usr/bin/locale					Px,
   /usr/bin/ldd						Px,
-  /usr/bin/evmctl					Px,
-  /usr/bin/gawk						ix,	# FS ACCESS!
-  /usr/bin/patch					ix,	# FS ACCESS!
-  /usr/bin/diff						ix,	# FS ACCESS!
+  /usr/bin/evmctl					Px,	# BUILD SYSTEM ONLY!
+  /usr/bin/gawk						Cx,
+  /usr/bin/patch					Cx,
+  /usr/bin/diff						Cx,
   /usr/bin/gcc-config					Px,
-  /usr/bin/libnotify-notify-send			Px,
+  audit /usr/bin/libnotify-notify-send			Px,	# FIX ME! audit 25.07.2017
   /usr/bin/ck-list-sessions				Px,
   /usr/bin/dig						Px,
   /usr/bin/dircolors					Px,
   /usr/bin/eix						Px,
   /usr/bin/eix-test-obsolete				Px,
   /usr/bin/eix-sync					Px,
-  /usr/sbin/logcheck					Px,
-  /usr/sbin/aideinit					Px,
+  audit /usr/sbin/logcheck				Px,	# FIX ME! audit 25.07.2017
   /usr/sbin/gdisk					Px,
   /usr/sbin/smartctl					Px,
   /usr/sbin/useradd					Px,
   /usr/sbin/userdel					Px,
   /usr/sbin/lspci					Px,
   /usr/sbin/etc-update					Px,
-  /usr/sbin/migrate-pax					Px,
-  /usr/sbin/revdep-pax					Px,
-  /usr/sbin/paxctl-ng					ix,	# FIX ME! Вынести в отдельный профиль.
   /usr/sbin/grub-mkconfig				Px,
   /usr/sbin/grub-install				Px,
   /usr/sbin/perl-cleaner				Px,
@@ -301,7 +289,6 @@ profile shell_root {
   /usr/sbin/iftop					Px,
   /usr/sbin/nettop					Px,
   /usr/sbin/firewall					Px,
-  /usr/sbin/sysctl					Px,
   @{PYTHON_EXEC_WRAPPER}				Px -> python_exec_root,
   /usr/local/bin/**					Px,
   /usr/local/sbin/**					Px,
@@ -316,6 +303,102 @@ profile shell_root {
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
+  
+  profile ls /bin/ls flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/ls						mr,
+  }
+  
+  profile ln /bin/ln flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/ln						mr,
+  }
+  
+  profile rm /bin/rm flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+  }
+  
+  profile cut /bin/cut flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cut						mr,
+  }
+  
+  profile grep /bin/grep flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile env /bin/env flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/env						mr,
+  }
+  
+  profile sed /bin/sed flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+  }
+  
+  profile gzip /bin/gzip flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/gzip						mr,
+  }
   
   profile mount /bin/mount {					# BUILD SYSTEM ONLY!
     #include <abstractions/base>
@@ -360,5 +443,225 @@ profile shell_root {
     
     # READS/WRITES -------------------------------------
     /run/mount/utab					rw,
+  }
+  
+  profile cp /bin/cp flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # CAPABILITIES -------------------------------------
+    capability fowner,
+    capability fsetid,
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cp						mr,
+  }
+  
+  profile mv /bin/mv flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mv						mr,
+  }
+  
+  profile chown /bin/chown flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chown						mr,
+  }
+  
+  profile chmod /bin/chmod flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/chmod						mr,
+  }
+  
+  profile nano /bin/nano flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/nano						mr,
+  }
+  
+  profile cat /bin/cat flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+  }
+  
+  profile dd /bin/dd flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/dd						mr,
+  }
+  
+  profile tar /bin/tar flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/tar						mr,
+  }
+  
+  profile head /bin/head flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/head						mr,
+  }
+  
+  profile tail /bin/tail flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/tail						mr,
+  }
+  
+  profile mkdir /bin/mkdir flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
+  }
+  
+  profile touch /bin/touch flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/touch						mr,
+  }
+  
+  profile rsync /usr/bin/rsync flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/rsync					mr,
+  }
+  
+  profile file /usr/bin/file flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/file					mr,
+  }
+  
+  profile find /usr/bin/find flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/find					mr,
+  }
+  
+  profile gawk /usr/bin/gawk flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/gawk					mr,
+  }
+  
+  profile patch /usr/bin/patch flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/patch					mr,
+  }
+  
+  profile diff /usr/bin/diff flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/diff					mr,
   }
 }
