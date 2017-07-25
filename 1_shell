@@ -357,6 +357,9 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
     
+    # CAPABILITIES -------------------------------------
+    capability mknod,
+    
     # PSEUDO -------------------------------------------
     /dev/pts/[0-9]*					rw,
     
@@ -453,6 +456,7 @@ profile shell_root {
     # CAPABILITIES -------------------------------------
     capability fowner,
     capability fsetid,
+    capability sys_admin,
     
     # PSEUDO -------------------------------------------
     /dev/pts/[0-9]*					rw,

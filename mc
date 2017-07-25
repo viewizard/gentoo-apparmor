@@ -19,6 +19,7 @@ profile mc /usr/bin/mc {
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(cont) peer="shell_users",
+  signal (send) set=(cont) peer="mc.cons.saver",
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,

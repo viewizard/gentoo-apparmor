@@ -138,6 +138,9 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {		# Относится к �
     # MOUNT --------------------------------------------
     mount options=(rw, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /media/*/,	# Важно! noexec - т.к. мы патчим udisks.
     mount options=(rw, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /run/media/*/*/,	# /run/media/$USER/VolumeName/
+    mount options=(ro, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /media/*/,	# Важно! noexec - т.к. мы патчим udisks.
+    mount options=(ro, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /run/media/*/*/,	# /run/media/$USER/VolumeName/
+
     
     # PSEUDO -------------------------------------------
     /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
