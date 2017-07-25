@@ -29,6 +29,7 @@ profile local.sbin.aa_portage /usr/local/sbin/aa_portage.sh {
   /bin/grep						Cx,
   /bin/rm						Cx,
   /bin/ln						Cx,
+  /sbin/apparmor_parser					Px,
   @{PYTHON_EXEC_WRAPPER}				Cx -> equery,
   
   # READS/WRITES ---------------------------------------
@@ -66,6 +67,7 @@ profile local.sbin.aa_portage /usr/local/sbin/aa_portage.sh {
     
     # READS/WRITES -------------------------------------
     /etc/apparmor.d/disable/*				w,
+    /etc/apparmor.d/cache/*				w,
   }
   
   profile ln /bin/ln {

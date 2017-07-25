@@ -107,12 +107,7 @@ profile eudev.udevd /sbin/udevd {
   /lib{,32,64}/udev/rules.d/{,*}			r,
   /lib{,32,64}/modprobe.d/{,*}				r,
   /lib{,32,64}/modules/@{kernel_ver}/modules.{dep,alias,symbols,builtin}.bin r,
-  /run/udev/control					w,
-  /run/udev/rules.d/{,*}				r,
-  /run/udev/queue					rw,
-  /run/udev/tags/{,**}					w,
-  /run/udev/{data,watch,links}/**			rw,
-  /run/udev/watch{,.old}/{,[0-9]*}			rw,
+  /run/udev/**						rw,
   
   profile shell @{shell} {
     #include <abstractions/base>
