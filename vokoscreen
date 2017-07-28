@@ -8,10 +8,6 @@
 #
 # ------------------------------------------------------------------
 
-# BUG!
-# С версии 2.5.0 начал "падать" в режиме полноэкранной записи
-# при её окончании (остановки). В оконном режиме проблем нет.
-
 #include <tunables/global>
 
 # предустановка для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
@@ -26,21 +22,39 @@ profile vokoscreen /usr/bin/vokoscreen {
   #include <abstractions/qt>
   #include <abstractions/video>
   #include <abstractions/X>
+  #include <abstractions/dbus/system-strict>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/accessibility-strict>
+  #include <abstractions/dbus/session-bind>
+  #include <abstractions/dbus/networkmanager>
   #include <abstractions/fs/access-by-users-preset-rwk>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/binary-helper-strict>
   #include <abstractions/nameservice>
   #include <abstractions/xdg-open>
   
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term) peer="vokoscreen//ffmpeg",
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
+  
+  # AUDIT NETWORK --------------------------------------
+  deny network inet stream,
+  deny network inet6 stream,
+  
   # PSEUDO ---------------------------------------------
   /dev/							r,
   /dev/tty						r,
   /dev/tty[0-9]*					rw,
+  owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/vokoscreen					mr,
-  /usr/bin/ffmpeg					Px,	# FIX ME! изменен с ix, проверить.
-  /usr/bin/pactl					Px,	# FIX ME! изменен с ix, проверить.
+  /usr/bin/ffmpeg					Cx,
+  /usr/bin/pactl					Px,
   
   # READS/WRITES ---------------------------------------
   /etc/os-release					r,
@@ -48,4 +62,25 @@ profile vokoscreen /usr/bin/vokoscreen {
   # USERS ----------------------------------------------
   owner @{HOME}/.config/vokoscreen/			rw,
   owner @{HOME}/.config/vokoscreen/**			rwk,
+  owner @{HOME}/{,[^.]**/}				r,	# Разрешаем выбирать любую папку.
+  owner @{HOME}/{,[^.]**/}.vokoscreen-recording/	w,	# Создание временной папки.
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/vokoscreen*				rw,
+  
+  profile ffmpeg /usr/bin/ffmpeg {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-users-preset-rwk>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/X-connection-strict>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/ffmpeg					mr,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.config/vokoscreen/ffmpeg-*.log	w,
+  }
 }
