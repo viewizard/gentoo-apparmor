@@ -31,8 +31,9 @@ profile 00_update_portage.cron.daily /etc/cron.daily/00_update_portage {
   /bin/mktemp						Cx,
   /bin/rm						Cx,
   /bin/cat						Cx,
-  /bin/env						Px -> env_00_update_portage,
   /bin/basename						Px,
+  /bin/cp						Cx,
+  /usr/bin/eix						Pxr,	# r - т.к. проверяем наличие файла
   /usr/bin/libnotify-notify-send-users			Px,
   /usr/bin/mail						Px,
   /usr/bin/logger					Px,
@@ -80,35 +81,28 @@ profile 00_update_portage.cron.daily /etc/cron.daily/00_update_portage {
     owner /tmp/portage.cron.??????			rw,
   }
   
-  profile emerge {
+  profile cp /bin/cp {
     #include <abstractions/base>
-    #include <abstractions/python-exec>
     
     # CAPABILITIES -------------------------------------
-    capability mknod,
+    capability fowner,
+    capability fsetid,
+    audit capability sys_admin,					# FIX ME! audit 26.07.2017
+    capability dac_override,
     
     # PSEUDO -------------------------------------------
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/emerge				Px,
+    /bin/cp						mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/cache/eix/portage.eix				r,
+    /var/cache/eix/previous.eix				rw,
     
     # TEMP ---------------------------------------------
-    owner /tmp/portage.cron.??????			rw,
+    owner /tmp/portage.cron.??????			w,
   }
-}
-
-# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
-# множественные вложенные профили, выносим в отдельный профиль.
-profile env_00_update_portage {
-  #include <abstractions/base>
-  
-  # EXECUTABLES ----------------------------------------
-  /bin/env						mr,
-  @{PYTHON_EXEC_WRAPPER}				Cx -> emerge,	# Выполняем emerge world.
-  
-  # TEMP -----------------------------------------------
-  owner /tmp/portage.cron.??????			w,
   
   profile emerge {
     #include <abstractions/base>

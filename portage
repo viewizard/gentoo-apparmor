@@ -209,7 +209,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {		# FS ACCESS! П
     # TEMP ---------------------------------------------
     /tmp/						r,
     owner /tmp/sh-thd.*					rw,
-    /tmp/portage.cron.*					rw,	# DELEGATION! 00_update_portage.cron.daily
+    owner /tmp/portage.cron.*				rw,	# DELEGATION! 00_update_portage.cron.daily
     owner /tmp/sed*					rw,
     owner /tmp/gcc-config-ima				rw,
     owner /tmp/??????					rw,
@@ -323,7 +323,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {		# FS ACCESS! П
     owner /tmp/cf*/{,**}				rw,
     owner /tmp/test.*					rw,
     owner /tmp/tmp*					rw,
-    /tmp/portage.cron.*					w,	# DELEGATION! 00_update_portage.cron.daily
+    owner /tmp/portage.cron.*				w,	# DELEGATION! 00_update_portage.cron.daily
     owner /tmp/glew.??????/				w,
     owner /tmp/???????					rw,
     /var/tmp/						r,
@@ -1056,6 +1056,7 @@ profile portage.ebuild.sh /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh flags=(co
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------

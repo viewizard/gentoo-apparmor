@@ -85,9 +85,14 @@ profile porthole_sandbox_shell {
   include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
   /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		Px,
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/sandbox/sandbox.bashrc			r,
+  /usr/portage/{,**}					r,
 }

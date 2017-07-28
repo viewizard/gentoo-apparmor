@@ -211,6 +211,7 @@ profile shell_root {
   /bin/date						Px,
   /bin/netstat						Px,
   /bin/getfacl						Px,
+  /bin/setfacl						Px,
   audit /bin/tar					Cx,	# FIX ME! audit 25.07.2017
   /bin/head						Cx,
   /bin/tail						Cx,
@@ -482,6 +483,9 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
     
+    # CAPABILITIES -------------------------------------
+    capability chown,
+    
     # PSEUDO -------------------------------------------
     /dev/pts/[0-9]*					rw,
     
@@ -493,6 +497,10 @@ profile shell_root {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # CAPABILITIES -------------------------------------
+    capability fowner,
+    capability fsetid,
     
     # PSEUDO -------------------------------------------
     /dev/pts/[0-9]*					rw,

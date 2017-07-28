@@ -40,6 +40,7 @@ profile eix /usr/bin/eix {
   
   # TEMP -----------------------------------------------
   owner /tmp/ebuild-cache.*				rw,
+  owner /tmp/portage.cron.*				rw,	# DELEGATION! 00_update_portage.cron.daily
   
   profile portageq {
     #include <abstractions/base>
@@ -50,6 +51,9 @@ profile eix /usr/bin/eix {
     
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/portageq				Px,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/portage.cron.*				rw,	# DELEGATION! 00_update_portage.cron.daily
   }
 }
 

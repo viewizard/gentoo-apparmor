@@ -20,3 +20,18 @@ profile acl.getfacl /bin/getfacl {
   # EXECUTABLES ----------------------------------------
   /bin/getfacl						mr,
 }
+
+profile acl.setfacl /bin/setfacl {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # CAPABILITIES ---------------------------------------
+  capability fowner,
+  capability fsetid,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/setfacl						mr,
+}

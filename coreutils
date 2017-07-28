@@ -35,6 +35,7 @@ profile coreutils.stat /usr/bin/stat {
   
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
+  @{PROC}/@{pid}/mount{s,info}				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/stat						mr,
@@ -234,6 +235,9 @@ profile coreutils.true /bin/true {
 
 profile coreutils.uniq /usr/bin/uniq {
   #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/uniq						mr,
