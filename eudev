@@ -13,6 +13,12 @@
 profile eudev.udevadm /bin/udevadm {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
+  capability net_admin,
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/@{BLOCK_REAL}					r,

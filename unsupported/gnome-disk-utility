@@ -1,0 +1,82 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <tunables/global>
+
+# 1) Фактически все делает через dbus.dbus-daemon, соотв. надо добавлять в
+# dbus.dbus-daemon полные доступы к дискам на запись и чтение.
+# Непонятно, как реализовать механизмы защиты, т.к. к dbus.dbus-daemon
+# обращаются все.
+# 2) Дает возможность выключить на диске SMART.
+# 3) Отображает не просто диски, а все (!) блочные устройства в системе (LUKS, mdadm, LVM, ...).
+# 4) Позволяет настроить параметры монтирования (что для нас очень плохо).
+# 5) Позволяет отмонтировать-монтировать все что угодно (в т.ч. системное).
+# 6) Удаляет разделы и форматирует через udisks (т.е. туда надо давать права запуска утилит).
+# Плохо, т.к. с udisks работаем постоянно через udev, как с основным хелпером монтирования.
+
+profile gnome-disk-utility.gnome-disks /usr/bin/gnome-disks flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/video>
+  #include <abstractions/gtk>
+  #include <abstractions/X>
+  #include <abstractions/dconf>
+  #include <abstractions/dbus/system-strict>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/accessibility-strict>
+  #include <abstractions/dbus/at-spi>
+  #include <abstractions/dbus/gvfs>
+  #include <abstractions/dbus/udisks>
+  #include <abstractions/dbus/session-bind>
+  #include <abstractions/unix/gvfsd-trash>
+  #include <abstractions/unix/gvfsd-network>
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=system
+  	path="/org/freedesktop/UDisks2/**"
+  	interface="org.freedesktop.UDisks2.*"
+  	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd"),
+  dbus receive
+  	bus=system
+  	path="/org/freedesktop/UDisks2/**"
+  	interface="org.freedesktop.UDisks2.*"
+  	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd"),
+  dbus send
+  	bus=session
+  	path="/org/gnome/DiskUtility"
+  	interface="org.gtk.{Actions,Application}"
+  	peer=(name="org.gnome.DiskUtility",label=@{profile_name}),
+  dbus receive
+  	bus=session
+  	path="/org/gnome/DiskUtility"
+  	interface="org.gtk.{Actions,Application}"
+  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/gnome-disks					mr,
+}
+
+profile gnome-disk-utility.gnome-disk-image-mounter /usr/bin/gnome-disk-image-mounter flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/fonts>
+  #include <abstractions/video>
+  #include <abstractions/gtk>
+  #include <abstractions/X>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/accessibility-strict>
+  #include <abstractions/dbus/at-spi>
+  #include <abstractions/dbus/gvfs>
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/gnome-disk-image-mounter			mr,
+}

@@ -28,9 +28,9 @@ profile glsa.cron.daily /etc/cron.daily/glsa {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/glsa					r,
   @{shell}						mr,
-  /bin/mktemp						ix,
-  /bin/cat						ix,
-  /bin/rm						ix,
+  /bin/mktemp						Cx,
+  /bin/cat						Cx,
+  /bin/rm						Cx,
   /bin/basename						Px,
   /usr/bin/libnotify-notify-send-users			Px,
   /usr/bin/mail						Px,
@@ -42,6 +42,36 @@ profile glsa.cron.daily /etc/cron.daily/glsa {
   
   # TEMP -----------------------------------------------
   owner /tmp/glsa.cron.??????				rw,
+  
+  profile mktemp /bin/mktemp {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mktemp						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/glsa.cron.??????				rw,
+  }
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/glsa.cron.??????				rw,
+  }
+  
+  profile rm /bin/rm {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rm						mr,
+    
+    # READS/WRITES -------------------------------------
+    owner /tmp/glsa.cron.??????				rw,
+  }
   
   profile glsa_check {
     #include <abstractions/base>

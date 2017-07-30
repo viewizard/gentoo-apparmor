@@ -23,6 +23,9 @@ profile attr.setfattr /bin/setfattr {
 profile attr.getfattr /bin/getfattr {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
+  capability sys_admin,
+  
   # PSEUDO ---------------------------------------------
   /dev/pts/[0-9]*					rw,
   

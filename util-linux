@@ -160,6 +160,7 @@ profile util-linux.fdisk /sbin/{,c}fdisk flags=(complain) {
   /dev/@{BLOCK_ALL}					rw,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
+  @{PROC}/partitions					r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/{,c}fdisk					mr,
@@ -299,4 +300,31 @@ profile util-linux.renice /usr/bin/renice {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/renice					mr,
+}
+
+profile util-linux.wipefs /sbin/wipefs {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/@{BLOCK_ALL}					rw,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
+  
+  # EXECUTABLES ----------------------------------------
+  /sbin/wipefs						mr,
+}
+
+profile util-linux.sfdisk /sbin/sfdisk {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability sys_admin,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/@{BLOCK_ALL}					rw,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
+  
+  # EXECUTABLES ----------------------------------------
+  /sbin/sfdisk						mr,
 }

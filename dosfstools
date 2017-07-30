@@ -20,3 +20,20 @@ profile dosfstools.fsck.fat /usr/sbin/fsck.fat flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/fsck.fat					mr,
 }
+
+profile dosfstools.mkfs.fat /usr/sbin/mkfs.fat {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  /dev/@{BLOCK_ALL}					rw,
+  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
+  @{PROC}/@{pid}/mounts					r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/mkfs.fat					mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/udev/udev.conf					r,
+}

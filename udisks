@@ -10,40 +10,6 @@
 
 #include <tunables/global>
 
-profile udisks.udisks-daemon /usr/lib{,32,64}/udisks/udisks-daemon {	# Относится к версии 1.х (0-й слот).
-  #include <abstractions/base>
-  
-  # CAPABILITIES ---------------------------------------
-  capability sys_rawio,
-  capability dac_override,
-  capability dac_read_search,
-  
-  # PSEUDO ---------------------------------------------
-  /dev/@{BLOCK_ALL}					r,
-  /sys/bus/						r,
-  /sys/bus/pci/devices/					r,
-  /sys/class/						r,
-  /sys/class/block/					r,
-  /sys/class/scsi_host/					r,
-  /sys/module/block/parameters/events_dfl_poll_msecs	r,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-  /sys/devices/pci[0-9]*/**/{,class,uevent}		r,
-  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/*	r,
-  @{PROC}/mdstat					r,
-  @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/mount{s,info}				r,
-  
-  # EXECUTABLES ----------------------------------------
-  /usr/lib{,32,64}/udisks/udisks-daemon			mr,
-  /usr/lib{,32,64}/udisks/*				ix,	# FIX ME! Ограничить списком.
-  
-  # READS/WRITES ---------------------------------------
-  /etc/udev/udev.conf					r,
-  /etc/fstab						r,
-  /run/udisks/						rw,
-  /run/udev/data/*					r,
-}
-
 profile udisks.udisksd /usr/libexec/udisks2/udisksd {		# Относится к версии 2.х (2-й слот).
   #include <abstractions/base>
   #include <abstractions/dbus/system-strict>
@@ -140,7 +106,10 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {		# Относится к �
     mount options=(rw, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /run/media/*/*/,	# /run/media/$USER/VolumeName/
     mount options=(ro, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /media/*/,	# Важно! noexec - т.к. мы патчим udisks.
     mount options=(ro, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /run/media/*/*/,	# /run/media/$USER/VolumeName/
-
+    mount options=(rw, nosuid, nodev, noexec, noatime) /dev/@{BLOCK_ALL} -> /media/*/,
+    mount options=(ro, nosuid, nodev, noexec, noatime) /dev/@{BLOCK_ALL} -> /media/*/,
+    mount options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /media/*/,
+    mount options=(ro, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /media/*/,
     
     # PSEUDO -------------------------------------------
     /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
@@ -159,6 +128,9 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {		# Относится к �
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,
+    
+    # PSEUDO -------------------------------------------
+    /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
     
     # MOUNT --------------------------------------------
     umount /media/*/,
