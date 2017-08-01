@@ -54,15 +54,29 @@ profile wine /usr/bin/wine flags=(attach_disconnected) {
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile wine.ntlm_auth /usr/bin/ntlm_auth {
+profile wine.ntlm_auth /usr/bin/ntlm_auth flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/fs/deny-private-strict>
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/ntlm_auth					mr,
   
   # READS/WRITES ---------------------------------------
   /usr/share/samba/codepages/**				r,
+  
+  # DENY INHERIT ---------------------------------------
+  deny network inet,						# evelauncher
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
+  deny /dev/shm/.org.chromium.Chromium.*		rw,	# evelauncher
+  deny @{HOME}/evelauncher/**				r,	# evelauncher
+  deny @{HOME}/.local/share/CCP/**			r,	# evelauncher
+  deny @{HOME_CACHE}/CCP/**				rw,	# evelauncher
 }
 
 # FIX ME! В идеале, иметь профиль на каждую программу, см.
