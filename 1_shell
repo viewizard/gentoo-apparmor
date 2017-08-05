@@ -224,8 +224,9 @@ profile shell_root {
   /bin/udevadm						Px,
   /bin/dmesg						Px,
   /sbin/mdadm						Px,
-  /sbin/shutdown					Px,
-  /sbin/{halt,poweroff,reboot}				Px,
+  /sbin/shutdown					Px,	# sysvinit
+  /sbin/{halt,poweroff,reboot}				Px,	# sysvinit
+  /sbin/openrc-shutdown					Px,	# openrc-init
   /sbin/cryptsetup					Px,
   /sbin/apparmor_parser					Px,
   /sbin/{,c}fdisk					Px,

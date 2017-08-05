@@ -75,6 +75,21 @@ profile openrc /sbin/openrc flags=(complain) {
   }
 }
 
+profile openrc.openrc-shutdown /sbin/openrc-shutdown flags=(complain) {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /sbin/openrc-shutdown					mr,
+  
+  # READS/WRITES ---------------------------------------
+  /var/log/wtmp						wk,
+}
+
+
 profile openrc.rc-service /sbin/rc-service flags=(complain) {
   #include <abstractions/base>
   
@@ -340,6 +355,26 @@ profile openrc.cgroup-release-agent.sh /lib{,32,64}/rc/sh/cgroup-release-agent.s
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
   }
+}
+
+profile openrc.kill_all /lib{,32,64}/rc/bin/kill_all flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/ncurses>
+  
+  # CAPABILITIES ---------------------------------------
+  capability kill,
+  
+  # SIGNAL ---------------------------------------------
+  signal (send),						# Все правильно, должны иметь возможность передать
+  								# любой сигнал любому процессу.
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  @{PROC}/						r,
+  @{PROC}/@{pid}/status					r,
+  
+  # EXECUTABLES ----------------------------------------
+  /lib{,32,64}/rc/bin/kill_all				mr,
 }
 
 profile openrc.checkpath /lib{,32,64}/rc/bin/checkpath flags=(complain) {
@@ -1200,7 +1235,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount {
     mount fstype=ext4 options=(rw, nosuid, nodev, noatime, iversion) /dev/@{BLOCK_ALL} -> /var/tmp/portage/,	# BUILD SYSTEM ONLY!
     mount fstype=ext4 options=(rw, noatime) /dev/@{BLOCK_ALL} -> /home/,
     mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /usr/portage/,
-    mount fstype=ext4 options=(rw, nosuid, nodev, noatime) /dev/@{BLOCK_ALL} -> /usr/src/,			# BUILD SYSTEM ONLY!
+    mount fstype=ext4 options=(rw, nosuid, nodev, noatime, iversion) /dev/@{BLOCK_ALL} -> /usr/src/,		# BUILD SYSTEM ONLY!
     mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /mnt/backup/,
     mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /media/sdb2/,
     mount fstype=tmpfs options=(rw, nosuid, nodev, noexec, noatime, nodiratime) tmpfs -> /tmp/,
@@ -1316,7 +1351,8 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc {
   /bin/mkdir						Cx,
   /bin/mount						Cx,
   /bin/umount						Cx,
-  /sbin/halt						Px,
+  /sbin/halt						Px,	# sysvinit
+  /sbin/openrc-shutdown					Px,	# openrc-init
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/bootmisc				r,
@@ -1831,7 +1867,8 @@ profile openrc.killprocs.init.d /etc/init.d/killprocs {
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/mkdir						Cx,
-  /sbin/killall5					Px,
+  /sbin/killall5					Px,	# sysvinit	# FIX ME! с openrc v0.72 не используется, скрипт изменен на kill_all
+  /lib{,32,64}/rc/bin/kill_all				Px,	# openrc-init
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/killprocs				r,
