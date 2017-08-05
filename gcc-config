@@ -19,6 +19,7 @@ profile gcc-config /usr/bin/gcc-config {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -57,6 +58,7 @@ profile gcc-config /usr/bin/gcc-config {
   
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.*					rw,
+  owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks
   
   profile mv /bin/mv {
     #include <abstractions/base>
@@ -216,6 +218,7 @@ profile gcc-config /usr/bin/gcc-config {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -224,6 +227,9 @@ profile gcc-config /usr/bin/gcc-config {
     # READS/WRITES -------------------------------------
     /etc/env.d/*					w,
     /etc/env.d/gcc/**					r,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks
   }
   
   profile tac /usr/bin/tac {
@@ -246,10 +252,14 @@ profile gcc-config /usr/bin/gcc-config {
     #include <abstractions/nameservice>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/portageq				Px,
     @{PYTHON_EXEC}/env-update				Px,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks
   }
 }

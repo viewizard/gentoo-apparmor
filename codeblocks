@@ -14,9 +14,6 @@
 @{USERS_DIR}="[^.]**"
 @{USERS_FILE}="[^.]*"
 
-# FIX ME! Все плохо, все "/** ix" надо убирать, иначе нельзя
-# давать обычному пользователю запуск этой программы!
-
 profile codeblocks /usr/bin/codeblocks {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -34,26 +31,25 @@ profile codeblocks /usr/bin/codeblocks {
   #include <abstractions/nameservice>
   #include <local/codeblocks-custom-settings>
   
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term) peer="codeblocks**",
+  
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/codeblocks					mr,
-  @{shell}						Cx,
-  /usr/bin/gcc						ix,
-  /usr/bin/g++						ix,
-  /usr/bin/llvm-ar					ix,
-  /usr/bin/gfortran					ix,
-  /usr/bin/{,@{CHOST}-}clang-*				ix,
-  /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc			ix,
-  /usr/@{CHOST}/gcc-bin/*/@{CHOST}-g++			ix,
-  /usr/libexec/gcc/@{CHOST}/*/cc1plus			ix,
+  @{shell}						Px -> codeblocks_shell,
+  /usr/bin/gcc						Cx -> test,
+  /usr/bin/g++						Cx -> test,
+  /usr/bin/llvm-ar					Cx -> test,
+  /usr/bin/{,@{CHOST}-}clang-*				Cx -> test,
+  
+  # AUDIT EXECUTABLES ----------------------------------
+  deny /usr/bin/gfortran				x,	# Не используем fortran.
   
   # READS/WRITES ---------------------------------------
-  /etc/lsb-release					r,
   /etc/mime.types					r,
-  /etc/env.d/gcc/@{CHOST}-*				r,
-  /etc/env.d/gcc/config-@{CHOST}			r,
   /usr/include/**					r,
   /usr/share/mime-info/{,*.mime,*.keys}			r,
   /usr/share/codeblocks/{,**}				r,
@@ -67,35 +63,70 @@ profile codeblocks /usr/bin/codeblocks {
   owner /tmp/CODEBLOCKS*.socket				rw,
   owner /tmp/Code::Blocks-*				rwk,
   
-  profile shell @{shell} {
+  profile test {
     #include <abstractions/base>
-    #include <abstractions/nameservice>
-    #include <abstractions/fs/access-by-users-preset-rwk>
-    #include <abstractions/fs/deny-by-pattern-internet>
-    #include <abstractions/fs/deny-private-strict>
-    #include <abstractions/python-exec>
     
     # PSEUDO -------------------------------------------
-    /dev/tty						rw,
-    @{PROC}/@{pid}/fd/					r,
+    /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
-    @{shell}						mr,
-    /{bin,sbin}/**					ixr,	# r - т.к. могут быть скрипты.
-    /usr/{bin,sbin}/**					ixr,	# r - т.к. могут быть скрипты.
-    /usr/{lib{,32,64,exec},@{CHOST}}/**			ixr,	# r - т.к. могут быть скрипты.
+    /usr/bin/gcc					mr,
+    /usr/bin/g++					mr,
+    /usr/bin/llvm-ar					mr,
+    /usr/bin/{,@{CHOST}-}clang-*			mr,
+    /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc		ix,	# Разрешаем ix для данного случая.
+    /usr/@{CHOST}/gcc-bin/*/@{CHOST}-g++		ix,	# Разрешаем ix для данного случая.
+    /usr/libexec/gcc/@{CHOST}/*/cc1plus			ix,	# Разрешаем ix для данного случая.
     
     # READS/WRITES -------------------------------------
-    /etc/profile.env					r,
-    /etc/env.d/**					r,
-    /etc/ld.so.conf					r,
-    /etc/ld.so.conf.d/{,*}				r,
-    /{etc,usr,usr/local}/portage/**			r,
-    /usr/share/portage/config/*				r,
+    /etc/lsb-release					r,
+    /etc/env.d/gcc/@{CHOST}-*				r,
+    /etc/env.d/gcc/config-@{CHOST}			r,
     /usr/include/**					r,
     
     # TEMP ---------------------------------------------
+    owner /tmp/Code::Blocks-*				rw,
+  }
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile codeblocks_shell {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
+  /usr/bin/gcc-config					Px,
+  /usr/bin/g++						Cx,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/Code::Blocks-*				w,
+  
+  profile g++ /usr/bin/g++ flags=(complain) {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-users-preset-rwk>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/g++					mr,
+    /usr/@{CHOST}/binutils-bin/*/as			ix,	# Разрешаем ix для данного случая.
+    /usr/@{CHOST}/binutils-bin/*/ld			ix,	# Разрешаем ix для данного случая.
+    /usr/@{CHOST}/gcc-bin/*/@{CHOST}-g++		ix,	# Разрешаем ix для данного случая.
+    /usr/libexec/gcc/@{CHOST}/*/cc1plus			ix,	# Разрешаем ix для данного случая.
+    /usr/libexec/gcc/@{CHOST}/*/collect2		ix,	# Разрешаем ix для данного случая.
+    
+    # READS/WRITES -------------------------------------
+    /usr/include/**					r,
+    /etc/ld.so.conf					r,
+    /etc/ld.so.conf.d/{,*}				r,
+    /usr/libexec/gcc/@{CHOST}/*/*.so.[0-9]*		rm,
+    
+    # TEMP ---------------------------------------------
     owner /tmp/cc*.{s,c,res,o,le,ld}			rw,
-    owner /tmp/Code::Blocks-*				w,
   }
 }

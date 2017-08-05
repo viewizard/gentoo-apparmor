@@ -130,7 +130,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {		# FS ACCESS! П
     capability kill,
     
     # PTRACE -------------------------------------------
-    ptrace (trace) peer="sysvinit.init",
+    ptrace (trace) peer="sysvinit.init",			# sysvinit
     
     # NETWORK ------------------------------------------
     network inet dgram,
@@ -502,6 +502,7 @@ profile portage.portageq @{PYTHON_EXEC}/portageq flags=(complain) {
   
   # TEMP -----------------------------------------------
   /tmp/portage.cron.*					w,	# DELEGATION! 00_update_portage.cron.daily	# FIX ME! UID 0,250
+  owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks
   
   profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
@@ -516,6 +517,7 @@ profile portage.portageq @{PYTHON_EXEC}/portageq flags=(complain) {
     
     # TEMP ---------------------------------------------
     /tmp/portage.cron.*					w,	# DELEGATION! 00_update_portage.cron.daily	# FIX ME! UID 0,250
+    owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks
   }
 }
 
