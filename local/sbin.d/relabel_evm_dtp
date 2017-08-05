@@ -17,10 +17,13 @@
 profile local.sbin.relabel_evm_dtp /usr/local/sbin/relabel_evm_dtp.sh {
   #include <abstractions/base>
   
+  # CAPABILITIES -------------------------------------
+  capability dac_override,
+  capability dac_read_search,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------
   /usr/local/sbin/relabel_evm_dtp.sh			r,
@@ -30,6 +33,7 @@ profile local.sbin.relabel_evm_dtp /usr/local/sbin/relabel_evm_dtp.sh {
   /bin/cat						Cx,
   /bin/grep						Cx,
   /usr/bin/find						Cx,
+  /usr/bin/evmctl					Px,
   
   profile touch /bin/touch {
     #include <abstractions/base>
@@ -78,6 +82,7 @@ profile local.sbin.relabel_evm_dtp /usr/local/sbin/relabel_evm_dtp.sh {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
