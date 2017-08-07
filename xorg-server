@@ -91,6 +91,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.serverauth*				r,
+  owner @{HOME}/.local/share/xorg/{,**}			rw,	# Нужно для запуска под пользователем (без suid), хранит там логи сервера.
   
   # TEMP -----------------------------------------------
   owner /tmp/.tX[0-9]-lock				w,	# 0-9 ONLY!

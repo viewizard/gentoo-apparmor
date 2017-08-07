@@ -140,6 +140,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {		# FS ACCESS! П
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     /dev/initctl					w,
     /sys/devices/system/cpu/				r,
@@ -258,6 +259,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {		# FS ACCESS! П
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/null						k,
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     /dev/dri/						r,
     owner /dev/shm/??????				rw,

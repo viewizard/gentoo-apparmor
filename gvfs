@@ -329,6 +329,10 @@ profile gvfs.gvfsd-network /usr/libexec/gvfsd-network {
   unix (send, receive, accept)
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="chromium.chrome"),		# chromium.chrome
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
   			peer=(label="nm-applet.nm-connection-editor"),	# nm-applet.nm-connection-editor
   unix (send, receive, accept)
   			type=stream
@@ -562,6 +566,10 @@ profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*"
   			peer=(label="libreoffice.bin"),		# libreoffice.bin
+  unix (send, receive, accept)
+  			type=stream
+  			addr="@/dbus-vfs-daemon/socket-*"
+  			peer=(label="chromium.chrome"),		# chromium.chrome
   unix (send, receive, accept)
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*"

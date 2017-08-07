@@ -12,6 +12,11 @@
 # Не при каких обстоятельствах данный пакет не должен присутствовать в
 # конечной пользовательской системе или серверах.
 
+# ВАЖНО!
+# Т.к. портадж использует специфические настройки окружение,
+# необходимо использовать переключение профиля px/cx/ix, если
+# есть взаимодействие с sandbox.
+
 #include <tunables/global>
 
 profile repoman @{PYTHON_EXEC}/repoman {
@@ -115,7 +120,7 @@ profile repoman_sandbox_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		Px,
+  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		px,
   
   # READS/WRITES ---------------------------------------
   /usr/share/sandbox/sandbox.bashrc			r,

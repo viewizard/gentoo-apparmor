@@ -8,6 +8,11 @@
 #
 # ------------------------------------------------------------------
 
+# ВАЖНО!
+# Т.к. портадж использует специфические настройки окружение,
+# необходимо использовать переключение профиля px/cx/ix, если
+# есть взаимодействие с sandbox.
+
 #include <tunables/global>
 
 profile porthole @{PYTHON_EXEC}/porthole {
@@ -90,7 +95,7 @@ profile porthole_sandbox_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		Px,
+  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		px,
   
   # READS/WRITES ---------------------------------------
   /usr/share/sandbox/sandbox.bashrc			r,

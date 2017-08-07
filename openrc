@@ -75,6 +75,14 @@ profile openrc /sbin/openrc flags=(complain) {
   }
 }
 
+profile openrc.openrc-init /sbin/openrc-init flags=(complain) {
+  #include <abstractions/base>
+  
+  # EXECUTABLES ----------------------------------------
+  /sbin/openrc-init					mr,
+  /sbin/openrc						Px,
+}
+
 profile openrc.openrc-shutdown /sbin/openrc-shutdown flags=(complain) {
   #include <abstractions/base>
   
@@ -88,7 +96,6 @@ profile openrc.openrc-shutdown /sbin/openrc-shutdown flags=(complain) {
   # READS/WRITES ---------------------------------------
   /var/log/wtmp						wk,
 }
-
 
 profile openrc.rc-service /sbin/rc-service flags=(complain) {
   #include <abstractions/base>

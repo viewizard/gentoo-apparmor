@@ -38,6 +38,7 @@ profile xinit /usr/bin/xinit {
   /usr/bin/xinit					mr,
   @{shell}						Px -> xinit_shell,
   /etc/X11/xinit/xserverrc				Px,
+  /usr/bin/Xorg						Px,	# Нужно для запуска под пользователем (без suid).
 }
 
 # FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
@@ -172,6 +173,7 @@ profile xinit.startx /usr/bin/startx {
   /bin/grep						Cx,
   /bin/sed						Cx,
   /bin/rm						Cx,
+  /bin/expr						Cx,
   /usr/bin/mcookie					Px,
   /usr/bin/deallocvt					Px,
   /usr/bin/xauth					Px,
@@ -211,6 +213,16 @@ profile xinit.startx /usr/bin/startx {
     
     # USERS --------------------------------------------
     owner @{HOME}/.serverauth.*				w,
+  }
+  
+  profile expr /bin/expr {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/expr						mr,
   }
 }
 
