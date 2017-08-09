@@ -10,18 +10,16 @@
 
 #include <tunables/global>
 
-profile desktop-file-utils.update-desktop-database /usr/bin/update-desktop-database {
+profile gtk-update-icon-cache /usr/bin/gtk-update-icon-cache {
   #include <abstractions/base>
   
-  # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					rw,
+  # PSEUDO -------------------------------------------
   /dev/pts/[0-9]*					rw,
   
-  # EXECUTABLES ----------------------------------------
-  /usr/bin/update-desktop-database			mr,
+  # EXECUTABLES --------------------------------------
+  /usr/bin/gtk-update-icon-cache			mr,
   
   # READS/WRITES -------------------------------------
-  /opt/**.desktop					r,
-  /usr/share/applications/{,**}				r,
-  /usr/share/applications/{,.}mimeinfo.cache{,.*}	rw,
+  /usr/share/icons/{,**}				r,
+  /usr/share/icons/*/{,.}icon-theme.cache		w,
 }

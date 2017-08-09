@@ -12,6 +12,8 @@
 # Не при каких обстоятельствах данный пакет не должен присутствовать в
 # конечной пользовательской системе или серверах.
 
+# Профиль ориентирован только на сборку ядра и initramfs.
+
 #include <tunables/global>
 
 profile make /usr/bin/{,g}make flags=(complain) {
@@ -58,6 +60,8 @@ profile make /usr/bin/{,g}make flags=(complain) {
   /lib{,32,64}/modules/{,**}				rw,
   /usr/src/@{kernel}/{,**}				ixrw,	# r - т.к. могут быть скрипты.
   owner /var/log/genkernel.log				w,	# genkernel-next
+  
+  # TEMP -----------------------------------------------
   /var/tmp/portage/genkernel/*/busybox-*/{,**}		rw,	# genkernel-next
   
   # NOISY ----------------------------------------------
@@ -125,7 +129,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /usr/bin/find					ix,	# FS ACCESS!
     /usr/bin/pkg-config					Px,
     /usr/bin/xargs					ix,	# FS ACCESS!
-    /usr/bin/gmake					Px,
+    /usr/bin/gmake					Pxr,	# Все правильно, r.
     /usr/bin/gcc					ix,	# FIX ME! Вынести в отдельный профиль.
     /usr/bin/g++					ix,	# FIX ME! Вынести в отдельный профиль.
     /usr/bin/openssl					ix,	# FIX ME! Вынести в отдельный профиль.

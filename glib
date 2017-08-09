@@ -23,3 +23,17 @@ profile glib.gsettings /usr/bin/gsettings {
   # EXECUTABLES ----------------------------------------
   /usr/bin/gsettings					mr,
 }
+
+profile glib.glib-compile-schemas /usr/bin/glib-compile-schemas {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/glib-compile-schemas				mr,
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/glib-[0-9]*/schemas/{,**}			r,
+  /usr/share/glib-[0-9]*/schemas/gschemas.compiled{,.*}	w,
+}

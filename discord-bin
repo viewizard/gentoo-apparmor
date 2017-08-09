@@ -57,6 +57,7 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   @{PROC}/@{pid}/stat					r,
   owner @{PROC}/@{pid}/fd/				r,
   @{PROC}/@{pid}/auxv					r,
+  owner @{PROC}/@{pid}/task/{,@{pid}/status}		r,
   
   # AUDIT PSEUDO ---------------------------------------
   deny @{PROC}/@{pid}/oom_score_adj			rw,

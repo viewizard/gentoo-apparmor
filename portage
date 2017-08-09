@@ -8,6 +8,11 @@
 #
 # ------------------------------------------------------------------
 
+# ВАЖНО!
+# Т.к. портадж использует специфические настройки окружение,
+# необходимо использовать переключение профиля px/cx/ix, если
+# есть взаимодействие с sandbox.
+
 #include <tunables/global>
 
 profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {		# FS ACCESS! Пока оставляем все ix в portage.emerge
@@ -143,32 +148,27 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {		# FS ACCESS! П
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     /dev/initctl					w,
-    /sys/devices/system/cpu/				r,
-    @{PROC}/						r,
-    @{PROC}/cmdline					r,
-    @{PROC}/vmstat					r,
-    @{PROC}/@{pid}/{environ,cmdline,status}		r,
-    @{PROC}/@{pid}/fd/					r,
+    /sys/{,**}						r,
+    @{PROC}/{,**}					r,
     @{PROC}/@{pid}/fd/[0-9]*				w,
-    @{PROC}/@{pid}/{mounts,mountinfo}			r,
-    @{PROC}/sys/kernel/osrelease			r,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /usr/sbin/useradd					Px,
-    /usr/sbin/lspci					Px,
-    /lib{,32,64}/rc/sh/migrate-to-run.sh		ix,
     /etc/portage/bin/**					ix,
     /bin/**						ix,
     /sbin/**						ix,
     /sbin/udevadm					Px,
     /opt/**						ix,
     /usr/bin/**						ix,
+    /usr/sbin/useradd					Px,
+    /usr/sbin/lspci					Px,
     /usr/sbin/**					ix,
     /usr/lib{,32,64,exec}/**				ix,
     /usr/@{CHOST}/**					ix,
     /usr/src/@{kernel}/scripts/**			ix,
     /lib{,32,64}/rc/sh/gendepends.sh			Px,
+    /lib{,32,64}/rc/sh/migrate-to-run.sh		ix,
+    /lib{,32,64}/rc/bin/*				ix,
     /var/tmp/portage/**					ix,
     
     # READS/WRITES -------------------------------------
@@ -188,7 +188,6 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {		# FS ACCESS! П
     /lib{,32,64}/					r,
     /lib{,32,64}/*					rwl,	# l - все правильно, разрешаем на /**.
     /lib{,32,64}/modules/@{kernel_ver}/modules.*	rw,
-    /lib{,32,64}/rc/bin/*				ix,
     /var/						r,
     /var/db/pkg/					r,
     /var/db/pkg/**					rw,
@@ -209,13 +208,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {		# FS ACCESS! П
     
     # TEMP ---------------------------------------------
     /tmp/						r,
-    owner /tmp/sh-thd.*					rw,
-    owner /tmp/portage.cron.*				w,	# DELEGATION! 00_update_portage.cron.daily
-    owner /tmp/sed*					rw,
-    owner /tmp/gcc-config-ima				rw,
-    owner /tmp/??????					rw,
-    owner /tmp/tmp??????				rwk,
-    owner /tmp/tac??????				rw,
+    owner /tmp/**					rwk,	# Исключительный случай, разрешаем полный доступ.
     /var/tmp/						r,
   }
   
@@ -257,35 +250,17 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {		# FS ACCESS! П
     network inet6 stream,
     
     # PSEUDO -------------------------------------------
+    /dev/{,**}						r,
     /dev/tty						rw,
     /dev/null						k,
+    /dev/ptmx						rw,
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
-    /dev/dri/						r,
     owner /dev/shm/??????				rw,
     owner /dev/shm/sem.*-[0-9]*				w,
     owner link subset /dev/shm/sem.*-[0-9]*		-> /dev/shm/??????,
-    /dev/ptmx						rw,
-    /sys/bus/pci/devices/				r,
-    /sys/devices/pci[0-9]*/**/config			r,
-    /sys/devices/system/cpu/{,**}			r,
-    @{PROC}/						r,
-    @{PROC}/@{pid}/fd/					r,
-    @{PROC}/cmdline					r,
-    @{PROC}/uptime					r,
-    @{PROC}/@{pid}/stat					r,
-    @{PROC}/@{pid}/mounts				r,
-    @{PROC}/@{pid}/loginuid				r,
-    @{PROC}/@{pid}/task/@{pid}/stat			r,
-    @{PROC}/@{pid}/net/arp				r,
-    @{PROC}/tty/drivers					r,
-    @{PROC}/sys/net/ipv4/ip_local_port_range		r,
-    @{PROC}/sys/kernel/randomize_va_space		r,
-    @{PROC}/sys/kernel/osrelease			r,
-    @{PROC}/sys/kernel/pid_max				r,
-    @{PROC}/sys/kernel/ostype				r,
-    @{PROC}/sys/kernel/ngroups_max			r,
-    owner @{PROC}/@{pid}/cmdline			r,
+    /sys/{,**}						r,
+    @{PROC}/{,**}					r,
     
     # EXECUTABLES ----------------------------------------
     @{shell}						mr,
@@ -296,11 +271,10 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {		# FS ACCESS! П
     /usr/bin/**						ix,
     /usr/sbin/**					ix,
     /usr/lib{,32,64,exec}/**				ix,
-    /usr/share/build-1/mkdir.sh				ix,
-    /usr/share/gnuconfig/config.sub			ix,
+    /usr/share/**					ix,
     /usr/@{CHOST}/**					ix,
     /usr/src/@{kernel}/scripts/**			ix,
-    /var/tmp/portage/**					ix,
+    /var/tmp/portage/*/*/**				ix,
     
     # READS/WRITES -------------------------------------
     /							r,
@@ -310,9 +284,8 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {		# FS ACCESS! П
     /lib{,32,64}/{,**}					r,
     /etc/{,**}						r,
     /usr/{,**}						r,
-    /usr/portage/distfiles/*/				w,	# git/cvs/svn
-    /usr/src/@{kernel}/tools/gcc/**.so			m,	# плагины
-    /usr/portage/distfiles/{egit,git3}-src/**		rw,
+    /usr/src/@{kernel}/tools/gcc/**.so			m,	# Плагины gcc.
+    /usr/portage/distfiles/{egit,git3}-src/{,**}	rw,
     link subset /usr/portage/distfiles/{egit,git3}-src/** -> /usr/portage/distfiles/{egit,git3}-src/**,
     /usr/portage/packages/{,**}				rw,
     /var/						r,
@@ -322,16 +295,9 @@ profile portage.emerge @{PYTHON_EXEC}/emerge flags=(complain) {		# FS ACCESS! П
     
     # TEMP ---------------------------------------------
     /tmp/						r,
-    owner /tmp/cf*/{,**}				rw,
-    owner /tmp/test.*					rw,
-    owner /tmp/tmp*					rw,
-    owner /tmp/portage.cron.*				w,	# DELEGATION! 00_update_portage.cron.daily
-    owner /tmp/glew.??????/				w,
-    owner /tmp/???????					rw,
+    owner /tmp/**					rwk,	# Исключительный случай, разрешаем полный доступ.
     /var/tmp/						r,
-    owner /var/tmp/cf*/{,**}				rw,
-    /var/tmp/portage/					rw,
-    /var/tmp/portage/**					rwk,
+    owner /var/tmp/**					rwk,	# Исключительный случай, разрешаем полный доступ.
     link subset /var/tmp/portage/**			-> /var/tmp/portage/**,
   }
 }
