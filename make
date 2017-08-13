@@ -74,6 +74,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     
     # CAPABILITIES ---------------------------------------
     capability mknod,
+    capability sys_admin,
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,

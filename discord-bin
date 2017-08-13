@@ -70,6 +70,7 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   # READS/WRITES ---------------------------------------
   /opt/discord/**					r,
   /opt/discord/**.so					m,
+  owner /run/user/[0-9]*/discord-ipc-[0-9]*		rw,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/discord/{,**}			rwk,
