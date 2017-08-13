@@ -10,6 +10,69 @@
 
 #include <tunables/global>
 
+# Профили с доступом к gvfsd-fuse анонимному сокету
+@{GVFSD_FUSE_ANON_SOCKET}="fuse.fusermount"
+
+# Профили с доступом к gvfsd-http сокету
+@{GVFSD_HTTP_SOCKET}="gimp"
+
+# Профили с доступом к gvfsd-http анонимному сокету
+@{GVFSD_HTTP_ANON_SOCKET}="gimp"
+
+# Профили с доступом к gvfsd-network сокету
+@{GVFSD_NETWORK_SOCKET}="thunar"
+@{GVFSD_NETWORK_SOCKET}+="uget.uget-gtk"
+@{GVFSD_NETWORK_SOCKET}+="engrampa"
+@{GVFSD_NETWORK_SOCKET}+="meld"
+@{GVFSD_NETWORK_SOCKET}+="alacarte"
+@{GVFSD_NETWORK_SOCKET}+="transmission"
+@{GVFSD_NETWORK_SOCKET}+="mousepad"
+@{GVFSD_NETWORK_SOCKET}+="remmina"
+@{GVFSD_NETWORK_SOCKET}+="wireshark"
+@{GVFSD_NETWORK_SOCKET}+="libreoffice.bin"
+@{GVFSD_NETWORK_SOCKET}+="chromium.chrome"
+@{GVFSD_NETWORK_SOCKET}+="nm-applet.nm-connection-editor"
+@{GVFSD_NETWORK_SOCKET}+="nvidia-drivers.nvidia-settings"
+
+# Профили с доступом к gvfsd-smb сокету
+@{GVFSD_SMB_SOCKET}="gvfs.gvfsd-fuse"
+@{GVFSD_SMB_SOCKET}+="libreoffice.bin"
+@{GVFSD_SMB_SOCKET}+="ristretto"
+@{GVFSD_SMB_SOCKET}+="tumbler"
+@{GVFSD_SMB_SOCKET}+="thunar"
+@{GVFSD_SMB_SOCKET}+="smplayer"
+@{GVFSD_SMB_SOCKET}+="vlc"
+
+# Профили с доступом к gvfsd-smb анонимному сокету
+@{GVFSD_SMB_ANON_SOCKET}="libreoffice.bin"
+@{GVFSD_SMB_ANON_SOCKET}+="ristretto"
+@{GVFSD_SMB_ANON_SOCKET}+="tumbler"
+@{GVFSD_SMB_ANON_SOCKET}+="thunar"
+
+# Профили с доступом к gvfsd-smb-browse сокету
+@{GVFSD_SMB_BROWSER_SOCKET}="gvfs.gvfsd-network"
+@{GVFSD_SMB_BROWSER_SOCKET}+="thunar"
+@{GVFSD_SMB_BROWSER_SOCKET}+="libreoffice.bin"
+
+# Профили с доступом к gvfsd-trash сокету
+@{GVFSD_TRASH_SOCKET}="tumbler"
+@{GVFSD_TRASH_SOCKET}+="thunar"
+@{GVFSD_TRASH_SOCKET}+="uget.uget-gtk"
+@{GVFSD_TRASH_SOCKET}+="engrampa"
+@{GVFSD_TRASH_SOCKET}+="meld"
+@{GVFSD_TRASH_SOCKET}+="alacarte"
+@{GVFSD_TRASH_SOCKET}+="transmission"
+@{GVFSD_TRASH_SOCKET}+="mousepad"
+@{GVFSD_TRASH_SOCKET}+="remmina"
+@{GVFSD_TRASH_SOCKET}+="wireshark"
+@{GVFSD_TRASH_SOCKET}+="libreoffice.bin"
+@{GVFSD_TRASH_SOCKET}+="chromium.chrome"
+@{GVFSD_TRASH_SOCKET}+="nm-applet.nm-connection-editor"
+@{GVFSD_TRASH_SOCKET}+="nvidia-drivers.nvidia-settings"
+
+# Профили с доступом к gvfsd-trash анонимному сокету
+@{GVFSD_TRASH_ANON_SOCKET}="tumbler"
+
 profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monitor {
   #include <abstractions/base>
   #include <abstractions/nameservice>
@@ -164,7 +227,7 @@ profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   unix (send, receive)
   			type=stream
 			addr=none
-  			peer=(addr=none,label="fuse.fusermount"),
+  			peer=(addr=none,label="@{GVFSD_FUSE_ANON_SOCKET}"),
   
   # MOUNT ----------------------------------------------
   mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /run/user/[0-9]*/gvfs/,
@@ -204,11 +267,11 @@ profile gvfs.gvfsd-http /usr/libexec/gvfsd-http {
   unix (send, receive, accept)
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="gimp"),			# gimp
+  			peer=(label="@{GVFSD_HTTP_SOCKET}"),
   unix (send, receive)
   			type=stream
   			addr=none
-  			peer=(label="gimp"),			# gimp
+  			peer=(label="@{GVFSD_HTTP_ANON_SOCKET}"),
   
   # DBUS -----------------------------------------------
   dbus (send, receive)
@@ -289,55 +352,7 @@ profile gvfs.gvfsd-network /usr/libexec/gvfsd-network {
   unix (send, receive, accept)
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="thunar"),			# thunar
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="uget.uget-gtk"),		# uget.uget-gtk
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="engrampa"),		# engrampa
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="meld"),			# meld
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="alacarte"),		# alacarte
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="transmission"),		# transmission
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="mousepad"),		# mousepad
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="remmina"),			# remmina
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="wireshark"),		# wireshark
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="libreoffice.bin"),		# libreoffice.bin
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="chromium.chrome"),		# chromium.chrome
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="nm-applet.nm-connection-editor"),	# nm-applet.nm-connection-editor
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="nvidia-drivers.nvidia-settings"),	# nvidia-drivers.nvidia-settings
+  			peer=(label="@{GVFSD_NETWORK_SOCKET}"),
   
   # DBUS -----------------------------------------------
   dbus (send, receive)
@@ -388,49 +403,13 @@ profile gvfs.gvfsd-smb /usr/libexec/gvfsd-smb {
   unix (send, receive, accept)
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="gvfs.gvfsd-fuse"),		# gvfs.gvfsd-fuse
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="libreoffice.bin"),		# libreoffice
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="ristretto"),		# ristretto
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="tumbler"),			# tumbler
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="thunar"),			# thunar
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="smplayer"),		# smplayer
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="vlc"),			# vlc
+  			peer=(label="@{GVFSD_SMB_SOCKET}"),
   unix (send, receive)
   			type=stream
   			addr=none
-  			peer=(label="libreoffice.bin"),		# libreoffice
-  unix (send, receive)
-  			type=stream
-  			addr=none
-  			peer=(label="ristretto"),		# ristretto
-  unix (send, receive)
-  			type=stream
-  			addr=none
-  			peer=(label="tumbler"),			# tumbler
-  unix (send, receive)
-  			type=stream
-  			addr=none
-  			peer=(label="thunar"),			# thunar
+  			peer=(label="@{GVFSD_SMB_ANON_SOCKET}"),
   
-# DBUS -----------------------------------------------
+  # DBUS -----------------------------------------------
   dbus (send, receive)
   	bus=session
   	path="/org/gtk/vfs/**"
@@ -473,15 +452,7 @@ profile gvfs.gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse {
   unix (send, receive, accept)
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="gvfs.gvfsd-network"),	# gvfs.gvfsd-network
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="thunar"),			# thunar
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="libreoffice.bin"),		# libreoffice.bin
+  			peer=(label="@{GVFSD_SMB_BROWSER_SOCKET}"),
   
   # DBUS -----------------------------------------------
   dbus (send, receive)
@@ -525,63 +496,11 @@ profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   unix (send, receive, accept)
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="tumbler"),			# tumbler
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="thunar"),			# thunar
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="uget.uget-gtk"),		# uget.uget-gtk
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="engrampa"),		# engrampa
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="meld"),			# meld
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="alacarte"),		# alacarte
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="transmission"),		# transmission
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="mousepad"),		# mousepad
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="remmina"),			# remmina
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="wireshark"),		# wireshark
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="libreoffice.bin"),		# libreoffice.bin
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="chromium.chrome"),		# chromium.chrome
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="nm-applet.nm-connection-editor"),	# nm-applet.nm-connection-editor
-  unix (send, receive, accept)
-  			type=stream
-  			addr="@/dbus-vfs-daemon/socket-*"
-  			peer=(label="nvidia-drivers.nvidia-settings"),	# nvidia-drivers.nvidia-settings
+  			peer=(label="@{GVFSD_TRASH_SOCKET}"),
   unix (send, receive)
 			type=stream
 			addr=none
-			peer=(label="tumbler"),			# tumbler
+			peer=(label="@{GVFSD_TRASH_ANON_SOCKET}"),
   
   # DBUS -----------------------------------------------
   dbus (send, receive)
