@@ -18,6 +18,11 @@ profile gconf.gconfd-2 /usr/libexec/gconfd-2 {
   #include <abstractions/dbus/session-bind>
   
   # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/org/gnome/GConf/Server"
+  	interface="org.gnome.GConf.Server"
+  	peer=(name="org.freedesktop.DBus"),
   dbus receive
   	bus=session
   	path="/org/gnome/GConf/Server"

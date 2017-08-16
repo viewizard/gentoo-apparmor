@@ -481,6 +481,7 @@ profile openrc.eend /lib{,32,64}/rc/bin/eend flags=(attach_disconnected,complain
   capability mknod,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -570,6 +571,9 @@ profile openrc.eerror /lib{,32,64}/rc/bin/eerror flags=(attach_disconnected,comp
 profile openrc.service /lib{,32,64}/rc/bin/service_* flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
+  capability kill,
+  
   # PSEUDO ---------------------------------------------
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
@@ -592,6 +596,7 @@ profile openrc.service_set_value /lib{,32,64}/rc/bin/service_set_value flags=(co
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   

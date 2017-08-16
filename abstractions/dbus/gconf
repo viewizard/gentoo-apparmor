@@ -13,6 +13,11 @@ dbus send
 	path="/org/gnome/GConf/Server"
 	interface="org.gnome.GConf.Server"
 	peer=(name="org.gnome.GConf",label="gconf.gconfd-2"),
+dbus receive
+	bus=session
+	path="/org/gnome/GConf/Server"
+	interface="org.gnome.GConf.Server"
+	peer=(name=":[0-9]*.[0-9]*",label="gconf.gconfd-2"),
 dbus send
 	bus=session
 	path="/org/gnome/GConf/Database/[0-9]*"

@@ -70,6 +70,7 @@ profile gcc-config /usr/bin/gcc-config {
     /bin/mv						mr,
     
     # READS/WRITES -------------------------------------
+    /etc/env.d/*					rw,
     /lib{,32,64}/*					rw,
     /usr/bin/*						rw,
   }
@@ -87,6 +88,7 @@ profile gcc-config /usr/bin/gcc-config {
     /bin/cp						mr,
     
     # READS/WRITES -------------------------------------
+    /etc/env.d/gcc/*					rw,
     /lib{,32,64}/*					w,
     /usr/bin/*						w,
   }
@@ -103,6 +105,8 @@ profile gcc-config /usr/bin/gcc-config {
     # READS/WRITES -------------------------------------
     /etc/env.d/**					w,
     /lib{,32,64}/*					w,
+    /usr/bin/gcc-[0-9]*					w,
+    /usr/bin/@{CHOST}-gcc-[0-9]*			w,
   }
   
   profile ln /bin/ln {
@@ -206,6 +210,9 @@ profile gcc-config /usr/bin/gcc-config {
   
   profile cmp /usr/bin/cmp {
     #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/cmp					mr,
