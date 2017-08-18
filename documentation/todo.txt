@@ -3,6 +3,11 @@ out of tree patches (kernel) git://kernel.ubuntu.com/jj/apparmor-backports
 out of tree patches (user-space) git://git.launchpad.net/~jjohansen/apparmor
 
 
+- xattr labels
+http://wiki.apparmor.net/index.php/TechnicalDoc#File_object_mediation
+Задание и работа с метками в расширенных атрибутах файлов (аналогично SELinux и SMACK).
+
+
 - мы используем confined init (SECURITY_APPARMOR_UNCONFINED_INIT выключен)
 На ранней загрузке переключаемся на свой default профиль. Нужно как-то больше его ограничить:
 1) После переключения рут (syscall chroot, или запуска /sbin/init), перезагружать профиль default, и не давать уже запускать /bin/busybox, /bin/udevadm, /bin/grep (особенно напрягают первые 2).

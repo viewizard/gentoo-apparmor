@@ -289,8 +289,12 @@ root # find * -maxdepth 0 -type f -exec ln -sr ./{} ./force-complain/{} \;
 Важно!
 В конечных системах нельзя ставить профили с flags=(complain), т.к. в таких профилях возможен запуск/выполнение/доступ ко всем объектам системы.
 
-
-
+Важно!
+chroot - https://wiki.ubuntu.com/DebuggingApparmor#AppArmor_and_chroot_environments
+если не переключаем namespace - все делается в рамках текущего:
+/var/chroot/etc/password r,   #post chroot path looks like access to file prechroot
+/etc/passwd r, 
+Как вариант, использовать флаги flags=(chroot_relative, chroot_attach).
 
 
 

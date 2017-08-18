@@ -76,7 +76,9 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   owner @{HOME}/.config/discord/{,**}			rwk,
   owner @{HOME}/.config/discord/*/modules/**.{node,so}	m,
   owner @{HOME}/.pki/nssdb/*				rwk,
-  owner @{HOME}/.config/autostart/discord-stable.desktop rw,
+  
+  # AUDIT USERS ----------------------------------------
+  deny @{HOME}/.config/autostart/*.desktop		rw,	# По какой-то причине, автозапуск не работает в XFCE4.
   
   # TEMP -----------------------------------------------
   /tmp/							r,
