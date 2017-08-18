@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2017 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -8,9 +8,6 @@
 #
 # ------------------------------------------------------------------
 
-# EXECUTABLES ------------------------------------------
-/usr/bin/qgit						Px -> qgit_root,
-/usr/bin/meld						Px -> meld_root,
-/usr/bin/exo-open					Px,
-/usr/local/bin/**					Px,
-/usr/local/sbin/**					Px,
+# MOUNT ----------------------------------------------
+mount fstype=ext4 options=(ro, noatime) /dev/@{BLOCK_ALL} -> /home/,
+mount fstype=ext4 options=(rw, noatime) /dev/@{BLOCK_ALL} -> /home/,

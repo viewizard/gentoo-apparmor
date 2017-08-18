@@ -36,18 +36,13 @@ profile pam_mount.pmvarrun /usr/sbin/pmvarrun {
   /run/pam_mount/					w,
 }
 
-profile pam_mount_mount /bin/mount {
+profile pam_mount_mount {
   #include <abstractions/base>
+  #include <local/mount/pam_mount.d/>
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
   capability dac_override,
-  
-  # MOUNT ----------------------------------------------	# FIX ME! Вынести список в local.
-  mount fstype=tmpfs options=(rw, noexec) none -> /home/*/.cache/,
-  mount fstype=tmpfs options=(rw, noexec) none -> /home/*/.thumbnails/,
-  mount fstype=tmpfs options=(rw, noexec) none -> /home/*.nv/,
-  mount fstype=tmpfs options=(rw, noexec) none -> /home/*/.nv/,
   
   # EXECUTABLES ----------------------------------------
   /bin/mount						mr,
@@ -58,15 +53,10 @@ profile pam_mount_mount /bin/mount {
 
 profile pam_mount_umount {
   #include <abstractions/base>
+  #include <local/mount/pam_mount.d/>
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
-  
-  # MOUNT ----------------------------------------------	# FIX ME! Вынести список в local.
-  umount /home/*/.cache/,
-  umount /home/*/.thumbnails/,
-  umount /home/*.nv/,
-  umount /home/*/.nv/,
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

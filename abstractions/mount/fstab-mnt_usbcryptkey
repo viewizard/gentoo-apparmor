@@ -8,8 +8,8 @@
 #
 # ------------------------------------------------------------------
 
-# Отслеживаемые udisk2 точки монтирования (в т.ч. из /etc/fstab).
+# USB-Flash раздел - всегда "реальное" блочное устройство.
 
-# READS/WRITES -----------------------------------------
-/media/*/						r,	# udisks2, /media/VolumeName/
-/run/media/*/*/						r,	# udisks2, /run/media/$USER/VolumeName/
+# MOUNT ----------------------------------------------
+mount fstype=ext2 options=(ro, nosuid, nodev, noexec, noatime) /dev/@{BLOCK_REAL} -> /mnt/usbcryptkey/,
+mount fstype=ext2 options=(rw, nosuid, nodev, noexec, noatime) /dev/@{BLOCK_REAL} -> /mnt/usbcryptkey/,

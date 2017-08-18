@@ -13,6 +13,7 @@
 profile fuse.fusermount /usr/bin/fusermount {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  #include <abstractions/mount/gvfsd-fuse>
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
@@ -25,10 +26,8 @@ profile fuse.fusermount /usr/bin/fusermount {
   			peer=(addr=none,label="gvfs.gvfsd-fuse"),
   
   # MOUNT ----------------------------------------------
-  mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /run/user/[0-9]*/gvfs/,
-  mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /root/.gvfs/,
-  umount /run/user/[0-9]*/gvfs/,
   umount /root/.gvfs/,
+  umount /run/user/[0-9]*/gvfs/,
   
   # PSEUDO ---------------------------------------------
   /dev/fuse						rw,

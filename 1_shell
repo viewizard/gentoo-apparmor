@@ -408,15 +408,13 @@ profile shell_root {
     /bin/gzip						mr,
   }
   
-  profile mount /bin/mount {					# BUILD SYSTEM ONLY!
+  profile mount /bin/mount {
     #include <abstractions/base>
+    #include <abstractions/mount/fstab-boot>			# BUILD SYSTEM ONLY!
+    #include <abstractions/mount/fstab-mnt_usbcryptkey>		# BUILD SYSTEM ONLY!
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,
-    
-    # MOUNT --------------------------------------------	# FIX ME! /etc/fstab
-    mount fstype=ext4 options=(rw, noatime, iversion) /dev/@{BLOCK_ALL} -> /boot/,	# BUILD SYSTEM ONLY!
-    mount fstype=ext2 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /mnt/usbcryptkey/,	# BUILD SYSTEM ONLY!
     
     # PSEUDO -------------------------------------------
     /dev/pts/[0-9]*					rw,
@@ -431,13 +429,13 @@ profile shell_root {
     /run/mount/utab					rw,
   }
   
-  profile umount /bin/umount {					# BUILD SYSTEM ONLY!
+  profile umount /bin/umount {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,
     
-    # MOUNT --------------------------------------------	# FIX ME! /etc/fstab
+    # MOUNT --------------------------------------------
     umount /boot/,						# BUILD SYSTEM ONLY!
     umount /mnt/usbcryptkey/,					# BUILD SYSTEM ONLY!
     

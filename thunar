@@ -29,7 +29,6 @@ profile thunar /usr/bin/{Thunar,thunar} {
   #include <abstractions/nameservice>
   #include <abstractions/fs/access-by-pattern-filemanager>
   #include <abstractions/binary-helper>
-  #include <local/thunar-custom-exec>
   #include <abstractions/unix/gvfsd-trash>
   #include <abstractions/unix/gvfsd-network>
   #include <abstractions/unix/gvfsd-smb-browse>
@@ -79,6 +78,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   /usr/bin/update-desktop-database			Px,
   /usr/lib{,32,64}/Thunar/thunar-sendto-email		Px,
   /usr/libexec/thunar-archive-plugin/engrampa.tap	Px,	# MATE
+  /usr/local/bin/*					Px,
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
@@ -101,7 +101,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   
   profile shell @{shell} {
     #include <abstractions/base>
-    #include <local/thunar-custom-actions>
+    #include <local/profile/thunar-custom-actions.d/>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -189,7 +189,6 @@ profile thunar_root {
   #include <abstractions/binary-helper_root>
   #include <abstractions/fs/access-by-pattern-filemanager>
   #include <abstractions/fs/access-by-pattern-systemusers>
-  #include <local/thunar_root-custom-exec>
   #include <abstractions/unix/gvfsd-trash>
   #include <abstractions/unix/gvfsd-network>
   #include <abstractions/unix/gvfsd-smb-browse>
@@ -246,6 +245,8 @@ profile thunar_root {
   /usr/lib{,32,64}/Thunar/thunar-sendto-email		Px,	# RBAC! Для root ветки отдельный профиль,
   								# вызывающий нужный профиль exo-helper-1.
   /usr/libexec/thunar-archive-plugin/engrampa.tap	Px -> engrampa_tap_root,	# MATE
+  /usr/local/bin/*					Px,
+  /usr/local/sbin/*					Px,
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
@@ -268,7 +269,7 @@ profile thunar_root {
   
   profile shell @{shell} {
     #include <abstractions/base>
-    #include <local/thunar_root-custom-actions>
+    #include <local/profile/thunar_root-custom-actions.d/>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -296,13 +297,11 @@ profile thunar_root {
   
   profile mount /bin/mount {
     #include <abstractions/base>
+    #include <abstractions/mount/fstab-boot>			# BUILD SYSTEM ONLY!
+    #include <abstractions/mount/fstab-mnt_usbcryptkey>		# BUILD SYSTEM ONLY!
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,
-    
-    # MOUNT --------------------------------------------	# FIX ME! /etc/fstab
-    mount fstype=ext4 options=(rw, noatime, iversion) /dev/@{BLOCK_ALL} -> /boot/,	# BUILD SYSTEM ONLY!
-    mount fstype=ext2 options=(rw, nosuid, nodev, noexec, noatime) /dev/@{BLOCK_ALL} -> /mnt/usbcryptkey/,	# BUILD SYSTEM ONLY!
     
     # PSEUDO -------------------------------------------
     /dev/						r,
@@ -329,7 +328,7 @@ profile thunar_root {
     # CAPABILITIES -------------------------------------
     capability sys_admin,
     
-    # MOUNT --------------------------------------------	# FIX ME! /etc/fstab
+    # MOUNT --------------------------------------------
     umount /boot/,						# BUILD SYSTEM ONLY!
     umount /mnt/usbcryptkey/,					# BUILD SYSTEM ONLY!
     

@@ -19,7 +19,7 @@ profile wine /usr/bin/wine flags=(attach_disconnected) {
   #include <abstractions/nameservice>
   #include <abstractions/p11-kit>
   #include <abstractions/fs/deny-private-strict>
-  #include <local/wine-custom-locations>
+  #include <local/profile/wine.d/>
   
   # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
@@ -96,7 +96,7 @@ profile wine.wine-preloader /usr/bin/wine-preloader flags=(attach_disconnected) 
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/udisks>
   #include <abstractions/video>
-  #include <local/wine-custom-locations>
+  #include <local/profile/wine.d/>
   
   # SIGNAL ---------------------------------------------
   signal (receive) set=(usr1, quit) peer="wine.wineserver",
@@ -177,9 +177,9 @@ profile wine.wine-preloader /usr/bin/wine-preloader flags=(attach_disconnected) 
 profile wine.wineserver /usr/bin/wineserver flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-  include <abstractions/X-connection-strict>
+  #include <abstractions/X-connection-strict>
   #include <abstractions/fs/deny-private-strict>
-  #include <local/wine-custom-locations>
+  #include <local/profile/wine.d/>
   
   # CAPABILITIES ---------------------------------------
   capability sys_ptrace,

@@ -689,7 +689,7 @@ profile openrc.netmount.init.d /etc/init.d/netmount {
   profile mount /bin/mount {
     #include <abstractions/base>
     
-    # MOUNT --------------------------------------------	# FIX ME! /etc/fstab - сетевые фс.
+    # MOUNT --------------------------------------------
     
     # EXECUTABLES --------------------------------------
     /bin/mount						mr,
@@ -701,7 +701,7 @@ profile openrc.netmount.init.d /etc/init.d/netmount {
   profile umount /bin/umount {
     #include <abstractions/base>
     
-    # MOUNT --------------------------------------------	# FIX ME! /etc/fstab - сетевые фс.
+    # MOUNT --------------------------------------------
     
     # PSEUDO -------------------------------------------
     /dev/console					rw,
@@ -753,7 +753,7 @@ profile openrc.local.init.d /etc/init.d/local {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
-  #include <local/openrc-local-scripts>				# Работа со скриптами в /etc/local.d
+  #include <local/profile/openrc.local.d/>
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/local/tasks			w,
@@ -1102,15 +1102,10 @@ profile openrc.root.init.d /etc/init.d/root {
   
   profile mount /bin/mount {
     #include <abstractions/base>
+    #include <abstractions/mount/fstab-root>
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,
-    
-    # MOUNT --------------------------------------------	# Допустимые опции перемонтирования корневого раздела.
-    mount options=(rw, remount, relatime) -> /,
-    mount options=(rw, remount, noatime) -> /,
-    mount options=(rw, remount, relatime, iversion) -> /,
-    mount options=(rw, remount, noatime, iversion) -> /,
     
     # PSEUDO -------------------------------------------
     /dev/console					rw,
@@ -1236,21 +1231,18 @@ profile openrc.localmount.init.d /etc/init.d/localmount {
   
   profile mount /bin/mount {
     #include <abstractions/base>
+    #include <abstractions/mount/fstab-var>
+    #include <abstractions/mount/fstab-var_log>
+    #include <abstractions/mount/fstab-var_tmp_portage>		# BUILD SYSTEM ONLY!
+    #include <abstractions/mount/fstab-home>
+    #include <abstractions/mount/fstab-usr_portage>
+    #include <abstractions/mount/fstab-usr_src>			# BUILD SYSTEM ONLY!
+    #include <abstractions/mount/fstab-tmp>
+    #include <local/mount/openrc.localmount.d/>
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,
     capability dac_override,
-    
-    # MOUNT --------------------------------------------	# FIX ME! /etc/fstab - локальные фс.
-    mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /var/,
-    mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /var/log/,
-    mount fstype=ext4 options=(rw, nosuid, nodev, noatime, iversion) /dev/@{BLOCK_ALL} -> /var/tmp/portage/,	# BUILD SYSTEM ONLY!
-    mount fstype=ext4 options=(rw, noatime) /dev/@{BLOCK_ALL} -> /home/,
-    mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /usr/portage/,
-    mount fstype=ext4 options=(rw, nosuid, nodev, noatime, iversion) /dev/@{BLOCK_ALL} -> /usr/src/,		# BUILD SYSTEM ONLY!
-    mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /mnt/backup/,
-    mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /media/sdb2/,
-    mount fstype=tmpfs options=(rw, nosuid, nodev, noexec, noatime, nodiratime) tmpfs -> /tmp/,
     
     # PSEUDO -------------------------------------------
     /dev/console					rw,
@@ -1277,8 +1269,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount {
     capability dac_override,
     
     # MOUNT --------------------------------------------
-    umount,							# FIX ME! Сделать deny на то, что нельзя отмонтировать.
-    								# См. /etc/init.d/localmount.
+    umount,							# Должен отмонтировать все не системные фс.
     
     # PSEUDO -------------------------------------------
     /dev/console					rw,

@@ -125,6 +125,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     #include <abstractions/X-connection-strict>
     #include <abstractions/dbus/session-strict>
     #include <abstractions/dbus/gconf>
+    #include <abstractions/mount/fstab-boot>
     
     # CAPABILITIES -------------------------------------
     capability dac_override,
@@ -154,8 +155,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     network inet6 stream,
     
     # MOUNT --------------------------------------------
-    mount fstype=ext4 options=(rw, noatime, iversion) /dev/@{BLOCK_ALL} -> /boot/,	# FIX ME! Вынести в local (/etc/fstab).
-    umount /boot/,									# FIX ME! Вынести в local (/etc/fstab).
+    umount /boot/,
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,

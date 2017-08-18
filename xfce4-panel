@@ -29,7 +29,7 @@ profile xfce4-panel /usr/bin/xfce4-panel {
   #include <abstractions/dbus/session-bind>
   #include <abstractions/nameservice>
   #include <abstractions/binary-helper>
-  #include <local/xfce4-panel-custom>
+  #include <local/profile/xfce4-panel.d/>
   
   # DBUS -----------------------------------------------
   dbus send
@@ -100,7 +100,7 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   #include <abstractions/fs/access-by-users-preset-rwk>		# xfce4-screenshooter
   #include <abstractions/fs/deny-by-pattern-internet>		# xfce4-screenshooter
   #include <abstractions/fs/deny-private-strict>		# xfce4-screenshooter
-  #include <local/xfce4-panel-custom>
+  #include <local/profile/xfce4-panel.d/>
   
   # DBUS -----------------------------------------------
   dbus (send, receive)

@@ -1,0 +1,15 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# Загрузочный раздел - всегда "реальное" блочное устройство.
+
+# MOUNT ----------------------------------------------
+mount fstype=ext4 options=(ro, noatime, iversion) /dev/@{BLOCK_REAL} -> /boot/,
+mount fstype=ext4 options=(rw, noatime, iversion) /dev/@{BLOCK_REAL} -> /boot/,
