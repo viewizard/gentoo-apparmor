@@ -125,7 +125,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     #include <abstractions/X-connection-strict>
     #include <abstractions/dbus/session-strict>
     #include <abstractions/dbus/gconf>
-    #include <abstractions/mount/fstab-boot>
+    #include <local/mount/portage.emerge.d/>
     
     # CAPABILITIES -------------------------------------
     capability dac_override,
@@ -153,9 +153,6 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     network inet6 dgram,
     network inet stream,
     network inet6 stream,
-    
-    # MOUNT --------------------------------------------
-    umount /boot/,
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,

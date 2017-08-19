@@ -1102,7 +1102,7 @@ profile openrc.root.init.d /etc/init.d/root {
   
   profile mount /bin/mount {
     #include <abstractions/base>
-    #include <abstractions/mount/fstab-root>
+    #include <local/mount/openrc.root.d/>
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,
@@ -1231,13 +1231,6 @@ profile openrc.localmount.init.d /etc/init.d/localmount {
   
   profile mount /bin/mount {
     #include <abstractions/base>
-    #include <abstractions/mount/fstab-var>
-    #include <abstractions/mount/fstab-var_log>
-    #include <abstractions/mount/fstab-var_tmp_portage>		# BUILD SYSTEM ONLY!
-    #include <abstractions/mount/fstab-home>
-    #include <abstractions/mount/fstab-usr_portage>
-    #include <abstractions/mount/fstab-usr_src>			# BUILD SYSTEM ONLY!
-    #include <abstractions/mount/fstab-tmp>
     #include <local/mount/openrc.localmount.d/>
     
     # CAPABILITIES -------------------------------------

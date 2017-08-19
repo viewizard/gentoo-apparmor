@@ -212,7 +212,6 @@ profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   #include <abstractions/dbus/session-strict>
   #include <abstractions/unix/gvfsd-smb>
   #include <abstractions/unix/gvfsd-smb-virtual>
-  #include <abstractions/mount/gvfsd-fuse>
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
@@ -231,6 +230,10 @@ profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   			peer=(addr=none,label="@{GVFSD_FUSE_ANON_SOCKET}"),
   
   # MOUNT ----------------------------------------------
+  mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /root/.gvfs/,
+  mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /root/.gvfs/,
+  mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /run/user/[0-9]*/gvfs/,
+  mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /run/user/[0-9]*/gvfs/,
   umount /root/.gvfs/,
   umount /run/user/[0-9]*/gvfs/,
   

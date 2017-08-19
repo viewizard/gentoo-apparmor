@@ -397,8 +397,7 @@ profile shell_root {
   
   profile mount /bin/mount {
     #include <abstractions/base>
-    #include <abstractions/mount/fstab-boot>			# BUILD SYSTEM ONLY!
-    #include <abstractions/mount/fstab-mnt_usbcryptkey>		# BUILD SYSTEM ONLY!
+    #include <local/mount/shell_root.d/>			# BUILD SYSTEM ONLY!
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,
@@ -418,13 +417,10 @@ profile shell_root {
   
   profile umount /bin/umount {
     #include <abstractions/base>
+    #include <local/mount/shell_root.d/>			# BUILD SYSTEM ONLY!
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,
-    
-    # MOUNT --------------------------------------------
-    umount /boot/,						# BUILD SYSTEM ONLY!
-    umount /mnt/usbcryptkey/,					# BUILD SYSTEM ONLY!
     
     # PSEUDO -------------------------------------------
     /dev/pts/[0-9]*					rw,

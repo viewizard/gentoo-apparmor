@@ -8,8 +8,9 @@
 #
 # ------------------------------------------------------------------
 
-# USB-Flash раздел - всегда "реальное" блочное устройство.
+# Загрузочный раздел - всегда "реальное" блочное устройство.
 
 # MOUNT ----------------------------------------------
-mount fstype=ext2 options=(ro, nosuid, nodev, noexec, noatime) /dev/@{BLOCK_REAL} -> /mnt/usbcryptkey/,
-mount fstype=ext2 options=(rw, nosuid, nodev, noexec, noatime) /dev/@{BLOCK_REAL} -> /mnt/usbcryptkey/,
+mount fstype=ext4 options=(ro, noatime, iversion) /dev/@{BLOCK_REAL} -> /boot/,
+mount fstype=ext4 options=(rw, noatime, iversion) /dev/@{BLOCK_REAL} -> /boot/,
+umount /boot/,

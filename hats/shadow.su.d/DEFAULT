@@ -23,11 +23,11 @@
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Px -> shell_users,
-  /usr/bin/xauth					Px,
+  audit /usr/bin/xauth					Px,	# FIX ME! audit 19.08.2017
   
   # READS/WRITES ---------------------------------------
   /etc/environment					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.xauth*					rw,
+  audit owner @{HOME}/.xauth*				rw,	# FIX ME! audit 19.08.2017
 }

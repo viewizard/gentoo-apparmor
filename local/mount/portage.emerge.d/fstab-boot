@@ -8,8 +8,9 @@
 #
 # ------------------------------------------------------------------
 
+# Загрузочный раздел - всегда "реальное" блочное устройство.
+
 # MOUNT ----------------------------------------------
-mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /root/.gvfs/,
-mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /root/.gvfs/,
-mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /run/user/[0-9]*/gvfs/,
-mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /run/user/[0-9]*/gvfs/,
+mount fstype=ext4 options=(ro, noatime, iversion) /dev/@{BLOCK_REAL} -> /boot/,
+mount fstype=ext4 options=(rw, noatime, iversion) /dev/@{BLOCK_REAL} -> /boot/,
+umount /boot/,
