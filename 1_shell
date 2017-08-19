@@ -25,12 +25,12 @@ profile shell_service @{shell} {
   @{shell}						mr,
   /bin/sed						Cx,
   /bin/uname						Px,
-  /sbin/mdadm						Px,
+  /sbin/mdadm						Px,	# FIX ME! (?) вынести в <local/shell/shell_service.d/>
   
   profile sed /bin/sed {
     #include <abstractions/base>
     
-    # EXECUTABLES ----------------------------------------
+    # EXECUTABLES --------------------------------------
     /bin/sed						mr,
   }
 }
@@ -55,7 +55,6 @@ profile shell_users {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  audit @{shell}					ix,	# FIX ME! 23.07.2017 что и как вызывает?
   /bin/ls						Cx,
   /bin/ln						Cx,
   /bin/df						Px,
@@ -69,15 +68,14 @@ profile shell_users {
   /bin/rc-status					Px,
   /bin/sleep						Px,
   /usr/bin/which					Px,
-  /usr/bin/git						Px,
+  /usr/bin/git						Px,	# FIX ME! (?) вынести в <local/shell/shell_users.d/>
   /usr/bin/sudo						Px,
   /usr/bin/whoami					Px,
   /usr/bin/id						Px,
-  /usr/bin/startx{,fce4}				Px,
+  /usr/bin/startx{,fce4}				Px,	# FIX ME! (?) вынести в <local/shell/shell_users.d/>
   /usr/bin/clear					Px,
-  /usr/bin/wine						Px,
-  /usr/bin/winecfg					Px,
-  /usr/bin/libnotify-notify-send			Px,
+  /usr/bin/wine						Px,	# FIX ME! (?) вынести в <local/shell/shell_users.d/>
+  /usr/bin/winecfg					Px,	# FIX ME! (?) вынести в <local/shell/shell_users.d/>
   /usr/bin/dircolors					Px,
   
   # READS/WRITES ---------------------------------------
@@ -146,6 +144,7 @@ profile shell_root {
   #include <abstractions/nameservice>
   #include <abstractions/fs/access-by-pattern-filemanager>
   #include <abstractions/fs/access-by-pattern-systemusers>
+  #include <local/profile/shell_root.d/>
   
   # CAPABILITIES ---------------------------------------
   audit capability setuid,					# FIX ME! audit 25.07.2017
@@ -165,7 +164,6 @@ profile shell_root {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  audit @{shell}					ix,	# FIX ME! 24.07.2017 что и как вызывает?
   /bin/ls						Cx,
   /bin/ln						Cx,
   /bin/df						Px,
@@ -177,7 +175,6 @@ profile shell_root {
   /bin/ps						Px,
   /bin/env						Cx,
   /bin/sed						Cx,
-  audit /bin/gzip					Cx,	# FIX ME! audit 25.07.2017
   /bin/mount						Cx,
   /bin/umount						Cx,
   /bin/sleep						Px,
@@ -210,14 +207,14 @@ profile shell_root {
   /bin/sync						Px,
   /bin/udevadm						Px,
   /bin/dmesg						Px,
-  /sbin/mdadm						Px,
+  /sbin/mdadm						Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
   /sbin/shutdown					Px,	# sysvinit
   /sbin/{halt,poweroff,reboot}				Px,	# sysvinit
   /sbin/openrc-shutdown					Px,	# openrc-init
-  /sbin/cryptsetup					Px,
+  /sbin/cryptsetup					Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
   /sbin/apparmor_parser					Px,
   /sbin/{,c}fdisk					Px,
-  /sbin/lvm						Px,
+  /sbin/lvm						Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
   /sbin/e2fsck						Px,
   /sbin/mke2fs						Px,
   /sbin/tune2fs						Px,
@@ -228,8 +225,7 @@ profile shell_root {
   /sbin/xtables-multi					Px,
   /sbin/blkid						Px,
   /usr/bin/which					Px,
-  /usr/bin/git						Px -> git_root,
-  audit /usr/bin/exo-open				Px,	# FIX ME! audit 25.07.2017
+  /usr/bin/git						Px -> git_root,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
   /usr/bin/killall					Px,
   /usr/bin/gsettings					Px,
   /usr/bin/revdep-rebuild				Px,
@@ -240,8 +236,6 @@ profile shell_root {
   /usr/bin/mc						Px -> mc_root,
   /usr/bin/eselect					Px,
   /usr/bin/ntpq						Px,
-  /usr/bin/genkernel					Px,	# BUILD SYSTEM ONLY!
-  /usr/bin/{,g}make					Px,	# BUILD SYSTEM ONLY!
   /usr/bin/stat						Px,
   /usr/bin/file						Cx,
   /usr/bin/lsusb					Px,
@@ -252,19 +246,17 @@ profile shell_root {
   /usr/bin/man						Px,
   /usr/bin/locale					Px,
   /usr/bin/ldd						Px,
-  /usr/bin/evmctl					Px,	# BUILD SYSTEM ONLY!
+  /usr/bin/evmctl					Px,
   /usr/bin/gawk						Cx,
-  /usr/bin/patch					Cx,
-  /usr/bin/diff						Cx,
+  /usr/bin/patch					Cx,	# FIX ME! (?) вынести в <local/shell/shell_root.d/> (вместе с профилем!)
+  /usr/bin/diff						Cx,	# FIX ME! (?) вынести в <local/shell/shell_root.d/> (вместе с профилем!)
   /usr/bin/gcc-config					Px,
-  audit /usr/bin/libnotify-notify-send			Px,	# FIX ME! audit 25.07.2017
   /usr/bin/ck-list-sessions				Px,
   /usr/bin/dig						Px,
   /usr/bin/dircolors					Px,
   /usr/bin/eix						Px,
   /usr/bin/eix-test-obsolete				Px,
   /usr/bin/eix-sync					Px,
-  audit /usr/sbin/logcheck				Px,	# FIX ME! audit 25.07.2017
   /usr/sbin/gdisk					Px,
   /usr/sbin/smartctl					Px,
   /usr/sbin/useradd					Px,
@@ -274,19 +266,17 @@ profile shell_root {
   /usr/sbin/groupdel					Px,
   /usr/sbin/lspci					Px,
   /usr/sbin/etc-update					Px,
-  /usr/sbin/grub-mkconfig				Px,
-  /usr/sbin/grub-install				Px,
+  /usr/sbin/grub-mkconfig				Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
+  /usr/sbin/grub-install				Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
   /usr/sbin/perl-cleaner				Px,
   /usr/sbin/python-updater				Px,
   /usr/sbin/iftop					Px,
   /usr/sbin/nettop					Px,
   /usr/sbin/firewall					Px,
   @{PYTHON_EXEC_WRAPPER}				Px -> python_exec_root,
-  /usr/local/bin/**					Px,
-  /usr/local/sbin/**					Px,
+  /usr/local/bin/**					Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
+  /usr/local/sbin/**					Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
   /etc/init.d/*						Px,
-  /usr/src/@{kernel}/scripts/*				Px,	# в профиле /etc/apparmor.d/kernel
-  /usr/src/IMA/certs/*					Px,	# в профиле /etc/apparmor.d/kernel
   
   # AUDIT EXECUTABLES ----------------------------------
   audit deny /usr/bin/startx*				x,	# RBAC! Запрещаем запуск Xorg-server под root. У нас
@@ -383,21 +373,9 @@ profile shell_root {
     /bin/sed						mr,
   }
   
-  profile gzip /bin/gzip flags=(complain) {
-    #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
-    
-    # PSEUDO -------------------------------------------
-    /dev/pts/[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /bin/gzip						mr,
-  }
-  
   profile mount /bin/mount {
     #include <abstractions/base>
-    #include <local/mount/shell_root.d/>			# BUILD SYSTEM ONLY!
+    #include <local/mount/shell_root.d/>
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,
@@ -417,7 +395,7 @@ profile shell_root {
   
   profile umount /bin/umount {
     #include <abstractions/base>
-    #include <local/mount/shell_root.d/>			# BUILD SYSTEM ONLY!
+    #include <local/mount/shell_root.d/>
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,

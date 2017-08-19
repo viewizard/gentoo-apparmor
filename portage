@@ -126,6 +126,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     #include <abstractions/dbus/session-strict>
     #include <abstractions/dbus/gconf>
     #include <local/mount/portage.emerge.d/>
+    #include <local/profile/portage.emerge.d/>
     
     # CAPABILITIES -------------------------------------
     capability dac_override,
@@ -176,11 +177,9 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /usr/sbin/**					ix,
     /usr/lib{,32,64,exec}/**				ix,
     /usr/@{CHOST}/**					ix,
-    /usr/src/@{kernel}/scripts/**			ix,	# BUILD SYSTEM ONLY!
     /lib{,32,64}/rc/sh/gendepends.sh			Px,
     /lib{,32,64}/rc/sh/migrate-to-run.sh		ix,
     /lib{,32,64}/rc/bin/*				ix,
-    /var/tmp/portage/*/*/**				ix,	# BUILD SYSTEM ONLY!
     
     # READS/WRITES -------------------------------------
     /							r,
@@ -234,6 +233,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     #include <abstractions/nameservice>
     #include <abstractions/X-connection-strict>
     #include <abstractions/dbus/session-strict>
+    #include <local/profile/portage.emerge.d/>
     
     # CAPABILITIES -------------------------------------
     capability dac_override,
@@ -291,8 +291,6 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /usr/lib{,32,64,exec}/**				ix,
     /usr/share/**					ix,
     /usr/@{CHOST}/**					ix,
-    /usr/src/@{kernel}/scripts/**			ix,	# BUILD SYSTEM ONLY!
-    /var/tmp/portage/*/*/**				ix,	# BUILD SYSTEM ONLY!
     
     # READS/WRITES -------------------------------------
     /							r,
@@ -765,6 +763,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
   /bin/date						Cx,
   /bin/rm						Cx,
   /bin/cut						Cx,
+  /bin/cat						Cx,
   /bin/mktemp						Cx,
   /bin/tar						Cx,
   /bin/chown						Cx,
@@ -821,6 +820,19 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     
     # READS/WRITES -------------------------------------
     /usr/portage/metadata/timestamp.x			r,
+  }
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/sh-thd.*					r,
   }
   
   profile mktemp /bin/mktemp {
