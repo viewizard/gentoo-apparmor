@@ -205,6 +205,9 @@ profile engrampa /usr/bin/engrampa {
     # READS/WRITES -------------------------------------
     /usr/lib64/p7zip/7z.so				m,
     
+    # USERS --------------------------------------------
+    owner @{HOME}/.fr-*/{,**}				rw,
+    
     # DENY INHERIT -------------------------------------
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
   }
