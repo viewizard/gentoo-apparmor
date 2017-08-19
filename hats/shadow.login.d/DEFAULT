@@ -1,0 +1,42 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+^DEFAULT {
+  #include <abstractions/base>
+  #include <abstractions/dbus/system-strict>
+  #include <abstractions/dbus/consolekit>
+  #include <abstractions/nameservice>
+  #include <abstractions/authentication>
+  #include <abstractions/authentication-pam_mount>
+  
+  # CAPABILITIES ---------------------------------------
+  capability setuid,
+  capability setgid,
+  capability chown,
+  capability fowner,
+  capability fsetid,
+  capability dac_read_search,					# Все правильно.
+  capability dac_override,					# Все правильно.
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/urandom						r,
+  @{PROC}/@{pid}/fd/					r,
+  @{PROC}/sys/kernel/ngroups_max			r,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						Px -> shell_users,
+  /usr/bin/gnome-keyring-daemon				Px,	# В случае запуска через pam модуль.
+  
+  # READS/WRITES ---------------------------------------
+  /etc/environment					r,
+  /run/utmp						rwk,
+  /var/log/wtmp						wk,
+}

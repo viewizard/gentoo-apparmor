@@ -35,19 +35,6 @@ profile shell_service @{shell} {
   }
 }
 
-# профиль для запуска logcheck
-profile shell_logcheck {
-  #include <abstractions/base>
-  
-  # PSEUDO ---------------------------------------------
-  /dev/tty						rw,
-  /dev/pts/[0-9]*					rw,
-  
-  # EXECUTABLES ----------------------------------------
-  @{shell}						mr,
-  /usr/sbin/logcheck					Px,
-}
-
 # профиль всех пользователей, прошедших аутентификацию
 # профиль терминала по умолчанию
 profile shell_users {

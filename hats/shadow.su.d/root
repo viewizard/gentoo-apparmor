@@ -1,0 +1,30 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+^root {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/authentication>
+  #include <abstractions/authentication-pam_mount>
+  
+  # CAPABILITIES ---------------------------------------
+  capability setuid,
+  capability setgid,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						Px -> shell_root,
+  /usr/bin/xauth					Px,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/environment					r,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.xauth*					rw,
+}

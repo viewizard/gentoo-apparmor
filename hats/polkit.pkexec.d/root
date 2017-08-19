@@ -1,0 +1,30 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+^root {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/authentication>
+  #include <abstractions/authentication-pam_mount>
+  
+  # CAPABILITIES ---------------------------------------
+  capability setuid,
+  capability setgid,
+  
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(rtmin+1) peer="polkit.pkexec",
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  @{PROC}/sys/kernel/ngroups_max			r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/gparted					Px,
+}

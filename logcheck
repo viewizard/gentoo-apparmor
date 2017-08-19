@@ -283,3 +283,16 @@ profile logcheck.cron.hourly /etc/cron.hourly/logcheck.cron {
     /run/lock/logcheck/					rw,
   }
 }
+
+# shell профиль для переключения hat в shadow.su
+profile shell_logcheck {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
+  /usr/sbin/logcheck					Px,
+}
