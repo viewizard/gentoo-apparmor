@@ -27,6 +27,7 @@ profile dhcpcd /sbin/dhcpcd {
   network inet6 dgram,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /sys/devices/virtual/net/lo/uevent			r,
   /sys/devices/pci[0-9]*/**/net/eth[0-9]*/uevent	r,
@@ -57,6 +58,7 @@ profile run-hooks /lib{,32,64}/dhcpcd/dhcpcd-run-hooks {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -158,6 +160,7 @@ profile dhcpcd.init.d /etc/init.d/dhcpcd {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/dhcpcd/			w,

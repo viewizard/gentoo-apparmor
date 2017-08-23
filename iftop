@@ -19,7 +19,8 @@ profile iftop /usr/sbin/iftop {
   capability net_raw,
   
   # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]					rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/iftop					mr,

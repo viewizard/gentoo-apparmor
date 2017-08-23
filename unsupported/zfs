@@ -19,6 +19,7 @@ profile zfs /sbin/zfs flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/zfs						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/mounts					r,
   @{PROC}/sys/fs/pipe-max-size				r,
@@ -44,6 +45,7 @@ profile zfs.zpool /sbin/zpool flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/zfs						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /sys/module/spl/parameters/spl_hostid			r,
   @{PROC}/@{pid}/mounts					r,
@@ -139,6 +141,7 @@ profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/zfs-zed/			w,
@@ -184,6 +187,7 @@ profile zfs.zfs-import.init.d /etc/init.d/zfs-import {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/zfs-import/			w,

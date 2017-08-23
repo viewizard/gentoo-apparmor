@@ -58,6 +58,7 @@ profile qpdfview /usr/bin/qpdfview {
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------

@@ -17,6 +17,7 @@ profile evelauncher.sh /home/*/evelauncher/evelauncher.sh {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   owner @{HOME}/evelauncher/evelauncher.sh		r,
@@ -31,6 +32,7 @@ profile evelauncher.sh /home/*/evelauncher/evelauncher.sh {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/sed						mr,
@@ -67,6 +69,7 @@ profile evelauncher /home/*/evelauncher/evelauncher flags=(attach_disconnected) 
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   /dev/disk/by-label/					r,
   owner /dev/shm/.org.chromium.Chromium.??????		rw,
   /sys/bus/pci/devices/					r,
@@ -124,6 +127,7 @@ profile evelauncher.updater /home/*/{.eve,evelauncher}/updater {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   owner @{HOME}/{.eve,evelauncher}/updater		mr,
@@ -173,6 +177,7 @@ profile evelauncher.LogLite /home/*/evelauncher/LogLite {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   owner @{HOME}/evelauncher/LogLite			mr,

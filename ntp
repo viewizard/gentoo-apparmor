@@ -28,6 +28,7 @@ profile ntp.ntpd /usr/sbin/ntpd {
   network inet6 stream,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -46,6 +47,7 @@ profile ntp.ntpd /usr/sbin/ntpd {
   deny /opt/bin/					r,
   deny /usr/{,s}bin/					r,
   deny /usr/local/{,s}bin/				r,
+  deny /usr/games/bin/					r,
 }
 
 profile ntp.ntpq /usr/bin/ntpq {
@@ -65,6 +67,7 @@ profile ntp.ntpq /usr/bin/ntpq {
   network inet6 stream,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -113,6 +116,7 @@ profile ntp.init.d /etc/init.d/ntpd {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/ntpd/				w,

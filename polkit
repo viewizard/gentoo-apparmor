@@ -52,6 +52,8 @@ profile polkit.polkitd /usr/lib{,32,64}/polkit-1/polkitd {
   
   # PSEUDO ---------------------------------------------
   @{PROC}/sys/kernel/ngroups_max			r,
+  @{PROC}/@{pid}/stat					r,
+  @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/polkit-1/polkitd			m,

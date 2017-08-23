@@ -33,6 +33,7 @@ profile suricata /usr/bin/suricata {
   network netlink raw,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   /sys/devices/system/cpu/				r,
@@ -100,6 +101,7 @@ profile suricata.init.d /etc/init.d/suricata {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -113,6 +115,7 @@ profile suricata.init.d /etc/init.d/suricata {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -126,6 +129,7 @@ profile suricata.init.d /etc/init.d/suricata {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/suricata/			w,

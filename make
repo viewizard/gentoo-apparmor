@@ -61,6 +61,9 @@ profile make /usr/bin/{,g}make flags=(complain) {
   /usr/src/@{kernel}/{,**}				ixrw,	# r - т.к. могут быть скрипты.
   owner /var/log/genkernel.log				w,	# genkernel-next
   
+  # USERS ----------------------------------------------
+  owner /root/.rnd					w,
+  
   # TEMP -----------------------------------------------
   /var/tmp/portage/genkernel/*/busybox-*/{,**}		rw,	# genkernel-next
   
@@ -118,7 +121,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /usr/bin/diff					ix,	# FS ACCESS!
     /usr/bin/pod2html					ix,	# FIX ME! Вынести в отдельный профиль.
     /usr/bin/od						ix,	# FS ACCESS!
-    /usr/bin/uniq					Px,
+    /usr/bin/uniq					ix,	# FS ACCESS!
     /usr/bin/which					Px,
     /usr/bin/whoami					Px,
     /usr/bin/bc						ix,	# FS ACCESS!
@@ -129,6 +132,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /usr/bin/gawk					ix,	# FS ACCESS!
     /usr/bin/find					ix,	# FS ACCESS!
     /usr/bin/pkg-config					Px,
+    /usr/bin/stat					ix,
     /usr/bin/xargs					ix,	# FS ACCESS!
     /usr/bin/gmake					Pxr,	# Все правильно, r.
     /usr/bin/gcc					ix,	# FIX ME! Вынести в отдельный профиль.

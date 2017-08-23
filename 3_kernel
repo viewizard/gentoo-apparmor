@@ -14,6 +14,7 @@ profile kernel.sign-file /usr/src/@{kernel}/scripts/sign-file flags=(complain) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -50,6 +51,7 @@ profile kernel.gen-ima-certs /usr/src/IMA/certs/* flags=(complain) {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -67,6 +69,7 @@ profile kernel.checkpatch.pl /usr/src/@{kernel}/scripts/checkpatch.pl flags=(com
   #include <abstractions/perl>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------

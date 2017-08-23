@@ -45,6 +45,7 @@ profile onboard /usr/bin/onboard {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
@@ -94,6 +95,7 @@ profile onboard_settings /usr/bin/onboard-settings {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   /sys/bus/						r,
   /sys/class/						r,
   /sys/class/input/					r,

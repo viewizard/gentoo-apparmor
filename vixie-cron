@@ -20,6 +20,7 @@ profile vixie-cron.cron /usr/sbin/cron {
   capability setgid,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/sys/kernel/ngroups_max			r,
@@ -70,6 +71,7 @@ profile vixie-cron.crontab /usr/bin/crontab {
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -106,6 +108,7 @@ profile vixie-cron.init.d /etc/init.d/vixie-cron {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/vixie-cron/			w,

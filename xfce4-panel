@@ -50,6 +50,7 @@ profile xfce4-panel /usr/bin/xfce4-panel {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
@@ -134,6 +135,7 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   /sys/devices/system/cpu/cpufreq/policy[0-9]*/scaling_* r,
   @{PROC}/uptime					r,
   @{PROC}/@{pid}/fd/					r,
@@ -211,6 +213,7 @@ profile xfce4-panel.wrapper-2.0 /usr/lib{,32,64}/xfce4/panel/wrapper-2.0 {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/panel/wrapper-2.0		m,
@@ -230,6 +233,7 @@ profile xfce4-panel.xfce4-xkb-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
@@ -256,6 +260,7 @@ profile xfce4-panel.xfce4-kbdleds-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xf
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-kbdleds-plugin m,
@@ -279,6 +284,7 @@ profile xfce4-panel.xfce4-sensors-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xf
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------

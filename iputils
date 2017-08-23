@@ -12,7 +12,6 @@
 
 profile iputils.ping /bin/ping {
   #include <abstractions/base>
-  #include <abstractions/consoles>
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
@@ -26,7 +25,10 @@ profile iputils.ping /bin/ping {
   network inet6 dgram,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /bin/ping						mr,

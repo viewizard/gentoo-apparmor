@@ -32,6 +32,7 @@ profile thunar-volman /usr/bin/thunar-volman {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   /sys/devices/pci[0-9]*/**/usb[0-9]*/{,**/}uevent	rw,
   /sys/devices/pci[0-9]*/**/ata[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{,name,uevent} r,
@@ -65,6 +66,7 @@ profile thunar-volman.thunar-volman-settings /usr/bin/thunar-volman-settings {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar-volman-settings			mr,

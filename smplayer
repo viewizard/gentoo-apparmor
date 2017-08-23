@@ -38,6 +38,7 @@ profile smplayer /usr/bin/smplayer {
   /dev/							r,
   /dev/tty						r,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------

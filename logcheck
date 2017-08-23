@@ -249,7 +249,6 @@ profile logcheck.cron.hourly /etc/cron.hourly/logcheck.cron {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /etc/cron.hourly/logcheck.cron			r,
@@ -290,7 +289,7 @@ profile shell_logcheck {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/pts/[0-9]*					rw,
+  audit /dev/pts/[0-9]*					rw,	# FIX ME! audit 22.08.2017
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,

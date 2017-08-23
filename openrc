@@ -70,8 +70,9 @@ profile openrc /sbin/openrc flags=(complain) {
     capability dac_read_search,
     
     # PSEUDO -------------------------------------------
-    /dev/pts/[0-9]*					rw,
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
   }
 }
 
@@ -87,6 +88,7 @@ profile openrc.openrc-shutdown /sbin/openrc-shutdown flags=(complain) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -113,6 +115,7 @@ profile openrc.rc-update /sbin/rc-update flags=(complain) {
   #include <abstractions/ncurses>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -135,6 +138,7 @@ profile openrc.rc-status /bin/rc-status {
   capability dac_override,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
   @{PROC}/cmdline					r,
@@ -172,8 +176,9 @@ profile openrc.gendepends.sh /lib{,32,64}/rc/sh/gendepends.sh flags=(attach_disc
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/pts/[0-9]*					rw,
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
@@ -203,6 +208,7 @@ profile openrc.gendepends.sh /lib{,32,64}/rc/sh/gendepends.sh flags=(attach_disc
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -214,6 +220,7 @@ profile openrc.gendepends.sh /lib{,32,64}/rc/sh/gendepends.sh flags=(attach_disc
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -235,6 +242,7 @@ profile openrc.gendepends.sh /lib{,32,64}/rc/sh/gendepends.sh flags=(attach_disc
     capability mknod,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -253,6 +261,7 @@ profile openrc.init-early.sh /lib{,32,64}/rc/sh/init-early.sh flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/null						w,
   /dev/console						rw,
@@ -275,6 +284,7 @@ profile openrc.init.sh /lib{,32,64}/rc/sh/init.sh flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -298,6 +308,7 @@ profile openrc.init.sh /lib{,32,64}/rc/sh/init.sh flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -312,6 +323,7 @@ profile openrc.init.sh /lib{,32,64}/rc/sh/init.sh flags=(complain) {
     capability sys_admin,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -326,6 +338,7 @@ profile openrc.init.sh /lib{,32,64}/rc/sh/init.sh flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     @{PROC}/@{pid}/environ				r,
@@ -395,6 +408,7 @@ profile openrc.checkpath /lib{,32,64}/rc/bin/checkpath flags=(complain) {
   capability dac_override,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -411,8 +425,10 @@ profile openrc.mountinfo /lib{,32,64}/rc/bin/mountinfo flags=(complain) {
   
   # CAPABILITIES ---------------------------------------
   capability dac_override,
+  capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/mounts					r,
@@ -429,6 +445,7 @@ profile openrc.fstabinfo /lib{,32,64}/rc/bin/fstabinfo flags=(attach_disconnecte
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -447,6 +464,7 @@ profile openrc.eval_ecolors /lib{,32,64}/rc/bin/eval_ecolors flags=(complain) {
   #include <abstractions/ncurses>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -462,6 +480,7 @@ profile openrc.ebegin /lib{,32,64}/rc/bin/ebegin flags=(attach_disconnected,comp
   capability mknod,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -482,6 +501,7 @@ profile openrc.eend /lib{,32,64}/rc/bin/eend flags=(attach_disconnected,complain
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -501,6 +521,7 @@ profile openrc.ewend /lib{,32,64}/rc/bin/ewend flags=(complain) {
   capability mknod,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -512,6 +533,7 @@ profile openrc.shell_var /lib{,32,64}/rc/bin/shell_var flags=(attach_disconnecte
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -522,47 +544,50 @@ profile openrc.shell_var /lib{,32,64}/rc/bin/shell_var flags=(attach_disconnecte
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile openrc.einfo /lib{,32,64}/rc/bin/einfo flags=(attach_disconnected,complain) {
+profile openrc.einfo /lib{,32,64}/rc/bin/einfo{,n} flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /lib{,32,64}/rc/bin/einfo				mr,
+  /lib{,32,64}/rc/bin/einfo{,n}				mr,
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   deny /etc/conf.d/dmcrypt				r,
 }
 
-profile openrc.ewarn /lib{,32,64}/rc/bin/ewarn flags=(attach_disconnected,complain) {
+profile openrc.ewarn /lib{,32,64}/rc/bin/ewarn{,n} flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /lib{,32,64}/rc/bin/ewarn				mr,
+  /lib{,32,64}/rc/bin/ewarn{,n}				mr,
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile openrc.eerror /lib{,32,64}/rc/bin/eerror flags=(attach_disconnected,complain) {
+profile openrc.eerror /lib{,32,64}/rc/bin/eerror{,n} flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /lib{,32,64}/rc/bin/eerror				mr,
+  /lib{,32,64}/rc/bin/eerror{,n}				mr,
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
@@ -575,6 +600,7 @@ profile openrc.service /lib{,32,64}/rc/bin/service_* flags=(attach_disconnected,
   capability kill,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
@@ -597,6 +623,7 @@ profile openrc.service_set_value /lib{,32,64}/rc/bin/service_set_value flags=(co
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -611,6 +638,7 @@ profile openrc.service_get_value /lib{,32,64}/rc/bin/service_get_value flags=(at
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -631,6 +659,7 @@ profile openrc.mark_service_inactive /lib{,32,64}/rc/sbin/mark_service_inactive 
   signal (send) set=(hup) peer="*.init.d",
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -678,6 +707,7 @@ profile openrc.netmount.init.d /etc/init.d/netmount {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/netmount/			w,
@@ -704,6 +734,7 @@ profile openrc.netmount.init.d /etc/init.d/netmount {
     # MOUNT --------------------------------------------
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     @{PROC}/@{pid}/mountinfo				r,
@@ -719,8 +750,6 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont {
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					rw,
-  /dev/pts/[0-9]*					r,
   /sys/fs/cgroup/openrc/consolefont/tasks		w,
   
   # EXECUTABLES ----------------------------------------
@@ -737,6 +766,7 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/consolefont/			w,
@@ -779,6 +809,7 @@ profile openrc.local.init.d /etc/init.d/local {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/local/			w,
@@ -817,6 +848,7 @@ profile openrc.hwclock.init.d /etc/init.d/hwclock {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     @{PROC}/devices					r,
@@ -832,6 +864,7 @@ profile openrc.hwclock.init.d /etc/init.d/hwclock {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/hwclock/			w,
@@ -871,6 +904,7 @@ profile openrc.swap.init.d /etc/init.d/swap {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/swap/				w,
@@ -910,6 +944,7 @@ profile openrc.modules.init.d /etc/init.d/modules {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/modules/			w,
@@ -950,6 +985,7 @@ profile openrc.fsck.init.d /etc/init.d/fsck {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     @{PROC}/cmdline					r,
@@ -965,6 +1001,7 @@ profile openrc.fsck.init.d /etc/init.d/fsck {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/fsck/				w,
@@ -1003,6 +1040,7 @@ profile openrc.opentmpfiles-dev.init.d /etc/init.d/opentmpfiles-dev {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/opentmpfiles-dev/		w,
@@ -1041,6 +1079,7 @@ profile openrc.opentmpfiles-setup.init.d /etc/init.d/opentmpfiles-setup {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/opentmpfiles-setup/		w,
@@ -1078,6 +1117,7 @@ profile openrc.root.init.d /etc/init.d/root {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -1092,6 +1132,7 @@ profile openrc.root.init.d /etc/init.d/root {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/root/				w,
@@ -1148,6 +1189,7 @@ profile openrc.mtab.init.d /etc/init.d/mtab {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -1165,6 +1207,7 @@ profile openrc.mtab.init.d /etc/init.d/mtab {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/mtab/				w,
@@ -1207,6 +1250,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -1221,6 +1265,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/localmount/			w,
@@ -1238,6 +1283,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
@@ -1260,11 +1306,13 @@ profile openrc.localmount.init.d /etc/init.d/localmount {
     # CAPABILITIES -------------------------------------
     capability sys_admin,
     capability dac_override,
+    capability dac_read_search,
     
     # MOUNT --------------------------------------------
     umount,							# Должен отмонтировать все не системные фс.
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     @{PROC}/@{pid}/mountinfo				r,
@@ -1280,6 +1328,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -1318,6 +1367,7 @@ profile openrc.sysctl.init.d /etc/init.d/sysctl {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/sysctl/			w,
@@ -1369,6 +1419,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -1383,6 +1434,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -1394,6 +1446,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -1408,6 +1461,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -1426,6 +1480,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc {
     capability chown,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -1443,6 +1498,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc {
     capability fsetid,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -1466,6 +1522,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/bootmisc/			w,
@@ -1488,6 +1545,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc {
     mount options=(rw, bind) / -> /tmp/tmp.*/,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -1508,6 +1566,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc {
     umount /tmp/tmp.*/,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -1551,6 +1610,7 @@ profile openrc.hostname.init.d /etc/init.d/hostname {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/hostname/			w,
@@ -1566,7 +1626,6 @@ profile openrc.termencoding.init.d /etc/init.d/termencoding {
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					rw,
   /sys/fs/cgroup/openrc/termencoding/tasks		w,
   
   # EXECUTABLES ----------------------------------------
@@ -1588,10 +1647,11 @@ profile openrc.termencoding.init.d /etc/init.d/termencoding {
   profile mkdir /bin/mkdir {
     #include <abstractions/base>
     
-    # CAPABILITIES ---------------------------------------
+    # CAPABILITIES -------------------------------------
     capability dac_override,
   
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/termencoding/			w,
@@ -1632,6 +1692,7 @@ profile openrc.runsvdir.init.d /etc/init.d/runsvdir {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/runsvdir/			w,
@@ -1647,8 +1708,6 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps {
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					rw,
-  /dev/pts/[0-9]*					r,
   /sys/fs/cgroup/openrc/keymaps/tasks			w,
   
   # EXECUTABLES ----------------------------------------
@@ -1668,6 +1727,7 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/keymaps/			w,
@@ -1716,6 +1776,7 @@ profile openrc.urandom.init.d /etc/init.d/urandom {
     
     # PSEUDO -------------------------------------------
     /dev/urandom					w,
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     @{PROC}/sys/kernel/random/poolsize			r,
@@ -1731,6 +1792,7 @@ profile openrc.urandom.init.d /etc/init.d/urandom {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -1745,6 +1807,7 @@ profile openrc.urandom.init.d /etc/init.d/urandom {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -1762,6 +1825,7 @@ profile openrc.urandom.init.d /etc/init.d/urandom {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/urandom/			w,
@@ -1801,6 +1865,7 @@ profile openrc.loopback.init.d /etc/init.d/loopback {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/loopback/			w,
@@ -1838,6 +1903,7 @@ profile openrc.procfs.init.d /etc/init.d/procfs {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/procfs/			w,
@@ -1882,6 +1948,7 @@ profile openrc.killprocs.init.d /etc/init.d/killprocs {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/killprocs/			w,
@@ -1930,6 +1997,7 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/mount-ro/			w,
@@ -1949,6 +2017,7 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro {
     umount,							# Должен отмонтировать все, что осталось.
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     @{PROC}/@{pid}/mountinfo				r,
@@ -1993,6 +2062,7 @@ profile openrc.savecache.init.d /etc/init.d/savecache {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/savecache/			w,
@@ -2053,6 +2123,7 @@ profile openrc.devfs.init.d /etc/init.d/devfs {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     @{PROC}/filesystems					r,
@@ -2083,6 +2154,7 @@ profile openrc.devfs.init.d /etc/init.d/devfs {
     mount fstype=mqueue options=(rw, nosuid, nodev, noexec) mqueue -> /dev/mqueue/,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -2120,6 +2192,7 @@ profile openrc.dmesg.init.d /etc/init.d/dmesg {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/dmesg/			w,
@@ -2159,6 +2232,7 @@ profile openrc.kmod-static-nodes.init.d /etc/init.d/kmod-static-nodes {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/kmod-static-nodes/		w,
@@ -2196,6 +2270,7 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     @{PROC}/filesystems					r,
@@ -2211,6 +2286,7 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/						w,
@@ -2242,8 +2318,10 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs {
     mount fstype=cgroup options=(rw, nosuid, nodev, noexec) cpuacct -> /sys/fs/cgroup/cpuacct/,
     mount fstype=cgroup options=(rw, nosuid, nodev, noexec) freezer -> /sys/fs/cgroup/freezer/,
     mount fstype=cgroup options=(rw, nosuid, nodev, noexec) net_cls -> /sys/fs/cgroup/net_cls/,
+    mount fstype=debugfs options=(rw, nosuid, nodev, noexec) debugfs -> /sys/kernel/debug/,
   
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     @{PROC}/cgroups					r,
@@ -2280,6 +2358,7 @@ profile openrc.modules-load.init.d /etc/init.d/modules-load {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -2294,6 +2373,7 @@ profile openrc.modules-load.init.d /etc/init.d/modules-load {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/modules-load/			w,
@@ -2333,6 +2413,7 @@ profile openrc.agetty.init.d /etc/init.d/agetty flags=(complain) {	# FIX ME! fla
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/agetty.*/			w,
@@ -2350,6 +2431,7 @@ profile openrc.agetty.init.d /etc/init.d/agetty flags=(complain) {	# FIX ME! fla
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
   

@@ -25,6 +25,7 @@ profile conky /usr/bin/conky {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   /sys/devices/system/cpu/present			r,
   @{PROC}/						r,
   @{PROC}/uptime					r,
@@ -54,6 +55,7 @@ profile conky_shell {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   /sys/devices/system/cpu/cpufreq/policy[0-9]*/scaling_governor r,
   @{PROC}/uptime					r,
   @{PROC}/@{pid}/net/dev				r,
@@ -80,6 +82,7 @@ profile conky_shell {
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/tail						mr,
@@ -97,6 +100,7 @@ profile conky_shell {
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/head						mr,
@@ -114,6 +118,7 @@ profile conky_shell {
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/date						mr,
@@ -131,6 +136,7 @@ profile conky_shell {
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/sed						mr,
@@ -148,6 +154,7 @@ profile conky_shell {
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     /sys/devices/system/cpu/cpufreq/policy[0-9]*/scaling_governor r,
     
     # EXECUTABLES --------------------------------------
@@ -169,6 +176,7 @@ profile conky_shell {
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/cut						mr,
@@ -186,6 +194,7 @@ profile conky_shell {
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -203,6 +212,7 @@ profile conky_shell {
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/wc						mr,

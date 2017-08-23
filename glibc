@@ -19,6 +19,7 @@ profile glibc.ldd /usr/bin/ldd flags=(attach_disconnected) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/meminfo					r,
   
@@ -39,6 +40,7 @@ profile glibc.ldd /usr/bin/ldd flags=(attach_disconnected) {
   
   profile test_run {
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -58,6 +60,7 @@ profile glibc.locale /usr/bin/locale flags=(attach_disconnected) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -74,6 +77,7 @@ profile glibc.locale /usr/bin/locale flags=(attach_disconnected) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------

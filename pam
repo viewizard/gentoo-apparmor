@@ -16,10 +16,22 @@ profile pam.unix_chkpwd /sbin/unix_chkpwd {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /sbin/unix_chkpwd					mr,
   
   # READS/WRITES ---------------------------------------
   owner /etc/shadow					r,
+}
+
+profile pam.pam_tally2 /sbin/pam_tally2 {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # EXECUTABLES ----------------------------------------
+  /sbin/pam_tally2					mr,
+  
+  # READS/WRITES ---------------------------------------
+  /var/log/tallylog					rw,
 }

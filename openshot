@@ -40,6 +40,7 @@ profile openshot @{PYTHON2_EXEC}/openshot {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   owner @{PROC}/@{pid}/cmdline				r,
   owner @{PROC}/@{pid}/fd/				r,
   
@@ -61,6 +62,7 @@ profile openshot @{PYTHON2_EXEC}/openshot {
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,

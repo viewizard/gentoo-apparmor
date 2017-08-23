@@ -14,6 +14,7 @@ profile nullmailer.sendmail /usr/sbin/sendmail flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -35,6 +36,7 @@ profile nullmailer.nullmailer-inject /usr/bin/nullmailer-inject flags=(attach_di
   capability dac_override,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -55,6 +57,7 @@ profile nullmailer.nullmailer-queue /usr/sbin/nullmailer-queue flags=(attach_dis
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -152,6 +155,7 @@ profile nullmailer.init.d /etc/init.d/nullmailer {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/nullmailer/			w,

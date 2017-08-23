@@ -20,6 +20,7 @@ profile acpid /usr/sbin/acpid {
   network netlink raw,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   /dev/input/						r,
@@ -131,6 +132,7 @@ profile acpid.kacpimon /usr/sbin/kacpimon {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/input/{,event*}					r,
   
@@ -167,6 +169,7 @@ profile acpid.init.d /etc/init.d/acpid {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/acpid/			w,

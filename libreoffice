@@ -20,6 +20,7 @@ profile libreoffice /usr/{bin,lib{,32,64}/libreoffice/program}/soffice {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
@@ -37,6 +38,7 @@ profile libreoffice /usr/{bin,lib{,32,64}/libreoffice/program}/soffice {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/ls						mr,
@@ -47,6 +49,7 @@ profile libreoffice /usr/{bin,lib{,32,64}/libreoffice/program}/soffice {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -57,6 +60,7 @@ profile libreoffice /usr/{bin,lib{,32,64}/libreoffice/program}/soffice {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/sed						mr,
@@ -70,6 +74,7 @@ profile libreoffice.oosplash /usr/lib{,32,64}/libreoffice/program/oosplash {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/queue/rotational r,
   
   # EXECUTABLES ----------------------------------------
@@ -87,6 +92,7 @@ profile libreoffice.javaldx /usr/lib{,32,64}/libreoffice/program/javaldx {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/libreoffice/program/javaldx		m,
@@ -178,6 +184,7 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,

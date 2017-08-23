@@ -14,6 +14,7 @@ profile lvm2.lvmetad /sbin/lvmetad {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -33,6 +34,7 @@ profile lvm2.dmsetup /sbin/dmsetup {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   /dev/mapper/control					rw,
   @{PROC}/devices					r,
   
@@ -55,6 +57,7 @@ profile lvm2.dmeventd /sbin/dmeventd {
   # PSEUDO ---------------------------------------------
   /dev/dm-[0-9]*					rw,	# DELEGATION! backup_daily.sh.cron.daily
   								# DELEGATION! backup_weekly.sh.cron.weekly
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/mapper/control					rw,
   /sys/bus/						r,
@@ -158,6 +161,7 @@ profile lvm2.fsadm /sbin/fsadm {
   capability mknod,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/**/name	r,
   @{PROC}/@{pid}/mounts					r,
@@ -212,8 +216,6 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad {
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  /dev/console						rw,
-  /dev/pts/[0-9]*					rw,
   /sys/fs/cgroup/openrc/lvmetad/tasks			w,
   
   # EXECUTABLES ----------------------------------------
@@ -240,6 +242,7 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/lvmetad/			w,
@@ -276,6 +279,7 @@ profile lvm2.lvm.init.d /etc/init.d/lvm {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     @{PROC}/misc					r,
@@ -292,6 +296,7 @@ profile lvm2.lvm.init.d /etc/init.d/lvm {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/lvm/				w,

@@ -19,7 +19,9 @@ profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check {
   capability mknod,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
+  @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -42,6 +44,7 @@ profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -63,8 +66,10 @@ profile gentoolkit.equery @{PYTHON_EXEC}/equery {
   capability mknod,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
+  @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -83,6 +88,7 @@ profile gentoolkit.equery @{PYTHON_EXEC}/equery {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -105,6 +111,7 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean {
   capability dac_override,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -134,6 +141,7 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -146,6 +154,7 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -162,6 +171,7 @@ profile gentoolkit_eclean_sandbox_shell {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -178,6 +188,7 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
   capability mknod,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
@@ -209,6 +220,7 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -219,9 +231,6 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
   profile portage {
     #include <abstractions/base>
     #include <abstractions/python-exec>
-    
-    # PSEUDO -------------------------------------------
-    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/emerge				Px,
@@ -235,6 +244,7 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------

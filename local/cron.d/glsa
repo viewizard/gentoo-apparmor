@@ -23,7 +23,6 @@ profile glsa.cron.daily /etc/cron.daily/glsa {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/glsa					r,
@@ -76,9 +75,6 @@ profile glsa.cron.daily /etc/cron.daily/glsa {
   profile glsa_check {
     #include <abstractions/base>
     #include <abstractions/python-exec>
-    
-    # PSEUDO -------------------------------------------
-    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/glsa-check				Px,

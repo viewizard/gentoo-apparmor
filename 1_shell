@@ -77,6 +77,7 @@ profile shell_users {
   /usr/bin/wine						Px,	# FIX ME! (?) вынести в <local/shell/shell_users.d/>
   /usr/bin/winecfg					Px,	# FIX ME! (?) вынести в <local/shell/shell_users.d/>
   /usr/bin/dircolors					Px,
+  /usr/bin/libnotify-notify-send			Px,	# /usr/bin/libnotify-notify-send-users запускает в шеле пользователя.
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
@@ -218,6 +219,8 @@ profile shell_root {
   /sbin/e2fsck						Px,
   /sbin/mke2fs						Px,
   /sbin/tune2fs						Px,
+  /sbin/resize2fs					Px,
+  /sbin/dumpe2fs					Px,
   /sbin/mkswap						Px,
   /sbin/rc-update					Px,
   /sbin/fsck						Px,
@@ -257,6 +260,7 @@ profile shell_root {
   /usr/bin/eix						Px,
   /usr/bin/eix-test-obsolete				Px,
   /usr/bin/eix-sync					Px,
+  /usr/bin/gpasswd					Px,
   /usr/sbin/gdisk					Px,
   /usr/sbin/smartctl					Px,
   /usr/sbin/useradd					Px,
@@ -292,6 +296,7 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -304,6 +309,7 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -316,6 +322,7 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -328,6 +335,7 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -343,6 +351,7 @@ profile shell_root {
     capability mknod,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -355,6 +364,7 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -367,6 +377,7 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -381,6 +392,7 @@ profile shell_root {
     capability sys_admin,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
     @{PROC}/@{pid}/mount{s,info}			r,
@@ -401,6 +413,7 @@ profile shell_root {
     capability sys_admin,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
     @{PROC}/@{pid}/mountinfo				r,
@@ -423,6 +436,7 @@ profile shell_root {
     capability sys_admin,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -435,6 +449,7 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -450,6 +465,7 @@ profile shell_root {
     capability chown,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -466,6 +482,7 @@ profile shell_root {
     capability fsetid,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -478,6 +495,7 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -490,6 +508,7 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -502,6 +521,7 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -514,6 +534,7 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -526,6 +547,7 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -538,6 +560,7 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -550,6 +573,7 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -562,6 +586,7 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -574,6 +599,7 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -586,6 +612,7 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -598,6 +625,7 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -610,6 +638,7 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -627,6 +656,7 @@ profile shell_root {
     capability fsetid,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -639,6 +669,7 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------

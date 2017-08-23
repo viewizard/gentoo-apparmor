@@ -18,6 +18,7 @@ profile smartmontools.smartd /usr/sbin/smartd {
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_REAL}					r,
@@ -51,6 +52,7 @@ profile smartmontools.smartctl /usr/sbin/smartctl {
   capability sys_rawio,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_REAL}					r,
@@ -92,6 +94,7 @@ profile smartmontools.init.d /etc/init.d/smartd {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/smartd/			w,

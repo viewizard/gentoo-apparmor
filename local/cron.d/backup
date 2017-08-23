@@ -23,7 +23,6 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/null						w,
-  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/backup_daily.sh			r,
@@ -84,6 +83,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     
     # CAPABILITIES -------------------------------------
     capability dac_override,
+    capability dac_read_search,
     
     # PSEUDO -------------------------------------------
     @{PROC}/@{pid}/fd/					r,
@@ -237,7 +237,6 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
@@ -299,6 +298,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     
     # CAPABILITIES -------------------------------------
     capability dac_override,
+    capability dac_read_search,
     
     # PSEUDO -------------------------------------------
     @{PROC}/@{pid}/fd/					r,

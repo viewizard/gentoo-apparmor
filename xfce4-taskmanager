@@ -48,6 +48,7 @@ profile xfce4-taskmanager /usr/bin/xfce4-taskmanager {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
   @{PROC}/@{pid}/fd/					r,
   @{PROC}/@{pid}/{cmdline,status,stat}			r,

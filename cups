@@ -55,6 +55,7 @@ profile cups.cupsd /usr/sbin/cupsd {
   network inet6 stream,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -247,6 +248,7 @@ profile cups.init.d /etc/init.d/cupsd {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/cupsd/			w,

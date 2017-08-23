@@ -17,6 +17,7 @@ profile util-linux.mkswap /sbin/mkswap {
   capability mknod,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rw,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
@@ -35,6 +36,7 @@ profile util-linux.swapon /sbin/swap{on,off} {
   capability sys_admin,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rw,
@@ -53,6 +55,7 @@ profile util-linux.lsblk /bin/lsblk {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /sys/block/						r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**		r,
@@ -106,6 +109,7 @@ profile util-linux.fsck /sbin/fsck flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					r,
@@ -144,6 +148,7 @@ profile util-linux.logger /usr/bin/logger {
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/loginuid r,
   
@@ -156,6 +161,7 @@ profile util-linux.fdisk /sbin/{,c}fdisk flags=(complain) {
   #include <abstractions/ncurses>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rw,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
@@ -234,6 +240,7 @@ profile util-linux.mcookie /usr/bin/mcookie {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mcookie					mr,
@@ -246,6 +253,7 @@ profile util-linux.cal /usr/bin/cal {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/cal						mr,
@@ -262,6 +270,7 @@ profile util-linux.getopt /usr/bin/getopt flags=(attach_disconnected) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/getopt					mr,
@@ -278,6 +287,7 @@ profile util-linux.dmesg /bin/dmesg {
   
   # PSEUDO ---------------------------------------------
   /dev/kmsg						r,
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -296,6 +306,7 @@ profile util-linux.renice /usr/bin/renice {
   capability mknod,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------

@@ -32,6 +32,7 @@ profile poedit /usr/bin/poedit {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   /sys/devices/system/cpu/				r,
   
   # EXECUTABLES ----------------------------------------
@@ -59,6 +60,7 @@ profile poedit /usr/bin/poedit {
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
@@ -76,6 +78,7 @@ profile poedit /usr/bin/poedit {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/msgmerge					mr,
@@ -92,6 +95,7 @@ profile poedit /usr/bin/poedit {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/msgfmt					mr,
@@ -111,6 +115,7 @@ profile poedit /usr/bin/poedit {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/msgcat					mr,

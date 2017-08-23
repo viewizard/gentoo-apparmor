@@ -13,13 +13,14 @@
 profile gtk-update-icon-cache /usr/bin/gtk-update-icon-cache {
   #include <abstractions/base>
   
-  # PSEUDO -------------------------------------------
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
-  # EXECUTABLES --------------------------------------
+  # EXECUTABLES ----------------------------------------
   /usr/bin/gtk-update-icon-cache			mr,
   
-  # READS/WRITES -------------------------------------
+  # READS/WRITES ---------------------------------------
   /usr/share/icons/{,**}				r,
   /usr/share/icons/*/{,.}icon-theme.cache		w,
 }

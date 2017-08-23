@@ -29,6 +29,7 @@ profile dnscrypt-proxy /usr/sbin/dnscrypt-proxy {
   network inet6 stream,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -46,6 +47,7 @@ profile dnscrypt-proxy.hostip /usr/bin/hostip {
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/sys/kernel/random/uuid			r,
   
@@ -89,6 +91,7 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy {
     capability chown,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -106,6 +109,7 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/dnscrypt-proxy/		w,

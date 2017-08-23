@@ -63,6 +63,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
   @{PROC}/@{pid}/fd/					r,
@@ -106,6 +107,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
@@ -134,6 +136,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
     # PSEUDO -------------------------------------------
     /dev/						r,
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     /dev/@{BLOCK_ALL}					r,
     /sys/block/						r,
     /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
@@ -160,6 +163,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/umount						mr,
@@ -229,6 +233,7 @@ profile thunar_root {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
   @{PROC}/@{pid}/fd/					r,
@@ -274,6 +279,7 @@ profile thunar_root {
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
@@ -305,6 +311,7 @@ profile thunar_root {
     # PSEUDO -------------------------------------------
     /dev/						r,
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     /dev/@{BLOCK_ALL}					r,
     /sys/block/						r,
     /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
@@ -330,6 +337,7 @@ profile thunar_root {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/umount						mr,
@@ -353,6 +361,7 @@ profile thunar.thunar-sendto-email /usr/lib{,32,64}/Thunar/thunar-sendto-email {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
@@ -369,6 +378,7 @@ profile thunar.thunar-sendto-email /usr/lib{,32,64}/Thunar/thunar-sendto-email {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/zip					mr,
@@ -384,6 +394,7 @@ profile thunar.thunar-settings /usr/bin/thunar-settings {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar-settings				r,
@@ -397,6 +408,7 @@ profile thunar.ThunarBulkRename /usr/lib{,32,64}/Thunar/ThunarBulkRename {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,

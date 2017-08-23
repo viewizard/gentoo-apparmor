@@ -23,7 +23,6 @@ profile 00_update_portage.cron.daily /etc/cron.daily/00_update_portage {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/00_update_portage			r,
@@ -48,9 +47,6 @@ profile 00_update_portage.cron.daily /etc/cron.daily/00_update_portage {
   profile mktemp /bin/mktemp {
     #include <abstractions/base>
     
-    # PSEUDO -------------------------------------------
-    /dev/pts/[0-9]*					rw,
-    
     # EXECUTABLES --------------------------------------
     /bin/mktemp						mr,
     
@@ -60,9 +56,6 @@ profile 00_update_portage.cron.daily /etc/cron.daily/00_update_portage {
   
   profile rm /bin/rm {
     #include <abstractions/base>
-    
-    # PSEUDO -------------------------------------------
-    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/rm						mr,
@@ -89,9 +82,6 @@ profile 00_update_portage.cron.daily /etc/cron.daily/00_update_portage {
     capability fsetid,
     capability dac_override,
     
-    # PSEUDO -------------------------------------------
-    /dev/pts/[0-9]*					rw,
-    
     # EXECUTABLES --------------------------------------
     /bin/cp						mr,
     
@@ -109,9 +99,6 @@ profile 00_update_portage.cron.daily /etc/cron.daily/00_update_portage {
     
     # CAPABILITIES -------------------------------------
     capability mknod,
-    
-    # PSEUDO -------------------------------------------
-    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/emerge				Px,

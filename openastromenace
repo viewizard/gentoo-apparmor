@@ -10,30 +10,35 @@
 
 #include <tunables/global>
 
-# предустановка для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
-@{USERS_DIR}="[^.]**"
-@{USERS_FILE}="{[^.]*.{pdf,xps,PDF,XPS},qt_temp.*}"
-
-profile masterpdfeditor /opt/master-pdf-editor-3/masterpdfeditor3 {
+profile openastromenace /usr/games/bin/openastromenace {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
-  #include <abstractions/qt>
-  #include <abstractions/cups-client>
+  #include <abstractions/audio>
   #include <abstractions/video>
   #include <abstractions/X>
-  #include <abstractions/xdg-open>
-  #include <abstractions/fs/access-by-users-preset-rwk>
-  #include <abstractions/fs/deny-by-pattern-internet>
-  #include <abstractions/nameservice>
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  /dev/input/event[0-9]*				r,
+  /sys/bus/						r,
+  /sys/class/						r,
+  /sys/class/input/					r,
+  /sys/class/sound/					r,
+  /sys/devices/**/uevent				r,
+  /sys/devices/pci**/sound/**/capabilities/*		r,
   
   # EXECUTABLES ----------------------------------------
-  /opt/master-pdf-editor-3/{,**}			mr,
+  /usr/games/bin/openastromenace			mr,
   
   # READS/WRITES ---------------------------------------
-  owner "@{HOME}/.config/Code Industry/"		rw,
-  owner "@{HOME}/.config/Code Industry/*"		rwk,
+  /usr/share/games/openastromenace/{,**}		r,
+  /run/udev/data/*					r,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.config/astromenace/{,*}		rw,
 }

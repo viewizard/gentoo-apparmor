@@ -32,6 +32,7 @@ profile pulseaudio /usr/bin/pulseaudio {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   /sys/bus/						r,
   /sys/class/						r,
   /sys/class/sound/					r,
@@ -102,6 +103,7 @@ profile pulseaudio.pacmd /usr/bin/pacmd {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   owner @{PROC}/@{pid}/stat				r,
   
   # EXECUTABLES ----------------------------------------

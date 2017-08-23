@@ -45,6 +45,7 @@ profile orage /usr/bin/orage {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
@@ -69,6 +70,7 @@ profile orage /usr/bin/orage {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     /sys/devices/system/cpu/				r,
     
     # EXECUTABLES --------------------------------------
@@ -93,6 +95,7 @@ profile orage.globaltime /usr/bin/globaltime {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/globaltime					mr,

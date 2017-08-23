@@ -32,10 +32,12 @@ profile qgit /usr/bin/qgit {
   # SIGNAL ---------------------------------------------
   signal (send) set=(term, kill) peer="meld",
   signal (send) set=(term, kill) peer="git",
+  signal (send) set=(term, kill) peer="juffed",
   
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
@@ -61,6 +63,7 @@ profile qgit /usr/bin/qgit {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/cat						mr,
@@ -93,10 +96,12 @@ profile qgit_root {
   # SIGNAL ---------------------------------------------
   signal (send) set=(term, kill) peer="meld_root",
   signal (send) set=(term, kill) peer="git_root",
+  signal (send) set=(term, kill) peer="juffed_root",
   
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
@@ -123,6 +128,7 @@ profile qgit_root {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/cat						mr,

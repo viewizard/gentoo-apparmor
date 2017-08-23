@@ -103,6 +103,7 @@ profile networkmanager.NetworkManager /usr/sbin/NetworkManager {
   # PSEUDO ---------------------------------------------
   /dev/console						rw,
   /dev/rfkill						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /sys/bus/						r,
   /sys/class/						r,
@@ -148,6 +149,7 @@ profile networkmanager.nm-online /usr/bin/nm-online {
   capability sys_tty_config,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -255,6 +257,7 @@ profile networkmanager.NetworkManager.init.d /etc/init.d/NetworkManager {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/NetworkManager/		w,

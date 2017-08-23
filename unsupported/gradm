@@ -17,6 +17,7 @@ profile gradm /sbin/gradm flags=(complain) {
   # PSEUDO ---------------------------------------------
   /dev/							r,
   /dev/grsec						w,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/mounts					r,
   
@@ -41,6 +42,7 @@ profile gradm.grlearn /sbin/grlearn flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/grsec						r,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -80,6 +82,7 @@ profile gradm.init.d /etc/init.d/gradm {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/gradm/			w,

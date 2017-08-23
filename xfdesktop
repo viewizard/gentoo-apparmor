@@ -101,6 +101,7 @@ profile xfdesktop /usr/bin/xfdesktop {
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
@@ -123,6 +124,7 @@ profile xfdesktop.xfdesktop-settings /usr/bin/xfdesktop-settings {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/mountinfo				r,
   
   # EXECUTABLES ----------------------------------------

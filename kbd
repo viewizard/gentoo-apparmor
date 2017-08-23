@@ -30,6 +30,7 @@ profile kbd.deallocvt /usr/bin/deallocvt {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/deallocvt					mr,
@@ -40,6 +41,7 @@ profile kbd.chvt /usr/bin/chvt {				# Корректировать с xorg-serve
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/chvt						mr,
@@ -52,8 +54,8 @@ profile kbd.kbd_mode /usr/bin/kbd_mode {
   capability sys_tty_config,
   
   # PSEUDO ---------------------------------------------
-  /dev/console						rw,
   /dev/tty[0-9]*					rw,
+  /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -67,6 +69,7 @@ profile kbd.loadkeys /usr/bin/loadkeys {
   capability sys_tty_config,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -87,6 +90,7 @@ profile kbd.loadkeys /usr/bin/loadkeys {
     capability sys_tty_config,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -101,7 +105,11 @@ profile kbd.loadkeys /usr/bin/loadkeys {
 profile kbd.dumpkeys /usr/bin/dumpkeys {
   #include <abstractions/base>
   
+  # CAPABILITIES ---------------------------------------
+  capability sys_tty_config,
+  
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -119,8 +127,8 @@ profile kbd.setfont /usr/bin/setfont {
   capability sys_tty_config,
   
   # PSEUDO ---------------------------------------------
-  /dev/console						rw,
   /dev/tty[0-9]*					rw,
+  /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------

@@ -18,6 +18,7 @@ profile e2fsprogs.e2fsck /sbin/e2fsck flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/console						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rw,
   @{PROC}/swaps						r,
@@ -63,6 +64,7 @@ profile e2fsprogs.tune2fs /sbin/tune2fs flags=(complain) {
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rw,
   @{PROC}/swaps						r,
@@ -79,6 +81,7 @@ profile e2fsprogs.resize2fs /sbin/resize2fs flags=(complain) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rw,
   @{PROC}/swaps						r,
@@ -86,4 +89,17 @@ profile e2fsprogs.resize2fs /sbin/resize2fs flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /sbin/resize2fs					mr,
+}
+
+profile e2fsprogs.dumpe2fs /sbin/dumpe2fs flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  /dev/@{BLOCK_ALL}					r,
+  
+  # EXECUTABLES ----------------------------------------
+  /sbin/dumpe2fs					mr,
 }

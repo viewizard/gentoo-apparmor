@@ -19,6 +19,7 @@ profile grub.grub-mkconfig /usr/sbin/grub-mkconfig {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -47,6 +48,7 @@ profile grub.grub-mkconfig /usr/sbin/grub-mkconfig {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -60,6 +62,7 @@ profile grub.grub-mkconfig /usr/sbin/grub-mkconfig {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -75,6 +78,10 @@ profile grub.grub-mkconfig /usr/sbin/grub-mkconfig {
   profile mv /bin/mv {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/mv						mr,
     
@@ -85,6 +92,10 @@ profile grub.grub-mkconfig /usr/sbin/grub-mkconfig {
 
 profile grub.grub-script-check /usr/bin/grub-script-check {
   #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/grub-script-check				mr,
@@ -97,6 +108,8 @@ profile grub.grub-mkrelpath /usr/bin/grub-mkrelpath {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/mountinfo				r,
   
   # EXECUTABLES ----------------------------------------
@@ -108,6 +121,7 @@ profile grub.grub.d /etc/grub.d/* {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -143,6 +157,7 @@ profile grub.grub.d /etc/grub.d/* {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -156,6 +171,7 @@ profile grub.grub.d /etc/grub.d/* {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -169,6 +185,10 @@ profile grub.grub.d /etc/grub.d/* {
   profile sed /bin/sed {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/sed						mr,
     
@@ -181,6 +201,7 @@ profile grub.grub.d /etc/grub.d/* {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -196,6 +217,10 @@ profile grub.grub.d /etc/grub.d/* {
   profile sort /bin/sort {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
     # CAPABILITIES -------------------------------------
     capability mknod,
     
@@ -206,12 +231,20 @@ profile grub.grub.d /etc/grub.d/* {
   profile head /bin/head {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/head						mr,
   }
   
   profile grep /bin/grep {
     #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -222,6 +255,10 @@ profile grub.grub.d /etc/grub.d/* {
   
   profile fgrep /bin/fgrep {
     #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -242,6 +279,7 @@ profile grub.grub-probe /usr/sbin/grub-probe {
   capability mknod,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					r,
   /dev/{,**/}						r,
@@ -267,6 +305,7 @@ profile grub.grub-install /usr/sbin/grub-install {
   
   # PSEUDO ---------------------------------------------
   /dev/{,**}						r,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_REAL}					rw,
   /dev/mapper/control					rw,
@@ -294,6 +333,7 @@ profile grub.grub-install /usr/sbin/grub-install {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------

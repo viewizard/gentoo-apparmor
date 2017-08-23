@@ -57,6 +57,7 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xarchiver					mr,
@@ -106,6 +107,7 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/rm						mr,
@@ -363,6 +365,7 @@ profile xarchiver_root flags=(complain) {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xarchiver					mr,
@@ -411,6 +414,7 @@ profile xarchiver_root flags=(complain) {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/rm						mr,
@@ -667,6 +671,7 @@ profile xarchiver_tap /usr/libexec/thunar-archive-plugin/xarchiver.tap {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/thunar-archive-plugin/xarchiver.tap	r,
@@ -680,6 +685,7 @@ profile xarchiver_tap_root {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/thunar-archive-plugin/xarchiver.tap	r,

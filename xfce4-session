@@ -63,7 +63,7 @@ profile xfce4-session /usr/bin/xfce4-session {
   @{shell}						Cx,
   /bin/env						Cx,
   /bin/true						Px,
-  audit /bin/rm						Cx,	# FIX ME! audit 22.06.2017
+  /bin/rm						Cx,
   /usr/bin/ssh-agent					Px,
   /usr/bin/gpg-agent					Px,
   /usr/bin/xfsettingsd					Px,
@@ -143,6 +143,9 @@ profile xfce4-session /usr/bin/xfce4-session {
   profile rm /bin/rm {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/rm						mr,
   }
@@ -165,6 +168,11 @@ profile xfce4-session.xfce4-session-logout /usr/bin/xfce4-session-logout {
   	path="/org/xfce/SessionManager"
   	interface="org.xfce.Session.Manager"
   	peer=(name=":[0-9]*.[0-9]*",label="xfce4-session"),
+  dbus send
+  	bus=session
+  	path="/org/gtk/vfs/mounttracker"
+  	interface="org.gtk.vfs.MountTracker"
+  	peer=(name=":[0-9]*.[0-9]*",label="gvfs.gvfsd"),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

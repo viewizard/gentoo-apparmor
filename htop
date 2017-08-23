@@ -31,6 +31,7 @@ profile htop /usr/bin/htop {
   								# любой сигнал любому процессу.
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/sys/kernel/pid_max				r,
   @{PROC}/{,loadavg,uptime}				r,

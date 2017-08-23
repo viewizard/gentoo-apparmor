@@ -62,7 +62,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   /sys/class/input/					r,
   /sys/bus/pci/devices/					r,
   /sys/devices/**/{id,uevent,name}			r,
-  /sys/devices/pci[0-9]*/**/{,config,resource,boot_vga}	r,
+  /sys/devices/pci[0-9]*/**/{,*}			r,
   @{PROC}/mtrr						rw,
   @{PROC}/cmdline					r,
   @{PROC}/modules					r,
@@ -112,6 +112,9 @@ profile xorg-server.Xorg /usr/bin/Xorg {
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /usr/bin/xkbcomp					Px,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.local/share/xorg/{,**}		rw,	# Нужно для запуска под пользователем (без suid), хранит там логи сервера.
     
     # READS/WRITES -------------------------------------
     /run/acpid.socket					rw,
@@ -184,6 +187,7 @@ profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/xdm-setup/			w,
@@ -243,6 +247,7 @@ profile xorg-server.xdm.init.d /etc/init.d/xdm {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/xdm/				w,
@@ -258,6 +263,6 @@ profile xorg-server.xdm.init.d /etc/init.d/xdm {
     /bin/grep						mr,
     
     # READS/WRITES -------------------------------------
-    /etc/inittab					r,
+    /etc/inittab					r,	# sysvinit
   }
 }

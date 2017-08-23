@@ -21,6 +21,7 @@ profile apparmor-utils.aa-status @{PYTHON_EXEC}/aa-status flags=(attach_disconne
   ptrace (trace),
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /sys/kernel/security/apparmor/*			r,
   @{PROC}/						r,
@@ -50,6 +51,7 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   ptrace (trace),
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
   @{PROC}/@{pid}/cmdline				r,
@@ -110,6 +112,7 @@ profile apparmor-utils.aa-complain @{PYTHON_EXEC}/aa-complain {
   #include <abstractions/ncurses>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -134,6 +137,7 @@ profile apparmor-utils.aa-enforce @{PYTHON_EXEC}/aa-enforce {
   #include <abstractions/ncurses>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -158,6 +162,7 @@ profile apparmor-utils.aa-disable @{PYTHON_EXEC}/aa-disable {
   #include <abstractions/ncurses>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -182,6 +187,7 @@ profile apparmor-utils.aa-logprof @{PYTHON_EXEC}/aa-logprof {
   #include <abstractions/ncurses>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/mounts					r,
   

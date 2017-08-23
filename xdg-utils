@@ -19,6 +19,7 @@ profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
@@ -77,6 +78,7 @@ profile xdg-utils.xdg-email /usr/bin/xdg-email {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-email					r,
@@ -90,6 +92,7 @@ profile xdg-utils.xdg-email /usr/bin/xdg-email {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/sed						mr,
@@ -104,6 +107,7 @@ profile xdg-utils.xdg-screensaver /usr/bin/xdg-screensaver {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-screensaver				r,
@@ -122,6 +126,7 @@ profile xdg-utils.xdg-screensaver /usr/bin/xdg-screensaver {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -132,6 +137,7 @@ profile xdg-utils.xdg-screensaver /usr/bin/xdg-screensaver {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/mv						mr,
@@ -142,6 +148,7 @@ profile xdg-utils.xdg-screensaver /usr/bin/xdg-screensaver {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/sed						mr,
@@ -162,6 +169,7 @@ profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-settings					mr,
@@ -195,6 +203,7 @@ profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -243,6 +252,7 @@ profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/cut						mr,
@@ -273,6 +283,7 @@ profile xdg_open_root {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
@@ -308,6 +319,7 @@ profile xdg_email_root {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-email					r,

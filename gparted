@@ -16,6 +16,7 @@ profile gparted.gparted-pkexec /usr/bin/gparted-pkexec flags=(complain) {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gparted-pkexec				r,
@@ -43,6 +44,7 @@ profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rwk,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]**/host*/target**/{vendor,model} r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
@@ -97,6 +99,7 @@ profile gparted.gparted /usr/sbin/gparted flags=(complain) {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/gparted					r,
@@ -118,6 +121,7 @@ profile gparted.gparted /usr/sbin/gparted flags=(complain) {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/rm						mr,
@@ -131,6 +135,7 @@ profile gparted.gparted /usr/sbin/gparted flags=(complain) {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -139,9 +144,10 @@ profile gparted.gparted /usr/sbin/gparted flags=(complain) {
   profile egrep /bin/egrep flags=(complain) {
     #include <abstractions/base>
     
-    # PSEUDO ---------------------------------------------
+    # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/egrep						r,
@@ -154,6 +160,7 @@ profile gparted.gparted /usr/sbin/gparted flags=(complain) {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/touch						mr,
@@ -167,6 +174,7 @@ profile gparted.gparted /usr/sbin/gparted flags=(complain) {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/sed						mr,

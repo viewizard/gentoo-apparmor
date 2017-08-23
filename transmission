@@ -52,6 +52,7 @@ profile transmission /usr/bin/transmission-* {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,
   @{PROC}/sys/kernel/random/uuid			r,
   owner @{PROC}/@{pid}/mounts				r,

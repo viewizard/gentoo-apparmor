@@ -32,6 +32,7 @@ profile cryptsetup /sbin/cryptsetup {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/null						rw,
   /dev/pts/[0-9]*					rw,
@@ -123,6 +124,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -139,6 +141,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     @{PROC}/cmdline					r,
@@ -150,8 +153,14 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
   profile dd /bin/dd {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/dd						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /etc/conf.d/dmcrypt				r,
   }
   
   profile mkdir /bin/mkdir {
@@ -161,6 +170,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/dmcrypt/			w,
@@ -191,6 +201,9 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
     
     # EXECUTABLES --------------------------------------
     /bin/mount						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/filesystems					r,
     
     # DENY INHERIT -------------------------------------
     deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d

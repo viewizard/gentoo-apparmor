@@ -14,6 +14,7 @@ profile attr.setfattr /bin/setfattr {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -25,8 +26,11 @@ profile attr.getfattr /bin/getfattr {
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
+  capability dac_override,
+  capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------

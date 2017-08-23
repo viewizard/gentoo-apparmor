@@ -53,6 +53,7 @@ profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				rw,
   
   # EXECUTABLES ----------------------------------------
@@ -92,6 +93,7 @@ profile gimp.plug-ins /usr/lib{,32,64}/gimp/[0-9].[0-9]/plug-ins/* {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/gimp/[0-9].[0-9]/plug-ins/*		mr,

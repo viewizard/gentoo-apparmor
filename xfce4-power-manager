@@ -55,6 +55,7 @@ profile xfce4-power-manager /usr/bin/xfce4-power-manager {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   owner @{PROC}/@{pid}/stat				r,
   
@@ -73,6 +74,7 @@ profile xfce4-power-manager.xfpm-power-backlight-helper /usr/sbin/xfpm-power-bac
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/xfpm-power-backlight-helper			mr,
@@ -119,6 +121,7 @@ profile xfce4-power-manager.xfce4-power-manager-settings /usr/bin/xfce4-power-ma
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------

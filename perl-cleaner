@@ -19,6 +19,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -141,9 +142,6 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
-    # PSEUDO -------------------------------------------
-    /dev/pts/[0-9]*					rw,
-    
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/emerge				Px,
     @{PYTHON_EXEC}/portageq				Px,
@@ -155,6 +153,7 @@ profile perl_cleaner_shell {
   
   # PSEUDO -------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES --------------------------------------

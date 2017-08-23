@@ -21,6 +21,7 @@ profile pmount /usr/bin/pmount flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_REAL}					r,
   /sys/class/block/					r,
   /sys/devices/virtual/block/md*/dev			r,

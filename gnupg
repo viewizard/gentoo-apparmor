@@ -69,6 +69,7 @@ profile gnupg.gpgconf /usr/bin/gpgconf {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
   # EXECUTABLES ----------------------------------------
@@ -88,6 +89,7 @@ profile gnupg.gpgsm /usr/bin/gpgsm {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gpgsm					mr,

@@ -62,6 +62,7 @@ profile nm-applet /usr/bin/nm-applet {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   /sys/devices/pci[0-9]**/net/{,**}			r,
   /sys/devices/pci[0-9]**/uevent			r,
   @{PROC}/@{pid}/fd/					r,
@@ -95,6 +96,7 @@ profile nm-applet.nm-connection-editor /usr/bin/nm-connection-editor {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/nm-connection-editor				mr,

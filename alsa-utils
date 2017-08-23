@@ -17,6 +17,7 @@ profile alsa-utils.aplay /usr/bin/aplay {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/aplay					mr,
@@ -31,6 +32,8 @@ profile alsa-utils.alsactl /usr/sbin/alsactl {
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   /sys/devices/pci[0-9]**/subsystem_{device,vendor}	r,
   
   # EXECUTABLES ----------------------------------------

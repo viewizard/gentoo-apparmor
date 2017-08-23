@@ -52,7 +52,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   /sys/fs/cgroup/portage/{,**}				rw,
   owner @{PROC}/@{pid}/cmdline				r,
   @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/mountinfo				r,
+  @{PROC}/@{pid}/mount{s,info}				r,
   @{PROC}/sys/kernel/osrelease				r,
   
   # EXECUTABLES ----------------------------------------
@@ -109,6 +109,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     mount fstype=cgroup options=(rw, nosuid, nodev, noexec) tmpfs -> /sys/fs/cgroup/portage/,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -173,6 +174,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /opt/**						ix,
     /usr/bin/**						ix,
     /usr/sbin/useradd					Px,
+    /usr/sbin/groupadd					Px,
     /usr/sbin/lspci					Px,
     /usr/sbin/**					ix,
     /usr/lib{,32,64,exec}/**				ix,
@@ -328,7 +330,9 @@ profile portage.env-update @{PYTHON_EXEC}/env-update {
   capability mknod,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
+  @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -356,6 +360,7 @@ profile portage.env-update @{PYTHON_EXEC}/env-update {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -374,6 +379,7 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf {
   capability mknod,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
@@ -395,6 +401,7 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -408,6 +415,7 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -430,6 +438,7 @@ profile portage_dispatch_conf_shell {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -445,6 +454,7 @@ profile portage_dispatch_conf_shell {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -455,6 +465,7 @@ profile portage_dispatch_conf_shell {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -471,7 +482,9 @@ profile portage.portageq @{PYTHON_EXEC}/portageq {
   capability mknod,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
+  @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -494,6 +507,7 @@ profile portage.portageq @{PYTHON_EXEC}/portageq {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -514,6 +528,7 @@ profile portage.etc-update /usr/sbin/etc-update {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -544,6 +559,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -560,6 +576,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -570,6 +587,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -580,6 +598,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -596,6 +615,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -609,6 +629,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -623,6 +644,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     #include <abstractions/nameservice>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -636,6 +658,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -652,6 +675,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -662,6 +686,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -675,6 +700,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -688,6 +714,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -698,6 +725,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -708,6 +736,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -727,6 +756,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -742,9 +772,6 @@ profile portage.etc-update /usr/sbin/etc-update {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
-    # PSEUDO -------------------------------------------
-    /dev/pts/[0-9]*					rw,
-    
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/portageq				Px,
   }
@@ -755,6 +782,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -787,6 +815,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -800,6 +829,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -813,6 +843,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -826,6 +857,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -842,6 +874,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -862,6 +895,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -879,6 +913,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     capability chown,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -892,6 +927,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -905,6 +941,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -919,6 +956,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     #include <abstractions/nameservice>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -929,6 +967,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -946,6 +985,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -955,9 +995,6 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
   profile portage {
     #include <abstractions/base>
     #include <abstractions/python-exec>
-    
-    # PSEUDO -------------------------------------------
-    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/emerge				Px,
@@ -969,6 +1006,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -992,6 +1030,7 @@ profile portage.emaint @{PYTHON_EXEC}/emaint {
   capability chown,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
   
@@ -1019,6 +1058,7 @@ profile portage.emaint @{PYTHON_EXEC}/emaint {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -1034,6 +1074,7 @@ profile portage.emaint @{PYTHON_EXEC}/emaint {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------

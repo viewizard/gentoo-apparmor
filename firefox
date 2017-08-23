@@ -18,6 +18,7 @@ profile firefox.start_script /usr/bin/firefox {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/firefox					r,
@@ -68,6 +69,7 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   owner /dev/shm/org.chromium.??????			rw,	# Нужено для adobe-flash (ppapi).
   /sys/devices/system/cpu/{,**}				r,
   /sys/devices/pci[0-9]*/**/uevent			r,
@@ -171,7 +173,8 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
-  /dev/tty[0-9]						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   owner /dev/shm/org.chromium.??????			rw,	# Нужено для adobe-flash (ppapi).
   /sys/devices/system/cpu/				r,
   owner @{PROC}/@{pid}/stat				r,
@@ -208,7 +211,8 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
-    /dev/tty[0-9]					rw,
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,

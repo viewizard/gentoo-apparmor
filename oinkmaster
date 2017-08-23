@@ -20,6 +20,7 @@ profile oinkmaster /usr/bin/oinkmaster.pl {
   capability dac_override,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -71,6 +72,7 @@ profile oinkmaster.cron.daily /etc/cron.daily/oinkmaster {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------

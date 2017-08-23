@@ -31,6 +31,7 @@ profile tor /usr/bin/tor {
   network inet6 stream,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   /sys/devices/system/cpu/				r,
@@ -87,6 +88,7 @@ profile tor.init.d /etc/init.d/tor {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/tor/				w,

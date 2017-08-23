@@ -44,6 +44,7 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     @{PROC}/filesystems					r,
@@ -59,6 +60,7 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /dev/pts/						w,
@@ -100,6 +102,7 @@ profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/udev-trigger/			w,
@@ -115,6 +118,7 @@ profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     @{PROC}/cmdline					r,
@@ -153,6 +157,7 @@ profile udev-init-scripts.udev-settle.init.d /etc/init.d/udev-settle {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/udev-settle/			w,

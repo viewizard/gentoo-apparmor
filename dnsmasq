@@ -49,6 +49,7 @@ profile dnsmasq /usr/sbin/dnsmasq {
   network inet6 stream,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -98,6 +99,7 @@ profile dnsmasq.init.d /etc/init.d/dnsmasq {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/dnsmasq/			w,

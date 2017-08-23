@@ -85,6 +85,7 @@ profile sudo.askpass /usr/bin/gksu_askpass.sh {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gksu_askpass.sh				r,
@@ -98,6 +99,7 @@ profile sudo.gksudo /usr/bin/{gksu,gksudo} {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,

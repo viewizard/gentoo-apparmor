@@ -18,6 +18,7 @@ profile lm_sensors.sensors /usr/bin/sensors {
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/sensors					mr,
@@ -58,6 +59,7 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/lm_sensors/			w,

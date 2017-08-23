@@ -28,6 +28,7 @@ profile iptables.xtables-multi /sbin/xtables-multi {
   network inet6 dgram,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/net/ip_tables_names			r,
@@ -68,6 +69,7 @@ profile iptables.init.d /etc/init.d/iptables {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     @{PROC}/@{pid}/net/ip{,6}_tables_names		r,
@@ -83,6 +85,7 @@ profile iptables.init.d /etc/init.d/iptables {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/iptables/			w,
@@ -104,6 +107,7 @@ profile iptables.firewall /usr/sbin/firewall {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   
@@ -121,6 +125,7 @@ profile iptables.firewall /usr/sbin/firewall {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     @{PROC}/@{pid}/net/ip_tables_names			r,
     

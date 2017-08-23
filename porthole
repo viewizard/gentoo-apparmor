@@ -35,6 +35,7 @@ profile porthole @{PYTHON_EXEC}/porthole {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/ptmx						rw,
+  @{PROC}/@{pid}/mount{s,info}				r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						cx,
@@ -63,6 +64,7 @@ profile porthole @{PYTHON_EXEC}/porthole {
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
@@ -74,6 +76,7 @@ profile porthole @{PYTHON_EXEC}/porthole {
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/sandbox					mr,
@@ -92,6 +95,7 @@ profile porthole_sandbox_shell {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,

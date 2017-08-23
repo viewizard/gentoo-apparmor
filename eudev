@@ -21,9 +21,9 @@ profile eudev.udevadm /bin/udevadm {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
-  /dev/@{BLOCK_REAL}					r,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
+  /dev/@{BLOCK_REAL}					r,
   /dev/input/event[0-9]*				r,
   /dev/snd/**						w,
   /sys/bus/						r,
@@ -57,18 +57,23 @@ profile eudev.udevd /sbin/udevd {
   capability sys_tty_config,
   capability net_admin,
   capability dac_override,
+  capability dac_read_search,
   capability chown,
   capability mknod,
   capability fsetid,
   capability fowner,
+  capability sys_rawio,
   
   # NETWORK --------------------------------------------
   network netlink raw,
   
   # PSEUDO ---------------------------------------------
   /dev/{,*}						w,
+  /dev/tty[0-9]*					rw,
   /dev/console						r,
   /dev/pts/[0-9]*					rw,
+  /dev/dri/card[0-9]*					w,
+  /dev/dri/render*					w,
   /dev/input/event[0-9]*				r,
   /dev/snd/**						w,
   /dev/@{BLOCK_ALL}					rk,

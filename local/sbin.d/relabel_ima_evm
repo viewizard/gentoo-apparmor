@@ -21,6 +21,7 @@ profile local.sbin.relabel_ima_evm /usr/local/sbin/relabel_ima_evm.sh {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -36,6 +37,7 @@ profile local.sbin.relabel_ima_evm /usr/local/sbin/relabel_ima_evm.sh {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -46,6 +48,7 @@ profile local.sbin.relabel_ima_evm /usr/local/sbin/relabel_ima_evm.sh {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     @{PROC}/cmdline					r,
     
@@ -60,6 +63,7 @@ profile local.sbin.relabel_ima_evm /usr/local/sbin/relabel_ima_evm.sh {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------

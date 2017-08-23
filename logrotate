@@ -24,6 +24,7 @@ profile logrotate /usr/bin/logrotate {
   capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -72,7 +73,6 @@ profile logrotate.cron.daily /etc/cron.daily/logrotate {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/logrotate				r,

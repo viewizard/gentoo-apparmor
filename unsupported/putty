@@ -27,6 +27,7 @@ profile putty /usr/bin/putty flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   owner @{PROC}/@{pid}/loginuid				r,
   
   # EXECUTABLES ----------------------------------------

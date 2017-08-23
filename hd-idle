@@ -17,6 +17,7 @@ profile hd-idle /usr/sbin/hd-idle {
   capability sys_rawio,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_REAL}					r,
@@ -59,6 +60,7 @@ profile hd-idle.init.d /etc/init.d/hd-idle {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/hd-idle/			w,

@@ -21,6 +21,7 @@ profile chkrootkit /usr/sbin/chkrootkit {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -216,6 +217,7 @@ profile chkrootkit.chkdirs /usr/sbin/chkdirs {
   capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -232,6 +234,7 @@ profile chkrootkit.strings-static /usr/sbin/strings-static {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -251,6 +254,7 @@ profile chkrootkit.chkproc /usr/sbin/chkproc {
   signal (send) set=(xfsz) peer="sysvinit.init",
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
   
@@ -273,6 +277,7 @@ profile chkrootkit_chkproc_shell {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -319,6 +324,7 @@ profile chkrootkit.ifpromisc /usr/sbin/ifpromisc flags=(attach_disconnected) {
   network inet6 dgram,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
   @{PROC}/@{pid}/fd/					r,
@@ -335,6 +341,7 @@ profile chkrootkit.chkwtmp /usr/sbin/chkwtmp {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -352,6 +359,7 @@ profile chkrootkit.chklastlog /usr/sbin/chklastlog {
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -368,6 +376,7 @@ profile chkrootkit.chkutmp /usr/sbin/chkutmp {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -389,6 +398,7 @@ profile chkrootkit.chkutmp /usr/sbin/chkutmp {
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -410,6 +420,7 @@ profile chkrootkit.cron.daily /etc/cron.daily/chkrootkit {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -431,6 +442,7 @@ profile chkrootkit.cron.daily /etc/cron.daily/chkrootkit {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -444,6 +456,7 @@ profile chkrootkit.cron.daily /etc/cron.daily/chkrootkit {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -457,6 +470,7 @@ profile chkrootkit.cron.daily /etc/cron.daily/chkrootkit {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------

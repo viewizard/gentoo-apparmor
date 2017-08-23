@@ -63,6 +63,7 @@ profile wine.ntlm_auth /usr/bin/ntlm_auth flags=(attach_disconnected) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/ntlm_auth					mr,
@@ -184,6 +185,9 @@ profile wine.wineserver /usr/bin/wineserver flags=(attach_disconnected) {
   # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
   
+  # PTRACE ---------------------------------------------
+  ptrace (trace) peer="wine.wine-preloader",
+  
   # SIGNAL ---------------------------------------------
   signal (send) set=(usr1, quit) peer="wine.wine-preloader",
   
@@ -240,6 +244,7 @@ profile wine.notepad /usr/bin/notepad {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/notepad					r,

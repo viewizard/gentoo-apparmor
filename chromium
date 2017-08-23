@@ -18,6 +18,7 @@ profile chromium.start_script /usr/bin/chromium{,-browser} {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/chromium{,-browser}				r,
@@ -33,6 +34,7 @@ profile chromium.chromium-launcher.sh /usr/lib{,32,64}/chromium-browser/chromium
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh r,
@@ -48,6 +50,7 @@ profile chromium.chromium-launcher.sh /usr/lib{,32,64}/chromium-browser/chromium
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/readlink					mr,
@@ -101,6 +104,10 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   # PTRACE ---------------------------------------------
   ptrace (trace) peer=@{profile_name},
   ptrace (trace) peer="chromium.start_script",
+  
+  # AUDIT PTRACE ---------------------------------------
+  deny ptrace (trace) peer="xdg-utils.xdg-settings",
+  deny ptrace (trace) peer="lsb-release",
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
@@ -233,6 +240,7 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
     # PSEUDO -------------------------------------------
     /dev/null						rw,
     /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     @{PROC}/						r,
     @{PROC}/@{pid}/					r,
     @{PROC}/@{pid}/fd/					r,

@@ -19,6 +19,7 @@ profile eix /usr/bin/eix {
   capability setgid,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/sys/kernel/ngroups_max			r,
   
@@ -46,9 +47,6 @@ profile eix /usr/bin/eix {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
-    # PSEUDO -------------------------------------------
-    /dev/pts/[0-9]*					rw,
-    
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/portageq				Px,
     
@@ -65,6 +63,7 @@ profile eix.eix-test-obsolete /usr/bin/eix-test-obsolete {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -81,6 +80,7 @@ profile eix.eix-functions.sh /usr/bin/eix-functions.sh {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -92,6 +92,7 @@ profile eix.eix-functions.sh /usr/bin/eix-functions.sh {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -107,6 +108,7 @@ profile eix.eix-sync /usr/bin/eix-sync {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
@@ -134,6 +136,7 @@ profile eix.eix-sync /usr/bin/eix-sync {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
@@ -147,9 +150,6 @@ profile eix.eix-sync /usr/bin/eix-sync {
   profile portage {
     #include <abstractions/base>
     #include <abstractions/python-exec>
-    
-    # PSEUDO -------------------------------------------
-    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/emerge				Px,

@@ -12,7 +12,6 @@
 
 profile syslog-ng /usr/sbin/syslog-ng {
   #include <abstractions/base>
-  #include <abstractions/consoles>
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
@@ -39,7 +38,10 @@ profile syslog-ng /usr/sbin/syslog-ng {
   network inet6 dgram,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   /dev/tty[0-9]*					rw,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
   /dev/kmsg						r,
   /dev/log						rw,
   /dev/syslog						w,
@@ -82,7 +84,6 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng {
   capability setgid,
   
   # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					rw,
   /sys/fs/cgroup/openrc/syslog-ng/tasks			w,
   @{PROC}/@{pid}/uid_map				r,
   @{PROC}/@{pid}/loginuid				rw,
@@ -114,6 +115,7 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/fs/cgroup/openrc/syslog-ng/			w,
