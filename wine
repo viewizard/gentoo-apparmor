@@ -151,7 +151,7 @@ profile wine.wine-preloader /usr/bin/wine-preloader flags=(attach_disconnected) 
   /etc/mime.types					r,
   /etc/fstab						r,
   /etc/printcap						r,
-  /usr/lib{,32,64}/wine/*				m,
+  /usr/lib{,32,64}/wine/*.so				m,
   /usr/share/wine/**					rk,
   /usr/share/icons/**					r,
   
@@ -213,6 +213,7 @@ profile wine.wineserver /usr/bin/wineserver flags=(attach_disconnected) {
   
   # READS/WRITES ---------------------------------------
   /etc/mime.types					r,
+  /usr/lib{,32,64}/wine/*.so				m,
   /usr/share/wine/**					rk,
   
   # USERS ----------------------------------------------

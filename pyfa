@@ -41,10 +41,14 @@ profile pyfa @{PYTHON2_EXEC}/pyfa {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
+  owner @{PROC}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/env						mr,
+  
+  # AUDIT EXECUTABLES ----------------------------------
+  deny /usr/bin/chromium-browser			x,	# Должен работать только через xdg-open.
   
   # READS/WRITES ---------------------------------------
   /usr/share/pyfa/					r,
