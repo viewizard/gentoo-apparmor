@@ -197,7 +197,7 @@ profile shell_root {
   /bin/netstat						Px,
   /bin/getfacl						Px,
   /bin/setfacl						Px,
-  audit /bin/tar					Cx,	# FIX ME! audit 25.07.2017
+  /bin/tar						Cx,
   /bin/head						Cx,
   /bin/tail						Cx,
   /bin/getfattr						Px,
@@ -384,12 +384,13 @@ profile shell_root {
     /bin/sed						mr,
   }
   
-  profile mount /bin/mount {
+  profile mount /bin/mount flags=(complain) {
     #include <abstractions/base>
     #include <local/mount/shell_root.d/>
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,
+    capability dac_override,
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -405,7 +406,7 @@ profile shell_root {
     /run/mount/utab					rw,
   }
   
-  profile umount /bin/umount {
+  profile umount /bin/umount flags=(complain) {
     #include <abstractions/base>
     #include <local/mount/shell_root.d/>
     
@@ -533,12 +534,22 @@ profile shell_root {
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
     
+    # CAPABILITIES -------------------------------------
+    capability mknod,
+    capability fowner,
+    capability fsetid,
+    capability chown,
+    
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/tar						mr,
+    /bin/bzip2						ix,
+    
+    # READS/WRITES -------------------------------------
+    owner /**						l,
   }
   
   profile head /bin/head flags=(complain) {
@@ -675,4 +686,135 @@ profile shell_root {
     # EXECUTABLES --------------------------------------
     /usr/bin/diff					mr,
   }
+}
+
+# профиль специального пользователя root после переключения chroot
+profile shell_chroot {
+  # Запрещаем работать с базовой системой:
+  audit deny /{,*}					xmrwkl,
+  audit deny /bin/{,**}					xmrwkl,
+  audit deny /boot/{,**}				xmrwkl,
+  audit deny /etc/{,**}					xmrwkl,
+  audit deny /home/{,**}				xmrwkl,
+  audit deny /lib{,32,64}/{,**}				xmrwkl,
+  audit deny /media/{,**}				xmrwkl,
+  audit deny /mnt/{,**}					xmrwkl,
+  audit deny /opt/{,**}					xmrwkl,
+  audit deny /@{PROC}/{,**}				xmrwkl,
+  audit deny /root/{,**}				xmrwkl,
+  audit deny /run/{,**}					xmrwkl,
+  audit deny /sbin/{,**}				xmrwkl,
+  audit deny /sys/{,**}					xmrwkl,
+  audit deny /tmp/{,**}					xmrwkl,
+  audit deny /usr/{,**}					xmrwkl,
+  audit deny /var/cache/{,**}				xmrwkl,
+  audit deny /var/db/{,**}				xmrwkl,
+  audit deny /var/empty/{,**}				xmrwkl,
+  audit deny /var/lib/{,**}				xmrwkl,
+  audit deny /var/log/{,**}				xmrwkl,
+  audit deny /var/spool/{,**}				xmrwkl,
+  audit deny /var/tmp/{,**}				xmrwkl,
+  # Неявно запрещаем работать со всем в /dev, кроме консоли.
+  # FIX ME! Когда будет возможность, запретить явно, с исключением для консолей.
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # CAPABILITIES ---------------------------------------
+  capability chown,
+  capability dac_override,
+  capability dac_read_search,
+  capability fowner,
+  capability fsetid,
+  capability kill,
+  capability setgid,
+  capability setuid,
+  capability sys_ptrace,
+  capability sys_admin,
+  capability sys_nice,
+  capability sys_resource,
+  capability sys_tty_config,
+  capability mknod,
+  capability setfcap,
+  
+  # PTRACE ---------------------------------------------
+  ptrace (readby, tracedby),
+  ptrace (read, trace) peer=@{profile_name},
+  
+  # SIGNAL ---------------------------------------------
+  signal peer=@{profile_name},
+  signal (receive, send) set=("exists"),
+  signal (receive) set=(hup, int, kill, term, cont, stop),
+  
+  # UNIX -----------------------------------------------
+  unix peer=(label=@{profile_name}),
+  unix (create, getattr, getopt, setopt, shutdown),
+  
+  # DBUS -----------------------------------------------
+  
+  # MOUNT ----------------------------------------------
+  mount fstype=cgroup options=(rw, nosuid, nodev, noexec) tmpfs -> @{CHROOT}/sys/fs/cgroup/portage/,
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
+  
+  # PSEUDO ---------------------------------------------	# Т.к. мы передаем /dev, /sys, /proc в новый рут, максимально
+  								# ограничиваем доступ к этим участкам.
+  @{CHROOT}/dev/{,**}					r,
+  @{CHROOT}/dev/tty					w,
+  @{CHROOT}/dev/tty[0-9]*				rw,
+  @{CHROOT}/dev/pts/[0-9]*				rw,
+  @{CHROOT}/dev/ptmx					w,
+  @{CHROOT}/dev/log					w,
+  @{CHROOT}/dev/null					wk,
+  @{CHROOT}/dev/zero					w,
+  @{CHROOT}/dev/full					w,
+  owner @{CHROOT}/dev/shm/**				wl,
+  @{CHROOT}/sys/{,**}					r,
+  @{CHROOT}/sys/fs/cgroup/portage/{,**}			w,
+  @{CHROOT}/@{PROC}/{,**}				r,
+  
+  # AUDIT PSEUDO ---------------------------------------
+  audit deny @{CHROOT}/dev/@{BLOCK_ALL}			wk,	# Запрещаем работать с блочными устройствами.
+  
+  # EXECUTABLES ----------------------------------------
+  @{CHROOT}/@{shell}					mr,
+  @{CHROOT}/bin/**					ix,
+  @{CHROOT}/etc/**					ix,
+  @{CHROOT}/opt/**					ix,
+  @{CHROOT}/sbin/**					ix,
+  @{CHROOT}/usr/**					ix,
+  @{CHROOT}/var/tmp/portage/*/*/**			ix,
+  
+  # READS/WRITES ---------------------------------------
+  @{CHROOT}/{,*}					rwk,
+  @{CHROOT}/bin/{,**}					rwkl,
+  @{CHROOT}/boot/{,**}					rwkl,
+  @{CHROOT}/etc/{,**}					rwkl,
+  @{CHROOT}/lib{,32,64}/{,**}				rwkl,
+  @{CHROOT}/lib{,32,64}/ld{,32,64}-*.so{,.*}		m,
+  @{CHROOT}/lib{,32,64}/**/ld{,32,64}-*.so{,.*}		m,
+  @{CHROOT}/lib{,32,64}/lib*.so{,.*}			m,
+  @{CHROOT}/lib{,32,64}/**/lib*.so{,.*}			m,
+  @{CHROOT}/opt/{,**}					rwkl,
+  @{CHROOT}/run/{,**}					rwkl,
+  @{CHROOT}/sbin/{,**}					rwkl,
+  @{CHROOT}/usr/{,**}					rwkl,
+  @{CHROOT}/usr/lib{,32,64}/*.so{,.*}			m,
+  @{CHROOT}/usr/lib{,32,64}/**/lib*.so{,.*}		m,
+  @{CHROOT}/usr/lib{,32,64}/locale/**			m,
+  @{CHROOT}/usr/lib{,32,64}/gconv/*.so			m,
+  @{CHROOT}/usr/lib{,32,64}/gconv/gconv-modules*	m,
+  @{CHROOT}/usr/src/@{kernel}/tools/gcc/**.so		m,	# Плагины gcc.
+  @{CHROOT}/var/{,**}					rwkl,
+  
+  # USERS ----------------------------------------------
+  @{CHROOT}@{HOME}/{,**}				rwk,
+  
+  # TEMP -----------------------------------------------
+  @{CHROOT}/tmp/{,**}					rwk,
+  @{CHROOT}/var/tmp/{,**}				rwk,
 }

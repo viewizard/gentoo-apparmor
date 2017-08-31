@@ -294,10 +294,9 @@ chroot - https://wiki.ubuntu.com/DebuggingApparmor#AppArmor_and_chroot_environme
 если не переключаем namespace - все делается в рамках текущего:
 /var/chroot/etc/password r,   #post chroot path looks like access to file prechroot
 /etc/passwd r, 
-Как вариант, использовать флаги flags=(chroot_relative, chroot_attach).
-
-
-
+Как вариант, использовать флаги flags=(chroot_relative,chroot_attach).
+chroot_relative - позволит не переписывать профиль, а использовать все пути относительно измененного рута, использовать этот флаг не очень хорошая идея, т.к. если пользователь выходит за рамки chroot-а, он получает сразу полный набор правил, работающий в основной системе.
+chroot_attach (нужен, если используется  - подключит терминал, для этого во все профили (где нужно) придется добавить переподключенный tty и pts.
 
 
 

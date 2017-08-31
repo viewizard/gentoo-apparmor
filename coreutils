@@ -272,3 +272,18 @@ profile coreutils.dircolors /usr/bin/dircolors {
   # READS/WRITES ---------------------------------------
   /etc/DIR_COLORS					r,
 }
+
+profile coreutils.chroot /bin/chroot {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability sys_chroot,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/chroot						mr,
+  @{CHROOT}/@{shell}					Px -> shell_chroot,
+}
