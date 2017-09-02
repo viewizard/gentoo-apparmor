@@ -50,7 +50,7 @@ profile wine /usr/bin/wine flags=(attach_disconnected) {
   deny /						r,
   
   # DENY INHERIT ---------------------------------------
-  deny unix (send, receive) peer=(label="evelauncher"),		# evelauncher
+  deny unix (send, receive) peer=(label="local.home.evelauncher"),	# local.home.evelauncher
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
@@ -72,12 +72,12 @@ profile wine.ntlm_auth /usr/bin/ntlm_auth flags=(attach_disconnected) {
   /usr/share/samba/codepages/**				r,
   
   # DENY INHERIT ---------------------------------------
-  deny network inet,						# evelauncher
+  deny network inet,						# local.home.evelauncher
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
-  deny /dev/shm/.org.chromium.Chromium.*		rw,	# evelauncher
-  deny @{HOME}/evelauncher/**				r,	# evelauncher
-  deny @{HOME}/.local/share/CCP/**			r,	# evelauncher
-  deny @{HOME_CACHE}/CCP/**				rw,	# evelauncher
+  deny /dev/shm/.org.chromium.Chromium.*		rw,	# local.home.evelauncher
+  deny @{HOME}/evelauncher/**				r,	# local.home.evelauncher
+  deny @{HOME}/.local/share/CCP/**			r,	# local.home.evelauncher
+  deny @{HOME_CACHE}/CCP/**				rw,	# local.home.evelauncher
 }
 
 # FIX ME! В идеале, иметь профиль на каждую программу, см.
@@ -171,7 +171,7 @@ profile wine.wine-preloader /usr/bin/wine-preloader flags=(attach_disconnected) 
   deny /usr/local/lib{,32,64}/				r,
   
   # DENY INHERIT ---------------------------------------
-  deny unix (send, receive) peer=(label="evelauncher"),		# evelauncher
+  deny unix (send, receive) peer=(label="local.home.evelauncher"),	# local.home.evelauncher
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
@@ -235,7 +235,7 @@ profile wine.wineserver /usr/bin/wineserver flags=(attach_disconnected) {
   deny /dev/@{BLOCK_REAL}				r,
   
   # DENY INHERIT ---------------------------------------
-  deny unix (send, receive) peer=(label="evelauncher"),		# evelauncher
+  deny unix (send, receive) peer=(label="local.home.evelauncher"),	# local.home.evelauncher
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 

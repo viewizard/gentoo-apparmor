@@ -110,14 +110,14 @@ profile nvidia-drivers.nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe flags=(att
   /bin/kmod						Px,
   
   # DENY INHERIT ---------------------------------------
-  deny network,							# evelauncher
+  deny network,							# local.home.evelauncher
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
-  deny /dev/shm/.org.chromium.Chromium.*		rw,	# evelauncher
+  deny /dev/shm/.org.chromium.Chromium.*		rw,	# local.home.evelauncher
   deny /dev/shm/org.chromium.*				rw,	# firefox
-  deny @{HOME}/evelauncher/{,**}			rw,	# evelauncher
-  deny @{HOME}/.eve/{,**}				rw,	# evelauncher
-  deny @{HOME}/.local/share/CCP/{,**}			rw,	# evelauncher
-  deny @{HOME_CACHE}/CCP/{,**}				rw,	# evelauncher
+  deny @{HOME}/evelauncher/{,**}			rw,	# local.home.evelauncher
+  deny @{HOME}/.eve/{,**}				rw,	# local.home.evelauncher
+  deny @{HOME}/.local/share/CCP/{,**}			rw,	# local.home.evelauncher
+  deny @{HOME_CACHE}/CCP/{,**}				rw,	# local.home.evelauncher
   deny /tmp/FreshStream*				rw,	# firefox.plugin-container
   /home/viewizard/.mozilla/firefox/*.default/extensions/{,**} r,	# firefox
   deny /media/{,**}					rw,

@@ -8,9 +8,7 @@
 #
 # ------------------------------------------------------------------
 
-#include <tunables/global>
-
-profile evelauncher.sh /home/*/evelauncher/evelauncher.sh {
+profile local.home.evelauncher.sh /home/*/evelauncher/evelauncher.sh {
   #include <abstractions/base>
   include <abstractions/X-connection-strict>
   
@@ -39,7 +37,7 @@ profile evelauncher.sh /home/*/evelauncher/evelauncher.sh {
   }
 }
 
-profile evelauncher /home/*/evelauncher/evelauncher flags=(attach_disconnected) {
+profile local.home.evelauncher /home/*/evelauncher/evelauncher flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -57,7 +55,7 @@ profile evelauncher /home/*/evelauncher/evelauncher flags=(attach_disconnected) 
   
   # UNIX -----------------------------------------------
   unix (send, receive)
-  		peer=(label="evelauncher.updater"),
+  		peer=(label="local.home.evelauncher.updater"),
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -117,13 +115,13 @@ profile evelauncher /home/*/evelauncher/evelauncher flags=(attach_disconnected) 
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile evelauncher.updater /home/*/{.eve,evelauncher}/updater {
+profile local.home.evelauncher.updater /home/*/{.eve,evelauncher}/updater {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
   # UNIX -----------------------------------------------
   unix (send, receive)
-  		peer=(label="evelauncher"),
+  		peer=(label="local.home.evelauncher"),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -144,7 +142,7 @@ profile evelauncher.updater /home/*/{.eve,evelauncher}/updater {
   deny @{HOME}/.local/share/CCP/EVE/QtWebEngine/Default/{,**} rw,	# evelauncher
 }
 
-profile evelauncher.LogLite.sh /home/*/evelauncher/LogLite.sh {
+profile local.home.evelauncher.LogLite.sh /home/*/evelauncher/LogLite.sh {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -165,7 +163,7 @@ profile evelauncher.LogLite.sh /home/*/evelauncher/LogLite.sh {
   }
 }
 
-profile evelauncher.LogLite /home/*/evelauncher/LogLite {
+profile local.home.evelauncher.LogLite /home/*/evelauncher/LogLite {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>

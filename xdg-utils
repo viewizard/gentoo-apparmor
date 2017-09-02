@@ -34,14 +34,14 @@ profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
   # DENY INHERIT ---------------------------------------
   deny unix peer=(label="wps-office"),				# wps-office
   deny unix peer=(label="qpdfview"),				# qpdfview
-  deny unix peer=(label="evelauncher"),				# evelauncher
+  deny unix peer=(label="local.home.evelauncher"),		# local.home.evelauncher
   deny unix peer=(label="teamspeak-client-bin.teamspeak"),	# teamspeak-client-bin.teamspeak
   deny network netlink raw,					# skype
   deny network inet dgram,					# teamspeak-client-bin.teamspeak
   deny network inet6 dgram,					# teamspeak-client-bin.teamspeak
-  deny network inet stream,					# evelauncher
-  deny network inet6 stream,					# evelauncher
-  deny /dev/shm/.org.chromium.Chromium.*		ra,	# evelauncher
+  deny network inet stream,					# local.home.evelauncher
+  deny network inet6 stream,					# local.home.evelauncher
+  deny /dev/shm/.org.chromium.Chromium.*		ra,	# local.home.evelauncher
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   deny /usr/share/qt[0-9]*/**				r,	# teamspeak-client-bin.teamspeak
   deny /usr/share/pyfa/imgs.zip				r,	# pyfa
@@ -51,10 +51,10 @@ profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
   deny @{HOME}/.local/share/poedit/TranslationMemory/*	rw,	# poedit
   deny @{HOME}/.kingsoft/office6/**			rw,	# wps-office
   deny @{HOME}/.ts3client/**				rw,	# teamspeak-client-bin.teamspeak
-  deny @{HOME}/evelauncher/**				r,	# evelauncher
-  deny @{HOME}/.local/share/CCP/**			rw,	# evelauncher
+  deny @{HOME}/evelauncher/**				r,	# local.home.evelauncher
+  deny @{HOME}/.local/share/CCP/**			rw,	# local.home.evelauncher
   deny @{HOME}/.pyfa/Pyfa-[0-9]*.log			w,	# pyfa
-  deny @{HOME_CACHE}/CCP/**				rw,	# evelauncher
+  deny @{HOME_CACHE}/CCP/**				rw,	# local.home.evelauncher
   
   profile grep /bin/grep {
     #include <abstractions/base>
