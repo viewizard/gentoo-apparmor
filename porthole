@@ -40,6 +40,7 @@ profile porthole @{PYTHON_EXEC}/porthole {
   # EXECUTABLES ----------------------------------------
   @{shell}						cx,
   /bin/stty						Px,
+  /bin/bzip2						Cx,
   /usr/bin/sandbox					cx,
   
   # READS/WRITES ---------------------------------------
@@ -69,6 +70,21 @@ profile porthole @{PYTHON_EXEC}/porthole {
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /bin/uname						Px,
+  }
+  
+  profile bzip2 /bin/bzip2 {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/bzip2						mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/portage/{,**}					r,
+    /var/db/pkg/{,**}					r,
   }
   
   profile sandbox /usr/bin/sandbox {

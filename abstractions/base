@@ -15,15 +15,19 @@ ptrace (readby, tracedby),
 ptrace (read) peer=@{profile_name},
 
 # SIGNAL -----------------------------------------------
-#signal (receive) peer=unconfined,				# FIX ME! 18.05.2017 Не должно использоваться.
 signal peer=@{profile_name},
 signal (receive, send) set=("exists"),
 signal (receive) set=(hup, int, kill, term, cont, stop),
 
-# UNIX -----------------------------------------------
-#unix (receive) peer=(label=unconfined),			# FIX ME! 18.05.2017 Не должно использоваться.
+# AUDIT SIGNAL -----------------------------------------
+audit deny signal (receive) peer=unconfined,			# unconfined процессов не должно быть вообще.
+
+# UNIX -------------------------------------------------
 unix peer=(label=@{profile_name}),
 unix (create, getattr, getopt, setopt, shutdown),
+
+# AUDIT UNIX -------------------------------------------
+audit deny unix (receive) peer=(label=unconfined),		# unconfined процессов не должно быть вообще.
 
 # PSEUDO -----------------------------------------------
 /dev/log						w,
