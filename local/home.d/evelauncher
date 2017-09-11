@@ -53,6 +53,9 @@ profile local.home.evelauncher /home/*/evelauncher/evelauncher flags=(attach_dis
   #include <abstractions/ssl-certs>
   #include <abstractions/xdg-open>
   
+  # PTRACE ---------------------------------------------
+  ptrace (trace) peer=@{profile_name},
+  
   # UNIX -----------------------------------------------
   unix (send, receive)
   		peer=(label="local.home.evelauncher.updater"),
@@ -84,6 +87,7 @@ profile local.home.evelauncher /home/*/evelauncher/evelauncher flags=(attach_dis
   # EXECUTABLES ----------------------------------------
   owner @{HOME}/evelauncher/evelauncher			mr,
   /usr/bin/wine						Px,
+  /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]*	Px,
   owner @{HOME}/{.eve,evelauncher}/updater		px,
   owner @{HOME}/evelauncher/QtWebEngineProcess		ix,
   owner @{HOME}/evelauncher/LogLite			px,

@@ -52,6 +52,9 @@ profile eselect /usr/bin/eselect {
   @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
   
   # READS/WRITES ---------------------------------------
+  /							r,
+  /etc/eselect/{,**}					r,
+  /etc/eselect/wine/**					w,
   /etc/env.d/000opengl					rw,	# eselect opengl
   /etc/env.d/02locale					rw,	# eselect locale
   /etc/env.d/03opencl					rw,	# eselect opencl
@@ -118,6 +121,7 @@ profile eselect /usr/bin/eselect {
     /usr/bin/testrb					w,	# eselect ruby
     /usr/share/man/man1/python.1.bz2			w,	# eselect python
     /usr/share/bakefile/presets/wx*			w,	# eselect wxwidgets
+    /usr/bin/function_grep.pl				w,	# eselect wine
   }
   
   profile mv /bin/mv {
@@ -175,6 +179,25 @@ profile eselect /usr/bin/eselect {
     /usr/bin/ri						w,	# eselect ruby
     /usr/bin/rdoc					w,	# eselect ruby
     /usr/bin/testrb					w,	# eselect ruby
+    /usr/bin/function_grep.pl				w,	# eselect wine
+    /usr/bin/msidb					w,	# eselect wine
+    /usr/bin/msiexec					w,	# eselect wine
+    /usr/bin/notepad					w,	# eselect wine
+    /usr/bin/regedit					w,	# eselect wine
+    /usr/bin/regsvr32					w,	# eselect wine
+    /usr/bin/widl					w,	# eselect wine
+    /usr/bin/wmc					w,	# eselect wine
+    /usr/bin/wrc					w,	# eselect wine
+    /usr/bin/wine*					w,	# eselect wine
+    /usr/share/man/man1/msiexec.1			w,	# eselect wine
+    /usr/share/man/man1/notepad.1			w,	# eselect wine
+    /usr/share/man/man1/regedit.1			w,	# eselect wine
+    /usr/share/man/man1/regsvr32.1			w,	# eselect wine
+    /usr/share/man/man1/widl.1				w,	# eselect wine
+    /usr/share/man/man1/wmc.1				w,	# eselect wine
+    /usr/share/man/man1/wrc.1				w,	# eselect wine
+    /usr/share/man/man1/wine*.1				w,	# eselect wine
+    /usr/share/applications/wine.desktop		w,	# eselect wine
   }
   
   profile sed /bin/sed {

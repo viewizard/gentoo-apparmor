@@ -1,0 +1,25 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# EXECUTABLES ------------------------------------------
+/bin/env						Cx,
+
+profile env /bin/env {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/env						mr,
+  /usr/bin/wine						Px,
+  /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]*	Px,
+}

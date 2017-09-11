@@ -34,6 +34,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   #include <abstractions/unix/gvfsd-smb-browse>
   #include <abstractions/unix/gvfsd-smb>
   #include <abstractions/unix/gvfsd-smb-virtual>
+  #include <local/profile/thunar.d/>
   
   # DBUS -----------------------------------------------
   dbus send
@@ -73,7 +74,6 @@ profile thunar /usr/bin/{Thunar,thunar} {
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar					mr,
   @{shell}						Cx,
-  /bin/env						Cx,
   /bin/mount						Cx,
   /bin/umount						Cx,
   /usr/bin/update-desktop-database			Px,
@@ -111,18 +111,6 @@ profile thunar /usr/bin/{Thunar,thunar} {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-  }
-  
-  profile env /bin/env {
-    #include <abstractions/base>
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					rw,
-    /dev/pts/[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /bin/env						mr,
-    /usr/bin/wine					Px,
   }
   
   profile mount /bin/mount {
@@ -243,7 +231,6 @@ profile thunar_root {
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar					mr,
   @{shell}						Cx,
-  /bin/env						Cx,
   /bin/mount						Cx,
   /bin/umount						Cx,
   /usr/bin/update-desktop-database			Px,
@@ -283,22 +270,6 @@ profile thunar_root {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-  }
-  
-  profile env /bin/env {
-    #include <abstractions/base>
-    
-    # CAPABILITIES -------------------------------------
-    capability dac_override,
-    capability dac_read_search,
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					rw,
-    /dev/pts/[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /bin/env						mr,
-    /usr/bin/wine					Px,
   }
   
   profile mount /bin/mount {

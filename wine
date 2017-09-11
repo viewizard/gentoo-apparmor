@@ -10,7 +10,30 @@
 
 #include <tunables/global>
 
-profile wine /usr/bin/wine flags=(attach_disconnected) {
+profile wine.wine-wrapper /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]* {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]*	r,
+  @{shell}						mr,
+  /usr/lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/bin/wine Px,
+  
+  # DENY INHERIT ---------------------------------------
+  deny network inet,						# local.home.evelauncher
+  deny network netlink,						# local.home.evelauncher
+  deny unix,							# local.home.evelauncher
+  deny /dev/shm/.org.chromium.Chromium.*		rw,	# local.home.evelauncher
+  deny @{HOME}/evelauncher/**				r,	# local.home.evelauncher
+  deny @{HOME}/.local/share/CCP/**			rw,	# local.home.evelauncher
+  deny @{HOME_CACHE}/CCP/**				rw,	# local.home.evelauncher
+}
+
+profile wine /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine flags=(attach_disconnected) {
   #include <abstractions/X>
   #include <abstractions/audio>
   #include <abstractions/base>
@@ -38,10 +61,10 @@ profile wine /usr/bin/wine flags=(attach_disconnected) {
   owner @{PROC}/@{pid}/mem				r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/wine						mr,
-  /usr/bin/ntlm_auth					Px,
-  /usr/bin/wine-preloader				Px,
-  /usr/bin/wineserver					Px,
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine mr,
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/ntlm_auth Px,
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine-preloader Px,
+  /usr{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}/bin/wineserver Px,
   
   # READS/WRITES ---------------------------------------
   /usr/share/wine/**					rk,
@@ -54,7 +77,7 @@ profile wine /usr/bin/wine flags=(attach_disconnected) {
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile wine.ntlm_auth /usr/bin/ntlm_auth flags=(attach_disconnected) {
+profile wine.ntlm_auth /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/ntlm_auth flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/fs/deny-private-strict>
   
@@ -66,7 +89,7 @@ profile wine.ntlm_auth /usr/bin/ntlm_auth flags=(attach_disconnected) {
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/ntlm_auth					mr,
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/ntlm_auth mr,
   
   # READS/WRITES ---------------------------------------
   /usr/share/samba/codepages/**				r,
@@ -83,7 +106,7 @@ profile wine.ntlm_auth /usr/bin/ntlm_auth flags=(attach_disconnected) {
 # FIX ME! В идеале, иметь профиль на каждую программу, см.
 # http://wiki.apparmor.net/index.php/AppArmorWine
 # Можно реализовать только в случае использования binfmt_misc.
-profile wine.wine-preloader /usr/bin/wine-preloader flags=(attach_disconnected) {
+profile wine.wine-preloader /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine-preloader flags=(attach_disconnected) {
   #include <abstractions/X>
   #include <abstractions/audio>
   #include <abstractions/base>
@@ -98,6 +121,9 @@ profile wine.wine-preloader /usr/bin/wine-preloader flags=(attach_disconnected) 
   #include <abstractions/dbus/udisks>
   #include <abstractions/video>
   #include <local/profile/wine.d/>
+  
+  # PTRACE ---------------------------------------------
+  ptrace (trace) peer=@{profile_name},
   
   # SIGNAL ---------------------------------------------
   signal (receive) set=(usr1, quit) peer="wine.wineserver",
@@ -130,29 +156,34 @@ profile wine.wine-preloader /usr/bin/wine-preloader flags=(attach_disconnected) 
   								# системы не совпадает.
   /sys/bus/						r,
   /sys/class/						r,
+  /sys/class/hidraw/					r,
+  /sys/class/scsi_device/				r,
   /sys/devices/system/cpu/cpu*/cpufreq/*		r,
   /sys/devices/system/cpu/cpu*/cache/index*/*		r,
   /sys/devices/system/cpu/cpufreq/policy*/{scaling_cur_freq,scaling_max_freq,cpuinfo_max_freq} r,
   /sys/devices/system/node/**				r,
+  /sys/devices/pci[0-9]**/scsi_generic/			r,
   @{PROC}/{cpu,mem}info					r,
   @{PROC}/scsi/scsi					r,
+  @{PROC}/@{pid}/stat{,m}				r,
   @{PROC}/@{pid}/mounts					r,
   @{PROC}/@{pid}/net/dev				r,
+  @{PROC}/@{pid}/task/@{pid}/stat			r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/wine-preloader				Pxmr,	# Все правильно, права на запуск и на mmap.
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine-preloader Pxmr,	# Все правильно, права на запуск и на mmap.
   								# Если будут отдельные профили для программ - изменить.
-  /usr/bin/wine						mr,
-  /usr/bin/ntlm_auth					Px,
-  /usr/bin/wineserver					Px,
-  /usr/bin/xdg-open					Px,
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine mr,
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/ntlm_auth Px,
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wineserver Px,
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/xdg-open Px,
   
   # READS/WRITES ---------------------------------------
   /etc/mime.types					r,
   /etc/fstab						r,
   /etc/printcap						r,
-  /usr/lib{,32,64}/wine/*.so				m,
-  /usr/share/wine/**					rk,
+  /usr/lib{,32,64}/{,wine-{any,d3d9,staging,vanilla}-[0-9]*/}wine/*.so m,
+  /usr/share/{,wine-{any,d3d9,staging,vanilla}-[0-9]*/}wine/** rk,
   /usr/share/icons/**					r,
   
   # USERS ----------------------------------------------
@@ -175,7 +206,7 @@ profile wine.wine-preloader /usr/bin/wine-preloader flags=(attach_disconnected) 
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile wine.wineserver /usr/bin/wineserver flags=(attach_disconnected) {
+profile wine.wineserver /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wineserver flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/X-connection-strict>
@@ -209,7 +240,7 @@ profile wine.wineserver /usr/bin/wineserver flags=(attach_disconnected) {
   owner @{PROC}/@{pid}/mem				r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/wineserver					mr,
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wineserver mr,
   
   # READS/WRITES ---------------------------------------
   /etc/mime.types					r,
@@ -239,7 +270,7 @@ profile wine.wineserver /usr/bin/wineserver flags=(attach_disconnected) {
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile wine.notepad /usr/bin/notepad {
+profile wine.notepad /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/notepad {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -248,14 +279,14 @@ profile wine.notepad /usr/bin/notepad {
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/notepad					r,
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/notepad r,
   @{shell}						mr,
   /bin/basename						Px,
   /bin/dirname						Px,
-  /usr/bin/wine						Px,
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine Px,
 }
 
-profile wine.winecfg /usr/bin/winecfg {
+profile wine.winecfg-wrapper /usr/bin/winecfg-{any,d3d9,staging,vanilla}-[0-9]* {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -264,9 +295,23 @@ profile wine.winecfg /usr/bin/winecfg {
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/winecfg					r,
+  /usr/bin/winecfg-{any,d3d9,staging,vanilla}-[0-9]*	r,
+  @{shell}						mr,
+  /usr/lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/bin/winecfg Px,
+}
+
+profile wine.winecfg /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/winecfg {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/winecfg r,
   @{shell}						mr,
   /bin/basename						Px,
   /bin/dirname						Px,
-  /usr/bin/wine						Px,
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine Px,
 }

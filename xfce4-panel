@@ -142,7 +142,6 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/panel/wrapper-1.0		m,
-  /bin/env						Cx,
   /usr/bin/xflock4					Px,
   /usr/bin/alock					Px,
   /usr/bin/passwd.sh					Px,
@@ -174,18 +173,6 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   # TEMP -----------------------------------------------
   owner /tmp/*_????-??-??_??-??-??.png			rw,	# xfce4-screenshooter
   owner /tmp/gdkpixbuf-xpm-tmp.*			rw,	# xfce4-whiskermenu-plugin
-  
-  profile env /bin/env {
-    #include <abstractions/base>
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					rw,
-    /dev/pts/[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /bin/env						mr,
-    /usr/bin/wine					Px,
-  }
 }
 
 profile xfce4-panel.wrapper-2.0 /usr/lib{,32,64}/xfce4/panel/wrapper-2.0 {
@@ -203,6 +190,7 @@ profile xfce4-panel.wrapper-2.0 /usr/lib{,32,64}/xfce4/panel/wrapper-2.0 {
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/notifications>
   #include <abstractions/binary-helper>
+  #include <local/profile/xfce4-panel.d/>
   
   # DBUS -----------------------------------------------
   dbus (send, receive)
