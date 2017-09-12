@@ -41,10 +41,10 @@ profile codeblocks /usr/bin/codeblocks {
   # EXECUTABLES ----------------------------------------
   /usr/bin/codeblocks					mr,
   @{shell}						Px -> codeblocks_shell,
-  /usr/bin/gcc						Cx -> test,
-  /usr/bin/g++						Cx -> test,
-  /usr/bin/llvm-ar					Cx -> test,
-  /usr/bin/{,@{CHOST}-}clang-*				Cx -> test,
+  /usr/bin/gcc						Cx -> build,
+  /usr/bin/g++						Cx -> build,
+  /usr/bin/llvm-ar					Cx -> build,
+  /usr/bin/{,@{CHOST}-}clang-*				Cx -> build,
   
   # AUDIT EXECUTABLES ----------------------------------
   deny /usr/bin/gfortran				x,	# Не используем fortran.
@@ -64,7 +64,7 @@ profile codeblocks /usr/bin/codeblocks {
   owner /tmp/CODEBLOCKS*.socket				rw,
   owner /tmp/Code::Blocks-*				rwk,
   
-  profile test {
+  profile build {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -99,6 +99,7 @@ profile codeblocks_shell {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
