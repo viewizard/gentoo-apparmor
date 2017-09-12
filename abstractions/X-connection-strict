@@ -8,13 +8,10 @@
 #
 # ------------------------------------------------------------------
 
-# Важно! xorg-server запускаем только на дисплеях 0-9
-# остальные могут использоваться для изоляции через Xephyr
-
 # UNIX -------------------------------------------------
 unix (connect, receive, send)
 	type=stream
-	peer=(addr="@/tmp/.X11-unix/X[0-9]",label="xorg-server.Xorg"),
+	peer=(addr="@/tmp/.X11-unix/X[0-9]*",label="xorg-server.Xorg"),
 unix (send receive)
 	type=stream
 	addr="none"
@@ -22,10 +19,10 @@ unix (send receive)
 unix (send receive)
 	type=stream
 	addr=none
-	peer=(addr="@/tmp/.X11-unix/X[0-9]"),
+	peer=(addr="@/tmp/.X11-unix/X[0-9]*"),
 unix (send receive)
 	type=stream
-	addr="@/tmp/.X11-unix/X[0-9]"
+	addr="@/tmp/.X11-unix/X[0-9]*"
 	peer=(addr="none"),
 unix (send)
 	type=dgram

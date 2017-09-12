@@ -35,7 +35,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   	peer=(addr="none"),
   unix (bind, listen, send, receive, accept)
 	type=stream
-  	addr="@/tmp/.X11-unix/X[0-9]",
+  	addr="@/tmp/.X11-unix/X[0-9]*",
   unix (send, receive)
   	type=stream
   	addr="none"
@@ -86,19 +86,19 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   /usr/share/X11/{,**}					r,
   /run/acpid.socket					rw,
   /run/udev/data/*					r,
-  /var/log/Xorg.[0-9].log{,.old}			rw,
-  /var/lib/xkb/server-[0-9].xkm				rw,
+  /var/log/Xorg.[0-9]*.log{,.old}			rw,
+  /var/lib/xkb/server-[0-9]*.xkm			rw,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.serverauth*				r,
   owner @{HOME}/.local/share/xorg/{,**}			rw,	# Нужно для запуска под пользователем (без suid), хранит там логи сервера.
   
   # TEMP -----------------------------------------------
-  owner /tmp/.tX[0-9]-lock				w,	# 0-9 ONLY!
-  owner /tmp/.X[0-9]-lock				w,	# 0-9 ONLY!
-  owner link subset /tmp/.X[0-9]-lock			-> /tmp/.tX[0-9]-lock,
-  owner /tmp/.X11-unix/X[0-9]				w,	# 0-9 ONLY!
-  /tmp/server-[0-9].xkm					rw,	# 0-9 ONLY!
+  owner /tmp/.tX[0-9]*-lock				w,
+  owner /tmp/.X[0-9]*-lock				w,
+  owner link subset /tmp/.X[0-9]*-lock			-> /tmp/.tX[0-9]*-lock,
+  owner /tmp/.X11-unix/X[0-9]*				w,
+  /tmp/server-[0-9]*.xkm				rw,
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -118,40 +118,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
     
     # READS/WRITES -------------------------------------
     /run/acpid.socket					rw,
-    /var/log/Xorg.[0-9].log				w,
-  }
-}
-
-profile xorg-server.Xephyr /usr/bin/Xephyr {
-  #include <abstractions/base>
-  #include <abstractions/fonts>
-  
-  # PSEUDO ---------------------------------------------
-  /dev/pts/[0-9]*					rw,
-  
-  # EXECUTABLES ----------------------------------------
-  /usr/bin/Xephyr					mr,
-  @{shell}						Cx,
-  
-  # READS/WRITES ---------------------------------------
-  /usr/lib{,32,64}/mesa/swrastg_dri.so			m,
-  /usr/share/X11/xkb/rules/evdev			r,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.Xauthority				r,	# FIX ME! Сдела аналогично X-connection-strict.
-  
-  # TEMP -----------------------------------------------
-  # tmp работать только с дисплеями 10 и выше, 0-9 закреплены за xorg-server
-  
-  profile shell @{shell} {
-    #include <abstractions/base>
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty						rw,
-    
-    # EXECUTABLES --------------------------------------
-    @{shell}						mr,
-    /usr/bin/xkbcomp					Px,
+    /var/log/Xorg.[0-9]*.log				w,
   }
 }
 
