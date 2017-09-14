@@ -88,7 +88,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   /usr/portage/packages/**				rwk,
   /run/							r,
   /var/							rw,
-  /var/**						rwk,	# FIX ME! exclude "/var/log" (allow only subfolder
+  /var/**						rwk,	# IMPROVE! exclude "/var/log" (allow only subfolder
   								# creation and .keep* files) with {*^}/{**^},
   								# when this features will be available
   
@@ -96,7 +96,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   audit deny /usr/local/**				w,	# Исключаем работу с /usr/local/.
   
   # TEMP -----------------------------------------------
-  /tmp/*						rwk,	# FIX ME! Потом ограничить fsuid/uid == 0 или 250.
+  /tmp/*						rwk,	# IMPROVE! Потом ограничить fsuid/uid == 0 или 250.
   
   profile mount /bin/mount {
     #include <abstractions/base>
@@ -314,9 +314,9 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     # TEMP ---------------------------------------------
     /tmp/						r,
     owner /tmp/**					rwk,	# Исключительный случай, разрешаем полный доступ.
-    /tmp/portage.cron.*					w,	# DELEGATION! 00_update_portage.cron.daily	# FIX ME! UID 0,250
+    /tmp/portage.cron.*					w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
     /var/tmp/						r,
-    /var/tmp/**						rwk,	# Исключительный случай, разрешаем полный доступ.	# FIX ME! UID 0, 250
+    /var/tmp/**						rwk,	# Исключительный случай, разрешаем полный доступ.	# IMPROVE! UID 0, 250
     link subset /var/tmp/portage/**			-> /var/tmp/portage/**,
   }
 }
@@ -427,7 +427,7 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf {
   }
 }
 
-# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# IMPROVE! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
 # множественные вложенные профили, выносим в отдельный профиль.
 profile portage_dispatch_conf_shell {
   #include <abstractions/base>
@@ -500,7 +500,7 @@ profile portage.portageq @{PYTHON_EXEC}/portageq {
   /var/cache/edb/{,**}					r,
   
   # TEMP -----------------------------------------------
-  /tmp/portage.cron.*					w,	# DELEGATION! 00_update_portage.cron.daily	# FIX ME! UID 0,250
+  /tmp/portage.cron.*					w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
   owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks
   
   profile shell @{shell} {
@@ -516,7 +516,7 @@ profile portage.portageq @{PYTHON_EXEC}/portageq {
     /bin/uname						Px,
     
     # TEMP ---------------------------------------------
-    /tmp/portage.cron.*					w,	# DELEGATION! 00_update_portage.cron.daily	# FIX ME! UID 0,250
+    /tmp/portage.cron.*					w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
     owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks
   }
 }
@@ -837,7 +837,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     /bin/rm						mr,
     
     # TEMP ---------------------------------------------
-    /var/tmp/portage/webrsync-*/{,**}			rw,	# FIX ME! UID может быть 250 (portage) или 0 (root).
+    /var/tmp/portage/webrsync-*/{,**}			rw,	# IMPROVE! UID может быть 250 (portage) или 0 (root).
   }
   
   profile cut /bin/cut {
@@ -903,7 +903,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     /bin/tar						mr,
     
     # TEMP ---------------------------------------------
-    /var/tmp/portage/webrsync-*/**			w,	# FIX ME! UID может быть 250 (portage) или 0 (root).
+    /var/tmp/portage/webrsync-*/**			w,	# IMPROVE! UID может быть 250 (portage) или 0 (root).
   }
   
   profile chown /bin/chown {
@@ -921,7 +921,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     /bin/chown						mr,
     
     # TEMP ---------------------------------------------
-    /var/tmp/portage/webrsync-*/**			rw,	# FIX ME! UID может быть 250 (portage) или 0 (root).
+    /var/tmp/portage/webrsync-*/**			rw,	# IMPROVE! UID может быть 250 (portage) или 0 (root).
   }
   
   profile xz /usr/bin/xz {
@@ -1136,5 +1136,5 @@ profile portage.ebuild.sh /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh {
   
   # TEMP -----------------------------------------------
   owner /tmp/ebuild-cache.*				rw,	# DELEGATION! eix
-  /tmp/portage.cron.*					w,	# DELEGATION! 00_update_portage.cron.daily	# FIX ME! UID 0,250
+  /tmp/portage.cron.*					w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
 }

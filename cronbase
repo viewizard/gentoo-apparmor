@@ -27,8 +27,6 @@ profile cronbase.run-crons /usr/sbin/run-crons {
   /bin/tr						Px,
   /bin/touch						Cx,
   /bin/readlink						Cx,
-  audit /bin/sed					Cx,	# FIX ME! audit 14.06.2017
-  audit /usr/bin/diff					Cx,	# FIX ME! audit 14.06.2017
   /usr/bin/find						Cx,
   /usr/bin/whoami					Px,
   /usr/bin/logger					Px,
@@ -84,20 +82,6 @@ profile cronbase.run-crons /usr/sbin/run-crons {
     /bin/readlink					mr,
   }
   
-  profile sed /bin/sed {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /bin/sed						mr,
-  }
-  
-  profile diff /usr/bin/diff {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /usr/bin/diff					mr,
-  }
-  
   profile find /usr/bin/find {
     #include <abstractions/base>
     
@@ -113,7 +97,7 @@ profile cronbase.run-crons /usr/sbin/run-crons {
   }
 }
 
-# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# IMPROVE! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
 # множественные вложенные профили, выносим в отдельный профиль.
 profile cronbase_rm {
   #include <abstractions/base>

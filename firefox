@@ -10,7 +10,8 @@
 
 #include <tunables.d/>
 
-# FIX ME! Скрипт запуска для управления доступом к интернету
+# IMPROVE! Скрипт запуска для управления доступом к интернету.
+# Когда будет реализована работа с портами - убрать.
 profile firefox.start_script /usr/bin/firefox {
   #include <abstractions/base>
   #include <abstractions/nameservice>
@@ -217,18 +218,8 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /bin/ps						Px,
-    audit /bin/grep					Px -> firefox_shell_grep,	# FIX ME! audit 28.06.2017
     
     # DENY INHERIT -------------------------------------
     deny /tmp/FreshStream*				rw,	# firefox.plugin-container
   }
-}
-
-# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
-# множественные вложенные профили, выносим в отдельный профиль.
-profile firefox_shell_grep {
-  #include <abstractions/base>
-  
-  # EXECUTABLES ----------------------------------------
-  /bin/grep						mr,
 }

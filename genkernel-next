@@ -14,7 +14,7 @@
 
 #include <tunables.d/>
 
-profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
+profile genkernel-next.genkernel /usr/bin/genkernel {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -130,7 +130,7 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
   # TEMP -----------------------------------------------
   /var/tmp/portage/genkernel/{,**}			rw,
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -149,7 +149,7 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
     /var/tmp/portage/genkernel/{,**}			rw,
   }
   
-  profile egrep /bin/egrep flags=(complain) {
+  profile egrep /bin/egrep {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -158,7 +158,7 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
     /bin/grep						ix,	# Все правильно, для egrep используем с ix.
   }
   
-  profile fgrep /bin/fgrep flags=(complain) {
+  profile fgrep /bin/fgrep {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -172,14 +172,14 @@ profile genkernel-next.genkernel /usr/bin/genkernel flags=(complain) {
     /bin/grep						ix,	# Все правильно, для egrep используем с ix.
   }
   
-  profile mount /bin/mount flags=(complain) {
+  profile mount /bin/mount {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/mount						mr,
   }
   
-  profile umount /bin/umount flags=(complain) {
+  profile umount /bin/umount {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------

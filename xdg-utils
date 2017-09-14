@@ -29,7 +29,6 @@ profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
   /bin/egrep						Cx,
   /usr/bin/exo-open					Px,
   /usr/bin/dbus-send					Px,
-  audit /usr/bin/xprop					Px,	# FIX ME! audit 26.06.2017
   
   # DENY INHERIT ---------------------------------------
   deny unix peer=(label="wps-office"),				# wps-office
@@ -295,7 +294,6 @@ profile xdg_open_root {
   /bin/egrep						Cx,
   /usr/bin/exo-open					Px -> exo_open_root,
   /usr/bin/dbus-send					Px,
-  audit /usr/bin/xprop					Px,	# FIX ME! audit 26.06.2017
   
   profile grep /bin/grep {
     #include <abstractions/base>

@@ -161,7 +161,6 @@ profile gvfs.gvfsd /usr/libexec/gvfsd {
   # READS/WRITES ---------------------------------------
   /usr/share/gvfs/{,**}					r,
   /run/user/[0-9]*/gvfs/				rw,
-  audit /run/user/[0-9]*/gvfs/**			rw,	# FIX ME! audit 18.07.2017 когда используется?
   
   # USERS ----------------------------------------------
   owner /root/.gvfs/					rw,
@@ -246,11 +245,9 @@ profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   
   # READS/WRITES ---------------------------------------
   /run/user/[0-9]*/gvfs/				r,
-  audit /run/user/[0-9]*/gvfs/**			rw,	# FIX ME! 17.06.2017 fusermount > Px (было ix)
   
   # USERS ----------------------------------------------
   owner /root/.gvfs/					r,
-  audit owner /root/.gvfs/**				rw,	# FIX ME! 17.06.2017 fusermount > Px (было ix)
 }
 
 profile gvfs.gvfsd-http /usr/libexec/gvfsd-http {

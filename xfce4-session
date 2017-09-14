@@ -258,7 +258,7 @@ profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
   /usr/bin/xinit					Px,
 }
 
-# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# IMPROVE! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
 # множественные вложенные профили, выносим в отдельный профиль.
 profile xfce4_session_startxfce4_shell {
   #include <abstractions/base>
@@ -270,10 +270,7 @@ profile xfce4_session_startxfce4_shell {
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
   /bin/cat						Cx,
-  audit /bin/grep					Cx,	# FIX ME! audit 22.06.2017
-  audit /bin/sed					Cx,	# FIX ME! audit 22.06.2017
   /usr/bin/which					Px,
-  audit /usr/bin/gawk					Cx,	# FIX ME! audit 22.06.2017
   /usr/bin/xrdb						Px,
   /usr/bin/xfce4-session				Px,
   /usr/bin/xdg-user-dirs-update				Px,
@@ -294,27 +291,6 @@ profile xfce4_session_startxfce4_shell {
     
     # READS/WRITES -------------------------------------
     /etc/xdg/xfce4/Xft.xrdb				r,
-  }
-  
-  profile grep /bin/grep {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /bin/grep						mr,
-  }
-  
-  profile sed /bin/sed {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /bin/sed						mr,
-  }
-  
-  profile gawk /usr/bin/gawk {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /usr/bin/gawk					mr,
   }
 }
 

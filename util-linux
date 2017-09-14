@@ -104,7 +104,7 @@ profile util-linux.agetty /sbin/agetty {
   /var/log/wtmp						wk,
 }
 
-profile util-linux.fsck /sbin/fsck flags=(complain) {
+profile util-linux.fsck /sbin/fsck {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -156,7 +156,7 @@ profile util-linux.logger /usr/bin/logger {
   /usr/bin/logger					mr,
 }
 
-profile util-linux.fdisk /sbin/{,c}fdisk flags=(complain) {
+profile util-linux.fdisk /sbin/{,c}fdisk {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -172,7 +172,7 @@ profile util-linux.fdisk /sbin/{,c}fdisk flags=(complain) {
   /sbin/{,c}fdisk					mr,
 }
 
-profile util-linux.eject /usr/bin/eject flags=(complain) {
+profile util-linux.eject /usr/bin/eject {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------

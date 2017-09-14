@@ -16,13 +16,9 @@ profile netifrc.init.d /etc/init.d/net.* {
   #include <abstractions/openrc>
   
   # CAPABILITIES ---------------------------------------
-  audit capability net_admin,					# FIX ME! audit, /bin/ip ix -> Px.
   capability sys_admin,
   capability sys_module,
   capability mknod,
-  
-  # NETWORK --------------------------------------------
-  audit network netlink raw,					# FIX ME! audit, /bin/ip ix -> Px.
   
   # PSEUDO ---------------------------------------------
   /dev/net/tun						rw,

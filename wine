@@ -103,7 +103,7 @@ profile wine.ntlm_auth /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*
   deny @{HOME_CACHE}/CCP/**				rw,	# local.home.evelauncher
 }
 
-# FIX ME! В идеале, иметь профиль на каждую программу, см.
+# IMPROVE! В идеале, иметь профиль на каждую программу, см.
 # http://wiki.apparmor.net/index.php/AppArmorWine
 # Можно реализовать только в случае использования binfmt_misc.
 profile wine.wine-preloader /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine-preloader flags=(attach_disconnected) {

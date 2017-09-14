@@ -10,7 +10,7 @@
 
 #include <tunables.d/>
 
-profile e2fsprogs.e2fsck /sbin/e2fsck flags=(complain) {
+profile e2fsprogs.e2fsck /sbin/e2fsck {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -33,7 +33,7 @@ profile e2fsprogs.e2fsck /sbin/e2fsck flags=(complain) {
   /run/blkid/blkid.tab					r,
 }
 
-profile e2fsprogs.mke2fs /sbin/mke2fs flags=(complain) {
+profile e2fsprogs.mke2fs /sbin/mke2fs {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -59,7 +59,7 @@ profile e2fsprogs.mke2fs /sbin/mke2fs flags=(complain) {
   owner link subset /run/blkid/blkid.tab*		-> /run/blkid/blkid.tab,
 }
 
-profile e2fsprogs.tune2fs /sbin/tune2fs flags=(complain) {
+profile e2fsprogs.tune2fs /sbin/tune2fs {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -77,7 +77,7 @@ profile e2fsprogs.tune2fs /sbin/tune2fs flags=(complain) {
   /run/blkid/blkid.tab*					r,
 }
 
-profile e2fsprogs.resize2fs /sbin/resize2fs flags=(complain) {
+profile e2fsprogs.resize2fs /sbin/resize2fs {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -91,7 +91,7 @@ profile e2fsprogs.resize2fs /sbin/resize2fs flags=(complain) {
   /sbin/resize2fs					mr,
 }
 
-profile e2fsprogs.dumpe2fs /sbin/dumpe2fs flags=(complain) {
+profile e2fsprogs.dumpe2fs /sbin/dumpe2fs {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
