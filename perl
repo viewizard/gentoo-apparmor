@@ -8,7 +8,7 @@
 #
 # ------------------------------------------------------------------
 
-#include <tunables.d/>
+#include <local/tunables.d/>
 
 profile perl.h2ph /usr/bin/h2ph {
   #include <abstractions/base>

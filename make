@@ -14,7 +14,7 @@
 
 # Профиль ориентирован только на сборку ядра и initramfs.
 
-#include <tunables.d/>
+#include <local/tunables.d/>
 
 profile make /usr/bin/{,g}make flags=(complain) {
   #include <abstractions/base>

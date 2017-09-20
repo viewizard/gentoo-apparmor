@@ -8,7 +8,7 @@
 #
 # ------------------------------------------------------------------
 
-#include <tunables.d/>
+#include <local/tunables.d/>
 
 profile mc /usr/bin/mc {
   #include <abstractions/base>
