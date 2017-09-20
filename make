@@ -62,7 +62,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
   owner /var/log/genkernel.log				w,	# genkernel-next
   
   # USERS ----------------------------------------------
-  owner /root/.rnd					w,
+  owner /root/.rnd					w,	# openssl
   
   # TEMP -----------------------------------------------
   /var/tmp/portage/genkernel/*/busybox-*/{,**}		rw,	# genkernel-next
@@ -154,6 +154,9 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /usr/src/IMA/certs/*.x509				r,
     /usr/src/@{kernel}/{,**}				rw,
     /usr/src/@{kernel}/tools/gcc/**.so			m,
+    
+    # USERS --------------------------------------------
+    owner /root/.rnd					w,	# openssl
     
     # TEMP ---------------------------------------------
     owner /tmp/sh-thd.*					rw,

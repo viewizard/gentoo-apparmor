@@ -41,6 +41,7 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   owner /dev/shm/.org.chromium.Chromium.??????		rw,
   /sys/devices/system/cpu/				r,
   /sys/devices/pci[0-9]*/**/{resource,irq,vendor,device,class,config} r,
+  @{PROC}/						r,
   @{PROC}/sys/kernel/shmmax				r,
   
   # AUDIT PSEUDO ---------------------------------------
@@ -55,7 +56,9 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   /opt/teamspeak3-client/QtWebEngineProcess		ix,
   /opt/teamspeak3-client/package_inst			ix,	# Установка плагинов @{HOME}/.ts3client/plugins/*.so
 #  /opt/teamspeak3-client/error_report			ix,
-#  /opt/teamspeak3-client/update			ix,
+  
+  # AUDIT EXECUTABLES ----------------------------------
+  deny /opt/teamspeak3-client/update			x,	# Не разрешать обновления, используем portage.
   
   # READS/WRITES ---------------------------------------
   /opt/teamspeak3-client/				r,

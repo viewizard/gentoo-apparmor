@@ -38,6 +38,7 @@ profile repoman @{PYTHON_EXEC}/repoman {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
+  @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						cx,
@@ -58,7 +59,8 @@ profile repoman @{PYTHON_EXEC}/repoman {
   /var/cache/edb/dep/usr/local/portage/**		rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/??????					rw,
+  audit owner /tmp/??????				rw,	# FIX ME! audit 15.09.2017 (? теперь /tmp/????????)
+  owner /tmp/????????					rw,
   owner /tmp/tmp*					rwk,
   owner /var/tmp/tmp*/					rw,
   owner /var/tmp/portage/tmp*/{,**}			rw,

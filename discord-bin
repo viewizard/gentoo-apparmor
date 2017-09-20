@@ -75,7 +75,7 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/discord/{,**}			rwk,
-  owner @{HOME}/.config/discord/*/modules/**.{node,so}	m,
+  owner @{HOME}/.config/discord/*/modules/**.{node,so}	m,	# Без этого не работает, учесть в IMA/EVM.
   owner @{HOME}/.pki/nssdb/*				rwk,
   
   # AUDIT USERS ----------------------------------------
