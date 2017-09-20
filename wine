@@ -42,7 +42,7 @@ profile wine /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine
   #include <abstractions/nameservice>
   #include <abstractions/p11-kit>
   #include <abstractions/fs/deny-private-strict>
-  #include <local/profile/wine.d/>
+  #include <local/profile_blocks/wine.d/>
   
   # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
@@ -120,7 +120,7 @@ profile wine.wine-preloader /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/udisks>
   #include <abstractions/video>
-  #include <local/profile/wine.d/>
+  #include <local/profile_blocks/wine.d/>
   
   # PTRACE ---------------------------------------------
   ptrace (trace) peer=@{profile_name},
@@ -211,7 +211,7 @@ profile wine.wineserver /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]
   #include <abstractions/nameservice>
   #include <abstractions/X-connection-strict>
   #include <abstractions/fs/deny-private-strict>
-  #include <local/profile/wine.d/>
+  #include <local/profile_blocks/wine.d/>
   
   # CAPABILITIES ---------------------------------------
   capability sys_ptrace,

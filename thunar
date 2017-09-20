@@ -34,7 +34,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   #include <abstractions/unix/gvfsd-smb-browse>
   #include <abstractions/unix/gvfsd-smb>
   #include <abstractions/unix/gvfsd-smb-virtual>
-  #include <local/profile/thunar.d/>
+  #include <local/profile_blocks/thunar.d/>
   
   # DBUS -----------------------------------------------
   dbus send
@@ -102,7 +102,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   
   profile shell @{shell} {
     #include <abstractions/base>
-    #include <local/profile/thunar-custom-actions.d/>
+    #include <local/profile_blocks/thunar-custom-actions.d/>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -261,7 +261,7 @@ profile thunar_root {
   
   profile shell @{shell} {
     #include <abstractions/base>
-    #include <local/profile/thunar_root-custom-actions.d/>
+    #include <local/profile_blocks/thunar_root-custom-actions.d/>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -274,7 +274,7 @@ profile thunar_root {
   
   profile mount /bin/mount {
     #include <abstractions/base>
-    #include <local/mount/shell_root.d/>
+    #include <local/mounts/shell_root.d/>
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,
@@ -301,7 +301,7 @@ profile thunar_root {
   
   profile umount /bin/umount {
     #include <abstractions/base>
-    #include <local/mount/shell_root.d/>
+    #include <local/mounts/shell_root.d/>
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,

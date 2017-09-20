@@ -783,7 +783,7 @@ profile openrc.local.init.d /etc/init.d/local {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
-  #include <local/profile/openrc.local.d/>
+  #include <local/profile_blocks/openrc.local.d/>
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/local/tasks			w,
@@ -1143,7 +1143,7 @@ profile openrc.root.init.d /etc/init.d/root {
   
   profile mount /bin/mount {
     #include <abstractions/base>
-    #include <local/mount/openrc.root.d/>
+    #include <local/mounts/openrc.root.d/>
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,
@@ -1276,7 +1276,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount {
   
   profile mount /bin/mount {
     #include <abstractions/base>
-    #include <local/mount/openrc.localmount.d/>
+    #include <local/mounts/openrc.localmount.d/>
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,
