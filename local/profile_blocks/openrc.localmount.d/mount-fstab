@@ -1,0 +1,31 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# Только правила монтирования, отмонтирование установлено в профиле.
+
+# MOUNT ----------------------------------------------
+mount fstype=ext4 options=(ro, noatime) /dev/@{BLOCK_ALL} -> /home/,
+mount fstype=ext4 options=(rw, noatime) /dev/@{BLOCK_ALL} -> /home/,
+mount fstype=ext4 options=(ro, nosuid, nodev, noatime, iversion) /dev/@{BLOCK_ALL} -> /usr/src/,
+mount fstype=ext4 options=(rw, nosuid, nodev, noatime, iversion) /dev/@{BLOCK_ALL} -> /usr/src/,
+mount fstype=ext4 options=(ro, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /usr/portage/,
+mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /usr/portage/,
+mount fstype=ext4 options=(ro, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /var/,
+mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /var/,
+mount fstype=ext4 options=(ro, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /var/log/,
+mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /var/log/,
+mount fstype=ext4 options=(ro, nosuid, nodev, noatime, iversion) /dev/@{BLOCK_ALL} -> /var/tmp/portage/,
+mount fstype=ext4 options=(rw, nosuid, nodev, noatime, iversion) /dev/@{BLOCK_ALL} -> /var/tmp/portage/,
+mount fstype=tmpfs options=(ro, nosuid, nodev, noexec, noatime, nodiratime) tmpfs -> /tmp/,
+mount fstype=tmpfs options=(rw, nosuid, nodev, noexec, noatime, nodiratime) tmpfs -> /tmp/,
+mount fstype=ext4 options=(ro, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /mnt/backup/,
+mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /mnt/backup/,
+mount fstype=ext4 options=(ro, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /media/sdb2/,
+mount fstype=ext4 options=(rw, nosuid, nodev, noexec, noatime, iversion) /dev/@{BLOCK_ALL} -> /media/sdb2/,

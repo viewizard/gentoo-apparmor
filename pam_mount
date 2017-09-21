@@ -38,7 +38,7 @@ profile pam_mount.pmvarrun /usr/sbin/pmvarrun {
 
 profile pam_mount_mount {
   #include <abstractions/base>
-  #include <local/mounts/pam_mount.d/>
+  #include <local/profile_blocks/pam_mount.d/>			# Локальные правила монтирования и размонтирования.
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
@@ -54,7 +54,7 @@ profile pam_mount_mount {
 
 profile pam_mount_umount {
   #include <abstractions/base>
-  #include <local/mounts/pam_mount.d/>
+  #include <local/profile_blocks/pam_mount.d/>			# Локальные правила монтирования и размонтирования.
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,

@@ -126,8 +126,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     #include <abstractions/X-connection-strict>
     #include <abstractions/dbus/session-strict>
     #include <abstractions/dbus/gconf>
-    #include <local/mounts/portage.emerge.d/>
-    #include <local/profile_blocks/portage.emerge.d/>
+    #include <local/profile_blocks/portage.emerge.shell.d/>	# В т.ч. локальные правила монтирования и размонтирования /boot.
     
     # CAPABILITIES -------------------------------------
     capability dac_override,
@@ -235,7 +234,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     #include <abstractions/nameservice>
     #include <abstractions/X-connection-strict>
     #include <abstractions/dbus/session-strict>
-    #include <local/profile_blocks/portage.emerge.d/>
+    #include <local/profile_blocks/portage.emerge.sandbox.d/>
     
     # CAPABILITIES -------------------------------------
     capability dac_override,
