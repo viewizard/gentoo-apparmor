@@ -18,6 +18,8 @@ profile transmission /usr/bin/transmission-* {
   #include <abstractions/gtk>
   #include <abstractions/video>
   #include <abstractions/X>
+  #include <abstractions/dconf>
+  #include <abstractions/nameservice>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
@@ -27,10 +29,8 @@ profile transmission /usr/bin/transmission-* {
   #include <abstractions/dbus/session-bind>
   #include <abstractions/unix/gvfsd-network>
   #include <abstractions/unix/gvfsd-trash>
-  #include <abstractions/dconf>
   #include <abstractions/fs/access-by-pattern-internet>
-  #include <abstractions/nameservice>
-  #include <abstractions/binary-helper-strict>
+  #include <abstractions/profile_transitions/users-mime-related>
   
   # DBUS -----------------------------------------------
   dbus send

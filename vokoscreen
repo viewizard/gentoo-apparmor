@@ -22,6 +22,8 @@ profile vokoscreen /usr/bin/vokoscreen {
   #include <abstractions/qt>
   #include <abstractions/video>
   #include <abstractions/X>
+  #include <abstractions/nameservice>
+  #include <abstractions/xdg-open>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
@@ -29,9 +31,7 @@ profile vokoscreen /usr/bin/vokoscreen {
   #include <abstractions/dbus/networkmanager>
   #include <abstractions/fs/access-by-users-preset-rwk>
   #include <abstractions/fs/deny-by-pattern-internet>
-  #include <abstractions/binary-helper-strict>
-  #include <abstractions/nameservice>
-  #include <abstractions/xdg-open>
+  #include <abstractions/profile_transitions/users-mime-related>
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(term) peer="vokoscreen//ffmpeg",

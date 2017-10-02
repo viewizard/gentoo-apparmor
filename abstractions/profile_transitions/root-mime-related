@@ -8,8 +8,8 @@
 #
 # ------------------------------------------------------------------
 
-#include <abstractions/binary-helper-strict-web>
-#include <abstractions/fs/access-by-pattern-xdg-open>
+#include <abstractions/fs/access-by-pattern-xdg-open_sudo>
+#include <abstractions/profile_transitions/root-deny-web>
 
 # sg/newgrp for work with network connection via iptables uid/gid-owner
 # IMPROVE! После возможности блокировки адресов и портов - убрать.
@@ -18,15 +18,15 @@
 
 ############################################################
 # Since all programs will be able to launch this binaries
-# we can't use abstractions/binary-helper here, we need
-# more strict rules with fixed programs list.
+# we can't use abstractions/profile_transitions/root-all
+# here, we need more strict rules with fixed programs list.
 ############################################################
 
-/usr/bin/ghex						Px,
-/usr/bin/juffed						Px,
-/usr/bin/mousepad					Px,
-/usr/bin/engrampa					Px,	# MATE
-/usr/bin/thunar						Px,	# XFCE4
+/usr/bin/ghex						Px -> ghex_root,
+/usr/bin/juffed						Px -> juffed_root,
+/usr/bin/mousepad					Px -> mousepad_root,
+/usr/bin/engrampa					Px -> engrampa_root,	# MATE
+/usr/bin/thunar						Px -> thunar_root,	# XFCE4
 
 /usr/bin/transmission-*					Px,
 /usr/lib{,32,64}/libreoffice/program/soffice		Px,

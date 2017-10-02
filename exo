@@ -17,12 +17,12 @@ profile exo.exo-open /usr/bin/exo-open flags=(attach_disconnected) {
   #include <abstractions/video>
   #include <abstractions/X>
   #include <abstractions/gtk>
+  #include <abstractions/nameservice>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
-  #include <abstractions/binary-helper-strict>
-  #include <abstractions/nameservice>
+  #include <abstractions/profile_transitions/users-mime-related>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -52,7 +52,7 @@ profile exo.exo-helper /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 {
   #include <abstractions/dbus/gvfs>
   #include <abstractions/gtk>
   #include <abstractions/fonts>
-  #include <abstractions/binary-helper-strict>
+  #include <abstractions/profile_transitions/users-mime-related>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -81,7 +81,7 @@ profile exo.exo-helper /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 {
 profile exo.exo-compose-mail /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 {
   #include <abstractions/base>
   #include <abstractions/perl>
-  #include <abstractions/binary-helper-strict>
+  #include <abstractions/profile_transitions/users-mime-related>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -147,13 +147,13 @@ profile exo_open_root flags=(attach_disconnected) {
   #include <abstractions/video>
   #include <abstractions/X>
   #include <abstractions/gtk>
+  #include <abstractions/nameservice>
+  #include <abstractions/xdg-open_root>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
-  #include <abstractions/binary-helper-strict_root>
-  #include <abstractions/nameservice>
-  #include <abstractions/xdg-open_root>
+  #include <abstractions/profile_transitions/root-mime-related>
   
   # CAPABILITIES ---------------------------------------
   capability fowner,
@@ -182,7 +182,7 @@ profile exo_helper_root {
   #include <abstractions/X>
   #include <abstractions/gtk>
   #include <abstractions/fonts>
-  #include <abstractions/binary-helper-strict_root>
+  #include <abstractions/profile_transitions/root-mime-related>
   
   # PSEUDO ---------------------------------------------
   owner @{PROC}/@{pid}/fd/				r,
@@ -210,7 +210,7 @@ profile exo_helper_root {
 profile exo_compose_mail_root {
   #include <abstractions/base>
   #include <abstractions/perl>
-  #include <abstractions/binary-helper-strict_root>
+  #include <abstractions/profile_transitions/root-mime-related>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

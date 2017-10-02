@@ -22,7 +22,6 @@ profile ghex /usr/bin/ghex {
   #include <abstractions/video>
   #include <abstractions/X>
   #include <abstractions/dconf>
-  #include <abstractions/binary-helper-strict-web>
   #include <abstractions/cups-client>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/session-strict>
@@ -33,6 +32,7 @@ profile ghex /usr/bin/ghex {
   #include <abstractions/fs/access-by-pattern-xdg-open>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/fs/deny-private-strict>
+  #include <abstractions/profile_transitions/users-strict-web>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -51,7 +51,6 @@ profile ghex_root {
   #include <abstractions/video>
   #include <abstractions/X_sudo>
   #include <abstractions/dconf>
-  #include <abstractions/binary-helper-strict-web_root>
   #include <abstractions/cups-client>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/session-strict>
@@ -63,6 +62,7 @@ profile ghex_root {
   #include <abstractions/fs/access-by-pattern-xdg-open_sudo>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/fs/deny-private-strict>
+  #include <abstractions/profile_transitions/root-deny-web>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

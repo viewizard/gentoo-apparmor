@@ -14,6 +14,11 @@ profile thunar /usr/bin/{Thunar,thunar} {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
+  #include <abstractions/audio>
+  #include <abstractions/gtk>
+  #include <abstractions/video>
+  #include <abstractions/X>
+  #include <abstractions/nameservice>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
@@ -22,18 +27,13 @@ profile thunar /usr/bin/{Thunar,thunar} {
   #include <abstractions/dbus/thumbnails>
   #include <abstractions/dbus/notifications>
   #include <abstractions/dbus/session-bind>
-  #include <abstractions/audio>
-  #include <abstractions/gtk>
-  #include <abstractions/video>
-  #include <abstractions/X>
-  #include <abstractions/nameservice>
-  #include <abstractions/fs/access-by-pattern-filemanager>
-  #include <abstractions/binary-helper>
   #include <abstractions/unix/gvfsd-trash>
   #include <abstractions/unix/gvfsd-network>
   #include <abstractions/unix/gvfsd-smb-browse>
   #include <abstractions/unix/gvfsd-smb>
   #include <abstractions/unix/gvfsd-smb-virtual>
+  #include <abstractions/fs/access-by-pattern-filemanager>
+  #include <abstractions/profile_transitions/users-all>
   #include <local/profile_blocks/thunar.d/>
   
   # DBUS -----------------------------------------------
@@ -165,6 +165,11 @@ profile thunar_root {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
+  #include <abstractions/audio>
+  #include <abstractions/gtk>
+  #include <abstractions/video>
+  #include <abstractions/X_sudo>
+  #include <abstractions/nameservice>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
@@ -173,12 +178,6 @@ profile thunar_root {
   #include <abstractions/dbus/thumbnails>
   #include <abstractions/dbus/notifications>
   #include <abstractions/dbus/session-bind>
-  #include <abstractions/audio>
-  #include <abstractions/gtk>
-  #include <abstractions/video>
-  #include <abstractions/X_sudo>
-  #include <abstractions/nameservice>
-  #include <abstractions/binary-helper_root>
   #include <abstractions/fs/access-by-pattern-filemanager>
   #include <abstractions/fs/access-by-pattern-systemusers>
   #include <abstractions/unix/gvfsd-trash>
@@ -186,6 +185,7 @@ profile thunar_root {
   #include <abstractions/unix/gvfsd-smb-browse>
   #include <abstractions/unix/gvfsd-smb>
   #include <abstractions/unix/gvfsd-smb-virtual>
+  #include <abstractions/profile_transitions/root-all>
   
   # CAPABILITIES ---------------------------------------
   capability sys_resource,
