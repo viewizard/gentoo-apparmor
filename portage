@@ -59,19 +59,19 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   @{shell}						cx,
   /bin/stty						Px,
   /bin/mount						Cx,
-  /bin/tar						ix,	# FS ACCESS!
+  /bin/tar						Cx,
   /sbin/ldconfig					Px,
   /usr/bin/sandbox					cx,
-  /usr/bin/find						ix,	# FS ACCESS!
+  /usr/bin/find						Cx,
   /usr/bin/id						Px,
-  /usr/bin/install-info					ix,	# FS ACCESS!
-  /usr/bin/scanelf					ix,	# FS ACCESS!
+  /usr/bin/install-info					Cx,
+  /usr/bin/scanelf					Cx,
   /usr/bin/wget						Px,
-  /usr/bin/desktop-file-validate			ix,	# FS ACCESS!
-  /usr/bin/rsync					ix,	# FS ACCESS!
+  /usr/bin/desktop-file-validate			Cx,
+  /usr/bin/rsync					Cx,
   /usr/bin/gcc-config					Px,
-  /usr/bin/free						ix,	# FS ACCESS!
-  /usr/@{CHOST}/binutils-bin/*/ld			ix,	# FS ACCESS!
+  /usr/bin/free						Cx,
+  /usr/@{CHOST}/binutils-bin/*/ld			Cx,
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -117,6 +117,105 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     
     # READS/WRITES -------------------------------------
     /run/mount/utab					rw,
+  }
+  
+  profile tar /bin/tar flags=(complain) {			# FIX ME! complain 06.10.2017
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/tar						mr,
+  }
+  
+  profile find /usr/bin/find flags=(complain) {			# FIX ME! complain 06.10.2017
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_read_search,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/find					mr,
+    
+    # READS/WRITES -------------------------------------
+    /							r,
+    /etc/{,**}						r,
+    /etc/portage/{,**}					r,
+  }
+  
+  profile install-info /usr/bin/install-info flags=(complain) {	# FIX ME! complain 06.10.2017
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/install-info				mr,
+  }
+  
+  profile scanelf /usr/bin/scanelf flags=(complain) {		# FIX ME! complain 06.10.2017
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/scanelf					mr,
+  }
+  
+  profile desktop-file-validate /usr/bin/desktop-file-validate flags=(complain) {	# FIX ME! complain 06.10.2017
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/desktop-file-validate			mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/tmp/portage/*/*/**.desktop			r,
+  }
+  
+  profile rsync /usr/bin/rsync flags=(complain) {		# FIX ME! complain 06.10.2017
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/rsync					mr,
+  }
+  
+  profile free /usr/bin/free flags=(complain) {			# FIX ME! complain 06.10.2017
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/free					mr,
+  }
+  
+  profile ld /usr/@{CHOST}/binutils-bin/*/ld flags=(complain) {	# FIX ME! complain 06.10.2017
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/@{CHOST}/binutils-bin/*/ld			mr,
   }
   
   profile shell @{shell} {

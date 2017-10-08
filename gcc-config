@@ -34,7 +34,13 @@ profile gcc-config /usr/bin/gcc-config {
   /bin/sed						Cx,
   /bin/touch						Cx,
   /bin/sort						Cx,
+  /bin/grep						Cx,
+  /bin/tail						Cx,
+  /bin/mkdir						Cx,
   /bin/egrep						Cx,
+  /sbin/consoletype					Px,
+  /bin/stty						Px,
+  /usr/bin/tput						Px,
   /usr/bin/find						Cx,
   /usr/bin/cmp						Cx,
   /usr/bin/gawk						Cx,
@@ -185,6 +191,42 @@ profile gcc-config /usr/bin/gcc-config {
     
     # EXECUTABLES --------------------------------------
     /bin/sort						mr,
+  }
+  
+  profile grep /bin/grep flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/env.d/gcc/*					r,
+  }
+  
+  profile tail /bin/tail flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/tail						mr,
+  }
+  
+  profile mkdir /bin/mkdir flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/mkdir						mr,
   }
   
   profile egrep /bin/egrep {
