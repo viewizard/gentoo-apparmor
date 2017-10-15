@@ -192,6 +192,7 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/fd/					r,
+  @{PROC}/@{pid}/mounts					r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -204,6 +205,7 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
   /{bin,sbin,opt,lib{,32,64}}/**			r,
   /usr/{bin,sbin,lib{,32,64,exec},@{CHOST}}/{,**}	r,
   /usr/local/lib{,32,64}/{,**}				r,
+  /usr/local/{,s}bin/{,**}				r,
   /etc/profile.env					r,
   /etc/ld.so.conf					r,
   /etc/ld.so.conf.d/{,*}				r,
@@ -243,6 +245,7 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
     # CAPABILITIES -------------------------------------
     capability sys_admin,
     capability dac_override,
+    capability dac_read_search,
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -256,5 +259,6 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
     /{bin,sbin,opt,lib{,32,64}}/**			r,
     /usr/{bin,sbin,lib{,32,64,exec},@{CHOST}}/**	r,
     /usr/local/lib{,32,64}/**				r,
+    /usr/local/{,s}bin/**				r,
   }
 }

@@ -89,7 +89,7 @@ profile genkernel-next.genkernel /usr/bin/genkernel {
   /usr/bin/lddtree					ixr,	# FIX ME! Вынести в отдельный профиль. r - т.к. скрипт.
   /usr/bin/scanelf					ix,	# FS ACCESS!
   /usr/bin/uniq						ix,	# FIX ME! Вынести в отдельный профиль.
-  /usr/bin/q						ix,	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/q						Px,
   /usr/bin/id						Px,
   /usr/bin/xargs					ix,	# FS ACCESS!
   /usr/bin/xz						ix,	# FS ACCESS!
@@ -111,9 +111,6 @@ profile genkernel-next.genkernel /usr/bin/genkernel {
   /etc/ld.so.conf					r,	# /usr/bin/lddtree
   /etc/ld.so.conf.d/{,*}				r,	# /usr/bin/lddtree
   /etc/apparmor.d/{,**}					r,
-  /etc/portage/{,**}					r,
-  /usr/portage/profiles/{,**}				r,
-  /usr/share/portage/{,**}				r,
   /usr/src/IMA/ima_policy				r,
   /usr/src/IMA/certs/x509_ima.der			r,
   /usr/src/IMA/evm-hmac/evm-{kmk,key}			r,
@@ -123,7 +120,6 @@ profile genkernel-next.genkernel /usr/bin/genkernel {
   /usr/share/misc/magic.mgc				r,
   /usr/portage/distfiles/busybox-*.tar.bz2		r,
   /boot/initramfs-genkernel-*-@{kernel_ver}		w,
-  /var/db/pkg/{,**}					r,
   /var/cache/genkernel/{,**}				rw,
   /var/log/genkernel.log				rw,
   

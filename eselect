@@ -280,6 +280,11 @@ profile eselect /usr/bin/eselect {
   
   profile chgrp /bin/chgrp {
     #include <abstractions/base>
+    #include <abstractions/nameservice>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/chgrp						mr,

@@ -131,6 +131,13 @@ extended ownership tests (not currently supported)
  owner=(fred 1001)
 /etc/apparmor.d/abstractions/authentication, например, хорошо бы сделать с owner=0
 
+
+- когда появится возможность (новая внутренняя переменная) для PID процесса,
+поменять все @{pid}, где нужен доступ ко всем процессам на @{pids}
+Define current process's PID in apparmor profile
+https://bugs.launchpad.net/apparmor/+bug/1546825
+
+
 - когда появится возможность ставить метки на файлах (через xattr), совместить эту возможность с IMA (лог файлы надо помечать, и не отслеживать на чтение-запись).
 
 - MLS (будет работать только с RBAC, т.к. нужен мепинг пользователей через pam_apparmor)

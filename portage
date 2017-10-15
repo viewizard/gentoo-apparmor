@@ -72,6 +72,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   /usr/bin/gcc-config					Px,
   /usr/bin/free						Cx,
   /usr/@{CHOST}/binutils-bin/*/ld			Cx,
+  /etc/portage/repo.postsync.d/*			Px,	# Выполняем скрипты, если у них есть профили.
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -158,6 +159,10 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/install-info				mr,
+    @{shell}						Px -> portage_emerge_install_info_shell,
+    
+    /usr/share/info/{,**}				r,
+    /usr/share/info/dir					w,
   }
   
   profile scanelf /usr/bin/scanelf flags=(complain) {		# FIX ME! complain 06.10.2017
@@ -419,6 +424,31 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   }
 }
 
+# IMPROVE! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile portage_emerge_install_info_shell {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
+  /bin/bzip2						Cx,
+  
+  profile bzip2 /bin/bzip2 {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/bzip2						mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/share/info/**.bz2				r,
+  }
+}
+
 profile portage.env-update @{PYTHON_EXEC}/env-update {
   #include <abstractions/base>
   #include <abstractions/python>
@@ -644,7 +674,7 @@ profile portage.etc-update /usr/sbin/etc-update {
   /bin/sort						Cx,
   /bin/head						Cx,
   /bin/wc						Cx,
-  audit /bin/mv						Cx,	# FIX ME! audit 15.07.2017
+  /bin/mv						Cx,
   audit /bin/readlink					Cx,	# FIX ME! audit 15.07.2017
   /usr/bin/diff						Cx,
   /usr/bin/find						Cx,
@@ -818,6 +848,9 @@ profile portage.etc-update /usr/sbin/etc-update {
     
     # EXECUTABLES --------------------------------------
     /bin/mv						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/**						rw,
   }
   
   profile readlink /bin/readlink {
@@ -853,6 +886,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     
     # CAPABILITIES -------------------------------------
     capability dac_override,
+    capability dac_read_search,
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -904,7 +938,6 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
   /usr/bin/renice					Px,
   /usr/bin/wget						Px,
   @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
-  /etc/portage/bin/post_sync				Cx,
   
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.*					rw,
@@ -1098,23 +1131,6 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/emerge				Px,
     @{PYTHON_EXEC}/portageq				Px,
-  }
-  
-  profile post_sync /etc/portage/bin/post_sync {
-    #include <abstractions/base>
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty						rw,
-    /dev/tty[0-9]*					rw,
-    /dev/pts/[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /etc/portage/bin/post_sync				r,
-    @{shell}						mr,
-    /etc/portage/postsync.d/*				Px,	# Выполняем файлы, если у них есть профили.
-    
-    # READS/WRITES -------------------------------------
-    /etc/portage/postsync.d/				r,
   }
 }
 

@@ -17,4 +17,6 @@
 @{kernel}=linux-@{kernel_ver}
 
 # Until kernel vars are implemented
-@{pid}=[1-9]{[0-9]{[0-9]{[0-9]{[0-9]{[0-9],},},},},}
+# On 64-bit systems, kernel.pid_max can be set to any value up to 2^22
+# (PID_MAX_LIMIT, 4194304).
+@{pid}={[1-9],[1-9][0-9],[1-9][0-9][0-9],[1-9][0-9][0-9][0-9],[1-9][0-9][0-9][0-9][0-9],[1-9][0-9][0-9][0-9][0-9][0-9],[1-4][0-9][0-9][0-9][0-9][0-9][0-9]}

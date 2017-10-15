@@ -51,12 +51,20 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
   profile grep /bin/grep {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
   }
   
   profile sort /bin/sort {
     #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/sort						mr,
@@ -65,12 +73,20 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
   profile cat /bin/cat {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/cat						mr,
   }
   
   profile rm /bin/rm {
     #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/rm						mr,
@@ -80,6 +96,8 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     @{PROC}/@{pid}/fd/					r,
     
     # EXECUTABLES --------------------------------------
@@ -92,6 +110,10 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
   
   profile gawk /usr/bin/gawk {
     #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/gawk					mr,
@@ -106,6 +128,11 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
     # CAPABILITIES -------------------------------------
     capability sys_admin,
     capability dac_override,
+    capability dac_read_search,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/scanelf					mr,
@@ -123,6 +150,10 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
   profile find /usr/bin/find {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /usr/bin/find					mr,
     
@@ -133,6 +164,10 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
   
   profile realpath /usr/bin/realpath {
     #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/realpath					mr,

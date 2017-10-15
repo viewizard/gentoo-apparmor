@@ -155,49 +155,13 @@ abstractions/qt - включает в себя abstractions/gtk, т.к. нужн
 Набор профилей (полноценные профили, кроме глобального инклуда), для всех локальных программ и скриптов.
 Обход и загрузка профилей выполняется через профиль /etc/apparmor.d/2_local.
 Расположение:
-/etc/apparmor.d/local/bin.d
-/etc/apparmor.d/local/cron.d
-/etc/apparmor.d/local/sbin.d
+/etc/apparmor.d/local/hats/ - блоки hats, используются при переключении пользователей через PAM
+/etc/apparmor.d/local/profile_blocks/ - локальные элементы профилей
+/etc/apparmor.d/local/profiles/ - локальные профили (/usr/local/..., и /home/$USER/...)
+/etc/apparmor.d/local/tunables.d/ - изменяемые константы
 
 
-5) Глобальные настройки (переменные, окружение и т.п.).
-Расположение:  /etc/apparmor.d/tunables
-@{CHOST}
-@{BLOCK_VIRT}
-@{BLOCK_MEDIA}
-@{BLOCK_REAL}
-@{BLOCK_ALL}
-@{PROC}
-@{HOME}
-@{HOME_USERS}
-@{HOMEDIRS}
-@{HOME_CACHE}
-@{shell}
-@{kernel_ver}
-@{kernel}
-@{pid}
-@{PYTHON}
-@{PYTHON_PACKAGES}
-@{PYTHON_EXEC}
-@{PYTHON2}
-@{PYTHON2_PACKAGES}
-@{PYTHON2_EXEC}
-@{PYTHON3}
-@{PYTHON3_PACKAGES}
-@{PYTHON3_EXEC}
-@{PYTHON_EXEC_WRAPPER}
-@{XDG_DESKTOP_DIR}="Desktop" "Рабочий стол"
-@{XDG_DOWNLOAD_DIR}="Downloads" "Загрузки"
-@{XDG_TEMPLATES_DIR}="Templates" "Шаблоны"
-@{XDG_PUBLICSHARE_DIR}="Public" "Общедоступные"
-@{XDG_DOCUMENTS_DIR}="Documents" "Документы"
-@{XDG_MUSIC_DIR}="Music" "Музыка"
-@{XDG_PICTURES_DIR}="Pictures" "Изображения"
-@{XDG_VIDEOS_DIR}="Videos" "Видео"
-
-
-
-6) Старые профили, черновики - профили, требующие доработки перед использованием.
+5) Старые профили, черновики - профили, требующие доработки перед использованием.
 Расположение:  /etc/apparmor.d/unsupported
 Если в процессе серьезного изменения модуля AppArmor, профиль не подвергался изменению и/или проверки данных изменений (был отключен, т.к. приложение не было установлено), его следует перенести в unsupported, и не оставлять в выключенном виде.
 

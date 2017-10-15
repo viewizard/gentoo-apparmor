@@ -24,5 +24,26 @@ profile portage-utils.q /usr/bin/q {
   /etc/portage/{,**}					r,
   /usr/portage/{,**}					r,
   /usr/share/portage/{,**}				r,
+  /var/cache/edb/{,**}					r,
   /var/db/pkg/{,**}					r,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/portage.cron.*				w,	# DELEGATION! 00_update_portage.cron.daily
+}
+
+profile portage-utils.q-reinit /etc/portage/repo.postsync.d/q-reinit flags=(complain) {	# FIX ME! complain 14.10.2017
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /etc/portage/repo.postsync.d/q-reinit			r,
+  @{shell}						mr,
+  /usr/bin/q						Px,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/portage.cron.*				w,	# DELEGATION! 00_update_portage.cron.daily
 }

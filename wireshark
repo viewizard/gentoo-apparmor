@@ -51,6 +51,8 @@ profile wireshark /usr/bin/wireshark{,-gtk} {
   # EXECUTABLES ----------------------------------------
   /usr/bin/wireshark{,-gtk}				mr,
   /usr/bin/dumpcap					Px,
+  /usr/lib{,32,64}/wireshark/extcap/udpdump		Px,
+  /usr/lib{,32,64}/wireshark/extcap/randpktdump		Px,
   
   # READS/WRITES ---------------------------------------
   /etc/libnl/classid					r,
@@ -72,6 +74,7 @@ profile wireshark.dumpcap /usr/bin/dumpcap {
   # CAPABILITIES ---------------------------------------
   capability net_admin,
   capability net_raw,
+  capability dac_read_search,
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -106,4 +109,28 @@ profile wireshark.dumpcap /usr/bin/dumpcap {
   
   # TEMP -----------------------------------------------
   owner /tmp/wireshark_*_*_*.pcapng			rw,
+}
+
+profile wireshark.udpdump /usr/lib{,32,64}/wireshark/extcap/udpdump {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/wireshark/extcap/udpdump		mr,
+  
+}
+
+profile wireshark.randpktdump /usr/lib{,32,64}/wireshark/extcap/randpktdump {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/wireshark/extcap/randpktdump		mr,
+  
 }
