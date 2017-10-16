@@ -28,6 +28,8 @@ profile netifrc.init.d /etc/init.d/net.* {
   /sys/devices/pci[0-9]*/**/net/eth[0-9]*/{,**}		r,
   /sys/devices/pci[0-9]*/**/usb[0-9]*/**/net/usb[0-9]*/ifindex r,
   /sys/fs/cgroup/openrc/net.*/tasks			w,
+  /sys/fs/cgroup/unified/net.*/cgroup.procs		w,
+  /sys/fs/cgroup/unified/net.*/cgroup.events		r,
   @{PROC}/@{pid}/mounts					r,
   @{PROC}/@{pid}/net/dev				r,
   @{PROC}/sys/net/ipv4/route/flush			w,
@@ -43,6 +45,7 @@ profile netifrc.init.d /etc/init.d/net.* {
   /bin/tr						Px,
   /bin/readlink						Cx,
   /bin/mkdir						Cx,
+  /bin/rmdir						Cx,
   /bin/rc-status					Px,
   /sbin/dhcpcd						Px,
   /sbin/brctl						Px,
@@ -85,6 +88,12 @@ profile netifrc.init.d /etc/init.d/net.* {
   profile grep /bin/grep {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/net.*/cgroup.procs		r,
+    
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
   }
@@ -120,10 +129,26 @@ profile netifrc.init.d /etc/init.d/net.* {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/net.*/			w,
+    /sys/fs/cgroup/{openrc,unified}/net.*/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/net.*/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
   
   profile gawk /usr/bin/gawk {

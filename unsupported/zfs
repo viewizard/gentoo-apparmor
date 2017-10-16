@@ -105,6 +105,8 @@ profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/zfs-zed/tasks			w,
+  /sys/fs/cgroup/unified/zfs-zed/cgroup.procs		w,
+  /sys/fs/cgroup/unified/zfs-zed/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -112,6 +114,8 @@ profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed {
   /sbin/zed						Px,
   /bin/rm						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   /bin/kmod						Px,
   
   # READS/WRITES ---------------------------------------
@@ -144,10 +148,39 @@ profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/zfs-zed/			w,
+    /sys/fs/cgroup/{openrc,unified}/zfs-zed/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/zfs-zed/cgroup.procs		r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/zfs-zed/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }
 
@@ -158,14 +191,17 @@ profile zfs.zfs-import.init.d /etc/init.d/zfs-import {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/zfs-import/tasks		w,
+  /sys/fs/cgroup/unified/zfs-import/cgroup.procs	w,
+  /sys/fs/cgroup/unified/zfs-import/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/grep						ix,	# FS ACCESS!
   /bin/uname						Px,
   /bin/udevadm						Px,
   /bin/kmod						Px,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   /sbin/zpool						Px,
   
   # READS/WRITES ---------------------------------------
@@ -190,9 +226,38 @@ profile zfs.zfs-import.init.d /etc/init.d/zfs-import {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/zfs-import/			w,
+    /sys/fs/cgroup/{openrc,unified}/zfs-import/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/zfs-import/cgroup.procs	r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/zfs-import/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }

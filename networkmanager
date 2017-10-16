@@ -228,10 +228,14 @@ profile networkmanager.NetworkManager.init.d /etc/init.d/NetworkManager {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/NetworkManager/tasks		w,
+  /sys/fs/cgroup/unified/NetworkManager/cgroup.procs	w,
+  /sys/fs/cgroup/unified/NetworkManager/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   /usr/bin/nm-online					Px,
   /usr/sbin/NetworkManager				Px,
   /etc/init.d/dnsmasq					Px,
@@ -260,9 +264,38 @@ profile networkmanager.NetworkManager.init.d /etc/init.d/NetworkManager {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/NetworkManager/		w,
+    /sys/fs/cgroup/{openrc,unified}/NetworkManager/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/NetworkManager/cgroup.procs	r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/NetworkManager/		w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }

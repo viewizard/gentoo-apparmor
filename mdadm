@@ -88,11 +88,15 @@ profile mdadm.init.d /etc/init.d/mdadm {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/mdadm/tasks			w,
+  /sys/fs/cgroup/unified/mdadm/cgroup.procs		w,
+  /sys/fs/cgroup/unified/mdadm/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/rm						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   /sbin/mdadm						Px,
   
   # READS/WRITES ---------------------------------------
@@ -133,10 +137,39 @@ profile mdadm.init.d /etc/init.d/mdadm {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/mdadm/			w,
+    /sys/fs/cgroup/{openrc,unified}/mdadm/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/mdadm/cgroup.procs		r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/mdadm/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }
 

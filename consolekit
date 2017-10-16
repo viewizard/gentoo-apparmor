@@ -393,11 +393,15 @@ profile consolekit.init.d /etc/init.d/consolekit {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/consolekit/tasks		w,
+  /sys/fs/cgroup/unified/consolekit/cgroup.procs	w,
+  /sys/fs/cgroup/unified/consolekit/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/console-kit-daemon				Px,
   @{shell}						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/consolekit				r,
@@ -420,9 +424,38 @@ profile consolekit.init.d /etc/init.d/consolekit {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/consolekit/			w,
+    /sys/fs/cgroup/{openrc,unified}/consolekit/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/consolekit/cgroup.procs	r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/consolekit/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }

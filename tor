@@ -64,11 +64,15 @@ profile tor.init.d /etc/init.d/tor {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/tor/tasks			w,
+  /sys/fs/cgroup/unified/tor/cgroup.procs		w,
+  /sys/fs/cgroup/unified/tor/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/tor						Px,
   @{shell}						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/tor				r,
@@ -91,9 +95,38 @@ profile tor.init.d /etc/init.d/tor {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/tor/				w,
+    /sys/fs/cgroup/{openrc,unified}/tor/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/tor/cgroup.procs		r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/tor/				w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }

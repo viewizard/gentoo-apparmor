@@ -66,12 +66,16 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/dnscrypt-proxy/tasks		w,
+  /sys/fs/cgroup/unified/dnscrypt-proxy/cgroup.procs	w,
+  /sys/fs/cgroup/unified/dnscrypt-proxy/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/dnscrypt-proxy				Px,
   @{shell}						Cx,
   /bin/chown						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/dnscrypt-proxy			r,
@@ -112,12 +116,41 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/dnscrypt-proxy/		w,
+    /sys/fs/cgroup/{openrc,unified}/dnscrypt-proxy/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
     
     # READS/WRITES -------------------------------------
     /run/dnscrypt-proxy/				w,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/dnscrypt-proxy/cgroup.procs	r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/dnscrypt-proxy/		w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }

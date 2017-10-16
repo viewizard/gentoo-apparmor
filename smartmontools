@@ -71,11 +71,15 @@ profile smartmontools.init.d /etc/init.d/smartd {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/smartd/tasks			w,
+  /sys/fs/cgroup/unified/smartd/cgroup.procs		w,
+  /sys/fs/cgroup/unified/smartd/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/smartd					Px,
   @{shell}						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/smartd				r,
@@ -97,9 +101,38 @@ profile smartmontools.init.d /etc/init.d/smartd {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/smartd/			w,
+    /sys/fs/cgroup/{openrc,unified}/smartd/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/smartd/cgroup.procs		r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/smartd/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }

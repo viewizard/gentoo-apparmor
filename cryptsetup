@@ -67,6 +67,8 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/dmcrypt/tasks			w,
+  /sys/fs/cgroup/unified/dmcrypt/cgroup.procs		w,
+  /sys/fs/cgroup/unified/dmcrypt/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -95,8 +97,14 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
   profile rmdir /bin/rmdir {
     #include <abstractions/base>
     
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
     # PSEUDO -------------------------------------------
-     /dev/console					rw,
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/dmcrypt/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -110,6 +118,12 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
   
   profile grep /bin/grep {
     #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/dmcrypt/cgroup.procs		r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -173,7 +187,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/dmcrypt/			w,
+    /sys/fs/cgroup/{openrc,unified}/dmcrypt/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,

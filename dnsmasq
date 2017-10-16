@@ -75,11 +75,15 @@ profile dnsmasq.init.d /etc/init.d/dnsmasq {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/dnsmasq/tasks			w,
+  /sys/fs/cgroup/unified/dnsmasq/cgroup.procs		w,
+  /sys/fs/cgroup/unified/dnsmasq/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/dnsmasq					Px,
   @{shell}						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   /etc/init.d/net.*					Px,
   
   # READS/WRITES ---------------------------------------
@@ -102,9 +106,38 @@ profile dnsmasq.init.d /etc/init.d/dnsmasq {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/dnsmasq/			w,
+    /sys/fs/cgroup/{openrc,unified}/dnsmasq/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/dnsmasq/cgroup.procs		r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/dnsmasq/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }

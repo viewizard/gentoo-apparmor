@@ -147,11 +147,15 @@ profile acpid.init.d /etc/init.d/acpid {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/acpid/tasks			w,
+  /sys/fs/cgroup/unified/acpid/cgroup.procs		w,
+  /sys/fs/cgroup/unified/acpid/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/acpid					Px,
   @{shell}						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/acpid				r,
@@ -172,9 +176,38 @@ profile acpid.init.d /etc/init.d/acpid {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/acpid/			w,
+    /sys/fs/cgroup/{openrc,unified}/acpid/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/acpid/cgroup.procs		r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/acpid/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }

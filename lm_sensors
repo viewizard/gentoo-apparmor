@@ -37,11 +37,15 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/lm_sensors/tasks		w,
+  /sys/fs/cgroup/unified/lm_sensors/cgroup.procs	w,
+  /sys/fs/cgroup/unified/lm_sensors/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/sensors					Px,
   @{shell}						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/lm_sensors				r,
@@ -62,9 +66,38 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/lm_sensors/			w,
+    /sys/fs/cgroup/{openrc,unified}/lm_sensors/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/lm_sensors/cgroup.procs	r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/lm_sensors/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }

@@ -38,11 +38,15 @@ profile hd-idle.init.d /etc/init.d/hd-idle {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/hd-idle/tasks			w,
+  /sys/fs/cgroup/unified/hd-idle/cgroup.procs		w,
+  /sys/fs/cgroup/unified/hd-idle/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/hd-idle					Px,
   @{shell}						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/hd-idle				r,
@@ -63,9 +67,38 @@ profile hd-idle.init.d /etc/init.d/hd-idle {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/hd-idle/			w,
+    /sys/fs/cgroup/{openrc,unified}/hd-idle/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/hd-idle/cgroup.procs		r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/hd-idle/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }

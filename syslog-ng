@@ -85,6 +85,8 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/syslog-ng/tasks			w,
+  /sys/fs/cgroup/unified/syslog-ng/cgroup.procs		w,
+  /sys/fs/cgroup/unified/syslog-ng/cgroup.events	r,
   @{PROC}/@{pid}/uid_map				r,
   @{PROC}/@{pid}/loginuid				rw,
   @{PROC}/sys/kernel/ngroups_max			r,
@@ -94,6 +96,8 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng {
   @{shell}						Cx,
   /bin/sleep						Px,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/environment					r,
@@ -118,9 +122,38 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/syslog-ng/			w,
+    /sys/fs/cgroup/{openrc,unified}/syslog-ng/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/syslog-ng/cgroup.procs	r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/syslog-ng/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }

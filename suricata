@@ -68,6 +68,8 @@ profile suricata.init.d /etc/init.d/suricata {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/suricata/tasks			w,
+  /sys/fs/cgroup/unified/suricata/cgroup.procs		w,
+  /sys/fs/cgroup/unified/suricata/cgroup.events		r,
   @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
@@ -75,8 +77,9 @@ profile suricata.init.d /etc/init.d/suricata {
   /bin/cat						Cx,
   /bin/ps						Px,
   /bin/sleep						Px,
-  /bin/grep						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   /usr/bin/suricata					Px,
   
   # READS/WRITES ---------------------------------------
@@ -111,17 +114,6 @@ profile suricata.init.d /etc/init.d/suricata {
     /run/suricata/suricata.pid				r,
   }
   
-  profile grep /bin/grep {
-    #include <abstractions/base>
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					rw,
-    /dev/pts/[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /bin/grep						mr,
-  }
-  
   profile mkdir /bin/mkdir flags=(attach_disconnected) {
     #include <abstractions/base>
     
@@ -132,10 +124,45 @@ profile suricata.init.d /etc/init.d/suricata {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/suricata/			w,
+    /sys/fs/cgroup/{openrc,unified}/suricata/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				rw,	# flags=(attach_disconnected), перезапуск из oinkmaster скрипта
+  }
+  
+  profile grep /bin/grep flags=(attach_disconnected) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/suricata/cgroup.procs	r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				rw,	# flags=(attach_disconnected), перезапуск из oinkmaster скрипта
+  }
+  
+  profile rmdir /bin/rmdir flags=(attach_disconnected) {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/suricata/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
     
     # DENY INHERIT -------------------------------------
     deny /apparmor/.null				rw,	# flags=(attach_disconnected), перезапуск из oinkmaster скрипта

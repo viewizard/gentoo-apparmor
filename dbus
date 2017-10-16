@@ -193,12 +193,16 @@ profile dbus.init.d /etc/init.d/dbus {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/dbus/tasks			w,
+  /sys/fs/cgroup/unified/dbus/cgroup.procs		w,
+  /sys/fs/cgroup/unified/dbus/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   /etc/init.d/{cupsd,consolekit,xdm,net.*}		Px,
   @{shell}						Cx,
   /bin/rm						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   /usr/bin/dbus-uuidgen					Px,
   /usr/bin/dbus-daemon					Px,
   /usr/bin/dbus-send					Px,
@@ -243,9 +247,38 @@ profile dbus.init.d /etc/init.d/dbus {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/dbus/				w,
+    /sys/fs/cgroup/{openrc,unified}/dbus/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/dbus/cgroup.procs		r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/dbus/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }

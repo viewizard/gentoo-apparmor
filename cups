@@ -223,11 +223,15 @@ profile cups.init.d /etc/init.d/cupsd {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/cupsd/tasks			w,
+  /sys/fs/cgroup/unified/cupsd/cgroup.procs		w,
+  /sys/fs/cgroup/unified/cupsd/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/cupsd					Px,
   @{shell}						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/cupsd				r,
@@ -251,9 +255,38 @@ profile cups.init.d /etc/init.d/cupsd {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/cupsd/			w,
+    /sys/fs/cgroup/{openrc,unified}/cupsd/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/cupsd/cgroup.procs		r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/cupsd/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }

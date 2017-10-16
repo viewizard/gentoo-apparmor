@@ -93,11 +93,15 @@ profile ntp.init.d /etc/init.d/ntpd {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/ntpd/tasks			w,
+  /sys/fs/cgroup/unified/ntpd/cgroup.procs		w,
+  /sys/fs/cgroup/unified/ntpd/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/ntpd					Px,
   @{shell}						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/ntpd				r,
@@ -119,9 +123,38 @@ profile ntp.init.d /etc/init.d/ntpd {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/ntpd/				w,
+    /sys/fs/cgroup/{openrc,unified}/ntpd/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/ntpd/cgroup.procs		r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/ntpd/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }

@@ -217,11 +217,15 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/lvmetad/tasks			w,
+  /sys/fs/cgroup/unified/lvmetad/cgroup.procs		w,
+  /sys/fs/cgroup/unified/lvmetad/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   /etc/init.d/lvm					Px,
   @{shell}						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   /sbin/lvmetad						Px,
   
   # READS/WRITES ---------------------------------------
@@ -245,10 +249,39 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/lvmetad/			w,
+    /sys/fs/cgroup/{openrc,unified}/lvmetad/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/lvmetad/cgroup.procs		r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/lvmetad/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }
 
@@ -259,12 +292,15 @@ profile lvm2.lvm.init.d /etc/init.d/lvm {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/lvm/tasks			w,
+  /sys/fs/cgroup/unified/lvm/cgroup.procs		w,
+  /sys/fs/cgroup/unified/lvm/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/lvm						Px,
   @{shell}						Cx,
-  /bin/grep						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/lvm				r,
@@ -273,20 +309,6 @@ profile lvm2.lvm.init.d /etc/init.d/lvm {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
-  }
-  
-  profile grep /bin/grep {
-    #include <abstractions/base>
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					rw,
-    /dev/console					rw,
-    /dev/pts/[0-9]*					rw,
-    @{PROC}/misc					r,
-    @{PROC}/devices					r,
-    
-    # EXECUTABLES --------------------------------------
-    /bin/grep						mr,
   }
   
   profile mkdir /bin/mkdir {
@@ -299,9 +321,40 @@ profile lvm2.lvm.init.d /etc/init.d/lvm {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/lvm/				w,
+    /sys/fs/cgroup/{openrc,unified}/lvm/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    @{PROC}/misc					r,
+    @{PROC}/devices					r,
+    /sys/fs/cgroup/unified/lvm/cgroup.procs		r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/lvm/				w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }

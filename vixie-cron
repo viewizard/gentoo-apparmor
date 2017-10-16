@@ -82,11 +82,15 @@ profile vixie-cron.init.d /etc/init.d/vixie-cron {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/vixie-cron/tasks		w,
+  /sys/fs/cgroup/unified/vixie-cron/cgroup.procs	w,
+  /sys/fs/cgroup/unified/vixie-cron/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/cron					Px,
   @{shell}						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/vixie-cron				r,
@@ -108,9 +112,38 @@ profile vixie-cron.init.d /etc/init.d/vixie-cron {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/vixie-cron/			w,
+    /sys/fs/cgroup/{openrc,unified}/vixie-cron/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/vixie-cron/cgroup.procs	r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/vixie-cron/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }

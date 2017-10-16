@@ -135,10 +135,14 @@ profile dhcpcd.init.d /etc/init.d/dhcpcd {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/dhcpcd/tasks			w,
+  /sys/fs/cgroup/unified/dhcpcd/cgroup.procs		w,
+  /sys/fs/cgroup/unified/dhcpcd/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   /sbin/dhcpcd						Px,
   
   # READS/WRITES ---------------------------------------
@@ -163,9 +167,38 @@ profile dhcpcd.init.d /etc/init.d/dhcpcd {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/dhcpcd/			w,
+    /sys/fs/cgroup/{openrc,unified}/dhcpcd/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/dhcpcd/cgroup.procs		r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/dhcpcd/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }

@@ -129,6 +129,8 @@ profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/xdm-setup/tasks			w,
+  /sys/fs/cgroup/unified/xdm-setup/cgroup.procs		w,
+  /sys/fs/cgroup/unified/xdm-setup/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -136,6 +138,7 @@ profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup {
   /bin/tr						Px,
   /bin/grep						Cx,
   /bin/mkdir						Cx,
+  /bin/rmdir						Cx,
   /etc/X11/startDM.sh					Px,
   
   # READS/WRITES ---------------------------------------
@@ -157,7 +160,7 @@ profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/xdm-setup/			w,
+    /sys/fs/cgroup/{openrc,unified}/xdm-setup/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -166,6 +169,11 @@ profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup {
   profile cat /bin/cat {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/cat						mr,
   }
@@ -173,8 +181,30 @@ profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup {
   profile grep /bin/grep {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/xdm-setup/cgroup.procs	r,
+    
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/xdm-setup/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }
 
@@ -186,12 +216,15 @@ profile xorg-server.xdm.init.d /etc/init.d/xdm {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /sys/fs/cgroup/openrc/xdm/tasks			w,
+  /sys/fs/cgroup/unified/xdm/cgroup.procs		w,
+  /sys/fs/cgroup/unified/xdm/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/tr						Px,
   /bin/grep						Cx,
   /bin/mkdir						Cx,
+  /bin/rmdir						Cx,
   /usr/bin/fgconsole					Px,
   /usr/bin/chvt						Px,
   /etc/init.d/xdm-setup					Px,
@@ -217,7 +250,7 @@ profile xorg-server.xdm.init.d /etc/init.d/xdm {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/xdm/				w,
+    /sys/fs/cgroup/{openrc,unified}/xdm/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -226,10 +259,32 @@ profile xorg-server.xdm.init.d /etc/init.d/xdm {
   profile grep /bin/grep {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/xdm/cgroup.procs		r,
+    
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
     
     # READS/WRITES -------------------------------------
     /etc/inittab					r,	# sysvinit
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/xdm/				w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }

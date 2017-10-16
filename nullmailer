@@ -125,6 +125,8 @@ profile nullmailer.init.d /etc/init.d/nullmailer {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/nullmailer/tasks		w,
+  /sys/fs/cgroup/unified/nullmailer/cgroup.procs	w,
+  /sys/fs/cgroup/unified/nullmailer/cgroup.events	r,
   @{PROC}/@{pid}/uid_map				r,
   @{PROC}/@{pid}/loginuid				wr,
   @{PROC}/sys/kernel/ngroups_max			r,
@@ -133,6 +135,8 @@ profile nullmailer.init.d /etc/init.d/nullmailer {
   /usr/sbin/nullmailer-send				Px,
   @{shell}						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/environment					r,
@@ -158,9 +162,38 @@ profile nullmailer.init.d /etc/init.d/nullmailer {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/nullmailer/			w,
+    /sys/fs/cgroup/{openrc,unified}/nullmailer/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/nullmailer/cgroup.procs	r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/nullmailer/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }

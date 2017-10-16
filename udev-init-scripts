@@ -20,13 +20,16 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/udev/tasks			w,
+  /sys/fs/cgroup/unified/udev/cgroup.procs		w,
+  /sys/fs/cgroup/unified/udev/cgroup.events		r,
   @{PROC}/@{pid}/mounts					r,
   @{PROC}/sys/kernel/hotplug				w,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/grep						Cx,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   /bin/udevadm						Px,
   /sbin/udevd						Px,
   
@@ -40,19 +43,6 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev {
     #include <abstractions/openrc-shell>
   }
   
-  profile grep /bin/grep {
-    #include <abstractions/base>
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					rw,
-    /dev/console					rw,
-    /dev/pts/[0-9]*					rw,
-    @{PROC}/filesystems					r,
-    
-    # EXECUTABLES --------------------------------------
-    /bin/grep						mr,
-  }
-  
   profile mkdir /bin/mkdir {
     #include <abstractions/base>
     
@@ -64,10 +54,39 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev {
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /dev/pts/						w,
-    /sys/fs/cgroup/openrc/udev/				w,
+    /sys/fs/cgroup/{openrc,unified}/udev/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/udev/cgroup.procs		r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/udev/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }
 
@@ -78,11 +97,15 @@ profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/udev-trigger/tasks		w,
+  /sys/fs/cgroup/unified/udev-trigger/cgroup.procs	w,
+  /sys/fs/cgroup/unified/udev-trigger/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/udevadm						Px,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   /bin/cat						Cx,
   
   # READS/WRITES ---------------------------------------
@@ -105,13 +128,42 @@ profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/udev-trigger/			w,
+    /sys/fs/cgroup/{openrc,unified}/udev-trigger/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
     
     # READS/WRITES -------------------------------------
     /run/udev/rules.d/					w,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/udev-trigger/cgroup.procs	r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/udev-trigger/		w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
   
   profile cat /bin/cat {
@@ -135,11 +187,15 @@ profile udev-init-scripts.udev-settle.init.d /etc/init.d/udev-settle {
   
   # PSEUDO ---------------------------------------------
   /sys/fs/cgroup/openrc/udev-settle/tasks		w,
+  /sys/fs/cgroup/unified/udev-settle/cgroup.procs	w,
+  /sys/fs/cgroup/unified/udev-settle/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/udevadm						Px,
   /bin/mkdir						Cx,
+  /bin/grep						Cx,
+  /bin/rmdir						Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/udev-settle			r,
@@ -160,9 +216,38 @@ profile udev-init-scripts.udev-settle.init.d /etc/init.d/udev-settle {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/openrc/udev-settle/			w,
+    /sys/fs/cgroup/{openrc,unified}/udev-settle/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+  }
+  
+  profile grep /bin/grep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/udev-settle/cgroup.procs	r,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+  }
+  
+  profile rmdir /bin/rmdir {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability dac_override,
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    /sys/fs/cgroup/unified/udev-settle/			w,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
   }
 }
