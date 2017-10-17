@@ -35,7 +35,7 @@ profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
   deny unix peer=(label="qpdfview"),				# qpdfview
   deny unix peer=(label="local.home.evelauncher"),		# local.home.evelauncher
   deny unix peer=(label="teamspeak-client-bin.teamspeak"),	# teamspeak-client-bin.teamspeak
-  deny network netlink raw,					# skype
+  deny unix peer=(label="keepassxc"),				# keepassxc
   deny network inet dgram,					# teamspeak-client-bin.teamspeak
   deny network inet6 dgram,					# teamspeak-client-bin.teamspeak
   deny network inet stream,					# local.home.evelauncher
@@ -45,8 +45,6 @@ profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
   deny /usr/share/qt[0-9]*/**				r,	# teamspeak-client-bin.teamspeak
   deny /usr/share/pyfa/imgs.zip				r,	# pyfa
   deny /run/user/[0-9]*/poedit.lock			w,	# poedit
-  deny /tmp/skype-[0-9]*/DbTemp./temp-*			rw,	# skype
-  deny @{HOME}/.Skype/**				rw,	# skype
   deny @{HOME}/.local/share/poedit/TranslationMemory/*	rw,	# poedit
   deny @{HOME}/.kingsoft/office6/**			rw,	# wps-office
   deny @{HOME}/.ts3client/**				rw,	# teamspeak-client-bin.teamspeak
