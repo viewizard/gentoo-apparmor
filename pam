@@ -29,6 +29,10 @@ profile pam.pam_tally2 /sbin/pam_tally2 {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
   # EXECUTABLES ----------------------------------------
   /sbin/pam_tally2					mr,
   

@@ -20,7 +20,11 @@
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Px -> shell_root,
+  /usr/bin/xauth					Px,
   
   # READS/WRITES ---------------------------------------
   /etc/environment					r,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.xauth*					rw,
 }

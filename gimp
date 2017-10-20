@@ -32,9 +32,6 @@ profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   #include <abstractions/fs/access-by-users-preset-rwk>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/fs/deny-private-strict>
-  #include <abstractions/unix/gvfsd-http>
-  #include <abstractions/unix/gvfsd-http-virtual>
-  #include <abstractions/profile_transitions/users-strict-web>
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(kill) peer="gimp.plug-ins",
@@ -54,7 +51,6 @@ profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/fd/				rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gimp-*					rm,
@@ -90,10 +86,14 @@ profile gimp.plug-ins /usr/lib{,32,64}/gimp/[0-9].[0-9]/plug-ins/* {
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
+  #include <abstractions/unix/gvfsd-http>
+  #include <abstractions/unix/gvfsd-http-virtual>
+  #include <abstractions/profile_transitions/users-strict-web>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/gimp/[0-9].[0-9]/plug-ins/*		mr,
