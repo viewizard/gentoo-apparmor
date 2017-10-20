@@ -22,7 +22,7 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev {
   /sys/fs/cgroup/openrc/udev/tasks			w,
   /sys/fs/cgroup/unified/udev/cgroup.procs		w,
   /sys/fs/cgroup/unified/udev/cgroup.events		r,
-  @{PROC}/@{pid}/mounts					r,
+  audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
   @{PROC}/sys/kernel/hotplug				w,
   
   # EXECUTABLES ----------------------------------------

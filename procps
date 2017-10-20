@@ -31,9 +31,11 @@ profile procps.ps /bin/ps {
   @{PROC}/sys/kernel/pid_max				r,
   @{PROC}/sys/kernel/osrelease				r,
   @{PROC}/tty/drivers					r,
-  @{PROC}/@{pid}/{stat,status,cmdline}			r,
-  @{PROC}/@{pid}/task/{,**}				r,
-  @{PROC}/@{pid}/attr/current				r,	# Нужен для запуска с параметром -Z.
+  @{PROC}/@{pids}/{stat,status,cmdline,wchan}		r,
+  @{PROC}/@{pids}/task/					r,
+  @{PROC}/@{pids}/task/@{pids}/				r,
+  @{PROC}/@{pids}/task/@{pids}/{stat,status,cmdline}	r,
+  @{PROC}/@{pids}/attr/current				r,	# Нужен для запуска с параметром -Z.
   
   # EXECUTABLES ----------------------------------------
   /bin/ps						mr,
@@ -60,7 +62,8 @@ profile procps.pidof /usr/bin/pidof {
   
   # PSEUDO ---------------------------------------------
   @{PROC}/						r,
-  @{PROC}/@{pid}/{stat,cmdline}				r,
+  audit @{PROC}/@{pid}/stat				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
+  audit @{PROC}/@{pid}/cmdline				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
   @{PROC}/sys/kernel/osrelease				r,
   
   # EXECUTABLES ----------------------------------------
@@ -82,7 +85,10 @@ profile procps.pgrep /usr/bin/pgrep {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
-  @{PROC}/@{pid}/{stat,status,cmdline,loginuid}		r,
+  audit @{PROC}/@{pid}/stat				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
+  audit @{PROC}/@{pid}/status				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
+  audit @{PROC}/@{pid}/cmdline				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
+  audit @{PROC}/@{pid}/loginuid				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
   @{PROC}/sys/kernel/osrelease				r,
   
   # EXECUTABLES ----------------------------------------

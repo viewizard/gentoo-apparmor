@@ -105,7 +105,7 @@ profile local.sbin.relabel_evm_dtp /usr/local/sbin/relabel_evm_dtp.sh {
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
-    @{PROC}/@{pid}/mountinfo				r,
+    owner @{PROC}/@{pid}/mountinfo			r,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/find					mr,

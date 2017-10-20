@@ -35,7 +35,7 @@ profile fuse.fusermount /usr/bin/fusermount {
   
   # PSEUDO ---------------------------------------------
   /dev/fuse						rw,
-  @{PROC}/@{pid}/mounts					r,
+  @{PROC}/@{pid}/mounts					r,	# IMPROVE! UID=$USER(owner),root(owner)
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/fusermount					mr,

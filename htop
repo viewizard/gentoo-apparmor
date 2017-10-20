@@ -33,11 +33,12 @@ profile htop /usr/bin/htop {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
+  @{PROC}/						r,
+  @{PROC}/{loadavg,uptime}				r,
   @{PROC}/sys/kernel/pid_max				r,
-  @{PROC}/{,loadavg,uptime}				r,
-  @{PROC}/@{pid}/{stat,statm,cmdline}			r,
-  @{PROC}/@{pid}/task/					r,
-  @{PROC}/@{pid}/task/@{pid}/{stat,statm,cmdline}	r,
+  @{PROC}/@{pids}/{stat,statm,cmdline}			r,
+  @{PROC}/@{pids}/task/					r,
+  @{PROC}/@{pids}/task/@{pids}/{stat,statm,cmdline}	r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/htop mr,

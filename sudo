@@ -40,10 +40,13 @@ profile sudo /usr/bin/sudo {
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,
+  @{PROC}/@{pid}/fd/					r,	# IMPROVE! UID=$USER(owner),root
   owner @{PROC}/@{pid}/stat				r,
-  @{PROC}/@{pid}/attr/{current,exec}			w,
-  @{PROC}/@{pid}/attr/{current,prev,exec}		r,
+  owner @{PROC}/@{pid}/attr/current			w,
+  audit @{PROC}/@{pid}/attr/exec			w,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  audit @{PROC}/@{pid}/attr/current			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  audit @{PROC}/@{pid}/attr/prev			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  audit @{PROC}/@{pid}/attr/exec			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
   @{PROC}/sys/kernel/ngroups_max			r,
   
   # EXECUTABLES ----------------------------------------

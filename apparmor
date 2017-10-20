@@ -22,7 +22,7 @@ profile apparmor.apparmor_parser /sbin/apparmor_parser {
   /sys/devices/system/cpu/				r,
   /sys/kernel/security/apparmor/{,**}			r,
   /sys/kernel/security/apparmor/.{load,replace,remove}	w,
-  @{PROC}/@{pid}/mounts					r,
+  owner @{PROC}/@{pid}/mounts				r,
   @{PROC}/sys/kernel/osrelease				r,
   
   # EXECUTABLES ----------------------------------------

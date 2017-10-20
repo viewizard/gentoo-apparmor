@@ -98,7 +98,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
-    @{PROC}/@{pid}/fd/					r,
+    owner @{PROC}/@{pid}/fd/					r,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/xargs					mr,

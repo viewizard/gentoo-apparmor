@@ -81,8 +81,8 @@ profile local.home.evelauncher /home/*/evelauncher/evelauncher flags=(attach_dis
   owner @{PROC}/@{pid}/mounts				r,
   
   # AUDIT PSEUDO ---------------------------------------
-  deny @{PROC}/@{pid}/oom_score_adj			rw,
-  deny @{PROC}/@{pid}/cmdline				r,
+  deny @{PROC}/@{pids}/oom_score_adj			rw,
+  deny @{PROC}/@{pids}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   owner @{HOME}/evelauncher/evelauncher			mr,

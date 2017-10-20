@@ -50,8 +50,8 @@ profile nettop /usr/sbin/nettop {
   /dev/pts/[0-9]*					rw,
   /sys/class/net/					r,
   /sys/bus/usb/devices/					r,
-  @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/net/dev				r,
+  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC}/@{pid}/net/dev				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/nettop					mr,

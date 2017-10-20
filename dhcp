@@ -24,7 +24,7 @@ profile dhcp.dhclient /sbin/dhclient {
   network inet6 dgram,
   
   # PSEUDO ---------------------------------------------
-  @{PROC}/@{pid}/net/dev				r,
+  owner @{PROC}/@{pid}/net/dev				r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/dhclient					mr,

@@ -112,10 +112,10 @@ profile networkmanager.NetworkManager /usr/sbin/NetworkManager {
   /sys/devices/virtual/net/lo/{,*}			r,
   /sys/devices/pci[0-9]**/net/{,**}			r,
   /sys/devices/pci[0-9]**/usb[0-9]*/**/uevent		r,
-  @{PROC}/@{pid}/stat					r,
+  @{PROC}/@{pids}/stat					r,
+  owner @{PROC}/@{pid}/fd/				r,
+  audit @{PROC}/@{pid}/cmdline				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
   @{PROC}/sys/kernel/random/boot_id			r,
-  @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/NetworkManager				mr,
@@ -189,7 +189,7 @@ profile networkmanager.nm-dispatcher /usr/libexec/nm-dispatcher {
   	peer=(name="org.freedesktop.nm_dispatcher",label=@{profile_name}),
   
   # PSEUDO ---------------------------------------------
-  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/nm-dispatcher				mr,

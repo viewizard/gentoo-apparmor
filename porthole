@@ -35,7 +35,7 @@ profile porthole @{PYTHON_EXEC}/porthole {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/ptmx						rw,
-  @{PROC}/@{pid}/mount{s,info}				r,
+  owner @{PROC}/@{pid}/mount{s,info}			r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						cx,

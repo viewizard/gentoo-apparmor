@@ -110,7 +110,7 @@ profile grub.grub-mkrelpath /usr/bin/grub-mkrelpath {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/mountinfo				r,
+  owner @{PROC}/@{pid}/mountinfo			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/grub-mkrelpath				mr,
@@ -288,7 +288,7 @@ profile grub.grub-probe /usr/sbin/grub-probe {
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/vendor	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}start r,
   @{PROC}/devices					r,
-  @{PROC}/@{pid}/mountinfo				r,
+  owner @{PROC}/@{pid}/mountinfo			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/grub-probe					mr,
@@ -311,7 +311,7 @@ profile grub.grub-install /usr/sbin/grub-install {
   /dev/mapper/control					rw,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}start r,
   @{PROC}/devices					r,
-  @{PROC}/@{pid}/mountinfo				r,
+  owner @{PROC}/@{pid}/mountinfo			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/grub-install				mr,

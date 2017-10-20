@@ -66,8 +66,8 @@ profile lvm2.dmeventd /sbin/dmeventd {
   /sys/devices/**/uevent				r,
   /sys/devices/virtual/bdi/[0-9]*:[0-9]*/read_ahead_kb	r,
   @{PROC}/devices					r,
-  @{PROC}/@{pid}/mounts					r,
-  @{PROC}/@{pid}/oom_score_adj				w,
+  audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  audit @{PROC}/@{pid}/oom_score_adj			w,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
   
   # EXECUTABLES ----------------------------------------
   /sbin/dmeventd					mr,
@@ -123,10 +123,10 @@ profile lvm2.lvm /sbin/lvm {
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   /sys/devices/virtual/bdi/*/read_ahead_kb		rw,
   @{PROC}/devices					r,
-  @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/mounts					r,
-  @{PROC}/@{pid}/mountinfo				r,
-  owner @{PROC}/@{pid}/cmdline				r,
+  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC}/@{pid}/mounts				r,
+  audit @{PROC}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  owner @{PROC}/@{pids}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/lvm						mr,
@@ -164,7 +164,7 @@ profile lvm2.fsadm /sbin/fsadm {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/**/name	r,
-  @{PROC}/@{pid}/mounts					r,
+  audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
   
   # EXECUTABLES ----------------------------------------
   /sbin/fsadm						r,

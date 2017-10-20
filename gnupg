@@ -16,7 +16,7 @@ profile gnupg.gpg-agent /usr/bin/gpg-agent {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gpg-agent					mr,
@@ -38,7 +38,7 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} {
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gpg{,2,-static}				mr,
@@ -70,7 +70,7 @@ profile gnupg.gpgconf /usr/bin/gpgconf {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gpgconf					mr,

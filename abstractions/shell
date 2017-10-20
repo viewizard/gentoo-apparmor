@@ -29,8 +29,7 @@
 
 # bash inspects filesystems at startup
 /etc/mtab						r,
-@{PROC}/@{pid}/mounts					r,
-@{PROC}/filesystems					r,
+audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 16.10.2017
 
 # run out of /etc/bash.bashrc
 /etc/DIR_COLORS						r,

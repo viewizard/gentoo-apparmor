@@ -58,7 +58,7 @@ profile wine /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine
   @{PROC}/cpuinfo					r,
   @{PROC}/meminfo					r,
   @{PROC}/scsi/scsi					r,
-  owner @{PROC}/@{pid}/mem				r,
+  audit owner @{PROC}/@{pid}/mem			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
   
   # EXECUTABLES ----------------------------------------
   /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine mr,
@@ -165,10 +165,10 @@ profile wine.wine-preloader /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[
   /sys/devices/pci[0-9]**/scsi_generic/			r,
   @{PROC}/{cpu,mem}info					r,
   @{PROC}/scsi/scsi					r,
-  @{PROC}/@{pid}/stat{,m}				r,
-  @{PROC}/@{pid}/mounts					r,
-  @{PROC}/@{pid}/net/dev				r,
-  @{PROC}/@{pid}/task/@{pid}/stat			r,
+  audit @{PROC}/@{pid}/stat{,m}				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+  owner @{PROC}/@{pid}/mounts				r,
+  audit @{PROC}/@{pid}/net/dev				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+  audit @{PROC}/@{pid}/task/@{pid}/stat			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
   
   # EXECUTABLES ----------------------------------------
   /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine-preloader Pxmr,	# Все правильно, права на запуск и на mmap.
@@ -237,7 +237,7 @@ profile wine.wineserver /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/mem				r,
+  owner @{PROC}/@{pids}/mem				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wineserver mr,

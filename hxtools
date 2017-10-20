@@ -24,11 +24,10 @@ profile hxtools.ofl /usr/bin/ofl {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  
-  # PSEUDO ---------------------------------------------
-  @{PROC}						r,
-  @{PROC}/@{pid}/task/					r,
-  @{PROC}/@{pid}/task/@{pid}/fd/			r,
+  @{PROC}/						r,
+  @{PROC}/@{pids}/maps					r,
+  @{PROC}/@{pids}/task/					r,
+  @{PROC}/@{pids}/task/@{pids}/fd/			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/ofl						mr,

@@ -14,10 +14,10 @@
 @{GVFSD_FUSE_ANON_SOCKET}="fuse.fusermount"
 
 # Профили с доступом к gvfsd-http сокету
-@{GVFSD_HTTP_SOCKET}="gimp"
+@{GVFSD_HTTP_SOCKET}="gimp.plug-ins"
 
 # Профили с доступом к gvfsd-http анонимному сокету
-@{GVFSD_HTTP_ANON_SOCKET}="gimp"
+@{GVFSD_HTTP_ANON_SOCKET}="gimp.plug-ins"
 
 # Профили с доступом к gvfsd-network сокету
 @{GVFSD_NETWORK_SOCKET}="thunar"
@@ -116,8 +116,8 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
   # PSEUDO ---------------------------------------------
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
-  @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/mounts					r,
+  audit @{PROC}/@{pid}/fd/				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+  audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
   owner @{PROC}/@{pid}/mountinfo			r,
   
   # EXECUTABLES ----------------------------------------
@@ -515,7 +515,7 @@ profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   
   # PSEUDO ---------------------------------------------
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}name	r,
-  @{PROC}/@{pid}/mounts					r,
+  audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
   owner @{PROC}/@{pid}/mountinfo			r,
   
   # EXECUTABLES ----------------------------------------

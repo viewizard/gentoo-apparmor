@@ -50,11 +50,10 @@ profile dbus.dbus-daemon /usr/bin/dbus-daemon {
   /dev/pts/[0-9]*					rw,
   /sys/kernel/security/apparmor/features/dbus/mask	r,	# AppArmor dbus mediation
   /sys/kernel/security/apparmor/.access			rw,	# AppArmor dbus mediation
-  @{PROC}/@{pid}/cmdline				r,
-  @{PROC}/@{pid}/mounts					r,	# AppArmor dbus mediation
-  @{PROC}/@{pid}/oom_score_adj				w,
-  @{PROC}/@{pid}/attr/current				r,	# AppArmor dbus mediation
-  owner @{PROC}/@{pid}/cmdline				r,
+  @{PROC}/@{pids}/cmdline				r,
+  @{PROC}/@{pid}/mounts					r,	# AppArmor dbus mediation	# IMPROVE! UID=messagebus(owner),root
+  owner @{PROC}/@{pid}/oom_score_adj			w,
+  @{PROC}/@{pid}/attr/current				r,	# AppArmor dbus mediation	# IMPROVE! UID=messagebus(owner),root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dbus-daemon					mr,

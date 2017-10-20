@@ -37,7 +37,7 @@ profile suricata /usr/bin/suricata {
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   /sys/devices/system/cpu/				r,
-  @{PROC}/@{pid}/net/dev				r,
+  audit @{PROC}/@{pid}/net/dev				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/suricata					mr,
@@ -70,7 +70,7 @@ profile suricata.init.d /etc/init.d/suricata {
   /sys/fs/cgroup/openrc/suricata/tasks			w,
   /sys/fs/cgroup/unified/suricata/cgroup.procs		w,
   /sys/fs/cgroup/unified/suricata/cgroup.events		r,
-  @{PROC}/@{pid}/cmdline				r,
+  audit @{PROC}/@{pid}/cmdline				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,

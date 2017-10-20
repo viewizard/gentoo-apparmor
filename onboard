@@ -46,7 +46,8 @@ profile onboard /usr/bin/onboard {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/onboard					mr,
@@ -100,7 +101,8 @@ profile onboard_settings /usr/bin/onboard-settings {
   /sys/class/						r,
   /sys/class/input/					r,
   /sys/devices/**/input**/uevent			r,
-  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/onboard-settings				mr,

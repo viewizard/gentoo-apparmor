@@ -74,9 +74,9 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
   /sys/devices/pci[0-9]*/**/usb[0-9]*/{,**/}{remove,uevent} rw,
-  @{PROC}/@{pid}/mountinfo				r,
   @{PROC}/swaps						r,
-  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/mountinfo			r,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/udisks2/udisksd				mr,
@@ -133,7 +133,7 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {
     umount /run/media/*/*/,
     
     # PSEUDO -------------------------------------------
-    @{PROC}/@{pid}/mountinfo				r,
+    owner @{PROC}/@{pid}/mountinfo			r,
     
     # EXECUTABLES --------------------------------------
     /bin/umount						mr,

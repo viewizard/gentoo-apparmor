@@ -38,7 +38,7 @@ audit deny unix (receive) peer=(label=unconfined),		# unconfined процесс�
 /dev/full						rw,
 /sys/devices/system/cpu/online				r,
 @{PROC}/{cpuinfo,stat,meminfo}				r,
-@{PROC}/@{pid}/maps					r,
+owner @{PROC}/@{pid}/maps				r,
 owner @{PROC}/@{pid}/status				r,
 @{PROC}/filesystems					r,
 @{PROC}/sys/vm/overcommit_memory			r,

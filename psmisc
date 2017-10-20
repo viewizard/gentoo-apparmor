@@ -30,7 +30,9 @@ profile psmisc.killall /usr/bin/killall {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
-  @{PROC}/@{pid}/{stat,status,cmdline}			r,
+  @{PROC}/@{pids}/stat					r,
+  audit @{PROC}/@{pid}/status				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+  @{PROC}/@{pids}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/killall					mr,
@@ -62,9 +64,12 @@ profile psmisc.fuser /bin/fuser {
   /dev/console						rw,
   @{PROC}/						r,
   @{PROC}/swaps						r,
-  @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/{mounts,mountinfo,stat}		r,
-  @{PROC}/@{pid}/net/unix				r,
+  @{PROC}/@{pids}/fd/					r,
+  @{PROC}/@{pids}/maps					r,
+  @{PROC}/@{pids}/stat					r,
+  owner @{PROC}/@{pid}/mounts				r,
+  owner @{PROC}/@{pid}/mountinfo			r,
+  owner @{PROC}/@{pid}/net/unix				r,
   @{PROC}/fs/nfs/exports				r,
   
   # EXECUTABLES ----------------------------------------

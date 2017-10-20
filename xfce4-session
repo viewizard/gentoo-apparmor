@@ -56,7 +56,7 @@ profile xfce4-session /usr/bin/xfce4-session {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-session				Pxmr,	# Все правильно, запуск и mmap.

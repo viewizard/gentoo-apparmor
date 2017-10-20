@@ -31,7 +31,7 @@ profile gcr.gcr-viewer /usr/bin/gcr-viewer {
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
-  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gcr-viewer					mr,
@@ -63,7 +63,7 @@ profile gcr.gcr-prompter /usr/libexec/gcr-prompter {
   	peer=(name=":[0-9]*.[0-9]*"),
   
   # PSEUDO ---------------------------------------------
-  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gcr-prompter				mr,

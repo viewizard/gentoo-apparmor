@@ -103,7 +103,7 @@ profile sysvinit.killall5 /sbin/killall5 {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   @{PROC}/						r,
-  @{PROC}/@{pid}/{stat,status,cmdline}			r,
+  audit @{PROC}/@{pid}/{stat,status,cmdline}		r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
   
   # EXECUTABLES ----------------------------------------
   /sbin/killall5					mr,

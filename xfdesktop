@@ -54,7 +54,7 @@ profile xfdesktop /usr/bin/xfdesktop {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}name	r,
-  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/fd/				r,
   owner @{PROC}/@{pid}/mountinfo			r,
   
   # EXECUTABLES ----------------------------------------
@@ -125,7 +125,7 @@ profile xfdesktop.xfdesktop-settings /usr/bin/xfdesktop-settings {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/mountinfo				r,
+  owner @{PROC}/@{pid}/mountinfo			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfdesktop-settings				mr,

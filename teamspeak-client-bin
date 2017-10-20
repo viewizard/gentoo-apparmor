@@ -45,8 +45,8 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   @{PROC}/sys/kernel/shmmax				r,
   
   # AUDIT PSEUDO ---------------------------------------
-  deny @{PROC}/@{pid}/cmdline				r,
-  deny @{PROC}/@{pid}/oom_score_adj			rw,
+  deny @{PROC}/@{pids}/cmdline				r,
+  deny @{PROC}/@{pids}/oom_score_adj			rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/teamspeak3					r,

@@ -45,8 +45,8 @@ profile wireshark /usr/bin/wireshark{,-gtk} {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/net/dev				r,
-  owner @{PROC}/@{pid}/cmdline				r,
+  @{PROC}/@{pid}/net/dev				r,	# IMPROVE! UID=$USER(owner),root
+  audit owner @{PROC}/@{pid}/cmdline			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/wireshark{,-gtk}				mr,
@@ -102,7 +102,7 @@ profile wireshark.dumpcap /usr/bin/dumpcap {
   /dev/pts/[0-9]*					rw,
   /sys/class/net/					r,
   /sys/bus/usb/devices/					r,
-  @{PROC}/@{pid}/net/dev				r,
+  @{PROC}/@{pid}/net/dev				r,	# IMPROVE! UID=$USER(owner),root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dumpcap					mr,

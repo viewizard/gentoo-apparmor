@@ -41,7 +41,7 @@ profile pulseaudio /usr/bin/pulseaudio {
   /sys/devices/system/cpu/				r,
   /sys/devices/virtual/dmi/id/{sys_vendor,board_vendor,bios_vendor} r,
   owner @{PROC}/@{pid}/fd/				r,
-  owner @{PROC}/@{pid}/stat				r,
+  owner @{PROC}/@{pids}/stat				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pulseaudio					mr,
@@ -104,7 +104,7 @@ profile pulseaudio.pacmd /usr/bin/pacmd {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/stat				r,
+  owner @{PROC}/@{pids}/stat				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pacmd					mr,

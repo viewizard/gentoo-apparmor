@@ -95,7 +95,7 @@ profile eudev.udevd /sbin/udevd {
   /sys/module/block/parameters/events_dfl_poll_msecs	rw,
   /sys/module/*/initstate				r,
   @{PROC}/cmdline					r,
-  @{PROC}/@{pid}/oom_score_adj				rw,
+  owner @{PROC}/@{pid}/oom_score_adj			rw,
   
   # EXECUTABLES ----------------------------------------
   /sbin/udevd						mr,
@@ -191,7 +191,7 @@ profile eudev.cdrom_id /lib{,32,64}/udev/cdrom_id {
   
   # PSEUDO ---------------------------------------------
   /dev/@{BLOCK_MEDIA}					r,
-  @{PROC}/@{pid}/mountinfo				r,
+  audit @{PROC}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
   
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/udev/cdrom_id				mr,

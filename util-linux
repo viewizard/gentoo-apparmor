@@ -23,7 +23,7 @@ profile util-linux.mkswap /sbin/mkswap {
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
   @{PROC}/swaps						r,
-  @{PROC}/@{pid}/mounts					r,
+  audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
   
   # EXECUTABLES ----------------------------------------
   /sbin/mkswap						mr,
@@ -61,7 +61,7 @@ profile util-linux.lsblk /bin/lsblk {
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**		r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   @{PROC}/swaps 					r,
-  @{PROC}/@{pid}/mountinfo				r,
+  owner @{PROC}/@{pid}/mountinfo			r,
   
   # EXECUTABLES ----------------------------------------
   /bin/lsblk						mr,
@@ -150,7 +150,7 @@ profile util-linux.logger /usr/bin/logger {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/loginuid r,
+  owner @{PROC}/@{pid}/loginuid				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/logger					mr,
@@ -183,7 +183,7 @@ profile util-linux.eject /usr/bin/eject {
   /dev/@{BLOCK_REAL}					rw,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
-  @{PROC}/@{pid}/mountinfo				r,
+  audit @{PROC}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/eject					mr,
@@ -263,7 +263,7 @@ profile util-linux.cal /usr/bin/cal {
   deny network inet dgram,					# conky_shell
   deny network inet6 dgram,					# conky_shell
   deny @{PROC}/uptime					r,	# conky_shell
-  deny @{PROC}/@{pid}/net/dev				r,	# conky_shell
+  deny @{PROC}/@{pids}/net/dev				r,	# conky_shell
 }
 
 profile util-linux.getopt /usr/bin/getopt flags=(attach_disconnected) {

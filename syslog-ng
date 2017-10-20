@@ -49,9 +49,11 @@ profile syslog-ng /usr/sbin/syslog-ng {
   /sys/devices/system/cpu/online			r,
   @{PROC}/kmsg						r,
   @{PROC}/uptime					r,
-  @{PROC}/@{pid}/{cgroup,sessionid,loginuid}		r,
-  @{PROC}/@{pid}/{status,cmdline}			r,
-  owner @{PROC}/@{pid}/cmdline				r,
+  owner @{PROC}/1/cgroup				r,
+  @{PROC}/@{pids}/sessionid				r,
+  @{PROC}/@{pids}/loginuid				r,
+  audit @{PROC}/@{pid}/status				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  @{PROC}/@{pids}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/syslog-ng					mr,
@@ -87,8 +89,8 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng {
   /sys/fs/cgroup/openrc/syslog-ng/tasks			w,
   /sys/fs/cgroup/unified/syslog-ng/cgroup.procs		w,
   /sys/fs/cgroup/unified/syslog-ng/cgroup.events	r,
-  @{PROC}/@{pid}/uid_map				r,
-  @{PROC}/@{pid}/loginuid				rw,
+  audit @{PROC}/@{pid}/uid_map				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  owner @{PROC}/@{pid}/loginuid				rw,
   @{PROC}/sys/kernel/ngroups_max			r,
   
   # EXECUTABLES ----------------------------------------

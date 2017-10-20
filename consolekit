@@ -153,9 +153,9 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   /dev/pts/[0-9]*					rw,
   /dev/console						rw,
   /sys/devices/virtual/tty/tty*/active			r,
-  @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/stat					r,
-  @{PROC}/@{pid}/environ				r,
+  owner @{PROC}/@{pid}/fd/				r,
+  @{PROC}/@{pids}/stat					r,
+  @{PROC}/@{pids}/environ				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/console-kit-daemon				mr,
@@ -189,10 +189,10 @@ profile consolekit.ck-collect-session-info /usr/lib{,32,64}/ConsoleKit/ck-collec
   
   # PSEUDO ---------------------------------------------
   @{PROC}/tty/drivers					r,
-  @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/stat					r,
-  @{PROC}/@{pid}/environ				r,
-  @{PROC}/@{pid}/sessionid				r,
+  owner @{PROC}/@{pid}/fd/				r,
+  @{PROC}/@{pids}/stat					r,
+  @{PROC}/@{pids}/environ				r,
+  @{PROC}/@{pids}/sessionid				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/ConsoleKit/ck-collect-session-info	m,
@@ -209,7 +209,7 @@ profile consolekit.ck-get-x11-display-device /usr/lib{,32,64}/ConsoleKit/ck-get-
   
   # PSEUDO ---------------------------------------------
   @{PROC}/tty/drivers					r,
-  @{PROC}/@{pid}/stat					r,
+  audit @{PROC}/@{pid}/stat				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/ConsoleKit/ck-get-x11-display-device	m,

@@ -18,7 +18,7 @@ profile net-tools.iptunnel /sbin/iptunnel {
   network inet6 dgram,
   
   # PSEUDO ---------------------------------------------
-  @{PROC}/@{pid}/net/dev				r,
+  owner @{PROC}/@{pid}/net/dev				r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/iptunnel					mr,
@@ -34,7 +34,7 @@ profile net-tools.ifconfig /bin/ifconfig {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/net/dev				r,
+  audit @{PROC}/@{pid}/net/dev				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
   
   # EXECUTABLES ----------------------------------------
   /bin/ifconfig						mr,
@@ -65,9 +65,9 @@ profile net-tools.netstat /bin/netstat {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
-  @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/cmdline				r,
-  @{PROC}/@{pid}/net/*					r,
+  @{PROC}/@{pids}/fd/					r,
+  @{PROC}/@{pids}/cmdline				r,
+  owner @{PROC}/@{pid}/net/*				r,
   
   # EXECUTABLES ----------------------------------------
   /bin/netstat						mr,

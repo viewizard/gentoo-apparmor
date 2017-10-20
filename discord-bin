@@ -55,14 +55,15 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   /sys/devices/pci[0-9]**/{device,class,irq,resource,vendor} r,
   /sys/devices/virtual/tty/tty[0-9]**/active		r,
   @{PROC}/						r,
-  @{PROC}/@{pid}/stat					r,
+  @{PROC}/@{pids}/stat					r,
+  owner @{PROC}/@{pids}/auxv				r,
   owner @{PROC}/@{pid}/fd/				r,
-  @{PROC}/@{pid}/auxv					r,
-  owner @{PROC}/@{pid}/task/{,@{pid}/status}		r,
+  owner @{PROC}/@{pids}/task/				r,
+  owner @{PROC}/@{pids}/task/@{pids}/status		r,
   
   # AUDIT PSEUDO ---------------------------------------
-  deny @{PROC}/@{pid}/oom_score_adj			rw,
-  deny @{PROC}/@{pid}/cmdline				r,	# Лазит по процессам и смотрит параметры запуска.
+  deny @{PROC}/@{pids}/oom_score_adj			rw,
+  deny @{PROC}/@{pids}/cmdline				r,	# Лазит по процессам и смотрит параметры запуска.
   
   # EXECUTABLES ----------------------------------------
   /opt/discord/share/discord/Discord			Pxmr,

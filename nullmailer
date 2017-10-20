@@ -67,7 +67,7 @@ profile nullmailer.nullmailer-queue /usr/sbin/nullmailer-queue flags=(attach_dis
   /etc/nullmailer/{,*}					r,
   /var/spool/nullmailer/				r,
   /var/spool/nullmailer/**				rw,
-  link subset /var/spool/nullmailer/queue/[0-9]*.@{pid}	-> /var/spool/nullmailer/tmp/@{pid},
+  link subset /var/spool/nullmailer/queue/[0-9]*.@{pids} -> /var/spool/nullmailer/tmp/@{pids},
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
@@ -127,8 +127,8 @@ profile nullmailer.init.d /etc/init.d/nullmailer {
   /sys/fs/cgroup/openrc/nullmailer/tasks		w,
   /sys/fs/cgroup/unified/nullmailer/cgroup.procs	w,
   /sys/fs/cgroup/unified/nullmailer/cgroup.events	r,
-  @{PROC}/@{pid}/uid_map				r,
-  @{PROC}/@{pid}/loginuid				wr,
+  audit @{PROC}/@{pid}/uid_map				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  owner @{PROC}/@{pid}/loginuid				wr,
   @{PROC}/sys/kernel/ngroups_max			r,
   
   # EXECUTABLES ----------------------------------------

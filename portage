@@ -50,9 +50,10 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /sys/fs/cgroup/portage/{,**}				rw,
-  owner @{PROC}/@{pid}/cmdline				r,
-  @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/mount{s,info}				r,
+  audit owner @{PROC}/@{pid}/cmdline			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC}/@{pid}/mounts				r,
+  owner @{PROC}/@{pid}/mountinfo			r,
   @{PROC}/sys/kernel/osrelease				r,
   
   # EXECUTABLES ----------------------------------------
@@ -168,6 +169,9 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   profile scanelf /usr/bin/scanelf flags=(complain) {		# FIX ME! complain 06.10.2017
     #include <abstractions/base>
     
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
@@ -266,7 +270,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /dev/initctl					w,
     /sys/{,**}						r,
     @{PROC}/{,**}					r,
-    @{PROC}/@{pid}/fd/[0-9]*				w,
+    audit @{PROC}/@{pid}/fd/[0-9]*			w,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
@@ -426,7 +430,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
 
 # IMPROVE! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
 # множественные вложенные профили, выносим в отдельный профиль.
-profile portage_emerge_install_info_shell {
+profile portage_emerge_install_info_shell flags=(complain) {	# FIX ME! complain 18.10.2017
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -438,8 +442,15 @@ profile portage_emerge_install_info_shell {
   @{shell}						mr,
   /bin/bzip2						Cx,
   
-  profile bzip2 /bin/bzip2 {
+  # READS/WRITES ---------------------------------------
+  /usr/share/info/**.bz2				r,
+  
+  profile bzip2 /bin/bzip2 flags=(complain) {			# FIX ME! complain 18.10.2017
     #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/bzip2						mr,
@@ -460,7 +471,8 @@ profile portage.env-update @{PYTHON_EXEC}/env-update {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/mounts					r,
+  owner @{PROC}/@{pid}/mounts				r,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -480,8 +492,8 @@ profile portage.env-update @{PYTHON_EXEC}/env-update {
   /var/lib/portage/config				rwk,
   
   # TEMP -----------------------------------------------
-  owner /tmp/??????					rw,
-  owner /tmp/tmp??????					rwk,
+  owner /tmp/????????					rw,
+  owner /tmp/tmp????????				rwk,
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -509,7 +521,8 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/mounts				r,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Px -> portage_dispatch_conf_shell,
@@ -541,6 +554,7 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf {
     
     # CAPABILITIES -------------------------------------
     capability dac_override,
+    capability dac_read_search,
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -552,6 +566,7 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf {
     # READS/WRITES -------------------------------------
     /							r,
     /etc/{,**}						r,
+    /usr/share/gnupg/					r,
   }
 }
 
@@ -612,8 +627,8 @@ profile portage.portageq @{PYTHON_EXEC}/portageq {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/mounts					r,
-  @{PROC}/@{pid}/fd/					r,
+  audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -682,7 +697,7 @@ profile portage.etc-update /usr/sbin/etc-update {
   
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.*					rw,
-  owner /var/tmp/etc-update-@{pid}/{,**}		rw,
+  owner /var/tmp/etc-update-@{pids}/{,**}		rw,
   
   profile cat /bin/cat {
     #include <abstractions/base>
@@ -737,7 +752,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     /etc/**						w,
     
     # TEMP ---------------------------------------------
-    owner /var/tmp/etc-update-@{pid}/{,**}		rw,
+    owner /var/tmp/etc-update-@{pids}/{,**}		rw,
   }
   
   profile mkdir /bin/mkdir {
@@ -751,7 +766,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     /bin/mkdir						mr,
     
     # TEMP ---------------------------------------------
-    owner /var/tmp/etc-update-@{pid}/{,**/}		w,
+    owner /var/tmp/etc-update-@{pids}/{,**/}		w,
   }
   
   profile chmod /bin/chmod {
@@ -765,7 +780,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     /bin/chmod						mr,
     
     # TEMP ---------------------------------------------
-    owner /var/tmp/etc-update-@{pid}/			w,
+    owner /var/tmp/etc-update-@{pids}/			w,
   }
   
    profile chown /bin/chown {
@@ -780,7 +795,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     /bin/chown						mr,
     
     # TEMP ---------------------------------------------
-    owner /var/tmp/etc-update-@{pid}/			w,
+    owner /var/tmp/etc-update-@{pids}/			w,
   }
   
   profile sed /bin/sed {
@@ -797,7 +812,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     /etc/etc-update.conf				r,
     
     # TEMP ---------------------------------------------
-    owner /var/tmp/etc-update-@{pid}/{,**}		rw,
+    owner /var/tmp/etc-update-@{pids}/{,**}		rw,
   }
   
   profile sort /bin/sort {
@@ -822,7 +837,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     /bin/head						mr,
     
     # TEMP ---------------------------------------------
-    owner /var/tmp/etc-update-@{pid}/**			r,
+    owner /var/tmp/etc-update-@{pids}/**			r,
   }
   
   profile wc /bin/wc {
@@ -836,7 +851,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     /bin/wc						mr,
     
     # TEMP ---------------------------------------------
-    owner /var/tmp/etc-update-@{pid}/**			r,
+    owner /var/tmp/etc-update-@{pids}/**			r,
   }
   
   profile mv /bin/mv {
@@ -878,7 +893,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     /etc/{,**}						r,
     
     # TEMP ---------------------------------------------
-    owner /var/tmp/etc-update-@{pid}/**			r,
+    owner /var/tmp/etc-update-@{pids}/**			r,
   }
   
   profile find /usr/bin/find {
@@ -1147,7 +1162,8 @@ profile portage.emaint @{PYTHON_EXEC}/emaint {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/mounts				r,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,

@@ -31,7 +31,7 @@ profile iptables.xtables-multi /sbin/xtables-multi {
   /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/net/ip_tables_names			r,
+  owner @{PROC}/@{pid}/net/ip_tables_names		r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/xtables-multi					mr,
@@ -76,7 +76,7 @@ profile iptables.init.d /etc/init.d/iptables {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{PROC}/@{pid}/net/ip{,6}_tables_names		r,
+    owner @{PROC}/@{pid}/net/ip{,6}_tables_names	r,
     
     # EXECUTABLES --------------------------------------
     /bin/cat						mr,
@@ -160,7 +160,7 @@ profile iptables.firewall /usr/sbin/firewall {
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
-    @{PROC}/@{pid}/net/ip_tables_names			r,
+    owner @{PROC}/@{pid}/net/ip_tables_names		r,
     
     # EXECUTABLES --------------------------------------
     /bin/cat						mr,

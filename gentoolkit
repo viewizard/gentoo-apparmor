@@ -21,8 +21,8 @@ profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/mounts					r,
-  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/mounts				r,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -69,8 +69,8 @@ profile gentoolkit.equery @{PYTHON_EXEC}/equery {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/mounts					r,
+  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -114,6 +114,8 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
+  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -191,8 +193,8 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/mounts					r,
+  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,

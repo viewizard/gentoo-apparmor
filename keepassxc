@@ -37,7 +37,7 @@ profile keepassxc /usr/bin/keepassxc {
   /dev/tty						r,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/{cmdline,status}			r,
+  @{PROC}/@{pid}/{maps,cmdline,status}			r,	# IMPROVE! UID=$USER(owner),root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/keepassxc					mr,

@@ -47,7 +47,8 @@ profile gnome-nettool /usr/bin/gnome-nettool {
   /dev/pts/[0-9]*					rw,
   /sys/devices/{virtual,pci**}/net/*/statistics/*	r,
   owner @{PROC}/@{pid}/fd/				r,
-  @{PROC}/@{pid}/net/{dev,tcp,udp,udplite,raw,igmp}	r,
+  @{PROC}/@{pid}/net/dev				r,	# IMPROVE! UID=$USER(owner),root
+  audit @{PROC}/@{pid}/net/{tcp,udp,udplite,raw,igmp}	r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gnome-nettool				mr,

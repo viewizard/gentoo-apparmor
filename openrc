@@ -34,11 +34,10 @@ profile openrc /sbin/openrc flags=(complain) {
   /sys/fs/cgroup/**					rwk,
   @{PROC}/						r,
   @{PROC}/cmdline					r,
-  @{PROC}/@{pid}/cmdline				r,
-  @{PROC}/@{pid}/environ				r,
-  @{PROC}/@{pid}/stat					r,
-  @{PROC}/@{pid}/mounts					r,
-  owner @{PROC}/@{pid}/cmdline				r,
+  @{PROC}/@{pids}/cmdline				r,
+  owner @{PROC}/1/environ				r,
+  audit @{PROC}/@{pid}/stat				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
   
   # EXECUTABLES ----------------------------------------
   /sbin/openrc						mr,
@@ -142,7 +141,8 @@ profile openrc.rc-status /bin/rc-status {
   /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
   @{PROC}/cmdline					r,
-  @{PROC}/@{pid}/{cmdline,environ}			r,
+  @{PROC}/@{pids}/cmdline				r,
+  audit @{PROC}/@{pid}/environ				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
   
   # EXECUTABLES ----------------------------------------
   /bin/rc-status					mr,
@@ -341,7 +341,7 @@ profile openrc.init.sh /lib{,32,64}/rc/sh/init.sh flags=(complain) {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{PROC}/@{pid}/environ				r,
+    owner @{PROC}/@{pid}/environ			r,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/md5sum					mr,
@@ -391,7 +391,7 @@ profile openrc.kill_all /lib{,32,64}/rc/bin/kill_all flags=(complain) {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   @{PROC}/						r,
-  @{PROC}/@{pid}/status					r,
+  @{PROC}/@{pids}/status				r,
   
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/rc/bin/kill_all				mr,
@@ -431,8 +431,8 @@ profile openrc.mountinfo /lib{,32,64}/rc/bin/mountinfo flags=(complain) {
   /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/mounts					r,
   @{PROC}/cgroups					r,
+  owner @{PROC}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/rc/bin/mountinfo				mr,
@@ -604,7 +604,7 @@ profile openrc.service /lib{,32,64}/rc/bin/service_* flags=(attach_disconnected,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
-  @{PROC}/@{pid}/cmdline				r,
+  @{PROC}/@{pids}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/rc/bin/service_*				mr,
@@ -770,7 +770,7 @@ profile openrc.netmount.init.d /etc/init.d/netmount {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{PROC}/@{pid}/mountinfo				r,
+    owner @{PROC}/@{pid}/mountinfo			r,
     
     # EXECUTABLES --------------------------------------
     /bin/umount						mr,
@@ -1469,7 +1469,8 @@ profile openrc.root.init.d /etc/init.d/root {
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-    @{PROC}/@{pid}/mount{s,info}			r,
+    audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+    audit @{PROC}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
     
     # EXECUTABLES --------------------------------------
     /bin/mount						mr,
@@ -1671,7 +1672,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount {
     /dev/pts/[0-9]*					rw,
     /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
     /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
-    @{PROC}/@{pid}/mountinfo				r,
+    owner @{PROC}/@{pid}/mountinfo			r,
     
     # EXECUTABLES --------------------------------------
     /bin/mount						mr,
@@ -1698,7 +1699,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{PROC}/@{pid}/mountinfo				r,
+    audit @{PROC}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
     
     # EXECUTABLES --------------------------------------
     /bin/umount						mr,
@@ -2753,7 +2754,7 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{PROC}/@{pid}/mountinfo				r,
+    audit @{PROC}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
     
     # EXECUTABLES --------------------------------------
     /bin/umount						mr,

@@ -83,7 +83,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
-    @{PROC}/@{pid}/fd/					r,
+    owner @{PROC}/@{pid}/fd/				r,
     
     # EXECUTABLES --------------------------------------
     @{shell}						ixmr,	# Все правильно, запуск и mmap.

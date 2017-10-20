@@ -75,22 +75,22 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   /sys/devices/system/cpu/{,**}				r,
   /sys/devices/pci[0-9]*/**/uevent			r,
   @{PROC}/						r,
-  @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/mountinfo				r,
-  @{PROC}/@{pid}/stat					r,
-  @{PROC}/@{pid}/net/arp				r,
-  owner @{PROC}/@{pid}/task/@{pid}/stat			r,
   @{PROC}/filesystems					r,
-  @{PROC}/@{pid}/net/if_inet6				r,
-  @{PROC}/@{pid}/net/ipv6_route				r,
-  @{PROC}/@{pid}/net/dev				r,
-  @{PROC}/@{pid}/net/wireless				r,
-  owner @{PROC}/@{pid}/statm				r,
-  owner @{PROC}/@{pid}/smaps				r,
-  owner @{PROC}/@{pid}/environ				r,
-  owner @{PROC}/@{pid}/auxv				r,
-  owner @{PROC}/@{pid}/cmdline				r,
+  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC}/@{pid}/mountinfo			r,
+  owner @{PROC}/@{pid}/stat				r,
+  audit owner @{PROC}/@{pid}/statm			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  audit owner @{PROC}/@{pid}/smaps			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  audit owner @{PROC}/@{pid}/environ			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  audit owner @{PROC}/@{pid}/auxv			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  audit owner @{PROC}/@{pid}/cmdline			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
   owner @{PROC}/@{pid}/mounts				r,
+  owner @{PROC}/@{pid}/task/@{pids}/stat		r,
+  @{PROC}/@{pid}/net/arp				r,	# IMPROVE! UID=$USER(owner),root
+  audit @{PROC}/@{pid}/net/if_inet6			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  audit @{PROC}/@{pid}/net/ipv6_route			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  audit @{PROC}/@{pid}/net/dev				r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  audit @{PROC}/@{pid}/net/wireless			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/firefox/firefox{,-bin}		mr,
@@ -180,7 +180,7 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   /sys/devices/system/cpu/				r,
   owner @{PROC}/@{pid}/stat				r,
   owner @{PROC}/@{pid}/cmdline				r,
-  owner @{PROC}/@{pid}/task/@{pid}/stat			r,
+  owner @{PROC}/@{pid}/task/@{pids}/stat		r,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/firefox/plugin-container		m,

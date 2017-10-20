@@ -398,7 +398,8 @@ profile shell_root {
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-    @{PROC}/@{pid}/mount{s,info}			r,
+    audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+    audit @{PROC}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
     
     # EXECUTABLES --------------------------------------
     /bin/mount						mr,
@@ -419,7 +420,7 @@ profile shell_root {
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-    @{PROC}/@{pid}/mountinfo				r,
+    audit @{PROC}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
     
     # EXECUTABLES --------------------------------------
     /bin/umount						mr,

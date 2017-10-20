@@ -28,8 +28,9 @@ profile iotop @{PYTHON_EXEC}/iotop {
   @{PROC}/						r,
   @{PROC}/vmstat					r,
   @{PROC}/sys/kernel/pid_max				r,
-  @{PROC}/@{pid}/task/					r,
-  @{PROC}/@{pid}/{cmdline,status}			r,
+  @{PROC}/@{pids}/task/					r,
+  @{PROC}/@{pids}/cmdline				r,
+  @{PROC}/@{pids}/status				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/file						Cx,

@@ -50,8 +50,8 @@ profile xfce4-taskmanager /usr/bin/xfce4-taskmanager {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
-  @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/{cmdline,status,stat}			r,
+  owner @{PROC}/@{pid}/fd/				r,
+  @{PROC}/@{pids}/{cmdline,status,stat}			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-taskmanager				mr,

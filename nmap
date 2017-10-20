@@ -18,6 +18,8 @@ profile nmap /usr/bin/nmap {
   capability net_raw,
   
   # NETWORK --------------------------------------------
+  network netlink raw,
+  network packet raw,
   network inet dgram,
   network inet6 dgram,
   network inet stream,
@@ -27,7 +29,7 @@ profile nmap /usr/bin/nmap {
   /dev/tty						r,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/net/dev				r,
+  owner @{PROC}/@{pid}/net/dev				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/nmap						mr,

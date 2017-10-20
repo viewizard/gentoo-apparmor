@@ -25,8 +25,8 @@ profile apparmor-utils.aa-status @{PYTHON_EXEC}/aa-status flags=(attach_disconne
   /dev/pts/[0-9]*					rw,
   /sys/kernel/security/apparmor/*			r,
   @{PROC}/						r,
-  @{PROC}/@{pid}/attr/{current,prev,exec}		r,
-  @{PROC}/@{pid}/mounts					r,
+  @{PROC}/@{pids}/attr/{current,prev,exec}		r,
+  owner @{PROC}/@{pid}/mounts				r,
   
   # READS/WRITES ---------------------------------------
   @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
@@ -54,10 +54,10 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
-  @{PROC}/@{pid}/cmdline				r,
-  @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/mounts					r,
-  @{PROC}/@{pid}/attr/{current,prev,exec}		r,
+  @{PROC}/@{pids}/cmdline				r,
+  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC}/@{pid}/mounts				r,
+  @{PROC}/@{pids}/attr/{current,prev,exec}		r,
   
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,
@@ -88,9 +88,9 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     @{PROC}/						r,
-    @{PROC}/@{pid}/fd/					r,
-    @{PROC}/@{pid}/cmdline				r,
-    @{PROC}/@{pid}/net/*				r,
+    audit @{PROC}/@{pid}/fd/				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+    audit @{PROC}/@{pid}/cmdline			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+    audit @{PROC}/@{pid}/net/*				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
@@ -181,7 +181,7 @@ profile apparmor-utils.aa-logprof @{PYTHON_EXEC}/aa-logprof {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/mounts					r,
+  owner @{PROC}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,

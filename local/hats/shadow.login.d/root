@@ -28,7 +28,7 @@
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/urandom						r,
-  @{PROC}/@{pid}/fd/					r,
+  audit @{PROC}/@{pid}/fd/				r,	# FIX ME! @{pid}/@{pids} audit 16.10.2017
   @{PROC}/sys/kernel/ngroups_max			r,
   
   # EXECUTABLES ----------------------------------------

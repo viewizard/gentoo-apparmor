@@ -36,7 +36,7 @@ profile thunar-volman /usr/bin/thunar-volman {
   /sys/devices/pci[0-9]*/**/usb[0-9]*/{,**/}uevent	rw,
   /sys/devices/pci[0-9]*/**/ata[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{,name,uevent} r,
-  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/fd/				r,
   owner @{PROC}/@{pid}/mountinfo			r,
   
   # EXECUTABLES ----------------------------------------
@@ -67,7 +67,12 @@ profile thunar-volman.thunar-volman-settings /usr/bin/thunar-volman-settings {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar-volman-settings			mr,
+  /usr/bin/exo-open					Px,
+  
+  # USERS ----------------------------------------------
+  @{HOME}/.config/xfce4/help.rc				r,
 }

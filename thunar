@@ -67,9 +67,8 @@ profile thunar /usr/bin/{Thunar,thunar} {
   /dev/pts/[0-9]*					rw,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
-  @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/mounts					r,
-  owner @{PROC}/@{pid}/mountinfo			r,
+  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC}/@{pid}/mount{s,info}			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar					mr,
@@ -224,9 +223,8 @@ profile thunar_root {
   /dev/pts/[0-9]*					rw,
   /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
-  @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/mounts					r,
-  owner @{PROC}/@{pid}/mountinfo			r,
+  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC}/@{pid}/mount{s,info}			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar					mr,
@@ -333,7 +331,7 @@ profile thunar.thunar-sendto-email /usr/lib{,32,64}/Thunar/thunar-sendto-email {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/Thunar/thunar-sendto-email		mr,

@@ -65,7 +65,7 @@ profile nm-applet /usr/bin/nm-applet {
   /dev/pts/[0-9]*					rw,
   /sys/devices/pci[0-9]**/net/{,**}			r,
   /sys/devices/pci[0-9]**/uevent			r,
-  @{PROC}/@{pid}/fd/					r,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/nm-applet					mr,
