@@ -35,6 +35,6 @@
 /run/NetworkManager/resolv.conf				r,	# networkmanager
 /etc/samba/lmhosts					r,
 /etc/services						r,
-/lib{,32,64}/libnss_*.so*				mr,	# The nss libraries are sometimes used in addition to PAM;
-/usr/lib{,32,64}/libnss_*.so*				mr,	# make sure they are available
+/lib{,32,64}/libnss_*.so{,.[0-9]*}			mr,	# The nss libraries are sometimes used in addition to PAM;
+/usr/lib{,32,64}/libnss_*.so{,.[0-9]*}			mr,	# make sure they are available
 /var/lib/misc/*.db					r,	# db backend

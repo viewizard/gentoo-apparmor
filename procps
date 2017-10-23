@@ -86,8 +86,8 @@ profile procps.pgrep /usr/bin/pgrep {
   /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
   audit @{PROC}/@{pid}/stat				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
-  audit @{PROC}/@{pid}/status				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
-  audit @{PROC}/@{pid}/cmdline				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
+  @{PROC}/@{pids}/status				r,
+  @{PROC}/@{pids}/cmdline				r,
   audit @{PROC}/@{pid}/loginuid				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
   @{PROC}/sys/kernel/osrelease				r,
   

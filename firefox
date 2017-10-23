@@ -49,6 +49,7 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/notifications>
   #include <abstractions/profile_transitions/users-mime-related>
+  #include <local/profile_blocks/firefox.d>
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(kill) peer="firefox.plugin-container",
@@ -131,7 +132,6 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   owner /tmp/mozilla-temp-*				rw,
   owner /tmp/mozilla_*/{,**}				rw,
   owner /tmp/firefox_*/{,**}				rwk,
-  owner /tmp/gnotifier/{,**}				rw,
   /var/tmp/						r,
   owner /var/tmp/etilqs_*				rw,
   

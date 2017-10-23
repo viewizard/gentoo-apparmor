@@ -3,6 +3,13 @@ out of tree patches (kernel) git://kernel.ubuntu.com/jj/apparmor-backports
 out of tree patches (user-space) git://git.launchpad.net/~jjohansen/apparmor
 
 
+- смотреть, когда в ядро вернут default профиль (confined boot), был до 4.13, потом убрали.
+Обещают, что будет работать через команду загрузки ядра.
+Убрали т.к. не мог использоваться в убунте (нужно было рекомпилировать ядро) + не работал нормально,
+когда убирали профиль, скидывался в unconfined, а не в default (т.е. первоначальный default с unconfined).
+https://bugs.launchpad.net/apparmor/+bug/1725335
+
+
 - AA + IMA/EVM
 https://sourceforge.net/p/linux-ima/mailman/linux-ima-devel/thread/20170829190401.18056-1-mjg59%40google.com/#msg36017307
 если добавят патч, дополнительно к уже существующим правилам: запуск codeblocks(astromenace), evelauncher, make, portage.emerge(shell,sandbox), kernel (профили скриптов) + сюда же добавить mmap nvidia-drivers (?) + wine

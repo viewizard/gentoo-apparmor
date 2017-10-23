@@ -66,8 +66,8 @@ profile lvm2.dmeventd /sbin/dmeventd {
   /sys/devices/**/uevent				r,
   /sys/devices/virtual/bdi/[0-9]*:[0-9]*/read_ahead_kb	r,
   @{PROC}/devices					r,
-  audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
-  audit @{PROC}/@{pid}/oom_score_adj			w,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  owner @{PROC}/@{pid}/mounts				r,
+  owner @{PROC}/@{pid}/oom_score_adj			w,
   
   # EXECUTABLES ----------------------------------------
   /sbin/dmeventd					mr,

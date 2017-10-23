@@ -11,10 +11,13 @@
 # READS/WRITES -----------------------------------------
 /etc/gtk-[0-9]*/*					r,
 /etc/fonts/*						r,
-/etc/pango/*						r,
-/usr/lib{,32,64}/pango/**				mr,
-/usr/lib{,32,64}/gtk-[0-9]*/**				mr,
-/usr/lib{,32,64}/gdk-pixbuf-*/**			mr,
+/etc/pango/*						r,	# pango, GTK+-2.x
+/usr/lib{,32,64}/pango/**				r,	# pango, GTK+-2.x
+/usr/lib{,32,64}/pango/[0-9]*/**.so			mr,	# pango, GTK+-2.x
+/usr/lib{,32,64}/gtk-[0-9]*/**				r,
+/usr/lib{,32,64}/gtk-[0-9]*/**.so			mr,
+/usr/lib{,32,64}/gdk-pixbuf-[0-9]*/**			r,	# gdk-pixbuf
+/usr/lib{,32,64}/gdk-pixbuf-[0-9]*/[0-9]*/**.so		mr,	# gdk-pixbuf
 /usr/share/themes/{,**}					r,
 /usr/share/gtk-[0-9]*/*					r,
 /usr/share/glib-[0-9]*/schemas/gschemas.compiled	r,

@@ -17,12 +17,18 @@ profile xfce4-notifyd /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd {
   #include <abstractions/gtk>
   #include <abstractions/video>
   #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/accessibility-strict>
+  #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/xfconf>
   #include <abstractions/dbus/session-bind>
   #include <abstractions/X_sudo>				# RBAC! Нужно для запуска запущенным под root-ом
   								# dbus-daemon, чтобы сделал вывод в сессию пользователя.
   								# Временно делаем одним профилем.
+  #include <local/profile_blocks/xfce4-notifyd.d>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   
   # DBUS -----------------------------------------------
   dbus receive
@@ -44,15 +50,9 @@ profile xfce4-notifyd /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd {
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd		mr,
   
-  # READS/WRITES ---------------------------------------
-  /usr/lib{,32,64}/pango/*/modules/*			m,
-  /usr/share/hplip/data/images/32x32/*.png		r,
-  
   # USERS ----------------------------------------------
   owner @{HOME_CACHE}/xfce4-notifyd-theme.rc*		rw,
-  
-  # TEMP -----------------------------------------------
-  owner /tmp/gnotifier/gnotifier-*			r,
+  owner @{HOME_CACHE}/xfce4/notifyd/{,**}		rw,
 }
 
 profile xfce4-notifyd.xfce4-notifyd-config /usr/bin/xfce4-notifyd-config {
@@ -75,4 +75,7 @@ profile xfce4-notifyd.xfce4-notifyd-config /usr/bin/xfce4-notifyd-config {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-notifyd-config				mr,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME_CACHE}/xfce4/notifyd/{,**}		rw,
 }
