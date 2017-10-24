@@ -42,16 +42,11 @@ profile shell_users {
   #include <abstractions/shell>
   #include <abstractions/consoles>
   #include <abstractions/nameservice>
-  #include <abstractions/fs/access-by-users-preset-rwk>
-  #include <abstractions/fs/deny-by-pattern-internet>
   
   # CAPABILITIES ---------------------------------------
-  capability setuid,
-  capability sys_tty_config,
-  capability kill,
-  
-  # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					rw,
+  audit capability setuid,					# FIX ME! audit 24.10.2017
+  audit capability sys_tty_config,				# FIX ME! audit 24.10.2017
+  audit capability kill,					# FIX ME! audit 24.10.2017
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
@@ -83,7 +78,6 @@ profile shell_users {
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
-  /etc/bash/bash_logout					r,
   
   profile grep /bin/grep {
     #include <abstractions/base>
@@ -145,21 +139,7 @@ profile shell_root {
   #include <abstractions/shell>
   #include <abstractions/consoles>
   #include <abstractions/nameservice>
-  #include <abstractions/fs/access-by-pattern-filemanager>
-  #include <abstractions/fs/access-by-pattern-systemusers>
   #include <local/profile_blocks/shell_root.d/>
-  
-  # CAPABILITIES ---------------------------------------
-  audit capability setuid,					# FIX ME! audit 25.07.2017
-  audit capability setgid,					# FIX ME! audit 25.07.2017
-  audit capability sys_admin,					# FIX ME! audit 25.07.2017
-  audit capability chown,					# FIX ME! audit 25.07.2017
-  audit capability mknod,					# FIX ME! audit 25.07.2017
-  audit capability fsetid,					# FIX ME! audit 25.07.2017
-  audit capability fowner,					# FIX ME! audit 25.07.2017
-  audit capability sys_tty_config,				# FIX ME! audit 25.07.2017
-  audit capability kill,					# FIX ME! audit 25.07.2017
-  audit capability setfcap,					# FIX ME! audit 25.07.2017
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(hup, int, kill, term, cont),		# Реакция на нажатия комбинаций кнопок.
@@ -689,6 +669,26 @@ profile shell_root {
     # EXECUTABLES --------------------------------------
     /usr/bin/diff					mr,
   }
+}
+
+# профиль специального пользователя root (переключение через sudo)
+profile shell_sudo {
+  #include <abstractions/base>
+  #include <abstractions/shell>
+  #include <abstractions/consoles>
+  #include <abstractions/nameservice>
+  #include <abstractions/profile_transitions/sudo>
+  
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(hup, int, kill, term, cont),		# Реакция на нажатия комбинаций кнопок.
+  								# IMPROVE! Отсылать запущенным в этом шеле.
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
+  /usr/bin/dircolors					Px,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/profile.env					r,
 }
 
 # профиль специального пользователя root после переключения chroot

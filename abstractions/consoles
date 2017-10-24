@@ -12,6 +12,7 @@
 # PSEUDO -----------------------------------------------
 /dev/console						rw,
 /dev/tty						rw,
+/dev/tty[0-9]*						rw,
 /dev/pts/						r,	# this entry is a tad unfortunate; /dev/tty will always be
 /dev/pts/[0-9]*						rw,	# associated with the controlling terminal by the kernel,
 								# but if a program uses the /dev/pts/ interface, it actually

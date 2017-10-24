@@ -13,7 +13,7 @@
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
   #include <abstractions/authentication-pam_mount>
-  #include <local/profile_blocks/sudo.d/>
+  #include <abstractions/profile_transitions/sudo>
   
   # CAPABILITIES ---------------------------------------
   capability dac_override,
@@ -24,7 +24,7 @@
   capability fsetid,
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(cont, hup) peer="shell_root",
+  signal (send) set=(cont, hup) peer="shell_sudo",
   
   # PSEUDO -------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -32,13 +32,13 @@
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Px -> shell_root,
-  /sbin/xtables-multi					Px,
+  @{shell}						Px -> shell_sudo,
   /usr/bin/thunar					Px -> thunar_root,	# XFCE4
   /usr/bin/dbus-daemon					Px,
   /usr/bin/gksu_askpass.sh				Px,
   /usr/bin/gsmartcontrol				Px,
   /usr/sbin/firewall					Px,
+  audit /media/sdb2/VM_SERVERS/launch_scripts/*		Px,
   
   # READS/WRITES ---------------------------------------
   /etc/environment					r,

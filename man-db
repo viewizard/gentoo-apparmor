@@ -74,11 +74,15 @@ profile man-db.man /usr/bin/man {
   /usr/bin/neqn						Cx,
   /usr/bin/nroff					Px,
   /usr/bin/tbl						Cx,
+  /usr/bin/manpager					Px,
   /usr/libexec/man-db/manconv				Px,
   
   # READS/WRITES ---------------------------------------
+  /							r,
   /etc/man_db.conf					r,
   /usr/share/man/{,**}					r,
+  /usr/share/gcc-data/@{CHOST}/[0-9]*/man/{,**}		r,
+  /usr/share/binutils-data/@{CHOST}/[0-9]*/man/{,**}	r,
   /var/cache/man/					r,
   /var/cache/man/**					rwk,
   
@@ -109,7 +113,7 @@ profile man-db.man /usr/bin/man {
     
     # READS/WRITES -------------------------------------
     /usr/share/man/{,**}				r,
-    /var/cache/man/**					r,
+    /var/cache/man/**					rw,
   }
   
   profile less /usr/bin/less {
