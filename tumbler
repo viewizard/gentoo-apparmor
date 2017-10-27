@@ -25,10 +25,11 @@ profile tumbler /usr/lib{,32,64}/tumbler-1/tumblerd {
   #include <abstractions/fs/access-by-users-preset-rk>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/fs/deny-private-strict>
+  #include <abstractions/fs/deny-by-pattern-trash>		# Запрещаем создавать превью в корзине.
   #include <abstractions/unix/gvfsd-trash>
   #include <abstractions/unix/gvfsd-smb>
-  #include <abstractions/unix/gvfsd-trash-virtual>
   #include <abstractions/unix/gvfsd-smb-virtual>
+  #include <abstractions/unix/deny-gvfsd-trash-virtual>		# Запрещаем создавать превью в корзине.
   
   # DBUS -----------------------------------------------
   dbus (send, receive)

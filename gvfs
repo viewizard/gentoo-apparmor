@@ -71,7 +71,7 @@
 @{GVFSD_TRASH_SOCKET}+="nvidia-drivers.nvidia-settings"
 
 # Профили с доступом к gvfsd-trash анонимному сокету
-@{GVFSD_TRASH_ANON_SOCKET}="tumbler"
+#@{GVFSD_TRASH_ANON_SOCKET}=""
 
 profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monitor {
   #include <abstractions/base>
@@ -496,10 +496,10 @@ profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   			type=stream
   			addr="@/dbus-vfs-daemon/socket-*"
   			peer=(label="@{GVFSD_TRASH_SOCKET}"),
-  unix (send, receive)
-			type=stream
-			addr=none
-			peer=(label="@{GVFSD_TRASH_ANON_SOCKET}"),
+#  unix (send, receive)
+#  			type=stream
+#  			addr=none
+#  			peer=(label="@{GVFSD_TRASH_ANON_SOCKET}"),
   
   # DBUS -----------------------------------------------
   dbus (send, receive)
