@@ -164,6 +164,10 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     
     /usr/share/info/{,**}				r,
     /usr/share/info/dir					w,
+    /usr/share/binutils-data/@{CHOST}/[0-9]*/info/{,**}	r,
+    /usr/share/binutils-data/@{CHOST}/[0-9]*/info/dir	w,
+    /usr/share/gcc-data/@{CHOST}/[0-9]*/info/{,**}	r,
+    /usr/share/gcc-data/@{CHOST}/[0-9]*/info/dir	w,
   }
   
   profile scanelf /usr/bin/scanelf flags=(complain) {		# FIX ME! complain 06.10.2017
