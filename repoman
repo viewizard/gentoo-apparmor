@@ -37,8 +37,8 @@ profile repoman @{PYTHON_EXEC}/repoman {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  audit @{PROC}/@{pid}/fd/				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
-  audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
+  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						cx,

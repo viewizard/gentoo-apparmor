@@ -18,6 +18,9 @@ profile gsmartcontrol /usr/bin/gsmartcontrol {
   #include <abstractions/video>
   #include <abstractions/X_sudo>
   #include <abstractions/nameservice>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/accessibility-strict>
+  #include <abstractions/dbus/at-spi>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -26,6 +29,7 @@ profile gsmartcontrol /usr/bin/gsmartcontrol {
   @{PROC}/partitions					r,
   @{PROC}/devices					r,
   @{PROC}/scsi/scsi					r,
+  @{PROC}/scsi/sg/devices				r,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------

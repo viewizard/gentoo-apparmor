@@ -38,6 +38,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   signal (send) set=(term,kill) peer="portage.emerge//sandbox",
   
   # NETWORK --------------------------------------------
+  network netlink raw,
   network inet dgram,
   network inet6 dgram,
   network inet stream,
@@ -201,12 +202,22 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   profile rsync /usr/bin/rsync flags=(complain) {		# FIX ME! complain 06.10.2017
     #include <abstractions/base>
     
+    # NETWORK ------------------------------------------
+    network inet stream,
+    network inet6 stream,
+    
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/rsync					mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/portage/{,**}					rw,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/tmp*					rw,
   }
   
   profile free /usr/bin/free flags=(complain) {			# FIX ME! complain 06.10.2017
@@ -215,6 +226,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
+    @{PROC}/sys/kernel/osrelease			r,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/free					mr,
@@ -1221,7 +1233,7 @@ profile portage.emaint @{PYTHON_EXEC}/emaint {
   }
 }
 
-profile portage.cgroup-release-agent /usr/lib{,32,64}/portage/@{PYTHON}/cgroup-release-agent {
+profile portage.cgroup-release-agent /{usr/lib{,32,64}/portage/@{PYTHON},var/tmp/portage/._portage_reinstall_.*/bin}/cgroup-release-agent {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -1233,6 +1245,7 @@ profile portage.cgroup-release-agent /usr/lib{,32,64}/portage/@{PYTHON}/cgroup-r
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/portage/@{PYTHON}/cgroup-release-agent r,
+  /var/tmp/portage/._portage_reinstall_.*/bin/cgroup-release-agent r,
   @{shell}						mr,
   /bin/rmdir						Cx,
   
@@ -1264,6 +1277,7 @@ profile portage.ebuild.sh /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh {
   @{shell}						mr,
   
   # READS/WRITES ---------------------------------------
+  /etc/portage/bashrc					r,
   /usr/share/sandbox/sandbox.bashrc			r,
   /usr/portage/{,**}					r,
   /usr/local/portage/{,**}				r,
