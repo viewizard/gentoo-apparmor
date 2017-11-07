@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 # доступ к файлам в @{HOME}, gvfs и /media с пользовательской
-# предустановкой для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
+# предустановкой для abstractions/fs/access-by-user-preset-rwk
 
 #include <abstractions/fs/access-by-pattern-xdg-open>
 #include <abstractions/fs/deny-remove-home-sensitive>
@@ -17,18 +17,18 @@
 /							r,
 @{HOMEDIRS}/						r,
 owner @{HOME}/						r,
-owner @{HOME}/@{USERS_DIR}/				r,
-owner @{HOME}/@{USERS_FILE}				rwk,
-owner @{HOME}/@{USERS_DIR}/@{USERS_FILE}		rwk,
+owner @{HOME}/@{USERS_DIR_rwk}/				r,
+owner @{HOME}/@{USERS_FILE_rwk}				rwk,
+owner @{HOME}/@{USERS_DIR_rwk}/@{USERS_FILE_rwk}	rwk,
 owner /run/user/[0-9]*/gvfs/				r,	# gvfs
-owner /run/user/[0-9]*/gvfs/*/@{USERS_DIR}/		r,	# gvfs
-owner /run/user/[0-9]*/gvfs/*/@{USERS_FILE}		rwk,	# gvfs
-owner /run/user/[0-9]*/gvfs/*/@{USERS_DIR}/@{USERS_FILE} rwk,	# gvfs
+owner /run/user/[0-9]*/gvfs/*/@{USERS_DIR_rwk}/		r,	# gvfs
+owner /run/user/[0-9]*/gvfs/*/@{USERS_FILE_rwk}		rwk,	# gvfs
+owner /run/user/[0-9]*/gvfs/*/@{USERS_DIR_rwk}/@{USERS_FILE_rwk} rwk,	# gvfs
 /media/{,*/}						r,
-/media/*/@{USERS_DIR}/					r,
-/media/*/@{USERS_FILE}					rwk,
-/media/*/@{USERS_DIR}/@{USERS_FILE}			rwk,
+/media/*/@{USERS_DIR_rwk}/				r,
+/media/*/@{USERS_FILE_rwk}				rwk,
+/media/*/@{USERS_DIR_rwk}/@{USERS_FILE_rwk}		rwk,
 /run/media/*/{,*/}					r,	# udisks2, /run/media/$USER/VolumeName/
-/run/media/*/*/@{USERS_DIR}/				r,	# udisks2, /run/media/$USER/VolumeName/
-/run/media/*/*/@{USERS_FILE}				rwk,	# udisks2, /run/media/$USER/VolumeName/
-/run/media/*/*/@{USERS_DIR}/@{USERS_FILE}		rwk,	# udisks2, /run/media/$USER/VolumeName/
+/run/media/*/*/@{USERS_DIR_rwk}/			r,	# udisks2, /run/media/$USER/VolumeName/
+/run/media/*/*/@{USERS_FILE_rwk}			rwk,	# udisks2, /run/media/$USER/VolumeName/
+/run/media/*/*/@{USERS_DIR_rwk}/@{USERS_FILE_rwk}	rwk,	# udisks2, /run/media/$USER/VolumeName/

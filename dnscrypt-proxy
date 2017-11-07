@@ -79,7 +79,7 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy {
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/dnscrypt-proxy			r,
-  audit /run/dnscrypt-proxy/				rw,	# FIX ME! должно уйти в mkdir audit 13.09.2017
+  /run/dnscrypt-proxy/					r,
   
   profile shell @{shell} {
     #include <abstractions/base>

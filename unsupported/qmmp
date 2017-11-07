@@ -12,57 +12,37 @@
 
 # предустановка для abstractions/fs/access-by-user-preset-rk
 @{USERS_DIR_rk}="[^.]**"
-@{USERS_FILE_rk}="[^.]*.{ogg,mp3,mp4,wma,s3m,stm,wav,OGG,MP3,MP4,WMA,S3M,STM,WAV}"
-# предустановка для abstractions/fs/access-by-user-preset-rwk
-@{USERS_DIR_rwk}="[^.]**"
-@{USERS_FILE_rwk}="[^.]*.{m3u,audpl,asx,xspf,pls,M3U,AUDPL,ASX,XSPF,PLS}"
+@{USERS_FILE_rk}="[^.]*.{ogg,mp3,mp4,wma,s3m,stm,wav,m3u,OGG,MP3,MP4,WMA,S3M,STM,WAV,M3U}"
 
-profile audacious /usr/bin/audacious {
+profile qmmp /usr/bin/qmmp {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
   #include <abstractions/audio>
-  #include <abstractions/gtk>
+  #include <abstractions/qt>
   #include <abstractions/video>
   #include <abstractions/X>
+  #include <abstractions/nameservice>
+  #include <abstractions/xdg-open>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
-  #include <abstractions/dbus/gvfs>
-  #include <abstractions/dbus/session-bind>
   #include <abstractions/fs/access-by-users-preset-rk>
-  #include <abstractions/fs/access-by-users-preset-rwk>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/profile_transitions/users-strict-web>
   
-  # DBUS -----------------------------------------------
-  dbus (send, receive)
-  	bus=session
-  	path="/org/atheme/audacious"
-  	interface="org.freedesktop.DBus.Properties"
-  	member=GetAll
-  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
-  dbus (send, receive)
-  	bus=session
-  	path="/org/atheme/audacious"
-  	interface="org.atheme.audacious"
-  	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
-  
   # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/fd/				r,
   owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/audacious					mr,
-  
-  # READS/WRITES ---------------------------------------
-  /usr/lib{,32,64}/audacious/{,*/}			r,
-  /usr/lib{,32,64}/audacious/*/*.so			mr,
-  /usr/share/audacious/{,**}				r,
+  /usr/bin/qmmp						mr,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/audacious/			rw,
-  owner @{HOME}/.config/audacious/**			rwk,
+  owner @{HOME}/.qmmp/					rw,
+  owner @{HOME}/.qmmp/**				rwk,
+  
+  owner /tmp/qmmp.sock.[0-9]*				rw,	# [0-9]* - UID
 }

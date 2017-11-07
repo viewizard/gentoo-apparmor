@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 # доступ к файлам в @{HOME}, gvfs и /media с пользовательской
-# предустановкой для abstractions/fs/access-by-user-preset-{rk,rwk,rwkl}
+# предустановкой для abstractions/fs/access-by-user-preset-rwkl
 
 #include <abstractions/fs/access-by-pattern-xdg-open>
 #include <abstractions/fs/deny-remove-home-sensitive>
@@ -17,27 +17,27 @@
 /							r,
 @{HOMEDIRS}/						r,
 owner @{HOME}/						r,
-owner @{HOME}/@{USERS_DIR}/				r,
-owner @{HOME}/@{USERS_FILE}				rwk,
-owner @{HOME}/@{USERS_DIR}/@{USERS_FILE}		rwk,
+owner @{HOME}/@{USERS_DIR_rwkl}/			r,
+owner @{HOME}/@{USERS_FILE_rwkl}			rwk,
+owner @{HOME}/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl}	rwk,
 owner /run/user/[0-9]*/gvfs/				r,	# gvfs
-owner /run/user/[0-9]*/gvfs/*/@{USERS_DIR}/		r,	# gvfs
-owner /run/user/[0-9]*/gvfs/*/@{USERS_FILE}		rwk,	# gvfs
-owner /run/user/[0-9]*/gvfs/*/@{USERS_DIR}/@{USERS_FILE} rwk,	# gvfs
+owner /run/user/[0-9]*/gvfs/*/@{USERS_DIR_rwkl}/	r,	# gvfs
+owner /run/user/[0-9]*/gvfs/*/@{USERS_FILE_rwkl}	rwk,	# gvfs
+owner /run/user/[0-9]*/gvfs/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl} rwk,	# gvfs
 /media/{,*/}						r,
-/media/*/@{USERS_DIR}/					r,
-/media/*/@{USERS_FILE}					rwk,
-/media/*/@{USERS_DIR}/@{USERS_FILE}			rwk,
+/media/*/@{USERS_DIR_rwkl}/				r,
+/media/*/@{USERS_FILE_rwkl}				rwk,
+/media/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl}		rwk,
 /run/media/*/{,*/}					r,	# udisks2, /run/media/$USER/VolumeName/
-/run/media/*/*/@{USERS_DIR}/				r,	# udisks2, /run/media/$USER/VolumeName/
-/run/media/*/*/@{USERS_FILE}				rwk,	# udisks2, /run/media/$USER/VolumeName/
-/run/media/*/*/@{USERS_DIR}/@{USERS_FILE}		rwk,	# udisks2, /run/media/$USER/VolumeName/
+/run/media/*/*/@{USERS_DIR_rwkl}/			r,	# udisks2, /run/media/$USER/VolumeName/
+/run/media/*/*/@{USERS_FILE_rwkl}			rwk,	# udisks2, /run/media/$USER/VolumeName/
+/run/media/*/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl}	rwk,	# udisks2, /run/media/$USER/VolumeName/
 
-owner link subset @{HOME}/@{USERS_FILE}			-> @{HOME}/@{USERS_FILE},
-owner link subset @{HOME}/@{USERS_DIR}/@{USERS_FILE}	-> @{HOME}/@{USERS_DIR}/@{USERS_FILE},
-owner link subset /run/user/[0-9]*/gvfs/*/@{USERS_FILE}	-> /run/user/[0-9]*/gvfs/*/@{USERS_FILE},
-owner link subset /run/user/[0-9]*/gvfs/*/@{USERS_DIR}/@{USERS_FILE}	-> /run/user/[0-9]*/gvfs/*/@{USERS_DIR}/@{USERS_FILE},
-link subset /media/*/@{USERS_FILE}			-> /media/*/@{USERS_FILE},
-link subset /media/*/@{USERS_DIR}/@{USERS_FILE}		-> /media/*/@{USERS_DIR}/@{USERS_FILE},
-link subset /run//media/*/*/@{USERS_FILE}		-> /run//media/*/*/@{USERS_FILE},
-link subset /run//media/*/*/@{USERS_DIR}/@{USERS_FILE}	-> /run//media/*/*/@{USERS_DIR}/@{USERS_FILE},
+owner link subset @{HOME}/@{USERS_FILE_rwkl}			-> @{HOME}/@{USERS_FILE_rwkl},
+owner link subset @{HOME}/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl}	-> @{HOME}/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl},
+owner link subset /run/user/[0-9]*/gvfs/*/@{USERS_FILE_rwkl}	-> /run/user/[0-9]*/gvfs/*/@{USERS_FILE_rwkl},
+owner link subset /run/user/[0-9]*/gvfs/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl}	-> /run/user/[0-9]*/gvfs/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl},
+link subset /media/*/@{USERS_FILE_rwkl}			-> /media/*/@{USERS_FILE_rwkl},
+link subset /media/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl}		-> /media/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl},
+link subset /run/media/*/*/@{USERS_FILE_rwkl}		-> /run/media/*/*/@{USERS_FILE_rwkl},
+link subset /run/media/*/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl}	-> /run/media/*/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl},

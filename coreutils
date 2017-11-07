@@ -289,3 +289,14 @@ profile coreutils.chroot /bin/chroot {
   /bin/chroot						mr,
   @{CHROOT}/@{shell}					Px -> shell_chroot,
 }
+
+profile coreutils.pwd /bin/pwd {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/pwd						mr,
+}

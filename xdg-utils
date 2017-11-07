@@ -36,6 +36,7 @@ profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
   deny unix peer=(label="local.home.evelauncher"),		# local.home.evelauncher
   deny unix peer=(label="teamspeak-client-bin.teamspeak"),	# teamspeak-client-bin.teamspeak
   deny unix peer=(label="keepassxc"),				# keepassxc
+  deny network netlink raw,					# local.home.evelauncher
   deny network inet dgram,					# teamspeak-client-bin.teamspeak
   deny network inet6 dgram,					# teamspeak-client-bin.teamspeak
   deny network inet stream,					# local.home.evelauncher
