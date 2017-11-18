@@ -12,7 +12,7 @@
 
 # предустановка для abstractions/fs/access-by-user-preset-rwk
 @{USERS_DIR_rwk}="[^.]**"
-@{USERS_FILE_rwk}="[^.]*.{png,PNG}"  # xfce4-screenshooter
+@{USERS_FILE_rwk}="[^.]*.{png,PNG}"  # xfce-extra/xfce4-screenshooter
 
 profile xfce4-panel /usr/bin/xfce4-panel {
   #include <abstractions/base>
@@ -57,10 +57,10 @@ profile xfce4-panel /usr/bin/xfce4-panel {
   /usr/bin/xfce4-panel					Pxmr,	# Все парвильно, запуск и mmap.
   /usr/lib{,32,64}/xfce4/panel/wrapper-[1-2].0		Px,
   /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-*-plugin	Px,
-  /usr/bin/exo-desktop-item-edit			Px,
-  /usr/bin/xfce4-session-logout				Px,
-  /usr/bin/xfce4-session-settings			Px,
-  /usr/bin/passwd.sh					Px,
+  /usr/bin/exo-desktop-item-edit			Px,	# xfce-base/exo
+  /usr/bin/xfce4-session-logout				Px,	# xfce-base/xfce4-session
+  /usr/bin/xfce4-session-settings			Px,	# xfce-base/xfce4-session
+  /usr/bin/passwd.sh					Px,	# sys-apps/shadow
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/menus/**.menu				r,
@@ -78,7 +78,7 @@ profile xfce4-panel /usr/bin/xfce4-panel {
   owner @{HOME}/.config/menus/applications-merged/	r,
   owner @{HOME}/.config/xfce4/panel/launcher-*/{,**}	rw,
   owner @{HOME}/.local/share/desktop-directories/*.directory r,
-  owner @{HOME}/.local/share/gvfs-metadata/{,*}		r,
+  owner @{HOME}/.local/share/gvfs-metadata/{,*}		r,	# gnome-base/gvfs
   owner @{HOME}/.xfce4-session.verbose-log		w,
 }
 
@@ -97,9 +97,9 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   #include <abstractions/gtk>
   #include <abstractions/audio>
   #include <abstractions/nameservice>
-  #include <abstractions/fs/access-by-users-preset-rwk>		# xfce4-screenshooter
-  #include <abstractions/fs/deny-by-pattern-internet>		# xfce4-screenshooter
-  #include <abstractions/fs/deny-private-strict>		# xfce4-screenshooter
+  #include <abstractions/fs/access-by-users-preset-rwk>		# xfce-extra/xfce4-screenshooter
+  #include <abstractions/fs/deny-by-pattern-internet>		# xfce-extra/xfce4-screenshooter
+  #include <abstractions/fs/deny-private-strict>		# xfce-extra/xfce4-screenshooter
   #include <abstractions/profile_transitions/users-all>
   #include <local/profile_blocks/xfce4-panel.d/>
   
@@ -113,17 +113,17 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   	bus=session
   	path="/org/xfce/FileManager"
   	interface="org.xfce.Trash"
-  	peer=(name="org.xfce.FileManager",label="thunar"),
+  	peer=(name="org.xfce.FileManager",label="thunar"),	# xfce-base/thunar
   dbus receive
   	bus=session
   	path="/org/xfce/FileManager"
   	interface="org.xfce.Trash"
-  	peer=(name=":[0-9]*.[0-9]*",label="thunar"),
+  	peer=(name=":[0-9]*.[0-9]*",label="thunar"),		# xfce-base/thunar
   dbus send
   	bus=session
   	path="/org/xfce/SessionManager"
   	interface="org.xfce.Session.Manager"
-  	peer=(name="org.xfce.SessionManager",label="xfce4-session"),
+  	peer=(name="org.xfce.SessionManager",label="xfce4-session"),	# # xfce-base/xfce4-session
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -142,18 +142,18 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/panel/wrapper-1.0		m,
-  /usr/bin/xflock4					Px,
-  /usr/bin/alock					Px,
-  /usr/bin/passwd.sh					Px,
-  /usr/bin/xfce4-notes-settings				Px,
+  /usr/bin/xflock4					Px,	# xfce-base/xfce4-session
+  /usr/bin/alock					Px,	# x11-misc/alock
+  /usr/bin/passwd.sh					Px,	# sys-apps/shadow
+  /usr/bin/xfce4-notes-settings				Px,	# xfce-extra/xfce4-notes-plugin
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/menus/**.menu				r,
   /etc/xdg/menus/applications-merged/			r,
-  /usr/share/alacarte/*					r,
+  /usr/share/alacarte/*					r,	# x11-misc/alacarte
   /usr/share/desktop-directories/{,*.directory}		r,
-  /usr/share/xfce4/weather/icons/{,**.info,**.png}	r,
-  /usr/share/xfce4-notes-plugin/{,**}			r,
+  /usr/share/xfce4/weather/icons/{,**.info,**.png}	r,	# xfce-extra/xfce4-weather-plugin
+  /usr/share/xfce4-notes-plugin/{,**}			r,	# xfce-extra/xfce4-notes-plugin
   
   # USERS ----------------------------------------------
   owner @{HOME}/.face					r,
@@ -161,18 +161,18 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   owner @{HOME}/.config/menus/**.menu			rw,
   owner @{HOME}/.config/menus/applications-merged/	r,
   owner @{HOME}/.config/xfce4/panel/{,**}		rw,
-  owner @{HOME}/.config/xfce4/xfce4-notes.gtkrc*	rw,
+  owner @{HOME}/.config/xfce4/xfce4-notes.gtkrc*	rw,	# xfce-extra/xfce4-notes-plugin
   owner @{HOME}/.config/xfce4/help.rc			r,
   owner @{HOME_CACHE}/xfce4/				rw,
-  owner @{HOME_CACHE}/xfce4/clipman/{,*}		rw,
-  owner @{HOME_CACHE}/xfce4/weather/{,*}		rw,
+  owner @{HOME_CACHE}/xfce4/clipman/{,*}		rw,	# xfce-extra/xfce4-clipman-plugin
+  owner @{HOME_CACHE}/xfce4/weather/{,*}		rw,	# xfce-extra/xfce4-weather-plugin
   owner @{HOME}/.local/share/applications/**.desktop	rw,
   owner @{HOME}/.local/share/desktop-directories/{,*.directory} r,
   owner @{HOME}/.local/share/notes/{,**}		rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/*_????-??-??_??-??-??.png			rw,	# xfce4-screenshooter
-  owner /tmp/gdkpixbuf-xpm-tmp.*			rw,	# xfce4-whiskermenu-plugin
+  owner /tmp/*_????-??-??_??-??-??.png			rw,	# xfce-extra/xfce4-screenshooter
+  owner /tmp/gdkpixbuf-xpm-tmp.*			rw,	# xfce-extra/xfce4-whiskermenu-plugin
 }
 
 profile xfce4-panel.wrapper-2.0 /usr/lib{,32,64}/xfce4/panel/wrapper-2.0 {
@@ -205,83 +205,8 @@ profile xfce4-panel.wrapper-2.0 /usr/lib{,32,64}/xfce4/panel/wrapper-2.0 {
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/panel/wrapper-2.0		m,
-  /usr/sbin/xfpm-power-backlight-helper			Px,
+  /usr/sbin/xfpm-power-backlight-helper			Px,	# xfce-extra/xfce4-power-manager
   
   # USERS ----------------------------------------------
-  owner @{HOME_CACHE}/xfce4/notifyd/{,**}		rw,	# xfce4-notifyd
-}
-
-profile xfce4-panel.xfce4-xkb-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-xkb-plugin {
-  #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
-  #include <abstractions/dbus/session-strict>
-  #include <abstractions/dbus/accessibility-strict>
-  #include <abstractions/dbus/at-spi>
-  #include <abstractions/dbus/gvfs>
-  
-  # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					rw,
-  /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/fd/				r,
-  
-  # EXECUTABLES ----------------------------------------
-  /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-xkb-plugin	m,
-  /usr/bin/xfce4-keyboard-settings			Px,
-  
-  # READS/WRITES ---------------------------------------
-  /usr/share/xfce4/xkb/flags/*.svg			r,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.config/xfce4/panel/{,*.rc*}		rw,
-}
-
-profile xfce4-panel.xfce4-kbdleds-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-kbdleds-plugin {
-  #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
-  #include <abstractions/dbus/session-strict>
-  #include <abstractions/dbus/accessibility-strict>
-  #include <abstractions/dbus/at-spi>
-  #include <abstractions/dbus/gvfs>
-  
-  # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					rw,
-  /dev/pts/[0-9]*					rw,
-  
-  # EXECUTABLES ----------------------------------------
-  /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-kbdleds-plugin m,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.config/xfce4/panel/{,*.rc*}		rw,
-}
-
-profile xfce4-panel.xfce4-sensors-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-sensors-plugin {
-  #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
-  #include <abstractions/sensors>
-  #include <abstractions/dbus/session-strict>
-  #include <abstractions/dbus/accessibility-strict>
-  #include <abstractions/dbus/at-spi>
-  #include <abstractions/dbus/gvfs>
-  
-  # PSEUDO ---------------------------------------------
-  /dev/tty						rw,
-  /dev/tty[0-9]*					rw,
-  /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/fd/				r,
-  
-  # EXECUTABLES ----------------------------------------
-  /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-sensors-plugin m,
-  /usr/bin/xfce4-sensors				Px,
-  
-  # USERS ----------------------------------------------
-  owner @{HOME}/.config/xfce4/panel/{,*.rc*}		rw,
+  owner @{HOME_CACHE}/xfce4/notifyd/{,**}		rw,	# xfce-extra/xfce4-notifyd
 }

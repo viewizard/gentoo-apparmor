@@ -71,7 +71,7 @@ profile lvm2.dmeventd /sbin/dmeventd {
   
   # EXECUTABLES ----------------------------------------
   /sbin/dmeventd					mr,
-  /bin/umount						Cx,
+  /bin/umount						Cx,	# sys-apps/util-linux
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
@@ -169,16 +169,16 @@ profile lvm2.fsadm /sbin/fsadm {
   # EXECUTABLES ----------------------------------------
   /sbin/fsadm						r,
   @{shell}						mr,
-  /bin/grep						Cx,
-  /bin/readlink						Cx,
-  /bin/date						Cx,
-  /bin/mount						Cx,
-  /sbin/blkid						Px,
-  /sbin/tune2fs						Px,
-  /sbin/fsck						Px,
-  /sbin/e2fsck						Px,
-  /sbin/resize2fs					Px,
-  /sbin/blockdev					Px,
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/readlink						Cx,	# sys-apps/coreutils
+  /bin/date						Cx,	# sys-apps/coreutils
+  /bin/mount						Cx,	# sys-apps/util-linux
+  /sbin/blkid						Px,	# sys-apps/util-linux
+  /sbin/tune2fs						Px,	# sys-fs/e2fsprogs
+  /sbin/fsck						Px,	# sys-apps/util-linux
+  /sbin/e2fsck						Px,	# sys-fs/e2fsprogs
+  /sbin/resize2fs					Px,	# sys-fs/e2fsprogs
+  /sbin/blockdev					Px,	# sys-apps/util-linux
   /sbin/lvm						Px,
   
   profile grep /bin/grep {
@@ -210,7 +210,7 @@ profile lvm2.fsadm /sbin/fsadm {
   }
 }
 
-profile lvm2.lvmetad.init.d /etc/init.d/lvmetad {
+profile lvm2.lvmetad.init.d /etc/init.d/lvmetad flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -223,9 +223,9 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad {
   # EXECUTABLES ----------------------------------------
   /etc/init.d/lvm					Px,
   @{shell}						Cx,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
   /sbin/lvmetad						Px,
   
   # READS/WRITES ---------------------------------------
@@ -285,7 +285,7 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad {
   }
 }
 
-profile lvm2.lvm.init.d /etc/init.d/lvm {
+profile lvm2.lvm.init.d /etc/init.d/lvm flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -298,9 +298,9 @@ profile lvm2.lvm.init.d /etc/init.d/lvm {
   # EXECUTABLES ----------------------------------------
   /sbin/lvm						Px,
   @{shell}						Cx,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/lvm				r,

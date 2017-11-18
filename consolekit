@@ -41,7 +41,9 @@ profile consolekit.ck-launch-session /usr/bin/ck-launch-session {
   @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
-  /etc/X11/Sessions/{,*}				r,
+  /etc/X11/Sessions/					r,
+  /etc/X11/Sessions/Xsession				r,	# x11-apps/xinit
+  /etc/X11/Sessions/Xfce4				r,	# xfce-base/xfce4-session
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -51,8 +53,8 @@ profile consolekit.ck-launch-session /usr/bin/ck-launch-session {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /etc/X11/Sessions/Xfce4				r,	# XFCE4
-    /usr/bin/startxfce4					Px,	# XFCE4
+    /etc/X11/Sessions/Xfce4				r,	# xfce-base/xfce4-session
+    /usr/bin/startxfce4					Px,	# xfce-base/xfce4-session
   }
 }
 
@@ -119,7 +121,7 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
 	path="/org/freedesktop/DBus/Bus"
 	interface="org.freedesktop.DBus"
 	member={GetConnectionUnixUser,GetConnectionUnixProcessID}
-	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon"),
+	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon"),	# sys-apps/dbus
   dbus send
 	bus=system
 	path="/org/freedesktop/ConsoleKit/Manager"
@@ -140,7 +142,7 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
 	path="/org/freedesktop/ConsoleKit/Manager"
 	interface="org.freedesktop.ConsoleKit.Manager"
 	member=GetSessionForUnixProcess
-	peer=(name=":[0-9]*.[0-9]*",label="{polkit.polkitd,polkit-gnome}"),
+	peer=(name=":[0-9]*.[0-9]*",label="{polkit.polkitd,polkit-gnome}"),	# sys-auth/polkit, gnome-extra/polkit-gnome
   dbus receive
 	bus=system
 	path="/org/freedesktop/ConsoleKit/Session[0-9]*"
@@ -159,8 +161,8 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/console-kit-daemon				mr,
-  /sbin/shutdown					Px,
-  /usr/bin/pm-is-supported				Px,
+  /sbin/shutdown					Px,	# sys-apps/sysvinit
+  /usr/bin/pm-is-supported				Px,	# sys-power/pm-utils
   /usr/lib{,32,64}/ConsoleKit/**			Px,
   
   # READS/WRITES ---------------------------------------
@@ -184,8 +186,8 @@ profile consolekit.ck-collect-session-info /usr/lib{,32,64}/ConsoleKit/ck-collec
   
   # PTRACE ---------------------------------------------
   ptrace (trace) peer="consolekit.ck-launch-session",
-  ptrace (trace) peer="xorg-server.Xorg",
-  ptrace (trace) peer="shadow.login//*",
+  ptrace (trace) peer="xorg-server.Xorg",			# x11-base/xorg-server
+  ptrace (trace) peer="shadow.login//*",			# sys-apps/shadow
   
   # PSEUDO ---------------------------------------------
   @{PROC}/tty/drivers					r,
@@ -205,7 +207,7 @@ profile consolekit.ck-get-x11-display-device /usr/lib{,32,64}/ConsoleKit/ck-get-
   #include <abstractions/X-connection-strict>
   
   # PTRACE ---------------------------------------------
-  ptrace (trace) peer="xorg-server.Xorg",
+  ptrace (trace) peer="xorg-server.Xorg",			# x11-base/xorg-server
   
   # PSEUDO ---------------------------------------------
   @{PROC}/tty/drivers					r,
@@ -253,7 +255,7 @@ profile consolekit.udev-acl /usr/lib{,32,64}/ConsoleKit/udev-acl {
   /usr/lib{,32,64}/ConsoleKit/udev-acl			m,
   
   # READS/WRITES ---------------------------------------
-  /etc/udev/udev.conf					r,
+  /etc/udev/udev.conf					r,	# sys-fs/eudev
   /run/udev/tags/udev-acl/				r,
   /run/ConsoleKit/database				r,
 }
@@ -268,7 +270,7 @@ profile consolekit.ck-system-hibernate /usr/lib{,32,64}/ConsoleKit/scripts/ck-sy
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-hibernate r,
   @{shell}						mr,
-  /usr/sbin/pm-hibernate				Px,
+  /usr/sbin/pm-hibernate				Px,	# sys-power/pm-utils
 }
 
 profile consolekit.ck-system-hybridsleep /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-hybridsleep {
@@ -281,7 +283,7 @@ profile consolekit.ck-system-hybridsleep /usr/lib{,32,64}/ConsoleKit/scripts/ck-
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-hybridsleep r,
   @{shell}						mr,
-  /usr/sbin/pm-suspend-hybrid				Px,
+  /usr/sbin/pm-suspend-hybrid				Px,	# sys-power/pm-utils
 }
 
 profile consolekit.ck-system-restart /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-restart {
@@ -294,7 +296,7 @@ profile consolekit.ck-system-restart /usr/lib{,32,64}/ConsoleKit/scripts/ck-syst
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-restart	r,
   @{shell}						mr,
-  /sbin/shutdown					Px,
+  /sbin/shutdown					Px,	# sys-apps/sysvinit
 }
 
 profile consolekit.ck-system-stop /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-stop {
@@ -307,7 +309,7 @@ profile consolekit.ck-system-stop /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-stop	r,
   @{shell}						mr,
-  /sbin/shutdown					Px,
+  /sbin/shutdown					Px,	# sys-apps/sysvinit
 }
 
 profile consolekit.ck-system-suspend /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-suspend {
@@ -320,7 +322,7 @@ profile consolekit.ck-system-suspend /usr/lib{,32,64}/ConsoleKit/scripts/ck-syst
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-suspend	r,
   @{shell}						mr,
-  /usr/sbin/pm-suspend					Px,
+  /usr/sbin/pm-suspend					Px,	# sys-power/pm-utils
 }
 
 profile consolekit.pam-foreground-compat.ck /usr/lib{,32,64}/ConsoleKit/run-session.d/pam-foreground-compat.ck {
@@ -334,11 +336,11 @@ profile consolekit.pam-foreground-compat.ck /usr/lib{,32,64}/ConsoleKit/run-sess
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/ConsoleKit/run-session.d/pam-foreground-compat.ck r,
   @{shell}						mr,
-  /bin/cut						Cx,
-  /bin/sed						Cx,
-  /bin/mkdir						Cx,
-  /bin/rm						Cx,
-  /usr/bin/getent					Px,
+  /bin/cut						Cx,	# sys-apps/coreutils
+  /bin/sed						Cx,	# sys-apps/sed
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /usr/bin/getent					Px,	# sys-libs/glibc
   
   # READS/WRITES ---------------------------------------
   /run/ConsoleKit/{,**}					rw,
@@ -386,7 +388,7 @@ profile consolekit.pam-foreground-compat.ck /usr/lib{,32,64}/ConsoleKit/run-sess
   }
 }
 
-profile consolekit.init.d /etc/init.d/consolekit {
+profile consolekit.init.d /etc/init.d/consolekit flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -399,9 +401,9 @@ profile consolekit.init.d /etc/init.d/consolekit {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/console-kit-daemon				Px,
   @{shell}						Cx,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/consolekit				r,

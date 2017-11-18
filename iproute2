@@ -27,3 +27,50 @@ profile iproute2.ip /bin/ip {
   # EXECUTABLES ----------------------------------------
   /bin/ip						mr,
 }
+
+profile iproute2.ifcfg /sbin/ifcfg {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability dac_override,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /sbin/ifcfg						r,
+  @{shell}						mr,
+}
+
+profile iproute2.ifstat /sbin/ifstat {
+  #include <abstractions/base>
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  @{PROC}/uptime					r,
+  
+  # EXECUTABLES ----------------------------------------
+  /sbin/ifstat						mr,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/.ifstat.*					rwk,
+}
+
+#  /sbin/bridge				# FIX ME! Сделать профиль!
+#  /sbin/genl				# FIX ME! Сделать профиль!
+#  /sbin/{ctstat,lnstat,rtstat}		# FIX ME! Сделать профиль!
+#  /sbin/nstat				# FIX ME! Сделать профиль!
+#  /sbin/routef				# FIX ME! Сделать профиль!
+#  /sbin/routel				# FIX ME! Сделать профиль!
+#  /sbin/rtacct				# FIX ME! Сделать профиль!
+#  /sbin/rtmon				# FIX ME! Сделать профиль!
+#  /sbin/rtpr				# FIX ME! Сделать профиль!
+#  /sbin/ss				# FIX ME! Сделать профиль!
+#  /sbin/tc				# FIX ME! Сделать профиль!
+#  /sbin/tipc				# FIX ME! Сделать профиль!

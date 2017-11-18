@@ -95,7 +95,7 @@ profile kbd.loadkeys /usr/bin/loadkeys {
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/gzip						ix,	# Оставляем вызов через ix.
+    /bin/gzip						ix,	# app-arch/gzip		# Оставляем вызов через ix.
     
     # READS/WRITES -------------------------------------
     /usr/share/keymaps/{,**/,**.gz}			r,
@@ -117,7 +117,7 @@ profile kbd.dumpkeys /usr/bin/dumpkeys {
   /usr/bin/dumpkeys					mr,
   
   # READS/WRITES ---------------------------------------
-  /lib{,32,64}/rc/console/keymap			w,
+  /lib{,32,64}/rc/console/keymap			w,	# sys-apps/openrc
 }
 
 profile kbd.setfont /usr/bin/setfont {
@@ -138,7 +138,7 @@ profile kbd.setfont /usr/bin/setfont {
   # READS/WRITES ---------------------------------------
   /							r,
   /usr/share/consolefonts/{,**}				r,
-  /lib{,32,64}/rc/console/font				rw,
+  /lib{,32,64}/rc/console/font				rw,	# sys-apps/openrc
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -154,7 +154,7 @@ profile kbd.setfont /usr/bin/setfont {
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/gzip						ix,	# Оставляем вызов через ix.
+    /bin/gzip						ix,	# app-arch/gzip		# Оставляем вызов через ix.
     
     # READS/WRITES -------------------------------------
     /usr/share/consolefonts/{,**/,**.gz}		r,

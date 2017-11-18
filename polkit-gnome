@@ -27,14 +27,14 @@ profile polkit-gnome /usr/libexec/polkit-gnome-authentication-agent-1 {
   #include <abstractions/nameservice>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term) peer="polkit.polkit-agent-helper",
+  signal (send) set=(term) peer="polkit.polkit-agent-helper",	# sys-auth/polkit
   
   # DBUS -----------------------------------------------
   dbus receive
   	bus=system
   	path="/org/gnome/PolicyKit[0-9]*/AuthenticationAgent"
   	interface="org.freedesktop.PolicyKit[0-9]*.AuthenticationAgent"
-  	peer=(name=":[0-9]*.[0-9]*",label="polkit.polkitd"),
+  	peer=(name=":[0-9]*.[0-9]*",label="polkit.polkitd"),	# sys-auth/polkit
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -43,5 +43,5 @@ profile polkit-gnome /usr/libexec/polkit-gnome-authentication-agent-1 {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/polkit-gnome-authentication-agent-1	mr,
-  /usr/lib{,32,64}/polkit-1/polkit-agent-helper-1	Px,
+  /usr/lib{,32,64}/polkit-1/polkit-agent-helper-1	Px,	# sys-auth/polkit
 }

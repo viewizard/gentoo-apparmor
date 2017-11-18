@@ -33,8 +33,8 @@ profile kernel.gen-ima-certs /usr/src/IMA/certs/* {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/cat						Cx,
-  /usr/bin/openssl					Cx,
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /usr/bin/openssl					Cx,	# dev-libs/openssl
   
   # READS/WRITES ---------------------------------------
   /usr/src/IMA/certs/*					rw,
@@ -74,7 +74,7 @@ profile kernel.checkpatch.pl /usr/src/@{kernel}/scripts/checkpatch.pl {
   
   # EXECUTABLES ----------------------------------------
   /usr/src/@{kernel}/scripts/checkpatch.pl		r,
-  /bin/pwd						Px,
+  /bin/pwd						Px,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /usr/src/**						r,

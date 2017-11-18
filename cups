@@ -124,9 +124,9 @@ profile cups.driver /usr/libexec/cups/driver/* {
   /usr/libexec/cups/driver/*				mr,
   
   # READS/WRITES ---------------------------------------
-  /usr/share/gutenprint/{,**}				r,
-  /usr/lib{,32,64}/gutenprint/{,**}			r,
-  /usr/lib{,32,64}/gutenprint/[0-9]*/modules/*.so	m,
+  /usr/share/gutenprint/{,**}				r,	# net-print/gutenprint
+  /usr/lib{,32,64}/gutenprint/{,**}			r,	# net-print/gutenprint
+  /usr/lib{,32,64}/gutenprint/[0-9]*/modules/*.so	m,	# net-print/gutenprint
   /var/spool/cups/{,**}					wr,
 }
 
@@ -159,7 +159,7 @@ profile cups.filter /usr/libexec/cups/filter/* {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/cups/filter/*				Pxmr,
-  /usr/bin/pdftops					Px,
+  /usr/bin/pdftops					Px,	# app-text/poppler
   
   # READS/WRITES ---------------------------------------
   /etc/cups/ppd/*.ppd					r,
@@ -210,7 +210,7 @@ profile cups.smbspool /usr/bin/smbspool {
   /usr/bin/smbspool					mr,
 }
 
-profile cups.init.d /etc/init.d/cupsd {
+profile cups.init.d /etc/init.d/cupsd flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -229,9 +229,9 @@ profile cups.init.d /etc/init.d/cupsd {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/cupsd					Px,
   @{shell}						Cx,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/cupsd				r,

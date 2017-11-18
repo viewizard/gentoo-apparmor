@@ -21,10 +21,10 @@ profile skypeforlinux.launcher /opt/bin/skypeforlinux {
   # EXECUTABLES ----------------------------------------
   /opt/bin/skypeforlinux				r,
   @{shell}						mr,
-  /bin/readlink						Cx,
-  /bin/mkdir						Cx,
-  /bin/dirname						Px,
-  /usr/bin/nohup					cx,	# Используем переменные окружения.
+  /bin/readlink						Cx,	# sys-apps/coreutils
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/dirname						Px,	# sys-apps/coreutils
+  /usr/bin/nohup					cx,	# sys-apps/coreutils	# Используем переменные окружения.
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/skypeforlinux/logs/skype-startup.log w,
@@ -108,6 +108,7 @@ profile skypeforlinux /opt/skypeforlinux/skypeforlinux {
   # PSEUDO ---------------------------------------------
   /dev/							r,
   /dev/tty[0-9]*					rw,
+  /dev/video*						m,	# camera
   owner /dev/shm/.org.chromium.Chromium.??????		mrw,
   /sys/bus/pci/devices/					r,
   /sys/devices/system/cpu/				r,
@@ -127,8 +128,8 @@ profile skypeforlinux /opt/skypeforlinux/skypeforlinux {
   /opt/skypeforlinux/skypeforlinux			ixmr,	# Все правильно, запуск и mmap.
   
   # READS/WRITES ---------------------------------------
-  /etc/os-release					r,
-  /etc/udev/udev.conf					r,
+  /etc/os-release					r,	# sys-apps/baselayout
+  /etc/udev/udev.conf					r,	# sys-fs/eudev
   /opt/skypeforlinux/{,**}				mr,
   /opt/skypeforlinux/*.{bin,so}				m,
   /opt/skypeforlinux/icudtl.dat				m,

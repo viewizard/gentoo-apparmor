@@ -33,13 +33,13 @@
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Px -> shell_sudo,
-  /usr/bin/thunar					Px -> thunar_root,	# XFCE4
-  /usr/bin/dbus-daemon					Px,
-  /usr/bin/gksu_askpass.sh				Px,
-  /usr/bin/gsmartcontrol				Px,
-  /usr/sbin/firewall					Px,
-  audit /media/sdb2/VM_SERVERS/launch_scripts/*		Px,
+  /usr/bin/thunar					Px -> thunar_root,	# xfce-base/thunar
+  /usr/bin/dbus-daemon					Px,	# sys-apps/dbus
+  /usr/bin/gksu_askpass.sh				Px,	# app-admin/sudo
+  /usr/bin/gsmartcontrol				Px,	# sys-apps/gsmartcontrol
+  /usr/sbin/firewall					Px,	# net-firewall/iptables
+  audit /media/sdb2/VM_SERVERS/launch_scripts/*		Px,	# app-emulation/qemu (скрипты запуска, без пакета безполезны)
   
   # READS/WRITES ---------------------------------------
-  /etc/environment					r,
+  /etc/environment					r,	# sys-libs/pam
 }

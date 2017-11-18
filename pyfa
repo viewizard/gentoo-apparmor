@@ -46,11 +46,15 @@ profile pyfa @{PYTHON2_EXEC}/pyfa {
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/env						mr,
+  /sbin/ldconfig					Px,	# sys-libs/glibc
+  /usr/bin/fc-list					Px,	# media-libs/fontconfig
   
   # AUDIT EXECUTABLES ----------------------------------
   deny /usr/bin/chromium-browser			x,	# Должен работать только через xdg-open.
   
   # READS/WRITES ---------------------------------------
+  /etc/							r,
+  /etc/gentoo-release					r,	# sys-apps/baselayout
   /usr/share/pyfa/					r,
   /usr/share/pyfa/*					rk,
   @{PYTHON2_PACKAGES}/wxversion.pyc{,.*}		w,
@@ -58,11 +62,11 @@ profile pyfa @{PYTHON2_EXEC}/pyfa {
   # USERS ----------------------------------------------
   owner @{HOME}/.pyfa/					rw,
   owner @{HOME}/.pyfa/**				rwk,
-  owner @{HOME}/.config/matplotlib/{,**}		rw,
-  owner @{HOME_CACHE}/matplotlib/{,**}			rw,
+  owner @{HOME}/.config/matplotlib/{,**}		rw,	# dev-python/matplotlib
+  owner @{HOME_CACHE}/matplotlib/{,**}			rw,	# dev-python/matplotlib
   
   # TEMP -----------------------------------------------
-  owner /tmp/??????					rw,
+  owner /tmp/tmp??????					rw,
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -74,8 +78,7 @@ profile pyfa @{PYTHON2_EXEC}/pyfa {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,
-    /sbin/ldconfig					Px,
+    /bin/uname						Px,	# sys-apps/coreutils
     
     # DENY INHERIT -------------------------------------
     deny /usr/share/pyfa/{,**}				r,

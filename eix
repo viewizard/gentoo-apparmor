@@ -25,8 +25,8 @@ profile eix /usr/bin/eix {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/eix						mr,
-  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		Px,
-  @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,
+  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		Px,	# sys-apps/portage
+  @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /etc/eixrc/{,**}					r,
@@ -48,7 +48,7 @@ profile eix /usr/bin/eix {
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/portageq				Px,
+    @{PYTHON_EXEC}/portageq				Px,	# sys-apps/portage
     
     # TEMP ---------------------------------------------
     /tmp/portage.cron.*					w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
@@ -69,24 +69,10 @@ profile eix.eix-test-obsolete /usr/bin/eix-test-obsolete {
   # EXECUTABLES ----------------------------------------
   /usr/bin/eix-test-obsolete				r,
   @{shell}						mr,
+  /bin/cat						Cx,	# sys-apps/coreutils
   /usr/bin/eix						Px,
-  /usr/bin/gettext					Px,
-  /usr/bin/envsubst					Px,
-  /usr/bin/push.sh					Px,
-  /usr/bin/eix-functions.sh				Px,
-}
-
-profile eix.eix-functions.sh /usr/bin/eix-functions.sh {
-  #include <abstractions/base>
-  
-  # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					rw,
-  /dev/pts/[0-9]*					rw,
-  
-  # EXECUTABLES ----------------------------------------
-  /usr/bin/eix-functions.sh				r,
-  /bin/env						mr,
-  /bin/cat						Cx,
+  /usr/bin/gettext					Px,	# sys-devel/gettext
+  /usr/bin/envsubst					Px,	# sys-devel/gettext
   
   profile cat /bin/cat {
     #include <abstractions/base>
@@ -99,7 +85,8 @@ profile eix.eix-functions.sh /usr/bin/eix-functions.sh {
     /bin/cat						mr,
     
     # READS/WRITES -------------------------------------
-    /usr/bin/eix-functions.sh				r,
+    /usr/share/eix/eix-functions.sh			r,
+    /usr/share/push/push.sh				r,	# app-shells/push
   }
 }
 
@@ -114,14 +101,13 @@ profile eix.eix-sync /usr/bin/eix-sync {
   # EXECUTABLES ----------------------------------------
   /usr/bin/eix-sync					r,
   @{shell}						mr,
-  /bin/date						Px,
-  /bin/cp						Cx,
-  /usr/bin/gettext					Px,
-  /usr/bin/envsubst					Px,
-  /usr/bin/push.sh					Px,
+  /bin/date						Px,	# sys-apps/coreutils
+  /bin/cp						Cx,	# sys-apps/coreutils
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /usr/bin/gettext					Px,	# sys-devel/gettext
+  /usr/bin/envsubst					Px,	# sys-devel/gettext
   /usr/bin/eix						Px,
-  /usr/bin/eix-functions.sh				Px,
-  @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
+  @{PYTHON_EXEC_WRAPPER}				Cx -> portage,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /usr/portage/metadata/timestamp.chk			r,
@@ -147,11 +133,26 @@ profile eix.eix-sync /usr/bin/eix-sync {
     /var/cache/eix/previous.eix				rw,
   }
   
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/share/eix/eix-functions.sh			r,
+    /usr/share/push/push.sh				r,	# app-shells/push
+  }
+  
   profile portage {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/emerge				Px,
+    @{PYTHON_EXEC}/emerge				Px,	# sys-apps/portage
   }
 }

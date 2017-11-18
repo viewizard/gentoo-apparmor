@@ -128,7 +128,7 @@ profile run-hooks /lib{,32,64}/dhcpcd/dhcpcd-run-hooks {
   }
 }
 
-profile dhcpcd.init.d /etc/init.d/dhcpcd {
+profile dhcpcd.init.d /etc/init.d/dhcpcd flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>

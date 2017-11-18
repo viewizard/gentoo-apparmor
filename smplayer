@@ -31,8 +31,8 @@ profile smplayer /usr/bin/smplayer {
   #include <abstractions/xdg-open>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(kill,term) peer="mpv",
-  signal (send) set=(kill,term) peer="mplayer",
+  signal (send) set=(kill,term) peer="mpv",			# media-video/mpv
+  signal (send) set=(kill,term) peer="mplayer",			# media-video/mplayer
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
@@ -43,10 +43,10 @@ profile smplayer /usr/bin/smplayer {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/smplayer					mr,
-  /usr/bin/mplayer					Px,
-  /usr/bin/pacmd					Px,
-  /usr/bin/mpv						Px,
-  /usr/bin/aplay					Px,
+  /usr/bin/mplayer					Px,	# media-video/mplayer
+  /usr/bin/pacmd					Px,	# media-sound/pulseaudio
+  /usr/bin/mpv						Px,	# media-video/mpv
+  /usr/bin/aplay					Px,	# media-sound/alsa-utils
   
   # READS/WRITES ---------------------------------------
   /usr/bin/						r,
@@ -55,7 +55,7 @@ profile smplayer /usr/bin/smplayer {
   # USERS ----------------------------------------------
   owner @{HOME}/.config/smplayer/			rw,
   owner @{HOME}/.config/smplayer/**			rwk,
-  owner @{HOME}/mplayer.log				rw,	# mplayer
+  owner @{HOME}/mplayer.log				rw,	# media-video/mplayer
   owner @{HOME}/Pictures/smplayer_screenshots/{,*}	rw,
   
   # TEMP -----------------------------------------------

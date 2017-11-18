@@ -8,20 +8,19 @@
 #
 # ------------------------------------------------------------------
 
-# Запуск с установкой нужного WINEPREFIX.
+#include <local/tunables.d/>
 
-# EXECUTABLES ------------------------------------------
-/bin/env						Cx,
-
-profile env /bin/env {
+profile fontconfig.fc-list /usr/bin/fc-list {
   #include <abstractions/base>
+  #include <abstractions/fonts>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /bin/env						mr,
-  /usr/bin/wine						Px,	# app-emulation/wine
-  /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]*	Px,	# app-emulation/wine-*
+  /usr/bin/fc-list					mr,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /usr/share/pyfa/{,**}				r,	# pyfa
 }

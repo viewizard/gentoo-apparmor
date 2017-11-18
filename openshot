@@ -47,15 +47,19 @@ profile openshot @{PYTHON2_EXEC}/openshot {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
+  /sbin/ldconfig					Px,	# sys-libs/glibc
   
   # READS/WRITES ---------------------------------------
   /usr/lib{,32,64}/					r,
-  /usr/lib{,32,64}/frei0r-1/*.so			m,
-  /usr/share/mlt/**					r,
-  @{PYTHON_PACKAGES}/cairo/**.pyc{,.*}			w,
+  /usr/lib{,32,64}/frei0r-1/*.so			m,	# media-plugins/frei0r-plugins
+  /usr/share/mlt/**					r,	# media-libs/mlt
+  @{PYTHON_PACKAGES}/cairo/**.pyc{,.*}			w,	# dev-python/pycairo
   
   # USERS ----------------------------------------------
   owner @{HOME}/.openshot/{,**}				rw,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/??????					rw,
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -67,7 +71,7 @@ profile openshot @{PYTHON2_EXEC}/openshot {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /sbin/ldconfig					Px,
+    /bin/netstat					Px,	# sys-apps/net-tools
   }
 }
 

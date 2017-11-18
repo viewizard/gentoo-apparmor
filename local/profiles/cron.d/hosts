@@ -27,15 +27,15 @@ profile hosts.sh.cron.daily /etc/cron.daily/hosts.sh {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/hosts.sh				r,
   @{shell}						mr,
-  /bin/date						Cx,
-  /bin/mv						Cx,
-  /bin/chmod						Cx,
-  /bin/basename						Px,
-  /usr/bin/libnotify-notify-send-users			Px,
-  /usr/bin/wget						Px,
-  /usr/bin/stat						Cx,
-  /usr/bin/mail						Px,
-  /usr/bin/logger					Px,
+  /bin/date						Cx,	# sys-apps/coreutils
+  /bin/mv						Cx,	# sys-apps/coreutils
+  /bin/chmod						Cx,	# sys-apps/coreutils
+  /bin/basename						Px,	# sys-apps/coreutils
+  /usr/bin/libnotify-notify-send-users			Px,	# x11-libs/libnotify
+  /usr/bin/wget						Px,	# net-misc/wget
+  /usr/bin/stat						Cx,	# sys-apps/coreutils
+  /usr/bin/mail						Px,	# mail-client/mailx
+  /usr/bin/logger					Px,	# sys-apps/util-linux
   
   # READS/WRITES ---------------------------------------
   /var/lib/hosts.blacklist				w,

@@ -28,7 +28,6 @@ profile elfix.migrate-pax /usr/sbin/migrate-pax {
   /usr/sbin/migrate-pax					mr,
   /bin/env						mr,
   @{shell}						Cx,
-  /usr/bin/python-wrapper				ix,	# FIX ME! Поменять на Px, откорректировать профиль.
   
   # READS/WRITES ---------------------------------------
   /{bin,sbin,opt,lib{,32,64}}/**			rw,
@@ -53,7 +52,7 @@ profile elfix.migrate-pax /usr/sbin/migrate-pax {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,
+    /bin/uname						Px,	# sys-apps/coreutils
   }
 }
 
@@ -70,7 +69,6 @@ profile elfix.revdep-pax /usr/sbin/revdep-pax {
   /usr/sbin/revdep-pax					mr,
   /bin/env						mr,
   @{shell}						Cx,
-  /usr/bin/python-wrapper				ix,	# FIX ME! Поменять на Px, откорректировать профиль.
   
   # READS/WRITES ---------------------------------------
   /{bin,sbin,opt,lib{,32,64}}/**			rw,
@@ -89,6 +87,6 @@ profile elfix.revdep-pax /usr/sbin/revdep-pax {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,
+    /bin/uname						Px,	# sys-apps/coreutils
   }
 }

@@ -19,7 +19,10 @@ profile manpager /usr/bin/manpager {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/manpager					mr,
-  /usr/bin/less						Cx,
+  /usr/bin/less						Cx,	# sys-apps/less
+  
+  # READS/WRITES ---------------------------------------
+  /var/cache/man/**					rw,
   
   profile less /usr/bin/less {
     #include <abstractions/base>
@@ -32,5 +35,8 @@ profile manpager /usr/bin/manpager {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/less					mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/cache/man/**					rw,
   }
 }

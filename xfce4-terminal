@@ -50,18 +50,17 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-terminal				mr,
   @{shell}						Px -> shell_users,	# Должен быть пользовательский профиль.
-  /bin/rc-status					Px,
-  /bin/su						Px,
-  /usr/bin/sudo						Px,
-  /usr/bin/htop						Px,
-  /usr/bin/passwd.sh					Px,
-  /usr/bin/exo-open					Px,
+  /bin/rc-status					Px,	# sys-apps/openrc
+  /bin/su						Px,	# sys-apps/shadow
+  /usr/bin/sudo						Px,	# app-admin/sudo
+  /usr/bin/htop						Px,	# sys-process/htop
+  /usr/bin/passwd.sh					Px,	# sys-apps/shadow
+  /usr/bin/exo-open					Px,	# xfce-base/exo
   
   # READS/WRITES ---------------------------------------
   /usr/share/						r,
   /usr/share/xfce4/					r,
   /usr/share/xfce4/terminal/{,**}			r,
-  /usr/share/vte/termcap-0.0/xterm			r,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.local/share/				r,
@@ -72,6 +71,5 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
   owner @{HOME}/.dbus/{,**}				rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/vte*					rw,
   owner /tmp/#*						rw,
 }

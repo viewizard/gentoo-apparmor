@@ -41,7 +41,7 @@ profile procps.ps /bin/ps {
   /bin/ps						mr,
   
   # READS/WRITES ---------------------------------------
-  /usr/src/@{kernel}/System.map				r,
+  /usr/src/@{kernel}/System.map				r,	# sys-kernel/gentoo-sources
   
   # DENY INHERIT ---------------------------------------
   deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
@@ -62,8 +62,8 @@ profile procps.pidof /usr/bin/pidof {
   
   # PSEUDO ---------------------------------------------
   @{PROC}/						r,
-  audit @{PROC}/@{pid}/stat				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
-  audit @{PROC}/@{pid}/cmdline				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
+  @{PROC}/@{pids}/stat					r,
+  @{PROC}/@{pids}/cmdline				r,
   @{PROC}/sys/kernel/osrelease				r,
   
   # EXECUTABLES ----------------------------------------
@@ -85,7 +85,7 @@ profile procps.pgrep /usr/bin/pgrep {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/						r,
-  audit @{PROC}/@{pid}/stat				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
+  @{PROC}/@{pids}/stat					r,
   @{PROC}/@{pids}/status				r,
   @{PROC}/@{pids}/cmdline				r,
   audit @{PROC}/@{pid}/loginuid				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
@@ -114,6 +114,6 @@ profile procps.sysctl /usr/sbin/sysctl {
   /usr/sbin/sysctl					mr,
   
   # READS/WRITES ---------------------------------------
-  /etc/sysctl.conf					r,
-  /etc/sysctl.d/{,*}					r,
+  /etc/sysctl.conf					r,	# sys-apps/baselayout
+  /etc/sysctl.d/{,*}					r,	# sys-apps/openrc
 }

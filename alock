@@ -30,12 +30,12 @@ profile alock /usr/bin/alock {
   # EXECUTABLES ----------------------------------------
   /usr/bin/alock					mr,
   @{shell}						Cx,
-  /sbin/unix_chkpwd					Px,
+  /sbin/unix_chkpwd					Px,	# sys-libs/pam
   
   # READS/WRITES ---------------------------------------
   /etc/shells						r,
   /usr/lib{,32,64}/imlib2/loaders/*.so			m,
-  /usr/local/share/backgrounds/**.@{local_ext}		r,
+  /usr/local/share/backgrounds/**.@{local_ext}		r,	# FIX ME! (?) вынести в <local/profile_blocks/alock.d/>
   /run/utmp						rk,
   
   profile shell @{shell} {

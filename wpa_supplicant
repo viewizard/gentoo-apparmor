@@ -42,22 +42,22 @@ profile wpa_supplicant /usr/sbin/wpa_supplicant {
   	bus=system
   	path="/fi/w[0-9]*/wpa_supplicant[0-9]**"
   	interface="org.freedesktop.DBus.Properties"
-  	peer=(name="org.freedesktop.DBus",label="networkmanager.NetworkManager"),
+  	peer=(name="org.freedesktop.DBus",label="networkmanager.NetworkManager"),	# net-misc/networkmanager
   dbus receive
   	bus=system
   	path="/fi/w[0-9]*/wpa_supplicant[0-9]**"
   	interface="org.freedesktop.DBus.{Properties,Introspectable}"
-  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),
+  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),	# net-misc/networkmanager
   dbus send
   	bus=system
   	path="/fi/w[0-9]*/wpa_supplicant[0-9]**"
   	interface="fi.w1.wpa_supplicant[0-9]*"
-  	peer=(name="org.freedesktop.DBus",label="networkmanager.NetworkManager"),
+  	peer=(name="org.freedesktop.DBus",label="networkmanager.NetworkManager"),	# net-misc/networkmanager
   dbus receive
   	bus=system
   	path="/fi/w[0-9]*/wpa_supplicant[0-9]**"
   	interface="fi.w1.wpa_supplicant[0-9]*"
-  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),
+  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),	# net-misc/networkmanager
   
   # NETWORK --------------------------------------------
   network netlink raw,

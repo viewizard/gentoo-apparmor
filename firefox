@@ -24,8 +24,8 @@ profile firefox.start_script /usr/bin/firefox {
   # EXECUTABLES ----------------------------------------
   /usr/bin/firefox					r,
   @{shell}						mr,
-  /usr/bin/id						Px,
-  /usr/bin/newgrp					Px,
+  /usr/bin/id						Px,	# sys-apps/coreutils
+  /usr/bin/newgrp					Px,	# sys-apps/shadow
   /usr/lib{,32,64}/firefox/firefox			Px,
 }
 
@@ -95,11 +95,11 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/firefox/firefox{,-bin}		mr,
-  /bin/ps						Px,
-  /bin/uname						Px,
-  /bin/basename						Px,
-  /bin/dirname						Px,
-  /usr/bin/which					Px,
+  /bin/ps						Px,	# sys-process/procps
+  /bin/uname						Px,	# sys-apps/coreutils
+  /bin/basename						Px,	# sys-apps/coreutils
+  /bin/dirname						Px,	# sys-apps/coreutils
+  /usr/bin/which					Px,	# sys-apps/which
   /usr/lib{,32,64}/firefox/firefox			Px,	# Перезапуск, после установки обновлений.
   /usr/lib{,32,64}/firefox/plugin-container		Px,
   owner @{HOME}/.mozilla/**/extensions/**		Px,	# Пользовательские расширения.
@@ -107,12 +107,12 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   
   # READS/WRITES ---------------------------------------
   /etc/							r,
-  /etc/lsb-release					r,
+  /etc/lsb-release					r,	# sys-apps/lsb-release
   /etc/mtab						r,
   /etc/fstab						r,
   /etc/mime.types					r,
   /etc/timezone						r,
-  /etc/udev/udev.conf					r,
+  /etc/udev/udev.conf					r,	# sys-fs/eudev
   
   # USERS ----------------------------------------------
   owner @{HOME}/.macromedia/**				rw,
@@ -187,8 +187,7 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
-  /etc/adobe/mms.cfg					r,
-  /etc/ssl/openssl.cnf					r,
+  /etc/ssl/openssl.cnf					r,	# dev-libs/openssl
   
   # USERS ----------------------------------------------
   owner @{HOME}/.adobe/Flash_Player/{,**}		r,
@@ -217,7 +216,7 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/ps						Px,
+    /bin/ps						Px,	# sys-process/procps
     
     # DENY INHERIT -------------------------------------
     deny /tmp/FreshStream*				rw,	# firefox.plugin-container

@@ -20,10 +20,11 @@ profile gnupg.gpg-agent /usr/bin/gpg-agent {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gpg-agent					mr,
-  /usr/bin/pinentry-*					Px,
+  /usr/bin/pinentry-*					Px,	# app-crypt/pinentry
   
   # READS/WRITES ---------------------------------------
   owner /run/user/[0-9]*/gnupg/{,**}			rw,
+  /var/lib/gentoo/gkeys/keyrings/gentoo/release/**	rw,
   
   # USERS ----------------------------------------------
   owner @{HOME_CACHE}/gpg-agent-info			rw,
@@ -50,12 +51,12 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} {
   /run/user/[0-9]*/gnupg/{,*}				rw,
   /var/lib/gentoo/gkeys/keyrings/gentoo/release/	r,
   /var/lib/gentoo/gkeys/keyrings/gentoo/release/**	rw,
-#  /var/lib/gentoo/gkeys/keyrings/gentoo/release/**	l,	# FIX ME!
+  owner link subset /var/lib/gentoo/gkeys/keyrings/gentoo/release/**	-> /var/lib/gentoo/gkeys/keyrings/gentoo/release/**,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.gnupg/					rw,
   owner @{HOME}/.gnupg/**				rwk,
-#  owner @{HOME}/.gnupg/**				l,	# FIX ME!
+  owner link subset @{HOME}/.gnupg/**			-> /{home/*,root}/.gnupg/**,	# LINK! @{HOME}
   
   # TEMP -----------------------------------------------
   owner /var/tmp/portage/webrsync-*/portage-*		r,	# DELEGATION! portage.emerge-webrsync
@@ -79,9 +80,7 @@ profile gnupg.gpgconf /usr/bin/gpgconf {
   /run/user/[0-9]*/gnupg/{,**}				w,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.gnupg/					rw,
-  owner @{HOME}/.gnupg/**				rw,
-#  owner @{HOME}/.gnupg/**				l,	# FIX ME!
+  owner @{HOME}/.gnupg/{,**}				rw,
 }
 
 profile gnupg.gpgsm /usr/bin/gpgsm {

@@ -21,35 +21,35 @@ profile eselect /usr/bin/eselect {
   # EXECUTABLES ----------------------------------------
   /usr/bin/eselect					r,
   @{shell}						mr,
-  /bin/readlink						Cx,
-  /bin/ln						Cx,
-  /bin/mv						Cx,
-  /bin/rm						Cx,
-  /bin/sed						Cx,
-  /bin/sort						Cx,
-  /bin/head						Cx,
-  /bin/mkdir						Cx,
-  /bin/mktemp						Cx,
-  /bin/cut						Cx,
-  /bin/grep						Cx,
-  /bin/chgrp						Cx,
-  /bin/chmod						Cx,
-  /bin/cat						Cx,
-  /bin/tr						Cx,
-  /bin/ls						Cx,
-  /bin/uname						Px,
-  /usr/bin/file						Cx,
-  /usr/bin/scanelf					Cx,
-  /usr/bin/tput						Px,
-  /usr/bin/binutils-config				Px,
-  /usr/bin/locale					Px,	# eselect locale
-  /etc/init.d/*						Pxr,	# eselect rc (r - для вывода списка).
-  /lib{,32,64}/rc/bin/service_stopp{ing,ed}		Px,
-  /lib{,32,64}/rc/bin/service_start{ing,ed}		Px,
-  /lib{,32,64}/rc/bin/service_inactive			Px,
-  /lib{,32,64}/rc/bin/service_crashed			Px,
-  /lib{,32,64}/rc/bin/service_hotplugged		Px,
-  @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
+  /bin/readlink						Cx,	# sys-apps/coreutils
+  /bin/ln						Cx,	# sys-apps/coreutils
+  /bin/mv						Cx,	# sys-apps/coreutils
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/sed						Cx,	# sys-apps/sed
+  /bin/sort						Cx,	# sys-apps/coreutils
+  /bin/head						Cx,	# sys-apps/coreutils
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/mktemp						Cx,	# sys-apps/coreutils
+  /bin/cut						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/chgrp						Cx,	# sys-apps/coreutils
+  /bin/chmod						Cx,	# sys-apps/coreutils
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/tr						Cx,	# sys-apps/coreutils
+  /bin/ls						Cx,	# sys-apps/coreutils
+  /bin/uname						Px,	# sys-apps/coreutils
+  /usr/bin/file						Cx,	# sys-apps/file
+  /usr/bin/scanelf					Cx,	# app-misc/pax-utils
+  /usr/bin/tput						Px,	# sys-libs/ncurses
+  /usr/bin/binutils-config				Px,	# sys-devel/binutils-config
+  /usr/bin/locale					Px,	# sys-libs/glibc	# eselect locale
+  /etc/init.d/*						Pxr,	# sys-apps/openrc	# eselect rc (r - для вывода списка).
+  /lib{,32,64}/rc/bin/service_stopp{ing,ed}		Px,	# sys-apps/openrc
+  /lib{,32,64}/rc/bin/service_start{ing,ed}		Px,	# sys-apps/openrc
+  /lib{,32,64}/rc/bin/service_inactive			Px,	# sys-apps/openrc
+  /lib{,32,64}/rc/bin/service_crashed			Px,	# sys-apps/openrc
+  /lib{,32,64}/rc/bin/service_hotplugged		Px,	# sys-apps/openrc
+  @{PYTHON_EXEC_WRAPPER}				Cx -> portage,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -362,7 +362,7 @@ profile eselect /usr/bin/eselect {
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/portageq				Px,
-    @{PYTHON_EXEC}/env-update				Px,
+    @{PYTHON_EXEC}/portageq				Px,	# sys-apps/portage
+    @{PYTHON_EXEC}/env-update				Px,	# sys-apps/portage
   }
 }

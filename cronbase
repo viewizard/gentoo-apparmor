@@ -20,16 +20,16 @@ profile cronbase.run-crons /usr/sbin/run-crons {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/run-crons					r,
   @{shell}						mr,
-  /bin/ln						Cx,
-  /bin/cat						Cx,
-  /bin/echo						Px,
-  /bin/rm						Cx,
-  /bin/tr						Px,
-  /bin/touch						Cx,
-  /bin/readlink						Cx,
-  /usr/bin/find						Cx,
-  /usr/bin/whoami					Px,
-  /usr/bin/logger					Px,
+  /bin/ln						Cx,	# sys-apps/coreutils
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/echo						Px,	# sys-apps/coreutils
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/tr						Px,	# sys-apps/coreutils
+  /bin/touch						Cx,	# sys-apps/coreutils
+  /bin/readlink						Cx,	# sys-apps/coreutils
+  /usr/bin/find						Cx,	# sys-apps/findutils
+  /usr/bin/whoami					Px,	# sys-apps/coreutils
+  /usr/bin/logger					Px,	# sys-apps/util-linux
   /etc/cron.{daily,hourly,monthly,weekly}/*		Px,
   
   # READS/WRITES ---------------------------------------
@@ -87,7 +87,7 @@ profile cronbase.run-crons /usr/sbin/run-crons {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/find					mr,
-    /bin/rm						Px -> cronbase_rm,
+    /bin/rm						Px -> cronbase_rm,	# sys-apps/coreutils
     
     # READS/WRITES -------------------------------------
     /var/spool/cron/lastrun/				r,

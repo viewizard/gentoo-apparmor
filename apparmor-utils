@@ -62,7 +62,7 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,
   @{shell}						Cx,
-  /bin/netstat						Px,
+  /bin/netstat						Px,	# sys-apps/net-tools
   
   # READS/WRITES ---------------------------------------
   /etc/apparmor/logprof.conf				r,
@@ -94,7 +94,7 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/netstat					Px,
+    /bin/netstat					Px,	# sys-apps/net-tools
   }
 }
 
@@ -109,7 +109,7 @@ profile apparmor-utils.aa-complain @{PYTHON_EXEC}/aa-complain {
   
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,
-  /sbin/apparmor_parser					Px,
+  /sbin/apparmor_parser					Px,	# sys-apps/apparmor
   
   # READS/WRITES ---------------------------------------
   /etc/inputrc						r,
@@ -134,7 +134,7 @@ profile apparmor-utils.aa-enforce @{PYTHON_EXEC}/aa-enforce {
   
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,
-  /sbin/apparmor_parser					Px,
+  /sbin/apparmor_parser					Px,	# sys-apps/apparmor
   
   # READS/WRITES ---------------------------------------
   /etc/inputrc						r,
@@ -159,7 +159,7 @@ profile apparmor-utils.aa-disable @{PYTHON_EXEC}/aa-disable {
   
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,
-  /sbin/apparmor_parser					Px,
+  /sbin/apparmor_parser					Px,	# sys-apps/apparmor
   
   # READS/WRITES ---------------------------------------
   /etc/inputrc						r,

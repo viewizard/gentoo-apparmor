@@ -39,17 +39,17 @@ profile porthole @{PYTHON_EXEC}/porthole {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						cx,
-  /bin/stty						Px,
-  /bin/bzip2						Cx,
-  /usr/bin/sandbox					cx,
+  /bin/stty						Px,	# sys-apps/coreutils
+  /bin/bzip2						Cx,	# app-arch/bzip2
+  /usr/bin/sandbox					cx,	# sys-apps/sandbox
   
   # READS/WRITES ---------------------------------------
-  /etc/portage/**					r,
+  /etc/portage/**					r,	# sys-apps/portage
   /etc/profile.env					r,
-  /usr/portage/**					r,
+  /usr/portage/**					r,	# sys-apps/portage
   /usr/local/portage/**					r,
-  /usr/share/portage/**					r,
-  /usr/share/gtksourceview-[2-9]*/**			r,
+  /usr/share/portage/**					r,	# sys-apps/portage
+  /usr/share/gtksourceview-[2-9]*/**			r,	# x11-libs/gtksourceview
   /usr/share/porthole/**				r,
   /var/lib/portage/*					r,
   /var/cache/edb/**					r,
@@ -69,7 +69,7 @@ profile porthole @{PYTHON_EXEC}/porthole {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,
+    /bin/uname						Px,	# sys-apps/coreutils
   }
   
   profile bzip2 /bin/bzip2 {
@@ -83,7 +83,7 @@ profile porthole @{PYTHON_EXEC}/porthole {
     /bin/bzip2						mr,
     
     # READS/WRITES -------------------------------------
-    /usr/portage/{,**}					r,
+    /usr/portage/{,**}					r,	# sys-apps/portage
     /var/db/pkg/{,**}					r,
   }
   
@@ -99,9 +99,9 @@ profile porthole @{PYTHON_EXEC}/porthole {
     @{shell}						px -> porthole_sandbox_shell,
     
     # READS/WRITES -------------------------------------
-    /etc/sandbox.conf					r,
-    /etc/sandbox.d/{,**}				r,
-    /usr/portage/{,**}					r,
+    /etc/sandbox.conf					r,	# sys-apps/sandbox
+    /etc/sandbox.d/{,**}				r,	# sys-apps/sandbox
+    /usr/portage/{,**}					r,	# sys-apps/portage
   }
 }
 
@@ -115,9 +115,9 @@ profile porthole_sandbox_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		px,
+  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		px,	# sys-apps/portage
   
   # READS/WRITES ---------------------------------------
-  /usr/share/sandbox/sandbox.bashrc			r,
-  /usr/portage/{,**}					r,
+  /usr/share/sandbox/sandbox.bashrc			r,	# sys-apps/sandbox
+  /usr/portage/{,**}					r,	# sys-apps/portage
 }

@@ -28,7 +28,7 @@ profile vixie-cron.cron /usr/sbin/cron {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/cron					mr,
   @{shell}						Cx,
-  /usr/sbin/sendmail					Px,
+  /usr/sbin/sendmail					Px,	# mail-mta/nullmailer
   
   # READS/WRITES ---------------------------------------
   /etc/crontab						r,
@@ -45,8 +45,8 @@ profile vixie-cron.cron /usr/sbin/cron {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/rm						Px -> vixie_cron_cron_shell_rm,
-    /usr/sbin/run-crons					Px,
+    /bin/rm						Px -> vixie_cron_cron_shell_rm,	# sys-apps/coreutils
+    /usr/sbin/run-crons					Px,	# sys-process/cronbase
   }
 }
 
@@ -75,7 +75,7 @@ profile vixie-cron.crontab /usr/bin/crontab {
   /usr/bin/crontab					mr,
 }
 
-profile vixie-cron.init.d /etc/init.d/vixie-cron {
+profile vixie-cron.init.d /etc/init.d/vixie-cron flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -88,9 +88,9 @@ profile vixie-cron.init.d /etc/init.d/vixie-cron {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/cron					Px,
   @{shell}						Cx,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/vixie-cron				r,

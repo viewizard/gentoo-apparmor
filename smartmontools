@@ -64,7 +64,7 @@ profile smartmontools.smartctl /usr/sbin/smartctl {
   /usr/share/smartmontools/**				r,
 }
 
-profile smartmontools.init.d /etc/init.d/smartd {
+profile smartmontools.init.d /etc/init.d/smartd flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -77,9 +77,9 @@ profile smartmontools.init.d /etc/init.d/smartd {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/smartd					Px,
   @{shell}						Cx,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/smartd				r,

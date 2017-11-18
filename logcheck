@@ -23,27 +23,27 @@ profile logcheck /usr/sbin/logcheck {
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
   /usr/sbin/logcheck					r,
-  /bin/date						Cx,
-  /bin/hostname						Px,
-  /bin/basename						Px,
-  /bin/expr						Cx,
-  /bin/mktemp						Cx,
-  /bin/mkdir						Cx,
-  /bin/run-parts					Cx,
-  /bin/mv						Cx,
-  /bin/grep						Cx,
-  /bin/egrep						Cx,
-  /bin/cat						Cx,
-  /bin/tr						Px,
-  /bin/sed						Cx,
-  /bin/ls						Cx,
-  /bin/sort						Cx,
-  /bin/rm						Cx,
-  /bin/cp						Cx,
-  /bin/wc						Cx,
-  /usr/bin/id						Px,
+  /bin/date						Cx,	# sys-apps/coreutils
+  /bin/hostname						Px,	# sys-apps/net-tools
+  /bin/basename						Px,	# sys-apps/coreutils
+  /bin/expr						Cx,	# sys-apps/coreutils
+  /bin/mktemp						Cx,	# sys-apps/coreutils
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/run-parts					Cx,	# sys-apps/debianutils
+  /bin/mv						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/egrep						Cx,	# sys-apps/grep
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/tr						Px,	# sys-apps/coreutils
+  /bin/sed						Cx,	# sys-apps/sed
+  /bin/ls						Cx,	# sys-apps/coreutils
+  /bin/sort						Cx,	# sys-apps/coreutils
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/cp						Cx,	# sys-apps/coreutils
+  /bin/wc						Cx,	# sys-apps/coreutils
+  /usr/bin/id						Px,	# sys-apps/coreutils
   /usr/bin/lockfile-create				Cx,
-  /usr/bin/mime-construct				Cx,
+  /usr/bin/mime-construct				Cx,	# dev-perl/mime-construct
   /usr/sbin/logtail2					Px,
   
   # READS/WRITES ---------------------------------------
@@ -122,7 +122,7 @@ profile logcheck /usr/sbin/logcheck {
     # EXECUTABLES --------------------------------------
     /bin/egrep						r,
     @{shell}						mr,
-    /bin/grep						ix,	# Все правильно, для egrep используем с ix.
+    /bin/grep						ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
     
     # READS/WRITES -------------------------------------
     /etc/logcheck/{,**}					r,
@@ -213,7 +213,7 @@ profile logcheck /usr/sbin/logcheck {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/mime-construct				mr,
-    /usr/sbin/sendmail					Px,
+    /usr/sbin/sendmail					Px,	# mail-mta/nullmailer
     
     # TEMP ---------------------------------------------
     owner /tmp/logcheck.*/{,**}				r,
@@ -253,9 +253,9 @@ profile logcheck.cron.hourly /etc/cron.hourly/logcheck.cron {
   # EXECUTABLES ----------------------------------------
   /etc/cron.hourly/logcheck.cron			r,
   @{shell}						mr,
-  /bin/mkdir						Cx,
-  /bin/chown						Cx,
-  /bin/su						Px,
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/chown						Cx,	# sys-apps/coreutils
+  /bin/su						Px,	# sys-apps/shadow
   /usr/sbin/logcheck					Px,
   
   profile mkdir /bin/mkdir {

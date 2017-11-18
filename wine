@@ -139,7 +139,7 @@ profile wine.wine-preloader /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[
   	path="/org/freedesktop/NetworkManager{,/**}"
   	interface="org.freedesktop.DBus.Properties"
   	member=PropertiesChanged
-  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),
+  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),	# net-misc/networkmanager
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -281,8 +281,8 @@ profile wine.notepad /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}
   # EXECUTABLES ----------------------------------------
   /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/notepad r,
   @{shell}						mr,
-  /bin/basename						Px,
-  /bin/dirname						Px,
+  /bin/basename						Px,	# sys-apps/coreutils
+  /bin/dirname						Px,	# sys-apps/coreutils
   /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine Px,
 }
 
@@ -311,7 +311,7 @@ profile wine.winecfg /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}
   # EXECUTABLES ----------------------------------------
   /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/winecfg r,
   @{shell}						mr,
-  /bin/basename						Px,
-  /bin/dirname						Px,
+  /bin/basename						Px,	# sys-apps/coreutils
+  /bin/dirname						Px,	# sys-apps/coreutils
   /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine Px,
 }

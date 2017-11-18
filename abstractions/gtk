@@ -11,16 +11,14 @@
 # READS/WRITES -----------------------------------------
 /etc/gtk-[0-9]*/*					r,
 /etc/fonts/*						r,
-/etc/pango/*						r,	# pango, GTK+-2.x
-/usr/lib{,32,64}/pango/**				r,	# pango, GTK+-2.x
-/usr/lib{,32,64}/pango/[0-9]*/**.so			mr,	# pango, GTK+-2.x
+audit /etc/pango/*					r,	# FIX ME! 10.11.2017 audit	# x11-libs/pango (GTK+-2.x)
 /usr/lib{,32,64}/gtk-[0-9]*/**				r,
 /usr/lib{,32,64}/gtk-[0-9]*/**.so			mr,
-/usr/lib{,32,64}/gdk-pixbuf-[0-9]*/**			r,	# gdk-pixbuf
-/usr/lib{,32,64}/gdk-pixbuf-[0-9]*/[0-9]*/**.so		mr,	# gdk-pixbuf
+/usr/lib{,32,64}/gdk-pixbuf-[0-9]*/**			r,	# x11-libs/gdk-pixbuf
+/usr/lib{,32,64}/gdk-pixbuf-[0-9]*/[0-9]*/**.so		mr,	# x11-libs/gdk-pixbuf
 /usr/share/themes/{,**}					r,
 /usr/share/gtk-[0-9]*/*					r,
-/usr/share/glib-[0-9]*/schemas/gschemas.compiled	r,
+/usr/share/glib-[0-9]*/schemas/gschemas.compiled	r,	# dev-libs/glib
 /usr/share/applications/{,mimeinfo.cache}		r,
 /usr/share/**/icon-theme.cache				r,
 /var/cache/**/icon-theme.cache				r,

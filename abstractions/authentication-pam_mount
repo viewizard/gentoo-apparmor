@@ -12,10 +12,10 @@
 owner @{PROC}/@{pid}/mountinfo				r,
 
 # EXECUTABLES ------------------------------------------
-/bin/mount						Px -> pam_mount_mount,
-/bin/umount						Px -> pam_mount_umount,
-/usr/bin/ofl						Px,
-/usr/sbin/pmvarrun					Px,
+/bin/mount						Px -> pam_mount_mount,	# sys-apps/util-linux
+/bin/umount						Px -> pam_mount_umount,	# sys-apps/util-linux
+/usr/bin/ofl						Px,	# dev-util/hxtools
+/usr/sbin/pmvarrun					Px,	# sys-auth/pam_mount
 
 # READS/WRITES -----------------------------------------
 /run/mount/utab						r,

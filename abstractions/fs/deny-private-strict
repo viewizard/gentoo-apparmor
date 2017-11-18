@@ -14,9 +14,9 @@
 #include <abstractions/fs/deny-private>
 
 # potentially extremely sensitive files
-audit deny @{HOME}/.gnupg/**				mrwkl,
-audit deny @{HOME}/.ssh/**				mrwkl,
+audit deny @{HOME}/.gnupg/**				mrwkl,	# app-crypt/gnupg
+audit deny @{HOME}/.ssh/**				mrwkl,	# net-misc/openssh
 
 # don't allow access to any gnome-keyring modules
-audit deny @{HOME}/.mozilla/**				mrwkl,
-audit deny @{HOME}/.config/chromium/**			mrwkl,
+audit deny @{HOME}/.mozilla/**				mrwkl,	# www-client/firefox
+audit deny @{HOME}/.config/chromium/**			mrwkl,	# www-client/chromium

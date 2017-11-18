@@ -33,7 +33,7 @@ profile wget /usr/bin/wget {
   
   # READS/WRITES ---------------------------------------
   /etc/wgetrc						r,
-  /usr/portage/distfiles/**				rw,	# DELEGATION! portage
+  /usr/portage/distfiles/**				rw,	# sys-apps/portage	# DELEGATION! portage
   
   # USERS ----------------------------------------------
   owner @{HOME}/.wget-hsts				rw,
@@ -44,8 +44,8 @@ profile wget /usr/bin/wget {
   
   # TEMP -----------------------------------------------
   owner /tmp/hosts					rwk,	# DELEGATION! hosts.sh.cron.daily
-  owner /tmp/oinkmaster.*/**				w,	# DELEGATION! oinkmaster.cron.daily
-  owner /var/tmp/portage/webrsync-*/**			w,	# DELEGATION! portage.emerge-webrsync
+  owner /tmp/oinkmaster.*/**				w,	# net-analyzer/oinkmaster	# DELEGATION! oinkmaster.cron.daily
+  owner /var/tmp/portage/webrsync-*/**			w,	# sys-apps/portage	# DELEGATION! portage.emerge-webrsync
   
   # DENY INHERIT ---------------------------------------
   deny /tmp/lynis.cron.*				w,	# lynis.cron.daily

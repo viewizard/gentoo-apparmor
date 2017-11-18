@@ -21,7 +21,7 @@ profile gparted.gparted-pkexec /usr/bin/gparted-pkexec flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /usr/bin/gparted-pkexec				r,
   @{shell}						mr,
-  /usr/bin/pkexec					Px,
+  /usr/bin/pkexec					Px,	# sys-auth/polkit
 }
 
 profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
@@ -55,35 +55,35 @@ profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
   @{PROC}/partitions					r,
   @{PROC}/version					r,
   owner @{PROC}/@{pid}/fd/				r,
-  audit owner @{PROC}/@{pid}/mounts			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+  owner @{PROC}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/gpartedbin					mr,
-  /bin/umount						Cx,
-  /bin/udevadm						Px,
-  /sbin/hdparm						ix,	# FIX ME! Вынести в отдельный профиль.
-  /sbin/blkid						Px,
-  /sbin/mdadm						Px,
-  /sbin/e2image						ix,	# FIX ME! Вынести в отдельный профиль.
-  /sbin/lvm						Px,
-  /sbin/tune2fs						ix,	# FIX ME! Вынести в отдельный профиль.
-  /sbin/dumpe2fs					ix,	# FIX ME! Вынести в отдельный профиль.
-  /sbin/dmsetup						Px,
-  /sbin/mke2fs						Px,
-  /sbin/swaplabel					ix,	# FIX ME! Вынести в отдельный профиль.
-  /sbin/mkswap						Px,
-  /usr/bin/mtools					ix,	# FIX ME! Вынести в отдельный профиль.
-  /usr/sbin/mkfs.fat					Px,
-  /usr/sbin/fsck.fat					Px,
-  /usr/sbin/mkntfs					ix,	# FIX ME! Вынести в отдельный профиль.
-  /usr/sbin/ntfsresize					ix,	# FIX ME! Вынести в отдельный профиль.
-  /usr/sbin/ntfslabel					ix,	# FIX ME! Вынести в отдельный профиль.
+  /bin/umount						Cx,	# sys-apps/util-linux
+  /bin/udevadm						Px,	# sys-fs/eudev
+  /sbin/hdparm						ix,	# sys-apps/hdparm	# FIX ME! Вынести в отдельный профиль.
+  /sbin/blkid						Px,	# sys-apps/util-linux
+  /sbin/mdadm						Px,	# sys-fs/mdadm
+  /sbin/e2image						ix,	# sys-fs/e2fsprogs	# FIX ME! Вынести в отдельный профиль.
+  /sbin/lvm						Px,	# sys-fs/lvm2
+  /sbin/tune2fs						ix,	# sys-fs/e2fsprogs	# FIX ME! Вынести в отдельный профиль.
+  /sbin/dumpe2fs					ix,	# sys-fs/e2fsprogs	# FIX ME! Вынести в отдельный профиль.
+  /sbin/dmsetup						Px,	# sys-fs/lvm2
+  /sbin/mke2fs						Px,	# sys-fs/e2fsprogs
+  /sbin/swaplabel					ix,	# sys-apps/util-linux	# FIX ME! Вынести в отдельный профиль.
+  /sbin/mkswap						Px,	# sys-apps/util-linux
+  /usr/bin/mtools					ix,	# sys-fs/mtools		# FIX ME! Вынести в отдельный профиль.
+  /usr/sbin/mkfs.fat					Px,	# sys-fs/dosfstools
+  /usr/sbin/fsck.fat					Px,	# sys-fs/dosfstools
+  /usr/sbin/mkntfs					ix,	# sys-fs/ntfs3g		# FIX ME! Вынести в отдельный профиль.
+  /usr/sbin/ntfsresize					ix,	# sys-fs/ntfs3g		# FIX ME! Вынести в отдельный профиль.
+  /usr/sbin/ntfslabel					ix,	# sys-fs/ntfs3g		# FIX ME! Вынести в отдельный профиль.
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
-  /etc/mtools/mtools.conf				r,	# mlabel
-  /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,
-  /run/blkid/blkid.tab					r,	# e2label
+  /etc/mtools/mtools.conf				r,	# sys-fs/mtools
+  /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
+  /run/blkid/blkid.tab					r,
   
   profile umount /bin/umount flags=(complain) {
     #include <abstractions/base>
@@ -104,13 +104,13 @@ profile gparted.gparted /usr/sbin/gparted flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/gparted					r,
   @{shell}						mr,
-  /bin/ps						Px,
-  /bin/rm						Cx,
-  /bin/grep						Cx,
-  /bin/egrep						Cx,
-  /bin/touch						Cx,
-  /bin/sed						Cx,
-  /usr/bin/id						Px,
+  /bin/ps						Px,	# sys-process/procps
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/egrep						Cx,	# sys-apps/grep
+  /bin/touch						Cx,	# sys-apps/coreutils
+  /bin/sed						Cx,	# sys-apps/sed
+  /usr/bin/id						Px,	# sys-apps/coreutils
   /usr/sbin/gpartedbin					Px,
   
   # READS/WRITES ---------------------------------------
@@ -152,7 +152,7 @@ profile gparted.gparted /usr/sbin/gparted flags=(complain) {
     # EXECUTABLES --------------------------------------
     /bin/egrep						r,
     @{shell}						mr,
-    /bin/grep						ix,	# Все правильно, для egrep используем с ix.
+    /bin/grep						ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
   }
   
   profile touch /bin/touch flags=(complain) {

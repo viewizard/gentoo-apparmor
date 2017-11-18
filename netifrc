@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile netifrc.init.d /etc/init.d/net.* {
+profile netifrc.init.d /etc/init.d/net.* flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -37,32 +37,32 @@ profile netifrc.init.d /etc/init.d/net.* {
   # EXECUTABLES ----------------------------------------
   /etc/init.d/*						Px,
   @{shell}						Cx,
-  /bin/ip						Px,
-  /bin/cat						Cx,
-  /bin/grep						Cx,
-  /bin/sed						Cx,
-  /bin/chmod						Cx,
-  /bin/tr						Px,
-  /bin/readlink						Cx,
-  /bin/mkdir						Cx,
-  /bin/rmdir						Cx,
-  /bin/rc-status					Px,
-  /sbin/dhcpcd						Px,
-  /sbin/brctl						Px,
-  /sbin/iptunnel					Px,
-  /sbin/iwconfig					Px,
-  /usr/bin/gawk						Cx,
-  /usr/sbin/ifplugd					Px,
-  /lib{,32,64}/rc/sbin/mark_service_inactive		Px,
+  /bin/ip						Px,	# sys-apps/iproute2
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/sed						Cx,	# sys-apps/sed
+  /bin/chmod						Cx,	# sys-apps/coreutils
+  /bin/tr						Px,	# sys-apps/coreutils
+  /bin/readlink						Cx,	# sys-apps/coreutils
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/rmdir						Cx,	# sys-apps/coreutils
+  /bin/rc-status					Px,	# sys-apps/openrc
+  /sbin/dhcpcd						Px,	# net-misc/dhcpcd
+  /sbin/brctl						Px,	# net-misc/bridge-utils
+  /sbin/iptunnel					Px,	# sys-apps/net-tools
+  /sbin/iwconfig					Px,	# net-wireless/wireless-tools
+  /usr/bin/gawk						Cx,	# sys-apps/gawk
+  /usr/sbin/ifplugd					Px,	# sys-apps/ifplugd
+  /lib{,32,64}/rc/sbin/mark_service_inactive		Px,	# sys-apps/openrc
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
   /etc/resolv.conf					w,
   /etc/conf.d/net					r,
   /etc/init.d/net.*					r,
-  /etc/iproute2/{,*}					r,
-  /run/dhcpcd-*.pid					rwk,
-  /run/ifplugd.*.pid					rwk,
+  /etc/iproute2/{,*}					r,	# sys-apps/iproute2
+  /run/dhcpcd-*.pid					rwk,	# net-misc/dhcpcd
+  /run/ifplugd.*.pid					rwk,	# sys-apps/ifplugd
   
   profile shell @{shell} {
     #include <abstractions/base>

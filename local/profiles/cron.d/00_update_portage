@@ -27,16 +27,16 @@ profile 00_update_portage.cron.daily /etc/cron.daily/00_update_portage {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/00_update_portage			r,
   @{shell}						mr,
-  /bin/mktemp						Cx,
-  /bin/rm						Cx,
-  /bin/cat						Cx,
-  /bin/basename						Px,
-  /bin/cp						Cx,
-  /usr/bin/eix						Pxr,	# r - т.к. проверяем наличие файла
-  /usr/bin/libnotify-notify-send-users			Px,
-  /usr/bin/mail						Px,
-  /usr/bin/logger					Px,
-  @{PYTHON_EXEC_WRAPPER}				Cx -> emerge,	# Выполняем синхронизацию.
+  /bin/mktemp						Cx,	# sys-apps/coreutils
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/basename						Px,	# sys-apps/coreutils
+  /bin/cp						Cx,	# sys-apps/coreutils
+  /usr/bin/eix						Pxr,	# app-portage/eix (r - т.к. проверяем наличие файла)
+  /usr/bin/libnotify-notify-send-users			Px,	# x11-libs/libnotify
+  /usr/bin/mail						Px,	# mail-client/mailx
+  /usr/bin/logger					Px,	# sys-apps/util-linux
+  @{PYTHON_EXEC_WRAPPER}				Cx -> emerge,	# dev-lang/python-exec	# Выполняем синхронизацию.
   
   # READS/WRITES ---------------------------------------
   /etc/portage/cron_update.conf				r,
@@ -101,7 +101,7 @@ profile 00_update_portage.cron.daily /etc/cron.daily/00_update_portage {
     capability mknod,
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/emerge				Px,
+    @{PYTHON_EXEC}/emerge				Px,	# sys-apps/portage
     
     # TEMP ---------------------------------------------
     owner /tmp/portage.cron.??????			rw,

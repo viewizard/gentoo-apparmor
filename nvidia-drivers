@@ -45,10 +45,10 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings {
   @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
-  /etc/conf.d/gpm					r,
-  /etc/vdpau_wrapper.cfg				r,
+  /etc/conf.d/gpm					r,	# sys-libs/gpm
+  /etc/vdpau_wrapper.cfg				r,	# x11-libs/libvdpau
   /usr/share/nvidia/{,**}				r,
-  /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,
+  /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
   
   # USERS ----------------------------------------------
   owner @{HOME}/.nvidia-settings-rc			rw,
@@ -66,9 +66,9 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/ps						Px,
-    /usr/bin/Xorg					Px -> nvidia_drivers_Xorg,	# Только создание xorg.conf.
-    /usr/bin/pkg-config					Px,
+    /bin/ps						Px,	# sys-process/procps
+    /usr/bin/Xorg					Px -> nvidia_drivers_Xorg,	# x11-base/xorg-server	# Только создание xorg.conf.
+    /usr/bin/pkg-config					Px,	# dev-util/pkgconfig
   }
 }
 
@@ -107,7 +107,7 @@ profile nvidia-drivers.nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe flags=(att
   
   # EXECUTABLES ----------------------------------------
   /{usr,opt}/bin/nvidia-modprobe			mr,
-  /bin/kmod						Px,
+  /bin/kmod						Px,	# sys-apps/kmod
   
   # DENY INHERIT ---------------------------------------
   deny network,							# local.home.evelauncher
@@ -158,9 +158,9 @@ profile nvidia-drivers.nvidia-udev.sh /lib{,32,64}/udev/nvidia-udev.sh {
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/udev/nvidia-udev.sh			r,
   @{shell}						mr,
-  /bin/kmod						Px,
-  /bin/grep						Cx,
-  /bin/rm						Cx,
+  /bin/kmod						Px,	# sys-apps/kmod
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rm						Cx,	# sys-apps/coreutils
   /opt/bin/nvidia-smi					Px,
   
   profile grep /bin/grep {

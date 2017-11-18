@@ -112,7 +112,7 @@ profile nullmailer.nullmailer-send /usr/sbin/nullmailer-send {
   deny /var/log/nullmailer/nullmailer.log		w,	# nullmailer.init.d
 }
 
-profile nullmailer.init.d /etc/init.d/nullmailer {
+profile nullmailer.init.d /etc/init.d/nullmailer flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
@@ -134,14 +134,14 @@ profile nullmailer.init.d /etc/init.d/nullmailer {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/nullmailer-send				Px,
   @{shell}						Cx,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
-  /etc/environment					r,
+  /etc/environment					r,	# sys-libs/pam
   /etc/{conf,init}.d/nullmailer				r,
-  /etc/security/limits.d/{,*}				r,
+  /etc/security/limits.d/{,*}				r,	# sys-libs/pam
   /run/nullmailer.pid					rwk,
   /run/utmp						rk,
   /var/log/nullmailer/nullmailer.log			w,

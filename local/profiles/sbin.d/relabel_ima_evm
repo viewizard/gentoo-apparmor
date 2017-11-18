@@ -27,10 +27,10 @@ profile local.sbin.relabel_ima_evm /usr/local/sbin/relabel_ima_evm.sh {
   # EXECUTABLES ----------------------------------------
   /usr/local/sbin/relabel_ima_evm.sh			r,
   @{shell}						mr,
-  /bin/grep						Cx,
-  /bin/cat						Cx,
-  /usr/bin/find						Cx,
-  /usr/bin/evmctl					Px,
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /usr/bin/find						Cx,	# sys-apps/findutils
+  /usr/bin/evmctl					Px,	# app-crypt/ima-evm-utils
   
   profile grep /bin/grep {
     #include <abstractions/base>

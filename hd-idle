@@ -27,7 +27,7 @@ profile hd-idle /usr/sbin/hd-idle {
   /usr/sbin/hd-idle					mr,
 }
 
-profile hd-idle.init.d /etc/init.d/hd-idle {
+profile hd-idle.init.d /etc/init.d/hd-idle flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -44,9 +44,9 @@ profile hd-idle.init.d /etc/init.d/hd-idle {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/hd-idle					Px,
   @{shell}						Cx,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/hd-idle				r,

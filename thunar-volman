@@ -42,12 +42,12 @@ profile thunar-volman /usr/bin/thunar-volman {
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar-volman				mr,
   /usr/bin/thunar-volman-settings			Px,
-  /usr/bin/thunar					Px,
+  /usr/bin/thunar					Px,	# xfce-base/thunar
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
-  /etc/udev/udev.conf					r,
-  /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,
+  /etc/udev/udev.conf					r,	# sys-fs/eudev
+  /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
   /run/udev/data/*					r,
   /run/mount/utab					r,
 }
@@ -71,7 +71,7 @@ profile thunar-volman.thunar-volman-settings /usr/bin/thunar-volman-settings {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar-volman-settings			mr,
-  /usr/bin/exo-open					Px,
+  /usr/bin/exo-open					Px,	# xfce-base/exo
   
   # USERS ----------------------------------------------
   @{HOME}/.config/xfce4/help.rc				r,

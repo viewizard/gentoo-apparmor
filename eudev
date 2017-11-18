@@ -100,18 +100,18 @@ profile eudev.udevd /sbin/udevd {
   # EXECUTABLES ----------------------------------------
   /sbin/udevd						mr,
   @{shell}						Cx,
-  /sbin/dmsetup						Px,
-  /sbin/mdadm						Px,
-  /sbin/lvm						Px,
-  /usr/sbin/crda					Px,
-  /usr/sbin/alsactl					Px,
+  /sbin/dmsetup						Px,	# sys-fs/lvm2
+  /sbin/lvm						Px,	# sys-fs/lvm2
+  /sbin/mdadm						Px,	# sys-fs/mdadm
+  /usr/sbin/crda					Px,	# net-wireless/crda
+  /usr/sbin/alsactl					Px,	# media-sound/alsa-utils
   /lib{,32,64}/udev/net.sh				Px,
   /lib{,32,64}/udev/nvidia-udev.sh			Px,
   /lib{,32,64}/udev/ata_id				Px,
   /lib{,32,64}/udev/scsi_id				Px,
   /lib{,32,64}/udev/v4l_id				Px,
   /lib{,32,64}/udev/cdrom_id				Px,
-  /usr/lib{,32,64}/ConsoleKit/udev-acl			Px,
+  /usr/lib{,32,64}/ConsoleKit/udev-acl			Px,	# sys-auth/consolekit
   
   # READS/WRITES ---------------------------------------
   /etc/group						r,
@@ -131,8 +131,8 @@ profile eudev.udevd /sbin/udevd {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/sed						Px -> eudev_udevd_sed,
-    /sbin/mdadm						Px,
+    /bin/sed						Px -> eudev_udevd_sed,	# sys-apps/sed
+    /sbin/mdadm						Px,	# sys-fs/mdadm
   }
 }
 

@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile udev-init-scripts.udev.init.d /etc/init.d/udev {
+profile udev-init-scripts.udev.init.d /etc/init.d/udev flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -27,11 +27,11 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
-  /bin/udevadm						Px,
-  /sbin/udevd						Px,
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
+  /bin/udevadm						Px,	# sys-fs/eudev
+  /sbin/udevd						Px,	# sys-fs/eudev
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
@@ -90,7 +90,7 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev {
   }
 }
 
-profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger {
+profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -102,11 +102,11 @@ profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/udevadm						Px,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
-  /bin/cat						Cx,
+  /bin/udevadm						Px,	# sys-fs/eudev
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
+  /bin/cat						Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/udev-trigger			r,
@@ -180,7 +180,7 @@ profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger {
   }
 }
 
-profile udev-init-scripts.udev-settle.init.d /etc/init.d/udev-settle {
+profile udev-init-scripts.udev-settle.init.d /etc/init.d/udev-settle flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -192,10 +192,10 @@ profile udev-init-scripts.udev-settle.init.d /etc/init.d/udev-settle {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/udevadm						Px,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
+  /bin/udevadm						Px,	# sys-fs/eudev
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/udev-settle			r,

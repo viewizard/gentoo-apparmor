@@ -25,14 +25,14 @@ profile oinkmaster /usr/bin/oinkmaster.pl {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/oinkmaster.pl				mr,
-  /bin/gzip						Cx,
-  /bin/tar						Cx,
-  /usr/bin/wget						Px,
+  /bin/gzip						Cx,	# app-arch/gzip
+  /bin/tar						Cx,	# app-arch/tar
+  /usr/bin/wget						Px,	# net-misc/wget
   
   # READS/WRITES ---------------------------------------
   /etc/oinkmaster.conf					r,
-  /etc/suricata/rules/					r,
-  /etc/suricata/rules/**				rw,
+  /etc/suricata/rules/					r,	# net-analyzer/suricata
+  /etc/suricata/rules/**				rw,	# net-analyzer/suricata
   
   # TEMP -----------------------------------------------
   owner /tmp/oinkmaster.cron.??????{,/,/**}		rw,
@@ -78,15 +78,15 @@ profile oinkmaster.cron.daily /etc/cron.daily/oinkmaster {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/oinkmaster				r,
   @{shell}						mr,
-  /bin/mktemp						Cx,
-  /bin/cat						Cx,
-  /bin/rm						Cx,
-  /bin/basename						Px,
-  /usr/bin/libnotify-notify-send-users			Px,
-  /usr/bin/mail						Px,
-  /usr/bin/logger					Px,
+  /bin/mktemp						Cx,	# sys-apps/coreutils
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/basename						Px,	# sys-apps/coreutils
+  /usr/bin/libnotify-notify-send-users			Px,	# x11-libs/libnotify
+  /usr/bin/mail						Px,	# mail-client/mailx
+  /usr/bin/logger					Px,	# sys-apps/util-linux
   /usr/bin/oinkmaster.pl				Px,
-  /etc/init.d/suricata					Px,
+  /etc/init.d/suricata					Px,	# net-analyzer/suricata
   
   # TEMP -----------------------------------------------
   owner /tmp/oinkmaster.cron.??????			rw,

@@ -59,14 +59,14 @@ profile transmission /usr/bin/transmission-* {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/transmission-*				mr,
-  /usr/bin/canberra-gtk-play				Px,
+  /usr/bin/canberra-gtk-play				Px,	# media-libs/libcanberra
   
   # READS/WRITES ---------------------------------------
-  /etc/ssl/openssl.cnf					r,
+  /etc/ssl/openssl.cnf					r,	# dev-libs/openssl
   
   # USERS ----------------------------------------------
   owner @{HOME_CACHE}/transmission/{,**}		rw,
   owner @{HOME}/.config/transmission/{,**}		rw,
   owner @{HOME}/.local/share/Trash/{info,files}/**	rw,
-  owner @{HOME}/.local/share/gvfs-metadata/home{,-*.log} r,
+  owner @{HOME}/.local/share/gvfs-metadata/home{,-*.log} r,	# gnome-base/gvfs
 }

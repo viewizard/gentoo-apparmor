@@ -62,19 +62,19 @@ profile conky_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/tail						Cx,
-  /bin/head						Cx,
-  /bin/date						Cx,
-  /bin/sed						Cx,
-  /bin/cat						Cx,
-  /bin/cut						Cx,
-  /bin/grep						Cx,
-  /bin/wc						Cx,
-  /usr/bin/cal						Px,
-  /usr/bin/sensors					Px,
+  /bin/tail						Cx,	# sys-apps/coreutils
+  /bin/head						Cx,	# sys-apps/coreutils
+  /bin/date						Cx,	# sys-apps/coreutils
+  /bin/sed						Cx,	# sys-apps/sed
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/cut						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/wc						Cx,	# sys-apps/coreutils
+  /usr/bin/cal						Px,	# sys-apps/util-linux
+  /usr/bin/sensors					Px,	# sys-apps/lm_sensors
   
   # READS/WRITES ---------------------------------------
-  /usr/portage/metadata/timestamp			r,
+  /usr/portage/metadata/timestamp			r,	# sys-apps/portage
   
   profile tail /bin/tail {
     #include <abstractions/base>
@@ -161,7 +161,7 @@ profile conky_shell {
     /bin/cat						mr,
     
     # READS/WRITES -------------------------------------
-    /usr/portage/metadata/timestamp			r,
+    /usr/portage/metadata/timestamp			r,	# sys-apps/portage
     
     # DENY INHERIT -------------------------------------
     deny network inet dgram,					# conky_shell

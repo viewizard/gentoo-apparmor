@@ -32,6 +32,7 @@ profile juffed /usr/bin/juffed {
   #include <abstractions/fs/deny-private-strict>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   owner @{PROC}/@{pid}/cmdline				r,
@@ -75,6 +76,7 @@ profile juffed_root {
   capability sys_nice,
   
   # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   owner @{PROC}/@{pid}/cmdline				r,

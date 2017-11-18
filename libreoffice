@@ -24,12 +24,12 @@ profile libreoffice /usr/{bin,lib{,32,64}/libreoffice/program}/soffice {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/dirname						Px,
-  /bin/basename						Px,
-  /bin/grep						Cx,
-  /bin/uname						Px,
-  /bin/ls						Cx,
-  /bin/sed						Cx,
+  /bin/dirname						Px,	# sys-apps/coreutils
+  /bin/basename						Px,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/uname						Px,	# sys-apps/coreutils
+  /bin/ls						Cx,	# sys-apps/coreutils
+  /bin/sed						Cx,	# sys-apps/sed
   /usr/lib{,32,64}/libreoffice/program/oosplash		Px,
   
   profile ls /bin/ls {
@@ -144,15 +144,18 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/libreoffice/program/soffice.bin	m,
   @{shell}						Cx,
+  /usr/bin/gpgconf					Px,	# app-crypt/gnupg
+  /usr/bin/gpg						Px,	# app-crypt/gnupg
+  /usr/bin/gpgsm					Px,	# app-crypt/gnupg
   /opt/{oracle-jdk,icedtea}-bin-*/bin/java		Px,
   /opt/{oracle-jdk,icedtea}-bin-*/jre/bin/java		Px,
   
   # READS/WRITES ---------------------------------------
-  /etc/OpenCL/vendors/{,*}				r,
+  /etc/OpenCL/vendors/{,*}				r,	# x11-drivers/nvidia-drivers (проверять, возможно и другие)
   /usr/lib{,32,64}/libreoffice/{,**}			r,
   /usr/lib{,32,64}/@{PYTHON}/lib-dynload/*.so		m,
-  /usr/share/liblangtag/**				r,
-  /usr/share/libexttextcat/{,*}				r,
+  /usr/share/liblangtag/**				r,	# app-text/liblangtag
+  /usr/share/libexttextcat/{,*}				r,	# app-text/libexttextcat
   # jre
   /opt/{oracle-jdk,icedtea}-bin-*/{,**}			r,
   /opt/{oracle-jdk,icedtea}-bin-*/jre/lib/**.so		rm,
@@ -164,6 +167,7 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   owner @{HOME}/.config/libreoffice/			rw,
   owner @{HOME}/.config/libreoffice/**			rwk,
   owner @{HOME}/.languagetool-ooo.cfg			rw,
+  owner @{HOME_CACHE}/fontconfig/**			k,	# media-libs/fontconfig
   
   # TEMP -----------------------------------------------
   /tmp/							r,
@@ -171,10 +175,12 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   owner /tmp/*.tmp/					rw,
   owner /tmp/*.tmp/*.tmp				rwk,
   owner /tmp/OSL_PIPE_[0-9]*_SingleOfficeIPC_*		rw,	# [0-9]* - UID пользователя.
+  /var/tmp/						r,
   
   # NOISY ----------------------------------------------
   deny /usr/lib{,32,64}/libreoffice/share/uno_packages/cache/* w,
   deny /usr/lib{,32,64}/libreoffice/program/__pycache__/ w,
+  deny @{HOME}/.mozilla/firefox/profiles.ini		r,
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -188,7 +194,7 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,
+    /bin/uname						Px,	# sys-apps/coreutils
     
     # DENY INHERIT -------------------------------------
     deny @{HOME}/.config/libreoffice/**			rw,	# libreoffice.bin

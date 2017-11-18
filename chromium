@@ -24,8 +24,8 @@ profile chromium.start_script /usr/bin/chromium{,-browser} {
   # EXECUTABLES ----------------------------------------
   /usr/bin/chromium{,-browser}				r,
   @{shell}						mr,
-  /usr/bin/id						Px,
-  /usr/bin/newgrp					Px,
+  /usr/bin/id						Px,	# sys-apps/coreutils
+  /usr/bin/newgrp					Px,	# sys-apps/shadow
   /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh Px,
 }
 
@@ -40,7 +40,7 @@ profile chromium.chromium-launcher.sh /usr/lib{,32,64}/chromium-browser/chromium
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh r,
   @{shell}						mr,
-  /bin/readlink						Cx,
+  /bin/readlink						Cx,	# sys-apps/coreutils
   /usr/lib{,32,64}/chromium-browser/chrome		Px,
   
   # READS/WRITES ---------------------------------------
@@ -146,10 +146,10 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   deny @{PROC}/@{pids}/oom_{,score_}adj			w,
   
   # EXECUTABLES ----------------------------------------
-  /bin/ps						Px,
-  /usr/bin/xdg-settings					Px,
-  /usr/bin/lsb_release					Px,
-  /usr/bin/gvfs-open					Px,
+  /bin/ps						Px,	# sys-process/procps
+  /usr/bin/xdg-settings					Px,	# x11-misc/xdg-utils
+  /usr/bin/lsb_release					Px,	# sys-apps/lsb-release
+  /usr/bin/gvfs-open					Px,	# gnome-base/gvfs
   # Allow transitions to ourself and our sandbox
   /usr/bin/chromium{,-browser}				Px,
   /usr/lib{,32,64}/chromium-browser/chrome		ixmr,
@@ -158,8 +158,8 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   
   # READS/WRITES ---------------------------------------
   /etc/chromium/{,**}					r,
-  /etc/udev/udev.conf					r,
-  /etc/mime.types					r,
+  /etc/udev/udev.conf					r,	# sys-fs/eudev
+  /etc/mime.types					r,	# app-misc/mime-types
   /etc/mtab						r,
   # chromium mmaps all kinds of things for speed.
   /etc/passwd						m,

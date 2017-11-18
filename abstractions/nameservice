@@ -25,16 +25,16 @@
 
 # READS/WRITES -----------------------------------------
 /etc/group						r,
-/etc/host.conf						r,
-/etc/hosts						r,
-/etc/nsswitch.conf					r,
-/etc/gai.conf						r,
+/etc/host.conf						r,	# sys-libs/glibc
+/etc/hosts						r,	# sys-apps/baselayout
+/etc/nsswitch.conf					r,	# sys-libs/glibc
+/etc/gai.conf						r,	# sys-libs/glibc
 /etc/passwd						r,
-/etc/protocols						r,
+/etc/protocols						r,	# sys-apps/baselayout
 /etc/resolv.conf					r,
-/run/NetworkManager/resolv.conf				r,	# networkmanager
-/etc/samba/lmhosts					r,
-/etc/services						r,
+/run/NetworkManager/resolv.conf				r,	# net-misc/networkmanager
+/etc/samba/lmhosts					r,	# net-fs/samba
+/etc/services						r,	# sys-apps/baselayout
 /lib{,32,64}/libnss_*.so{,.[0-9]*}			mr,	# The nss libraries are sometimes used in addition to PAM;
 /usr/lib{,32,64}/libnss_*.so{,.[0-9]*}			mr,	# make sure they are available
 /var/lib/misc/*.db					r,	# db backend

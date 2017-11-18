@@ -43,14 +43,14 @@ profile tumbler /usr/lib{,32,64}/tumbler-1/tumblerd {
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/tumbler/tumbler.rc				r,
-  /etc/udev/udev.conf					r,
+  /etc/udev/udev.conf					r,	# sys-fs/eudev
   /usr/share/thumbnailers/				r,
   /usr/lib{,32,64}/tumbler-1/plugins/**			mr,
   /usr/local/share/backgrounds/**			r,
   
   # USERS ----------------------------------------------
   owner @{HOME_CACHE}/sessions/thumbs*/{,*.png}		r,
-  owner @{HOME}/.local/share/gvfs-metadata/*		r,
+  owner @{HOME}/.local/share/gvfs-metadata/*		r,	# gnome-base/gvfs
   owner @{HOME}/.face*					r,
   
   # NOISY ----------------------------------------------

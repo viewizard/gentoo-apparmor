@@ -51,21 +51,21 @@ profile engrampa /usr/bin/engrampa {
   # EXECUTABLES ----------------------------------------
   /usr/bin/engrampa					mr,
   @{shell}						Cx,
-  /bin/mv						Cx,
-  /bin/rm						Cx,
-  /bin/cp						Cx,
-  /bin/tar						Cx,
-  /bin/bzip2						Cx,
-  /bin/gzip						Cx,
-  /usr/bin/7z						Cx,
-  /usr/bin/7za						Cx,
-  /usr/bin/zip						Cx,
-  /usr/bin/unzip					Cx,
-  /usr/bin/lzip						Cx,
-  /usr/bin/xz						Cx,
-  /usr/bin/dpkg-deb					Px -> engrampa_dpkg_deb,
-  /usr/@{CHOST}/binutils-bin/*/ar			Cx,
-  /opt/rar/rar						Cx,
+  /bin/mv						Cx,	# sys-apps/coreutils
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/cp						Cx,	# sys-apps/coreutils
+  /bin/tar						Cx,	# app-arch/tar
+  /bin/bzip2						Cx,	# app-arch/bzip2
+  /bin/gzip						Cx,	# app-arch/gzip
+  /usr/bin/7z						Cx,	# app-arch/p7zip
+  /usr/bin/7za						Cx,	# app-arch/p7zip
+  /usr/bin/zip						Cx,	# app-arch/zip
+  /usr/bin/unzip					Cx,	# app-arch/unzip
+  /usr/bin/lzip						Cx,	# app-arch/lzip
+  /usr/bin/xz						Cx,	# app-arch/xz-utils
+  /usr/bin/dpkg-deb					Px -> engrampa_dpkg_deb,	# app-arch/dpkg
+  /usr/@{CHOST}/binutils-bin/*/ar			Cx,	# sys-devel/binutils
+  /opt/rar/rar						Cx,	# app-arch/rar
   
   # READS/WRITES ---------------------------------------
   /usr/share/engrampa/{,**}				r,
@@ -73,7 +73,7 @@ profile engrampa /usr/bin/engrampa {
   # USERS ----------------------------------------------
   owner @{HOME}/.fr-*/{,**}				rw,
   owner @{HOME}/.config/mimeapps.list*			rw,
-  owner @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+  owner @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -96,7 +96,7 @@ profile engrampa /usr/bin/engrampa {
     /bin/mv						mr,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
   }
   
   profile rm /bin/rm {
@@ -116,7 +116,7 @@ profile engrampa /usr/bin/engrampa {
     owner @{HOME}/.fr-*/{,**}				rw,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
   }
   
   profile cp /bin/cp {
@@ -132,7 +132,7 @@ profile engrampa /usr/bin/engrampa {
     owner @{HOME}/.fr-*/{,**}				rw,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
   }
   
   profile tar /bin/tar {
@@ -145,16 +145,16 @@ profile engrampa /usr/bin/engrampa {
     # EXECUTABLES --------------------------------------
     /bin/tar						mr,
     @{shell}						Px -> engrampa_tar_shell,
-    /bin/bzip2						ix,	# Oставляем запуск через ix.
-    /bin/gzip						ix,	# Oставляем запуск через ix.
-    /usr/bin/lzip					ix,	# Oставляем запуск через ix.
-    /usr/bin/xz						ix,	# Oставляем запуск через ix.
+    /bin/bzip2						ix,	# app-arch/bzip2	# Oставляем запуск через ix.
+    /bin/gzip						ix,	# app-arch/gzip		# Oставляем запуск через ix.
+    /usr/bin/lzip					ix,	# app-arch/lzip		# Oставляем запуск через ix.
+    /usr/bin/xz						ix,	# app-arch/xz-utils	# Oставляем запуск через ix.
     
     # USERS --------------------------------------------
     owner @{HOME}/.fr-*/{,**}				rw,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
   }
   
   profile bzip2 /bin/bzip2 {
@@ -170,7 +170,7 @@ profile engrampa /usr/bin/engrampa {
     owner @{HOME}/.fr-*/{,**}				rw,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
   }
   
   profile gzip /bin/gzip {
@@ -186,7 +186,7 @@ profile engrampa /usr/bin/engrampa {
     owner @{HOME}/.fr-*/{,**}				rw,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
   }
   
   profile 7z /usr/bin/7z {
@@ -202,7 +202,7 @@ profile engrampa /usr/bin/engrampa {
     # EXECUTABLES --------------------------------------
     /usr/bin/7z						r,
     @{shell}						mr,
-    /usr/lib{,32,64}/p7zip/7z				ix,	# Все правильно, для 7z используем с ix.
+    /usr/lib{,32,64}/p7zip/7z				ix,	# app-arch/p7zip	# Все правильно, для 7z используем с ix.
     
     # READS/WRITES -------------------------------------
     /usr/lib64/p7zip/7z.so				m,
@@ -211,7 +211,7 @@ profile engrampa /usr/bin/engrampa {
     owner @{HOME}/.fr-*/{,**}				rw,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
   }
   
   profile 7za /usr/bin/7za {
@@ -227,10 +227,10 @@ profile engrampa /usr/bin/engrampa {
     # EXECUTABLES --------------------------------------
     /usr/bin/7za					r,
     @{shell}						mr,
-    /usr/lib{,32,64}/p7zip/7za				ix,	# Все правильно, для 7za используем с ix.
+    /usr/lib{,32,64}/p7zip/7za				ix,	# app-arch/p7zip	# Все правильно, для 7za используем с ix.
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
   }
   
   profile zip /usr/bin/zip {
@@ -243,7 +243,7 @@ profile engrampa /usr/bin/engrampa {
     /usr/bin/zip					mr,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
   }
   
   profile unzip /usr/bin/unzip {
@@ -256,7 +256,7 @@ profile engrampa /usr/bin/engrampa {
     /usr/bin/unzip					mr,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
   }
   
   profile lzip /usr/bin/lzip {
@@ -272,7 +272,7 @@ profile engrampa /usr/bin/engrampa {
     owner @{HOME}/.fr-*/{,**}				rw,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
   }
   
   profile xz /usr/bin/xz {
@@ -288,7 +288,7 @@ profile engrampa /usr/bin/engrampa {
     owner @{HOME}/.fr-*/{,**}				rw,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
   }
   
   profile ar /usr/@{CHOST}/binutils-bin/*/ar {
@@ -301,7 +301,7 @@ profile engrampa /usr/bin/engrampa {
     /usr/@{CHOST}/binutils-bin/*/ar			mr,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
   }
   
   profile rar /opt/rar/rar {
@@ -313,12 +313,15 @@ profile engrampa /usr/bin/engrampa {
     # EXECUTABLES --------------------------------------
     /opt/rar/rar					mr,
     
+    # USERS --------------------------------------------
+    owner @{HOME}/.fr-*/{,**}				rw,
+    
     # NOISY --------------------------------------------
     deny /etc/						r,
     deny /usr/{,local/}lib{,32,64}/			r,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
   }
 }
 
@@ -359,9 +362,9 @@ profile engrampa_rpm2cpio_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/dd						Cx,
-  /bin/gzip						Cx,
-  /bin/cpio						Cx,
+  /bin/dd						Cx,	# sys-apps/coreutils
+  /bin/gzip						Cx,	# app-arch/gzip
+  /bin/cpio						Cx,	# app-arch/cpio
   
   profile dd /bin/dd {
     #include <abstractions/base>
@@ -402,8 +405,8 @@ profile engrampa_dpkg_deb {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dpkg-deb					mr,
-  /bin/rm						Cx,
-  /bin/tar						Cx,
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/tar						Cx,	# app-arch/tar
   
   # TEMP -----------------------------------------------
   owner /tmp/dpkg-deb.*/				rw,
@@ -450,10 +453,10 @@ profile engrampa_tar_shell flags=(attach_disconnected) {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/gzip						Cx,
-  /bin/bzip2						Cx,
-  /usr/bin/lzip						Cx,
-  /usr/bin/xz						Cx,
+  /bin/gzip						Cx,	# app-arch/gzip
+  /bin/bzip2						Cx,	# app-arch/bzip2
+  /usr/bin/lzip						Cx,	# app-arch/lzip
+  /usr/bin/xz						Cx,	# app-arch/xz-utils
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
@@ -545,28 +548,28 @@ profile engrampa_root {
   # EXECUTABLES ----------------------------------------
   /usr/bin/engrampa					mr,
   @{shell}						Cx,
-  /bin/mv						Cx,
-  /bin/rm						Cx,
-  /bin/cp						Cx,
-  /bin/tar						Cx,
-  /bin/bzip2						Cx,
-  /bin/gzip						Cx,
-  /usr/bin/7z						Cx,
-  /usr/bin/7za						Cx,
-  /usr/bin/zip						Cx,
-  /usr/bin/unzip					Cx,
-  /usr/bin/lzip						Cx,
-  /usr/bin/xz						Cx,
-  /usr/bin/dpkg-deb					Px -> engrampa_dpkg_deb_root,
-  /usr/@{CHOST}/binutils-bin/*/ar			Cx,
-  /opt/rar/rar						Cx,
+  /bin/mv						Cx,	# sys-apps/coreutils
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/cp						Cx,	# sys-apps/coreutils
+  /bin/tar						Cx,	# app-arch/tar
+  /bin/bzip2						Cx,	# app-arch/bzip2
+  /bin/gzip						Cx,	# app-arch/gzip
+  /usr/bin/7z						Cx,	# app-arch/p7zip
+  /usr/bin/7za						Cx,	# app-arch/p7zip
+  /usr/bin/zip						Cx,	# app-arch/zip
+  /usr/bin/unzip					Cx,	# app-arch/unzip
+  /usr/bin/lzip						Cx,	# app-arch/lzip
+  /usr/bin/xz						Cx,	# app-arch/xz-utils
+  /usr/bin/dpkg-deb					Px -> engrampa_dpkg_deb_root,	# app-arch/dpkg
+  /usr/@{CHOST}/binutils-bin/*/ar			Cx,	# sys-devel/binutils
+  /opt/rar/rar						Cx,	# app-arch/rar
   
   # READS/WRITES ---------------------------------------
   /usr/share/engrampa/{,**}				r,
   
   # USERS ----------------------------------------------
   /root/.config/mimeapps.list*				rw,
-  /root/.local/share/gvfs-metadata/{,**}		rw,
+  /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
   /root/.cache/.fr-*/{,**}				rw,
   
   profile shell @{shell} {
@@ -591,7 +594,7 @@ profile engrampa_root {
     /bin/mv						mr,
     
     # DENY INHERIT -------------------------------------
-    deny /root/.local/share/gvfs-metadata/{,**}	rw,
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
   }
   
   profile rm /bin/rm {
@@ -612,7 +615,7 @@ profile engrampa_root {
     /root/.cache/.fr-*/{,**}				rw,
     
     # DENY INHERIT -------------------------------------
-    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
   }
   
   profile cp /bin/cp {
@@ -632,7 +635,7 @@ profile engrampa_root {
     /root/.cache/.fr-*/{,**}				rw,
     
     # DENY INHERIT -------------------------------------
-    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
   }
   
   profile tar /bin/tar {
@@ -651,16 +654,16 @@ profile engrampa_root {
     # EXECUTABLES --------------------------------------
     /bin/tar						mr,
     @{shell}						Px -> engrampa_tar_shell_root,
-    /bin/bzip2						ix,	# Oставляем запуск через ix.
-    /bin/gzip						ix,	# Oставляем запуск через ix.
-    /usr/bin/lzip					ix,	# Oставляем запуск через ix.
-    /usr/bin/xz						ix,	# Oставляем запуск через ix.
+    /bin/bzip2						ix,	# app-arch/bzip2	# Oставляем запуск через ix.
+    /bin/gzip						ix,	# app-arch/gzip		# Oставляем запуск через ix.
+    /usr/bin/lzip					ix,	# app-arch/lzip		# Oставляем запуск через ix.
+    /usr/bin/xz						ix,	# app-arch/xz-utils	# Oставляем запуск через ix.
     
     # USERS --------------------------------------------
     /root/.cache/.fr-*/{,**}				rw,
     
     # DENY INHERIT -------------------------------------
-    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
   }
   
   profile bzip2 /bin/bzip2 {
@@ -677,7 +680,7 @@ profile engrampa_root {
     /root/.cache/.fr-*/{,**}				rw,
     
     # DENY INHERIT -------------------------------------
-    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
   }
   
   profile gzip /bin/gzip {
@@ -694,7 +697,7 @@ profile engrampa_root {
     /root/.cache/.fr-*/{,**}				rw,
     
     # DENY INHERIT -------------------------------------
-    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
   }
   
   profile 7z /usr/bin/7z {
@@ -711,13 +714,13 @@ profile engrampa_root {
     # EXECUTABLES --------------------------------------
     /usr/bin/7z						r,
     @{shell}						mr,
-    /usr/lib{,32,64}/p7zip/7z				ix,	# Все правильно, для 7z используем с ix.
+    /usr/lib{,32,64}/p7zip/7z				ix,	# app-arch/p7zip	# Все правильно, для 7z используем с ix.
     
     # READS/WRITES -------------------------------------
     /usr/lib64/p7zip/7z.so				m,
     
     # DENY INHERIT -------------------------------------
-    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
   }
   
   profile 7za /usr/bin/7za {
@@ -734,10 +737,10 @@ profile engrampa_root {
     # EXECUTABLES --------------------------------------
     /usr/bin/7za					r,
     @{shell}						mr,
-    /usr/lib{,32,64}/p7zip/7za				ix,	# Все правильно, для 7za используем с ix.
+    /usr/lib{,32,64}/p7zip/7za				ix,	# app-arch/p7zip	# Все правильно, для 7za используем с ix.
     
     # DENY INHERIT -------------------------------------
-    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
   }
   
   profile zip /usr/bin/zip {
@@ -751,7 +754,7 @@ profile engrampa_root {
     /usr/bin/zip					mr,
     
     # DENY INHERIT -------------------------------------
-    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
   }
   
   profile unzip /usr/bin/unzip {
@@ -765,7 +768,7 @@ profile engrampa_root {
     /usr/bin/unzip					mr,
     
     # DENY INHERIT -------------------------------------
-    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
   }
   
   profile lzip /usr/bin/lzip {
@@ -782,7 +785,7 @@ profile engrampa_root {
     /root/.cache/.fr-*/{,**}				rw,
     
     # DENY INHERIT -------------------------------------
-    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
   }
   
   profile xz /usr/bin/xz {
@@ -799,7 +802,7 @@ profile engrampa_root {
     /root/.cache/.fr-*/{,**}				rw,
     
     # DENY INHERIT -------------------------------------
-    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
   }
   
   profile ar /usr/@{CHOST}/binutils-bin/*/ar {
@@ -813,7 +816,7 @@ profile engrampa_root {
     /usr/@{CHOST}/binutils-bin/*/ar			mr,
     
     # DENY INHERIT -------------------------------------
-    deny /root/.local/share/gvfs-metadata/{,**}		rw,
+    deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
   }
   
   profile rar /opt/rar/rar {
@@ -871,9 +874,9 @@ profile engrampa_rpm2cpio_shell_root {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/dd						Cx,
-  /bin/gzip						Cx,
-  /bin/cpio						Cx,
+  /bin/dd						Cx,	# sys-apps/coreutils
+  /bin/gzip						Cx,	# app-arch/gzip
+  /bin/cpio						Cx,	# app-arch/cpio
   
   profile dd /bin/dd {
     #include <abstractions/base>
@@ -917,8 +920,8 @@ profile engrampa_dpkg_deb_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dpkg-deb					mr,
-  /bin/rm						Cx,
-  /bin/tar						Cx,
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/tar						Cx,	# app-arch/tar
   
   # TEMP -----------------------------------------------
   owner /tmp/dpkg-deb.*/				rw,
@@ -968,10 +971,10 @@ profile engrampa_tar_shell_root flags=(attach_disconnected) {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/gzip						Cx,
-  /bin/bzip2						Cx,
-  /usr/bin/lzip						Cx,
-  /usr/bin/xz						Cx,
+  /bin/gzip						Cx,	# app-arch/gzip
+  /bin/bzip2						Cx,	# app-arch/bzip2
+  /usr/bin/lzip						Cx,	# app-arch/lzip
+  /usr/bin/xz						Cx,	# app-arch/xz-utils
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)

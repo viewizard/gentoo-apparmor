@@ -36,9 +36,9 @@ profile libnotify.libnotify-notify-send-users /usr/bin/libnotify-notify-send-use
   # EXECUTABLES ----------------------------------------
   /usr/bin/libnotify-notify-send-users			r,
   @{shell}						mr,
-  /bin/grep						Cx,
-  /bin/su						Px,
-  /usr/bin/pgrep					Px,
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/su						Px,	# sys-apps/shadow
+  /usr/bin/pgrep					Px,	# sys-process/procps
   
   profile grep /bin/grep {
     #include <abstractions/base>
@@ -49,7 +49,7 @@ profile libnotify.libnotify-notify-send-users /usr/bin/libnotify-notify-send-use
     capability dac_read_search,
     
     # PTRACE -------------------------------------------
-    ptrace (trace) peer="xfce4-session",			# XFCE4
+    ptrace (trace) peer="xfce4-session",			# xfce-base/xfce4-session
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -57,6 +57,6 @@ profile libnotify.libnotify-notify-send-users /usr/bin/libnotify-notify-send-use
     @{PROC}/@{pids}/environ				r,
     
     # EXECUTABLES --------------------------------------
-    /bin/grep						mr,
+    /bin/grep						mr,	# sys-apps/grep
   }
 }

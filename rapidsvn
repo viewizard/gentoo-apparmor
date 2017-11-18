@@ -45,10 +45,10 @@ profile rapidsvn /usr/bin/rapidsvn {
   # EXECUTABLES ----------------------------------------
   /usr/bin/rapidsvn					mr,
   @{shell}						Cx,
-  /usr/bin/meld						Px,
+  /usr/bin/meld						Px,	# dev-util/meld
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.subversion/{,**}			rw,
+  owner @{HOME}/.subversion/{,**}			rw,	# dev-vcs/subversion
   owner @{HOME}/.RapidSVN*				rw,
   
   # TEMP -----------------------------------------------
@@ -64,7 +64,7 @@ profile rapidsvn /usr/bin/rapidsvn {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,
-    /usr/bin/lsb_release				Px,
+    /bin/uname						Px,	# sys-apps/coreutils
+    /usr/bin/lsb_release				Px,	# sys-apps/lsb-release
   }
 }

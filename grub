@@ -25,12 +25,12 @@ profile grub.grub-mkconfig /usr/sbin/grub-mkconfig {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/grub-mkconfig				r,
   @{shell}						mr,
-  /bin/basename						Px,
-  /bin/rm						Cx,
-  /bin/cat						Cx,
-  /bin/mv						Cx,
-  /usr/bin/which					Px,
-  /usr/bin/gettext					Px,
+  /bin/basename						Px,	# sys-apps/coreutils
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/mv						Cx,	# sys-apps/coreutils
+  /usr/bin/which					Px,	# sys-apps/which
+  /usr/bin/gettext					Px,	# sys-devel/gettext
   /usr/bin/grub-script-check				Px,
   /usr/sbin/grub-probe					Px,
   /etc/grub.d/*						Px,
@@ -127,22 +127,22 @@ profile grub.grub.d /etc/grub.d/* {
   # EXECUTABLES ----------------------------------------
   /etc/grub.d/*						r,
   @{shell}						mr,
-  /bin/tr						Px,
-  /bin/cut						Cx,
-  /bin/cat						Cx,
-  /bin/sed						Cx,
-  /bin/tail						Cx,
-  /bin/sort						Cx,
-  /bin/head						Cx,
-  /bin/grep						Cx,
-  /bin/fgrep						Cx,
-  /bin/uname						Px,
-  /bin/basename						Px,
-  /bin/dirname						Px,
-  /usr/bin/which					Px,
-  /usr/bin/gettext					Px,
-  /usr/sbin/grub-probe					Px,
+  /bin/tr						Px,	# sys-apps/coreutils
+  /bin/cut						Cx,	# sys-apps/coreutils
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/sed						Cx,	# sys-apps/sed
+  /bin/tail						Cx,	# sys-apps/coreutils
+  /bin/sort						Cx,	# sys-apps/coreutils
+  /bin/head						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/fgrep						Cx,	# sys-apps/grep
+  /bin/uname						Px,	# sys-apps/coreutils
+  /bin/basename						Px,	# sys-apps/coreutils
+  /bin/dirname						Px,	# sys-apps/coreutils
+  /usr/bin/which					Px,	# sys-apps/which
+  /usr/bin/gettext					Px,	# sys-devel/gettext
   /usr/bin/grub-mkrelpath				Px,
+  /usr/sbin/grub-probe					Px,
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -266,7 +266,7 @@ profile grub.grub.d /etc/grub.d/* {
     # EXECUTABLES --------------------------------------
     /bin/fgrep						r,
     @{shell}						mr,
-    /bin/grep						ix,	# Все правильно, для egrep используем с ix.
+    /bin/grep						ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
   }
 }
 
@@ -292,8 +292,8 @@ profile grub.grub-probe /usr/sbin/grub-probe {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/grub-probe					mr,
-  /bin/udevadm						Px,
-  /sbin/lvm						Px,
+  /bin/udevadm						Px,	# sys-fs/eudev
+  /sbin/lvm						Px,	# sys-fs/lvm2
 }
 
 profile grub.grub-install /usr/sbin/grub-install {
@@ -316,9 +316,9 @@ profile grub.grub-install /usr/sbin/grub-install {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/grub-install				mr,
   @{shell}						Cx,
-  /bin/kmod						Px,
-  /bin/udevadm						Px,
-  /sbin/lvm						Px,
+  /bin/kmod						Px,	# sys-apps/kmod
+  /bin/udevadm						Px,	# sys-fs/eudev
+  /sbin/lvm						Px,	# sys-fs/lvm2
   
   # READS/WRITES ---------------------------------------
   /boot/grub/{,**}					rw,

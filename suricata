@@ -44,7 +44,7 @@ profile suricata /usr/bin/suricata {
   
   # READS/WRITES ---------------------------------------
   /etc/suricata/{,**}					r,
-  /usr/share/misc/magic.mgc				r,
+  /usr/share/misc/magic.mgc				r,	# sys-apps/file
   /var/lib/suricata/**					rwk,
   /run/suricata/suricata.pid				rw,
   
@@ -53,7 +53,7 @@ profile suricata /usr/bin/suricata {
   /var/tmp/						r,
 }
 
-profile suricata.init.d /etc/init.d/suricata {
+profile suricata.init.d /etc/init.d/suricata flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -74,12 +74,12 @@ profile suricata.init.d /etc/init.d/suricata {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/cat						Cx,
-  /bin/ps						Px,
-  /bin/sleep						Px,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/ps						Px,	# sys-process/procps
+  audit /bin/sleep					Px,	# sys-apps/coreutils	# FIX ME! audit 18.11.2017
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
   /usr/bin/suricata					Px,
   
   # READS/WRITES ---------------------------------------

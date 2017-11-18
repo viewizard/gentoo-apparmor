@@ -26,8 +26,8 @@ profile pam-script /etc/security/pam-script/pam_script* {
   # EXECUTABLES ----------------------------------------
   /etc/security/pam-script/pam_script*			r,
   @{shell}						Cxmr,	# Все правильно, запуск и mmap.
-  /bin/dirname						Px,
-  /bin/basename						Px,
+  /bin/dirname						Px,	# sys-apps/coreutils
+  /bin/basename						Px,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/security/pam-script/pam-script.d/{,**} r,

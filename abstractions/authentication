@@ -14,16 +14,16 @@
 #include <abstractions/p11-kit>					# p11-kit (PKCS#11 modules configuration)
 
 # EXECUTABLES ------------------------------------------
-/etc/security/pam-script/pam_script*			Px,	# pam-script
+/etc/security/pam-script/pam_script*			Px,	# sys-auth/pam-script
 
 # READS/WRITES -----------------------------------------
-/etc/pam.d/*						r,	# PAM
-/etc/security/*						r,	# PAM
-/etc/shadow						r,	# PAM
-/etc/gshadow						r,	# PAM
-/etc/passwd						r,	# PAM
-/etc/login.defs						r,	# PAM
-/lib{,32,64}/security/					r,	# PAM
-/lib{,32,64}/security/pam_*.so				mr,	# PAM
-/lib{,32,64}/security/pam_filter/*			mr,	# PAM
-/run/pam_mount/*					rwk,	# pam_mount
+/etc/pam.d/*						r,	# sys-auth/pambase
+/etc/security/*						r,	# sys-libs/pam
+/etc/shadow						r,
+/etc/gshadow						r,
+/etc/passwd						r,
+/etc/login.defs						r,	# sys-apps/shadow
+/lib{,32,64}/security/					r,	# sys-libs/pam
+/lib{,32,64}/security/pam_*.so				mr,	# sys-libs/pam
+/lib{,32,64}/security/pam_filter/*			mr,	# sys-libs/pam
+/run/pam_mount/*					rwk,	# sys-auth/pam_mount

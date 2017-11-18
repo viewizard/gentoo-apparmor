@@ -21,9 +21,9 @@ profile local.home.evelauncher.sh /home/*/evelauncher/evelauncher.sh {
   owner @{HOME}/evelauncher/evelauncher.sh		r,
   owner @{HOME}/evelauncher/evelauncher			px,
   @{shell}						mr,
-  /bin/sed						Cx,
-  /bin/basename						Px,
-  /bin/dirname						Px,
+  /bin/sed						Cx,	# sys-apps/sed
+  /bin/basename						Px,	# sys-apps/coreutils
+  /bin/dirname						Px,	# sys-apps/coreutils
   
   profile sed /bin/sed {
     #include <abstractions/base>
@@ -86,8 +86,8 @@ profile local.home.evelauncher /home/*/evelauncher/evelauncher flags=(attach_dis
   
   # EXECUTABLES ----------------------------------------
   owner @{HOME}/evelauncher/evelauncher			mr,
-  /usr/bin/wine						Px,
-  /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]*	Px,
+  /usr/bin/wine						Px,	# app-emulation/wine
+  /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]*	Px,	# app-emulation/wine-*
   owner @{HOME}/{.eve,evelauncher}/updater		px,
   owner @{HOME}/evelauncher/QtWebEngineProcess		ix,
   owner @{HOME}/evelauncher/LogLite			px,
@@ -155,9 +155,9 @@ profile local.home.evelauncher.LogLite.sh /home/*/evelauncher/LogLite.sh {
   # EXECUTABLES ----------------------------------------
   owner @{HOME}/evelauncher/LogLite			px,
   @{shell}						mr,
-  /bin/sed						Cx,
-  /bin/basename						Px,
-  /bin/dirname						Px,
+  /bin/sed						Cx,	# sys-apps/sed
+  /bin/basename						Px,	# sys-apps/coreutils
+  /bin/dirname						Px,	# sys-apps/coreutils
   
   profile sed /bin/sed {
     #include <abstractions/base>

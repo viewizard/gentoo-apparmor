@@ -34,7 +34,7 @@ profile git /usr/{bin,libexec/git-core}/git {
   
   # EXECUTABLES ----------------------------------------
   /usr/{bin,libexec/git-core}/git			Pxmr,
-  /usr/bin/less						Cx,
+  /usr/bin/less						Cx,	# sys-apps/less
   /usr/libexec/git-core/git-remote-http{,s}		Cx,
   
   # READS/WRITES ---------------------------------------
@@ -44,10 +44,16 @@ profile git /usr/{bin,libexec/git-core}/git {
   owner @{HOME}/.gitconfig				rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/qgit4.*					rw,	# qgit /usr/bin/qgit
+  owner /tmp/qgit4.*					rw,	# dev-vcs/qgit
   
   profile less /usr/bin/less {
     #include <abstractions/base>
+    #include <abstractions/ncurses>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/less					mr,
@@ -105,7 +111,7 @@ profile git_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/{bin,libexec/git-core}/git			Pxmr -> git_root,
-  /usr/bin/less						Cx,
+  /usr/bin/less						Cx,	# sys-apps/less
   /usr/libexec/git-core/git-remote-http{,s}		Cx,
   
   # READS/WRITES ---------------------------------------
@@ -117,10 +123,16 @@ profile git_root {
   owner @{HOME}/.gitconfig				rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/qgit4.*					rw,	# qgit /usr/bin/qgit
+  owner /tmp/qgit4.*					rw,	# dev-vcs/qgit
   
   profile less /usr/bin/less {
     #include <abstractions/base>
+    #include <abstractions/ncurses>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/less					mr,

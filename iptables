@@ -40,7 +40,7 @@ profile iptables.xtables-multi /sbin/xtables-multi {
   /var/lib/iptables/rules-save				rw,
 }
 
-profile iptables.init.d /etc/init.d/iptables {
+profile iptables.init.d /etc/init.d/iptables flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -52,11 +52,11 @@ profile iptables.init.d /etc/init.d/iptables {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/dirname						Px,
-  /bin/cat						Cx,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
+  /bin/dirname						Px,	# sys-apps/coreutils
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
   /sbin/xtables-multi					Px,
   
   # READS/WRITES ---------------------------------------
@@ -147,7 +147,7 @@ profile iptables.firewall /usr/sbin/firewall {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/firewall					r,
   @{shell}						mr,
-  /bin/cat						Cx,
+  /bin/cat						Cx,	# sys-apps/coreutils
   /sbin/xtables-multi					Px,
   /etc/init.d/iptables					Px,
   

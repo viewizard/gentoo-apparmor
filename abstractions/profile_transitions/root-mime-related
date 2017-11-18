@@ -13,8 +13,8 @@
 
 # sg/newgrp for work with network connection via iptables uid/gid-owner
 # IMPROVE! После возможности блокировки адресов и портов - убрать.
-/usr/bin/newgrp						Px,
-/usr/bin/id						Px,
+/usr/bin/newgrp						Px,	# sys-apps/shadow
+/usr/bin/id						Px,	# sys-apps/coreutils
 
 ############################################################
 # Since all programs will be able to launch this binaries
@@ -22,22 +22,21 @@
 # here, we need more strict rules with fixed programs list.
 ############################################################
 
-/usr/bin/ghex						Px -> ghex_root,
-/usr/bin/juffed						Px -> juffed_root,
-/usr/bin/mousepad					Px -> mousepad_root,
-/usr/bin/engrampa					Px -> engrampa_root,	# MATE
-/usr/bin/thunar						Px -> thunar_root,	# XFCE4
+/usr/bin/ghex						Px -> ghex_root,	# app-editors/ghex
+/usr/bin/juffed						Px -> juffed_root,	# app-editors/juffed
+/usr/bin/mousepad					Px -> mousepad_root,	# app-editors/mousepad
+/usr/bin/engrampa					Px -> engrampa_root,	# app-arch/engrampa
+/usr/bin/thunar						Px -> thunar_root,	# xfce-base/thunar
 
-/usr/bin/transmission-*					Px,
-/usr/lib{,32,64}/libreoffice/program/soffice		Px,
-/usr/bin/{et,wpp,wps}					Px,
-/usr/bin/ristretto					Px,
-/usr/bin/gimp*						Px,
-/usr/bin/inkscape					Px,
-/usr/bin/qpdfview					Px,
-/opt/master-pdf-editor-3/masterpdfeditor3		Px,
-/usr/bin/audacious					Px,
-/usr/bin/mpv						Px,
-/usr/bin/smplayer					Px,
-/usr/bin/vlc						Px,
-/usr/bin/xfce4-terminal					Px,
+/usr/bin/transmission-*					Px,	# net-p2p/transmission
+/usr/lib{,32,64}/libreoffice/program/soffice		Px,	# app-office/libreoffice
+/usr/bin/{et,wpp,wps}					Px,	# app-office/wps-office
+/usr/bin/ristretto					Px,	# media-gfx/ristretto
+/usr/bin/gimp*						Px,	# media-gfx/gimp
+/usr/bin/inkscape					Px,	# media-gfx/inkscape
+/usr/bin/qpdfview					Px,	# app-text/qpdfview
+/usr/bin/audacious					Px,	# media-sound/audacious
+/usr/bin/mpv						Px,	# media-video/mpv
+/usr/bin/smplayer					Px,	# media-video/smplayer
+/usr/bin/vlc						Px,	# media-video/vlc
+/usr/bin/xfce4-terminal					Px,	# x11-terms/xfce4-terminal

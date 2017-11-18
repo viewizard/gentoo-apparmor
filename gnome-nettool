@@ -27,12 +27,12 @@ profile gnome-nettool /usr/bin/gnome-nettool {
   #include <abstractions/profile_transitions/users-strict-web>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(int,kill) peer="nmap",
-  signal (send) set=(int,kill) peer="dig",
-  signal (send) set=(int,kill) peer="whois",
-  signal (send) set=(int,kill) peer="traceroute",
-  signal (send) set=(int,kill) peer="netkit-fingerd.finger",
-  signal (send) set=(int,kill) peer="iputils.ping",
+  signal (send) set=(int,kill) peer="nmap",			# net-analyzer/nmap
+  signal (send) set=(int,kill) peer="dig",			# net-dns/bind-tools
+  signal (send) set=(int,kill) peer="whois",			# net-misc/whois
+  signal (send) set=(int,kill) peer="traceroute",		# net-analyzer/traceroute
+  signal (send) set=(int,kill) peer="netkit-fingerd.finger",	# net-misc/netkit-fingerd
+  signal (send) set=(int,kill) peer="iputils.ping",		# net-misc/iputils
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -52,16 +52,16 @@ profile gnome-nettool /usr/bin/gnome-nettool {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gnome-nettool				mr,
-  /bin/ping						Px,
-  /bin/netstat						Px,
-  /usr/bin/finger					Px,
-  /usr/bin/nmap						Px,
-  /usr/bin/dig						Px,
-  /usr/bin/whois					Px,
-  /usr/bin/traceroute					Px,
-  /usr/bin/nm-connection-editor				Px,
+  /bin/ping						Px,	# net-misc/iputils
+  /bin/netstat						Px,	# sys-apps/net-tools
+  /usr/bin/finger					Px,	# net-misc/netkit-fingerd
+  /usr/bin/nmap						Px,	# net-analyzer/nmap
+  /usr/bin/dig						Px,	# net-dns/bind-tools
+  /usr/bin/whois					Px,	# net-misc/whois
+  /usr/bin/traceroute					Px,	# net-analyzer/traceroute
+  /usr/bin/nm-connection-editor				Px,	# gnome-extra/nm-applet
   
   # READS/WRITES ---------------------------------------
-  /etc/ssl/openssl.cnf					r,
+  /etc/ssl/openssl.cnf					r,	# dev-libs/openssl
   /usr/share/gnome-nettool/{,**}			r,
 }

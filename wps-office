@@ -51,7 +51,7 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   # EXECUTABLES ----------------------------------------
   /usr/bin/{et,wpp,wps}					r,
   @{shell}						Cxmr,	# Все правильно, запуск и mmap.
-  /bin/dirname						Px,
+  /bin/dirname						Px,	# sys-apps/coreutils
   /opt/kingsoft/wps-office/office6/{et,wpp,wps}		px,
   
   # READS/WRITES ---------------------------------------
@@ -93,7 +93,7 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,
+    /bin/uname						Px,	# sys-apps/coreutils
     
     # DENY INHERIT -------------------------------------
     deny unix (send, receive) peer=(label="wps-office"),	# wps-office

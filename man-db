@@ -29,7 +29,7 @@ profile man-db.mandb /usr/bin/mandb {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mandb					mr,
-  /bin/bzip2						Cx,
+  /bin/bzip2						Cx,	# app-arch/bzip2
   /usr/libexec/man-db/manconv				Px,
   
   # READS/WRITES ---------------------------------------
@@ -67,22 +67,22 @@ profile man-db.man /usr/bin/man {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/man						mr,
-  /bin/bzip2						Cx,
-  /bin/gzip						Cx,
-  /usr/bin/less						Cx,
-  /usr/bin/preconv					Cx,
-  /usr/bin/neqn						Cx,
-  /usr/bin/nroff					Px,
-  /usr/bin/tbl						Cx,
-  /usr/bin/manpager					Px,
+  /bin/bzip2						Cx,	# app-arch/bzip2
+  /bin/gzip						Cx,	# app-arch/gzip
+  /usr/bin/less						Cx,	# sys-apps/less
+  /usr/bin/preconv					Cx,	# sys-apps/groff
+  /usr/bin/neqn						Cx,	# sys-apps/groff
+  /usr/bin/nroff					Px,	# sys-apps/groff
+  /usr/bin/tbl						Cx,	# sys-apps/groff
+  /usr/bin/manpager					Px,	# app-text/manpager
   /usr/libexec/man-db/manconv				Px,
   
   # READS/WRITES ---------------------------------------
   /							r,
   /etc/man_db.conf					r,
   /usr/share/man/{,**}					r,
-  /usr/share/gcc-data/@{CHOST}/[0-9]*/man/{,**}		r,
-  /usr/share/binutils-data/@{CHOST}/[0-9]*/man/{,**}	r,
+  /usr/share/gcc-data/@{CHOST}/[0-9]*/man/{,**}		r,	# sys-devel/gcc
+  /usr/share/binutils-data/@{CHOST}/[0-9]*/man/{,**}	r,	# sys-devel/binutils
   /var/cache/man/					r,
   /var/cache/man/**					rwk,
   
@@ -136,6 +136,7 @@ profile man-db.man /usr/bin/man {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -195,10 +196,10 @@ profile man-db.cron.daily /etc/cron.daily/man-db {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/man-db				r,
   @{shell}						mr,
-  /bin/chown						Cx,
-  /bin/chmod						Cx,
-  /bin/mkdir						Cx,
-  /usr/bin/nice						Cx,
+  /bin/chown						Cx,	# sys-apps/coreutils
+  /bin/chmod						Cx,	# sys-apps/coreutils
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /usr/bin/nice						Cx,	# sys-apps/coreutils
   
   profile chown /bin/chown {
     #include <abstractions/base>

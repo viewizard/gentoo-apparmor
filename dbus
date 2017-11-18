@@ -57,27 +57,27 @@ profile dbus.dbus-daemon /usr/bin/dbus-daemon {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dbus-daemon					mr,
-  /usr/bin/gnome-keyring-daemon				Px,
-  /usr/bin/thunar					Px,	# XFCE4
-  /usr/lib{,32,64}/xfce4/xfconf/xfconfd			Px,	# XFCE4
-  /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd		Px,	# XFCE4
-  /usr/lib{,32,64}/tumbler-1/tumblerd			Px,	# XFCE4
-  /usr/libexec/at-spi-bus-launcher			Px,
-  /usr/libexec/at-spi2-registryd			Px,
-  /usr/libexec/gvfsd					Px,
-  /usr/libexec/gvfsd-metadata				Px,
-  /usr/libexec/gvfs-udisks2-volume-monitor		Px,
-  /usr/libexec/dconf-service				Px,
+  /usr/bin/gnome-keyring-daemon				Px,	# gnome-base/gnome-keyring
+  /usr/bin/thunar					Px,	# xfce-base/thunar
+  /usr/lib{,32,64}/xfce4/xfconf/xfconfd			Px,	# xfce-base/xfconf
+  /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd		Px,	# xfce-extra/xfce4-notifyd
+  /usr/lib{,32,64}/tumbler-1/tumblerd			Px,	# xfce-extra/tumbler
+  /usr/libexec/at-spi-bus-launcher			Px,	# app-accessibility/at-spi2-core
+  /usr/libexec/at-spi2-registryd			Px,	# app-accessibility/at-spi2-core
+  /usr/libexec/gvfsd					Px,	# gnome-base/gvfs
+  /usr/libexec/gvfsd-metadata				Px,	# gnome-base/gvfs
+  /usr/libexec/gvfs-udisks2-volume-monitor		Px,	# gnome-base/gvfs
+  /usr/libexec/dconf-service				Px,	# gnome-base/dconf
   /usr/libexec/dbus-daemon-launch-helper		Px,
-  /usr/libexec/gconfd-2					Px,
-  /usr/libexec/gcr-prompter				Px,
+  /usr/libexec/gconfd-2					Px,	# gnome-base/gconf
+  /usr/libexec/gcr-prompter				Px,	# app-crypt/gcr
   
   # READS/WRITES ---------------------------------------
   /etc/dbus-1/**					r,
   /usr/share/dbus-1/**					r,
-  /usr/share/defaults/at-spi2/accessibility.conf	r,
+  /usr/share/defaults/at-spi2/accessibility.conf	r,	# app-accessibility/at-spi2-core
   /run/dbus.pid						rw,
-  /run/ConsoleKit/inhibit/inhibit.*.pipe		w,
+  /run/ConsoleKit/inhibit/inhibit.*.pipe		w,	# sys-auth/consolekit
 }
 
 profile dbus.dbus-launch /usr/bin/dbus-launch {
@@ -97,8 +97,8 @@ profile dbus.dbus-launch /usr/bin/dbus-launch {
   /usr/bin/dbus-launch					mr,
   @{shell}						Cx,
   /usr/bin/dbus-daemon					Px,
-  /usr/bin/xfce4-session				Px,	# XFCE4
-  /etc/X11/Sessions/Xfce4				Px,	# XFCE4
+  /usr/bin/xfce4-session				Px,	# xfce-base/xfce4-session
+  /etc/X11/Sessions/Xfce4				Px,	# xfce-base/xfce4-session
   
   # USERS ----------------------------------------------
   owner @{HOME}/.dbus/{,**}				rw,
@@ -112,8 +112,8 @@ profile dbus.dbus-launch /usr/bin/dbus-launch {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /etc/X11/Sessions/Xfce4				r,	# XFCE4
-    /usr/bin/startxfce4					Px,	# XFCE4
+    /etc/X11/Sessions/Xfce4				r,	# xfce-base/xfce4-session
+    /usr/bin/startxfce4					Px,	# xfce-base/xfce4-session
   }
 }
 
@@ -135,7 +135,7 @@ profile dbus.dbus-send /usr/bin/dbus-send {
   	bus=session
   	path="/org/xfce/FileManager"
   	interface="org.xfce.FileManager"
-  	peer=(name="org.xfce.FileManager",label="thunar"),	# XFCE4 (Запуск настроек thunar через менеджер настроек).
+  	peer=(name="org.xfce.FileManager",label="thunar"),	# xfce-base/thunar (запуск настроек thunar через менеджер настроек).
   								# RBAC! Для root ветки label="thunar_root".
   
   # PSEUDO ---------------------------------------------
@@ -172,20 +172,20 @@ profile dbus.dbus-daemon-launch-helper /usr/libexec/dbus-daemon-launch-helper {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/dbus-daemon-launch-helper		mr,
-  /usr/sbin/console-kit-daemon				Px,
-  /usr/sbin/ModemManager				Px,
-  /usr/sbin/wpa_supplicant				Px,
-  /usr/lib{,32,64}/polkit-1/polkitd			Px,
-  /usr/lib{,32,64}/upower/upowerd			Px,
-  /usr/libexec/udisks2/udisksd				Px,
-  /usr/libexec/nm-dispatcher				Px,
+  /usr/sbin/console-kit-daemon				Px,	# sys-auth/consolekit
+  /usr/sbin/ModemManager				Px,	# net-misc/modemmanager
+  /usr/sbin/wpa_supplicant				Px,	# net-wireless/wpa_supplicant
+  /usr/lib{,32,64}/polkit-1/polkitd			Px,	# sys-auth/polkit
+  /usr/lib{,32,64}/upower/upowerd			Px,	# sys-power/upower
+  /usr/libexec/udisks2/udisksd				Px,	# sys-fs/udisks
+  /usr/libexec/nm-dispatcher				Px,	# net-misc/networkmanager
   
   # READS/WRITES ---------------------------------------
   /etc/dbus-1/**					r,
   /usr/share/dbus-1/**					r,
 }
 
-profile dbus.init.d /etc/init.d/dbus {
+profile dbus.init.d /etc/init.d/dbus flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -198,10 +198,10 @@ profile dbus.init.d /etc/init.d/dbus {
   # EXECUTABLES ----------------------------------------
   /etc/init.d/{cupsd,consolekit,xdm,net.*}		Px,
   @{shell}						Cx,
-  /bin/rm						Cx,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
   /usr/bin/dbus-uuidgen					Px,
   /usr/bin/dbus-daemon					Px,
   /usr/bin/dbus-send					Px,

@@ -47,7 +47,7 @@ profile cryptsetup /sbin/cryptsetup {
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
-  /run/openrc/dm-crypt-remdev.*/enc.key			r,
+  /run/openrc/dm-crypt-remdev.[0-9]*/{,**/}*		r,	# Ключ key на устройстве remdev (/etc/conf.d/dmcrypt).
   
   # TEMP -----------------------------------------------
   owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! backup_daily.sh.cron.daily
@@ -57,7 +57,7 @@ profile cryptsetup /sbin/cryptsetup {
   deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d
 }
 
-profile cryptsetup.init.d /etc/init.d/dmcrypt {
+profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -72,18 +72,18 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/rmdir						Cx,
-  /bin/grep						Cx,
-  /bin/egrep						Cx,
-  /bin/cat						Cx,
-  /bin/dd						Cx,
-  /bin/mkdir						Cx,
-  /bin/stty						Px,
-  /bin/mount						Cx,
-  /bin/umount						Cx,
-  /sbin/mkswap						Px,
+  /bin/rmdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/egrep						Cx,	# sys-apps/grep
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/dd						Cx,	# sys-apps/coreutils
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/stty						Px,	# sys-apps/coreutils
+  /bin/mount						Cx,	# sys-apps/util-linux
+  /bin/umount						Cx,	# sys-apps/util-linux
+  /sbin/mkswap						Px,	# sys-apps/util-linux
   /sbin/cryptsetup					Px,
-  /usr/bin/gpg{,2,-static}				Px,
+  /usr/bin/gpg{,2,-static}				Px,	# app-crypt/gnupg
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/dmcrypt				r,
@@ -206,7 +206,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
     capability sys_admin,
     
     # MOUNT --------------------------------------------
-    mount options=ro /dev/@{BLOCK_REAL} -> /run/openrc/dm-crypt-remdev.*/,
+    mount options=ro /dev/@{BLOCK_REAL} -> /run/openrc/dm-crypt-remdev.[0-9]*/,
     
     # PSEUDO -------------------------------------------
     /dev/console					rw,
@@ -230,7 +230,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt {
     capability sys_admin,
     
     # MOUNT --------------------------------------------
-    umount /run/openrc/dm-crypt-remdev.*/,
+    umount /run/openrc/dm-crypt-remdev.[0-9]*/,
     
     # PSEUDO -------------------------------------------
     /dev/console					rw,

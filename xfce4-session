@@ -61,39 +61,38 @@ profile xfce4-session /usr/bin/xfce4-session {
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-session				Pxmr,	# Все правильно, запуск и mmap.
   @{shell}						Cx,
-  /bin/env						Cx,
-  /bin/true						Px,
-  /bin/rm						Cx,
-  /usr/bin/ssh-agent					Px,
-  /usr/bin/gpg-agent					Px,
-  /usr/bin/xfsettingsd					Px,
-  /usr/bin/xdg-user-dirs-gtk-update			Px,
-  /usr/bin/start-pulseaudio-x11				Px,
-  /usr/bin/mate-screensaver{,.sh}			Px,
-  /usr/bin/pkexec					Px,
-  /usr/bin/gnome-keyring-daemon				Px,	# В случае запуска через автозагрузку.
-  /usr/bin/xfdesktop					Px,
-  /usr/bin/xfwm4					Px,
-  /usr/bin/xfce4-panel					Px,
-  /usr/bin/nm-applet					Px,
-  /usr/bin/xfce4-volumed				Px,
-  /usr/bin/xfce4-volumed-pulse				Px,
-  /usr/bin/xfce4-power-manager				Px,
-  /usr/bin/gsettings-data-convert			Px,
-  /usr/libexec/at-spi-bus-launcher			Px,
-  /usr/libexec/polkit-gnome-authentication-agent-1	Px,
-  /usr/libexec/vino-server				Px,
+  /bin/env						Cx,	# sys-apps/coreutils
+  /bin/true						Px,	# sys-apps/coreutils
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /usr/bin/ssh-agent					Px,	# net-misc/openssh
+  /usr/bin/gpg-agent					Px,	# app-crypt/gnupg
+  /usr/bin/xfsettingsd					Px,	# xfce-base/xfce4-settings
+  /usr/bin/xdg-user-dirs-gtk-update			Px,	# x11-misc/xdg-user-dirs-gtk
+  /usr/bin/start-pulseaudio-x11				Px,	# media-sound/pulseaudio
+  /usr/bin/mate-screensaver{,.sh}			Px,	# mate-extra/mate-screensaver
+  /usr/bin/pkexec					Px,	# sys-auth/polkit
+  /usr/bin/gnome-keyring-daemon				Px,	# gnome-base/gnome-keyring	# (в случае запуска через автозагрузку)
+  /usr/bin/xfdesktop					Px,	# xfce-base/xfdesktop
+  /usr/bin/xfwm4					Px,	# xfce-base/xfwm4
+  /usr/bin/xfce4-panel					Px,	# xfce-base/xfce4-panel
+  /usr/bin/nm-applet					Px,	# gnome-extra/nm-applet
+  /usr/bin/xfce4-volumed-pulse				Px,	# xfce-extra/xfce4-volumed-pulse
+  /usr/bin/xfce4-power-manager				Px,	# xfce-extra/xfce4-power-manager
+  /usr/bin/gsettings-data-convert			Px,	# gnome-base/gconf
+  /usr/libexec/at-spi-bus-launcher			Px,	# app-accessibility/at-spi2-core
+  /usr/libexec/polkit-gnome-authentication-agent-1	Px,	# gnome-extra/polkit-gnome
+  /usr/libexec/vino-server				Px,	# net-misc/vino
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/						r,
   /etc/xdg/autostart/{,*}				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.ICEauthority*				w,
+  owner @{HOME}/.ICEauthority*				w,	# x11-apps/iceauth
   owner @{HOME}/.xfce4-session.verbose-log*		rw,
   owner @{HOME}/.config/				r,
   owner @{HOME}/.config/autostart/{,*}			r,
-  owner @{HOME}/.dbus/session-bus/{,*}			rw,
+  owner @{HOME}/.dbus/session-bus/{,*}			rw,	# sys-apps/dbus
   owner @{HOME_CACHE}/sessions/{,*}			rw,
   owner @{HOME_CACHE}/sessions/thumbs*/{,*.png}		rw,
   owner @{HOME_CACHE}/gpg-agent-info			rw,
@@ -112,9 +111,9 @@ profile xfce4-session /usr/bin/xfce4-session {
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /bin/sleep						Px,
-    /usr/bin/iceauth					Px,
-    /usr/bin/cairo-clock				Px,	# Запуск с задержкой (корректировка пакета через env portage).
-    /usr/bin/conky					Px,	# Запуск с задержкой (корректировка пакета через env portage).
+    /usr/bin/iceauth					Px,	# x11-apps/iceauth
+    /usr/bin/cairo-clock				Px,	# x11-misc/cairo-clock (запуск с задержкой, корректировка пакета через env portage)
+    /usr/bin/conky					Px,	# app-admin/conky (запуск с задержкой, корректировка пакета через env portage)
     
     # USERS --------------------------------------------
     owner @{HOME}/.xfce4-session.verbose-log		w,
@@ -129,12 +128,12 @@ profile xfce4-session /usr/bin/xfce4-session {
     
     # EXECUTABLES --------------------------------------
     /bin/env						mr,
-    /usr/bin/xfwm4					Px,
-    /usr/bin/xfsettingsd				Px,
-    /usr/bin/xfce4-panel				Px,
-    /usr/bin/thunar					Px,
-    /usr/bin/xfdesktop					Px,
-    /usr/bin/cairo-clock				Px,
+    /usr/bin/xfwm4					Px,	# xfce-base/xfwm4
+    /usr/bin/xfsettingsd				Px,	# xfce-base/xfce4-settings
+    /usr/bin/xfce4-panel				Px,	# xfce-base/xfce4-panel
+    /usr/bin/thunar					Px,	# xfce-base/thunar
+    /usr/bin/xfdesktop					Px,	# xfce-base/xfdesktop
+    /usr/bin/cairo-clock				Px,	# x11-misc/cairo-clock
     
     # USERS --------------------------------------------
     owner @{HOME}/.xfce4-session.verbose-log		w,
@@ -175,7 +174,7 @@ profile xfce4-session.xfce4-session-logout /usr/bin/xfce4-session-logout {
   	bus=session
   	path="/org/gtk/vfs/mounttracker"
   	interface="org.gtk.vfs.MountTracker"
-  	peer=(name=":[0-9]*.[0-9]*",label="gvfs.gvfsd"),
+  	peer=(name=":[0-9]*.[0-9]*",label="gvfs.gvfsd"),	# gnome-base/gvfs
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -241,7 +240,7 @@ profile xfce4-session.xflock4 /usr/bin/xflock4 {
   # EXECUTABLES ----------------------------------------
   /usr/bin/xflock4					r,
   @{shell}						mr,
-  /usr/bin/mate-screensaver-command			Px,	# MATE
+  /usr/bin/mate-screensaver-command			Px,	# mate-extra/mate-screensaver
 }
 
 profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
@@ -255,7 +254,7 @@ profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
   # EXECUTABLES ----------------------------------------
   /usr/bin/startxfce4					r,
   @{shell}						Pxmr -> xfce4_session_startxfce4_shell,	# Все правильно, запуск и mmap.
-  /usr/bin/xinit					Px,
+  /usr/bin/xinit					Px,	# x11-apps/xinit
 }
 
 # IMPROVE! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
@@ -269,12 +268,12 @@ profile xfce4_session_startxfce4_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/cat						Cx,
-  /usr/bin/which					Px,
-  /usr/bin/xrdb						Px,
-  /usr/bin/xfce4-session				Px,
-  /usr/bin/xdg-user-dirs-update				Px,
-  /etc/xdg/xfce4/xfce4-session-fix			Px,	# временный скрипт-фикс для xfce4 4.12
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /usr/bin/which					Px,	# sys-apps/which
+  /usr/bin/xrdb						Px,	# x11-apps/xrdb
+  /usr/bin/xfce4-session				Px,	# xfce-base/xfce4-session
+  /usr/bin/xdg-user-dirs-update				Px,	# x11-misc/xdg-user-dirs
+  /etc/xdg/xfce4/xfce4-session-fix			Px,	# xfce-base/xfce4-session (временный скрипт-фикс для xfce4 4.12)
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/xfce4/xinitrc				r,
@@ -308,13 +307,13 @@ profile xfce4-session.xfce4-session-fix /etc/xdg/xfce4/xfce4-session-fix {
   # EXECUTABLES ----------------------------------------
   /etc/xdg/xfce4/xfce4-session-fix			r,
   @{shell}						mr,
-  /bin/rm						Cx,
-  /bin/cp						Cx,
-  /bin/sleep						Px,
-  /bin/mkdir						Cx,
-  /usr/bin/diff						Cx,
-  /usr/bin/xfdesktop					Px,
-  /usr/bin/libnotify-notify-send			Px,
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/cp						Cx,	# sys-apps/coreutils
+  /bin/sleep						Px,	# sys-apps/coreutils
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /usr/bin/diff						Cx,	# sys-apps/diffutils
+  /usr/bin/xfdesktop					Px,	# xfce-base/xfdesktop
+  /usr/bin/libnotify-notify-send			Px,	# x11-libs/libnotify
   
   profile rm /bin/rm {
     #include <abstractions/base>

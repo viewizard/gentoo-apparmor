@@ -86,7 +86,7 @@ profile ntp.ntpq /usr/bin/ntpq {
   deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
 }
 
-profile ntp.init.d /etc/init.d/ntpd {
+profile ntp.init.d /etc/init.d/ntpd flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -99,9 +99,9 @@ profile ntp.init.d /etc/init.d/ntpd {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/ntpd					Px,
   @{shell}						Cx,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/ntpd				r,

@@ -30,7 +30,7 @@ profile sudo /usr/bin/sudo {
   # UNIX -----------------------------------------------
   unix (send, receive)
   		type=stream
-  		peer=(label="pam_mount.pmvarrun"),		# pam_mount.pmvarrun
+  		peer=(label="pam_mount.pmvarrun"),		# sys-auth/pam_mount
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -53,13 +53,13 @@ profile sudo /usr/bin/sudo {
   /usr/bin/sudo						mr,
   @{shell}						Cx,
   /usr/bin/gksu_askpass.sh				Px,
-  /usr/sbin/sendmail					Px,
+  /usr/sbin/sendmail					Px,	# mail-mta/nullmailer
   
   # READS/WRITES ---------------------------------------
   /etc/sudoers						r,
   /etc/sudoers.d/{,*}					r,
-  /etc/environment					r,
-  /etc/security/limits.d/{,*}				r,
+  /etc/environment					r,	# sys-libs/pam
+  /etc/security/limits.d/{,*}				r,	# sys-libs/pam
   /usr/lib{,32,64}/sudo/sudoers.so			m,
   /usr/libexec/sudo/libsudo_util.so*			mr,
   /run/utmp						rk,
@@ -93,7 +93,7 @@ profile sudo.askpass /usr/bin/gksu_askpass.sh {
   # EXECUTABLES ----------------------------------------
   /usr/bin/gksu_askpass.sh				r,
   @{shell}						mr,
-  /usr/bin/zenity					Px,
+  /usr/bin/zenity					Px,	# gnome-extra/zenity
 }
 
 profile sudo.gksudo /usr/bin/{gksu,gksudo} {

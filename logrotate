@@ -30,7 +30,7 @@ profile logrotate /usr/bin/logrotate {
   # EXECUTABLES ----------------------------------------
   /usr/bin/logrotate					mr,
   @{shell}						Cx,
-  /usr/bin/xz						Cx,
+  /usr/bin/xz						Cx,	# app-arch/xz-utils
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -53,8 +53,8 @@ profile logrotate /usr/bin/logrotate {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/su						Px,
-    /etc/init.d/syslog-ng				Px,
+    /bin/su						Px,	# sys-apps/shadow
+    /etc/init.d/syslog-ng				Px,	# app-admin/syslog-ng
   }
   
   profile xz /usr/bin/xz {
@@ -77,6 +77,6 @@ profile logrotate.cron.daily /etc/cron.daily/logrotate {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/logrotate				r,
   @{shell}						mr,
-  /usr/bin/logger					Px,
+  /usr/bin/logger					Px,	# sys-apps/util-linux
   /usr/bin/logrotate					Px,
 }

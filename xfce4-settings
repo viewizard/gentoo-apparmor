@@ -23,7 +23,7 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/xfconf>
   #include <abstractions/dbus/gvfs>
-  #include <abstractions/xdg-open>  # need for CUPS (web browser)
+  #include <abstractions/xdg-open>  # need for net-print/cups (web browser)
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -33,32 +33,32 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyboard,-mime,-mouse}-settings{,-editor,-manager} Pxmr,
-  /usr/bin/xfce4-session-settings			Px,
-  /usr/bin/thunar-volman-settings			Px,
-  /usr/bin/xfwm4{,-tweaks,-workspace}-settings		Px,
-  /usr/bin/exo-preferred-applications			Px,
-  /usr/bin/xfce4-panel					Px,
-  /usr/bin/xfce4-notifyd-config				Px,
-  /usr/bin/xfce4-power-manager-settings			Px,
-  /usr/bin/thunar-settings				Px,
-  /usr/bin/dbus-send					Px,
-  /usr/bin/qtchooser					Px,
-  /usr/bin/gparted-pkexec				Px,
-  /usr/bin/pavucontrol					Px,
-  /usr/bin/passwd.sh					Px,
-  /usr/bin/xfdesktop-settings				Px,
-  /usr/bin/mate-screensaver-preferences			Px,	# MATE
-  /usr/bin/exo-open					Px,
-  /usr/bin/vino-preferences				Px,
-  /usr/bin/onboard-settings				Px,
-  /usr/bin/xfce4-terminal				Px,
-  /usr/bin/nm-connection-editor				Px,
-  /usr/bin/xfce4-sensors				Px,
-  /usr/bin/gsmartcontrol-root				Px,
-  /usr/bin/dconf-editor					Px,
-  /usr/bin/gconf-editor					Px,
-  /usr/bin/qt5ct					Px,
-  @{PYTHON_EXEC_WRAPPER}				Cx -> alacarte,
+  /usr/bin/xfce4-session-settings			Px,	# xfce-base/xfce4-session
+  /usr/bin/thunar-volman-settings			Px,	# xfce-extra/thunar-volman
+  /usr/bin/xfwm4{,-tweaks,-workspace}-settings		Px,	# xfce-base/xfwm4
+  /usr/bin/exo-preferred-applications			Px,	# xfce-base/exo
+  /usr/bin/xfce4-panel					Px,	# xfce-base/xfce4-panel
+  /usr/bin/xfce4-notifyd-config				Px,	# xfce-extra/xfce4-notifyd
+  /usr/bin/xfce4-power-manager-settings			Px,	# xfce-extra/xfce4-power-manager
+  /usr/bin/thunar-settings				Px,	# xfce-base/thunar
+  /usr/bin/dbus-send					Px,	# sys-apps/dbus
+  /usr/bin/qtchooser					Px,	# dev-qt/qtchooser
+  /usr/bin/gparted-pkexec				Px,	# sys-block/gparted
+  /usr/bin/pavucontrol					Px,	# media-sound/pavucontrol
+  /usr/bin/passwd.sh					Px,	# sys-apps/shadow
+  /usr/bin/xfdesktop-settings				Px,	# xfce-base/xfdesktop
+  /usr/bin/mate-screensaver-preferences			Px,	# mate-extra/mate-screensaver
+  /usr/bin/exo-open					Px,	# xfce-base/exo
+  /usr/bin/vino-preferences				Px,	# net-misc/vino-preferences
+  /usr/bin/onboard-settings				Px,	# app-accessibility/onboard
+  /usr/bin/xfce4-terminal				Px,	# x11-terms/xfce4-terminal
+  /usr/bin/nm-connection-editor				Px,	# gnome-extra/nm-applet
+  /usr/bin/xfce4-sensors				Px,	# xfce-extra/xfce4-sensors-plugin
+  /usr/bin/gsmartcontrol-root				Px,	# sys-apps/gsmartcontrol
+  /usr/bin/dconf-editor					Px,	# gnome-base/dconf-editor
+  /usr/bin/gconf-editor					Px,	# gnome-extra/gconf-editor
+  /usr/bin/qt5ct					Px,	# x11-misc/qt5ct
+  @{PYTHON_EXEC_WRAPPER}				Cx -> alacarte,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/						r,
@@ -83,7 +83,7 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/alacarte				Px,
+    @{PYTHON_EXEC}/alacarte				Px,	# x11-misc/alacarte
   }
 }
 
@@ -113,13 +113,13 @@ profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfsettingsd					mr,
-  /usr/bin/xkbcomp					Px,
-  /usr/bin/xflock4					Px,
+  /usr/bin/xkbcomp					Px,	# x11-apps/xkbcomp
+  /usr/bin/xflock4					Px,	# xfce-base/xfce4-session
   /usr/bin/xfce4-display-settings			Px,
-  /usr/bin/xfdesktop					Px,
+  /usr/bin/xfdesktop					Px,	# xfce-base/xfdesktop
   
   # READS/WRITES ---------------------------------------
-  /etc/xdg/autostart/xfsettingsd.desktop		r,
+  /etc/xdg/autostart/xfsettingsd.desktop		r,	# xfce-base/xfdesktop
   
   # USERS ----------------------------------------------
   owner @{HOME}/.xfce4-session.verbose-log		w,

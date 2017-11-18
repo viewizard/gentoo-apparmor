@@ -25,20 +25,20 @@ profile binutils-config /usr/bin/binutils-config {
   # EXECUTABLES ----------------------------------------
   /usr/bin/binutils-config				r,
   @{shell}						mr,
-  /bin/stty						Px,
-  /bin/tr						Px,
-  /bin/ln						Cx,
-  /bin/mv						Cx,
-  /bin/rm						Cx,
-  /bin/rmdir						Cx,
-  /bin/mkdir						Cx,
-  /bin/cat						Cx,
-  /sbin/consoletype					Px,
-  /usr/bin/find						Cx,
-  /usr/bin/tput						Px,
-  /usr/bin/scanelf					Cx,
-  /usr/bin/cmp						Cx,
-  @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,
+  /bin/stty						Px,	# sys-apps/coreutils
+  /bin/tr						Px,	# sys-apps/coreutils
+  /bin/ln						Cx,	# sys-apps/coreutils
+  /bin/mv						Cx,	# sys-apps/coreutils
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/rmdir						Cx,	# sys-apps/coreutils
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /sbin/consoletype					Px,	# sys-apps/gentoo-functions
+  /usr/bin/find						Cx,	# sys-apps/findutils
+  /usr/bin/tput						Px,	# sys-libs/ncurses
+  /usr/bin/scanelf					Cx,	# app-misc/pax-utils
+  /usr/bin/cmp						Cx,	# sys-apps/diffutils
+  @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /etc/env.d/**						r,
@@ -138,7 +138,7 @@ profile binutils-config /usr/bin/binutils-config {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/find					mr,
-    /bin/rm						Px -> binutils_config_rm,
+    /bin/rm						Px -> binutils_config_rm,	# sys-apps/coreutils
     
     # READS/WRITES -------------------------------------
     /usr/@{CHOST}/**					r,
@@ -171,8 +171,8 @@ profile binutils-config /usr/bin/binutils-config {
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/portageq				Px,
-    @{PYTHON_EXEC}/env-update				Px,
+    @{PYTHON_EXEC}/portageq				Px,	# sys-apps/portage
+    @{PYTHON_EXEC}/env-update				Px,	# sys-apps/portage
   }
 }
 

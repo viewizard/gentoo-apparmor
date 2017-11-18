@@ -38,9 +38,9 @@ profile poedit /usr/bin/poedit {
   # EXECUTABLES ----------------------------------------
   /usr/bin/poedit					mr,
   @{shell}						Cx,
-  /usr/bin/msgmerge					Cx,
-  /usr/bin/msgfmt					Cx,
-  /usr/bin/msgcat					Cx,
+  /usr/bin/msgmerge					Cx,	# sys-devel/gettext
+  /usr/bin/msgfmt					Cx,	# sys-devel/gettext
+  /usr/bin/msgcat					Cx,	# sys-devel/gettext
   
   # READS/WRITES ---------------------------------------
   /usr/share/poedit/{,**}				r,
@@ -64,8 +64,8 @@ profile poedit /usr/bin/poedit {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,
-    /usr/bin/lsb_release				Px,
+    /bin/uname						Px,	# sys-apps/coreutils
+    /usr/bin/lsb_release				Px,	# sys-apps/lsb-release
     
     # DENY INHERIT -------------------------------------
     deny /run/user/[0-9]*/poedit.lock			w,

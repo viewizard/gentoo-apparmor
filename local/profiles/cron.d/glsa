@@ -27,14 +27,14 @@ profile glsa.cron.daily /etc/cron.daily/glsa {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/glsa					r,
   @{shell}						mr,
-  /bin/mktemp						Cx,
-  /bin/cat						Cx,
-  /bin/rm						Cx,
-  /bin/basename						Px,
-  /usr/bin/libnotify-notify-send-users			Px,
-  /usr/bin/mail						Px,
-  /usr/bin/logger					Px,
-  @{PYTHON_EXEC_WRAPPER}				Cx -> glsa_check,
+  /bin/mktemp						Cx,	# sys-apps/coreutils
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/basename						Px,	# sys-apps/coreutils
+  /usr/bin/libnotify-notify-send-users			Px,	# x11-libs/libnotify
+  /usr/bin/mail						Px,	# mail-client/mailx
+  /usr/bin/logger					Px,	# sys-apps/util-linux
+  @{PYTHON_EXEC_WRAPPER}				Cx -> glsa_check,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /etc/portage/cron_glsa.conf				r,
@@ -77,7 +77,7 @@ profile glsa.cron.daily /etc/cron.daily/glsa {
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/glsa-check				Px,
+    @{PYTHON_EXEC}/glsa-check				Px,	# app-portage/gentoolkit
     
     # TEMP ---------------------------------------------
     owner /tmp/glsa.cron.??????				w,

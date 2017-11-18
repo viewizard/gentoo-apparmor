@@ -58,8 +58,8 @@ profile filezilla /usr/bin/filezilla {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,
-    /usr/bin/lsb_release				Px,
+    /bin/uname						Px,	# sys-apps/coreutils
+    /usr/bin/lsb_release				Px,	# sys-apps/lsb-release
   }
 }
 
@@ -96,8 +96,8 @@ profile filezilla.fzsftp /usr/bin/fzsftp {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/ls						Px -> filezilla_fzsftp_ls,
-    /bin/ps						Px,
+    /bin/ls						Px -> filezilla_fzsftp_ls,	# sys-apps/coreutils
+    /bin/ps						Px,	# sys-process/procps
     
     # NOISY --------------------------------------------
     deny /etc/						r,

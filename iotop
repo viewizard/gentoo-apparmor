@@ -33,7 +33,7 @@ profile iotop @{PYTHON_EXEC}/iotop {
   @{PROC}/@{pids}/status				r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/file						Cx,
+  /usr/bin/file						Cx,	# sys-apps/file
   
   profile file /usr/bin/file {
     #include <abstractions/base>
@@ -46,6 +46,6 @@ profile iotop @{PYTHON_EXEC}/iotop {
     
     # READS/WRITES -------------------------------------
     /usr/bin/@{PYTHON}					r,
-    /usr/share/misc/magic.mgc				r,
+    /usr/share/misc/magic.mgc				r,	# sys-apps/file
   }
 }

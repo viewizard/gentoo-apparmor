@@ -37,8 +37,9 @@ profile dnscrypt-proxy /usr/sbin/dnscrypt-proxy {
   /usr/sbin/dnscrypt-proxy				mr,
   
   # READS/WRITES ---------------------------------------
+  /etc/dnscrypt-proxy.conf				r,
   /usr/share/dnscrypt-proxy/{,*}			r,
-  /run/dnscrypt-proxy/dnscrypt-proxy.pid		rw,
+  /run/dnscrypt-proxy.pid				rw,
   /var/log/dnscrypt-proxy.log				rw,
 }
 
@@ -55,7 +56,7 @@ profile dnscrypt-proxy.hostip /usr/bin/hostip {
   /usr/bin/hostip					mr,
 }
 
-profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy {
+profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -72,38 +73,18 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/dnscrypt-proxy				Px,
   @{shell}						Cx,
-  /bin/chown						Cx,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/dnscrypt-proxy			r,
-  /run/dnscrypt-proxy/					r,
+  /run/dnscrypt-proxy.pid				r,
   
   profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
-  }
-  
-  profile chown /bin/chown {
-    #include <abstractions/base>
-    #include <abstractions/nameservice>
-    
-    # CAPABILITIES -------------------------------------
-    capability chown,
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					rw,
-    /dev/console					rw,
-    /dev/pts/[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /bin/chown						mr,
-    
-    # READS/WRITES -------------------------------------
-    /run/dnscrypt-proxy/				rw,
   }
   
   profile mkdir /bin/mkdir {
@@ -120,9 +101,6 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy {
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
-    
-    # READS/WRITES -------------------------------------
-    /run/dnscrypt-proxy/				w,
   }
   
   profile grep /bin/grep {

@@ -29,17 +29,17 @@ profile dnsmasq /usr/sbin/dnsmasq {
   	path="/uk/org/thekelleys/dnsmasq"
   	interface="org.freedesktop.DBus.Properties"
 	member="GetAll"
-  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),
+  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),		# net-misc/networkmanager
   dbus send
   	bus=system
   	path="/uk/org/thekelleys/dnsmasq"
   	interface="org.freedesktop.NetworkManager.dnsmasq"
-  	peer=(name="org.freedesktop.DBus",label="networkmanager.NetworkManager"),
+  	peer=(name="org.freedesktop.DBus",label="networkmanager.NetworkManager"),	# net-misc/networkmanager
   dbus receive
   	bus=system
   	path="/uk/org/thekelleys/dnsmasq"
   	interface="org.freedesktop.NetworkManager.dnsmasq"
-  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),
+  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),		# net-misc/networkmanager
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -57,15 +57,15 @@ profile dnsmasq /usr/sbin/dnsmasq {
   
   # READS/WRITES ---------------------------------------
   /etc/dnsmasq.conf					r,
-  /etc/NetworkManager/dnsmasq.d/{,*}			r,	# DELEGATION! networkmanager.NetworkManager
+  /etc/NetworkManager/dnsmasq.d/{,*}			r,	# net-misc/networkmanager	# DELEGATION! networkmanager.NetworkManager
   /usr/share/dnsmasq/{,*}				r,
   /run/dnsmasq.pid					rw,
-  /run/NetworkManager/dnsmasq.pid			rw,	# DELEGATION! networkmanager.NetworkManager
-  /var/lib/hosts.blacklist				r,
+  /run/NetworkManager/dnsmasq.pid			rw,	# net-misc/networkmanager	# DELEGATION! networkmanager.NetworkManager
+  /var/lib/hosts.blacklist				r,	# Список запрещенных доменов (в конфигурации используем этот путь).
   /var/lib/misc/dnsmasq.leases				rw,
 }
 
-profile dnsmasq.init.d /etc/init.d/dnsmasq {
+profile dnsmasq.init.d /etc/init.d/dnsmasq flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -81,10 +81,10 @@ profile dnsmasq.init.d /etc/init.d/dnsmasq {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/dnsmasq					Px,
   @{shell}						Cx,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
-  /etc/init.d/net.*					Px,
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
+  /etc/init.d/net.*					Px,	# net-misc/netifrc
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/dnsmasq				r,

@@ -59,21 +59,21 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						cx,
-  /bin/stty						Px,
-  /bin/mount						Cx,
-  /bin/tar						Cx,
-  /sbin/ldconfig					Px,
-  /usr/bin/sandbox					cx,
-  /usr/bin/find						Cx,
-  /usr/bin/id						Px,
-  /usr/bin/install-info					Cx,
-  /usr/bin/scanelf					Cx,
-  /usr/bin/wget						Px,
-  /usr/bin/desktop-file-validate			Cx,
-  /usr/bin/rsync					Cx,
-  /usr/bin/gcc-config					Px,
-  /usr/bin/free						Cx,
-  /usr/@{CHOST}/binutils-bin/*/ld			Cx,
+  /bin/stty						Px,	# sys-apps/coreutils
+  /bin/mount						Cx,	# sys-apps/util-linux
+  /bin/tar						Cx,	# app-arch/tar
+  /sbin/ldconfig					Px,	# sys-libs/glibc
+  /usr/bin/sandbox					cx,	# sys-apps/sandbox
+  /usr/bin/find						Cx,	# sys-apps/findutils
+  /usr/bin/id						Px,	# sys-apps/coreutils
+  /usr/bin/install-info					Cx,	# sys-apps/texinfo
+  /usr/bin/scanelf					Cx,	# app-misc/pax-utils
+  /usr/bin/wget						Px,	# net-misc/wget
+  /usr/bin/desktop-file-validate			Cx,	# dev-util/desktop-file-utils
+  /usr/bin/rsync					Cx,	# net-misc/rsync
+  /usr/bin/gcc-config					Px,	# sys-devel/gcc-config
+  /usr/bin/free						Cx,	# sys-process/procps
+  /usr/@{CHOST}/binutils-bin/*/ld			Cx,	# sys-devel/binutils
   /etc/portage/repo.postsync.d/*			Px,	# Выполняем скрипты, если у них есть профили.
   
   # READS/WRITES ---------------------------------------
@@ -165,10 +165,10 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     
     /usr/share/info/{,**}				r,
     /usr/share/info/dir					w,
-    /usr/share/binutils-data/@{CHOST}/[0-9]*/info/{,**}	r,
-    /usr/share/binutils-data/@{CHOST}/[0-9]*/info/dir	w,
-    /usr/share/gcc-data/@{CHOST}/[0-9]*/info/{,**}	r,
-    /usr/share/gcc-data/@{CHOST}/[0-9]*/info/dir	w,
+    /usr/share/binutils-data/@{CHOST}/[0-9]*/info/{,**}	r,	# sys-devel/binutils
+    /usr/share/binutils-data/@{CHOST}/[0-9]*/info/dir	w,	# sys-devel/binutils
+    /usr/share/gcc-data/@{CHOST}/[0-9]*/info/{,**}	r,	# sys-devel/gcc
+    /usr/share/gcc-data/@{CHOST}/[0-9]*/info/dir	w,	# sys-devel/gcc
   }
   
   profile scanelf /usr/bin/scanelf flags=(complain) {		# FIX ME! complain 06.10.2017
@@ -267,11 +267,11 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     capability kill,
     
     # SIGNAL ---------------------------------------------
-    signal (send) set=(term) peer="dconf.dconf-service",
-    signal (send) set=(hup) peer="gconf.gconfd-2",
+    signal (send) set=(term) peer="dconf.dconf-service",	# gnome-base/dconf
+    signal (send) set=(hup) peer="gconf.gconfd-2",		# gnome-base/gconf
     
     # PTRACE -------------------------------------------
-    ptrace (trace) peer="sysvinit.init",			# sysvinit
+    ptrace (trace) peer="sysvinit.init",			# sys-apps/sysvinit
     
     # NETWORK ------------------------------------------
     network inet dgram,
@@ -293,18 +293,18 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /etc/portage/bin/**					ix,
     /bin/**						ix,
     /sbin/**						ix,
-    /sbin/udevadm					Px,
+    /sbin/udevadm					Px,	# sys-fs/eudev
     /opt/**						ix,
     /usr/bin/**						ix,
-    /usr/sbin/useradd					Px,
-    /usr/sbin/groupadd					Px,
-    /usr/sbin/lspci					Px,
+    /usr/sbin/useradd					Px,	# sys-apps/shadow
+    /usr/sbin/groupadd					Px,	# sys-apps/shadow
+    /usr/sbin/lspci					Px,	# sys-apps/pciutils
     /usr/sbin/**					ix,
     /usr/lib{,32,64,exec}/**				ix,
     /usr/@{CHOST}/**					ix,
-    /lib{,32,64}/rc/sh/gendepends.sh			Px,
-    /lib{,32,64}/rc/sh/migrate-to-run.sh		ix,
-    /lib{,32,64}/rc/bin/*				ix,
+    /lib{,32,64}/rc/sh/gendepends.sh			Px,	# sys-apps/openrc
+    /lib{,32,64}/rc/sh/migrate-to-run.sh		ix,	# sys-apps/openrc
+    /lib{,32,64}/rc/bin/*				ix,	# sys-apps/openrc
     
     # READS/WRITES -------------------------------------
     /							r,
@@ -329,15 +329,15 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /var/tmp/portage/					rw,
     /var/tmp/portage/**					rwk,
     /var/cache/**					rwl,	# l - все правильно, разрешаем на /**.
-    /var/log/nullmailer/				w,
-    /var/spool/nullmailer/{,**}				w,
+    /var/log/nullmailer/				w,	# mail-mta/nullmailer
+    /var/spool/nullmailer/{,**}				w,	# mail-mta/nullmailer
     /var/lib/*/						rw,
     /var/lib/*/**					rwkl,	# l - все правильно, разрешаем на /**.
     /run/utmp						rk,
     /run/mount/utab					rw,
-    /run/openrc/*					r,
-    /run/openrc/deptree					w,
-    /run/openrc/depconfig				w,
+    /run/openrc/*					r,	# sys-apps/openrc
+    /run/openrc/deptree					w,	# sys-apps/openrc
+    /run/openrc/depconfig				w,	# sys-apps/openrc
     /run/udev/control					rw,
     /var/spool/**					rw,
     /var/log/emerge-fetch.log				a,	# DELEGATION! portage.emerge
@@ -425,7 +425,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /lib{,32,64}/{,**}					r,
     /etc/{,**}						r,
     /usr/{,**}						r,
-    /usr/src/@{kernel}/tools/gcc/**.so			m,	# Плагины gcc.
+    /usr/src/@{kernel}/tools/gcc/**.so			m,	# sys-kernel/gentoo-sources, плагины gcc
     /usr/portage/distfiles/{egit,git3}-src/{,**}	rw,
     link subset /usr/portage/distfiles/{egit,git3}-src/** -> /usr/portage/distfiles/{egit,git3}-src/**,
     /usr/portage/packages/{,**}				rw,
@@ -456,7 +456,7 @@ profile portage_emerge_install_info_shell flags=(complain) {	# FIX ME! complain 
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/bzip2						Cx,
+  /bin/bzip2						Cx,	# app-arch/bzip2
   
   # READS/WRITES ---------------------------------------
   /usr/share/info/**.bz2				r,
@@ -521,8 +521,8 @@ profile portage.env-update @{PYTHON_EXEC}/env-update {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,
-    /sbin/ldconfig					Px,
+    /bin/uname						Px,	# sys-apps/coreutils
+    /sbin/ldconfig					Px,	# sys-libs/glibc
   }
 }
 
@@ -542,8 +542,8 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Px -> portage_dispatch_conf_shell,
-  audit /usr/bin/diff					Cx,	# FIX ME! audit 15.07.2017
-  /usr/bin/find						Cx,
+  audit /usr/bin/diff					Cx,	# sys-apps/diffutils	# FIX ME! audit 15.07.2017
+  /usr/bin/find						Cx,	# sys-apps/findutils
   
   # READS/WRITES ---------------------------------------
   /etc/{,**}						rw,
@@ -582,7 +582,7 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf {
     # READS/WRITES -------------------------------------
     /							r,
     /etc/{,**}						r,
-    /usr/share/gnupg/					r,
+    /usr/share/gnupg/					r,	# app-crypt/gnupg
   }
 }
 
@@ -602,9 +602,9 @@ profile portage_dispatch_conf_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/uname						Px,
-  audit /usr/bin/find					Cx,	# FIX ME! audit 15.07.2017
-  audit /usr/bin/diff					Cx,	# FIX ME! audit 15.07.2017
+  /bin/uname						Px,	# sys-apps/coreutils
+  audit /usr/bin/find					Cx,	# sys-apps/findutils	# FIX ME! audit 15.07.2017
+  audit /usr/bin/diff					Cx,	# sys-apps/diffutils	# FIX ME! audit 15.07.2017
   
   # READS/WRITES ---------------------------------------
   /etc/{,**}						r,
@@ -672,7 +672,7 @@ profile portage.portageq @{PYTHON_EXEC}/portageq {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,
+    /bin/uname						Px,	# sys-apps/coreutils
     
     # TEMP ---------------------------------------------
     /tmp/portage.cron.*					w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
@@ -694,22 +694,22 @@ profile portage.etc-update /usr/sbin/etc-update {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/etc-update					r,
   @{shell}						mr,
-  /bin/cat						Cx,
-  /bin/grep						Cx,
-  /bin/cut						Cx,
-  /bin/rm						Cx,
-  /bin/mkdir						Cx,
-  /bin/chmod						Cx,
-  /bin/chown						Cx,
-  /bin/sed						Cx,
-  /bin/sort						Cx,
-  /bin/head						Cx,
-  /bin/wc						Cx,
-  /bin/mv						Cx,
-  audit /bin/readlink					Cx,	# FIX ME! audit 15.07.2017
-  /usr/bin/diff						Cx,
-  /usr/bin/find						Cx,
-  @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/cut						Cx,	# sys-apps/coreutils
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/chmod						Cx,	# sys-apps/coreutils
+  /bin/chown						Cx,	# sys-apps/coreutils
+  /bin/sed						Cx,	# sys-apps/sed
+  /bin/sort						Cx,	# sys-apps/coreutils
+  /bin/head						Cx,	# sys-apps/coreutils
+  /bin/wc						Cx,	# sys-apps/coreutils
+  /bin/mv						Cx,	# sys-apps/coreutils
+  audit /bin/readlink					Cx,	# sys-apps/coreutils	# FIX ME! audit 15.07.2017
+  /usr/bin/diff						Cx,	# sys-apps/diffutils
+  /usr/bin/find						Cx,	# sys-apps/findutils
+  @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,	# dev-lang/python-exec
   
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.*					rw,
@@ -726,7 +726,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     /bin/cat						mr,
     
     # READS/WRITES -------------------------------------
-    /etc/os-release					r,
+    /etc/os-release					r,	# sys-apps/baselayout
     
     # TEMP ---------------------------------------------
     owner /tmp/sh-thd.*					r,
@@ -853,7 +853,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     /bin/head						mr,
     
     # TEMP ---------------------------------------------
-    owner /var/tmp/etc-update-@{pids}/**			r,
+    owner /var/tmp/etc-update-@{pids}/**		r,
   }
   
   profile wc /bin/wc {
@@ -867,7 +867,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     /bin/wc						mr,
     
     # TEMP ---------------------------------------------
-    owner /var/tmp/etc-update-@{pids}/**			r,
+    owner /var/tmp/etc-update-@{pids}/**		r,
   }
   
   profile mv /bin/mv {
@@ -909,7 +909,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     /etc/{,**}						r,
     
     # TEMP ---------------------------------------------
-    owner /var/tmp/etc-update-@{pids}/**			r,
+    owner /var/tmp/etc-update-@{pids}/**		r,
   }
   
   profile find /usr/bin/find {
@@ -929,7 +929,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     # READS/WRITES -------------------------------------
     /							r,
     /etc/{,**}						r,
-    /usr/share/gnupg/					r,
+    /usr/share/gnupg/					r,	# app-crypt/gnupg
   }
   
   profile portageq {
@@ -952,23 +952,23 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
   # EXECUTABLES ----------------------------------------
   /usr/bin/emerge-webrsync				r,
   @{shell}						mr,
-  /bin/date						Cx,
-  /bin/rm						Cx,
-  /bin/cut						Cx,
-  /bin/cat						Cx,
-  /bin/mktemp						Cx,
-  /bin/tar						Cx,
-  /bin/chown						Cx,
-  /bin/stty						Px,
-  /usr/bin/md5sum					Cx,
-  /usr/bin/xz						Cx,
-  /usr/bin/stat						Cx,
-  /usr/bin/rsync					Cx,
-  /usr/bin/fmt						Cx,
-  /usr/bin/gpg2						Px,
-  /usr/bin/renice					Px,
-  /usr/bin/wget						Px,
-  @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
+  /bin/date						Cx,	# sys-apps/coreutils
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/cut						Cx,	# sys-apps/coreutils
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/mktemp						Cx,	# sys-apps/coreutils
+  /bin/tar						Cx,	# app-arch/tar
+  /bin/chown						Cx,	# sys-apps/coreutils
+  /bin/stty						Px,	# sys-apps/coreutils
+  /usr/bin/md5sum					Cx,	# sys-apps/coreutils
+  /usr/bin/xz						Cx,	# app-arch/xz-utils
+  /usr/bin/stat						Cx,	# sys-apps/coreutils
+  /usr/bin/rsync					Cx,	# net-misc/rsync
+  /usr/bin/fmt						Cx,	# sys-apps/coreutils
+  /usr/bin/gpg2						Px,	# app-crypt/gnupg
+  /usr/bin/renice					Px,	# sys-apps/util-linux
+  /usr/bin/wget						Px,	# net-misc/wget
+  @{PYTHON_EXEC_WRAPPER}				Cx -> portage,	# dev-lang/python-exec
   
   # TEMP -----------------------------------------------
   owner /tmp/sh-thd.*					rw,
@@ -1183,7 +1183,7 @@ profile portage.emaint @{PYTHON_EXEC}/emaint {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /usr/bin/find						Cx,
+  /usr/bin/find						Cx,	# sys-apps/findutils
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
@@ -1210,7 +1210,7 @@ profile portage.emaint @{PYTHON_EXEC}/emaint {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,
+    /bin/uname						Px,	# sys-apps/coreutils
     /usr/bin/emerge-webrsync				Px,
   }
   
@@ -1247,7 +1247,7 @@ profile portage.cgroup-release-agent /{usr/lib{,32,64}/portage/@{PYTHON},var/tmp
   /usr/lib{,32,64}/portage/@{PYTHON}/cgroup-release-agent r,
   /var/tmp/portage/._portage_reinstall_.*/bin/cgroup-release-agent r,
   @{shell}						mr,
-  /bin/rmdir						Cx,
+  /bin/rmdir						Cx,	# sys-apps/coreutils
   
   profile rmdir /bin/rmdir {
     #include <abstractions/base>

@@ -21,14 +21,14 @@ profile lsb-release /usr/bin/lsb_release flags=(attach_disconnected) {
   # EXECUTABLES ----------------------------------------
   /usr/bin/lsb_release					r,
   @{shell}						mr,
-  /bin/sed						Cx,
-  /bin/head						Cx,
-  /bin/tr						Px,
-  /usr/bin/find						Cx,
-  /usr/bin/getopt					Px,
+  /bin/sed						Cx,	# sys-apps/sed
+  /bin/head						Cx,	# sys-apps/coreutils
+  /bin/tr						Px,	# sys-apps/coreutils
+  /usr/bin/find						Cx,	# sys-apps/findutils
+  /usr/bin/getopt					Px,	# sys-apps/util-linux
   
   # READS/WRITES ---------------------------------------
-  /etc/lsb-release					r,
+  /etc/lsb-release					r,	# sys-apps/lsb-release
   
   # DENY INHERIT ---------------------------------------
   deny unix (send, receive) peer=(label="discord-bin.Discord"),	# discord-bin.Discord
@@ -64,7 +64,7 @@ profile lsb-release /usr/bin/lsb_release flags=(attach_disconnected) {
     /bin/head						mr,
     
     # READS/WRITES -------------------------------------
-    /etc/{gentoo,os}-release				r,
+    /etc/{gentoo,os}-release				r,	# sys-apps/baselayout
     
     # DENY INHERIT -------------------------------------
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)

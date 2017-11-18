@@ -49,13 +49,13 @@ profile xfburn /usr/bin/xfburn {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfburn					mr,
-  /usr/libexec/gvfsd-burn				r,
+  /usr/libexec/gvfsd-burn				r,	# gnome-base/gvfs
   
   # READS/WRITES ---------------------------------------
-  /etc/udev/udev.conf					r,
+  /etc/udev/udev.conf					r,	# sys-fs/eudev
   /usr/share/xfburn/{,**}				r,
   /run/udev/data/*					r,
-  owner /run/user/[0-9]*/gvfs-burn/			rw,
+  owner /run/user/[0-9]*/gvfs-burn/			rw,	# gnome-base/gvfs
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/xfburn/{,**}			rw,

@@ -28,10 +28,10 @@ profile dhcp.dhclient /sbin/dhclient {
   
   # EXECUTABLES ----------------------------------------
   /sbin/dhclient					mr,
-  /usr/libexec/nm-dhcp-helper				Px,	# DELEGATION! networkmanager.NetworkManager
+  /usr/libexec/nm-dhcp-helper				Px,	# net-misc/networkmanager	# DELEGATION! networkmanager.NetworkManager
   
   # READS/WRITES ---------------------------------------
-  /run/dhclient-*.pid					rw,	# DELEGATION! networkmanager.NetworkManager
-  /var/lib/NetworkManager/dhclient-*.conf		r,	# DELEGATION! networkmanager.NetworkManager
-  /var/lib/NetworkManager/dhclient-*.lease		rw,	# DELEGATION! networkmanager.NetworkManager
+  /run/dhclient-*.pid					rw,	# net-misc/networkmanager	# DELEGATION! networkmanager.NetworkManager
+  /var/lib/NetworkManager/dhclient-*.conf		r,	# net-misc/networkmanager	# DELEGATION! networkmanager.NetworkManager
+  /var/lib/NetworkManager/dhclient-*.lease		rw,	# net-misc/networkmanager	# DELEGATION! networkmanager.NetworkManager
 }

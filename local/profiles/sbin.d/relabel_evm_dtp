@@ -31,12 +31,12 @@ profile local.sbin.relabel_evm_dtp /usr/local/sbin/relabel_evm_dtp.sh {
   # EXECUTABLES ----------------------------------------
   /usr/local/sbin/relabel_evm_dtp.sh			r,
   @{shell}						mr,
-  /bin/touch						Cx,
-  /bin/rm						Cx,
-  /bin/cat						Cx,
-  /bin/grep						Cx,
-  /usr/bin/find						Cx,
-  /usr/bin/evmctl					Px,
+  /bin/touch						Cx,	# sys-apps/coreutils
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /usr/bin/find						Cx,	# sys-apps/findutils
+  /usr/bin/evmctl					Px,	# app-crypt/ima-evm-utils
   
   profile touch /bin/touch {
     #include <abstractions/base>

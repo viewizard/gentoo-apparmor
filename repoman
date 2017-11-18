@@ -42,20 +42,20 @@ profile repoman @{PYTHON_EXEC}/repoman {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						cx,
-  /usr/bin/sandbox					cx,
-  /bin/basename						Px,
-  /usr/bin/git						Cx,	# не используем Px и Px -> git_root.
-  /usr/bin/id						Px,
-  /usr/bin/wget						Px,
+  /usr/bin/sandbox					cx,	# sys-apps/sandbox
+  /bin/basename						Px,	# sys-apps/coreutils
+  /usr/bin/git						Cx,	# dev-vcs/git		# не используем Px и Px -> git_root.
+  /usr/bin/id						Px,	# sys-apps/coreutils
+  /usr/bin/wget						Px,	# net-misc/wget
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
-  /etc/portage/{,**}					r,
-  /usr/portage/{,**}					r,
-  /usr/portage/distfiles/*				wk,
+  /etc/portage/{,**}					r,	# sys-apps/portage
+  /usr/portage/{,**}					r,	# sys-apps/portage
+  /usr/portage/distfiles/*				wk,	# sys-apps/portage
   /usr/local/portage/{,**}				r,
   /usr/local/portage/**/Manifest*			rw,
-  /usr/share/portage/{,**}				r,
+  /usr/share/portage/{,**}				r,	# sys-apps/portage
   /var/cache/edb/dep/usr/local/portage/**		rw,
   
   # TEMP -----------------------------------------------
@@ -75,12 +75,12 @@ profile repoman @{PYTHON_EXEC}/repoman {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,
-    /bin/rm						ix,	# Оставляем через ix, чтобы не создавать дополнительный профиль.
-    /sbin/ldconfig					Px,
+    /bin/uname						Px,	# sys-apps/coreutils
+    /bin/rm						ix,	# sys-apps/coreutils	# Оставляем через ix, чтобы не создавать дополнительный профиль.
+    /sbin/ldconfig					Px,	# sys-libs/glibc
     
     # READS/WRITES -------------------------------------
-    /usr/portage/distfiles/*				w,
+    /usr/portage/distfiles/*				w,	# sys-apps/portage
   }
   
   profile sandbox /usr/bin/sandbox {
@@ -95,8 +95,8 @@ profile repoman @{PYTHON_EXEC}/repoman {
     @{shell}						px -> repoman_sandbox_shell,
     
     # READS/WRITES -------------------------------------
-    /etc/sandbox.conf					r,
-    /etc/sandbox.d/{,**}				r,
+    /etc/sandbox.conf					r,	# sys-apps/sandbox
+    /etc/sandbox.d/{,**}				r,	# sys-apps/sandbox
   }
   
   profile git /usr/bin/git {
@@ -127,8 +127,8 @@ profile repoman_sandbox_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		px,
+  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		px,	# sys-apps/portage
   
   # READS/WRITES ---------------------------------------
-  /usr/share/sandbox/sandbox.bashrc			r,
+  /usr/share/sandbox/sandbox.bashrc			r,	# sys-apps/sandbox
 }

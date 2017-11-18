@@ -27,13 +27,13 @@ profile local.sbin.aa_portage /usr/local/sbin/aa_portage.sh {
   # EXECUTABLES ----------------------------------------
   /usr/local/sbin/aa_portage.sh				r,
   @{shell}						mr,
-  /bin/basename						Px,
-  /bin/cat						Cx,
-  /bin/grep						Cx,
-  /bin/rm						Cx,
-  /bin/ln						Cx,
-  /sbin/apparmor_parser					Px,
-  @{PYTHON_EXEC_WRAPPER}				Cx -> equery,
+  /bin/basename						Px,	# sys-apps/coreutils
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/ln						Cx,	# sys-apps/coreutils
+  /sbin/apparmor_parser					Px,	# sys-apps/apparmor
+  @{PYTHON_EXEC_WRAPPER}				Cx -> equery,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /etc/apparmor.d/{,**}					r,
@@ -96,6 +96,6 @@ profile local.sbin.aa_portage /usr/local/sbin/aa_portage.sh {
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/equery				Px,
+    @{PYTHON_EXEC}/equery				Px,	# app-portage/gentoolkit
   }
 }

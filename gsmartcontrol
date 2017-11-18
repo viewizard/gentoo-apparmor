@@ -34,12 +34,12 @@ profile gsmartcontrol /usr/bin/gsmartcontrol {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gsmartcontrol				mr,
+  /usr/bin/exo-open					Px,	# xfce-base/exo
   /usr/sbin/smartctl					Px,
-  /usr/bin/exo-open					Px,
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
-  /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,
+  /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/gsmartcontrol/{,gsmartcontrol.conf} rw,
@@ -67,8 +67,8 @@ profile gsmartcontrol.gsmartcontrol-root /usr/bin/gsmartcontrol-root {
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /usr/bin/gsmartcontrol-root				r,
-    /usr/bin/which					Px,
-    /usr/bin/sudo					Px,
-    /usr/bin/gksu					Px,
+    /usr/bin/which					Px,	# sys-apps/which
+    /usr/bin/sudo					Px,	# app-admin/sudo
+    /usr/bin/gksu					Px,	# app-admin/sudo
   }
 }

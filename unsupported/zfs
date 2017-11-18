@@ -98,7 +98,7 @@ profile zfs.zed.d /usr/libexec/zfs/zed.d/*.sh {
   /etc/zfs/zed.d/zed.rc					r,
 }
 
-profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed {
+profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -188,7 +188,7 @@ profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed {
   }
 }
 
-profile zfs.zfs-import.init.d /etc/init.d/zfs-import {
+profile zfs.zfs-import.init.d /etc/init.d/zfs-import flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>

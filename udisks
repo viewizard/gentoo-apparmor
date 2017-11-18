@@ -80,17 +80,17 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/udisks2/udisksd				mr,
-  /bin/mount						Cx,
-  /bin/umount						Cx,
-  /sbin/cryptsetup					Px,
-  /usr/bin/eject					Px,
+  /bin/mount						Cx,	# sys-apps/util-linux
+  /bin/umount						Cx,	# sys-apps/util-linux
+  /sbin/cryptsetup					Px,	# sys-fs/cryptsetup
+  /usr/bin/eject					Px,	# sys-apps/util-linux
   
   # READS/WRITES ---------------------------------------
-  /etc/udev/udev.conf					r,
   /etc/fstab						r,
-  /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,
+  /etc/udev/udev.conf					r,	# sys-fs/eudev
+  /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
   /run/udisks2/{,mounted-fs*,unlocked-luks*}		rw,
-  /run/udev/data/*					r,
+  /run/udev/data/*					r,	# sys-fs/eudev
   /run/media/{,*/,*/*/}					w,
   /media/*/						w,
   

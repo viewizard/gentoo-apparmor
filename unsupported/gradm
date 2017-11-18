@@ -57,7 +57,7 @@ profile gradm.grlearn /sbin/grlearn flags=(complain) {
   /etc/grsec/*						rw,
 }
 
-profile gradm.init.d /etc/init.d/gradm {
+profile gradm.init.d /etc/init.d/gradm flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>

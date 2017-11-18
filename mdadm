@@ -57,9 +57,9 @@ profile mdadm.checkarray /usr/sbin/checkarray {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/checkarray					r,
   @{shell}						mr,
-  /bin/ls						Cx,
-  /bin/egrep						Cx,
-  /usr/bin/getopt					Px,
+  /bin/ls						Cx,	# sys-apps/coreutils
+  /bin/egrep						Cx,	# sys-apps/grep
+  /usr/bin/getopt					Px,	# sys-apps/util-linux
   
   # READS/WRITES ---------------------------------------
   /etc/default/mdadm					r,
@@ -77,11 +77,11 @@ profile mdadm.checkarray /usr/sbin/checkarray {
     # EXECUTABLES --------------------------------------
     /bin/egrep						r,
     @{shell}						mr,
-    /bin/grep						ix,	# Все правильно, для egrep используем с ix.
+    /bin/grep						ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
   }
 }
 
-profile mdadm.init.d /etc/init.d/mdadm {
+profile mdadm.init.d /etc/init.d/mdadm flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -93,10 +93,10 @@ profile mdadm.init.d /etc/init.d/mdadm {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/rm						Cx,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
   /sbin/mdadm						Px,
   
   # READS/WRITES ---------------------------------------
@@ -182,7 +182,7 @@ profile mdadm.cron.weekly /etc/cron.weekly/mdadm {
   # EXECUTABLES ----------------------------------------
   /etc/cron.weekly/mdadm				r,
   @{shell}						mr,
-  /bin/date						Cx,
+  /bin/date						Cx,	# sys-apps/coreutils
   /usr/sbin/checkarray					Px,
   
   profile date /bin/date {

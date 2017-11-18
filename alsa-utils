@@ -23,7 +23,7 @@ profile alsa-utils.aplay /usr/bin/aplay {
   /usr/bin/aplay					mr,
   
   # TEMP -----------------------------------------------
-  owner /tmp/pulse-*/{,*}				rw,	# pulseaudio
+  owner /tmp/pulse-*/{,*}				rw,	# media-sound/pulseaudio
 }
 
 profile alsa-utils.alsactl /usr/sbin/alsactl {
@@ -40,6 +40,6 @@ profile alsa-utils.alsactl /usr/sbin/alsactl {
   /usr/sbin/alsactl					mr,
   
   # READS/WRITES ---------------------------------------
-  /etc/pulse/client.conf				r,
+  /etc/pulse/client.conf				r,	# media-sound/pulseaudio
   /usr/lib{,32,64}/alsa-lib/{,**}			r,
 }

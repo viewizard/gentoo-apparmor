@@ -33,9 +33,9 @@ profile qgit /usr/bin/qgit {
   #include <abstractions/fs/deny-private-strict>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term, kill) peer="meld",
-  signal (send) set=(term, kill) peer="git",
-  signal (send) set=(term, kill) peer="juffed",
+  signal (send) set=(term, kill) peer="meld",			# dev-util/meld
+  signal (send) set=(term, kill) peer="git",			# dev-vcs/git
+  signal (send) set=(term, kill) peer="juffed",			# app-editors/juffed
   
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
@@ -45,10 +45,10 @@ profile qgit /usr/bin/qgit {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/qgit						mr,
-  /bin/cat						Cx,
-  /usr/bin/git						Px,
-  /usr/bin/meld						Px,	# Выбирается пользователем через настройки.
-  /usr/bin/juffed					Px,	# Выбирается пользователем через настройки.
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /usr/bin/git						Px,	# dev-vcs/git
+  /usr/bin/meld						Px,	# dev-util/meld (выбирается пользователем через настройки)
+  /usr/bin/juffed					Px,	# app-editors/juffed (выбирается пользователем через настройки)
   
   # READS/WRITES ---------------------------------------
   owner @{HOME}/.config/qgit/				rw,
@@ -97,9 +97,9 @@ profile qgit_root {
   ptrace (trace) peer=@{profile_name},
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term, kill) peer="meld_root",
-  signal (send) set=(term, kill) peer="git_root",
-  signal (send) set=(term, kill) peer="juffed_root",
+  signal (send) set=(term, kill) peer="meld_root",		# dev-util/meld
+  signal (send) set=(term, kill) peer="git_root",		# dev-vcs/git
+  signal (send) set=(term, kill) peer="juffed_root",		# app-editors/juffed
   
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
@@ -109,10 +109,10 @@ profile qgit_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/qgit						mr,
-  /bin/cat						Cx,
-  /usr/bin/git						Px -> git_root,
-  /usr/bin/meld						Px -> meld_root,	# Выбирается пользователем через настройки.
-  /usr/bin/juffed					Px -> juffed_root,	# Выбирается пользователем через настройки.
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /usr/bin/git						Px -> git_root,		# dev-vcs/git
+  /usr/bin/meld						Px -> meld_root,	# dev-util/meld (выбирается пользователем через настройки)
+  /usr/bin/juffed					Px -> juffed_root,	# app-editors/juffed (выбирается пользователем через настройки)
   
   # READS/WRITES ---------------------------------------
   owner @{HOME}/.config/qgit/				rw,

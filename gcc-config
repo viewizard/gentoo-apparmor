@@ -25,33 +25,33 @@ profile gcc-config /usr/bin/gcc-config {
   # EXECUTABLES ----------------------------------------
   /usr/bin/gcc-config					r,
   @{shell}						mr,
-  /bin/mv						Cx,
-  /bin/cp						Cx,
-  /bin/rm						Cx,
-  /bin/ln						Cx,
-  /bin/tr						Px,
-  /bin/cat						Cx,
-  /bin/sed						Cx,
-  /bin/touch						Cx,
-  /bin/sort						Cx,
-  /bin/grep						Cx,
-  /bin/tail						Cx,
-  /bin/mkdir						Cx,
-  /bin/egrep						Cx,
-  /sbin/consoletype					Px,
-  /bin/stty						Px,
-  /usr/bin/tput						Px,
-  /usr/bin/find						Cx,
-  /usr/bin/cmp						Cx,
-  /usr/bin/gawk						Cx,
-  /usr/bin/tac						Cx,
-  /usr/bin/python-wrapper				Px,
-  /lib{,32,64}/rc/bin/eval_ecolors			Px,
-  /lib{,32,64}/rc/bin/ebegin				Px,
-  /lib{,32,64}/rc/bin/ewarn				Px,
-  /lib{,32,64}/rc/bin/eend				Px,
-  /lib{,32,64}/rc/bin/eerror				Px,
-  @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,
+  /bin/mv						Cx,	# sys-apps/coreutils
+  /bin/cp						Cx,	# sys-apps/coreutils
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/ln						Cx,	# sys-apps/coreutils
+  /bin/tr						Px,	# sys-apps/coreutils
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/sed						Cx,	# sys-apps/sed
+  /bin/touch						Cx,	# sys-apps/coreutils
+  /bin/sort						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/tail						Cx,	# sys-apps/coreutils
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/rmdir						Cx,	# sys-apps/coreutils
+  /bin/egrep						Cx,	# sys-apps/grep
+  /sbin/consoletype					Px,	# sys-apps/gentoo-functions
+  /bin/stty						Px,	# sys-apps/coreutils
+  /usr/bin/tput						Px,	# sys-libs/ncurses
+  /usr/bin/find						Cx,	# sys-apps/findutils
+  /usr/bin/cmp						Cx,	# sys-apps/diffutils
+  /usr/bin/gawk						Cx,	# sys-apps/gawk
+  /usr/bin/tac						Cx,	# sys-apps/coreutils
+  /lib{,32,64}/rc/bin/eval_ecolors			Px,	# sys-apps/openrc
+  /lib{,32,64}/rc/bin/ebegin				Px,	# sys-apps/openrc
+  /lib{,32,64}/rc/bin/ewarn				Px,	# sys-apps/openrc
+  /lib{,32,64}/rc/bin/eend				Px,	# sys-apps/openrc
+  /lib{,32,64}/rc/bin/eerror				Px,	# sys-apps/openrc
+  @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,		# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -79,6 +79,7 @@ profile gcc-config /usr/bin/gcc-config {
     # READS/WRITES -------------------------------------
     /etc/env.d/*					rw,
     /lib{,32,64}/*					rw,
+    /lib{,32,64}/.gcc.config.new/*			w,
     /usr/bin/*						rw,
   }
   
@@ -98,6 +99,7 @@ profile gcc-config /usr/bin/gcc-config {
     # READS/WRITES -------------------------------------
     /etc/env.d/gcc/*					rw,
     /lib{,32,64}/*					w,
+    /lib{,32,64}/.gcc.config.new/*			w,
     /usr/bin/*						w,
   }
   
@@ -129,7 +131,7 @@ profile gcc-config /usr/bin/gcc-config {
     /bin/ln						mr,
     
     # READS/WRITES -------------------------------------
-    /etc/env.d/gcc/**					w,
+    /etc/env.d/gcc/**					w,	# sys-devel/gcc
     link subset /lib{,32,64}/*				-> /usr/lib{,32,64}/gcc/@{CHOST}/**,
   }
   
@@ -161,7 +163,7 @@ profile gcc-config /usr/bin/gcc-config {
     /bin/sed						mr,
     
     # READS/WRITES -------------------------------------
-    /etc/env.d/gcc/**					rw,
+    /etc/env.d/gcc/**					rw,	# sys-devel/gcc
     
     # TEMP ---------------------------------------------
     owner /tmp/sed*					rw,
@@ -178,6 +180,7 @@ profile gcc-config /usr/bin/gcc-config {
     /bin/touch						mr,
     
     # READS/WRITES -------------------------------------
+    /etc/env.d/gcc/@{CHOST}-[0-9]*			w,	# sys-devel/gcc
     /lib{,32,64}/*					w,
     /usr/bin/*						w,
   }
@@ -204,7 +207,7 @@ profile gcc-config /usr/bin/gcc-config {
     /bin/grep						mr,
     
     # READS/WRITES -------------------------------------
-    /etc/env.d/gcc/*					r,
+    /etc/env.d/gcc/*					r,	# sys-devel/gcc
   }
   
   profile tail /bin/tail flags=(complain) {
@@ -227,6 +230,23 @@ profile gcc-config /usr/bin/gcc-config {
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
+    
+    # READS/WRITES -------------------------------------
+    /lib{,32,64}/.gcc.config.new/			w,
+  }
+  
+  profile rmdir /bin/rmdir flags=(complain) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/rmdir						mr,
+    
+    # READS/WRITES -------------------------------------
+    /lib{,32,64}/.gcc.config.new/			w,
   }
   
   profile egrep /bin/egrep {
@@ -240,10 +260,10 @@ profile gcc-config /usr/bin/gcc-config {
     # EXECUTABLES --------------------------------------
     /bin/egrep						r,
     @{shell}						mr,
-    /bin/grep						ix,	# Все правильно, для egrep используем с ix.
+    /bin/grep						ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
     
     # READS/WRITES -------------------------------------
-    /etc/env.d/gcc/*					r,
+    /etc/env.d/gcc/*					r,	# sys-devel/gcc
   }
   
   profile find /usr/bin/find {
@@ -286,7 +306,7 @@ profile gcc-config /usr/bin/gcc-config {
     
     # READS/WRITES -------------------------------------
     /etc/env.d/*					w,
-    /etc/env.d/gcc/**					r,
+    /etc/env.d/gcc/**					r,	# sys-devel/gcc
     
     # TEMP ---------------------------------------------
     owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks
@@ -313,8 +333,8 @@ profile gcc-config /usr/bin/gcc-config {
     #include <abstractions/nameservice>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/portageq				Px,
-    @{PYTHON_EXEC}/env-update				Px,
+    @{PYTHON_EXEC}/portageq				Px,	# sys-apps/portage
+    @{PYTHON_EXEC}/env-update				Px,	# sys-apps/portage
     
     # TEMP ---------------------------------------------
     owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks

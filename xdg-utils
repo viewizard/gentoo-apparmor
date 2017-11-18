@@ -25,10 +25,10 @@ profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-open					r,
   @{shell}						mr,
-  /bin/grep						Cx,
-  /bin/egrep						Cx,
-  /usr/bin/exo-open					Px,
-  /usr/bin/dbus-send					Px,
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/egrep						Cx,	# sys-apps/grep
+  /usr/bin/exo-open					Px,	# xfce-base/exo
+  /usr/bin/dbus-send					Px,	# sys-apps/dbus
   
   # DENY INHERIT ---------------------------------------
   deny unix peer=(label="wps-office"),				# wps-office
@@ -67,7 +67,7 @@ profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
     # EXECUTABLES --------------------------------------
     /bin/egrep						r,
     @{shell}						mr,
-    /bin/grep						ix,	# Все правильно, для egrep используем с ix.
+    /bin/grep						ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
   }
 }
 
@@ -82,9 +82,9 @@ profile xdg-utils.xdg-email /usr/bin/xdg-email {
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-email					r,
   @{shell}						mr,
-  /bin/sed						Cx,
-  /usr/bin/which					Px,
-  /usr/bin/exo-open					Px,
+  /bin/sed						Cx,	# sys-apps/sed
+  /usr/bin/which					Px,	# sys-apps/which
+  /usr/bin/exo-open					Px,	# xfce-base/exo
   
   profile sed /bin/sed {
     #include <abstractions/base>
@@ -111,14 +111,14 @@ profile xdg-utils.xdg-screensaver /usr/bin/xdg-screensaver {
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-screensaver				r,
   @{shell}						mr,
-  /bin/grep						Cx,
-  /bin/mv						Cx,
-  /bin/sed						Cx,
-  /bin/hostname						Px,
-  /usr/bin/which					Px,
-  /usr/bin/dbus-send					Px,
-  /usr/bin/xset						ix,	# FIX ME! Вынести в отдельный профиль.
-  /usr/bin/xautolock					Px,
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/mv						Cx,	# sys-apps/coreutils
+  /bin/sed						Cx,	# sys-apps/sed
+  /bin/hostname						Px,	# sys-apps/net-tools
+  /usr/bin/which					Px,	# sys-apps/which
+  /usr/bin/dbus-send					Px,	# sys-apps/dbus
+  /usr/bin/xset						ix,	# x11-apps/xset		# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/xautolock					Px,	# x11-misc/xautolock
   
   profile grep /bin/grep {
     #include <abstractions/base>
@@ -174,18 +174,18 @@ profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
   /usr/bin/xdg-settings					mr,
   # Checking default browser
   @{shell}						mr,
-  /bin/grep						Cx,
-  /bin/readlink						Cx,
-  /bin/sed						Cx,
-  /bin/mkdir						Cx,
-  /bin/mv						Cx,
-  /bin/touch						Cx,
-  /bin/cut						Cx,
-  /bin/dirname						Px,
-  /usr/bin/which					Px,
-  /usr/bin/basename					Px,
-  /usr/bin/gconftool-2					Px,	# Detect proxy settings for gnome2/gnome3.
-  /usr/bin/gawk						Cx,
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/readlink						Cx,	# sys-apps/coreutils
+  /bin/sed						Cx,	# sys-apps/sed
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/mv						Cx,	# sys-apps/coreutils
+  /bin/touch						Cx,	# sys-apps/coreutils
+  /bin/cut						Cx,	# sys-apps/coreutils
+  /bin/dirname						Px,	# sys-apps/coreutils
+  /usr/bin/which					Px,	# sys-apps/which
+  /usr/bin/basename					Px,	# sys-apps/coreutils
+  /usr/bin/gconftool-2					Px,	# gnome-base/gconf	# Detect proxy settings for gnome2/gnome3.
+  /usr/bin/gawk						Cx,	# sys-apps/gawk
   /usr/bin/xdg-mime					Px,
   
   # READS/WRITES ---------------------------------------
@@ -288,11 +288,11 @@ profile xdg_open_root {
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-open					r,
   @{shell}						mr,
-  /bin/uname						Px,
-  /bin/grep						Cx,
-  /bin/egrep						Cx,
-  /usr/bin/exo-open					Px -> exo_open_root,
-  /usr/bin/dbus-send					Px,
+  /bin/uname						Px,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/egrep						Cx,	# sys-apps/grep
+  /usr/bin/exo-open					Px -> exo_open_root,	# xfce-base/exo
+  /usr/bin/dbus-send					Px,	# sys-apps/dbus
   
   profile grep /bin/grep {
     #include <abstractions/base>
@@ -322,9 +322,9 @@ profile xdg_email_root {
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-email					r,
   @{shell}						mr,
-  /bin/sed						Cx,
-  /usr/bin/which					Px,
-  /usr/bin/exo-open					Px -> exo_open_root,
+  /bin/sed						Cx,	# sys-apps/sed
+  /usr/bin/which					Px,	# sys-apps/which
+  /usr/bin/exo-open					Px -> exo_open_root,	# xfce-base/exo
   
   profile sed /bin/sed {
     #include <abstractions/base>

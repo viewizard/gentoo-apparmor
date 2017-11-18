@@ -42,16 +42,16 @@ profile default {
   @{PROC}/sys/kernel/printk				w,
   
   # EXECUTABLES ----------------------------------------
-  /bin/kmod						Px,
-  /bin/initramfs_busybox				Cx,
-  /bin/grep						Cx,
-  /bin/udevadm						Px,
-  /lib{,32,64}/rc/sh/cgroup-release-agent.sh		Px,	# openrc
-  /usr/lib{,32,64}/portage/@{PYTHON}/cgroup-release-agent Px,	# portage
-  /var/tmp/portage/._portage_reinstall_.*/bin/cgroup-release-agent Px,	# portage
+  /bin/kmod						Px,	# sys-apps/kmod
+  /bin/initramfs_busybox				Cx,	# sys-kernel/genkernel-next (собирается в процессе создания initramfs)
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/udevadm						Px,	# sys-fs/eudev
+  /lib{,32,64}/rc/sh/cgroup-release-agent.sh		Px,	# sys-apps/openrc
+  /usr/lib{,32,64}/portage/@{PYTHON}/cgroup-release-agent Px,	# sys-apps/portage
+  /var/tmp/portage/._portage_reinstall_.*/bin/cgroup-release-agent Px,	# sys-apps/portage
   
   # READS/WRITES ---------------------------------------
-  /run/udev/control					w,
+  /run/udev/control					w,	# sys-fs/eudev
   
   profile initramfs.grep /bin/grep {
     
@@ -86,8 +86,8 @@ profile default {
     
     # EXECUTABLES --------------------------------------
     /bin/initramfs_busybox				mr,
-    /sbin/init						Px,	# sysvinit
-    /sbin/openrc-init					Px,	# openrc-init
+    /sbin/init						Px,	# sys-apps/sysvinit
+    /sbin/openrc-init					Px,	# sys-apps/openrc (openrc-init)
     
     # READS/WRITES -------------------------------------
     /							r,

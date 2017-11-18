@@ -47,7 +47,7 @@ profile tor /usr/bin/tor {
   /run/tor/{,tor.pid}					rw,
 }
 
-profile tor.init.d /etc/init.d/tor {
+profile tor.init.d /etc/init.d/tor flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -70,9 +70,9 @@ profile tor.init.d /etc/init.d/tor {
   # EXECUTABLES ----------------------------------------
   /usr/bin/tor						Px,
   @{shell}						Cx,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/tor				r,

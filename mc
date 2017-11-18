@@ -85,7 +85,7 @@ profile mc_root {
   /usr/bin/mc						mr,
   /usr/libexec/mc/cons.saver				Px,
   @{shell}						Px -> shell_root,
-  /** rw,
+  
   # READS/WRITES ---------------------------------------
   /etc/mc/{,**}						r,
   /usr/libexec/mc/{,**}					r,

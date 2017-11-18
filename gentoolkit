@@ -28,12 +28,12 @@ profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check {
   @{shell}						Cx,
   
   # READS/WRITES ---------------------------------------
-  /etc/mime.types					r,
+  /etc/mime.types					r,	# app-misc/mime-types
   /etc/profile.env					r,
-  /etc/portage/**					r,
-  /usr/portage/**					r,
+  /etc/portage/**					r,	# sys-apps/portage
+  /usr/portage/**					r,	# sys-apps/portage
   /usr/local/portage/**					r,
-  /usr/share/portage/config/*				r,
+  /usr/share/portage/config/*				r,	# sys-apps/portage
   /var/db/pkg/{,**}					r,
   /var/cache/edb/**					r,
   
@@ -50,7 +50,7 @@ profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,
+    /bin/uname						Px,	# sys-apps/coreutils
     
     # TEMP ---------------------------------------------
     owner /tmp/glsa.cron.*				w,	# DELEGATION! glsa.cron.daily
@@ -77,10 +77,10 @@ profile gentoolkit.equery @{PYTHON_EXEC}/equery {
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
-  /etc/portage/**					r,
-  /usr/portage/**					r,
+  /etc/portage/**					r,	# sys-apps/portage
+  /usr/portage/**					r,	# sys-apps/portage
   /usr/local/portage/**					r,
-  /usr/share/portage/config/*				r,
+  /usr/share/portage/config/*				r,	# sys-apps/portage
   /var/db/pkg/{,**}					r,
   /var/cache/edb/{,**}					r,
   
@@ -94,7 +94,7 @@ profile gentoolkit.equery @{PYTHON_EXEC}/equery {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,
+    /bin/uname						Px,	# sys-apps/coreutils
   }
 }
 
@@ -119,19 +119,19 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/stty						Px,
-  /usr/bin/sandbox					cx,
-  /usr/bin/id						Px,
+  /bin/stty						Px,	# sys-apps/coreutils
+  /usr/bin/sandbox					cx,	# sys-apps/sandbox
+  /usr/bin/id						Px,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
   /etc/eclean/{,*}					r,
-  /etc/portage/**					r,
-  /usr/portage/**					r,
-  /usr/portage/distfiles/**				rw,
-  /usr/portage/packages/**				rwk,
+  /etc/portage/**					r,	# sys-apps/portage
+  /usr/portage/**					r,	# sys-apps/portage
+  /usr/portage/distfiles/**				rw,	# sys-apps/portage
+  /usr/portage/packages/**				rwk,	# sys-apps/portage
   /usr/local/portage/**					r,
-  /usr/share/portage/config/*				r,
+  /usr/share/portage/config/*				r,	# sys-apps/portage
   /var/db/pkg/{,**}					r,
   /var/cache/edb/{,**}					rw,
   
@@ -149,7 +149,7 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,
+    /bin/uname						Px,	# sys-apps/coreutils
   }
   
   profile sandbox /usr/bin/sandbox {
@@ -179,7 +179,7 @@ profile gentoolkit_eclean_sandbox_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		Px,
+  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		Px,	# sys-apps/portage
 }
 
 profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
@@ -198,8 +198,8 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  @{PYTHON_EXEC_WRAPPER}				Cx -> portage,
-  /usr/bin/scanelf					Cx,
+  @{PYTHON_EXEC_WRAPPER}				Cx -> portage,	# dev-lang/python-exec
+  /usr/bin/scanelf					Cx,	# app-misc/pax-utils
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -212,9 +212,9 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
   /etc/ld.so.conf					r,
   /etc/ld.so.conf.d/{,*}				r,
   /etc/revdep-rebuild/{,**}				r,
-  /etc/portage/{,**}					r,
-  /usr/portage/{,**}					r,
-  /usr/share/portage/{,**}				r,
+  /etc/portage/{,**}					r,	# sys-apps/portage
+  /usr/portage/{,**}					r,	# sys-apps/portage
+  /usr/share/portage/{,**}				r,	# sys-apps/portage
   /usr/local/portage/{,**}				r,
   /var/db/pkg/{,**}					r,
   /var/cache/edb/dep/usr/local/portage/{,**}		r,
@@ -230,7 +230,7 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,
+    /bin/uname						Px,	# sys-apps/coreutils
   }
   
   profile portage {
@@ -238,7 +238,7 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/emerge				Px,
+    @{PYTHON_EXEC}/emerge				Px,	# sys-apps/portage
   }
   
   profile scanelf /usr/bin/scanelf {

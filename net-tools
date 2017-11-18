@@ -34,7 +34,7 @@ profile net-tools.ifconfig /bin/ifconfig {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  audit @{PROC}/@{pid}/net/dev				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
+  owner @{PROC}/@{pid}/net/dev				r,
   
   # EXECUTABLES ----------------------------------------
   /bin/ifconfig						mr,

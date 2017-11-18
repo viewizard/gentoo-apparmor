@@ -67,7 +67,7 @@ profile util-linux.lsblk /bin/lsblk {
   /bin/lsblk						mr,
   
   # READS/WRITES ---------------------------------------
-  /etc/udev/udev.conf					r,
+  /etc/udev/udev.conf					r,	# sys-fs/eudev
   /run/udev/data/*:[0-9]*				r,
   /run/mount/utab					r,
   
@@ -95,10 +95,10 @@ profile util-linux.agetty /sbin/agetty {
   
   # EXECUTABLES ----------------------------------------
   /sbin/agetty						mr,
-  /bin/login						Px,
+  /bin/login						Px,	# sys-apps/shadow
   
   # READS/WRITES ---------------------------------------
-  /etc/issue						r,
+  /etc/issue						r,	# sys-apps/baselayout
   /run/utmp						rwk,
   /run/agetty.reload					rw,
   /var/log/wtmp						wk,
@@ -120,8 +120,8 @@ profile util-linux.fsck /sbin/fsck {
   
   # EXECUTABLES ----------------------------------------
   /sbin/fsck						mr,
-  /sbin/e2fsck						Px,
-  /usr/sbin/fsck.fat					Px,
+  /sbin/e2fsck						Px,	# sys-fs/e2fsprogs
+  /usr/sbin/fsck.fat					Px,	# sys-fs/dosfstools
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
@@ -223,7 +223,7 @@ profile util-linux.switch_root /sbin/switch_root {
   
   # EXECUTABLES ----------------------------------------
   /sbin/switch_root					mr,
-  /sbin/init						Px,
+  /sbin/init						Px,	# sys-apps/sysvinit
 }
 
 profile util-linux.blockdev /sbin/blockdev {
@@ -282,6 +282,7 @@ profile util-linux.getopt /usr/bin/getopt flags=(attach_disconnected) {
 
 profile util-linux.dmesg /bin/dmesg {
   #include <abstractions/base>
+  #include <abstractions/ncurses>
   
   # CAPABILITIES ---------------------------------------
   capability syslog,

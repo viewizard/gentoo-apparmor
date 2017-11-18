@@ -36,7 +36,7 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   deny ptrace (trace),
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term) peer="lsb-release",
+  signal (send) set=(term) peer="lsb-release",			# sys-apps/lsb-release
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -67,7 +67,7 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   
   # EXECUTABLES ----------------------------------------
   /opt/discord/share/discord/Discord			Pxmr,
-  /usr/bin/lsb_release					Px,
+  /usr/bin/lsb_release					Px,	# sys-apps/lsb-release
   
   # READS/WRITES ---------------------------------------
   /opt/discord/**					r,

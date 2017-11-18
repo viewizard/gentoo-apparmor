@@ -31,35 +31,45 @@ owner /**						rw,
 # См. /etc/portage/bashrc (особенно проверять /etc/).
 audit /etc/init.d/{,**}					l,	# FIX ME! audit 8.07.2017 потом добавить deny!
 								# Может потребоваться создание симлинка, разрешаем w.
-audit /etc/security/pam-script/{,**}			wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
+audit /etc/security/pam-script/{,**}			wl,	# sys-auth/pam-script	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /etc/cron.daily/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /etc/cron.hourly/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /etc/cron.monthly/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /etc/cron.weekly/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
-audit /etc/acpi/actions/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
-audit /etc/grub.d/{,**}					wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
+audit /etc/acpi/actions/{,**}				wl,	# sys-power/acpid	# FIX ME! audit 8.07.2017 потом добавить deny!
+audit /etc/grub.d/{,**}					wl,	# sys-boot/grub		# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /etc/local.d/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
-audit /etc/portage/bin/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
-audit /etc/ifplugd/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
-audit /etc/security/pam-script/{,**}			wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
-audit /etc/acpi/default.sh				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
+audit /etc/portage/bin/{,**}				wl,	# sys-apps/portage	# FIX ME! audit 8.07.2017 потом добавить deny!
+audit /etc/ifplugd/{,**}				wl,	# sys-apps/ifplugd	# FIX ME! audit 8.07.2017 потом добавить deny!
+audit /etc/security/pam-script/{,**}			wl,	# sys-auth/pam-script	# FIX ME! audit 8.07.2017 потом добавить deny!
+audit /etc/acpi/default.sh				wl,	# sys-power/acpid	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /etc/X11/*.sh					wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /etc/X11/Sessions/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /etc/X11/xinit/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
-audit /etc/xdg/xfce4/xfce4-session-fix			wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
-audit /etc/NetworkManager/dispatcher.d/{,**}		wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
+audit /etc/xdg/xfce4/xfce4-session-fix			wl,	# xfce-base/xfce4-session	# FIX ME! audit 8.07.2017 потом добавить deny!
+audit /etc/NetworkManager/dispatcher.d/{,**}		wl,	# net-misc/networkmanager	# FIX ME! audit 8.07.2017 потом добавить deny!
+
+# audit deny /etc/portage/{,**}				wl,	# sys-apps/portage	# На пользовательских системах, запрещать изменение настроек.
 
 audit /bin/{,**}					wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /lib{,32,64}/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /opt/{,**}					wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /sbin/{,**}					wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /usr/bin/{,**}					wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
+audit /usr/games/{,**}					wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /usr/include/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /usr/lib{,32,64,exec}/{,**}			wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 # /usr/lib{,32,64}/perl[0-9]*/vendor_perl/**		w,	# Разрешаем удалять root-у старые настройки perl.
 audit /usr/sbin/{,**}					wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /usr/share/{,**}					wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /usr/@{CHOST}/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
+
+# На конечных системах нельзя давать работать в /usr/local/,
+# т.к. можем создать хардлинк на бинарный файл с IMA digsig.
+# audit /usr/local/bin/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
+# audit /usr/local/sbin/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
+audit /usr/local/lib{,32,64,exec}/{,**}			wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
+audit /usr/local/share/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 
 # IMPROVE! Когда будет возможность указывать явно к каким UID
 # владельцев может быть доступ - переделать. Дать доступ
@@ -68,30 +78,30 @@ audit /usr/@{CHOST}/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добав
 # Разрешаем доступ к файлам других системных пользователей.
 # Явно перечисляем куда доступ разрешен.
 
-/etc/suricata/{,**}					rw,
-/etc/polkit-1/rules.d/{,*}				rw,
-/etc/logcheck/{,**}					rw,
+/etc/suricata/{,**}					rw,	# net-analyzer/suricata
+/etc/polkit-1/rules.d/{,*}				rw,	# sys-auth/polkit
+/etc/logcheck/{,**}					rw,	# app-admin/logcheck
 
-/usr/share/polkit-1/**					r,
-/usr/portage/{,**}					r,
-/usr/portage/distfiles/{,**}				rw,
-/usr/portage/packages/{,**}				rw,
-/usr/local/portage/{,**}				rw,
+/usr/share/polkit-1/**					r,	# sys-auth/polkit
+/usr/portage/{,**}					r,	# sys-apps/portage
+/usr/portage/distfiles/{,**}				rw,	# sys-apps/portage
+/usr/portage/packages/{,**}				rw,	# sys-apps/portage
+/usr/local/portage/{,**}				rw,	# sys-apps/portage
 
 /var/log/**						r,
 audit deny /var/log/**					w,
 
 /var/cache/{,**}					rw,
-/var/spool/nullmailer/{,**}				rw,
+/var/spool/nullmailer/{,**}				rw,	# mail-mta/nullmailer
 /var/lib/{,**}						rw,
-/var/tmp/portage/{,**}					rw,
+/var/tmp/portage/{,**}					rw,	# sys-apps/portage
 
 /run/{,**}						rw,
 /tmp/{,**}						rw,
 
 # IMPROVE! нужно для общесистемного rsync. Убрать в профиль
 # или разрешать доступ ко всем файлам с владельцем UID<1000.
-/usr/bin/mailq						r,
-/usr/bin/man						r,
-/usr/bin/mandb						r,
-/usr/sbin/nullmailer-queue				r,
+/usr/bin/mailq						r,	# mail-mta/nullmailer
+/usr/bin/man						r,	# sys-apps/man-db
+/usr/bin/mandb						r,	# sys-apps/man-db
+/usr/sbin/nullmailer-queue				r,	# mail-mta/nullmailer

@@ -35,40 +35,40 @@ profile make /usr/bin/{,g}make flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /usr/bin/{,g}make					ixmr,	# Все правильно, запуск и mmap.
   @{shell}						Cx,
-  /bin/uname						Px,
-  /bin/rm						ix,	# FS ACCESS!
-  /bin/ln						ix,	# FS ACCESS!
-  /bin/cp						ix,	# FS ACCESS!
-  /bin/mv						ix,	# FS ACCESS!
-  /bin/echo						Px,
-  /bin/expr						ix,	# FS ACCESS!
-  /bin/grep						ix,	# FS ACCESS!
-  /bin/chmod						ix,	# FS ACCESS!
-  /bin/mkdir						ix,	# FS ACCESS!
-  /bin/sed						ix,	# FS ACCESS!
-  /bin/cat						ix,	# FS ACCESS!
-  /bin/touch						ix,	# FS ACCESS!
-  /usr/bin/gcc						ix,	# FIX ME! Вынести в отдельный профиль.
-  /usr/bin/cmp						ix,	# FS ACCESS!
-  /usr/bin/find						ix,	# FS ACCESS!
-  /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc			ix,	# FIX ME! Вынести в отдельный профиль.
-  /usr/@{CHOST}/binutils-bin/[0-9]*/strip		ix,	# FIX ME! Вынести в отдельный профиль.
-  /var/tmp/portage/genkernel/*/busybox-*/scripts/**	ix,	# genkernel-next
+  /bin/uname						Px,	# sys-apps/coreutils
+  /bin/rm						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/ln						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/cp						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/mv						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/echo						Px,	# sys-apps/coreutils
+  /bin/expr						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/grep						ix,	# sys-apps/grep		# FS ACCESS!
+  /bin/chmod						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/mkdir						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/sed						ix,	# sys-apps/sed		# FS ACCESS!
+  /bin/cat						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/touch						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /usr/bin/gcc						ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/cmp						ix,	# sys-apps/diffutils	# FS ACCESS!
+  /usr/bin/find						ix,	# sys-apps/findutils	# FS ACCESS!
+  /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc			ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
+  /usr/@{CHOST}/binutils-bin/[0-9]*/strip		ix,	# sys-devel/binutils	# FIX ME! Вынести в отдельный профиль.
+  /var/tmp/portage/genkernel/*/busybox-*/scripts/**	ix,	# sys-kernel/genkernel-next
   
   # READS/WRITES ---------------------------------------
-  /etc/env.d/gcc/{,**}					r,
+  /							r,
+  /etc/env.d/gcc/{,**}					r,	# sys-devel/gcc
   /lib{,32,64}/modules/{,**}				rw,
-  /usr/src/@{kernel}/{,**}				ixrw,	# r - т.к. могут быть скрипты.
-  owner /var/log/genkernel.log				w,	# genkernel-next
+  /usr/share/gcc-data/@{CHOST}/[0-9]*/locale/**.mo	r,	# sys-devel/gcc
+  /usr/share/binutils-data/@{CHOST}/[0-9]*/locale/**.mo	r,	# sys-devel/binutils
+  /usr/src/@{kernel}/{,**}				ixrw,	# sys-kernel/gentoo-sources	# r - т.к. могут быть скрипты.
+  owner /var/log/genkernel.log				w,	# sys-kernel/genkernel-next
   
   # USERS ----------------------------------------------
-  owner /root/.rnd					w,	# openssl
+  owner /root/.rnd					w,	# dev-libs/openssl
   
   # TEMP -----------------------------------------------
-  /var/tmp/portage/genkernel/*/busybox-*/{,**}		rw,	# genkernel-next
-  
-  # NOISY ----------------------------------------------
-  deny /						r,
+  /var/tmp/portage/genkernel/*/busybox-*/{,**}		rw,	# sys-kernel/genkernel-next
   
   profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
@@ -87,76 +87,79 @@ profile make /usr/bin/{,g}make flags=(complain) {
     
     # EXECUTABLES --------------------------------------
     @{shell}						ixmr,	# Все правильно, запуск и mmap.
-    /bin/uname						Px,
-    /bin/sed						ix,	# FS ACCESS!
-    /bin/rm						ix,	# FS ACCESS!
-    /bin/wc						ix,	# FS ACCESS!
-    /bin/mv						ix,	# FS ACCESS!
-    /bin/dd						ix,	# FS ACCESS!
-    /bin/tr						Px,
-    /bin/ln						ix,	# FS ACCESS!
-    /bin/cp						ix,	# FS ACCESS!
-    /bin/pwd						ix,	# FS ACCESS!
-    /bin/seq						ix,	# FIX ME! Вынести в отдельный профиль.
-    /bin/cat						ix,	# FS ACCESS!
-    /bin/cut						ix,	# FS ACCESS!
-    /bin/gzip						ix,	# FS ACCESS!
-    /bin/date						ix,	# FS ACCESS!
-    /bin/dirname					Px,
-    /bin/basename					Px,
-    /bin/echo						Px,
-    /bin/tail						ix,	# FS ACCESS!
-    /bin/sort						ix,	# FS ACCESS!
-    /bin/grep						ix,	# FS ACCESS!
-    /bin/expr						ix,	# FS ACCESS!
-    /bin/sleep						Px,
-    /bin/mkdir						ix,	# FS ACCESS!
-    /bin/kmod						Px,
-    /bin/mktemp						ix,	# FS ACCESS!
-    /bin/hostname					Px,
-    /bin/touch						ix,	# FS ACCESS!
-    /bin/head						ix,	# FS ACCESS!
-    /bin/tar						ix,	# FS ACCESS!
-    /bin/bzip2						ix,	# FS ACCESS!
-    /usr/bin/diff					ix,	# FS ACCESS!
-    /usr/bin/pod2html					ix,	# FIX ME! Вынести в отдельный профиль.
-    /usr/bin/od						ix,	# FS ACCESS!
-    /usr/bin/uniq					ix,	# FS ACCESS!
-    /usr/bin/which					Px,
-    /usr/bin/whoami					Px,
-    /usr/bin/bc						ix,	# FS ACCESS!
-    /usr/bin/cmp					ix,	# FS ACCESS!
-    /usr/bin/git					ix,	# Не используем Px и Px -> git_root.
-  								# FIX ME! Вынести в отдельный профиль.
-    /usr/bin/svn					ix,	# FIX ME! Вынести в отдельный профиль.
-    /usr/bin/gawk					ix,	# FS ACCESS!
-    /usr/bin/find					ix,	# FS ACCESS!
-    /usr/bin/pkg-config					Px,
-    /usr/bin/stat					ix,
-    /usr/bin/xargs					ix,	# FS ACCESS!
-    /usr/bin/gmake					Pxr,	# Все правильно, r.
-    /usr/bin/gcc					ix,	# FIX ME! Вынести в отдельный профиль.
-    /usr/bin/g++					ix,	# FIX ME! Вынести в отдельный профиль.
-    /usr/bin/openssl					ix,	# FIX ME! Вынести в отдельный профиль.
-    /usr/libexec/gcc/@{CHOST}/*/*			ix,	# FIX ME! Вынести в отдельный профиль.
-    /usr/@{CHOST}/gcc-bin/*/*				ix,	# FIX ME! Вынести в отдельный профиль.
-    /usr/@{CHOST}/binutils-bin/*/*			ix,	# FIX ME! Вынести в отдельный профиль.
-    /usr/src/@{kernel}/{,**}				ixr,	# FIX ME! Вынести в отдельный профиль. r - т.к. могут быть скрипты.
-    /var/tmp/portage/genkernel/*/busybox-*/**		ix,	# genkernel-next
+    /bin/uname						Px,	# sys-apps/coreutils
+    /bin/sed						ix,	# sys-apps/sed		# FS ACCESS!
+    /bin/rm						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/wc						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/mv						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/dd						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/tr						Px,	# sys-apps/coreutils
+    /bin/ln						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/cp						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/pwd						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/seq						ix,	# sys-apps/coreutils	# FIX ME! Вынести в отдельный профиль.
+    /bin/cat						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/cut						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/gzip						ix,	# app-arch/gzip		# FS ACCESS!
+    /bin/date						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/dirname					Px,	# sys-apps/coreutils
+    /bin/basename					Px,	# sys-apps/coreutils
+    /bin/echo						Px,	# sys-apps/coreutils
+    /bin/tail						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/sort						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/grep						ix,	# sys-apps/grep		# FS ACCESS!
+    /bin/expr						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/sleep						Px,	# sys-apps/coreutils
+    /bin/mkdir						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/kmod						Px,	# sys-apps/kmod
+    /bin/mktemp						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/hostname					Px,	# sys-apps/net-tools
+    /bin/touch						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/head						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/tar						ix,	# app-arch/tar		# FS ACCESS!
+    /bin/bzip2						ix,	# app-arch/bzip2	# FS ACCESS!
+    /usr/bin/diff					ix,	# sys-apps/diffutils	# FS ACCESS!
+    /usr/bin/pod2html					ix,	# dev-lang/perl		# FIX ME! Вынести в отдельный профиль.
+    /usr/bin/od						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /usr/bin/uniq					ix,	# sys-apps/coreutils	# FS ACCESS!
+    /usr/bin/which					Px,	# sys-apps/which
+    /usr/bin/whoami					Px,	# sys-apps/coreutils
+    /usr/bin/bc						ix,	# sys-devel/bc		# FS ACCESS!
+    /usr/bin/cmp					ix,	# sys-apps/diffutils	# FS ACCESS!
+    /usr/bin/git					ix,	# dev-vcs/git		# Не используем Px и Px -> git_root.
+  											# FIX ME! Вынести в отдельный профиль.
+    /usr/bin/svn					ix,	# dev-vcs/subversion	# FIX ME! Вынести в отдельный профиль.
+    /usr/bin/gawk					ix,	# sys-apps/gawk		# FS ACCESS!
+    /usr/bin/find					ix,	# sys-apps/findutils	# FS ACCESS!
+    /usr/bin/pkg-config					Px,	# dev-util/pkgconfig
+    /usr/bin/stat					ix,	# sys-apps/coreutils
+    /usr/bin/xargs					ix,	# sys-apps/findutils	# FS ACCESS!
+    /usr/bin/gmake					Pxr,	# sys-devel/make	# Все правильно, r.
+    /usr/bin/gcc					ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
+    /usr/bin/g++					ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
+    /usr/bin/openssl					ix,	# dev-libs/openssl	# FIX ME! Вынести в отдельный профиль.
+    /usr/libexec/gcc/@{CHOST}/*/*			ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
+    /usr/@{CHOST}/gcc-bin/*/*				ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
+    /usr/@{CHOST}/binutils-bin/*/*			ix,	# sys-devel/binutils	# FIX ME! Вынести в отдельный профиль.
+    /usr/src/@{kernel}/{,**}				ixr,	# sys-kernel/gentoo-sources	# FIX ME! Вынести в отдельный профиль. r - т.к. могут быть скрипты.
+    /var/tmp/portage/genkernel/*/busybox-*/**		ix,	# sys-kernel/genkernel-next
     
     # READS/WRITES -------------------------------------
     /etc/ld.so.conf					r,
     /etc/ld.so.conf.d/{,*}				r,
-    /etc/env.d/gcc/{,**}				r,
-    /usr/libexec/gcc/@{CHOST}/{,**}.so*			mr,
+    /etc/env.d/gcc/{,**}				r,	# sys-devel/gcc
+    /usr/libexec/gcc/@{CHOST}/{,**}.so*			mr,	# sys-devel/gcc
     /usr/include/{,**}					r,
+    /usr/share/gcc-data/@{CHOST}/[0-9]*/locale/**.mo	r,	# sys-devel/gcc
+    /usr/share/binutils-data/@{CHOST}/[0-9]*/locale/**.mo r,	# sys-devel/binutils
     /lib{,32,64}/modules/{,**}				rw,
     /usr/src/IMA/certs/*.x509				r,
-    /usr/src/@{kernel}/{,**}				rw,
-    /usr/src/@{kernel}/tools/gcc/**.so			m,
+    /usr/src/@{kernel}/{,**}				rw,	# sys-kernel/gentoo-sources
+    /usr/src/@{kernel}/tools/gcc/**.so			m,	# sys-kernel/gentoo-sources
     
     # USERS --------------------------------------------
-    owner /root/.rnd					w,	# openssl
+    owner @{HOME}/.rnd					w,	# dev-libs/openssl
+    owner @{HOME}/.subversion/{,*}			r,	# dev-vcs/subversion
     
     # TEMP ---------------------------------------------
     owner /tmp/sh-thd.*					rw,
@@ -164,12 +167,8 @@ profile make /usr/bin/{,g}make flags=(complain) {
     owner /tmp/cpiolist.*				rw,
     owner /tmp/tmp.*					rw,
     owner /tmp/depmod.*/{,**}				rw,
-    owner /var/tmp/portage/genkernel/*/busybox-*/{,**}	rw,	# genkernel-next
-    owner /var/tmp/portage/genkernel/initramfs-@{kernel_ver}.cpio r,	# genkernel-next
-    owner /var/log/genkernel.log			w,	# genkernel-next
-    
-    # NOISY --------------------------------------------
-    deny /.git/{,**}					r,
-    deny @{HOME}/{,**}					r,
+    owner /var/tmp/portage/genkernel/*/busybox-*/{,**}	rw,	# sys-kernel/genkernel-next
+    owner /var/tmp/portage/genkernel/initramfs-@{kernel_ver}.cpio r,	# sys-kernel/genkernel-next
+    owner /var/log/genkernel.log			w,	# sys-kernel/genkernel-next
   }
 }

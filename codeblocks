@@ -41,17 +41,17 @@ profile codeblocks /usr/bin/codeblocks {
   # EXECUTABLES ----------------------------------------
   /usr/bin/codeblocks					mr,
   @{shell}						Px -> codeblocks_shell,
-  /usr/bin/gcc						Cx -> build,
-  /usr/bin/g++						Cx -> build,
-  /usr/bin/llvm-ar					Cx -> build,
-  /usr/bin/{,@{CHOST}-}clang-*				Cx -> build,
+  /usr/bin/gcc						Cx -> build,	# sys-devel/gcc
+  /usr/bin/g++						Cx -> build,	# sys-devel/gcc
+  /usr/bin/llvm-ar					Cx -> build,	# sys-devel/llvm
+  /usr/bin/{,@{CHOST}-}clang-*				Cx -> build,	# sys-devel/clang
   
   # AUDIT EXECUTABLES ----------------------------------
   deny /usr/bin/gfortran				x,	# Не используем fortran.
   
   # READS/WRITES ---------------------------------------
   /etc/mime.types					r,
-  /usr/include/**					r,
+  /usr/include/{,**}					r,
   /usr/share/mime-info/{,*.mime,*.keys}			r,
   /usr/share/codeblocks/{,**}				r,
   
@@ -72,19 +72,21 @@ profile codeblocks /usr/bin/codeblocks {
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
-    /usr/bin/gcc					mr,
-    /usr/bin/g++					mr,
-    /usr/bin/llvm-ar					mr,
-    /usr/bin/{,@{CHOST}-}clang-*			mr,
-    /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc		ix,	# Разрешаем ix для данного случая.
-    /usr/@{CHOST}/gcc-bin/*/@{CHOST}-g++		ix,	# Разрешаем ix для данного случая.
-    /usr/libexec/gcc/@{CHOST}/*/cc1plus			ix,	# Разрешаем ix для данного случая.
+    /usr/bin/gcc					mr,	# sys-devel/gcc
+    /usr/bin/g++					mr,	# sys-devel/gcc
+    /usr/bin/llvm-ar					mr,	# sys-devel/llvm
+    /usr/bin/{,@{CHOST}-}clang-*			mr,	# sys-devel/clang
+    /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc		ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
+    /usr/@{CHOST}/gcc-bin/*/@{CHOST}-g++		ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
+    /usr/libexec/gcc/@{CHOST}/*/cc1plus			ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
     
     # READS/WRITES -------------------------------------
     /etc/lsb-release					r,
-    /etc/env.d/gcc/@{CHOST}-*				r,
-    /etc/env.d/gcc/config-@{CHOST}			r,
+    /etc/env.d/gcc/@{CHOST}-*				r,	# sys-devel/gcc
+    /etc/env.d/gcc/config-@{CHOST}			r,	# sys-devel/gcc
     /usr/include/**					r,
+    /usr/share/gcc-data/@{CHOST}/[0-9]*/locale/**.mo	r,	# sys-devel/gcc
+    /usr/share/binutils-data/@{CHOST}/[0-9]*/locale/**.mo r,	# sys-devel/binutils
     
     # TEMP ---------------------------------------------
     owner /tmp/Code::Blocks-*				rw,
@@ -103,8 +105,8 @@ profile codeblocks_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /usr/bin/gcc-config					Px,
-  /usr/bin/g++						Cx,
+  /usr/bin/gcc-config					Px,	# sys-devel/gcc-config
+  /usr/bin/g++						Cx,	# sys-devel/gcc
   
   # TEMP -----------------------------------------------
   owner /tmp/Code::Blocks-*				w,
@@ -115,19 +117,24 @@ profile codeblocks_shell {
     #include <abstractions/fs/deny-by-pattern-internet>
     #include <abstractions/fs/deny-private-strict>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /usr/bin/g++					mr,
-    /usr/@{CHOST}/binutils-bin/*/as			ix,	# Разрешаем ix для данного случая.
-    /usr/@{CHOST}/binutils-bin/*/ld			ix,	# Разрешаем ix для данного случая.
-    /usr/@{CHOST}/gcc-bin/*/@{CHOST}-g++		ix,	# Разрешаем ix для данного случая.
-    /usr/libexec/gcc/@{CHOST}/*/cc1plus			ix,	# Разрешаем ix для данного случая.
-    /usr/libexec/gcc/@{CHOST}/*/collect2		ix,	# Разрешаем ix для данного случая.
+    /usr/@{CHOST}/binutils-bin/*/as			ix,	# sys-devel/binutils	# Разрешаем ix для данного случая.
+    /usr/@{CHOST}/binutils-bin/*/ld			ix,	# sys-devel/binutils	# Разрешаем ix для данного случая.
+    /usr/@{CHOST}/gcc-bin/*/@{CHOST}-g++		ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
+    /usr/libexec/gcc/@{CHOST}/*/cc1plus			ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
+    /usr/libexec/gcc/@{CHOST}/*/collect2		ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
     
     # READS/WRITES -------------------------------------
     /usr/include/**					r,
     /etc/ld.so.conf					r,
     /etc/ld.so.conf.d/{,*}				r,
-    /usr/libexec/gcc/@{CHOST}/*/*.so.[0-9]*		rm,
+    /usr/libexec/gcc/@{CHOST}/*/*.so.[0-9]*		rm,	# sys-devel/gcc
+    /usr/share/gcc-data/@{CHOST}/[0-9]*/locale/**.mo	r,	# sys-devel/gcc
+    /usr/share/binutils-data/@{CHOST}/[0-9]*/locale/**.mo r,	# sys-devel/binutils
     
     # TEMP ---------------------------------------------
     owner /tmp/cc*.{s,c,res,o,le,ld}			rw,

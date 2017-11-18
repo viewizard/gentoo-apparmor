@@ -73,17 +73,17 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   # EXECUTABLES ----------------------------------------
   /usr/bin/Xorg						mr,
   @{shell}						Cx,
-  /bin/kmod						Px,
+  /bin/kmod						Px,	# sys-apps/kmod
   
   # READS/WRITES ---------------------------------------
-  /etc/drirc						r,
-  /etc/udev/udev.conf					r,
+  /etc/drirc						r,	# media-libs/mesa
+  /etc/udev/udev.conf					r,	# sys-fs/eudev
   /etc/X11/xorg.conf					r,
   /etc/X11/xorg.conf.d/{,*}				r,
   /usr/lib{,32,64}/xorg/modules/**.so			m,
-  /usr/lib{,32,64}/mesa/**.so				m,
+  /usr/lib{,32,64}/mesa/**.so				m,	# media-libs/mesa
   /usr/share/X11/{,**}					r,
-  /run/acpid.socket					rw,
+  /run/acpid.socket					rw,	# sys-power/acpid
   /run/udev/data/*					r,
   /var/log/Xorg.[0-9]*.log{,.old}			rw,
   /var/lib/xkb/server-[0-9]*.xkm			rw,
@@ -110,18 +110,18 @@ profile xorg-server.Xorg /usr/bin/Xorg {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /usr/bin/xkbcomp					Px,
+    /usr/bin/xkbcomp					Px,	# x11-apps/xkbcomp
     
     # USERS --------------------------------------------
     owner @{HOME}/.local/share/xorg/{,**}		rw,	# Нужно для запуска под пользователем (без suid), хранит там логи сервера.
     
     # READS/WRITES -------------------------------------
-    /run/acpid.socket					rw,
+    /run/acpid.socket					rw,	# sys-power/acpid
     /var/log/Xorg.[0-9]*.log				w,
   }
 }
 
-profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup {
+profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -133,11 +133,11 @@ profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/cat						Cx,
-  /bin/tr						Px,
-  /bin/grep						Cx,
-  /bin/mkdir						Cx,
-  /bin/rmdir						Cx,
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/tr						Px,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/rmdir						Cx,	# sys-apps/coreutils
   /etc/X11/startDM.sh					Px,
   
   # READS/WRITES ---------------------------------------
@@ -207,7 +207,7 @@ profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup {
   }
 }
 
-profile xorg-server.xdm.init.d /etc/init.d/xdm {
+profile xorg-server.xdm.init.d /etc/init.d/xdm flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -220,18 +220,18 @@ profile xorg-server.xdm.init.d /etc/init.d/xdm {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/tr						Px,
-  /bin/grep						Cx,
-  /bin/mkdir						Cx,
-  /bin/rmdir						Cx,
-  /usr/bin/fgconsole					Px,
-  /usr/bin/chvt						Px,
+  /bin/tr						Px,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/rmdir						Cx,	# sys-apps/coreutils
+  /usr/bin/fgconsole					Px,	# sys-apps/kbd
+  /usr/bin/chvt						Px,	# sys-apps/kbd
   /etc/init.d/xdm-setup					Px,
   /etc/X11/startDM.sh					Px,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/xdm				r,
-  /run/sddm.pid						rw,	# sddm
+  /run/sddm.pid						rw,	# x11-misc/sddm
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -268,7 +268,7 @@ profile xorg-server.xdm.init.d /etc/init.d/xdm {
     /bin/grep						mr,
     
     # READS/WRITES -------------------------------------
-    /etc/inittab					r,	# sysvinit
+    /etc/inittab					r,	# sys-apps/sysvinit
   }
   
   profile rmdir /bin/rmdir {

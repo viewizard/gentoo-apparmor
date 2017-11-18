@@ -73,12 +73,12 @@ profile sysvinit.init /sbin/init {
   
   # EXECUTABLES ----------------------------------------
   /sbin/init						Pxmr,
-  /sbin/openrc						Px,
+  /sbin/openrc						Px,	# sys-apps/openrc
   /sbin/{halt,poweroff,reboot}				Px,
-  /sbin/agetty						Px,
+  /sbin/agetty						Px,	# sys-apps/util-linux
   /sbin/shutdown					Px,
-#  /sbin/sulogin					Px,	# не задействуем
-#  /etc/X11/startDM.sh					Px,	# не задействуем
+#  /sbin/sulogin					Px,	# sys-apps/util-linux	# не задействуем
+#  /etc/X11/startDM.sh					Px,	# x11-apps/xinit	# не задействуем
   
   # READS/WRITES ---------------------------------------
   /etc/inittab						r,

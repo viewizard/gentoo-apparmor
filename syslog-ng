@@ -60,9 +60,9 @@ profile syslog-ng /usr/sbin/syslog-ng {
   
   # READS/WRITES ---------------------------------------
   /etc/syslog-ng/*					r,
-  /etc/hosts.{allow,deny}				r,
+  /etc/hosts.{allow,deny}				r,	# sys-apps/tcp-wrappers
   /usr/share/syslog-ng/**				r,
-  /usr/share/include/scl**				r,
+  /usr/share/include/scl/{,**}				r,
   /var/lib/*/dev/log					w,
   /var/lib/syslog-ng/syslog-ng.persist*			rw,
   /var/log/**						w,
@@ -74,7 +74,7 @@ profile syslog-ng /usr/sbin/syslog-ng {
   deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
 }
 
-profile syslog-ng.init.d /etc/init.d/syslog-ng {
+profile syslog-ng.init.d /etc/init.d/syslog-ng flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
@@ -96,15 +96,15 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/syslog-ng					Px,
   @{shell}						Cx,
-  /bin/sleep						Px,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
+  /bin/sleep						Px,	# sys-apps/coreutils
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
-  /etc/environment					r,
+  /etc/environment					r,	# sys-libs/pam
   /etc/{conf,init}.d/syslog-ng				r,
-  /etc/security/limits.d/{,*}				r,
+  /etc/security/limits.d/{,*}				r,	# sys-libs/pam
   /run/syslog-ng.pid					rwk,
   /run/utmp						rk,
   

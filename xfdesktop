@@ -33,12 +33,14 @@ profile xfdesktop /usr/bin/xfdesktop {
   	bus=session
   	path="/org/xfce/FileManager"
   	interface="org.xfce.{FileManager,Trash}"
-  	peer=(name="org.xfce.FileManager",label="thunar"),	# RBAC! Для root ветки label="thunar_root".
+  	peer=(name="org.xfce.FileManager",label="thunar"),	# xfce-base/thunar
+  								# RBAC! Для root ветки label="thunar_root".
   dbus receive
   	bus=session
   	path="/org/xfce/FileManager"
   	interface="org.xfce.Trash"
-  	peer=(name=":[0-9]*.[0-9]*",label="thunar"),		# RBAC! Для root ветки label="thunar_root".
+  	peer=(name=":[0-9]*.[0-9]*",label="thunar"),		# xfce-base/thunar
+  								# RBAC! Для root ветки label="thunar_root".
   dbus send
   	bus=session
   	path="/org/xfce/xfdesktop"
@@ -60,11 +62,12 @@ profile xfdesktop /usr/bin/xfdesktop {
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfdesktop					mr,
   @{shell}						Cx,
-  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1		Px,
-  /usr/bin/exo-desktop-item-edit			Px,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1		Px,	# xfce-base/exo
+  /usr/bin/exo-desktop-item-edit			Px,	# xfce-base/exo
   /usr/bin/xfdesktop-settings				Px,
-  /usr/bin/xfce4-session-logout				Px,
-  /usr/libexec/thunar-archive-plugin/engrampa.tap	Px,	# RBAC! MATE  В случае root, вызывать engrampa_tap_root
+  /usr/bin/xfce4-session-logout				Px,	# xfce-base/xfce4-session
+  /usr/libexec/thunar-archive-plugin/engrampa.tap	Px,	# xfce-extra/thunar-archive-plugin
+  								# RBAC! В случае root, использовать engrampa_tap_root
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/menus/**.menu				r,
@@ -72,7 +75,7 @@ profile xfdesktop /usr/bin/xfdesktop {
   /usr/share/desktop-directories/{,*.directory}		r,
   /usr/{,local/}share/**/				r,
   /usr/{,local/}share/**.@{local_ext}			r,
-  /usr/lib{,32,64}/thunarx-2/*.so			m,
+  /usr/lib{,32,64}/thunarx-2/*.so			m,	# xfce-base/thunar
   /opt/**/						r,
   /opt/**.@{local_ext}					r,
   /run/mount/utab					r,
@@ -83,11 +86,11 @@ profile xfdesktop /usr/bin/xfdesktop {
   owner @{HOME}/**.@{local_ext}				r,
   owner @{HOME}/[^.]**/					r,
   owner @{HOME}/.config/xfce4/desktop/{,**}		rw,
-  owner @{HOME}/.config/Thunar/{,**}			rw,
+  owner @{HOME}/.config/Thunar/{,**}			rw,	# xfce-base/thunar
   owner @{HOME}/.config/menus/**.menu			r,
   owner @{HOME}/.config/menus/applications-merged/	r,
   owner @{HOME}/.local/share/desktop-directories/{,*.directory} r,
-  owner @{HOME}/.local/share/gvfs-metadata/{,*}		r,
+  owner @{HOME}/.local/share/gvfs-metadata/{,*}		r,	# gnome-base/gvfs
   owner @{HOME}/.xfce4-session.verbose-log		rw,
   
   # TEMP -----------------------------------------------
@@ -95,7 +98,7 @@ profile xfdesktop /usr/bin/xfdesktop {
   
   profile shell @{shell} {
     #include <abstractions/base>
-    #include <local/profile_blocks/thunar-custom-actions.d/>		# Must be the same as thunar custom actions!
+    #include <local/profile_blocks/thunar-custom-actions.d/>	# Must be the same as thunar custom actions!
     								# RBAC! Для root ветки <local/profile_blocks/thunar_root-custom-actions.d/>.
     
     # PSEUDO -------------------------------------------
@@ -105,7 +108,7 @@ profile xfdesktop /usr/bin/xfdesktop {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /usr/bin/{gksu,gksudo}				Px,
+    /usr/bin/{gksu,gksudo}				Px,	# app-admin/sudo
   }
 }
 
@@ -140,5 +143,5 @@ profile xfdesktop.xfdesktop-settings /usr/bin/xfdesktop-settings {
   owner @{HOME}/					r,
   owner @{HOME}/**.@{local_ext}				r,
   owner @{HOME}/**/					r,
-  owner @{HOME}/.local/share/gvfs-metadata/{home,root}*	r,
+  owner @{HOME}/.local/share/gvfs-metadata/{home,root}*	r,	# gnome-base/gvfs
 }
