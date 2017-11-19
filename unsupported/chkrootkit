@@ -31,23 +31,23 @@ profile chkrootkit /usr/sbin/chkrootkit {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/chkrootkit					r,
   @{shell}						mr,
-  /bin/sed						Cx,
-  /bin/uname						Px,
-  /bin/ps						Px,
-  /bin/cut						Cx,
-  /bin/egrep						Cx,
-  /bin/grep						Cx,
-  /bin/ls						Cx,
-  /bin/echo						Px,
-  /bin/tr						Px,
-  /bin/wc						Cx,
-  /bin/cat						Cx,
-  /bin/head						Cx,
-  /bin/netstat						Px,
-  /usr/bin/id						Px,
-  /usr/bin/crontab					Px,
-  /usr/bin/gawk						Cx,
-  /usr/bin/find						Cx,
+  /bin/sed						Cx,	# sys-apps/sed
+  /bin/uname						Px,	# sys-apps/coreutils
+  /bin/ps						Px,	# sys-process/procps
+  /bin/cut						Cx,	# sys-apps/coreutils
+  /bin/egrep						Cx,	# sys-apps/grep
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/ls						Cx,	# sys-apps/coreutils
+  /bin/echo						Px,	# sys-apps/coreutils
+  /bin/tr						Px,	# sys-apps/coreutils
+  /bin/wc						Cx,	# sys-apps/coreutils
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/head						Cx,	# sys-apps/coreutils
+  /bin/netstat						Px,	# sys-apps/net-tools
+  /usr/bin/id						Px,	# sys-apps/coreutils
+  /usr/bin/crontab					Px,	# sys-process/vixie-cron
+  /usr/bin/gawk						Cx,	# sys-apps/gawk
+  /usr/bin/find						Cx,	# sys-apps/findutils
   /usr/sbin/chkdirs					Px,
   /usr/sbin/strings-static				Px,
   /usr/sbin/chkproc					Px,
@@ -95,7 +95,7 @@ profile chkrootkit /usr/sbin/chkrootkit {
     # EXECUTABLES --------------------------------------
     /bin/egrep						r,
     @{shell}						mr,
-    /bin/grep						ix,	# Все правильно, для egrep используем с ix.
+    /bin/grep						ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
     
     # DENY INHERIT -------------------------------------
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
@@ -184,7 +184,7 @@ profile chkrootkit /usr/sbin/chkrootkit {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/find					mr,
-    /bin/head						Px -> chkrootkit_find_head,
+    /bin/head						Px -> chkrootkit_find_head,	# sys-apps/coreutils
     
     # READS/WRITES -------------------------------------
     /{,**}						r,
@@ -286,9 +286,9 @@ profile chkrootkit_chkproc_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/ps						Px,
-  /bin/tr						Px,
-  /bin/cut						Cx,
+  /bin/ps						Px,	# sys-process/procps
+  /bin/tr						Px,	# sys-apps/coreutils
+  /bin/cut						Cx,	# sys-apps/coreutils
   
   # TEMP -----------------------------------------------
   owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
@@ -407,7 +407,7 @@ profile chkrootkit.chkutmp /usr/sbin/chkutmp {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/ps						Px,
+    /bin/ps						Px,	# sys-process/procps
     
     # TEMP ---------------------------------------------
     owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
@@ -430,13 +430,13 @@ profile chkrootkit.cron.daily /etc/cron.daily/chkrootkit {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/chkrootkit				r,
   @{shell}						mr,
-  /bin/mktemp						Cx,
-  /bin/cat						Cx,
-  /bin/rm						Cx,
-  /bin/basename						Px,
-  /usr/bin/libnotify-notify-send-users			Px,
-  /usr/bin/mail						Px,
-  /usr/bin/logger					Px,
+  /bin/mktemp						Cx,	# sys-apps/coreutils
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/basename						Px,	# sys-apps/coreutils
+  /usr/bin/libnotify-notify-send-users			Px,	# x11-libs/libnotify
+  /usr/bin/mail						Px,	# mail-client/mailx
+  /usr/bin/logger					Px,	# sys-apps/util-linux
   /usr/sbin/chkrootkit					Px,
   
   # TEMP -----------------------------------------------

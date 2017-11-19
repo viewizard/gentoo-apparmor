@@ -40,7 +40,7 @@ profile dhcpcd /sbin/dhcpcd {
   # READS/WRITES ---------------------------------------
   /etc/dhcpcd.conf					r,
   /etc/dhcpcd.duid					rw,
-  /etc/udev/udev.conf					r,
+  /etc/udev/udev.conf					r,	# sys-fs/eudev
   /run/dhcpcd{,-eth[0-9]*}.pid				rwk,
   /run/dhcpcd.{unpriv.,}sock				rw,
   /run/udev/data/*					rw,
@@ -63,18 +63,18 @@ profile run-hooks /lib{,32,64}/dhcpcd/dhcpcd-run-hooks {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/sed						Cx,
-  /bin/rm						Cx,
-  /bin/cat						Cx,
-  /bin/chmod						Cx,
-  /bin/touch						Cx,
-  /bin/hostname						Px,
-  /bin/mkdir						Cx,
-  /usr/bin/cmp						Cx,
+  /bin/sed						Cx,	# sys-apps/sed
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/chmod						Cx,	# sys-apps/coreutils
+  /bin/touch						Cx,	# sys-apps/coreutils
+  /bin/hostname						Px,	# sys-apps/coreutils
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /usr/bin/cmp						Cx,	# sys-apps/diffutils
   
   # READS/WRITES ---------------------------------------
   /etc/resolv.conf					rw,
-  /etc/ntp.conf						r,
+  /etc/ntp.conf						r,	# net-misc/ntp
   /run/dhcpcd/						rw,
   /run/dhcpcd/**					rwk,
   
@@ -140,9 +140,9 @@ profile dhcpcd.init.d /etc/init.d/dhcpcd flags=(attach_disconnected) {	# attach_
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/mkdir						Cx,
-  /bin/grep						Cx,
-  /bin/rmdir						Cx,
+  /bin/mkdir						Cx,	# sys-apps/coreutils
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rmdir						Cx,	# sys-apps/coreutils
   /sbin/dhcpcd						Px,
   
   # READS/WRITES ---------------------------------------

@@ -46,10 +46,10 @@ profile aide.aideinit /usr/sbin/aideinit {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/aideinit					r,
   @{shell}						mr,
-  /bin/cut						Cx,
-  audit /bin/grep					Cx,	# FIX ME! Вызывается именно grep?
-  /bin/egrep						Cx,
-  /bin/cp						Cx,
+  /bin/cut						Cx,	# sys-apps/coreutils
+  audit /bin/grep					Cx,	# sys-apps/grep		# FIX ME! Вызывается именно grep?
+  /bin/egrep						Cx,	# sys-apps/grep
+  /bin/cp						Cx,	# sys-apps/coreutils
   /usr/bin/aide						Px,
   
   # READS/WRITES ---------------------------------------
@@ -103,24 +103,24 @@ profile aide.cron.daily /etc/cron.daily/aide {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/aide					r,
   @{shell}						mr,
-  /bin/mktemp						Cx,
-  /bin/cat						Cx,
-  /bin/rm						Cx,
-  /bin/dd						Cx,
-  /bin/sed						Cx,
-  /bin/grep						Cx,
-#  /bin/mount						Px,	# FS ACCESS!
-#  /bin/umount						Px,	# FS ACCESS!
-  /bin/basename						Px,
-  /usr/bin/libnotify-notify-send-users			Px,
-  /usr/bin/stat						Cx,
-  /usr/bin/mail						Px,
-  /usr/bin/logger					Px,
+  /bin/mktemp						Cx,	# sys-apps/coreutils
+  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/dd						Cx,	# sys-apps/coreutils
+  /bin/sed						Cx,	# sys-apps/sed
+  /bin/grep						Cx,	# sys-apps/grep
+#  /bin/mount						Px,	# sys-apps/util-linux	# FS ACCESS!
+#  /bin/umount						Px,	# sys-apps/util-linux	# FS ACCESS!
+  /bin/basename						Px,	# sys-apps/coreutils
+  /usr/bin/libnotify-notify-send-users			Px,	# x11-libs/libnotify
+  /usr/bin/stat						Cx,	# sys-apps/coreutils
+  /usr/bin/mail						Px,	# mail-client/mailx
+  /usr/bin/logger					Px,	# sys-apps/util-linux
   /usr/bin/aide						Px,
-  /usr/bin/md5sum					Cx,
-  /usr/bin/sha1sum					Cx,
-  /usr/bin/sha512sum					Cx,
-  /usr/sbin/gdisk					Px,
+  /usr/bin/md5sum					Cx,	# sys-apps/coreutils
+  /usr/bin/sha1sum					Cx,	# sys-apps/coreutils
+  /usr/bin/sha512sum					Cx,	# sys-apps/coreutils
+  /usr/sbin/gdisk					Px,	# sys-apps/gptfdisk
   
   # READS/WRITES ---------------------------------------
   /var/lib/aide/{,*}					r,

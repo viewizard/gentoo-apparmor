@@ -53,13 +53,13 @@ profile mate-screensaver.sh /usr/bin/mate-screensaver.sh {
   # EXECUTABLES ----------------------------------------
   /usr/bin/mate-screensaver.sh				r,
   @{shell}						mr,
-  /bin/grep						Cx,
-  /bin/sleep						Px,
-  /bin/ps						Px,
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/sleep						Px,	# sys-apps/coreutils
+  /bin/ps						Px,	# sys-process/procps
   /usr/bin/mate-screensaver				Px,
-  /usr/bin/xautolock					Px,
-  /usr/bin/killall					Px,
-  /usr/bin/gsettings					Px,
+  /usr/bin/xautolock					Px,	# x11-misc/xautolock
+  /usr/bin/killall					Px,	# sys-process/psmisc
+  /usr/bin/gsettings					Px,	# dev-libs/glib
   
   profile grep /bin/grep flags=(complain) {
     #include <abstractions/base>
@@ -160,10 +160,10 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
   # EXECUTABLES ----------------------------------------
   /usr/libexec/mate-screensaver-dialog			mr,
   @{shell}						Cx,
-  /sbin/unix_chkpwd					Px,
+  /sbin/unix_chkpwd					Px,	# sys-libs/pam
   
   # READS/WRITES ---------------------------------------
-  /etc/environment					r,
+  /etc/environment					r,	# sys-libs/pam
   /usr/share/mate-screensaver/{,**}			r,
   /run/utmp						rk,
   
@@ -178,8 +178,8 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/wc						Px -> mate_screensaver_dialog_wc,
-    /usr/bin/pidof					Px,
+    /bin/wc						Px -> mate_screensaver_dialog_wc,	# sys-apps/coreutils
+    /usr/bin/pidof					Px,	# sys-process/procps
   }
 }
 

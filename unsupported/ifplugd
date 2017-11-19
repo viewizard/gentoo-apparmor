@@ -47,13 +47,13 @@ profile ifplugd.action /etc/ifplugd/ifplugd.action {
   # EXECUTABLES ----------------------------------------
   /etc/ifplugd/ifplugd.action				r,
   @{shell}						mr,
-  /bin/grep						Cx,
-  /bin/rc-status					Px,
-  /etc/init.d/net.lo					Px,
-  /etc/init.d/dnsmasq					Px,
-  /etc/init.d/netmount					Px,
-  /etc/init.d/tor					Px,
-  /etc/init.d/suricata					Px,
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/rc-status					Px,	# sys-apps/openrc
+  /etc/init.d/net.lo					Px,	# sys-apps/openrc
+  /etc/init.d/dnsmasq					Px,	# net-dns/dnsmasq
+  /etc/init.d/netmount					Px,	# sys-apps/openrc
+  /etc/init.d/tor					Px,	# net-vpn/tor
+  /etc/init.d/suricata					Px,	# net-analyzer/suricata
   
   profile grep /bin/grep flags=(complain) {
     #include <abstractions/base>

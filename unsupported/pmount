@@ -36,8 +36,8 @@ profile pmount /usr/bin/pmount flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pmount					mr,
-#  /bin/mount						Px,	# FS ACCESS! 
-  /sbin/cryptsetup					Px,
+#  /bin/mount						Px,	# FS ACCESS!	# sys-apps/util-linux
+  /sbin/cryptsetup					Px,	# sys-fs/cryptsetup
   
   # READS/WRITES ---------------------------------------
   /etc/pmount.conf					r,
@@ -60,8 +60,8 @@ profile pmount.pumount /usr/bin/pumount flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pumount					mr,
-#  /bin/umount						Px,	# FS ACCESS! 
-  /sbin/cryptsetup					Px,
+#  /bin/umount						Px,	# FS ACCESS!	# sys-apps/util-linux
+  /sbin/cryptsetup					Px,	# sys-fs/cryptsetup
   
   # READS/WRITES ---------------------------------------
   /etc/pmount.conf					r,

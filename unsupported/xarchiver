@@ -61,20 +61,20 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xarchiver					mr,
-  /bin/mv						Cx,
-  /bin/rm						Cx,
-  /bin/cp						Cx,
-  /bin/tar						Cx,
-  /bin/bzip2						Cx,
-  /bin/gzip						Cx,
-  /usr/bin/7z						Cx,
-  /usr/bin/7za						Cx,
-  /usr/bin/zip						Cx,
-  /usr/bin/unzip					Cx,
-  /usr/bin/lzip						Cx,
-  /usr/bin/xz						Cx,
-  /usr/@{CHOST}/binutils-bin/*/ar			Cx,
-  /opt/rar/rar						Cx,
+  /bin/mv						Cx,	# sys-apps/coreutils
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/cp						Cx,	# sys-apps/coreutils
+  /bin/tar						Cx,	# app-arch/tar
+  /bin/bzip2						Cx,	# app-arch/bzip2
+  /bin/gzip						Cx,	# app-arch/gzip
+  /usr/bin/7z						Cx,	# app-arch/p7zip
+  /usr/bin/7za						Cx,	# app-arch/p7zip
+  /usr/bin/zip						Cx,	# app-arch/zip
+  /usr/bin/unzip					Cx,	# app-arch/unzip
+  /usr/bin/lzip						Cx,	# app-arch/lzip
+  /usr/bin/xz						Cx,	# app-arch/xz-utils
+  /usr/@{CHOST}/binutils-bin/*/ar			Cx,	# sys-devel/binutils
+  /opt/rar/rar						Cx,	# app-arch/rar
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
@@ -96,7 +96,7 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
     /bin/mv						mr,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+    deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
   }
   
   profile rm /bin/rm flags=(complain) {
@@ -133,10 +133,10 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
     # EXECUTABLES --------------------------------------
     /bin/tar						mr,
     @{shell}						Px -> xarchiver_tar_shell,
-    /bin/bzip2						ix,	# Oставляем запуск через ix.
-    /bin/gzip						ix,	# Oставляем запуск через ix.
-    /usr/bin/lzip					ix,	# Oставляем запуск через ix.
-    /usr/bin/xz						ix,	# Oставляем запуск через ix.
+    /bin/bzip2						ix,	# app-arch/bzip2	# Oставляем запуск через ix.
+    /bin/gzip						ix,	# app-arch/gzip		# Oставляем запуск через ix.
+    /usr/bin/lzip					ix,	# app-arch/lzip		# Oставляем запуск через ix.
+    /usr/bin/xz						ix,	# app-arch/xz-utils	# Oставляем запуск через ix.
   }
   
   profile bzip2 /bin/bzip2 flags=(complain) {
@@ -172,7 +172,7 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
     # EXECUTABLES --------------------------------------
     /usr/bin/7z						r,
     @{shell}						mr,
-    /usr/lib{,32,64}/p7zip/7z				ix,	# Все правильно, для 7z используем с ix.
+    /usr/lib{,32,64}/p7zip/7z				ix,	# app-arch/p7zip	# Все правильно, для 7z используем с ix.
     
     # READS/WRITES -------------------------------------
     /usr/lib64/p7zip/7z.so				m,
@@ -191,7 +191,7 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
     # EXECUTABLES --------------------------------------
     /usr/bin/7za					r,
     @{shell}						mr,
-    /usr/lib{,32,64}/p7zip/7za				ix,	# Все правильно, для 7za используем с ix.
+    /usr/lib{,32,64}/p7zip/7za				ix,	# app-arch/p7zip	# Все правильно, для 7za используем с ix.
   }
   
   profile zip /usr/bin/zip flags=(complain) {
@@ -275,10 +275,10 @@ profile xarchiver_tar_shell flags=(attach_disconnected,complain) {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/gzip						Cx,
-  /bin/bzip2						Cx,
-  /usr/bin/lzip						Cx,
-  /usr/bin/xz						Cx,
+  /bin/gzip						Cx,	# app-arch/gzip
+  /bin/bzip2						Cx,	# app-arch/bzip2
+  /usr/bin/lzip						Cx,	# app-arch/lzip
+  /usr/bin/xz						Cx,	# app-arch/xz-utils
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
@@ -369,20 +369,20 @@ profile xarchiver_root flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xarchiver					mr,
-  /bin/mv						Cx,
-  /bin/rm						Cx,
-  /bin/cp						Cx,
-  /bin/tar						Cx,
-  /bin/bzip2						Cx,
-  /bin/gzip						Cx,
-  /usr/bin/7z						Cx,
-  /usr/bin/7za						Cx,
-  /usr/bin/zip						Cx,
-  /usr/bin/unzip					Cx,
-  /usr/bin/lzip						Cx,
-  /usr/bin/xz						Cx,
-  /usr/@{CHOST}/binutils-bin/*/ar			Cx,
-  /opt/rar/rar						Cx,
+  /bin/mv						Cx,	# sys-apps/coreutils
+  /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/cp						Cx,	# sys-apps/coreutils
+  /bin/tar						Cx,	# app-arch/tar
+  /bin/bzip2						Cx,	# app-arch/bzip2
+  /bin/gzip						Cx,	# app-arch/gzip
+  /usr/bin/7z						Cx,	# app-arch/p7zip
+  /usr/bin/7za						Cx,	# app-arch/p7zip
+  /usr/bin/zip						Cx,	# app-arch/zip
+  /usr/bin/unzip					Cx,	# app-arch/unzip
+  /usr/bin/lzip						Cx,	# app-arch/lzip
+  /usr/bin/xz						Cx,	# app-arch/xz-utils
+  /usr/@{CHOST}/binutils-bin/*/ar			Cx,	# sys-devel/binutils
+  /opt/rar/rar						Cx,	# app-arch/rar
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
@@ -450,10 +450,10 @@ profile xarchiver_root flags=(complain) {
     # EXECUTABLES --------------------------------------
     /bin/tar						mr,
     @{shell}						Px -> xarchiver_tar_shell_root,
-    /bin/bzip2						ix,	# Oставляем запуск через ix.
-    /bin/gzip						ix,	# Oставляем запуск через ix.
-    /usr/bin/lzip					ix,	# Oставляем запуск через ix.
-    /usr/bin/xz						ix,	# Oставляем запуск через ix.
+    /bin/bzip2						ix,	# app-arch/bzip2	# Oставляем запуск через ix.
+    /bin/gzip						ix,	# app-arch/gzip		# Oставляем запуск через ix.
+    /usr/bin/lzip					ix,	# app-arch/lzip		# Oставляем запуск через ix.
+    /usr/bin/xz						ix,	# app-arch/xz-utils	# Oставляем запуск через ix.
   }
   
   profile bzip2 /bin/bzip2 flags=(complain) {
@@ -492,7 +492,7 @@ profile xarchiver_root flags=(complain) {
     # EXECUTABLES --------------------------------------
     /usr/bin/7z						r,
     @{shell}						mr,
-    /usr/lib{,32,64}/p7zip/7z				ix,	# Все правильно, для 7z используем с ix.
+    /usr/lib{,32,64}/p7zip/7z				ix,	# app-arch/p7zip	# Все правильно, для 7z используем с ix.
     
     # READS/WRITES -------------------------------------
     /usr/lib64/p7zip/7z.so				m,
@@ -512,7 +512,7 @@ profile xarchiver_root flags=(complain) {
     # EXECUTABLES --------------------------------------
     /usr/bin/7za					r,
     @{shell}						mr,
-    /usr/lib{,32,64}/p7zip/7za				ix,	# Все правильно, для 7za используем с ix.
+    /usr/lib{,32,64}/p7zip/7za				ix,	# app-arch/p7zip	# Все правильно, для 7za используем с ix.
   }
   
   profile zip /usr/bin/zip flags=(complain) {
@@ -600,10 +600,10 @@ profile xarchiver_tar_shell_root flags=(attach_disconnected,complain) {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/gzip						Cx,
-  /bin/bzip2						Cx,
-  /usr/bin/lzip						Cx,
-  /usr/bin/xz						Cx,
+  /bin/gzip						Cx,	# app-arch/gzip
+  /bin/bzip2						Cx,	# app-arch/bzip2
+  /usr/bin/lzip						Cx,	# app-arch/lzip
+  /usr/bin/xz						Cx,	# app-arch/xz-utils
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)

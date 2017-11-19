@@ -38,55 +38,55 @@ profile lynis /usr/sbin/lynis {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cxmr,	# Все правильно, запуск и mmap
-  /bin/date						ix,	# FS ACCESS!
-  /bin/expr						ix,	# FS ACCESS!
-  /bin/ls						ix,	# FS ACCESS!
-  /bin/egrep						ix,	# FS ACCESS!
-  /bin/grep						ix,	# FS ACCESS!
-  /bin/cut						ix,	# FS ACCESS!
-  /bin/wc						ix,	# FS ACCESS!
-  /bin/sed						ix,	# FS ACCESS!
-  /bin/tr						Px,
-  /bin/chmod						ix,	# FS ACCESS!
-  /bin/ps						Px,
-  /bin/uname						Px,
-  /bin/head						ix,	# FS ACCESS!
-  /bin/cat						ix,	# FS ACCESS!
-  /bin/echo						Px,
-  /bin/kmod						Px,
-  /bin/sort						ix,	# FS ACCESS!
-  /bin/sleep						Px,
-  /bin/ifconfig						Px,
-  /bin/hostname						Px,
-  /bin/readlink						ix,	# FS ACCESS!
-  /bin/mktemp						ix,	# FS ACCESS!
-  /bin/passwd						Px,
-  /bin/rm						ix,	# FS ACCESS!
-  /bin/mount						ix,	# FS ACCESS!
-  /bin/netstat						Px,
-  /sbin/lvm						Px,
-  /sbin/tune2fs						ix,	# FIX ME! Вынести в отдельный профиль.
-  /sbin/rpcinfo						ix,	# FIX ME! Вынести в отдельный профиль.
-  /usr/bin/aide						Px,
-  /usr/bin/id						Px,
-  /usr/bin/wget						Px,
-  /usr/bin/gawk						ix,	# FS ACCESS!
-  /usr/bin/find						ix,	# FS ACCESS!
-  /usr/bin/nmap						Px,
-  /usr/bin/openssl					ix,	# FIX ME! Вынести в отдельный профиль.
-  /usr/bin/xargs					ix,	# FIX ME! Вынести в отдельный профиль.
-  /usr/bin/uniq						Px,
-  /usr/bin/which					Px,
-  /usr/bin/dig						Px,
-  /usr/bin/ntpq						Px,
-  /usr/bin/shasum-*-perl-*				ix,	# FIX ME! Вынести в отдельный профиль.
-  /usr/sbin/smbd					Cx,
-  /usr/sbin/sshd					Cx,
-  /usr/sbin/sysctl					Px,
-  /usr/sbin/syslog-ng					Px,
-  /usr/bin/logrotate					Px,
-  /usr/sbin/grpck					ix,	# FIX ME! Вынести в отдельный профиль.
-  /usr/sbin/pwck					ix,	# FIX ME! Вынести в отдельный профиль.
+  /bin/date						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/expr						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/ls						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/egrep						ix,	# sys-apps/grep		# FS ACCESS!
+  /bin/grep						ix,	# sys-apps/grep		# FS ACCESS!
+  /bin/cut						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/wc						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/sed						ix,	# sys-apps/sed		# FS ACCESS!
+  /bin/tr						Px,	# sys-apps/coreutils
+  /bin/chmod						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/ps						Px,	# sys-process/procps
+  /bin/uname						Px,	# sys-apps/coreutils
+  /bin/head						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/cat						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/echo						Px,	# sys-apps/coreutils
+  /bin/kmod						Px,	# sys-apps/kmod
+  /bin/sort						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/sleep						Px,	# sys-apps/coreutils
+  /bin/ifconfig						Px,	# sys-apps/net-tools
+  /bin/hostname						Px,	# sys-apps/net-tools
+  /bin/readlink						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/mktemp						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/passwd						Px,	# sys-apps/shadow
+  /bin/rm						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/mount						ix,	# sys-apps/util-linux	# FS ACCESS!
+  /bin/netstat						Px,	# sys-apps/net-tools
+  /sbin/lvm						Px,	# sys-fs/lvm2
+  /sbin/tune2fs						ix,	# sys-fs/e2fsprogs	# FIX ME! Вынести в отдельный профиль.
+  /sbin/rpcinfo						ix,	# net-nds/rpcbind	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/aide						Px,	# app-forensics/aide
+  /usr/bin/id						Px,	# sys-apps/coreutils
+  /usr/bin/wget						Px,	# net-misc/wget
+  /usr/bin/gawk						ix,	# sys-apps/gawk		# FS ACCESS!
+  /usr/bin/find						ix,	# sys-apps/findutils	# FS ACCESS!
+  /usr/bin/nmap						Px,	# net-analyzer/nmap
+  /usr/bin/openssl					ix,	# dev-libs/openssl	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/xargs					ix,	# sys-apps/findutils	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/uniq						Px,	# sys-apps/coreutils
+  /usr/bin/which					Px,	# sys-apps/which
+  /usr/bin/dig						Px,	# net-dns/bind-tools
+  /usr/bin/ntpq						Px,	# net-misc/ntp
+  /usr/bin/shasum-*-perl-*				ix,	# dev-lang/perl		# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/logrotate					Px,	# app-admin/logrotate
+  /usr/sbin/smbd					Cx,	# net-fs/samba
+  /usr/sbin/sshd					Cx,	# net-misc/openssh
+  /usr/sbin/sysctl					Px,	# sys-process/procps
+  /usr/sbin/syslog-ng					Px,	# app-admin/syslog-ng
+  /usr/sbin/grpck					ix,	# sys-apps/shadow	# FIX ME! Вынести в отдельный профиль.
+  /usr/sbin/pwck					ix,	# sys-apps/shadow	# FIX ME! Вынести в отдельный профиль.
   @{PYTHON_EXEC_WRAPPER}				Cx -> aa_status,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
@@ -118,11 +118,11 @@ profile lynis /usr/sbin/lynis {
     
     # EXECUTABLES --------------------------------------
     @{shell}						ixmr,	# Все правильно, запуск и mmap
-    /bin/grep						ix,	# FS ACCESS!
-    /bin/env						ix,	# FS ACCESS!
-    /bin/rm						ix,	# FS ACCESS!
-    /bin/cat						ix,	# FS ACCESS!
-    /bin/date						ix,	# FS ACCESS!
+    /bin/grep						ix,	# sys-apps/grep		# FS ACCESS!
+    /bin/env						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/rm						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/cat						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/date						ix,	# sys-apps/coreutils	# FS ACCESS!
     
     # TEMP ---------------------------------------------
     owner /tmp/sh-thd.*					rw,
@@ -170,7 +170,7 @@ profile lynis /usr/sbin/lynis {
     /usr/sbin/sshd					mr,
     
     # READS/WRITES -------------------------------------
-    /etc/ssl/openssl.cnf				r,
+    /etc/ssl/openssl.cnf				r,	# dev-libs/openssl
     /etc/ssh/sshd_config				r,
   }
   
@@ -179,7 +179,7 @@ profile lynis /usr/sbin/lynis {
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/aa-status				Px,
+    @{PYTHON_EXEC}/aa-status				Px,	# sys-apps/apparmor-utils
     
     # DENY INHERIT -------------------------------------
     deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
@@ -202,13 +202,13 @@ profile lynis.cron.daily /etc/cron.daily/lynis {
   # PSEUDO ---------------------------------------------
   /etc/cron.daily/lynis					r,
   @{shell}						mr,
-  /bin/mktemp						ix,	# FS ACCESS!
-  /bin/cat						ix,	# FS ACCESS!
-  /bin/rm						ix,	# FS ACCESS!
-  /bin/basename						Px,
-  /usr/bin/libnotify-notify-send-users			Px,
-  /usr/bin/mail						Px,
-  /usr/bin/logger					Px,
+  /bin/mktemp						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/cat						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/rm						ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/basename						Px,	# sys-apps/coreutils
+  /usr/bin/libnotify-notify-send-users			Px,	# x11-libs/libnotify
+  /usr/bin/mail						Px,	# mail-client/mailx
+  /usr/bin/logger					Px,	# sys-apps/util-linux
   /usr/sbin/lynis					Px,
   
   # TEMP -----------------------------------------------
