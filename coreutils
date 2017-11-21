@@ -69,11 +69,11 @@ profile coreutils.uname /bin/uname flags=(attach_disconnected) {
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
-  deny /run/user/[0-9]*/poedit.lock			w,	# poedit
-  deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
-  deny /tmp/chkrootkit.cron.*				w,	# chkrootkit.cron.daily
-  deny /var/log/genkernel.log				w,	# genkernel-next
-  deny /tmp/Code::Blocks-*				w,	# codeblocks
+  deny /run/user/[0-9]*/poedit.lock			w,	# app-i18n/poedit
+  deny /tmp/lynis.cron.*				w,	# app-forensics/lynis, lynis.cron.daily
+  deny /tmp/chkrootkit.cron.*				w,	# app-forensics/chkrootkit, chkrootkit.cron.daily
+  deny /var/log/genkernel.log				w,	# sys-kernel/genkernel-next
+  deny /tmp/Code::Blocks-*				w,	# dev-util/codeblocks
 }
 
 profile coreutils.tty /bin/tty {
@@ -99,9 +99,9 @@ profile coreutils.tr /bin/tr flags=(attach_disconnected) {
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
-  deny /tmp/sh-thd.*					r,	# gentoolkit.revdep-rebuild.sh
-  deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
-  deny /tmp/chkrootkit.cron.*				w,	# chkrootkit.cron.daily
+  deny /tmp/sh-thd.*					r,	# app-portage/gentoolkit, gentoolkit.revdep-rebuild.sh
+  deny /tmp/lynis.cron.*				w,	# app-forensics/lynis, lynis.cron.daily
+  deny /tmp/chkrootkit.cron.*				w,	# app-forensics/chkrootkit, chkrootkit.cron.daily
 }
 
 profile coreutils.sleep /bin/sleep {
@@ -116,7 +116,7 @@ profile coreutils.sleep /bin/sleep {
   /bin/sleep						mr,
   
   # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
+  deny /tmp/lynis.cron.*				w,	# app-forensics/lynis, lynis.cron.daily
 }
 
 profile coreutils.whoami /usr/bin/whoami {
@@ -144,10 +144,10 @@ profile coreutils.id /usr/bin/id {
   /usr/bin/id						mr,
   
   # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
-  deny /tmp/chkrootkit.cron.*				w,	# chkrootkit.cron.daily
-  deny /var/tmp/portage/**/temp/build.log		w,	# portage.emerge
-  deny /var/log/emerge-fetch.log			a,	# portage.emerge
+  deny /tmp/lynis.cron.*				w,	# app-forensics/lynis, lynis.cron.daily
+  deny /tmp/chkrootkit.cron.*				w,	# app-forensics/chkrootkit, chkrootkit.cron.daily
+  deny /var/tmp/portage/**/temp/build.log		w,	# sys-apps/portage, portage.emerge
+  deny /var/log/emerge-fetch.log			a,	# sys-apps/portage, portage.emerge
 }
 
 profile coreutils.pinky /usr/bin/pinky {
@@ -178,7 +178,7 @@ profile coreutils.stty /bin/stty {
   /bin/stty						mr,
   
   # DENY INHERIT ---------------------------------------
-  deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d
+  deny /etc/conf.d/dmcrypt				r,	# sys-fs/cryptsetup, cryptsetup.init.d
 }
 
 profile coreutils.basename /bin/basename {
@@ -217,9 +217,9 @@ profile coreutils.echo /bin/echo {
   /bin/echo						mr,
   
   # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
-  deny /tmp/chkrootkit.cron.*				w,	# chkrootkit.cron.daily
-  deny /var/log/genkernel.log				w,	# genkernel-next
+  deny /tmp/lynis.cron.*				w,	# app-forensics/lynis, lynis.cron.daily
+  deny /tmp/chkrootkit.cron.*				w,	# app-forensics/chkrootkit, chkrootkit.cron.daily
+  deny /var/log/genkernel.log				w,	# sys-kernel/genkernel-next
 }
 
 profile coreutils.sync /bin/sync {
@@ -256,7 +256,7 @@ profile coreutils.uniq /usr/bin/uniq {
   /usr/bin/uniq						mr,
   
   # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
+  deny /tmp/lynis.cron.*				w,	# app-forensics/lynis, lynis.cron.daily
   deny /tmp/rootbackup.cron.*				w,	# backup_weekly.sh.cron.weekly
   deny /tmp/dailyhomebackup.cron.*			w,	# backup_daily.sh.cron.daily
 }

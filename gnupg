@@ -62,7 +62,7 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} {
   owner /var/tmp/portage/webrsync-*/portage-*		r,	# DELEGATION! portage.emerge-webrsync
   
   # NOISY ----------------------------------------------
-  deny /.gnupg/{,**}					r,
+  deny /.gnupg/{,**}					r,	# В некоторых случаях, если HOME пользователя не определен, лезет в корень.
 }
 
 profile gnupg.gpgconf /usr/bin/gpgconf {

@@ -31,27 +31,27 @@ profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
   /usr/bin/dbus-send					Px,	# sys-apps/dbus
   
   # DENY INHERIT ---------------------------------------
-  deny unix peer=(label="wps-office"),				# wps-office
-  deny unix peer=(label="qpdfview"),				# qpdfview
+  deny unix peer=(label="wps-office"),				# app-office/wps-office, wps-office
+  deny unix peer=(label="qpdfview"),				# app-text/qpdfview, qpdfview
   deny unix peer=(label="local.home.evelauncher"),		# local.home.evelauncher
-  deny unix peer=(label="teamspeak-client-bin.teamspeak"),	# teamspeak-client-bin.teamspeak
-  deny unix peer=(label="keepassxc"),				# keepassxc
+  deny unix peer=(label="teamspeak-client-bin.teamspeak"),	# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
+  deny unix peer=(label="keepassxc"),				# app-admin/keepassxc, keepassxc
   deny network netlink raw,					# local.home.evelauncher
-  deny network inet dgram,					# teamspeak-client-bin.teamspeak
-  deny network inet6 dgram,					# teamspeak-client-bin.teamspeak
+  deny network inet dgram,					# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
+  deny network inet6 dgram,					# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
   deny network inet stream,					# local.home.evelauncher
   deny network inet6 stream,					# local.home.evelauncher
   deny /dev/shm/.org.chromium.Chromium.*		ra,	# local.home.evelauncher
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
-  deny /usr/share/qt[0-9]*/**				r,	# teamspeak-client-bin.teamspeak
-  deny /usr/share/pyfa/imgs.zip				r,	# pyfa
-  deny /run/user/[0-9]*/poedit.lock			w,	# poedit
-  deny @{HOME}/.local/share/poedit/TranslationMemory/*	rw,	# poedit
-  deny @{HOME}/.kingsoft/office6/**			rw,	# wps-office
-  deny @{HOME}/.ts3client/**				rw,	# teamspeak-client-bin.teamspeak
+  deny /usr/share/qt[0-9]*/**				r,	# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
+  deny /usr/share/pyfa/imgs.zip				r,	# games-util/pyfa, pyfa
+  deny /run/user/[0-9]*/poedit.lock			w,	# app-i18n/poedit, poedit
+  deny @{HOME}/.local/share/poedit/TranslationMemory/*	rw,	# app-i18n/poedit, poedit
+  deny @{HOME}/.kingsoft/office6/**			rw,	# app-office/wps-office, wps-office
+  deny @{HOME}/.ts3client/**				rw,	# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
   deny @{HOME}/evelauncher/**				r,	# local.home.evelauncher
   deny @{HOME}/.local/share/CCP/**			rw,	# local.home.evelauncher
-  deny @{HOME}/.pyfa/Pyfa-[0-9]*.log			w,	# pyfa
+  deny @{HOME}/.pyfa/Pyfa-[0-9]*.log			w,	# games-util/pyfa, pyfa
   deny @{HOME_CACHE}/CCP/**				rw,	# local.home.evelauncher
   
   profile grep /bin/grep {

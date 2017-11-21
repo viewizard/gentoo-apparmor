@@ -113,7 +113,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# at
     /run/openrc/dm-crypt-remdev.[0-9]*/			w,
     
     # DENY INHERIT -------------------------------------
-    deny /etc/conf.d/dmcrypt				r,
+    deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d
   }
   
   profile grep /bin/grep {
@@ -174,7 +174,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# at
     /bin/dd						mr,
     
     # DENY INHERIT -------------------------------------
-    deny /etc/conf.d/dmcrypt				r,
+    deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d
   }
   
   profile mkdir /bin/mkdir {
@@ -196,7 +196,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# at
     /run/openrc/dm-crypt-remdev.[0-9]*/			w,
     
     # DENY INHERIT -------------------------------------
-    deny /etc/conf.d/dmcrypt				r,
+    deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d
   }
   
   profile mount /bin/mount {

@@ -36,7 +36,7 @@ profile glibc.ldd /usr/bin/ldd flags=(attach_disconnected) {
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					r,	# flags=(attach_disconnected)
-  deny /var/cache/revdep-rebuild/*errors*		rw,	# gentoolkit.revdep-rebuild.sh
+  deny /var/cache/revdep-rebuild/*errors*		rw,	# app-portage/gentoolkit, gentoolkit.revdep-rebuild.sh
   
   profile test_run {
     # PSEUDO -------------------------------------------
@@ -116,8 +116,8 @@ profile glibc.ldconfig /sbin/ldconfig flags=(attach_disconnected) {
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
-  deny @{HOME}/.pyfa/log.txt				w,	# pyfa
-  deny /usr/share/pyfa/imgs.zip				r,	# pyfa
+  deny @{HOME}/.pyfa/log.txt				w,	# games-util/pyfa
+  deny /usr/share/pyfa/imgs.zip				r,	# games-util/pyfa
 }
 
 profile glibc.getent /usr/bin/getent {

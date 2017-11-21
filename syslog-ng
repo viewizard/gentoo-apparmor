@@ -71,7 +71,7 @@ profile syslog-ng /usr/sbin/syslog-ng {
   /run/syslog-ng/additional-log-sockets.conf		r,
   
   # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
+  deny /tmp/lynis.cron.*				w,	# app-forensics/lynis, lynis.cron.daily
 }
 
 profile syslog-ng.init.d /etc/init.d/syslog-ng flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"

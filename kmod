@@ -41,6 +41,6 @@ profile kmod /{bin/kmod,sbin/modprobe,sbin/modeinfo} {
   owner /tmp/depmod.*/{,**}				rw,
   
   # DENY INHERIT ---------------------------------------
-  deny /var/log/Xorg.[0-9]*.log				w,	# xorg-server.Xorg
-  deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
+  deny /var/log/Xorg.[0-9]*.log				w,	# x11-base/xorg-server, xorg-server.Xorg
+  deny /tmp/lynis.cron.*				w,	# app-forensics/lynis, lynis.cron.daily
 }

@@ -492,7 +492,7 @@ profile openrc.ebegin /lib{,32,64}/rc/bin/ebegin flags=(attach_disconnected,comp
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
-  deny /etc/conf.d/dmcrypt				r,
+  deny /etc/conf.d/dmcrypt				r,	# sys-fs/cryptsetup
 }
 
 profile openrc.eend /lib{,32,64}/rc/bin/eend flags=(attach_disconnected,complain) {
@@ -513,7 +513,7 @@ profile openrc.eend /lib{,32,64}/rc/bin/eend flags=(attach_disconnected,complain
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
-  deny /etc/conf.d/dmcrypt				r,
+  deny /etc/conf.d/dmcrypt				r,	# sys-fs/cryptsetup
 }
 
 profile openrc.ewend /lib{,32,64}/rc/bin/ewend flags=(complain) {
@@ -561,7 +561,7 @@ profile openrc.einfo /lib{,32,64}/rc/bin/einfo{,n} flags=(attach_disconnected,co
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
-  deny /etc/conf.d/dmcrypt				r,
+  deny /etc/conf.d/dmcrypt				r,	# sys-fs/cryptsetup
 }
 
 profile openrc.ewarn /lib{,32,64}/rc/bin/ewarn{,n} flags=(attach_disconnected,complain) {

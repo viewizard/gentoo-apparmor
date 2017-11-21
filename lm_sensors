@@ -24,10 +24,10 @@ profile lm_sensors.sensors /usr/bin/sensors {
   /usr/bin/sensors					mr,
   
   # DENY INHERIT ---------------------------------------
-  deny network inet dgram,					# conky_shell
-  deny network inet6 dgram,					# conky_shell
-  deny @{PROC}/uptime					r,	# conky_shell
-  deny @{PROC}/@{pids}/net/dev				r,	# conky_shell
+  deny network inet dgram,					# app-admin/conky, conky_shell
+  deny network inet6 dgram,					# app-admin/conky, conky_shell
+  deny @{PROC}/uptime					r,	# app-admin/conky, conky_shell
+  deny @{PROC}/@{pids}/net/dev				r,	# app-admin/conky, conky_shell
 }
 
 profile lm_sensors.init.d /etc/init.d/lm_sensors flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"

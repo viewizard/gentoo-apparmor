@@ -48,8 +48,8 @@ profile wget /usr/bin/wget {
   owner /var/tmp/portage/webrsync-*/**			w,	# sys-apps/portage	# DELEGATION! portage.emerge-webrsync
   
   # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
-  deny /tmp/oinkmaster.cron.*				w,	# oinkmaster.cron.daily
+  deny /tmp/lynis.cron.*				w,	# app-forensics/lynis, lynis.cron.daily
+  deny /tmp/oinkmaster.cron.*				w,	# net-analyzer/oinkmaster, oinkmaster.cron.daily
 }
 
 # Профиль должен вызываться только из shell_root,

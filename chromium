@@ -107,8 +107,8 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   ptrace (trace) peer="chromium.start_script",
   
   # AUDIT PTRACE ---------------------------------------
-  deny ptrace (trace) peer="xdg-utils.xdg-settings",
-  deny ptrace (trace) peer="lsb-release",
+  deny ptrace (trace) peer="xdg-utils.xdg-settings",		# x11-misc/xdg-utils
+  deny ptrace (trace) peer="lsb-release",			# sys-apps/lsb-release
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
@@ -192,7 +192,7 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   # NOISY ----------------------------------------------
   deny /dev/bus/usb/					r,
   deny /usr/lib{,32,64}/chromium-browser/**		w,
-  deny owner @{HOME}/.mozilla/{,**}			r,
+  deny owner @{HOME}/.mozilla/{,**}			r,	# www-client/firefox
   
   profile chrome-sandbox /usr/lib{,32,64}/chromium-browser/chrome-sandbox {
     # Be fanatical since it is setuid root and don't use an abstraction

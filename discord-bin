@@ -38,6 +38,9 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   # SIGNAL ---------------------------------------------
   signal (send) set=(term) peer="lsb-release",			# sys-apps/lsb-release
   
+  # AUDIT UNIX -----------------------------------------
+  deny unix (send, receive) peer=(label="lsb-release"),		# sys-apps/lsb-release
+  
   # NETWORK --------------------------------------------
   network netlink raw,
   network inet dgram,
@@ -87,7 +90,4 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   owner "/tmp/Discord Crashes/{,**}"			rw,
   /var/tmp/						r,
   owner /var/tmp/etilqs_*				rw,
-  
-  # DENY INHERIT ---------------------------------------
-  deny unix (send, receive) peer=(label="lsb-release"),
 }

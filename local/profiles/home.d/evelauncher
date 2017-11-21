@@ -114,8 +114,8 @@ profile local.home.evelauncher /home/*/evelauncher/evelauncher flags=(attach_dis
   owner /var/tmp/etilqs_*				rw,
   
   # DENY INHERIT ---------------------------------------
-  deny unix (send, receive) peer=(label="wine*"),		# wine
-  deny unix (send, receive) peer=(label="nvidia-drivers.nvidia-modprobe"),	# nvidia-drivers.nvidia-modprobe
+  deny unix (send, receive) peer=(label="wine*"),		# app-emulation/wine
+  deny unix (send, receive) peer=(label="nvidia-drivers.nvidia-modprobe"),	# x11-drivers/nvidia-drivers, nvidia-drivers.nvidia-modprobe
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 

@@ -260,10 +260,10 @@ profile util-linux.cal /usr/bin/cal {
   /usr/bin/cal						mr,
   
   # DENY INHERIT ---------------------------------------
-  deny network inet dgram,					# conky_shell
-  deny network inet6 dgram,					# conky_shell
-  deny @{PROC}/uptime					r,	# conky_shell
-  deny @{PROC}/@{pids}/net/dev				r,	# conky_shell
+  deny network inet dgram,					# app-admin/conky, conky_shell
+  deny network inet6 dgram,					# app-admin/conky, conky_shell
+  deny @{PROC}/uptime					r,	# app-admin/conky, conky_shell
+  deny @{PROC}/@{pids}/net/dev				r,	# app-admin/conky, conky_shell
 }
 
 profile util-linux.getopt /usr/bin/getopt flags=(attach_disconnected) {
