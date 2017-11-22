@@ -87,7 +87,7 @@ profile skypeforlinux /opt/skypeforlinux/skypeforlinux {
   #include <abstractions/fs/access-by-pattern-internet>		# Доступ к файлам для отсылки в теле сообщения.
   #include <abstractions/xdg-open>
   
-  # AUDIT UNIX -----------------------------------------
+  # UNIX -----------------------------------------------
   deny unix type=stream
   	peer=(label="nvidia-drivers.nvidia-modprobe"),
   
@@ -119,8 +119,6 @@ profile skypeforlinux /opt/skypeforlinux/skypeforlinux {
   owner @{PROC}/@{pid}/fd/				r,
   owner @{PROC}/@{pids}/task/				r,
   owner @{PROC}/@{pids}/task/@{pids}/status		r,
-  
-  # AUDIT PSEUDO ---------------------------------------
   deny /dev/nvidiactl					m,
   deny @{PROC}/modules					r,
   deny @{PROC}/@{pids}/oom_score_adj			rw,
@@ -142,8 +140,6 @@ profile skypeforlinux /opt/skypeforlinux/skypeforlinux {
   owner @{HOME}/.config/skypeforlinux/**		rwk,
   owner @{HOME}/.config/autostart/skypeforlinux.desktop	rw,	# BUG! По какой-то причине, автозапуск не работает в XFCE4.
   owner @{HOME}/.pki/nssdb/*				rwk,
-  
-  # AUDIT USERS ----------------------------------------
   deny @{HOME}/.config/skypeforlinux/**			m,
   deny @{HOME}/.local/share/mime/mime.cache		m,
   

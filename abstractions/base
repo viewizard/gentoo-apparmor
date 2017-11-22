@@ -18,15 +18,11 @@ ptrace (read) peer=@{profile_name},
 signal peer=@{profile_name},
 signal (receive, send) set=("exists"),
 signal (receive) set=(hup, int, kill, term, cont, stop),
-
-# AUDIT SIGNAL -----------------------------------------
 audit deny signal (receive) peer=unconfined,			# unconfined процессов не должно быть вообще.
 
 # UNIX -------------------------------------------------
 unix peer=(label=@{profile_name}),
 unix (create, getattr, getopt, setopt, shutdown),
-
-# AUDIT UNIX -------------------------------------------
 audit deny unix (receive) peer=(label=unconfined),		# unconfined процессов не должно быть вообще.
 
 # PSEUDO -----------------------------------------------

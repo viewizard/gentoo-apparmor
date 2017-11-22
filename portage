@@ -94,8 +94,6 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   /var/**						rwk,	# IMPROVE! exclude "/var/log" (allow only subfolder
   								# creation and .keep* files) with {*^}/{**^},
   								# when this features will be available
-  
-  # AUDIT READS/WRITES ---------------------------------
   audit deny /usr/local/**				w,	# Исключаем работу с /usr/local/.
   
   # TEMP -----------------------------------------------
@@ -341,8 +339,6 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /run/udev/control					rw,
     /var/spool/**					rw,
     /var/log/emerge-fetch.log				a,	# DELEGATION! portage.emerge
-    
-    # AUDIT READS/WRITES -------------------------------
     audit deny /usr/local/**				w,	# Исключаем работу с /usr/local/.
     
     # TEMP ---------------------------------------------

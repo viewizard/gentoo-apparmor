@@ -268,8 +268,6 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
   /usr/local/bin/**					Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
   /usr/local/sbin/**					Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
   /etc/init.d/*						Px,	# sys-apps/openrc
-  
-  # AUDIT EXECUTABLES ----------------------------------
   audit deny /usr/bin/startx*				x,	# RBAC! Запрещаем запуск Xorg-server под root. У нас
   								# нет полноценной ветки профилей для запуска всех
   								# дочерних процессов.
@@ -785,8 +783,6 @@ profile shell_chroot {
   @{CHROOT}/sys/{,**}					r,
   @{CHROOT}/sys/fs/cgroup/portage/{,**}			w,
   @{CHROOT}/@{PROC}/{,**}				r,
-  
-  # AUDIT PSEUDO ---------------------------------------
   audit deny @{CHROOT}/dev/@{BLOCK_ALL}			wk,	# Запрещаем работать с блочными устройствами.
   
   # EXECUTABLES ----------------------------------------

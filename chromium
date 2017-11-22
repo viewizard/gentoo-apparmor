@@ -105,8 +105,6 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   # PTRACE ---------------------------------------------
   ptrace (trace) peer=@{profile_name},
   ptrace (trace) peer="chromium.start_script",
-  
-  # AUDIT PTRACE ---------------------------------------
   deny ptrace (trace) peer="xdg-utils.xdg-settings",		# x11-misc/xdg-utils
   deny ptrace (trace) peer="lsb-release",			# sys-apps/lsb-release
   
@@ -141,8 +139,6 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   audit @{PROC}/@{pid}/setgroups			rw,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
   audit @{PROC}/@{pid}/uid_map				rw,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
   audit @{PROC}/@{pid}/gid_map				rw,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
-  
-  # AUDIT PSEUDO ---------------------------------------
   deny @{PROC}/@{pids}/oom_{,score_}adj			w,
   
   # EXECUTABLES ----------------------------------------
@@ -248,8 +244,6 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
     audit @{PROC}/@{pid}/fd/				r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
     audit @{PROC}/@{pid}/status				r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
     audit @{PROC}/@{pid}/task/@{pid}/stat		r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
-    
-    # AUDIT PSEUDO -------------------------------------
     deny @{PROC}/@{pids}/oom_{,score_}adj		w,
     
     # EXECUTABLES --------------------------------------

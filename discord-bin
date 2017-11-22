@@ -29,16 +29,16 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   #include <abstractions/fs/access-by-pattern-internet>		# Доступ к файлам для отсылки в теле сообщения.
   #include <abstractions/xdg-open>
   
-  # AUDIT CAPABILITIES ---------------------------------
+  # CAPABILITIES ---------------------------------------
   deny capability sys_ptrace,
   
-  # AUDIT PTRACE ---------------------------------------
+  # PTRACE ---------------------------------------------
   deny ptrace (trace),
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(term) peer="lsb-release",			# sys-apps/lsb-release
   
-  # AUDIT UNIX -----------------------------------------
+  # UNIX -----------------------------------------------
   deny unix (send, receive) peer=(label="lsb-release"),		# sys-apps/lsb-release
   
   # NETWORK --------------------------------------------
@@ -63,8 +63,6 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   owner @{PROC}/@{pid}/fd/				r,
   owner @{PROC}/@{pids}/task/				r,
   owner @{PROC}/@{pids}/task/@{pids}/status		r,
-  
-  # AUDIT PSEUDO ---------------------------------------
   deny @{PROC}/@{pids}/oom_score_adj			rw,
   deny @{PROC}/@{pids}/cmdline				r,	# Лазит по процессам и смотрит параметры запуска.
   

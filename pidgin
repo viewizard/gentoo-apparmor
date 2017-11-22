@@ -31,10 +31,10 @@ profile pidgin /usr/bin/pidgin {
   #include <abstractions/xdg-open>
   #include <abstractions/fs/access-by-pattern-internet>
   
-  # AUDIT CAPABILITIES ---------------------------------
+  # CAPABILITIES ---------------------------------------
   deny capability sys_ptrace,
   
-  # AUDIT PTRACE ---------------------------------------
+  # PTRACE ---------------------------------------------
   deny ptrace (trace),
   
   # DBUS -----------------------------------------------
@@ -74,8 +74,6 @@ profile pidgin /usr/bin/pidgin {
   # USERS ----------------------------------------------
   owner @{HOME}/.purple/				rw,
   owner @{HOME}/.purple/**				rwk,
-  
-  # AUDIT USERS ----------------------------------------
   audit deny @{HOME}/.purple/plugins/**			m,	# Не разрешаем использовать плагины пользователя,
   								# в любом случае их не пропустит IMA/EVM.
   
