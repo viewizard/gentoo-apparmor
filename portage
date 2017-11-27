@@ -663,7 +663,7 @@ profile portage.portageq @{PYTHON_EXEC}/portageq {
   
   # TEMP -----------------------------------------------
   /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
-  owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks	# * - $USER
+  owner /tmp/Code::Blocks-@{USER}			w,	# DELEGATION! codeblocks
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -679,7 +679,7 @@ profile portage.portageq @{PYTHON_EXEC}/portageq {
     
     # TEMP ---------------------------------------------
     /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
-    owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks	# * - $USER
+    owner /tmp/Code::Blocks-@{USER}			w,	# DELEGATION! codeblocks
   }
 }
 

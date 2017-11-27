@@ -133,7 +133,7 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   owner /tmp/plugtmp/plugin-*				rw,	# * - имя с расширением файла (PL_HD.txt)
   owner /tmp/mozilla-temp-*				rw,	# * - 9 цифр
   audit owner /tmp/mozilla_*/{,**}			rw,	# FIX ME! audit 26.11.2017
-  owner /tmp/firefox_*/{,**}				rwk,	# * - $USER
+  owner /tmp/firefox_@{USER}/{,**}			rwk,
   /var/tmp/						r,
   owner /var/tmp/@{TMP_SQLITE}				rw,
   

@@ -64,7 +64,7 @@ profile gnome-keyring.gnome-keyring-daemon /usr/bin/gnome-keyring-daemon {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.local/share/keyrings/{,*}		rw,
-  owner link subset @{HOME}/.local/share/keyrings/*	-> /{home/*,root}/.local/share/keyrings/*,	# LINK! @{HOME}
+  owner link subset @{HOME}/.local/share/keyrings/*	-> /{home/*,root}/.local/share/keyrings/*,	# TARGET! @{HOME}
   owner @{HOME_CACHE}/keyring-*/{,*}			rw,
   owner @{HOME}/.ssh/					r,
 }

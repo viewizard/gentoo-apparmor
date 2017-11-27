@@ -8,7 +8,7 @@
 #
 # ------------------------------------------------------------------
 
-profile local.home.evelauncher.sh /home/*/evelauncher/evelauncher.sh {
+profile local.home.evelauncher.sh /home/@{USER}/evelauncher/evelauncher.sh {
   #include <abstractions/base>
   include <abstractions/X-connection-strict>
   
@@ -37,7 +37,7 @@ profile local.home.evelauncher.sh /home/*/evelauncher/evelauncher.sh {
   }
 }
 
-profile local.home.evelauncher /home/*/evelauncher/evelauncher flags=(attach_disconnected) {
+profile local.home.evelauncher /home/@{USER}/evelauncher/evelauncher flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -117,7 +117,7 @@ profile local.home.evelauncher /home/*/evelauncher/evelauncher flags=(attach_dis
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile local.home.evelauncher.updater /home/*/{.eve,evelauncher}/updater {
+profile local.home.evelauncher.updater /home/@{USER}/{.eve,evelauncher}/updater {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -144,7 +144,7 @@ profile local.home.evelauncher.updater /home/*/{.eve,evelauncher}/updater {
   deny @{HOME}/.local/share/CCP/EVE/QtWebEngine/Default/{,**} rw,	# evelauncher
 }
 
-profile local.home.evelauncher.LogLite.sh /home/*/evelauncher/LogLite.sh {
+profile local.home.evelauncher.LogLite.sh /home/@{USER}/evelauncher/LogLite.sh {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -165,7 +165,7 @@ profile local.home.evelauncher.LogLite.sh /home/*/evelauncher/LogLite.sh {
   }
 }
 
-profile local.home.evelauncher.LogLite /home/*/evelauncher/LogLite {
+profile local.home.evelauncher.LogLite /home/@{USER}/evelauncher/LogLite {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>

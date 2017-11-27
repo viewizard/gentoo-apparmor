@@ -64,7 +64,7 @@ profile gcc-config /usr/bin/gcc-config {
   
   # TEMP -----------------------------------------------
   owner /tmp/@{TMP_SH}					rw,
-  owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks	# * - $USER
+  owner /tmp/Code::Blocks-@{USER}			w,	# DELEGATION! codeblocks
   
   profile mv /bin/mv {
     #include <abstractions/base>
@@ -309,7 +309,7 @@ profile gcc-config /usr/bin/gcc-config {
     /etc/env.d/gcc/**					r,	# sys-devel/gcc
     
     # TEMP ---------------------------------------------
-    owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks	# * - $USER
+    owner /tmp/Code::Blocks-@{USER}			w,	# DELEGATION! codeblocks
   }
   
   profile tac /usr/bin/tac {
@@ -337,6 +337,6 @@ profile gcc-config /usr/bin/gcc-config {
     @{PYTHON_EXEC}/env-update				Px,	# sys-apps/portage
     
     # TEMP ---------------------------------------------
-    owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks	# * - $USER
+    owner /tmp/Code::Blocks-@{USER}			w,	# DELEGATION! codeblocks
   }
 }

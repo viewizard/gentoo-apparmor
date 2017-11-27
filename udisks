@@ -107,8 +107,8 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {
     # MOUNT --------------------------------------------	# Важно! noexec - т.к. используется патч в udisks (patches portage).
     mount options=(ro, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /media/*/,
     mount options=(rw, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /media/*/,
-    mount options=(ro, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /run/media/*/*/,	# /run/media/$USER/VolumeName/
-    mount options=(rw, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /run/media/*/*/,	# /run/media/$USER/VolumeName/
+    mount options=(ro, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /run/media/@{USER}/*/,	# /run/media/$USER/VolumeName/
+    mount options=(rw, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /run/media/@{USER}/*/,	# /run/media/$USER/VolumeName/
     
     # EXECUTABLES --------------------------------------
     /bin/mount						mr,

@@ -9,5 +9,5 @@
 # ------------------------------------------------------------------
 
 # MOUNT ----------------------------------------------
-mount fstype=tmpfs options=(rw, noexec) none -> /home/*/.thumbnails/,
-umount /home/*/.thumbnails/,
+mount fstype=tmpfs options=(rw, noexec) none -> /home/@{USER}/.thumbnails/,	# TARGET! Нельзя использовать @{HOME}/@{HOMEDIRS}.
+umount /home/@{USER}/.thumbnails/,						# TARGET! Нельзя использовать @{HOME}/@{HOMEDIRS}.

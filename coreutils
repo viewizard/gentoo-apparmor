@@ -73,7 +73,7 @@ profile coreutils.uname /bin/uname flags=(attach_disconnected) {
   deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
   deny /tmp/chkrootkit.cron.@{TMP6}			w,	# app-forensics/chkrootkit, chkrootkit.cron.daily
   deny /var/log/genkernel.log				w,	# sys-kernel/genkernel-next
-  deny /tmp/Code::Blocks-*				w,	# dev-util/codeblocks	# * - $USER
+  deny /tmp/Code::Blocks-@{USER}			w,	# dev-util/codeblocks
 }
 
 profile coreutils.tty /bin/tty {

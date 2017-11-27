@@ -181,7 +181,7 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   # TEMP -----------------------------------------------
   /tmp/							r,
   /tmp/.org.chromium.Chromium.@{TMP6}{,/,/**}		rw,
-  audit owner /tmp/scoped_dir*/{,**}			rw,	# FIX ME! audit 25.11.2017
+  owner /tmp/scoped_dir@{TMP6}/{,**}			rw,
   /var/tmp/						r,
   owner /var/tmp/@{TMP_SQLITE}				rw,
   

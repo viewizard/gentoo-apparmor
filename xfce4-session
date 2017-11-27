@@ -325,7 +325,7 @@ profile xfce4-session.xfce4-session-fix /etc/xdg/xfce4/xfce4-session-fix {
     /bin/rm						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/xfdesktop-*/{,**}			rw,	# * - $USER
+    owner /tmp/xfdesktop-@{USER}/{,**}			rw,
   }
   
   profile cp /bin/cp {
@@ -341,7 +341,7 @@ profile xfce4-session.xfce4-session-fix /etc/xdg/xfce4/xfce4-session-fix {
     owner @{HOME}/.config/xfce4/desktop/{,*}		rw,
     
     # TEMP ---------------------------------------------
-    owner /tmp/xfdesktop-*/desktop/{,*}			rw,	# * - $USER
+    owner /tmp/xfdesktop-@{USER}/desktop/{,*}		rw,
   }
   
   profile mkdir /bin/mkdir {
@@ -354,7 +354,7 @@ profile xfce4-session.xfce4-session-fix /etc/xdg/xfce4/xfce4-session-fix {
     /bin/mkdir						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/xfdesktop-*/				w,	# * - $USER
+    owner /tmp/xfdesktop-@{USER}/			w,
   }
   
   profile diff /usr/bin/diff {
@@ -370,7 +370,7 @@ profile xfce4-session.xfce4-session-fix /etc/xdg/xfce4/xfce4-session-fix {
     owner @{HOME}/.config/xfce4/desktop/{,*}		r,
     
     # TEMP ---------------------------------------------
-    owner /tmp/xfdesktop-*/desktop/{,*}			r,	# * - $USER
+    owner /tmp/xfdesktop-@{USER}/desktop/{,*}		r,
   }
 }
 

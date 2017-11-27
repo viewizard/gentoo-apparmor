@@ -10,6 +10,10 @@
 #
 # ------------------------------------------------------------------
 
+# Паттерн имени пользователя.
+# * используется как цель в mount и link, проверять при изменении (см. маркер TARGET!)
+@{USER}=[a-z_]*
+
 # @{HOME_CACHE} is a space-separated list of per user cache directories.
 @{HOME_CACHE}=@{HOME}/.cache/
 
@@ -17,7 +21,7 @@
 # it doesn't refer to a specific home directory (AppArmor doesn't
 # enforce discretionary access controls) it can be used as if it did
 # refer to a specific home directory
-@{HOME}=@{HOMEDIRS}/*/ /root/
+@{HOME}=@{HOMEDIRS}/@{USER}/ /root/
 
 # @{HOMEDIRS} is a space-separated list of where user home directories
 # are stored, for programs that must enumerate all home directories on a

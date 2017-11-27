@@ -9,5 +9,5 @@
 # ------------------------------------------------------------------
 
 # MOUNT ----------------------------------------------
-mount fstype=tmpfs options=(rw, noexec) none -> /home/*/.cache/,
-umount /home/*/.cache/,
+mount fstype=tmpfs options=(rw, noexec) none -> /home/@{USER}/.cache/,	# TARGET! Нельзя использовать @{HOME}/@{HOMEDIRS}.
+umount /home/@{USER}/.cache/,						# TARGET! Нельзя использовать @{HOME}/@{HOMEDIRS}.

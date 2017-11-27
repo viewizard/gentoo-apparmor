@@ -121,7 +121,7 @@ profile nvidia-drivers.nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe flags=(att
   deny /opt/skypeforlinux/icudtl.dat			r,	# net-im/skypeforlinux, skypeforlinux
   deny @{HOME_CACHE}/CCP/{,**}				rw,	# local.home.evelauncher
   deny /tmp/FreshStream*				rw,	# www-client/firefox, firefox.plugin-container
-  /home/viewizard/.mozilla/firefox/*.default/extensions/{,**} r,	# www-client/firefox, firefox
+  deny @{HOME}/.mozilla/firefox/*.default/extensions/{,**} r,	# www-client/firefox, firefox
   deny /media/{,**}					rw,
   deny /mnt/{,**}					rw,
 }

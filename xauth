@@ -22,11 +22,11 @@ profile xauth /usr/bin/xauth {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.Xauthority*				rw,
-  owner link subset @{HOME}/.Xauthority*		-> /{home/*,root}/.Xauthority*,		# LINK! @{HOME}
+  owner link subset @{HOME}/.Xauthority*		-> /{home/*,root}/.Xauthority*,		# TARGET! @{HOME}
   owner @{HOME}/.serverauth.*				rw,
-  owner link subset @{HOME}/.serverauth.*		-> /{home/*,root}/.serverauth.*,	# LINK! @{HOME}
+  owner link subset @{HOME}/.serverauth.*		-> /{home/*,root}/.serverauth.*,	# TARGET! @{HOME}
   owner @{HOME}/.xauth*					rw,
-  owner link subset @{HOME}/.xauth*			-> /{home/*,root}/.xauth*,	# LINK! @{HOME}
+  owner link subset @{HOME}/.xauth*			-> /{home/*,root}/.xauth*,	# TARGET! @{HOME}
   
   # TEMP -----------------------------------------------
   owner /tmp/@{TMP_SH}					rw,

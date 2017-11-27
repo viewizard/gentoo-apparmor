@@ -39,7 +39,7 @@ profile mc /usr/bin/mc {
   /usr/share/mc/{,**}					r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/mc-*/{,**}					w,	# * - $USER
+  owner /tmp/mc-@{USER}/{,**}				w,
 }
 
 profile mc.cons.saver /usr/libexec/mc/cons.saver {
