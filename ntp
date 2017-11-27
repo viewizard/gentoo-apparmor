@@ -83,7 +83,7 @@ profile ntp.ntpq /usr/bin/ntpq {
   deny /usr/local/{,s}bin/				r,
   
   # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.*				w,	# app-forensics/lynis, lynis.cron.daily
+  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
 }
 
 profile ntp.init.d /etc/init.d/ntpd flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"

@@ -42,7 +42,7 @@ profile grub.grub-mkconfig /usr/sbin/grub-mkconfig {
   /usr/share/grub/{,**}					r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/sh-thd.*					rw,
+  owner /tmp/@{TMP_SH}					rw,
   
   profile rm /bin/rm {
     #include <abstractions/base>
@@ -72,7 +72,7 @@ profile grub.grub-mkconfig /usr/sbin/grub-mkconfig {
     /boot/grub/grub.cfg.new				w,
     
     # DENY INHERIT -------------------------------------
-    /tmp/sh-thd.*					rw,
+    /tmp/@{TMP_SH}					rw,
   }
   
   profile mv /bin/mv {
@@ -151,7 +151,7 @@ profile grub.grub.d /etc/grub.d/* {
   /usr/share/grub/{,**}					r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/sh-thd.*					rw,
+  owner /tmp/@{TMP_SH}					rw,
   
   profile cut /bin/cut {
     #include <abstractions/base>
@@ -179,7 +179,7 @@ profile grub.grub.d /etc/grub.d/* {
     
     # DENY INHERIT -------------------------------------
     /boot/grub/grub.cfg.new				w,
-    /tmp/sh-thd.*					rw,
+    /tmp/@{TMP_SH}					rw,
   }
   
   profile sed /bin/sed {
@@ -194,7 +194,7 @@ profile grub.grub.d /etc/grub.d/* {
     
     # DENY INHERIT -------------------------------------
     /boot/grub/grub.cfg.new				w,
-    /tmp/sh-thd.*					rw,
+    /tmp/@{TMP_SH}					rw,
   }
   
   profile tail /bin/tail {

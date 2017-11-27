@@ -11,7 +11,7 @@
 #include <abstractions/dbus/dconf>
 
 # READS/WRITES -----------------------------------------
-owner /run/user/[0-9]*/dconf/{,user}			rw,	# IMPROVE! Только для пользователей (owner>=1000).
+owner /run/user/@{UID}/dconf/{,user}			rw,	# IMPROVE! Только для пользователей (owner>=1000).
 
 # USERS ------------------------------------------------
 owner @{HOME_CACHE}/dconf/{,user}			rw,	# IMPROVE! Только для root (owner==root).

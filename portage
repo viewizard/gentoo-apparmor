@@ -98,6 +98,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   
   # TEMP -----------------------------------------------
   /tmp/*						rwk,	# IMPROVE! Потом ограничить fsuid/uid == 0 или 250.
+  								# IMPROVE! (?) Потом работать с xattr, чтобы ограничить только на процесс.
   
   profile mount /bin/mount {
     #include <abstractions/base>
@@ -215,7 +216,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /usr/portage/{,**}					rw,
     
     # TEMP ---------------------------------------------
-    owner /tmp/tmp*					rw,
+    audit owner /tmp/tmp*				rw,	# FIX ME! audit 26.11.2017
   }
   
   profile free /usr/bin/free flags=(complain) {			# FIX ME! complain 06.10.2017
@@ -284,7 +285,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /dev/initctl					w,
     /sys/{,**}						r,
     @{PROC}/{,**}					r,
-    audit @{PROC}/@{pid}/fd/[0-9]*			w,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+    owner @{PROC}/@{pid}/fd/[0-9]*			w,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
@@ -344,6 +345,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     # TEMP ---------------------------------------------
     /tmp/						r,
     owner /tmp/**					rwk,	# Исключительный случай, разрешаем полный доступ.
+    								# IMPROVE! (?) Потом работать с xattr, чтобы ограничить только на процесс.
     /var/tmp/						r,
   }
   
@@ -394,10 +396,10 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /dev/ptmx						rw,
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
-    owner /dev/shm/??????				rw,
-    owner /dev/shm/sem.*				w,
-    owner /dev/shm/parted*/{,*}				w,
-    owner link subset /dev/shm/sem.*			-> /dev/shm/??????,
+    owner /dev/shm/@{TMP6}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+    audit owner /dev/shm/sem.*				w,	# FIX ME! audit 24.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+    owner /dev/shm/parted*/{,*}				w,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+    owner link subset /dev/shm/sem.*			-> /dev/shm/@{TMP6},
     /sys/{,**}						r,
     @{PROC}/{,**}					r,
     
@@ -425,6 +427,9 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /usr/portage/distfiles/{egit,git3}-src/{,**}	rw,
     link subset /usr/portage/distfiles/{egit,git3}-src/** -> /usr/portage/distfiles/{egit,git3}-src/**,
     /usr/portage/packages/{,**}				rw,
+    /usr/share/applications/{,**}			rw,
+    /usr/share/icons/{,**}				rw,
+    /usr/share/mime/{,**}				rw,
     /var/						r,
     /var/log/sandbox/sandbox-*.log			rw,
     /var/db/pkg/{,**}					r,
@@ -433,9 +438,11 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     # TEMP ---------------------------------------------
     /tmp/						r,
     owner /tmp/**					rwk,	# Исключительный случай, разрешаем полный доступ.
-    /tmp/portage.cron.*					w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
+    								# IMPROVE! (?) Потом работать с xattr, чтобы ограничить только на процесс.
+    /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
     /var/tmp/						r,
     /var/tmp/**						rwk,	# Исключительный случай, разрешаем полный доступ.	# IMPROVE! UID 0, 250
+    								# IMPROVE! (?) Потом работать с xattr, чтобы ограничить только на процесс.
     link subset /var/tmp/portage/**			-> /var/tmp/portage/**,
   }
 }
@@ -504,8 +511,8 @@ profile portage.env-update @{PYTHON_EXEC}/env-update {
   /var/lib/portage/config				rwk,
   
   # TEMP -----------------------------------------------
-  owner /tmp/????????					rw,
-  owner /tmp/tmp????????				rwk,
+  owner /tmp/@{TMP8}					rw,
+  owner /tmp/tmp@{TMP8}					rwk,
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -548,7 +555,7 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf {
   /usr/share/portage/**					r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/dispatch-conf.*/				rw,
+  audit owner /tmp/dispatch-conf.*/			rw,	# FIX ME! audit 26.11.2017
   
   profile diff /usr/bin/diff {
     #include <abstractions/base>
@@ -655,8 +662,8 @@ profile portage.portageq @{PYTHON_EXEC}/portageq {
   /var/cache/edb/{,**}					r,
   
   # TEMP -----------------------------------------------
-  /tmp/portage.cron.*					w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
-  owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks
+  /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
+  owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks	# * - $USER
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -671,8 +678,8 @@ profile portage.portageq @{PYTHON_EXEC}/portageq {
     /bin/uname						Px,	# sys-apps/coreutils
     
     # TEMP ---------------------------------------------
-    /tmp/portage.cron.*					w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
-    owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks
+    /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
+    owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks	# * - $USER
   }
 }
 
@@ -708,7 +715,7 @@ profile portage.etc-update /usr/sbin/etc-update {
   @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,	# dev-lang/python-exec
   
   # TEMP -----------------------------------------------
-  owner /tmp/sh-thd.*					rw,
+  owner /tmp/@{TMP_SH}					rw,
   owner /var/tmp/etc-update-@{pids}/{,**}		rw,
   
   profile cat /bin/cat {
@@ -725,7 +732,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     /etc/os-release					r,	# sys-apps/baselayout
     
     # TEMP ---------------------------------------------
-    owner /tmp/sh-thd.*					r,
+    owner /tmp/@{TMP_SH}				r,
   }
   
   profile grep /bin/grep {
@@ -961,14 +968,14 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
   /usr/bin/stat						Cx,	# sys-apps/coreutils
   /usr/bin/rsync					Cx,	# net-misc/rsync
   /usr/bin/fmt						Cx,	# sys-apps/coreutils
-  /usr/bin/gpg2						Px,	# app-crypt/gnupg
+  /usr/bin/gpg{,2}					Px,	# app-crypt/gnupg
   /usr/bin/renice					Px,	# sys-apps/util-linux
   /usr/bin/wget						Px,	# net-misc/wget
   @{PYTHON_EXEC_WRAPPER}				Cx -> portage,	# dev-lang/python-exec
   
   # TEMP -----------------------------------------------
-  owner /tmp/sh-thd.*					rw,
-  owner /var/tmp/portage/webrsync-*/portage-*.md5sum	r,
+  owner /tmp/@{TMP_SH}					rw,
+  owner /var/tmp/portage/webrsync-@{TMP6}/portage-*.md5sum r,
   
   profile date /bin/date {
     #include <abstractions/base>
@@ -995,7 +1002,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     /bin/rm						mr,
     
     # TEMP ---------------------------------------------
-    /var/tmp/portage/webrsync-*/{,**}			rw,	# IMPROVE! UID может быть 250 (portage) или 0 (root).
+    /var/tmp/portage/webrsync-@{TMP6}/{,**}		rw,	# IMPROVE! UID может быть 250 (portage) или 0 (root).
   }
   
   profile cut /bin/cut {
@@ -1023,7 +1030,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     /bin/cat						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/sh-thd.*					r,
+    owner /tmp/@{TMP_SH}				r,
   }
   
   profile mktemp /bin/mktemp {
@@ -1040,7 +1047,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     /bin/mktemp						mr,
     
     # TEMP ---------------------------------------------
-    owner /var/tmp/portage/webrsync-*/			w,
+    owner /var/tmp/portage/webrsync-@{TMP6}/		w,
   }
   
   profile tar /bin/tar {
@@ -1061,7 +1068,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     /bin/tar						mr,
     
     # TEMP ---------------------------------------------
-    /var/tmp/portage/webrsync-*/**			w,	# IMPROVE! UID может быть 250 (portage) или 0 (root).
+    /var/tmp/portage/webrsync-@{TMP6}/**		w,	# IMPROVE! UID может быть 250 (portage) или 0 (root).
   }
   
   profile chown /bin/chown {
@@ -1079,7 +1086,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     /bin/chown						mr,
     
     # TEMP ---------------------------------------------
-    /var/tmp/portage/webrsync-*/**			rw,	# IMPROVE! UID может быть 250 (portage) или 0 (root).
+    /var/tmp/portage/webrsync-@{TMP6}/**		rw,	# IMPROVE! UID может быть 250 (portage) или 0 (root).
   }
   
   profile xz /usr/bin/xz {
@@ -1093,7 +1100,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     /usr/bin/xz						mr,
     
     # TEMP ---------------------------------------------
-    owner /var/tmp/portage/webrsync-*/**		r,
+    owner /var/tmp/portage/webrsync-@{TMP6}/**		r,
   }
   
   profile md5sum /usr/bin/md5sum {
@@ -1107,7 +1114,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     /usr/bin/md5sum					mr,
     
     # TEMP ---------------------------------------------
-    owner /var/tmp/portage/webrsync-*/**		r,
+    owner /var/tmp/portage/webrsync-@{TMP6}/**		r,
   }
   
   profile stat /usr/bin/stat {
@@ -1137,7 +1144,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     /usr/portage/**					rw,
     
     # TEMP ---------------------------------------------
-    owner /var/tmp/portage/webrsync-*/**		r,
+    owner /var/tmp/portage/webrsync-@{TMP6}/**		r,
   }
   
   profile fmt /usr/bin/fmt {
@@ -1193,8 +1200,8 @@ profile portage.emaint @{PYTHON_EXEC}/emaint {
   /var/cache/edb/{,**}					r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/??????					rw,
-  owner /tmp/tmp??????					rwk,
+  audit owner /tmp/??????				rw,	# FIX ME! audit 26.11.2017
+  audit owner /tmp/tmp??????				rwk,	# FIX ME! audit 26.11.2017
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -1229,7 +1236,7 @@ profile portage.emaint @{PYTHON_EXEC}/emaint {
   }
 }
 
-profile portage.cgroup-release-agent /{usr/lib{,32,64}/portage/@{PYTHON},var/tmp/portage/._portage_reinstall_.*/bin}/cgroup-release-agent {
+profile portage.cgroup-release-agent /{usr/lib{,32,64}/portage/@{PYTHON},var/tmp/portage/._portage_reinstall_.@{TMP8}/bin}/cgroup-release-agent {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -1241,7 +1248,7 @@ profile portage.cgroup-release-agent /{usr/lib{,32,64}/portage/@{PYTHON},var/tmp
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/portage/@{PYTHON}/cgroup-release-agent r,
-  /var/tmp/portage/._portage_reinstall_.*/bin/cgroup-release-agent r,
+  /var/tmp/portage/._portage_reinstall_.@{TMP8}/bin/cgroup-release-agent r,
   @{shell}						mr,
   /bin/rmdir						Cx,	# sys-apps/coreutils
   
@@ -1279,6 +1286,6 @@ profile portage.ebuild.sh /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh {
   /usr/local/portage/{,**}				r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/ebuild-cache.*				rw,	# DELEGATION! eix
-  /tmp/portage.cron.*					w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
+  owner /tmp/ebuild-cache.@{TMP8}			rw,	# DELEGATION! eix
+  /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
 }

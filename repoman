@@ -59,11 +59,10 @@ profile repoman @{PYTHON_EXEC}/repoman {
   /var/cache/edb/dep/usr/local/portage/**		rw,
   
   # TEMP -----------------------------------------------
-  audit owner /tmp/??????				rw,	# FIX ME! audit 15.09.2017 (? теперь /tmp/????????)
-  owner /tmp/????????					rw,
-  owner /tmp/tmp*					rwk,
-  owner /var/tmp/tmp*/					rw,
-  owner /var/tmp/portage/tmp*/{,**}			rw,
+  owner /tmp/@{TMP8}					rw,
+  owner /tmp/tmp@{TMP8}					rwk,
+  audit owner /var/tmp/tmp*/				rw,	# FIX ME! audit 26.11.2017
+  audit owner /var/tmp/portage/tmp*/{,**}		rw,	# FIX ME! audit 26.11.2017
   
   profile shell @{shell} {
     #include <abstractions/base>

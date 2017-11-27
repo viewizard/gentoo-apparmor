@@ -40,8 +40,8 @@ profile eix /usr/bin/eix {
   /var/cache/eix/{,**}					rwk,
   
   # TEMP -----------------------------------------------
-  owner /tmp/ebuild-cache.*				rw,
-  owner /tmp/portage.cron.*				w,	# DELEGATION! 00_update_portage.cron.daily
+  owner /tmp/ebuild-cache.@{TMP8}			rw,
+  owner /tmp/portage.cron.@{TMP6}			w,	# DELEGATION! 00_update_portage.cron.daily
   
   profile portageq {
     #include <abstractions/base>
@@ -51,7 +51,7 @@ profile eix /usr/bin/eix {
     @{PYTHON_EXEC}/portageq				Px,	# sys-apps/portage
     
     # TEMP ---------------------------------------------
-    /tmp/portage.cron.*					w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
+    /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
   }
 }
 

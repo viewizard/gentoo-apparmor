@@ -71,7 +71,7 @@ profile engrampa /usr/bin/engrampa {
   /usr/share/engrampa/{,**}				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.fr-*/{,**}				rw,
+  owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
   owner @{HOME}/.config/mimeapps.list*			rw,
   owner @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
   
@@ -113,7 +113,7 @@ profile engrampa /usr/bin/engrampa {
     /bin/rm						mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.fr-*/{,**}				rw,
+    owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
@@ -129,7 +129,7 @@ profile engrampa /usr/bin/engrampa {
     /bin/cp						mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.fr-*/{,**}				rw,
+    owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
@@ -151,7 +151,7 @@ profile engrampa /usr/bin/engrampa {
     /usr/bin/xz						ix,	# app-arch/xz-utils	# Oставляем запуск через ix.
     
     # USERS --------------------------------------------
-    owner @{HOME}/.fr-*/{,**}				rw,
+    owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
@@ -167,7 +167,7 @@ profile engrampa /usr/bin/engrampa {
     /bin/bzip2						mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.fr-*/{,**}				rw,
+    owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
@@ -183,7 +183,7 @@ profile engrampa /usr/bin/engrampa {
     /bin/gzip						mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.fr-*/{,**}				rw,
+    owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
@@ -208,7 +208,7 @@ profile engrampa /usr/bin/engrampa {
     /usr/lib64/p7zip/7z.so				m,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.fr-*/{,**}				rw,
+    owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
@@ -269,7 +269,7 @@ profile engrampa /usr/bin/engrampa {
     /usr/bin/lzip					mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.fr-*/{,**}				rw,
+    owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
@@ -285,7 +285,7 @@ profile engrampa /usr/bin/engrampa {
     /usr/bin/xz						mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.fr-*/{,**}				rw,
+    owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
@@ -314,7 +314,7 @@ profile engrampa /usr/bin/engrampa {
     /opt/rar/rar					mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.fr-*/{,**}				rw,
+    owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
     
     # NOISY --------------------------------------------
     deny /etc/						r,
@@ -408,9 +408,12 @@ profile engrampa_dpkg_deb {
   /bin/rm						Cx,	# sys-apps/coreutils
   /bin/tar						Cx,	# app-arch/tar
   
+  # USERS ----------------------------------------------
+  owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
+  
   # TEMP -----------------------------------------------
-  owner /tmp/dpkg-deb.*/				rw,
-  owner /tmp/dpkg-deb.*/*				r,
+  owner /tmp/dpkg-deb.@{TMP6}/				rw,
+  owner /tmp/dpkg-deb.@{TMP6}/*				r,
   
   profile rm /bin/rm {
     #include <abstractions/base>
@@ -422,7 +425,7 @@ profile engrampa_dpkg_deb {
     /bin/rm						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/dpkg-deb.*/{,**}				rw,
+    owner /tmp/dpkg-deb.@{TMP6}/{,**}			rw,
   }
   
   profile tar /bin/tar {
@@ -435,8 +438,11 @@ profile engrampa_dpkg_deb {
     # EXECUTABLES --------------------------------------
     /bin/tar						mr,
     
+    # USERS --------------------------------------------
+    owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
+    
     # TEMP ---------------------------------------------
-    owner /tmp/dpkg-deb.*/{,**}				w,
+    owner /tmp/dpkg-deb.@{TMP6}/{,**}			w,
   }
 }
 
@@ -570,7 +576,7 @@ profile engrampa_root {
   # USERS ----------------------------------------------
   /root/.config/mimeapps.list*				rw,
   /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
-  /root/.cache/.fr-*/{,**}				rw,
+  /root/.cache/.fr-@{TMP6}/{,**}			rw,
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -612,7 +618,7 @@ profile engrampa_root {
     /bin/rm						mr,
     
     # USERS --------------------------------------------
-    /root/.cache/.fr-*/{,**}				rw,
+    /root/.cache/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
     deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
@@ -632,7 +638,7 @@ profile engrampa_root {
     /bin/cp						mr,
     
     # USERS --------------------------------------------
-    /root/.cache/.fr-*/{,**}				rw,
+    /root/.cache/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
     deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
@@ -660,7 +666,7 @@ profile engrampa_root {
     /usr/bin/xz						ix,	# app-arch/xz-utils	# Oставляем запуск через ix.
     
     # USERS --------------------------------------------
-    /root/.cache/.fr-*/{,**}				rw,
+    /root/.cache/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
     deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
@@ -677,7 +683,7 @@ profile engrampa_root {
     /bin/bzip2						mr,
     
     # USERS --------------------------------------------
-    /root/.cache/.fr-*/{,**}				rw,
+    /root/.cache/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
     deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
@@ -694,7 +700,7 @@ profile engrampa_root {
     /bin/gzip						mr,
     
     # USERS --------------------------------------------
-    /root/.cache/.fr-*/{,**}				rw,
+    /root/.cache/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
     deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
@@ -782,7 +788,7 @@ profile engrampa_root {
     /usr/bin/lzip					mr,
     
     # USERS --------------------------------------------
-    /root/.cache/.fr-*/{,**}				rw,
+    /root/.cache/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
     deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
@@ -799,7 +805,7 @@ profile engrampa_root {
     /usr/bin/xz						mr,
     
     # USERS --------------------------------------------
-    /root/.cache/.fr-*/{,**}				rw,
+    /root/.cache/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
     deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
@@ -828,6 +834,9 @@ profile engrampa_root {
     
     # EXECUTABLES --------------------------------------
     /opt/rar/rar					mr,
+    
+    # USERS --------------------------------------------
+    /root/.cache/.fr-@{TMP6}/{,**}			rw,
     
     # NOISY --------------------------------------------
     deny /etc/						r,
@@ -923,9 +932,12 @@ profile engrampa_dpkg_deb_root {
   /bin/rm						Cx,	# sys-apps/coreutils
   /bin/tar						Cx,	# app-arch/tar
   
+  # USERS ----------------------------------------------
+  /root/.cache/.fr-@{TMP6}/{,**}			rw,
+  
   # TEMP -----------------------------------------------
-  owner /tmp/dpkg-deb.*/				rw,
-  owner /tmp/dpkg-deb.*/*				r,
+  owner /tmp/dpkg-deb.@{TMP6}/				rw,
+  owner /tmp/dpkg-deb.@{TMP6}/*				r,
   
   profile rm /bin/rm {
     #include <abstractions/base>
@@ -938,7 +950,7 @@ profile engrampa_dpkg_deb_root {
     /bin/rm						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/dpkg-deb.*/{,**}				rw,
+    owner /tmp/dpkg-deb.@{TMP6}/{,**}			rw,
   }
   
   profile tar /bin/tar {
@@ -952,8 +964,11 @@ profile engrampa_dpkg_deb_root {
     # EXECUTABLES --------------------------------------
     /bin/tar						mr,
     
+    # USERS --------------------------------------------
+    /root/.cache/.fr-@{TMP6}/{,**}			rw,
+    
     # TEMP ---------------------------------------------
-    owner /tmp/dpkg-deb.*/{,**}				w,
+    owner /tmp/dpkg-deb.@{TMP6}/{,**}			w,
   }
 }
 

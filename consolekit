@@ -109,8 +109,8 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   capability dac_override,
   
   # MOUNT ----------------------------------------------
-  mount fstype=tmpfs -> /run/user/[0-9]*/,
-  umount /run/user/[0-9]*/,
+  mount fstype=tmpfs -> /run/user/@{UID}/,
+  umount /run/user/@{UID}/,
   
   # PTRACE ---------------------------------------------
   ptrace (trace),
@@ -229,7 +229,7 @@ profile consolekit.ck-remove-directory /usr/lib{,32,64}/ConsoleKit/ck-remove-dir
   /usr/lib{,32,64}/ConsoleKit/ck-remove-directory	m,
   
   # READS/WRITES ---------------------------------------
-  /run/user/[0-9]*/{,**}				rw,
+  /run/user/@{UID}/{,**}				rw,
 }
 
 profile consolekit.ck-get-x11-server-pid /usr/lib{,32,64}/ConsoleKit/ck-get-x11-server-pid {

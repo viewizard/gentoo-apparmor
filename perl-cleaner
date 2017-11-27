@@ -46,7 +46,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
   /var/db/pkg/{,**}					r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/sh-thd.*					rw,
+  owner /tmp/@{TMP_SH}					rw,
   
   profile grep /bin/grep {
     #include <abstractions/base>

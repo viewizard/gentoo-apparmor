@@ -53,9 +53,9 @@ profile meld /usr/bin/meld {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner /dev/shm/??????					rw,
-  owner /dev/shm/sem.*-[0-9]*				rw,
-  owner link subset /dev/shm/sem.*-[0-9]*		-> /dev/shm/??????,
+  owner /dev/shm/@{TMP6}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /dev/shm/sem.mp@{pids}-[0-9]*			rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner link subset /dev/shm/sem.mp@{pids}-[0-9]*	-> /dev/shm/@{TMP6},
   owner @{PROC}/@{pid}/fd/				r,
   owner @{PROC}/@{pid}/mounts				r,
   
@@ -82,7 +82,9 @@ profile meld /usr/bin/meld {
   
   # TEMP -----------------------------------------------
   owner /tmp/*						rw,	# системы контроля версий передают файлы на проверку через tmp.
-  owner /var/tmp/??????					rw,
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на текущий
+  								# процесc, rapidsvn, qgit.
+  audit owner /var/tmp/??????				rw,	# FIX ME! audit 25.11.2017
 }
 
 profile meld_root {
@@ -129,9 +131,9 @@ profile meld_root {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner /dev/shm/??????					rw,
-  owner /dev/shm/sem.*-[0-9]*				rw,
-  owner link subset /dev/shm/sem.*-[0-9]*		-> /dev/shm/??????,
+  owner /dev/shm/@{TMP6}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /dev/shm/sem.mp@{pids}-[0-9]*			rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner link subset /dev/shm/sem.mp@{pids}-[0-9]*	-> /dev/shm/@{TMP6},
   owner @{PROC}/@{pid}/fd/				r,
   owner @{PROC}/@{pid}/mounts				r,
   
@@ -157,6 +159,9 @@ profile meld_root {
   owner @{HOME}/.local/share/meld/{,**}			rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/??????{,_*}				rw,
-  owner /var/tmp/??????					rw,
+  /tmp/							r,
+  owner /tmp/*						rw,	# системы контроля версий передают файлы на проверку через tmp.
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на текущий
+  								# процеcс, rapidsvn, qgit.
+  audit owner /var/tmp/??????				rw,	# FIX ME! audit 25.11.2017
 }

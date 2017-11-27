@@ -86,13 +86,14 @@ profile filezilla.fzsftp /usr/bin/fzsftp {
   owner @{HOME}/.putty/{,**}				rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/ssh-*/agent.*				rw,
+  owner /tmp/ssh-@{TMP12}/agent.@{pids}			rw,	# @{pids} - pid процесса /usr/bin/ssh-agent
   
   profile shell @{shell} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,

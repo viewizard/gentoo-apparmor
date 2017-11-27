@@ -26,5 +26,5 @@ profile openssh.ssh-agent /usr/bin/ssh-agent {
   /etc/ssl/openssl.cnf					r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/ssh-*/{,agent.*}				rw,
+  owner /tmp/ssh-@{TMP12}/{,agent.@{pids}}		rw,	# IMPROVE! Должен работать с @{pid} текущего процесса.
 }

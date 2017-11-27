@@ -38,9 +38,9 @@ profile kmod /{bin/kmod,sbin/modprobe,sbin/modeinfo} {
   /run/tmpfiles.d/kmod.conf				w,
   
   # TEMP -----------------------------------------------
-  owner /tmp/depmod.*/{,**}				rw,
+  audit owner /tmp/depmod.*/{,**}			rw,	# FIX ME! audit 26.11.2017
   
   # DENY INHERIT ---------------------------------------
-  deny /var/log/Xorg.[0-9]*.log				w,	# x11-base/xorg-server, xorg-server.Xorg
-  deny /tmp/lynis.cron.*				w,	# app-forensics/lynis, lynis.cron.daily
+  deny /var/log/Xorg.@{X_DISPLAY}.log			w,	# x11-base/xorg-server, xorg-server.Xorg
+  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
 }

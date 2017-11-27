@@ -41,7 +41,7 @@ profile dconf.dconf-service /usr/libexec/dconf-service {
   /usr/libexec/dconf-service				mr,
   
   # READS/WRITES ---------------------------------------
-  owner /run/user/[0-9]*/dconf/{,user}			rw,
+  owner /run/user/@{UID}/dconf/{,user}			rw,
   
   # USERS ----------------------------------------------
   owner @{HOME_CACHE}/dconf/{,user}			rw,

@@ -83,8 +83,8 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   owner @{HOME}/.config/xarchiver/{,**}			rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/xarchiver_*_socket				rw,
-  owner /tmp/xa-*/{,**}					rw,
+  audit owner /tmp/xarchiver_*_socket			rw,	# FIX ME! Использовать @{TMP} переменные.
+  audit owner /tmp/xa-*/{,**}				rw,	# FIX ME! Использовать @{TMP} переменные.
   
   profile mv /bin/mv flags=(complain) {
     #include <abstractions/base>
@@ -224,7 +224,7 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
     /usr/bin/lzip					mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.fr-*/{,**}				rw,
+    owner @{HOME}/.xa-*/{,**}				rw,
   }
   
   profile xz /usr/bin/xz flags=(complain) {
@@ -391,8 +391,8 @@ profile xarchiver_root flags=(complain) {
   owner @{HOME}/.config/xarchiver/{,**}			rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/xarchiver_*_socket				rw,
-  /tmp/xa-*/{,**}					rw,
+  audit owner /tmp/xarchiver_*_socket			rw,	# FIX ME! Использовать @{TMP} переменные.
+  audit /tmp/xa-*/{,**}					rw,	# FIX ME! Использовать @{TMP} переменные.
   
   profile mv /bin/mv flags=(complain) {
     #include <abstractions/base>

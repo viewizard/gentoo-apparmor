@@ -40,11 +40,11 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner /dev/shm/??????					rw,
-  owner /dev/shm/sem.KCacheEngineReaderSem*		rw,
-  owner /dev/shm/sem.KCacheEngineWriterSem*		rw,
-  owner link subset /dev/shm/sem.KCacheEngineReaderSem*	-> /dev/shm/??????,
-  owner link subset /dev/shm/sem.KCacheEngineWriterSem*	-> /dev/shm/??????,
+  owner /dev/shm/@{TMP6}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /dev/shm/sem.KCacheEngineReaderSem*		rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /dev/shm/sem.KCacheEngineWriterSem*		rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner link subset /dev/shm/sem.KCacheEngineReaderSem*	-> /dev/shm/@{TMP6},
+  owner link subset /dev/shm/sem.KCacheEngineWriterSem*	-> /dev/shm/@{TMP6},
   owner @{PROC}/@{pid}/auxv				r,
   owner @{PROC}/@{pid}/cmdline				r,
   
@@ -68,13 +68,13 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   owner @{HOME}/.local/share/data/Kingsoft/**		rwk,
   
   # TEMP -----------------------------------------------
-  owner /tmp/qt_temp.*					rwk,
-  owner /tmp/~wp*					rw,
-  owner /tmp/~tmp*.TMP					rw,
-  owner /tmp/wps-*/{,*}					rw,
+  audit owner /tmp/qt_temp.*				rwk,	# FIX ME! Использовать @{TMP} переменные.
+  audit owner /tmp/~wp*					rw,	# FIX ME! Использовать @{TMP} переменные.
+  audit owner /tmp/~tmp*.TMP				rw,	# FIX ME! Использовать @{TMP} переменные.
+  audit owner /tmp/wps-*/{,*}				rw,	# FIX ME! Использовать @{TMP} переменные.
   owner /tmp/renderlog					w,
-  owner /tmp/qipc_systemsem_{wps,et,wpp}starupobject{,2d}* rw,
-  owner /tmp/qipc_sharedmemory_{wps,et,wpp}starupobject{,2d}* rw,
+  audit owner /tmp/qipc_systemsem_{wps,et,wpp}starupobject{,2d}* rw,	# FIX ME! Использовать @{TMP} переменные.
+  audit owner /tmp/qipc_sharedmemory_{wps,et,wpp}starupobject{,2d}* rw,	# FIX ME! Использовать @{TMP} переменные.
   
   # NOISY ----------------------------------------------
   deny /opt/kingsoft/wps-office/office6/startup/	w,

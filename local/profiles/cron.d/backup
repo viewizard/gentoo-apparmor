@@ -51,8 +51,8 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
   /etc/backup_daily.conf				r,
   
   # TEMP -----------------------------------------------
-  /tmp/dailyhomebackup.cron.??????			rw,
-  /tmp/dailyhomebackup.cron.??????/			r,
+  /tmp/dailyhomebackup.cron.@{TMP6}			rw,
+  /tmp/dailyhomebackup.cron.@{TMP6}/			r,
   
   profile chmod /bin/chmod {
     #include <abstractions/base>
@@ -64,7 +64,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     /mnt/backup/Gentoo_Backup/daily_gentoo_home_*.tar	w,
     
     # DENY INHERIT -------------------------------------
-    deny /tmp/dailyhomebackup.cron.??????		w,
+    deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
   }
   
   profile date /bin/date {
@@ -74,7 +74,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     /bin/date						mr,
     
     # DENY INHERIT -------------------------------------
-    deny /tmp/dailyhomebackup.cron.??????		w,
+    deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
   }
   
   profile tar /bin/tar {
@@ -95,10 +95,10 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     /mnt/backup/Gentoo_Backup/daily_gentoo_home_*.tar	w,
     
     # TEMP ---------------------------------------------
-    /tmp/dailyhomebackup.cron.??????/{,**}		r,	# Точка монтирования снапшота с /home.
+    /tmp/dailyhomebackup.cron.@{TMP6}/{,**}		r,	# Точка монтирования снапшота с /home.
     
     # DENY INHERIT -------------------------------------
-    deny /tmp/dailyhomebackup.cron.??????		w,
+    deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
   }
   
   profile rm /bin/rm {
@@ -109,7 +109,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     
     # READS/WRITES -------------------------------------
     /mnt/backup/Gentoo_Backup/daily_gentoo_home_*.tar	w,
-    /tmp/dailyhomebackup.cron.??????{,/}		rw,
+    /tmp/dailyhomebackup.cron.@{TMP6}{,/}		rw,
   }
   
   profile cat /bin/cat {
@@ -119,10 +119,10 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     /bin/cat						mr,
     
     # READS/WRITES -------------------------------------
-    /tmp/dailyhomebackup.cron.??????			r,
+    /tmp/dailyhomebackup.cron.@{TMP6}			r,
     
     # DENY INHERIT -------------------------------------
-    deny /tmp/dailyhomebackup.cron.??????		w,
+    deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
   }
   
   profile mktemp /bin/mktemp {
@@ -132,7 +132,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     /bin/mktemp						mr,
     
     # TEMP ---------------------------------------------
-    /tmp/dailyhomebackup.cron.??????{,/}		rw,
+    /tmp/dailyhomebackup.cron.@{TMP6}{,/}		rw,
   }
   
   profile sort /bin/sort {
@@ -142,7 +142,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     /bin/sort						mr,
     
     # DENY INHERIT -------------------------------------
-    deny /tmp/dailyhomebackup.cron.??????		w,
+    deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
   }
   
   profile grep /bin/grep {
@@ -152,7 +152,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     /bin/grep						mr,
     
     # TEMP ---------------------------------------------
-    /tmp/dailyhomebackup.cron.??????			w,
+    /tmp/dailyhomebackup.cron.@{TMP6}			w,
   }
   
   profile mount /bin/mount {
@@ -162,7 +162,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     capability sys_admin,
     
     # MOUNT --------------------------------------------
-    mount fstype=ext4 options=(ro) /dev/@{BLOCK_ALL} -> /tmp/dailyhomebackup.cron.*/,
+    mount fstype=ext4 options=(ro) /dev/@{BLOCK_ALL} -> /tmp/dailyhomebackup.cron.@{TMP6}/,
     
     # PSEUDO -------------------------------------------
     /dev/@{BLOCK_VIRT}					r,
@@ -175,7 +175,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     /run/mount/utab					rw,
     
     # DENY INHERIT -------------------------------------
-    deny /tmp/dailyhomebackup.cron.??????		w,
+    deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
   }
   
   profile umount /bin/umount {
@@ -185,7 +185,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     capability sys_admin,
     
     # MOUNT --------------------------------------------
-    umount /tmp/dailyhomebackup.cron.*/,
+    umount /tmp/dailyhomebackup.cron.@{TMP6}/,
     
     # EXECUTABLES --------------------------------------
     /bin/umount						mr,
@@ -194,7 +194,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     /run/mount/utab					rw,
     
     # DENY INHERIT -------------------------------------
-    deny /tmp/dailyhomebackup.cron.??????		w,
+    deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
   }
   
   profile gawk /usr/bin/gawk {
@@ -204,7 +204,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     /usr/bin/gawk					mr,
     
     # TEMP ---------------------------------------------
-    /tmp/dailyhomebackup.cron.??????			w,
+    /tmp/dailyhomebackup.cron.@{TMP6}			w,
   }
   
   profile find /usr/bin/find {
@@ -218,7 +218,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     /mnt/backup/Gentoo_Backup/				r,
     
     # DENY INHERIT -------------------------------------
-    deny /tmp/dailyhomebackup.cron.??????		w,
+    deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
   }
   
   profile stat /usr/bin/stat {
@@ -228,7 +228,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     /usr/bin/stat					mr,
     
     # DENY INHERIT -------------------------------------
-    deny /tmp/dailyhomebackup.cron.??????		w,
+    deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
   }
 }
 
@@ -265,8 +265,8 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
   /etc/backup_weekly.conf				r,
   
   # TEMP -----------------------------------------------
-  /tmp/rootbackup.cron.??????				rw,
-  /tmp/rootbackup.cron.??????/				r,
+  /tmp/rootbackup.cron.@{TMP6}				rw,
+  /tmp/rootbackup.cron.@{TMP6}/				r,
   
   profile chmod /bin/chmod {
     #include <abstractions/base>
@@ -279,7 +279,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     /mnt/backup/Gentoo_Backup/gentoo_var_*.tar		w,
     
     # DENY INHERIT -------------------------------------
-    deny /tmp/rootbackup.cron.??????			w,
+    deny /tmp/rootbackup.cron.@{TMP6}			w,
   }
   
   profile date /bin/date {
@@ -289,7 +289,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     /bin/date						mr,
     
     # DENY INHERIT -------------------------------------
-    deny /tmp/rootbackup.cron.??????			w,
+    deny /tmp/rootbackup.cron.@{TMP6}			w,
   }
   
   profile tar /bin/tar {
@@ -311,10 +311,10 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     /mnt/backup/Gentoo_Backup/gentoo_var_*.tar		w,
     
     # TEMP ---------------------------------------------
-    /tmp/rootbackup.cron.??????/{,**}			r,	# Точка монтирования снапшота c root и var.
+    /tmp/rootbackup.cron.@{TMP6}/{,**}			r,	# Точка монтирования снапшота c root и var.
     
     # DENY INHERIT -------------------------------------
-    deny /tmp/rootbackup.cron.??????			w,
+    deny /tmp/rootbackup.cron.@{TMP6}			w,
   }
   
   profile rm /bin/rm {
@@ -326,7 +326,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     # READS/WRITES -------------------------------------
     /mnt/backup/Gentoo_Backup/gentoo_root_*.tar		w,
     /mnt/backup/Gentoo_Backup/gentoo_var_*.tar		w,
-    /tmp/rootbackup.cron.??????{,/}			rw,
+    /tmp/rootbackup.cron.@{TMP6}{,/}			rw,
   }
   
   profile cat /bin/cat {
@@ -336,10 +336,10 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     /bin/cat						mr,
     
     # READS/WRITES -------------------------------------
-    /tmp/rootbackup.cron.??????				r,
+    /tmp/rootbackup.cron.@{TMP6}			r,
     
     # DENY INHERIT -------------------------------------
-    deny /tmp/rootbackup.cron.??????			w,
+    deny /tmp/rootbackup.cron.@{TMP6}			w,
   }
   
   profile mktemp /bin/mktemp {
@@ -349,7 +349,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     /bin/mktemp						mr,
     
     # TEMP ---------------------------------------------
-    /tmp/rootbackup.cron.??????{,/}			rw,
+    /tmp/rootbackup.cron.@{TMP6}{,/}			rw,
   }
   
   profile grep /bin/grep {
@@ -359,7 +359,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     /bin/grep						mr,
     
     # TEMP ---------------------------------------------
-    /tmp/rootbackup.cron.??????				w,
+    /tmp/rootbackup.cron.@{TMP6}			w,
   }
   
   profile sort /bin/sort {
@@ -369,7 +369,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     /bin/sort						mr,
     
     # TEMP ---------------------------------------------
-    /tmp/rootbackup.cron.??????				w,
+    /tmp/rootbackup.cron.@{TMP6}			w,
   }
   
   profile mount /bin/mount {
@@ -379,7 +379,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     capability sys_admin,
     
     # MOUNT --------------------------------------------
-    mount fstype=ext4 options=(ro) /dev/@{BLOCK_ALL} -> /tmp/rootbackup.cron.*/,
+    mount fstype=ext4 options=(ro) /dev/@{BLOCK_ALL} -> /tmp/rootbackup.cron.@{TMP6}/,
     
     # PSEUDO -------------------------------------------
     /dev/@{BLOCK_VIRT}					r,
@@ -392,7 +392,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     /run/mount/utab					rw,
     
     # DENY INHERIT -------------------------------------
-    deny /tmp/rootbackup.cron.??????			w,
+    deny /tmp/rootbackup.cron.@{TMP6}			w,
   }
   
   profile umount /bin/umount {
@@ -402,7 +402,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     capability sys_admin,
     
     # MOUNT --------------------------------------------
-    umount /tmp/rootbackup.cron.*/,
+    umount /tmp/rootbackup.cron.@{TMP6}/,
     
     # EXECUTABLES --------------------------------------
     /bin/umount						mr,
@@ -411,7 +411,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     /run/mount/utab					rw,
     
     # DENY INHERIT -------------------------------------
-    deny /tmp/rootbackup.cron.??????			w,
+    deny /tmp/rootbackup.cron.@{TMP6}			w,
   }
   
   profile gawk /usr/bin/gawk {
@@ -421,7 +421,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     /usr/bin/gawk					mr,
     
     # TEMP ---------------------------------------------
-    /tmp/rootbackup.cron.??????				w,
+    /tmp/rootbackup.cron.@{TMP6}			w,
   }
   
   profile find /usr/bin/find {
@@ -435,7 +435,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     /mnt/backup/Gentoo_Backup/				r,
     
     # DENY INHERIT -------------------------------------
-    deny /tmp/rootbackup.cron.??????			w,
+    deny /tmp/rootbackup.cron.@{TMP6}			w,
   }
   
   profile stat /usr/bin/stat {
@@ -445,6 +445,6 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     /usr/bin/stat					mr,
     
     # DENY INHERIT -------------------------------------
-    deny /tmp/rootbackup.cron.??????			w,
+    deny /tmp/rootbackup.cron.@{TMP6}			w,
   }
 }

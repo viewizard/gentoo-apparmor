@@ -20,10 +20,10 @@ owner @{HOME}/						r,
 owner @{HOME}/@{USERS_DIR_rwkl}/			r,
 owner @{HOME}/@{USERS_FILE_rwkl}			rwk,
 owner @{HOME}/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl}	rwk,
-owner /run/user/[0-9]*/gvfs/				r,	# gnome-base/gvfs
-owner /run/user/[0-9]*/gvfs/*/@{USERS_DIR_rwkl}/	r,	# gnome-base/gvfs
-owner /run/user/[0-9]*/gvfs/*/@{USERS_FILE_rwkl}	rwk,	# gnome-base/gvfs
-owner /run/user/[0-9]*/gvfs/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl} rwk,	# gnome-base/gvfs
+owner /run/user/@{UID}/gvfs/				r,	# gnome-base/gvfs
+owner /run/user/@{UID}/gvfs/*/@{USERS_DIR_rwkl}/	r,	# gnome-base/gvfs
+owner /run/user/@{UID}/gvfs/*/@{USERS_FILE_rwkl}	rwk,	# gnome-base/gvfs
+owner /run/user/@{UID}/gvfs/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl} rwk,	# gnome-base/gvfs
 /media/{,*/}						r,
 /media/*/@{USERS_DIR_rwkl}/				r,
 /media/*/@{USERS_FILE_rwkl}				rwk,
@@ -35,8 +35,8 @@ owner /run/user/[0-9]*/gvfs/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl} rwk,	# gnome-
 
 owner link subset @{HOME}/@{USERS_FILE_rwkl}			-> @{HOME}/@{USERS_FILE_rwkl},
 owner link subset @{HOME}/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl}	-> @{HOME}/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl},
-owner link subset /run/user/[0-9]*/gvfs/*/@{USERS_FILE_rwkl}	-> /run/user/[0-9]*/gvfs/*/@{USERS_FILE_rwkl},
-owner link subset /run/user/[0-9]*/gvfs/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl}	-> /run/user/[0-9]*/gvfs/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl},
+owner link subset /run/user/@{UID}/gvfs/*/@{USERS_FILE_rwkl}	-> /run/user/@{UID}/gvfs/*/@{USERS_FILE_rwkl},
+owner link subset /run/user/@{UID}/gvfs/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl}	-> /run/user/@{UID}/gvfs/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl},
 link subset /media/*/@{USERS_FILE_rwkl}			-> /media/*/@{USERS_FILE_rwkl},
 link subset /media/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl}		-> /media/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl},
 link subset /run/media/*/*/@{USERS_FILE_rwkl}		-> /run/media/*/*/@{USERS_FILE_rwkl},

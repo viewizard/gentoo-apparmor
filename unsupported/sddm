@@ -26,8 +26,8 @@ profile sddm /usr/bin/sddm {
   /var/log/sddm.log					rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/sddm-auth*					rw,
-  owner /tmp/??????/					rw,
+  audit owner /tmp/sddm-auth*				rw,	# FIX ME! Использовать @{TMP} переменные.
+  audit owner /tmp/??????/				rw,	# FIX ME! Использовать @{TMP} переменные.
   
   profile shell @{shell} {
     #include <abstractions/base>

@@ -71,8 +71,8 @@ profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   owner @{HOME}/.gimp-[0-9].[0-9]/**			rwk,
   
   # TEMP -----------------------------------------------
-  owner /tmp/gdkpixbuf-save-tmp.*			rw,
-  owner /tmp/gtkprint_*					rw,
+  audit owner /tmp/gdkpixbuf-save-tmp.*			rw,	# FIX ME! audit 25.11.2017
+  audit owner /tmp/gtkprint_*				rw,	# FIX ME! audit 25.11.2017
 }
 
 profile gimp.plug-ins /usr/lib{,32,64}/gimp/[0-9].[0-9]/plug-ins/* {
@@ -88,6 +88,9 @@ profile gimp.plug-ins /usr/lib{,32,64}/gimp/[0-9].[0-9]/plug-ins/* {
   #include <abstractions/dbus/gvfs>
   #include <abstractions/unix/gvfsd-http>
   #include <abstractions/unix/gvfsd-http-virtual>
+  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
   #include <abstractions/profile_transitions/users-strict-web>
   
   # PSEUDO ---------------------------------------------

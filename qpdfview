@@ -74,6 +74,6 @@ profile qpdfview /usr/bin/qpdfview {
   owner @{HOME}/.config/qpdfview/*			rwk,
   
   # TEMP -----------------------------------------------
-  owner /tmp/qt_temp.*.@{local_ext}			rw,
-  owner /tmp/qpdfview.*.@{local_ext}			rw,
+  audit owner /tmp/qt_temp.*.@{local_ext}		rw,	# FIX ME! audit 25.11.2017
+  audit owner /tmp/qpdfview.*.@{local_ext}		rw,	# FIX ME! audit 25.11.2017
 }

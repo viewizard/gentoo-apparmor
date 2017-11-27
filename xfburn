@@ -55,7 +55,7 @@ profile xfburn /usr/bin/xfburn {
   /etc/udev/udev.conf					r,	# sys-fs/eudev
   /usr/share/xfburn/{,**}				r,
   /run/udev/data/*					r,
-  owner /run/user/[0-9]*/gvfs-burn/			rw,	# gnome-base/gvfs
+  owner /run/user/@{UID}/gvfs-burn/			rw,	# gnome-base/gvfs
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/xfburn/{,**}			rw,

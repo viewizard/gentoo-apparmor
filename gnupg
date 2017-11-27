@@ -23,7 +23,7 @@ profile gnupg.gpg-agent /usr/bin/gpg-agent {
   /usr/bin/pinentry-*					Px,	# app-crypt/pinentry
   
   # READS/WRITES ---------------------------------------
-  owner /run/user/[0-9]*/gnupg/{,**}			rw,
+  owner /run/user/@{UID}/gnupg/{,**}			rw,
   /var/lib/gentoo/gkeys/keyrings/gentoo/release/**	rw,
   
   # USERS ----------------------------------------------
@@ -48,7 +48,7 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} {
   # READS/WRITES ---------------------------------------
   /etc/inputrc						r,
   /run/openrc/dm-crypt-remdev.*/*			r,
-  /run/user/[0-9]*/gnupg/{,*}				rw,
+  /run/user/@{UID}/gnupg/{,*}				rw,
   /var/lib/gentoo/gkeys/keyrings/gentoo/release/	r,
   /var/lib/gentoo/gkeys/keyrings/gentoo/release/**	rw,
   owner link subset /var/lib/gentoo/gkeys/keyrings/gentoo/release/**	-> /var/lib/gentoo/gkeys/keyrings/gentoo/release/**,
@@ -59,7 +59,7 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} {
   owner link subset @{HOME}/.gnupg/**			-> /{home/*,root}/.gnupg/**,	# LINK! @{HOME}
   
   # TEMP -----------------------------------------------
-  owner /var/tmp/portage/webrsync-*/portage-*		r,	# DELEGATION! portage.emerge-webrsync
+  owner /var/tmp/portage/webrsync-@{TMP6}/portage-*	r,	# DELEGATION! portage.emerge-webrsync
   
   # NOISY ----------------------------------------------
   deny /.gnupg/{,**}					r,	# В некоторых случаях, если HOME пользователя не определен, лезет в корень.
@@ -77,7 +77,7 @@ profile gnupg.gpgconf /usr/bin/gpgconf {
   /usr/bin/gpgconf					mr,
   
   # READS/WRITES ---------------------------------------
-  /run/user/[0-9]*/gnupg/{,**}				w,
+  /run/user/@{UID}/gnupg/{,**}				w,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.gnupg/{,**}				rw,

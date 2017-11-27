@@ -54,7 +54,7 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings {
   owner @{HOME}/.nvidia-settings-rc			rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/.xconfig.tmp.*				rw,
+  owner /tmp/.xconfig.tmp.@{TMP6}			rw,
   
   profile shell @{shell} {
     #include <abstractions/base>

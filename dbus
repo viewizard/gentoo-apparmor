@@ -29,7 +29,7 @@ profile dbus.dbus-daemon /usr/bin/dbus-daemon {
   # UNIX -----------------------------------------------
   unix (bind, listen, send, receive, accept)
   			type=stream
-  			addr="@/tmp/dbus-*",
+  			addr="@/tmp/dbus-@{TMP10}",
   
   # DBUS -----------------------------------------------
   dbus receive

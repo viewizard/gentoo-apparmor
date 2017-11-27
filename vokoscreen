@@ -67,7 +67,7 @@ profile vokoscreen /usr/bin/vokoscreen {
   owner @{HOME}/{,[^.]**/}.vokoscreen-recording/	w,	# Создание временной папки.
   
   # TEMP -----------------------------------------------
-  owner /tmp/vokoscreen*				rw,
+  owner /tmp/mergeFile.txt				rw,
   
   profile ffmpeg /usr/bin/ffmpeg {
     #include <abstractions/base>
@@ -84,5 +84,8 @@ profile vokoscreen /usr/bin/vokoscreen {
     
     # USERS --------------------------------------------
     owner @{HOME}/.config/vokoscreen/ffmpeg-*.log	w,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/mergeFile.txt				r,
   }
 }

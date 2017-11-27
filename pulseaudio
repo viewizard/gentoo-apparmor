@@ -53,16 +53,16 @@ profile pulseaudio /usr/bin/pulseaudio {
   /usr/share/pulseaudio/**				r,
   /usr/share/applications/{,*}				r,
   /run/udev/data/+sound:card*				r,
-  owner /run/user/[0-9]*/{,pulse/}			w,
-  owner /run/user/[0-9]*/pulse/autospawn.lock		rwk,
-  owner /run/user/[0-9]*/pulse/cli			rw,
+  owner /run/user/@{UID}/{,pulse/}			w,
+  owner /run/user/@{UID}/pulse/autospawn.lock		rwk,
+  owner /run/user/@{UID}/pulse/cli			rw,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/pulse/				rw,
   owner @{HOME}/.config/pulse/**			rwk,
   
   # TEMP -----------------------------------------------
-  owner /tmp/pulse-*/{,*}				rwk,
+  audit owner /tmp/pulse-*/{,*}				rwk,	# FIX ME! audit 26.11.2017
 }
 
 profile pulseaudio.start-pulseaudio-x11 /usr/bin/start-pulseaudio-x11 {
@@ -110,7 +110,7 @@ profile pulseaudio.pacmd /usr/bin/pacmd {
   /usr/bin/pacmd					mr,
   
   # READS/WRITES ---------------------------------------
-  owner /run/user/[0-9]*/pulse/				r,
-  owner /run/user/[0-9]*/pulse/pid			rk,
-  owner /run/user/[0-9]*/pulse/cli			rw,
+  owner /run/user/@{UID}/pulse/				r,
+  owner /run/user/@{UID}/pulse/pid			rk,
+  owner /run/user/@{UID}/pulse/cli			rw,
 }

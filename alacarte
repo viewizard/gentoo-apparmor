@@ -37,6 +37,7 @@ profile alacarte @{PYTHON2_EXEC}/alacarte {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
+  owner @{PROC}/@{pid}/mounts				r,
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/menus/{,**/,**.menu}				r,

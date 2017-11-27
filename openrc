@@ -1835,7 +1835,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
   /var/log/wtmp						w,
   
   # TEMP -----------------------------------------------
-  owner /tmp/tmp.*/run/					r,
+  owner /tmp/tmp.@{TMP10}/run/				r,
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -1882,7 +1882,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
     /bin/mktemp						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/tmp.*/					w,
+    owner /tmp/tmp.@{TMP10}/				w,
   }
   
   profile chgrp /bin/chgrp {
@@ -1977,7 +1977,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
     /bin/rmdir						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/tmp.*/					w,
+    owner /tmp/tmp.@{TMP10}/				w,
   }
   
   profile mount /bin/mount {
@@ -1987,7 +1987,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
     capability sys_admin,
     
     # MOUNT --------------------------------------------
-    mount options=(rw, bind) / -> /tmp/tmp.*/,
+    mount options=(rw, bind) / -> /tmp/tmp.@{TMP10}/,
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -2008,7 +2008,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
     capability sys_admin,
     
     # MOUNT --------------------------------------------
-    umount /tmp/tmp.*/,
+    umount /tmp/tmp.@{TMP10}/,
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,

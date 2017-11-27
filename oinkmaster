@@ -35,8 +35,8 @@ profile oinkmaster /usr/bin/oinkmaster.pl {
   /etc/suricata/rules/**				rw,	# net-analyzer/suricata
   
   # TEMP -----------------------------------------------
-  owner /tmp/oinkmaster.cron.??????{,/,/**}		rw,
-  owner /tmp/oinkmaster.*/{,**}				rw,
+  owner /tmp/oinkmaster.cron.@{TMP6}{,/,/**}		rw,
+  owner /tmp/oinkmaster.@{TMP10}/{,**}			rw,
   
   profile gzip /bin/gzip {
     #include <abstractions/base>
@@ -45,8 +45,8 @@ profile oinkmaster /usr/bin/oinkmaster.pl {
     /bin/gzip						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/oinkmaster.cron.??????			rw,
-    owner /tmp/oinkmaster.*/{,**}			rw,
+    owner /tmp/oinkmaster.cron.@{TMP6}			rw,
+    owner /tmp/oinkmaster.@{TMP10}/{,**}		rw,
   }
   
   profile tar /bin/tar {
@@ -57,8 +57,8 @@ profile oinkmaster /usr/bin/oinkmaster.pl {
     /bin/tar						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/oinkmaster.cron.??????			rw,
-    owner /tmp/oinkmaster.*/{,**}			rw,
+    owner /tmp/oinkmaster.cron.@{TMP6}			rw,
+    owner /tmp/oinkmaster.@{TMP10}/{,**}		rw,
   }
 }
 
@@ -89,7 +89,7 @@ profile oinkmaster.cron.daily /etc/cron.daily/oinkmaster {
   /etc/init.d/suricata					Px,	# net-analyzer/suricata
   
   # TEMP -----------------------------------------------
-  owner /tmp/oinkmaster.cron.??????			rw,
+  owner /tmp/oinkmaster.cron.@{TMP6}			rw,
   
   profile mktemp /bin/mktemp {
     #include <abstractions/base>
@@ -98,7 +98,7 @@ profile oinkmaster.cron.daily /etc/cron.daily/oinkmaster {
     /bin/mktemp						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/oinkmaster.cron.??????			rw,
+    owner /tmp/oinkmaster.cron.@{TMP6}			rw,
   }
   
   profile cat /bin/cat {
@@ -108,7 +108,7 @@ profile oinkmaster.cron.daily /etc/cron.daily/oinkmaster {
     /bin/cat						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/oinkmaster.cron.??????			rw,
+    owner /tmp/oinkmaster.cron.@{TMP6}			rw,
   }
   
   profile rm /bin/rm {
@@ -118,6 +118,6 @@ profile oinkmaster.cron.daily /etc/cron.daily/oinkmaster {
     /bin/rm						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/oinkmaster.cron.??????			w,
+    owner /tmp/oinkmaster.cron.@{TMP6}			w,
   }
 }

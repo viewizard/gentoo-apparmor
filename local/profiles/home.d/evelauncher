@@ -72,7 +72,7 @@ profile local.home.evelauncher /home/*/evelauncher/evelauncher flags=(attach_dis
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/disk/by-label/					r,
-  owner /dev/shm/.org.chromium.Chromium.??????		rw,
+  owner /dev/shm/.org.chromium.Chromium.@{TMP6}		rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   /sys/bus/pci/devices/					r,
   /sys/devices/system/cpu/				r,
   /sys/devices/pci[0-9]*/**/{resource,irq,vendor,device,class,config} r,
@@ -109,7 +109,7 @@ profile local.home.evelauncher /home/*/evelauncher/evelauncher flags=(attach_dis
   # TEMP -----------------------------------------------
   /tmp/							r,
   /var/tmp/						r,
-  owner /var/tmp/etilqs_*				rw,
+  owner /var/tmp/@{TMP_SQLITE}				rw,
   
   # DENY INHERIT ---------------------------------------
   deny unix (send, receive) peer=(label="wine*"),		# app-emulation/wine
@@ -139,7 +139,7 @@ profile local.home.evelauncher.updater /home/*/{.eve,evelauncher}/updater {
   
   # DENY INHERIT ---------------------------------------
   deny network netlink raw,						# evelauncher
-  deny /dev/shm/.org.chromium.Chromium.??????		ra,		# evelauncher
+  deny /dev/shm/.org.chromium.Chromium.@{TMP6}		ra,		# evelauncher
   deny @{HOME_CACHE}/CCP/EVE/QtWebEngine/Default/Cache/{,**} rw,	# evelauncher
   deny @{HOME}/.local/share/CCP/EVE/QtWebEngine/Default/{,**} rw,	# evelauncher
 }

@@ -44,9 +44,9 @@ profile procps.ps /bin/ps {
   /usr/src/@{kernel}/System.map				r,	# sys-kernel/gentoo-sources
   
   # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.*				w,	# app-forensics/lynis, lynis.cron.daily
-  deny /tmp/oinkmaster.cron.*				w,	# net-analyzer/oinkmaster, oinkmaster.cron.daily
-  deny /tmp/chkrootkit.cron.*				w,	# app-forensics/chkrootkit, chkrootkit.cron.daily
+  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
+  deny /tmp/oinkmaster.cron.@{TMP6}			w,	# net-analyzer/oinkmaster, oinkmaster.cron.daily
+  deny /tmp/chkrootkit.cron.@{TMP6}			w,	# app-forensics/chkrootkit, chkrootkit.cron.daily
 }
 
 profile procps.pidof /usr/bin/pidof {

@@ -150,7 +150,7 @@ profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* {
   /var/spool/cups/{,**}					r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/?????????????				rw,
+  owner /tmp/@{TMP13}					rw,
 }
 
 profile cups.filter /usr/libexec/cups/filter/* {
@@ -168,7 +168,7 @@ profile cups.filter /usr/libexec/cups/filter/* {
   /var/spool/cups/*					r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/??????*					rw,
+  audit owner /tmp/??????*				rw,	# FIX ME! audit 25.11.2017
 }
 
 profile cups.backend /usr/libexec/cups/backend/* {

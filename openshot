@@ -59,7 +59,7 @@ profile openshot @{PYTHON2_EXEC}/openshot {
   owner @{HOME}/.openshot/{,**}				rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/??????					rw,
+  audit owner /tmp/??????				rw,	# FIX ME! audit 25.11.2017
   
   profile shell @{shell} {
     #include <abstractions/base>

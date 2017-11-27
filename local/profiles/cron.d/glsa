@@ -40,7 +40,7 @@ profile glsa.cron.daily /etc/cron.daily/glsa {
   /etc/portage/cron_glsa.conf				r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/glsa.cron.??????				rw,
+  owner /tmp/glsa.cron.@{TMP6}				rw,
   
   profile mktemp /bin/mktemp {
     #include <abstractions/base>
@@ -49,7 +49,7 @@ profile glsa.cron.daily /etc/cron.daily/glsa {
     /bin/mktemp						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/glsa.cron.??????				rw,
+    owner /tmp/glsa.cron.@{TMP6}			rw,
   }
   
   profile cat /bin/cat {
@@ -59,7 +59,7 @@ profile glsa.cron.daily /etc/cron.daily/glsa {
     /bin/cat						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/glsa.cron.??????				rw,
+    owner /tmp/glsa.cron.@{TMP6}			rw,
   }
   
   profile rm /bin/rm {
@@ -69,7 +69,7 @@ profile glsa.cron.daily /etc/cron.daily/glsa {
     /bin/rm						mr,
     
     # READS/WRITES -------------------------------------
-    owner /tmp/glsa.cron.??????				rw,
+    owner /tmp/glsa.cron.@{TMP6}			rw,
   }
   
   profile glsa_check {
@@ -80,6 +80,6 @@ profile glsa.cron.daily /etc/cron.daily/glsa {
     @{PYTHON_EXEC}/glsa-check				Px,	# app-portage/gentoolkit
     
     # TEMP ---------------------------------------------
-    owner /tmp/glsa.cron.??????				w,
+    owner /tmp/glsa.cron.@{TMP6}			w,
   }
 }

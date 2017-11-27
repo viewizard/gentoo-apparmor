@@ -44,7 +44,7 @@ profile poedit /usr/bin/poedit {
   
   # READS/WRITES ---------------------------------------
   /usr/share/poedit/{,**}				r,
-  owner /run/user/[0-9]*/poedit.*			rwk,
+  owner /run/user/@{UID}/poedit.*			rwk,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.poedit/{,**}				rw,
@@ -52,7 +52,7 @@ profile poedit /usr/bin/poedit {
   owner @{HOME}/.local/share/poedit/{,**}		rwk,
   
   # TEMP -----------------------------------------------
-  owner /tmp/poedit*/{,**}				rw,
+  owner /tmp/poedit@{TMP6}/{,**}			rw,
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -68,7 +68,7 @@ profile poedit /usr/bin/poedit {
     /usr/bin/lsb_release				Px,	# sys-apps/lsb-release
     
     # DENY INHERIT -------------------------------------
-    deny /run/user/[0-9]*/poedit.lock			w,
+    deny /run/user/@{UID}/poedit.lock			w,
   }
   
   profile msgmerge /usr/bin/msgmerge {
@@ -84,7 +84,7 @@ profile poedit /usr/bin/poedit {
     /usr/bin/msgmerge					mr,
     
     # DENY INHERIT -------------------------------------
-    deny /run/user/[0-9]*/poedit.lock			w,
+    deny /run/user/@{UID}/poedit.lock			w,
     deny @{HOME}/.local/share/poedit/{,**}		rw,
   }
   
@@ -101,10 +101,10 @@ profile poedit /usr/bin/poedit {
     /usr/bin/msgfmt					mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/poedit*/**				r,
+    owner /tmp/poedit@{TMP6}/**				r,
     
     # DENY INHERIT -------------------------------------
-    deny /run/user/[0-9]*/poedit.lock			w,
+    deny /run/user/@{UID}/poedit.lock			w,
     deny @{HOME}/.local/share/poedit/{,**}		rw,
   }
   
@@ -121,7 +121,7 @@ profile poedit /usr/bin/poedit {
     /usr/bin/msgcat					mr,
     
     # DENY INHERIT -------------------------------------
-    deny /run/user/[0-9]*/poedit.lock			w,
+    deny /run/user/@{UID}/poedit.lock			w,
     deny @{HOME}/.local/share/poedit/{,**}		rw,
   }
 }

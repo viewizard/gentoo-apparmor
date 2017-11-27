@@ -42,7 +42,7 @@ profile 00_update_portage.cron.daily /etc/cron.daily/00_update_portage {
   /etc/portage/cron_update.conf				r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/portage.cron.??????			rw,
+  owner /tmp/portage.cron.@{TMP6}			rw,
   
   profile mktemp /bin/mktemp {
     #include <abstractions/base>
@@ -51,7 +51,7 @@ profile 00_update_portage.cron.daily /etc/cron.daily/00_update_portage {
     /bin/mktemp						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/portage.cron.??????			rw,
+    owner /tmp/portage.cron.@{TMP6}			rw,
   }
   
   profile rm /bin/rm {
@@ -61,7 +61,7 @@ profile 00_update_portage.cron.daily /etc/cron.daily/00_update_portage {
     /bin/rm						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/portage.cron.??????			w,
+    owner /tmp/portage.cron.@{TMP6}			w,
   }
   
   profile cat /bin/cat {
@@ -71,7 +71,7 @@ profile 00_update_portage.cron.daily /etc/cron.daily/00_update_portage {
     /bin/cat						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/portage.cron.??????			rw,
+    owner /tmp/portage.cron.@{TMP6}			rw,
   }
   
   profile cp /bin/cp {
@@ -90,7 +90,7 @@ profile 00_update_portage.cron.daily /etc/cron.daily/00_update_portage {
     /var/cache/eix/previous.eix				rw,
     
     # TEMP ---------------------------------------------
-    owner /tmp/portage.cron.??????			w,
+    owner /tmp/portage.cron.@{TMP6}			w,
   }
   
   profile emerge {
@@ -104,6 +104,6 @@ profile 00_update_portage.cron.daily /etc/cron.daily/00_update_portage {
     @{PYTHON_EXEC}/emerge				Px,	# sys-apps/portage
     
     # TEMP ---------------------------------------------
-    owner /tmp/portage.cron.??????			rw,
+    owner /tmp/portage.cron.@{TMP6}			rw,
   }
 }

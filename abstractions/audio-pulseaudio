@@ -10,7 +10,7 @@
 
 # PSEUDO -----------------------------------------------
 /dev/shm/						r,
-owner /dev/shm/pulse-shm*				rwk,
+audit owner /dev/shm/pulse-shm*				rwk,	# FIX ME! audit 24.11.2017
 owner @{PROC}/@{pid}/fd/				r,
 
 # EXECUTABLES ------------------------------------------
@@ -18,9 +18,9 @@ owner @{PROC}/@{pid}/fd/				r,
 
 # READS/WRITES -----------------------------------------
 /etc/machine-id						r,
-/etc/pulse/{,*}						r,
-owner /run/user/[0-9]*/pulse/				rw,
-owner /run/user/[0-9]*/pulse/{native,pid}		rwk,
+/etc/pulse/{,**}					r,
+owner /run/user/@{UID}/pulse/				rw,
+owner /run/user/@{UID}/pulse/{native,pid}		rwk,
 
 # USERS ------------------------------------------------
 owner @{HOME}/.config/pulse/				rw,

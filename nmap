@@ -38,5 +38,5 @@ profile nmap /usr/bin/nmap {
   /usr/share/nmap/{,**}					r,
   
   # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.*				w,	# app-forensics/lynis, lynis.cron.daily
+  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
 }

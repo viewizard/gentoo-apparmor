@@ -37,7 +37,7 @@ profile lsb-release /usr/bin/lsb_release flags=(attach_disconnected) {
   deny /opt/discord/share/discord/{,**}			r,	# net-im/discord-bin, discord-bin.Discord
   deny /usr/share/inkscape/extensions/			r,	# media-gfx/inkscape, inkscape
   deny /opt/teamspeak3-client/				r,	# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
-  deny /run/user/[0-9]*/poedit.*			rw,	# app-i18n/poedit, poedit
+  deny /run/user/@{UID}/poedit.*			rw,	# app-i18n/poedit, poedit
   
   profile sed /bin/sed flags=(attach_disconnected) {
     #include <abstractions/base>
@@ -95,6 +95,6 @@ profile lsb-release /usr/bin/lsb_release flags=(attach_disconnected) {
     deny /opt/discord/share/discord/{,**}		r,	# net-im/discord-bin, discord-bin.Discord
     deny /usr/share/inkscape/extensions/		r,	# media-gfx/inkscape, inkscape
     deny /opt/teamspeak3-client/			r,	# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
-    deny /run/user/[0-9]*/poedit.*			rw,	# app-i18n/poedit, poedit
+    deny /run/user/@{UID}/poedit.*			rw,	# app-i18n/poedit, poedit
   }
 }

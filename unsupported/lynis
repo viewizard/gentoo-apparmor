@@ -96,10 +96,10 @@ profile lynis /usr/sbin/lynis {
   /var/log/lynis-report.dat				rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/lynis.*					rw,
-  owner /tmp/lynis2.*					rw,
-  owner /tmp/lynis.cron.*				rw,	# DELEGATION! lynis.cron.daily
-  owner /tmp/lynis-shellshock-test.*			rw,
+  audit owner /tmp/lynis.*				rw,	# FIX ME! Использовать @{TMP} переменные.
+  audit owner /tmp/lynis2.*				rw,	# FIX ME! Использовать @{TMP} переменные.
+  owner /tmp/lynis.cron.@{TMP6}				rw,	# DELEGATION! lynis.cron.daily
+  audit owner /tmp/lynis-shellshock-test.*		rw,	# FIX ME! Использовать @{TMP} переменные.
   
   # NOISY ----------------------------------------------
   deny /*						w,
@@ -125,8 +125,8 @@ profile lynis /usr/sbin/lynis {
     /bin/date						ix,	# sys-apps/coreutils	# FS ACCESS!
     
     # TEMP ---------------------------------------------
-    owner /tmp/sh-thd.*					rw,
-    owner /tmp/lynis-shellshock-test.*			rw,
+    owner /tmp/@{TMP_SH}				rw,
+    audit owner /tmp/lynis-shellshock-test.*		rw,	# FIX ME! Использовать @{TMP} переменные.
   }
   
   profile smbd /usr/sbin/smbd {
@@ -143,7 +143,7 @@ profile lynis /usr/sbin/lynis {
     /usr/share/samba/{,**}				r,
     
     # DENY INHERIT -------------------------------------
-    deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
+    deny /tmp/lynis.cron.@{TMP6}			w,	# lynis.cron.daily
   }
   
   profile sshd /usr/sbin/sshd {
@@ -182,7 +182,7 @@ profile lynis /usr/sbin/lynis {
     @{PYTHON_EXEC}/aa-status				Px,	# sys-apps/apparmor-utils
     
     # DENY INHERIT -------------------------------------
-    deny /tmp/lynis.cron.*				w,	# lynis.cron.daily
+    deny /tmp/lynis.cron.@{TMP6}			w,	# lynis.cron.daily
   }
 }
 
@@ -212,5 +212,5 @@ profile lynis.cron.daily /etc/cron.daily/lynis {
   /usr/sbin/lynis					Px,
   
   # TEMP -----------------------------------------------
-  owner /tmp/lynis.cron.??????				rw,
+  owner /tmp/lynis.cron.@{TMP6}				rw,
 }

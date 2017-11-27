@@ -83,7 +83,7 @@ profile libreoffice.oosplash /usr/lib{,32,64}/libreoffice/program/oosplash {
   /usr/lib{,32,64}/libreoffice/program/soffice.bin	Px,
   
   # TEMP -----------------------------------------------
-  owner /tmp/OSL_PIPE_[0-9]*_SingleOfficeIPC_*		rw,	# [0-9]* - UID пользователя.
+  owner /tmp/OSL_PIPE_@{UID}_SingleOfficeIPC_*		rw,	# * - 31(?) символ
 }
 
 profile libreoffice.javaldx /usr/lib{,32,64}/libreoffice/program/javaldx {
@@ -145,7 +145,7 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   /usr/lib{,32,64}/libreoffice/program/soffice.bin	m,
   @{shell}						Cx,
   /usr/bin/gpgconf					Px,	# app-crypt/gnupg
-  /usr/bin/gpg						Px,	# app-crypt/gnupg
+  /usr/bin/gpg{,2}					Px,	# app-crypt/gnupg
   /usr/bin/gpgsm					Px,	# app-crypt/gnupg
   /opt/{oracle-jdk,icedtea}-bin-*/bin/java		Px,
   /opt/{oracle-jdk,icedtea}-bin-*/jre/bin/java		Px,
@@ -171,10 +171,10 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   
   # TEMP -----------------------------------------------
   /tmp/							r,
-  owner /tmp/??????					rwk,
-  owner /tmp/*.tmp/					rw,
-  owner /tmp/*.tmp/*.tmp				rwk,
-  owner /tmp/OSL_PIPE_[0-9]*_SingleOfficeIPC_*		rw,	# [0-9]* - UID пользователя.
+  owner /tmp/@{TMP6}					rwk,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /tmp/lu@{pids}@{TMP6}.tmp/			rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /tmp/lu@{pids}@{TMP6}.tmp/lu@{pids}@{TMP6}.tmp	rwk,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /tmp/OSL_PIPE_@{UID}_SingleOfficeIPC_*		rw,	# * - 31(?) символ
   /var/tmp/						r,
   
   # NOISY ----------------------------------------------

@@ -112,7 +112,7 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   /dev/							r,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner /dev/shm/.org.chromium.Chromium.??????		rw,
+  owner /dev/shm/.org.chromium.Chromium.@{TMP6}		rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   /sys/bus/{,**}					r,
   /sys/class/{,**}					r,
   /sys/devices/system/cpu/				r,
@@ -180,15 +180,15 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   
   # TEMP -----------------------------------------------
   /tmp/							r,
-  /tmp/.org.chromium.Chromium.??????{,/,/**}	rw,
-  owner /tmp/scoped_dir*/{,**}				rw,
+  /tmp/.org.chromium.Chromium.@{TMP6}{,/,/**}		rw,
+  audit owner /tmp/scoped_dir*/{,**}			rw,	# FIX ME! audit 25.11.2017
   /var/tmp/						r,
-  owner /var/tmp/etilqs_*				rw,
+  owner /var/tmp/@{TMP_SQLITE}				rw,
   
   # NOISY ----------------------------------------------
   deny /dev/bus/usb/					r,
   deny /usr/lib{,32,64}/chromium-browser/**		w,
-  deny owner @{HOME}/.mozilla/{,**}			r,	# www-client/firefox
+  deny @{HOME}/.mozilla/{,**}				r,	# www-client/firefox
   
   profile chrome-sandbox /usr/lib{,32,64}/chromium-browser/chrome-sandbox {
     # Be fanatical since it is setuid root and don't use an abstraction
@@ -237,6 +237,7 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
     
     # PSEUDO -------------------------------------------
     /dev/null						rw,
+    /dev/tty						rw,
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     @{PROC}/						r,

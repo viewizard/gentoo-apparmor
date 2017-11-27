@@ -23,16 +23,16 @@ profile xkbcomp /usr/bin/xkbcomp {
   
   # READS/WRITES ---------------------------------------
   /usr/share/X11/xkb/**					r,
-  /var/lib/xkb/server-[0-9]*.xkm			w,
+  /var/lib/xkb/server-@{X_DISPLAY}.xkm			w,
   
   # TEMP -----------------------------------------------
-  owner /tmp/server-[0-9]*.xkm				w,
-  owner /tmp/file*					rw,
+  owner /tmp/server-@{X_DISPLAY}.xkm			w,
+  owner /tmp/file@{TMP6}				rw,
   
   # DENY INHERIT ---------------------------------------
   deny /dev/input/event[0-9]*				rw,	# xorg-server.Xorg
   deny /run/acpid.socket				rw,	# xorg-server.Xorg
-  deny /var/log/Xorg.[0-9]*.log				w,	# xorg-server.Xorg
+  deny /var/log/Xorg.@{X_DISPLAY}.log			w,	# xorg-server.Xorg
   deny @{HOME}/.local/share/xorg/{,**}			rw,	# xorg-server.Xorg
   deny @{HOME}/.xfce4-session.verbose-log		w,	# xfce4-session
 }

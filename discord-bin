@@ -52,7 +52,7 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   /dev/							r,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner /dev/shm/.org.chromium.Chromium.??????		rw,
+  owner /dev/shm/.org.chromium.Chromium.@{TMP6}		rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   /sys/devices/system/cpu/				r,
   /sys/devices/system/cpu/cpufreq/policy[0-9]*/cpuinfo_max_freq r,
   /sys/devices/pci[0-9]**/{device,class,irq,resource,vendor} r,
@@ -73,7 +73,7 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   # READS/WRITES ---------------------------------------
   /opt/discord/**					r,
   /opt/discord/**.so					m,
-  owner /run/user/[0-9]*/discord-ipc-[0-9]*		rw,
+  owner /run/user/@{UID}/discord-ipc-[0-9]*		rw,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/discord/{,**}			rwk,
@@ -84,8 +84,8 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   # TEMP -----------------------------------------------
   /tmp/							r,
   owner /tmp/discord.sock				rw,
-  owner /tmp/.org.chromium.Chromium.*			mrw,
+  owner /tmp/.org.chromium.Chromium.@{TMP6}		mrw,
   owner "/tmp/Discord Crashes/{,**}"			rw,
   /var/tmp/						r,
-  owner /var/tmp/etilqs_*				rw,
+  owner /var/tmp/@{TMP_SQLITE}				rw,
 }

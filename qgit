@@ -55,8 +55,9 @@ profile qgit /usr/bin/qgit {
   owner @{HOME}/.config/qgit/**				rwk,
   
   # TEMP -----------------------------------------------
-  owner /tmp/qgit4.*					rw,
-  owner /tmp/??????_*					rw,
+  owner /tmp/qgit4.@{TMP6}				rw,
+  owner /tmp/??????_*					rw,	# * - файл из svn для передачи в meld (сравнение файлов).
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   profile cat /bin/cat {
     #include <abstractions/base>
@@ -119,8 +120,10 @@ profile qgit_root {
   owner @{HOME}/.config/qgit/**				rwk,
   
   # TEMP -----------------------------------------------
-  owner /tmp/qgit4.*					rw,
-  owner /tmp/??????_*					rw,
+  /tmp/							r,
+  owner /tmp/qgit4.@{TMP6}				rw,
+  owner /tmp/@{TMP6}_*					rw,	# * - файл из git для передачи в meld (сравнение файлов).
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   profile cat /bin/cat {
     #include <abstractions/base>
@@ -135,5 +138,8 @@ profile qgit_root {
     
     # EXECUTABLES --------------------------------------
     /bin/cat						mr,
+    
+    # TEMP ---------------------------------------------
+#    audit /tmp/{,**}					rw,	# FIX ME! audit 26.11.2017 убрали из access-by-pattern-systemusers
   }
 }

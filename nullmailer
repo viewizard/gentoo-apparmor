@@ -22,7 +22,7 @@ profile nullmailer.sendmail /usr/sbin/sendmail flags=(attach_disconnected) {
   /usr/bin/nullmailer-inject				Px,
   
   # TEMP -----------------------------------------------
-  owner /tmp/mail.*					r,	# mailx
+  owner /tmp/mail.RsXXXX@{TMP6}				r,	# mailx
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
@@ -47,7 +47,7 @@ profile nullmailer.nullmailer-inject /usr/bin/nullmailer-inject flags=(attach_di
   /etc/nullmailer/{,*}					r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/mail.*					r,	# mailx
+  owner /tmp/mail.RsXXXX@{TMP6}				r,	# mailx
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
@@ -67,7 +67,7 @@ profile nullmailer.nullmailer-queue /usr/sbin/nullmailer-queue flags=(attach_dis
   /etc/nullmailer/{,*}					r,
   /var/spool/nullmailer/				r,
   /var/spool/nullmailer/**				rw,
-  link subset /var/spool/nullmailer/queue/[0-9]*.@{pids} -> /var/spool/nullmailer/tmp/@{pids},
+  link subset /var/spool/nullmailer/queue/[0-9]*.@{pids} -> /var/spool/nullmailer/tmp/@{pids},	# [0-9]* - 10 цифр
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)

@@ -29,7 +29,7 @@ profile portage-utils.q /usr/bin/q {
   /var/db/pkg/{,**}					r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/portage.cron.*				w,	# DELEGATION! 00_update_portage.cron.daily
+  owner /tmp/portage.cron.@{TMP6}			w,	# DELEGATION! 00_update_portage.cron.daily
 }
 
 profile portage-utils.q-reinit /etc/portage/repo.postsync.d/q-reinit flags=(complain) {	# FIX ME! complain 14.10.2017
@@ -46,5 +46,5 @@ profile portage-utils.q-reinit /etc/portage/repo.postsync.d/q-reinit flags=(comp
   /usr/bin/q						Px,
   
   # TEMP -----------------------------------------------
-  owner /tmp/portage.cron.*				w,	# DELEGATION! 00_update_portage.cron.daily
+  owner /tmp/portage.cron.@{TMP6}			w,	# DELEGATION! 00_update_portage.cron.daily
 }

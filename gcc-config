@@ -63,8 +63,8 @@ profile gcc-config /usr/bin/gcc-config {
   /usr/@{CHOST}/gcc-bin/*/{,**}				r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/sh-thd.*					rw,
-  owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks
+  owner /tmp/@{TMP_SH}					rw,
+  owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks	# * - $USER
   
   profile mv /bin/mv {
     #include <abstractions/base>
@@ -149,7 +149,7 @@ profile gcc-config /usr/bin/gcc-config {
     /etc/env.d/*					w,
     
     # TEMP ---------------------------------------------
-    owner /tmp/sh-thd.*					rw,
+    owner /tmp/@{TMP_SH}				rw,
   }
   
   profile sed /bin/sed {
@@ -166,7 +166,7 @@ profile gcc-config /usr/bin/gcc-config {
     /etc/env.d/gcc/**					rw,	# sys-devel/gcc
     
     # TEMP ---------------------------------------------
-    owner /tmp/sed*					rw,
+    audit owner /tmp/sed*				rw,	# FIX ME! audit 26.11.2017
   }
   
   profile touch /bin/touch {
@@ -309,7 +309,7 @@ profile gcc-config /usr/bin/gcc-config {
     /etc/env.d/gcc/**					r,	# sys-devel/gcc
     
     # TEMP ---------------------------------------------
-    owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks
+    owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks	# * - $USER
   }
   
   profile tac /usr/bin/tac {
@@ -323,7 +323,7 @@ profile gcc-config /usr/bin/gcc-config {
     /usr/bin/tac					mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/tac*					rw,
+    owner /tmp/tac@{TMP6}				rw,
   }
   
   profile portageq {
@@ -337,6 +337,6 @@ profile gcc-config /usr/bin/gcc-config {
     @{PYTHON_EXEC}/env-update				Px,	# sys-apps/portage
     
     # TEMP ---------------------------------------------
-    owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks
+    owner /tmp/Code::Blocks-*				w,	# DELEGATION! codeblocks	# * - $USER
   }
 }

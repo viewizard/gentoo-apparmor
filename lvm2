@@ -88,8 +88,8 @@ profile lvm2.dmeventd /sbin/dmeventd {
   /run/lvm/lvmetad.socket				rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! backup_daily.sh.cron.daily
-  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! backup_weekly.sh.cron.weekly
+  owner /tmp/dailyhomebackup.cron.@{TMP6}		w,	# DELEGATION! backup_daily.sh.cron.daily
+  owner /tmp/rootbackup.cron.@{TMP6}			w,	# DELEGATION! backup_weekly.sh.cron.weekly
   
   profile umount /bin/umount {
     #include <abstractions/base>
@@ -149,9 +149,9 @@ profile lvm2.lvm /sbin/lvm {
   /run/dmeventd-{client,server}				rwk,
   
   # TEMP -----------------------------------------------
-  owner /tmp/dailyhomebackup.cron.*			w,	# DELEGATION! backup_daily.sh.cron.daily
-  owner /tmp/rootbackup.cron.*				w,	# DELEGATION! backup_weekly.sh.cron.weekly
-  owner /tmp/lynis.cron.*				w,	# DELEGATION! lynis.cron.daily
+  owner /tmp/dailyhomebackup.cron.@{TMP6}		w,	# DELEGATION! backup_daily.sh.cron.daily
+  owner /tmp/rootbackup.cron.@{TMP6}			w,	# DELEGATION! backup_weekly.sh.cron.weekly
+  owner /tmp/lynis.cron.@{TMP6}				w,	# DELEGATION! lynis.cron.daily
 }
 
 profile lvm2.fsadm /sbin/fsadm {

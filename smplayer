@@ -59,5 +59,6 @@ profile smplayer /usr/bin/smplayer {
   owner @{HOME}/Pictures/smplayer_screenshots/{,*}	rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/qtsingleapp-smplay-*-*{,-lockfile}		rwk,
+  owner /tmp/qtsingleapp-smplay-@{TMP4}-{@{UID_HEX},@{UID_ROOT_HEX}} rw,
+  owner /tmp/qtsingleapp-smplay-@{TMP4}-{@{UID_HEX},@{UID_ROOT_HEX}}-lockfile rwk,
 }

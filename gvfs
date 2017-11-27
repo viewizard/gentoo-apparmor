@@ -160,7 +160,7 @@ profile gvfs.gvfsd /usr/libexec/gvfsd {
   
   # READS/WRITES ---------------------------------------
   /usr/share/gvfs/{,**}					r,
-  /run/user/[0-9]*/gvfs/				rw,
+  /run/user/@{UID}/gvfs/				rw,
   
   # USERS ----------------------------------------------
   owner /root/.gvfs/					rw,
@@ -231,10 +231,10 @@ profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   # MOUNT ----------------------------------------------
   mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /root/.gvfs/,
   mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /root/.gvfs/,
-  mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /run/user/[0-9]*/gvfs/,
-  mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /run/user/[0-9]*/gvfs/,
+  mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /run/user/@{UID}/gvfs/,
+  mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /run/user/@{UID}/gvfs/,
   umount /root/.gvfs/,
-  umount /run/user/[0-9]*/gvfs/,
+  umount /run/user/@{UID}/gvfs/,
   
   # PSEUDO ---------------------------------------------
   /dev/fuse						rw,
@@ -244,7 +244,7 @@ profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   /usr/bin/fusermount					Px,	# sys-fs/fuse
   
   # READS/WRITES ---------------------------------------
-  /run/user/[0-9]*/gvfs/				r,
+  /run/user/@{UID}/gvfs/				r,
   
   # USERS ----------------------------------------------
   owner /root/.gvfs/					r,

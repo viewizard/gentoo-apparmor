@@ -89,7 +89,7 @@ profile suricata.init.d /etc/init.d/suricata flags=(attach_disconnected) {	# att
   /run/suricata/suricata.pid				rwk,
   
   # DENY INHERIT ---------------------------------------
-  deny /tmp/oinkmaster.cron.*				w,	# net-analyzer/oinkmaster, oinkmaster.cron.daily
+  deny /tmp/oinkmaster.cron.@{TMP6}			w,	# net-analyzer/oinkmaster, oinkmaster.cron.daily
   
   profile shell @{shell} flags=(attach_disconnected) {
     #include <abstractions/base>

@@ -28,10 +28,10 @@ profile fuse.fusermount /usr/bin/fusermount {
   # MOUNT ----------------------------------------------
   mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /root/.gvfs/,
   mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /root/.gvfs/,
-  mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /run/user/[0-9]*/gvfs/,
-  mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /run/user/[0-9]*/gvfs/,
+  mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /run/user/@{UID}/gvfs/,
+  mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /run/user/@{UID}/gvfs/,
   umount /root/.gvfs/,
-  umount /run/user/[0-9]*/gvfs/,
+  umount /run/user/@{UID}/gvfs/,
   
   # PSEUDO ---------------------------------------------
   /dev/fuse						rw,
@@ -42,7 +42,7 @@ profile fuse.fusermount /usr/bin/fusermount {
   
   # READS/WRITES ---------------------------------------
   /etc/fuse.conf					r,
-  /run/user/[0-9]*/gvfs/				r,
+  /run/user/@{UID}/gvfs/				r,
   
   # USERS ----------------------------------------------
   owner /root/.gvfs/					r,

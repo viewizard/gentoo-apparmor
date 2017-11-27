@@ -57,12 +57,12 @@ profile claws-mail /usr/bin/claws-mail {
   owner @{HOME_CACHE}/webkit/{,**}			rwk,
   
   # TEMP -----------------------------------------------
-  owner /tmp/claws-mail-[0-9]*/				rw,
-  /tmp/claws-mail-[0-9]*/**				rwk,
+  owner /tmp/claws-mail-@{UID}/				rw,
+  owner /tmp/claws-mail-@{UID}/**			rwk,
   
   # NOISY ----------------------------------------------
   deny /						r,
   deny /etc/pulse/client.conf				r,	# media-sound/pulseaudio	# (?) Не очень понятно почему, но при выключении
   deny /dev/shm/					r,	# media-sound/pulseaudio	# (?) лезет к данным пульсаудио. Хотя не использует
-  deny /run/user/[0-9]*/pulse/native			rw,	# media-sound/pulseaudio	# (?) звук.
+  deny /run/user/@{UID}/pulse/native			rw,	# media-sound/pulseaudio	# (?) звук.
 }

@@ -32,10 +32,10 @@ profile xfce4-session /usr/bin/xfce4-session {
   # UNIX -----------------------------------------------
   unix (bind, listen)
   			type=stream
-  			addr="@/tmp/.ICE-unix/*",
+  			addr="@/tmp/.ICE-unix/@{pids}",
   unix (send, receive, accept)
   			type=stream
-  			addr="@/tmp/.ICE-unix/*",
+  			addr="@/tmp/.ICE-unix/@{pids}",
   
   # DBUS -----------------------------------------------
   dbus receive
@@ -98,8 +98,8 @@ profile xfce4-session /usr/bin/xfce4-session {
   owner @{HOME_CACHE}/gpg-agent-info			rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/.ICE-unix/*				w,
-  owner /tmp/.xfsm-ICE-*				rw,
+  owner /tmp/.ICE-unix/@{pids}				w,
+  owner /tmp/.xfsm-ICE-@{TMP6}				rw,
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -325,7 +325,7 @@ profile xfce4-session.xfce4-session-fix /etc/xdg/xfce4/xfce4-session-fix {
     /bin/rm						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/xfdesktop-*/{,**}			rw,
+    owner /tmp/xfdesktop-*/{,**}			rw,	# * - $USER
   }
   
   profile cp /bin/cp {
@@ -341,7 +341,7 @@ profile xfce4-session.xfce4-session-fix /etc/xdg/xfce4/xfce4-session-fix {
     owner @{HOME}/.config/xfce4/desktop/{,*}		rw,
     
     # TEMP ---------------------------------------------
-    owner /tmp/xfdesktop-*/desktop/{,*}			rw,
+    owner /tmp/xfdesktop-*/desktop/{,*}			rw,	# * - $USER
   }
   
   profile mkdir /bin/mkdir {
@@ -354,7 +354,7 @@ profile xfce4-session.xfce4-session-fix /etc/xdg/xfce4/xfce4-session-fix {
     /bin/mkdir						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/xfdesktop-*/				w,
+    owner /tmp/xfdesktop-*/				w,	# * - $USER
   }
   
   profile diff /usr/bin/diff {
@@ -370,7 +370,7 @@ profile xfce4-session.xfce4-session-fix /etc/xdg/xfce4/xfce4-session-fix {
     owner @{HOME}/.config/xfce4/desktop/{,*}		r,
     
     # TEMP ---------------------------------------------
-    owner /tmp/xfdesktop-*/desktop/{,*}			r,
+    owner /tmp/xfdesktop-*/desktop/{,*}			r,	# * - $USER
   }
 }
 

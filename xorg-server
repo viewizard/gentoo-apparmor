@@ -35,7 +35,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   	peer=(addr="none"),
   unix (bind, listen, send, receive, accept)
 	type=stream
-  	addr="@/tmp/.X11-unix/X[0-9]*",
+  	addr="@/tmp/.X11-unix/X@{X_DISPLAY}",
   unix (send, receive)
   	type=stream
   	addr="none"
@@ -85,19 +85,19 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   /usr/share/X11/{,**}					r,
   /run/acpid.socket					rw,	# sys-power/acpid
   /run/udev/data/*					r,
-  /var/log/Xorg.[0-9]*.log{,.old}			rw,
-  /var/lib/xkb/server-[0-9]*.xkm			rw,
+  /var/log/Xorg.@{X_DISPLAY}.log{,.old}			rw,
+  /var/lib/xkb/server-@{X_DISPLAY}.xkm			rw,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.serverauth*				r,
   owner @{HOME}/.local/share/xorg/{,**}			rw,	# Нужно для запуска под пользователем (без suid), хранит там логи сервера.
   
   # TEMP -----------------------------------------------
-  owner /tmp/.tX[0-9]*-lock				w,
-  owner /tmp/.X[0-9]*-lock				w,
-  owner link subset /tmp/.X[0-9]*-lock			-> /tmp/.tX[0-9]*-lock,
-  owner /tmp/.X11-unix/X[0-9]*				w,
-  /tmp/server-[0-9]*.xkm				rw,
+  owner /tmp/.tX@{X_DISPLAY}-lock			w,
+  owner /tmp/.X@{X_DISPLAY}-lock			w,
+  owner link subset /tmp/.X@{X_DISPLAY}-lock		-> /tmp/.tX@{X_DISPLAY}-lock,
+  owner /tmp/.X11-unix/X@{X_DISPLAY}			w,
+  /tmp/server-@{X_DISPLAY}.xkm				rw,
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -117,7 +117,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
     
     # READS/WRITES -------------------------------------
     /run/acpid.socket					rw,	# sys-power/acpid
-    /var/log/Xorg.[0-9]*.log				w,
+    /var/log/Xorg.@{X_DISPLAY}.log			w,
   }
 }
 

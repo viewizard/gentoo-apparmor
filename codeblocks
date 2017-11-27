@@ -58,9 +58,9 @@ profile codeblocks /usr/bin/codeblocks {
   owner @{HOME}/.local/share/codeblocks/{,**}		rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/wxbf*					rw,
-  owner /tmp/CODEBLOCKS*.socket				rw,
-  owner /tmp/Code::Blocks-*				rwk,
+  owner /tmp/wxbf@{TMP6}				rw,
+  owner /tmp/CODEBLOCKS*.socket				rw,	# * - $USER
+  owner /tmp/Code::Blocks-*				rwk,	# * - $USER
   
   profile build {
     #include <abstractions/base>
@@ -87,7 +87,7 @@ profile codeblocks /usr/bin/codeblocks {
     /usr/share/binutils-data/@{CHOST}/[0-9]*/locale/**.mo r,	# sys-devel/binutils
     
     # TEMP ---------------------------------------------
-    owner /tmp/Code::Blocks-*				rw,
+    owner /tmp/Code::Blocks-*				rw,	# * - $USER
   }
 }
 
@@ -107,7 +107,7 @@ profile codeblocks_shell {
   /usr/bin/g++						Cx,	# sys-devel/gcc
   
   # TEMP -----------------------------------------------
-  owner /tmp/Code::Blocks-*				w,
+  owner /tmp/Code::Blocks-*				w,	# * - $USER
   
   profile g++ /usr/bin/g++ {
     #include <abstractions/base>

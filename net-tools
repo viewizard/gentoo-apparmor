@@ -40,7 +40,7 @@ profile net-tools.ifconfig /bin/ifconfig {
   /bin/ifconfig						mr,
   
   # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.*				w,	# app-forensics/lynis, lynis.cron.daily
+  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
 }
 
 profile net-tools.netstat /bin/netstat {
@@ -73,8 +73,8 @@ profile net-tools.netstat /bin/netstat {
   /bin/netstat						mr,
   
   # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.*				w,	# app-forensics/lynis, lynis.cron.daily
-  deny /tmp/chkrootkit.cron.*				w,	# app-forensics/chkrootkit, chkrootkit.cron.daily
+  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
+  deny /tmp/chkrootkit.cron.@{TMP6}			w,	# app-forensics/chkrootkit, chkrootkit.cron.daily
 }
 
 profile net-tools.hostname /bin/hostname {

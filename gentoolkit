@@ -38,7 +38,7 @@ profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check {
   /var/cache/edb/**					r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/glsa.cron.*				w,
+  owner /tmp/glsa.cron.@{TMP6}				w,
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -53,7 +53,7 @@ profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check {
     /bin/uname						Px,	# sys-apps/coreutils
     
     # TEMP ---------------------------------------------
-    owner /tmp/glsa.cron.*				w,	# DELEGATION! glsa.cron.daily
+    owner /tmp/glsa.cron.@{TMP6}			w,	# DELEGATION! glsa.cron.daily
   }
 }
 
@@ -136,8 +136,8 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean {
   /var/cache/edb/{,**}					rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/??????					rw,
-  owner /tmp/tmp??????					rwk,
+  owner /tmp/@{TMP8}					rw,
+  owner /tmp/tmp@{TMP8}					rwk,
   
   profile shell @{shell} {
     #include <abstractions/base>

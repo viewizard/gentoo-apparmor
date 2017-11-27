@@ -28,11 +28,12 @@ profile timezone-data.tzselect /usr/bin/tzselect {
   /bin/mktemp						Cx,	# sys-apps/coreutils
   /bin/mkdir						Cx,	# sys-apps/coreutils
   /bin/rm						Cx,	# sys-apps/coreutils
+  /bin/echo						Cx,	# sys-apps/coreutils
   /usr/bin/gawk						Cx,	# sys-apps/gawk
   /usr/bin/iconv					Cx,	# sys-libs/glibc
   
   # TEMP -----------------------------------------------
-  /tmp/tmp.*/*						rw,
+  audit /tmp/tmp.*/*					rw,	# FIX ME! audit 26.11.2017
   
   profile expr /bin/expr {
     #include <abstractions/base>
@@ -78,7 +79,7 @@ profile timezone-data.tzselect /usr/bin/tzselect {
     /bin/mktemp						mr,
     
     # TEMP ---------------------------------------------
-    /tmp/tmp.*/						w,
+    audit /tmp/tmp.*/					w,	# FIX ME! audit 26.11.2017
   }
   
   profile mkdir /bin/mkdir {
@@ -95,7 +96,18 @@ profile timezone-data.tzselect /usr/bin/tzselect {
     /bin/rm						mr,
     
     # TEMP ---------------------------------------------
-    /tmp/tmp.*/{,*}					rw,
+    audit /tmp/tmp.*/{,*}				rw,	# FIX ME! audit 26.11.2017
+  }
+  
+  profile echo /bin/echo {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/echo						mr,
   }
   
   profile gawk /usr/bin/gawk {
@@ -112,7 +124,7 @@ profile timezone-data.tzselect /usr/bin/tzselect {
     /usr/bin/gawk					mr,
     
     # DENY INHERIT -------------------------------------
-    deny /tmp/tmp.*/*					rw,	# timezone-data.tzselect
+    audit deny /tmp/tmp.*/*				rw,	# timezone-data.tzselect	# FIX ME! audit 26.11.2017
   }
   
   profile iconv /usr/bin/iconv flags=(attach_disconnected) {
@@ -130,6 +142,6 @@ profile timezone-data.tzselect /usr/bin/tzselect {
     
     # DENY INHERIT -------------------------------------
     deny /apparmor/.null				r,	# flags=(attach_disconnected)
-    deny /tmp/tmp.*/*					rw,	# timezone-data.tzselect
+    audit deny /tmp/tmp.*/*				rw,	# timezone-data.tzselect	# FIX ME! audit 26.11.2017
  }
 }

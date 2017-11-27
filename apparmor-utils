@@ -32,7 +32,7 @@ profile apparmor-utils.aa-status @{PYTHON_EXEC}/aa-status flags=(attach_disconne
   @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
   
   # TEMP -----------------------------------------------
-  owner /tmp/????????					rw,
+  audit owner /tmp/????????				rw,	# FIX ME! audit 26.11.2017
   owner /tmp/apparmor-bugreport-*.txt			rw,
   
   # DENY INHERIT ---------------------------------------
@@ -71,10 +71,10 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   @{PYTHON_PACKAGES}/LibAppArmor/**.pyc{,.*}		w,
   
   # TEMP -----------------------------------------------
-  owner /tmp/{,tmp}??????				rw,
-  owner /tmp/????????					rw,
+  audit owner /tmp/{,tmp}??????				rw,	# FIX ME! audit 26.11.2017
+  audit owner /tmp/????????				rw,	# FIX ME! audit 26.11.2017
   owner /tmp/apparmor-bugreport-*.txt			rw,
-  owner /var/tmp/????????				rw,
+  audit owner /var/tmp/????????				rw,	# FIX ME! audit 26.11.2017
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -120,7 +120,7 @@ profile apparmor-utils.aa-complain @{PYTHON_EXEC}/aa-complain {
   @{PYTHON_PACKAGES}/LibAppArmor/**.pyc{,.*}		w,
   
   # TEMP -----------------------------------------------
-  owner /tmp/{,tmp}??????				rw,
+  audit owner /tmp/{,tmp}??????				rw,	# FIX ME! audit 26.11.2017
 }
 
 profile apparmor-utils.aa-enforce @{PYTHON_EXEC}/aa-enforce {
@@ -145,7 +145,7 @@ profile apparmor-utils.aa-enforce @{PYTHON_EXEC}/aa-enforce {
   @{PYTHON_PACKAGES}/LibAppArmor/**.pyc{,.*}		w,
   
   # TEMP -----------------------------------------------
-  owner /tmp/{,tmp}??????				rw,
+  audit owner /tmp/{,tmp}??????				rw,	# FIX ME! audit 26.11.2017
 }
 
 profile apparmor-utils.aa-disable @{PYTHON_EXEC}/aa-disable {
@@ -170,7 +170,7 @@ profile apparmor-utils.aa-disable @{PYTHON_EXEC}/aa-disable {
   @{PYTHON_PACKAGES}/LibAppArmor/**.pyc{,.*}		w,
   
   # TEMP -----------------------------------------------
-  owner /tmp/{,tmp}??????				rw,
+  audit owner /tmp/{,tmp}??????				rw,	# FIX ME! audit 26.11.2017
 }
 
 profile apparmor-utils.aa-logprof @{PYTHON_EXEC}/aa-logprof {
@@ -192,5 +192,5 @@ profile apparmor-utils.aa-logprof @{PYTHON_EXEC}/aa-logprof {
   /etc/apparmor.d/{,**}					r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/????????					rw,
+  audit owner /tmp/????????				rw,	# FIX ME! audit 26.11.2017
 }

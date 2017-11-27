@@ -38,7 +38,7 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner /dev/shm/.org.chromium.Chromium.??????		rw,
+  owner /dev/shm/.org.chromium.Chromium.@{TMP6}		rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   /sys/devices/system/cpu/				r,
   /sys/devices/pci[0-9]*/**/{resource,irq,vendor,device,class,config} r,
   @{PROC}/						r,
@@ -69,11 +69,11 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   
   # TEMP -----------------------------------------------
   /tmp/							r,
-  owner /tmp/TS3Client*					rw,
-  owner /tmp/*.ts3_plugin				rw,
-  owner /tmp/ts3import/{,**}				rw,
-  owner /tmp/qt_temp.??????				rw,
+  owner /tmp/TS3Client@{TMP4}				rw,
+  audit owner /tmp/*.ts3_plugin				rw,	# FIX ME! audit 25.11.2017
+  audit owner /tmp/ts3import/{,**}			rw,	# FIX ME! audit 25.11.2017
+  audit owner /tmp/qt_temp.??????			rw,	# FIX ME! audit 25.11.2017
   owner /tmp/avatar					rw,
   /var/tmp/						r,
-  owner /var/tmp/etilqs_*				rw,
+  owner /var/tmp/@{TMP_SQLITE}				rw,
 }

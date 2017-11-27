@@ -56,12 +56,12 @@ profile seahorse /usr/bin/seahorse {
   /usr/share/seahorse/{,**}				r,
   /usr/share/p11-kit/modules/{,*.module}		r,
   /usr/lib{,32,64}/pkcs11/*.so				m,
-  /run/user/[0-9]*/keyring/pkcs11			rw,
+  /run/user/@{UID}/keyring/pkcs11			rw,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.gnupg/{,**}				r,
   owner @{HOME}/.ssh/{,**}				r,
   
   # TEMP -----------------------------------------------
-  /tmp/seahorse-photoid-*				rw,
+  /tmp/seahorse-photoid-@{TMP6}				rw,
 }

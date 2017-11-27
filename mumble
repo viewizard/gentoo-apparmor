@@ -59,7 +59,8 @@ profile mumble /usr/bin/mumble {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner /dev/shm/MumbleLink.[0-9]*			rw,	# [0-9]* - UID пользователя.
+  owner /dev/shm/MumbleLink.@{UID}			rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+
   owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------

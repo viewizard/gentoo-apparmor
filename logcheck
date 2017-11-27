@@ -50,7 +50,7 @@ profile logcheck /usr/sbin/logcheck {
   /etc/logcheck/{,**}					r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/logcheck.*/{,**}				rw,
+  owner /tmp/logcheck.@{TMP6}/{,**}			rw,
   
   profile date /bin/date {
     #include <abstractions/base>
@@ -73,7 +73,7 @@ profile logcheck /usr/sbin/logcheck {
     /bin/mktemp						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/logcheck.*/				w,
+    owner /tmp/logcheck.@{TMP6}/			w,
   }
   
   profile mkdir /bin/mkdir {
@@ -83,7 +83,7 @@ profile logcheck /usr/sbin/logcheck {
     /bin/mkdir						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/logcheck.*/**/				w,
+    owner /tmp/logcheck.@{TMP6}/**/			w,
   }
   
   profile run-parts /bin/run-parts {
@@ -103,7 +103,7 @@ profile logcheck /usr/sbin/logcheck {
     /bin/mv						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/logcheck.*/{,**}				rw,
+    owner /tmp/logcheck.@{TMP6}/{,**}			rw,
   }
   
   profile grep /bin/grep {
@@ -128,7 +128,7 @@ profile logcheck /usr/sbin/logcheck {
     /etc/logcheck/{,**}					r,
     
     # TEMP ---------------------------------------------
-    owner /tmp/logcheck.*/{,**}				r,
+    owner /tmp/logcheck.@{TMP6}/{,**}			r,
   }
   
   profile cat /bin/cat {
@@ -138,7 +138,7 @@ profile logcheck /usr/sbin/logcheck {
     /bin/cat						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/logcheck.*/{,**}				rw,
+    owner /tmp/logcheck.@{TMP6}/{,**}			rw,
   }
   
   profile sed /bin/sed {
@@ -155,7 +155,7 @@ profile logcheck /usr/sbin/logcheck {
     /bin/ls						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/logcheck.*/{,**}				r,
+    owner /tmp/logcheck.@{TMP6}/{,**}			r,
   }
   
   profile sort /bin/sort {
@@ -165,7 +165,7 @@ profile logcheck /usr/sbin/logcheck {
     /bin/sort						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/logcheck.*/{,**}				r,
+    owner /tmp/logcheck.@{TMP6}/{,**}			r,
   }
   
   profile rm /bin/rm {
@@ -175,7 +175,7 @@ profile logcheck /usr/sbin/logcheck {
     /bin/rm						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/logcheck.*/{,**}				rw,
+    owner /tmp/logcheck.@{TMP6}/{,**}			rw,
   }
   
   profile cp /bin/cp {
@@ -185,7 +185,7 @@ profile logcheck /usr/sbin/logcheck {
     /bin/cp						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/logcheck.*/{,**}				rw,
+    owner /tmp/logcheck.@{TMP6}/{,**}			rw,
   }
   
   profile wc /bin/wc {
@@ -216,7 +216,7 @@ profile logcheck /usr/sbin/logcheck {
     /usr/sbin/sendmail					Px,	# mail-mta/nullmailer
     
     # TEMP ---------------------------------------------
-    owner /tmp/logcheck.*/{,**}				r,
+    owner /tmp/logcheck.@{TMP6}/{,**}			r,
   }
 }
 
@@ -237,7 +237,7 @@ profile logcheck.logtail2 /usr/sbin/logtail2 {
   /usr/share/logtail/{,**}				r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/logcheck.*/{,**}				rw,
+  owner /tmp/logcheck.@{TMP6}/{,**}			rw,
 }
 
 profile logcheck.cron.hourly /etc/cron.hourly/logcheck.cron {

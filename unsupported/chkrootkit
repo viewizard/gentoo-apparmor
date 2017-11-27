@@ -60,7 +60,7 @@ profile chkrootkit /usr/sbin/chkrootkit {
   /							r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
+  owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
   
   profile sed /bin/sed {
     #include <abstractions/base>
@@ -69,7 +69,7 @@ profile chkrootkit /usr/sbin/chkrootkit {
     /bin/sed						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
+    owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
   }
   
   profile cut /bin/cut {
@@ -79,7 +79,7 @@ profile chkrootkit /usr/sbin/chkrootkit {
     /bin/cut						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
+    owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
   }
   
   profile egrep /bin/egrep flags=(attach_disconnected) {
@@ -99,7 +99,7 @@ profile chkrootkit /usr/sbin/chkrootkit {
     
     # DENY INHERIT -------------------------------------
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
-    deny /tmp/chkrootkit.cron.*				w,
+    deny /tmp/chkrootkit.cron.@{TMP6}			w,
   }
   
   profile grep /bin/grep {
@@ -123,7 +123,7 @@ profile chkrootkit /usr/sbin/chkrootkit {
     /							r,
     
     # TEMP ---------------------------------------------
-    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
+    owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
   }
   
   profile wc /bin/wc {
@@ -133,7 +133,7 @@ profile chkrootkit /usr/sbin/chkrootkit {
     /bin/wc						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
+    owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
   }
   
   profile cat /bin/cat {
@@ -149,7 +149,7 @@ profile chkrootkit /usr/sbin/chkrootkit {
     /etc/shells						r,
     
     # TEMP ---------------------------------------------
-    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
+    owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
   }
   
    profile head /bin/head {
@@ -162,7 +162,7 @@ profile chkrootkit /usr/sbin/chkrootkit {
     /bin/head						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
+    owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
   }
   
   profile gawk /usr/bin/gawk {
@@ -172,7 +172,7 @@ profile chkrootkit /usr/sbin/chkrootkit {
     /usr/bin/gawk					mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
+    owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
   }
   
   profile find /usr/bin/find {
@@ -190,7 +190,7 @@ profile chkrootkit /usr/sbin/chkrootkit {
     /{,**}						r,
     
     # TEMP ---------------------------------------------
-    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
+    owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
   }
 }
 
@@ -206,11 +206,11 @@ profile chkrootkit_find_head /bin/head {
   /bin/head						mr,
   
   # READS/WRITES ---------------------------------------
-  /tmp/**						r,
-  /var/tmp/**						r,
+  audit /tmp/**						r,	# FIX ME! Использовать @{TMP} переменные.
+  audit /var/tmp/**					r,	# FIX ME! Использовать @{TMP} переменные.
   
   # TEMP -----------------------------------------------
-  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
+  owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
 }
 
 profile chkrootkit.chkdirs /usr/sbin/chkdirs {
@@ -231,7 +231,7 @@ profile chkrootkit.chkdirs /usr/sbin/chkdirs {
   /{,**}/						r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
+  owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
 }
 
 profile chkrootkit.strings-static /usr/sbin/strings-static {
@@ -248,7 +248,7 @@ profile chkrootkit.strings-static /usr/sbin/strings-static {
   /{,**}						r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
+  owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
 }
 
 profile chkrootkit.chkproc /usr/sbin/chkproc {
@@ -267,7 +267,7 @@ profile chkrootkit.chkproc /usr/sbin/chkproc {
   @{shell}						Px -> chkrootkit_chkproc_shell,
   
   # TEMP -----------------------------------------------
-  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
+  owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
 }
 
 # FIX ME! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
@@ -291,7 +291,7 @@ profile chkrootkit_chkproc_shell {
   /bin/cut						Cx,	# sys-apps/coreutils
   
   # TEMP -----------------------------------------------
-  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
+  owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
   
   profile cut /bin/cut {
     #include <abstractions/base>
@@ -300,7 +300,7 @@ profile chkrootkit_chkproc_shell {
     /bin/cut						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
+    owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
   }
 }
 
@@ -338,7 +338,7 @@ profile chkrootkit.ifpromisc /usr/sbin/ifpromisc flags=(attach_disconnected) {
   /usr/sbin/ifpromisc					mr,
   
   # TEMP -----------------------------------------------
-  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
+  owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
 }
 
 profile chkrootkit.chkwtmp /usr/sbin/chkwtmp {
@@ -355,7 +355,7 @@ profile chkrootkit.chkwtmp /usr/sbin/chkwtmp {
   /var/log/wtmp						r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
+  owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
 }
 
 profile chkrootkit.chklastlog /usr/sbin/chklastlog {
@@ -373,7 +373,7 @@ profile chkrootkit.chklastlog /usr/sbin/chklastlog {
   /var/log/**						r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
+  owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
 }
 
 profile chkrootkit.chkutmp /usr/sbin/chkutmp {
@@ -391,7 +391,7 @@ profile chkrootkit.chkutmp /usr/sbin/chkutmp {
   /run/utmp						r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/chkrootkit.cron.*				w,	# DELEGATION! chkrootkit.cron.daily
+  owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -410,7 +410,7 @@ profile chkrootkit.chkutmp /usr/sbin/chkutmp {
     /bin/ps						Px,	# sys-process/procps
     
     # TEMP ---------------------------------------------
-    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
+    owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
   }
 }
 
@@ -440,7 +440,7 @@ profile chkrootkit.cron.daily /etc/cron.daily/chkrootkit {
   /usr/sbin/chkrootkit					Px,
   
   # TEMP -----------------------------------------------
-  owner /tmp/chkrootkit.cron.*				rw,	# DELEGATION! chkrootkit.cron.daily
+  owner /tmp/chkrootkit.cron.@{TMP6}			rw,	# DELEGATION! chkrootkit.cron.daily
   
   profile mktemp /bin/mktemp {
     #include <abstractions/base>
@@ -453,7 +453,7 @@ profile chkrootkit.cron.daily /etc/cron.daily/chkrootkit {
     /bin/mktemp						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/chkrootkit.cron.*			rw,	# DELEGATION! chkrootkit.cron.daily
+    owner /tmp/chkrootkit.cron.@{TMP6}			rw,	# DELEGATION! chkrootkit.cron.daily
   }
   
   profile cat /bin/cat {
@@ -467,7 +467,7 @@ profile chkrootkit.cron.daily /etc/cron.daily/chkrootkit {
     /bin/cat						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/chkrootkit.cron.*			rw,	# DELEGATION! chkrootkit.cron.daily
+    owner /tmp/chkrootkit.cron.@{TMP6}			rw,	# DELEGATION! chkrootkit.cron.daily
   }
   
   profile rm /bin/rm {
@@ -481,6 +481,6 @@ profile chkrootkit.cron.daily /etc/cron.daily/chkrootkit {
     /bin/rm						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/chkrootkit.cron.*			w,	# DELEGATION! chkrootkit.cron.daily
+    owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
   }
 }

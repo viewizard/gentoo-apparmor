@@ -72,7 +72,8 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner /dev/shm/org.chromium.??????			rw,	# Нужено для adobe-flash (ppapi).
+  owner /dev/shm/org.chromium.@{TMP6}			rw,	# Нужено для adobe-flash (ppapi).
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   /sys/devices/system/cpu/{,**}				r,
   /sys/devices/pci[0-9]*/**/uevent			r,
   @{PROC}/						r,
@@ -127,13 +128,14 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   # TEMP -----------------------------------------------
   /tmp/							r,
   owner /tmp/*						rw,	# Need for download files with any filename.
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить rw только на процесс.
   owner /tmp/plugtmp/					rw,
-  owner /tmp/plugtmp/plugin-*				rw,
-  owner /tmp/mozilla-temp-*				rw,
-  owner /tmp/mozilla_*/{,**}				rw,
-  owner /tmp/firefox_*/{,**}				rwk,
+  owner /tmp/plugtmp/plugin-*				rw,	# * - имя с расширением файла (PL_HD.txt)
+  owner /tmp/mozilla-temp-*				rw,	# * - 9 цифр
+  audit owner /tmp/mozilla_*/{,**}			rw,	# FIX ME! audit 26.11.2017
+  owner /tmp/firefox_*/{,**}				rwk,	# * - $USER
   /var/tmp/						r,
-  owner /var/tmp/etilqs_*				rw,
+  owner /var/tmp/@{TMP_SQLITE}				rw,
   
   # DENY INHERIT ---------------------------------------
   deny unix peer=(label="nvidia-drivers.nvidia-modprobe"),		# nvidia-drivers.nvidia-modprobe
@@ -176,7 +178,8 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   /dev/							r,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner /dev/shm/org.chromium.??????			rw,	# Нужено для adobe-flash (ppapi).
+  owner /dev/shm/org.chromium.@{TMP6}			rw,	# Нужено для adobe-flash (ppapi).
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   /sys/devices/system/cpu/				r,
   owner @{PROC}/@{pid}/stat				r,
   owner @{PROC}/@{pid}/cmdline				r,
@@ -197,8 +200,8 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   
   # TEMP -----------------------------------------------
   /tmp/							r,
-  owner /tmp/FreshStream*				rw,
-  owner /tmp/FreshTemp*					rw,
+  owner /tmp/FreshStream@{TMP6}				rw,
+  owner /tmp/FreshTemp@{TMP6}				rw,
   /var/tmp/						r,
   
   profile shell @{shell} {

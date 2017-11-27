@@ -151,7 +151,7 @@ profile wine.wine-preloader /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner /dev/shm/#[0-9]*				rw,	# [0-9]* - очень похоже на внутренний PID в wine
+  owner /dev/shm/#@{pids}				rw,	# очень похоже на внутренний PID в wine
   								# (до 6 символов, только цифры), с PID процесса
   								# системы не совпадает.
   /sys/bus/						r,
@@ -191,8 +191,8 @@ profile wine.wine-preloader /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[
   owner @{HOME_CACHE}/winetricks/**			rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/.wine-[0-9]*/server-*-*/{,lock}		r,
-  owner /tmp/.wine-[0-9]*/server-*-*/socket		rw,
+  owner /tmp/.wine-@{UID}/server-*-*/{,lock}		r,
+  owner /tmp/.wine-@{UID}/server-*-*/socket		rw,
   
   # NOISY ----------------------------------------------
   deny /						r,
@@ -253,10 +253,10 @@ profile wine.wineserver /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]
   owner @{HOME_CACHE}/winetricks/**			rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/.wine-[0-9]*/				rw,
-  owner /tmp/.wine-[0-9]*/server-*-*/			rw,
-  owner /tmp/.wine-[0-9]*/server-*-*/{lock,socket}	rwk,
-  owner /tmp/.wine-[0-9]*/server-*-*/anonmap.*		mrw,
+  owner /tmp/.wine-@{UID}/				rw,
+  owner /tmp/.wine-@{UID}/server-*-*/			rw,
+  owner /tmp/.wine-@{UID}/server-*-*/{lock,socket}	rwk,
+  owner /tmp/.wine-@{UID}/server-*-*/anonmap.*		mrw,
   
   # NOISY ----------------------------------------------
   deny /						r,
