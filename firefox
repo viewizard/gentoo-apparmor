@@ -75,7 +75,7 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   owner /dev/shm/org.chromium.@{TMP6}			rw,	# Нужено для adobe-flash (ppapi).
   								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   /sys/devices/system/cpu/{,**}				r,
-  /sys/devices/pci[0-9]*/**/uevent			r,
+  /sys/devices/pci@{PCI2}/@{PCI4}/**/uevent		r,
   @{PROC}/						r,
   @{PROC}/filesystems					r,
   owner @{PROC}/@{pid}/fd/				r,

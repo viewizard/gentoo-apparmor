@@ -115,7 +115,7 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
   
   # PSEUDO ---------------------------------------------
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
-  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
+  /sys/devices/pci@{PCI2}/@{PCI4}/{ata[0-9]*,usb@{USB1}}/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   owner @{PROC}/@{pid}/fd/				r,
   audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
   owner @{PROC}/@{pid}/mountinfo			r,
@@ -330,7 +330,7 @@ profile gvfs.gvfsd-metadata /usr/libexec/gvfsd-metadata {
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}uevent	r,
-  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
+  /sys/devices/pci@{PCI2}/@{PCI4}/{ata[0-9]*,usb@{USB1}}/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   /run/udev/data/*					r,
   
   # USERS ----------------------------------------------

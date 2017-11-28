@@ -71,7 +71,11 @@ profile glibc.locale /usr/bin/locale flags=(attach_disconnected) {
   /usr/share/i18n/charmaps/{,*.gz}			r,
   
   # DENY INHERIT ---------------------------------------
+  deny unix type=stream peer=(label="skypeforlinux"),		# net-im/skypeforlinux
+  deny unix type=seqpacket peer=(label="skypeforlinux"),	# net-im/skypeforlinux
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
+  deny /opt/skypeforlinux/{,**}				rw,	# net-im/skypeforlinux
+  deny /dev/shm/.org.chromium.Chromium.@{TMP6}		rw,	# net-im/skypeforlinux
   
   profile gzip /bin/gzip {
     #include <abstractions/base>

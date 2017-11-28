@@ -71,5 +71,6 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
   owner @{HOME}/.dbus/{,**}				rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/#[0-9][0-9][0-9][0-9][0-9][0-9]		rw,
+  owner /tmp/#@{pids}					rw,	# На самом деле не pid, 5-6 символов - цифры.
+  owner /tmp/vte@{TMP6}					rw,
 }

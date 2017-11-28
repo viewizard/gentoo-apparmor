@@ -26,7 +26,12 @@ profile usbutils.lsusb /usr/bin/lsusb {
   /sys/bus/						r,
   /sys/bus/usb/devices/					r,
   /sys/class/						r,
-  /sys/devices/pci[0-9]*/**/usb[0-9]*/**		r,
+  /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/{uevent,busnum,speed,descriptors,devnum} r,
+  /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/{uevent,busnum,speed,descriptors,devnum} r,
+  /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/**/@{USB2}/{uevent,busnum,speed,descriptors,devnum} r,
+  /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB4}/uevent r,
+  /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/@{USB4}/uevent r,
+  /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/**/@{USB4}/uevent r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/lsusb					mr,

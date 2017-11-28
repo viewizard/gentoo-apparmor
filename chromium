@@ -118,9 +118,12 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   /sys/devices/system/cpu/				r,
   /sys/devices/system/cpu/cpu*/cpufreq/cpuinfo_max_freq	r,
   /sys/devices/system/cpu/cpufreq/policy*/cpuinfo_max_freq r,
-  /sys/devices/pci[0-9]*/**/{class,device,irq,resource,vendor,removable,uevent} r,
-  /sys/devices/pci[0-9]*/**/usb[0-9]*/**		r,
-  /sys/devices/pci[0-9]*/**/block/**/size		r,
+  /sys/devices/pci@{PCI2}/@{PCI4}/{device,class,irq,resource,vendor} r,
+  /sys/devices/pci@{PCI2}/**/@{PCI4}/{device,class,irq,resource,vendor} r,
+  /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/	r,
+  /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/@{USB4}/{,**} r,
+  audit /sys/devices/pci[0-9]*/**/{removable,uevent}	r,	# FIX ME! audit 28.11.2017
+  audit /sys/devices/pci[0-9]*/**/block/**/size		r,	# FIX ME! audit 28.11.2017
   /sys/devices/virtual/block/**/{removable,uevent,size}	r,
   /sys/devices/virtual/tty/tty[0-9]*/active		r,
   @{PROC}/						r,

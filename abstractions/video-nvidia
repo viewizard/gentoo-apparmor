@@ -14,7 +14,7 @@ capability ipc_lock,
 # PSEUDO -----------------------------------------------
 /dev/nvidia{[0-9]*,ctl,-modeset}			rw,
 /sys/bus/pci/devices/					r,
-/sys/devices/pci**/config				r,
+audit /sys/devices/pci**/config				r,	# FIX ME! audit 28.11.2017
 @{PROC}/interrupts					r,
 @{PROC}/sys/vm/max_map_count				r,
 @{PROC}/driver/nvidia/params				r,

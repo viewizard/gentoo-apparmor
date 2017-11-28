@@ -30,7 +30,7 @@ profile dhcpcd /sbin/dhcpcd {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /sys/devices/virtual/net/lo/uevent			r,
-  /sys/devices/pci[0-9]*/**/net/eth[0-9]*/uevent	r,
+#  /sys/devices/pci[0-9]*/**/net/eth[0-9]*/uevent	r,	# FIX ME! Сделать через @{PCI2} и @{PCI4} + жесткие ограничения на ресурсы.
   @{PROC}/sys/net/ipv4/conf/*/promote_secondaries	rwk,
   
   # EXECUTABLES ----------------------------------------

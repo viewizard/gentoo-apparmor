@@ -21,7 +21,8 @@ profile pciutils.lspci /usr/sbin/lspci {
   /dev/pts/[0-9]*					rw,
   /sys/bus/pci/devices/					r,
   /sys/bus/pci/slots/					r,
-  /sys/devices/pci*/**/{resource,irq,vendor,device,class,config} r,
+  /sys/devices/pci@{PCI2}/@{PCI4}/{resource,irq,vendor,device,class,config} r,
+  /sys/devices/pci@{PCI2}/**/@{PCI4}/{resource,irq,vendor,device,class,config} r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/lspci					mr,

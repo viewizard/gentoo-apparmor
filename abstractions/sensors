@@ -13,8 +13,9 @@
 /sys/class/thermal/					r,
 /sys/class/i2c-adapter/					r,
 /sys/class/power_supply/				r,
-/sys/devices/pci[0-9]**/i2c-*/{,*}			r,
-/sys/devices/pci[0-9]**/hwmon/hwmon*/{,*}		r,
+/sys/devices/pci@{PCI2}/@{PCI4}/i2c-[0-9]*/name		r,
+/sys/devices/pci@{PCI2}/**/@{PCI4}/i2c-[0-9]*/name	r,
+audit /sys/devices/pci[0-9]**/hwmon/hwmon*/{,*}		r,	# FIX ME! audit 28.11.2017
 /sys/devices/platform/**				r,
 /sys/devices/system/cpu/cpufreq/**			r,
 /sys/devices/system/cpu/cpu*/cpufreq/**			r,

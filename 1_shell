@@ -135,13 +135,11 @@ profile shell_users {
 }
 
 # профиль специального пользователя root
-profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем без abstractions/fs/access-by-pattern-*
+profile shell_root {
   #include <abstractions/base>
   #include <abstractions/shell>
   #include <abstractions/consoles>
   #include <abstractions/nameservice>
-#  #include <abstractions/fs/access-by-pattern-filemanager>	# FIX ME! 07.11.2017 Тестируем без abstractions/fs/access-by-pattern-*
-#  #include <abstractions/fs/access-by-pattern-systemusers>	# FIX ME! 07.11.2017 Тестируем без abstractions/fs/access-by-pattern-*
   #include <local/profile_blocks/shell_root.d/>
   
   # CAPABILITIES ---------------------------------------
@@ -279,7 +277,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
   /etc/profile.env					r,
   /{,**/}						r,	# Разрешаем получать списки файлов в директориях.
   
-  profile ls /bin/ls flags=(complain) {
+  profile ls /bin/ls {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -292,7 +290,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /bin/ls						mr,
   }
   
-  profile ln /bin/ln flags=(complain) {
+  profile ln /bin/ln {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -305,7 +303,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /bin/ln						mr,
   }
   
-  profile rm /bin/rm flags=(complain) {
+  profile rm /bin/rm {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -318,7 +316,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /bin/rm						mr,
   }
   
-  profile cut /bin/cut flags=(complain) {
+  profile cut /bin/cut {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -331,7 +329,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /bin/cut						mr,
   }
   
-  profile grep /bin/grep flags=(complain) {
+  profile grep /bin/grep {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -347,7 +345,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /bin/grep						mr,
   }
   
-  profile env /bin/env flags=(complain) {
+  profile env /bin/env {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -360,7 +358,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /bin/env						mr,
   }
   
-  profile sed /bin/sed flags=(complain) {
+  profile sed /bin/sed {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -373,7 +371,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /bin/sed						mr,
   }
   
-  profile mount /bin/mount flags=(complain) {
+  profile mount /bin/mount {
     #include <abstractions/base>
     #include <local/profile_blocks/shell_root.mount.d/>		# Локальные правила монтирования и размонтирования.
     
@@ -396,7 +394,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /run/mount/utab					rw,
   }
   
-  profile umount /bin/umount flags=(complain) {
+  profile umount /bin/umount {
     #include <abstractions/base>
     #include <local/profile_blocks/shell_root.mount.d/>		# Локальные правила монтирования и размонтирования.
     
@@ -416,7 +414,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /run/mount/utab					rw,
   }
   
-  profile cp /bin/cp flags=(complain) {
+  profile cp /bin/cp {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -434,7 +432,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /bin/cp						mr,
   }
   
-  profile mv /bin/mv flags=(complain) {
+  profile mv /bin/mv {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -447,7 +445,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /bin/mv						mr,
   }
   
-  profile chown /bin/chown flags=(complain) {
+  profile chown /bin/chown {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -463,7 +461,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /bin/chown						mr,
   }
   
-  profile chmod /bin/chmod flags=(complain) {
+  profile chmod /bin/chmod {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -480,7 +478,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /bin/chmod						mr,
   }
   
-  profile nano /bin/nano flags=(complain) {
+  profile nano /bin/nano {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -493,7 +491,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /bin/nano						mr,
   }
   
-  profile cat /bin/cat flags=(complain) {
+  profile cat /bin/cat {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -506,7 +504,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /bin/cat						mr,
   }
   
-  profile dd /bin/dd flags=(complain) {
+  profile dd /bin/dd {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -519,7 +517,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /bin/dd						mr,
   }
   
-  profile tar /bin/tar flags=(complain) {
+  profile tar /bin/tar {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -542,7 +540,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     owner /**						l,
   }
   
-  profile head /bin/head flags=(complain) {
+  profile head /bin/head {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -555,7 +553,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /bin/head						mr,
   }
   
-  profile tail /bin/tail flags=(complain) {
+  profile tail /bin/tail {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -568,7 +566,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /bin/tail						mr,
   }
   
-  profile mkdir /bin/mkdir flags=(complain) {
+  profile mkdir /bin/mkdir {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -581,7 +579,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /bin/mkdir						mr,
   }
   
-  profile touch /bin/touch flags=(complain) {
+  profile touch /bin/touch {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -594,7 +592,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /bin/touch						mr,
   }
   
-  profile rsync /usr/bin/rsync flags=(complain) {
+  profile rsync /usr/bin/rsync {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -607,7 +605,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /usr/bin/rsync					mr,
   }
   
-  profile file /usr/bin/file flags=(complain) {
+  profile file /usr/bin/file {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -620,7 +618,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /usr/bin/file					mr,
   }
   
-  profile find /usr/bin/find flags=(complain) {
+  profile find /usr/bin/find {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -633,7 +631,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /usr/bin/find					mr,
   }
   
-  profile gawk /usr/bin/gawk flags=(complain) {
+  profile gawk /usr/bin/gawk {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -646,7 +644,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /usr/bin/gawk					mr,
   }
   
-  profile patch /usr/bin/patch flags=(complain) {
+  profile patch /usr/bin/patch {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -664,7 +662,7 @@ profile shell_root flags=(complain) {	# FIX ME! 07.11.2017 Тестируем б
     /usr/bin/patch					mr,
   }
   
-  profile diff /usr/bin/diff flags=(complain) {
+  profile diff /usr/bin/diff {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>

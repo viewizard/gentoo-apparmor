@@ -10,11 +10,14 @@
 
 #include <local/tunables.d/>
 
+# FIX ME! Потом внимательно просмотреть, что он может делать в /dev и /sys.
+
 profile eudev.udevadm /bin/udevadm {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
   capability net_admin,
+  capability sys_admin,
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -34,7 +37,8 @@ profile eudev.udevadm /bin/udevadm {
   /sys/module/*/uevent					rw,
   /sys/devices/**/uevent				rw,
   /sys/module/block/parameters/events_dfl_poll_msecs	rw,
-  /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/** rw,
+  /sys/devices/pci@{PCI2}/{,**/}			r,
+  /sys/devices/pci@{PCI2}/**/*				rw,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/**		rw,
   
   # EXECUTABLES ----------------------------------------
@@ -86,10 +90,10 @@ profile eudev.udevd /sbin/udevd {
   /dev/bus/usb/**					rw,
   /sys/bus/pci/slots/					r,
   /sys/**/uevent					rw,
-  /sys/devices/pci[0-9]**/**				r,
+  /sys/devices/pci@{PCI2}/{,**}				r,
+  /sys/devices/pci@{PCI2}/@{PCI4}/{ata[0-9]*,usb@{USB1}}/**/block/@{BLOCK_REAL}/queue/scheduler w,
   /sys/devices/virtual/**				r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/queue/scheduler w,
-  /sys/devices/pci[0-9]**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/queue/scheduler w,
   /sys/devices/**/input/input[0-9]*/{,capabilities/}*	r,
   /sys/devices/pnp[0-9]*/*/rtc/rtc[0-9]*/hctosys	r,
   /sys/module/block/parameters/events_dfl_poll_msecs	rw,

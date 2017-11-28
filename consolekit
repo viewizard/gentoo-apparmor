@@ -109,8 +109,8 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   capability dac_override,
   
   # MOUNT ----------------------------------------------
-  mount fstype=tmpfs -> /run/user/@{UID}/,
-  umount /run/user/@{UID}/,
+  mount fstype=tmpfs -> /run/user/{@{UID_ROOT},@{UID}}/,	# пользователи, которые могут логиниться.
+  umount /run/user/{@{UID_ROOT},@{UID}}/,			# пользователи, которые могут логиниться.
   
   # PTRACE ---------------------------------------------
   ptrace (trace),

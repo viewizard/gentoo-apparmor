@@ -33,8 +33,8 @@ profile thunar-volman /usr/bin/thunar-volman {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  /sys/devices/pci[0-9]*/**/usb[0-9]*/{,**/}uevent	rw,
-  /sys/devices/pci[0-9]*/**/ata[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
+  /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/{,**/}uevent rw,
+  /sys/devices/pci@{PCI2}/@{PCI4}/ata[0-9]*/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{,name,uevent} r,
   owner @{PROC}/@{pid}/fd/				r,
   owner @{PROC}/@{pid}/mountinfo			r,

@@ -30,7 +30,7 @@ profile qemu.qemu-system /usr/bin/qemu-system-{arm,i386,x86_64} {
   /dev/bus/usb/						r,
   /sys/bus/usb/devices/					r,
   /sys/class/						r,
-  /sys/devices/pci[0-9]*/**/usb[0-9]*/**		r,
+  /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/**		r,
   /sys/module/vhost/parameters/max_mem_regions		r,
   
   # EXECUTABLES ----------------------------------------

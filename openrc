@@ -1679,7 +1679,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount flags=(attach_disconnect
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-    /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
+    /sys/devices/pci@{PCI2}/@{PCI4}/{ata[0-9]*,usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
     owner @{PROC}/@{pid}/mountinfo			r,
     
     # EXECUTABLES --------------------------------------

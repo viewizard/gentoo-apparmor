@@ -211,7 +211,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# at
     # PSEUDO -------------------------------------------
     /dev/console					rw,
     /dev/@{BLOCK_ALL}					r,
-    /sys/devices/pci[0-9]*/**/{ata,usb}[0-9]*/**/block/@{BLOCK_REAL}/{,**} r,
+    /sys/devices/pci@{PCI2}/@{PCI4}/{ata[0-9]*,usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
     
     # EXECUTABLES --------------------------------------
     /bin/mount						mr,

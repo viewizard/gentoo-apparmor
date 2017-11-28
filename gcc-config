@@ -196,7 +196,7 @@ profile gcc-config /usr/bin/gcc-config {
     /bin/sort						mr,
   }
   
-  profile grep /bin/grep flags=(complain) {
+  profile grep /bin/grep {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -210,7 +210,7 @@ profile gcc-config /usr/bin/gcc-config {
     /etc/env.d/gcc/*					r,	# sys-devel/gcc
   }
   
-  profile tail /bin/tail flags=(complain) {
+  profile tail /bin/tail {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -221,7 +221,7 @@ profile gcc-config /usr/bin/gcc-config {
     /bin/tail						mr,
   }
   
-  profile mkdir /bin/mkdir flags=(complain) {
+  profile mkdir /bin/mkdir {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -235,7 +235,7 @@ profile gcc-config /usr/bin/gcc-config {
     /lib{,32,64}/.gcc.config.new/			w,
   }
   
-  profile rmdir /bin/rmdir flags=(complain) {
+  profile rmdir /bin/rmdir {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
