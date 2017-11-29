@@ -140,7 +140,7 @@ profile networkmanager.NetworkManager /usr/sbin/NetworkManager {
   /sys/class/net/					r,
   /sys/class/rfkill/					r,
   /sys/devices/virtual/net/lo/{,*}			r,
-  /sys/devices/pci@{PCI2}/**/@{PCI4}/net/eth[0-9]*/{,uevent,ifindex,phys_port_id,dev_id} r,
+  /sys/devices/pci@{PCI2}/**/@{PCI4}/net/@{NIC}/{,uevent,ifindex,phys_port_id,dev_id} r,
   /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/@{USB4}/net/usb@{USB1}/{,uevent,ifindex,phys_port_id,dev_id} r,
   /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/**/@{USB4}/net/usb@{USB1}/{,uevent,ifindex,phys_port_id,dev_id} r,
   /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/uevent r,
@@ -149,7 +149,7 @@ profile networkmanager.NetworkManager /usr/sbin/NetworkManager {
   owner @{PROC}/@{pid}/fd/				r,
   @{PROC}/@{pids}/cmdline				r,
   @{PROC}/sys/kernel/random/boot_id			r,
-  @{PROC}/sys/net/ipv4/conf/{default,eth[0-9]*,usb[0-9]*}/rp_filter rw,
+  @{PROC}/sys/net/ipv4/conf/{default,@{NIC},usb@{USB1}}/rp_filter rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/NetworkManager				mr,

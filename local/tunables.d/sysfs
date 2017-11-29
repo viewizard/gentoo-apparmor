@@ -1,0 +1,32 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# В переменных sysfs обозначаем цифрой не кол-во символов,
+# а кол-во элементов. Например:
+# @{PCI2} - содержит 2 элемента (domain:bus), 7 символов
+# @{USB1} - содержит 1 элемент (bus), 1 или 2 символа
+
+# PCI domain:bus (hex)
+@{PCI2}=[0-9a-f][0-9a-f][0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]
+# PCI domain:bus:slot.func (hex)
+@{PCI4}=@{PCI2}:[0-9a-f][0-9a-f].[0-9a-f]
+
+# USB bus
+@{USB1}=[0-9]{,[0-9]}
+# USB bus-port[.hub]
+@{USB2}=@{USB1}-@{USB1}{,.@{USB1},.@{USB1}.*}
+# USB bus-port[.hub]:config.interface
+@{USB4}=@{USB2}:[0-9].[0-9]
+
+# ATA port
+@{ATA1}=[0-9]{,[0-9]}
+
+# NIC name+port
+@{NIC}=eth[0-9]

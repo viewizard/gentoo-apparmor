@@ -122,8 +122,8 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   /sys/devices/pci@{PCI2}/**/@{PCI4}/{device,class,irq,resource,vendor} r,
   /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/	r,
   /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/@{USB4}/{,**} r,
-  audit /sys/devices/pci[0-9]*/**/{removable,uevent}	r,	# FIX ME! audit 28.11.2017
-  audit /sys/devices/pci[0-9]*/**/block/**/size		r,	# FIX ME! audit 28.11.2017
+  audit /sys/devices/pci@{PCI2}/**/{removable,uevent}	r,	# FIX ME! audit 28.11.2017
+  audit /sys/devices/pci@{PCI2}/**/block/**/size	r,	# FIX ME! audit 28.11.2017
   /sys/devices/virtual/block/**/{removable,uevent,size}	r,
   /sys/devices/virtual/tty/tty[0-9]*/active		r,
   @{PROC}/						r,

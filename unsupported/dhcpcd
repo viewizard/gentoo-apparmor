@@ -30,7 +30,7 @@ profile dhcpcd /sbin/dhcpcd {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /sys/devices/virtual/net/lo/uevent			r,
-#  /sys/devices/pci[0-9]*/**/net/eth[0-9]*/uevent	r,	# FIX ME! Сделать через @{PCI2} и @{PCI4} + жесткие ограничения на ресурсы.
+  /sys/devices/pci@{PCI2}/**/@{PCI4}/net/@{NIC}/uevent	r,
   @{PROC}/sys/net/ipv4/conf/*/promote_secondaries	rwk,
   
   # EXECUTABLES ----------------------------------------
@@ -41,7 +41,7 @@ profile dhcpcd /sbin/dhcpcd {
   /etc/dhcpcd.conf					r,
   /etc/dhcpcd.duid					rw,
   /etc/udev/udev.conf					r,	# sys-fs/eudev
-  /run/dhcpcd{,-eth[0-9]*}.pid				rwk,
+  /run/dhcpcd{,-@{NIC}}.pid				rwk,
   /run/dhcpcd.{unpriv.,}sock				rw,
   /run/udev/data/*					rw,
   /var/lib/dhcpcd/					rw,

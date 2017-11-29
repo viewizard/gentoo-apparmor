@@ -24,21 +24,3 @@
 # PID процесса, который ограничевает профиль безопасности.
 # Until kernel vars are implemented
 @{pid}=@{pids}
-
-# sysfs PCI
-# PCI domain:bus (hex)
-@{PCI2}=[0-9a-f][0-9a-f][0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]
-# PCI domain:bus:slot.func (hex)
-@{PCI4}=@{PCI2}:[0-9a-f][0-9a-f].[0-9a-f]
-
-# sysfs USB
-# USB bus
-@{USB1}=[0-9]{,[0-9]}
-# USB bus-port[.hub]
-@{USB2}=@{USB1}-@{USB1}{,.@{USB1},.@{USB1}.*}
-# USB bus-port[.hub]:config.interface
-@{USB4}=@{USB2}:[0-9].[0-9]
-
-# sysfs ATA
-# ATA port
-@{ATA1}=[0-9]{,[0-9]}
