@@ -119,7 +119,7 @@ profile lvm2.lvm /sbin/lvm {
   /sys/bus/						r,
   /sys/class/						r,
   /sys/class/block/					r,
-  /sys/devices/pci@{PCI2}/@{PCI4}/{ata[0-9]*,usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
+  /sys/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   /sys/devices/virtual/bdi/*/read_ahead_kb		rw,
   @{PROC}/devices					r,

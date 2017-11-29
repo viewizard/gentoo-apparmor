@@ -48,7 +48,7 @@ profile xsane /usr/bin/xsane {
   /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/@{USB4}/uevent r,
   /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/**/@{USB4}/uevent r,
   /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/**/@{USB4}/host[0-9]*/**/{vendor,model,type} r,
-  deny /sys/devices/pci@{PCI2}/@{PCI4}/ata[0-9]*/{,**} r,
+  deny /sys/devices/pci@{PCI2}/@{PCI4}/ata@{ATA1}/{,**} r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xsane					mr,

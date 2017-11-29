@@ -91,7 +91,7 @@ profile eudev.udevd /sbin/udevd {
   /sys/bus/pci/slots/					r,
   /sys/**/uevent					rw,
   /sys/devices/pci@{PCI2}/{,**}				r,
-  /sys/devices/pci@{PCI2}/@{PCI4}/{ata[0-9]*,usb@{USB1}}/**/block/@{BLOCK_REAL}/queue/scheduler w,
+  /sys/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/queue/scheduler w,
   /sys/devices/virtual/**				r,
   /sys/devices/virtual/block/@{BLOCK_VIRT}/queue/scheduler w,
   /sys/devices/**/input/input[0-9]*/{,capabilities/}*	r,

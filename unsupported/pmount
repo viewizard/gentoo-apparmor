@@ -29,7 +29,7 @@ profile pmount /usr/bin/pmount flags=(complain) {
   /dev/@{BLOCK_REAL}					r,
   /sys/class/block/					r,
   /sys/devices/virtual/block/md*/dev			r,
-  /sys/devices/pci@{PCI2}/@{PCI4}/{ata[0-9]*,usb@{USB1}}/**/block/@{BLOCK_REAL}/{,*/}{,dev} r,
+  /sys/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,*/}{,dev} r,
   /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/**/block/@{BLOCK_REAL}/removable r,
   /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/**/block/@{BLOCK_REAL}/*/{size,start} r,
   @{PROC}/@{pid}/mounts					r,
