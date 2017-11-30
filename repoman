@@ -59,8 +59,8 @@ profile repoman @{PYTHON_EXEC}/repoman {
   /var/cache/edb/dep/usr/local/portage/**		rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/@{TMP8}					rw,
-  owner /tmp/tmp@{TMP8}					rwk,
+  owner /tmp/{@{TMP6},@{TMP8}}				rw,	# TMP6 - python2, TMP8 - python3	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /tmp/tmp{@{TMP6},@{TMP8}}			rwk,	# TMP6 - python2, TMP8 - python3	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   audit owner /var/tmp/tmp*/				rw,	# FIX ME! audit 26.11.2017
   audit owner /var/tmp/portage/tmp*/{,**}		rw,	# FIX ME! audit 26.11.2017
   

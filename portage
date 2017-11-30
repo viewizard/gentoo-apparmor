@@ -511,8 +511,8 @@ profile portage.env-update @{PYTHON_EXEC}/env-update {
   /var/lib/portage/config				rwk,
   
   # TEMP -----------------------------------------------
-  owner /tmp/@{TMP8}					rw,
-  owner /tmp/tmp@{TMP8}					rwk,
+  owner /tmp/{@{TMP6},@{TMP8}}				rw,	# TMP6 - python2, TMP8 - python3	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /tmp/tmp{@{TMP6},@{TMP8}}			rwk,	# TMP6 - python2, TMP8 - python3	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -1236,7 +1236,7 @@ profile portage.emaint @{PYTHON_EXEC}/emaint {
   }
 }
 
-profile portage.cgroup-release-agent /{usr/lib{,32,64}/portage/@{PYTHON},var/tmp/portage/._portage_reinstall_.@{TMP8}/bin}/cgroup-release-agent {
+profile portage.cgroup-release-agent /{usr/lib{,32,64}/portage/@{PYTHON},var/tmp/portage/._portage_reinstall_.{@{TMP6},@{TMP8}}/bin}/cgroup-release-agent {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -1248,7 +1248,7 @@ profile portage.cgroup-release-agent /{usr/lib{,32,64}/portage/@{PYTHON},var/tmp
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/portage/@{PYTHON}/cgroup-release-agent r,
-  /var/tmp/portage/._portage_reinstall_.@{TMP8}/bin/cgroup-release-agent r,
+  /var/tmp/portage/._portage_reinstall_.{@{TMP6},@{TMP8}}/bin/cgroup-release-agent r,
   @{shell}						mr,
   /bin/rmdir						Cx,	# sys-apps/coreutils
   
@@ -1286,6 +1286,6 @@ profile portage.ebuild.sh /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh {
   /usr/local/portage/{,**}				r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/ebuild-cache.@{TMP8}			rw,	# DELEGATION! eix
+  owner /tmp/ebuild-cache.{@{TMP6},@{TMP8}}		rw,	# DELEGATION! eix
   /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
 }
