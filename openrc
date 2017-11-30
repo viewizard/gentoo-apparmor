@@ -31,7 +31,8 @@ profile openrc /sbin/openrc flags=(attach_disconnected,complain) {	# attach_disc
   /dev/ptmx						rw,
   /dev/pts/[0-9]*					rw,
   /sys/fs/cgroup/					r,
-  /sys/fs/cgroup/**					rwk,
+  /sys/fs/cgroup/**/					rw,
+  /sys/fs/cgroup/{,**/}*				rwk,
   @{PROC}/						r,
   @{PROC}/cmdline					r,
   @{PROC}/@{pids}/cmdline				r,
@@ -56,7 +57,8 @@ profile openrc /sbin/openrc flags=(attach_disconnected,complain) {	# attach_disc
   /etc/runlevels/{,**}					rw,
   /var/log/rc.log					w,
   /run/**{,.}pid					rw,
-  /run/openrc/**					rwk,
+  /run/openrc/**/					rw,
+  /run/openrc/{,**/}*					rwk,
   
   profile shell @{shell} flags=(complain) {
     #include <abstractions/base>

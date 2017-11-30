@@ -68,7 +68,8 @@ profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   owner @{HOME_CACHE}/gegl-[0-9].[0-9]/{,**}		rw,
   owner @{HOME}/.local/share/gegl-[0-9].[0-9]/{,**}	rw,
   owner @{HOME}/.gimp-[0-9].[0-9]/			rw,
-  owner @{HOME}/.gimp-[0-9].[0-9]/**			rwk,
+  owner @{HOME}/.gimp-[0-9].[0-9]/**/			rw,
+  owner @{HOME}/.gimp-[0-9].[0-9]/{,**/}*		rwk,
   
   # TEMP -----------------------------------------------
   audit owner /tmp/gdkpixbuf-save-tmp.*			rw,	# FIX ME! audit 25.11.2017

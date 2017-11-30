@@ -85,15 +85,15 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   /lib{,32,64}/{,**}					rw,
   /opt/{,**}						rw,
   /sbin/{,**}						rw,
-  /usr/							rw,
-  /usr/**						rwl,	# l - все правильно, разрешаем на /**.
-  /usr/portage/distfiles/**				rwk,
-  /usr/portage/packages/**				rwk,
+  /usr/{,**/}						rw,
+  /usr/{,**/}*						rwl,	# l - все правильно, разрешаем на /**.
+  /usr/portage/distfiles/**/				rw,
+  /usr/portage/distfiles/{,**/}*			rwk,
+  /usr/portage/packages/**/				rw,
+  /usr/portage/packages/{,**/}*				rwk,
   /run/							r,
-  /var/							rw,
-  /var/**						rwk,	# IMPROVE! exclude "/var/log" (allow only subfolder
-  								# creation and .keep* files) with {*^}/{**^},
-  								# when this features will be available
+  /var/{,**/}						rw,	# IMPROVE! Исключить "/var/log" (разрешать только создание
+  /var/{,**/}*						rwk,	# директорий и файлов .keep*) с {*^}/{**^}.
   audit deny /usr/local/**				w,	# Исключаем работу с /usr/local/.
   
   # TEMP -----------------------------------------------
@@ -317,21 +317,24 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /etc/**						rw,
     /etc/xml/.keep					k,
     /usr/						r,
-    /usr/**						rwkl,	# l - все правильно, разрешаем на /**.
-    /usr/portage/packages/**				rwk,
+    /usr/**/						rw,
+    /usr/{,**/}*					rwkl,	# l - все правильно, разрешаем на /**.
+    /usr/portage/packages/**/				rw,
+    /usr/portage/packages/{,**/}*			rwk,
     /lib{,32,64}/					r,
     /lib{,32,64}/*					rwl,	# l - все правильно, разрешаем на /**.
     /lib{,32,64}/modules/@{kernel_ver}/modules.*	rw,
     /var/						r,
     /var/db/pkg/					r,
     /var/db/pkg/**					rw,
-    /var/tmp/portage/					rw,
-    /var/tmp/portage/**					rwk,
-    /var/cache/**					rwl,	# l - все правильно, разрешаем на /**.
+    /var/tmp/portage/{,**/}				rw,
+    /var/tmp/portage/{,**/}*				rwk,
+    /var/cache/**/					rw,
+    /var/cache/{,**/}*					rwl,	# l - все правильно, разрешаем на /**.
     /var/log/nullmailer/				w,	# mail-mta/nullmailer
     /var/spool/nullmailer/{,**}				w,	# mail-mta/nullmailer
-    /var/lib/*/						rw,
-    /var/lib/*/**					rwkl,	# l - все правильно, разрешаем на /**.
+    /var/lib/**/					rw,
+    /var/lib/**/*					rwkl,	# l - все правильно, разрешаем на /**.
     /run/utmp						rk,
     /run/mount/utab					rw,
     /run/openrc/*					r,	# sys-apps/openrc
@@ -344,7 +347,8 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     
     # TEMP ---------------------------------------------
     /tmp/						r,
-    owner /tmp/**					rwk,	# Исключительный случай, разрешаем полный доступ.
+    owner /tmp/**/					rw,	# Исключительный случай, разрешаем полный доступ.
+    owner /tmp/{,**/}*					rwk,	# Исключительный случай, разрешаем полный доступ.
     								# IMPROVE! (?) Потом работать с xattr, чтобы ограничить только на процесс.
     /var/tmp/						r,
   }
@@ -425,7 +429,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /usr/{,**}						r,
     /usr/src/@{kernel}/tools/gcc/**.so			m,	# sys-kernel/gentoo-sources, плагины gcc
     /usr/portage/distfiles/{egit,git3}-src/{,**}	rw,
-    link subset /usr/portage/distfiles/{egit,git3}-src/** -> /usr/portage/distfiles/{egit,git3}-src/**,
+    link subset /usr/portage/distfiles/{egit,git3}-src/{,**/}* -> /usr/portage/distfiles/{egit,git3}-src/{,**/}*,
     /usr/portage/packages/{,**}				rw,
     /usr/share/applications/{,**}			rw,
     /usr/share/icons/{,**}				rw,
@@ -437,13 +441,15 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     
     # TEMP ---------------------------------------------
     /tmp/						r,
-    owner /tmp/**					rwk,	# Исключительный случай, разрешаем полный доступ.
+    owner /tmp/**/					rw,	# Исключительный случай, разрешаем полный доступ.
+    owner /tmp/{,**/}*					rwk,	# Исключительный случай, разрешаем полный доступ.
     								# IMPROVE! (?) Потом работать с xattr, чтобы ограничить только на процесс.
     /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
     /var/tmp/						r,
-    /var/tmp/**						rwk,	# Исключительный случай, разрешаем полный доступ.	# IMPROVE! UID 0, 250
+    /var/tmp/**/					rw,	# Исключительный случай, разрешаем полный доступ.
+    /var/tmp/{,**/}*					rwk,	# Исключительный случай, разрешаем полный доступ.	# IMPROVE! UID 0, 250
     								# IMPROVE! (?) Потом работать с xattr, чтобы ограничить только на процесс.
-    link subset /var/tmp/portage/**			-> /var/tmp/portage/**,
+    link subset /var/tmp/portage/{,**/}*		-> /var/tmp/portage/{,**/}*,
   }
 }
 
@@ -1195,13 +1201,14 @@ profile portage.emaint @{PYTHON_EXEC}/emaint {
   /usr/local/portage/{,**}				r,
   /usr/share/portage/{,**}				r,
   /var/lib/portage/{,**}				r,
-  /var/lib/gentoo/{,**}					rwk,
+  /var/lib/gentoo/{,**/}				rw,
+  /var/lib/gentoo/{,**/}*				rwk,
   /var/db/pkg/{,**}					r,
   /var/cache/edb/{,**}					r,
   
   # TEMP -----------------------------------------------
-  audit owner /tmp/??????				rw,	# FIX ME! audit 26.11.2017
-  audit owner /tmp/tmp??????				rwk,	# FIX ME! audit 26.11.2017
+  owner /tmp/{@{TMP6},@{TMP8}}				rw,	# TMP6 - python2, TMP8 - python3	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /tmp/tmp{@{TMP6},@{TMP8}}			rwk,	# TMP6 - python2, TMP8 - python3	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   profile shell @{shell} {
     #include <abstractions/base>

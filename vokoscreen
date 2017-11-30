@@ -61,8 +61,8 @@ profile vokoscreen /usr/bin/vokoscreen {
   /etc/os-release					r,	# sys-apps/baselayout
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/vokoscreen/			rw,
-  owner @{HOME}/.config/vokoscreen/**			rwk,
+  owner @{HOME}/.config/vokoscreen/{,**/}		rw,
+  owner @{HOME}/.config/vokoscreen/{,**/}*		rwk,
   owner @{HOME}/{,[^.]**/}				r,	# Разрешаем выбирать любую папку.
   owner @{HOME}/{,[^.]**/}.vokoscreen-recording/	w,	# Создание временной папки.
   

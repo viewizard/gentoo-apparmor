@@ -60,11 +60,12 @@ profile pulseaudio /usr/bin/pulseaudio {
   owner /run/user/@{UID}/pulse/cli			rw,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/pulse/				rw,
-  owner @{HOME}/.config/pulse/**			rwk,
+  owner @{HOME}/.config/pulse/{,**/}			rw,
+  owner @{HOME}/.config/pulse/{,**/}*			rwk,
   
   # TEMP -----------------------------------------------
-  audit owner /tmp/pulse-*/{,*}				rwk,	# FIX ME! audit 26.11.2017
+  audit owner /tmp/pulse-*/				rw,	# FIX ME! audit 26.11.2017
+  audit owner /tmp/pulse-*/*				rwk,	# FIX ME! audit 26.11.2017
 }
 
 profile pulseaudio.start-pulseaudio-x11 /usr/bin/start-pulseaudio-x11 {

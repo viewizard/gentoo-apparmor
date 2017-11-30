@@ -72,8 +72,8 @@ profile pidgin /usr/bin/pidgin {
   /usr/share/purple/ca-certs/{,**}			r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.purple/				rw,
-  owner @{HOME}/.purple/**				rwk,
+  owner @{HOME}/.purple/{,**/}				rw,
+  owner @{HOME}/.purple/{,**/}*				rwk,
   audit deny @{HOME}/.purple/plugins/**			m,	# Не разрешаем использовать плагины пользователя,
   								# в любом случае их не пропустит IMA/EVM.
   

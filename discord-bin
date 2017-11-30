@@ -77,7 +77,8 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   owner /run/user/@{UID}/discord-ipc-[0-9]*		rw,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/discord/{,**}			rwk,
+  owner @{HOME}/.config/discord/{,**/}			rw,
+  owner @{HOME}/.config/discord/{,**/}*			rwk,
   owner @{HOME}/.config/discord/*/modules/**.{node,so}	m,	# Без этого не работает, учесть в IMA/EVM.
   owner @{HOME}/.config/autostart/*.desktop		rw,	# BUG! По какой-то причине, автозапуск не работает в XFCE4.
   owner @{HOME}/.pki/nssdb/*				rwk,

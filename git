@@ -116,8 +116,8 @@ profile git_root {
   
   # READS/WRITES ---------------------------------------
   /usr/share/git-core/**				r,
-  owner link subset /.git/objects/**			-> /.git/objects/**,
-  owner link subset /**/.git/objects/**			-> /**/.git/objects/**,
+  owner link subset /.git/objects/{,**/}*		-> /.git/objects/{,**/}*,
+  owner link subset /**/.git/objects/{,**/}*		-> /**/.git/objects/{,**/}*,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.gitconfig				rw,

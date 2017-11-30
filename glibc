@@ -25,11 +25,11 @@ profile glibc.ldd /usr/bin/ldd flags=(attach_disconnected) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/ldd						mr,
-  /bin/**						cxmr -> test_run,
-  /sbin/**						cxmr -> test_run,
-  /lib{,32,64,exec}/**					cxmr -> test_run,
-  /opt/**						cxmr -> test_run,
-  /usr/**						cxmr -> test_run,
+  /bin/{,**/}*						cxmr -> test_run,
+  /sbin/{,**/}*						cxmr -> test_run,
+  /lib{,32,64,exec}/{,**/}*				cxmr -> test_run,
+  /opt/{,**/}*						cxmr -> test_run,
+  /usr/{,**/}*						cxmr -> test_run,
   
   # READS/WRITES ---------------------------------------
   /etc/ld.so.cache					r,
@@ -44,11 +44,11 @@ profile glibc.ldd /usr/bin/ldd flags=(attach_disconnected) {
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/**						mr,
-    /sbin/**						mr,
-    /lib{,32,64,exec}/**				mr,
-    /opt/**						mr,
-    /usr/**						mr,
+    /bin/{,**/}*					mr,
+    /sbin/{,**/}*					mr,
+    /lib{,32,64,exec}/{,**/}*				mr,
+    /opt/{,**/}*					mr,
+    /usr/{,**/}*					mr,
     
     # READS/WRITES -------------------------------------
     /etc/ld.so.cache					r,

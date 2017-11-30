@@ -29,7 +29,8 @@ profile aide /usr/bin/aide {
   
   # READS/WRITES ---------------------------------------
   /{,**}						r,
-  /var/lib/aide/**					rwk,
+  /var/lib/aide/**/					rw,
+  /var/lib/aide/{,**/}*					rwk,
 }
 
 profile aide.aideinit /usr/sbin/aideinit {
@@ -54,7 +55,8 @@ profile aide.aideinit /usr/sbin/aideinit {
   
   # READS/WRITES ---------------------------------------
   /etc/aide/**						r,
-  /var/lib/aide/**					rwk,
+  /var/lib/aide/**/					rw,
+  /var/lib/aide/{,**/}*					rwk,
   
   profile cut /bin/cut flags=(complain) {
     #include <abstractions/base>

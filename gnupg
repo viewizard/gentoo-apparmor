@@ -51,12 +51,12 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} {
   /run/user/@{UID}/gnupg/{,*}				rw,
   /var/lib/gentoo/gkeys/keyrings/gentoo/release/	r,
   /var/lib/gentoo/gkeys/keyrings/gentoo/release/**	rw,
-  owner link subset /var/lib/gentoo/gkeys/keyrings/gentoo/release/**	-> /var/lib/gentoo/gkeys/keyrings/gentoo/release/**,
+  owner link subset /var/lib/gentoo/gkeys/keyrings/gentoo/release/{,**/}* -> /var/lib/gentoo/gkeys/keyrings/gentoo/release/{,**/}*,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.gnupg/					rw,
-  owner @{HOME}/.gnupg/**				rwk,
-  owner link subset @{HOME}/.gnupg/**			-> /{home/*,root}/.gnupg/**,	# TARGET! @{HOME}
+  owner @{HOME}/.gnupg/{,**/}				rw,
+  owner @{HOME}/.gnupg/{,**/}*				rwk,
+  owner link subset @{HOME}/.gnupg/{,**/}*		-> /{home/*,root}/.gnupg/{,**/}*,	# TARGET! @{HOME}
   
   # TEMP -----------------------------------------------
   owner /var/tmp/portage/webrsync-@{TMP6}/portage-*	r,	# DELEGATION! portage.emerge-webrsync

@@ -19,15 +19,15 @@
 /usr/share/poppler/{,**}				r,	# app-text/poppler-data
 /var/cache/fonts/**					r,
 /var/cache/fontconfig/					rw,	# media-libs/fontconfig
-/var/cache/fontconfig/**				mr,	# media-libs/fontconfig
-link subset /var/cache/fontconfig/**			-> /var/cache/fontconfig/**,	# media-libs/fontconfig
+/var/cache/fontconfig/*					mr,	# media-libs/fontconfig
+link subset /var/cache/fontconfig/*			-> /var/cache/fontconfig/*,	# media-libs/fontconfig
 
 # USERS ------------------------------------------------
 owner @{HOME}/.fontconfig/				r,	# media-libs/fontconfig
-owner @{HOME}/.fontconfig/**				mrw,	# media-libs/fontconfig
-owner link subset @{HOME}/.fontconfig/**		-> /{home/*,root}/.fontconfig/**,	# TARGET! @{HOME}	# media-libs/fontconfig
+owner @{HOME}/.fontconfig/*				mrw,	# media-libs/fontconfig
+owner link subset @{HOME}/.fontconfig/*			-> /{home/*,root}/.fontconfig/*,	# TARGET! @{HOME}	# media-libs/fontconfig
 owner @{HOME_CACHE}/fontconfig/				rw,	# media-libs/fontconfig
-owner @{HOME_CACHE}/fontconfig/**			mrw,	# media-libs/fontconfig
-owner link subset @{HOME_CACHE}/fontconfig/**		-> /{home/*/.cache,root/.cache,tmp/*}/fontconfig/**,	# TARGET! @{HOME_CACHE}	# media-libs/fontconfig
+owner @{HOME_CACHE}/fontconfig/*			mrw,	# media-libs/fontconfig
+owner link subset @{HOME_CACHE}/fontconfig/*		-> /{home/*/.cache,root/.cache,tmp/*}/fontconfig/*,	# TARGET! @{HOME_CACHE}	# media-libs/fontconfig
 owner @{HOME}/.config/fontconfig/{,**}			r,	# media-libs/fontconfig
 owner @{HOME}/.local/share/fonts/{,**}			r,

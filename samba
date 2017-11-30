@@ -26,8 +26,8 @@ profile samba.smbclient /usr/bin/smbclient {
   /etc/inputrc						r,
   /etc/samba/smb.conf					r,
   /usr/share/samba/{,**}				r,
-  /var/cache/samba/					rw,
-  /var/cache/samba/**					rwk,
-  /run/lock/samba/					rw,
-  /run/lock/samba/**					rwk,
+  /var/cache/samba/{,**/}				rw,
+  /var/cache/samba/{,**/}*				rwk,
+  /run/lock/samba/{,**/}				rw,
+  /run/lock/samba/{,**/}*				rwk,
 }

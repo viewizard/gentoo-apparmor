@@ -129,7 +129,8 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean {
   /etc/portage/**					r,	# sys-apps/portage
   /usr/portage/**					r,	# sys-apps/portage
   /usr/portage/distfiles/**				rw,	# sys-apps/portage
-  /usr/portage/packages/**				rwk,	# sys-apps/portage
+  /usr/portage/packages/**/				rw,	# sys-apps/portage
+  /usr/portage/packages/{,**/}*				rwk,	# sys-apps/portage
   /usr/local/portage/**					r,
   /usr/share/portage/config/*				r,	# sys-apps/portage
   /var/db/pkg/{,**}					r,

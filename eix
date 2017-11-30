@@ -37,7 +37,8 @@ profile eix /usr/bin/eix {
   /var/lib/portage/{,**}				r,
   /var/db/pkg/{,**}					r,
   /var/cache/edb/{,**}					r,
-  /var/cache/eix/{,**}					rwk,
+  /var/cache/eix/{,**/}					rw,
+  /var/cache/eix/{,**/}*				rwk,
   
   # TEMP -----------------------------------------------
   owner /tmp/ebuild-cache.@{TMP8}			rw,

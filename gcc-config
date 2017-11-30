@@ -132,7 +132,7 @@ profile gcc-config /usr/bin/gcc-config {
     
     # READS/WRITES -------------------------------------
     /etc/env.d/gcc/**					w,	# sys-devel/gcc
-    link subset /lib{,32,64}/*				-> /usr/lib{,32,64}/gcc/@{CHOST}/**,
+    link subset /lib{,32,64}/*				-> /usr/lib{,32,64}/gcc/@{CHOST}/{,**/}*,
   }
   
   profile cat /bin/cat {

@@ -36,7 +36,8 @@ profile man-db.mandb /usr/bin/mandb {
   /etc/man_db.conf					r,
   /usr/share/man/{,**}					r,
   /var/cache/man/					r,
-  /var/cache/man/**					rwk,
+  /var/cache/man/**/					rw,
+  /var/cache/man/{,**/}*				rwk,
   
   profile bzip2 /bin/bzip2 {
     #include <abstractions/base>
@@ -84,7 +85,8 @@ profile man-db.man /usr/bin/man {
   /usr/share/gcc-data/@{CHOST}/[0-9]*/man/{,**}		r,	# sys-devel/gcc
   /usr/share/binutils-data/@{CHOST}/[0-9]*/man/{,**}	r,	# sys-devel/binutils
   /var/cache/man/					r,
-  /var/cache/man/**					rwk,
+  /var/cache/man/**/					rw,
+  /var/cache/man/{,**/}*				rwk,
   
   profile bzip2 /bin/bzip2 {
     #include <abstractions/base>

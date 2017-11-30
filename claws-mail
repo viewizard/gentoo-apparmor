@@ -54,11 +54,10 @@ profile claws-mail /usr/bin/claws-mail {
   owner @{HOME}/Mail/{,**}				rw,
   owner link subset @{HOME}/Mail/queue/[0-9]*		-> /{home/*,root}/.claws-mail/tmp/queue.*,	# TARGET! @{HOME}
   owner link subset @{HOME}/Mail/draft/[0-9]*		-> /{home/*,root}/.claws-mail/tmp/draft.*,	# TARGET! @{HOME}
-  owner @{HOME_CACHE}/webkit/{,**}			rwk,
   
   # TEMP -----------------------------------------------
-  owner /tmp/claws-mail-@{UID}/				rw,
-  owner /tmp/claws-mail-@{UID}/**			rwk,
+  owner /tmp/claws-mail-@{UID}/{,**/}			rw,
+  owner /tmp/claws-mail-@{UID}/{,**/}*			rwk,
   
   # NOISY ----------------------------------------------
   deny /						r,

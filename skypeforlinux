@@ -141,15 +141,16 @@ profile skypeforlinux /opt/skypeforlinux/skypeforlinux {
   # READS/WRITES ---------------------------------------
   /etc/os-release					r,	# sys-apps/baselayout
   /etc/udev/udev.conf					r,	# sys-fs/eudev
-  /opt/skypeforlinux/**					mr,
+  /opt/skypeforlinux/**/				r,
+  /opt/skypeforlinux/{,**/}*				mr,
   /usr/share/mime/mime.cache				m,
   /usr/share/locale/**.mo				m,
   /usr/share/fonts/**.{ttf,ttc,otf}			m,
   audit /usr/share/icons/*/icon-theme.cache		m,	# FIX ME! audit 28.11.2017 был нужен бета версии.
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/skypeforlinux/			rw,
-  owner @{HOME}/.config/skypeforlinux/**		rwk,
+  owner @{HOME}/.config/skypeforlinux/{,**/}		rw,
+  owner @{HOME}/.config/skypeforlinux/{,**/}*		rwk,
   owner @{HOME}/.config/autostart/skypeforlinux.desktop	rw,	# BUG! По какой-то причине, автозапуск не работает в XFCE4.
   owner @{HOME}/.pki/nssdb/*				rwk,
   deny @{HOME}/.config/skypeforlinux/**			m,

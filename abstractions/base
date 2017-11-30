@@ -53,6 +53,7 @@ owner @{PROC}/@{pid}/status				r,
 /usr/lib{,32,64}/**					r,
 /usr/lib{,32,64}/*.so{,.[0-9]*}				mr,
 /usr/lib{,32,64}/**/lib*.so{,.[0-9]*}			mr,	# Для упрощения, даем полный доступ всем процессам.
-/usr/lib{,32,64}/locale/**				mr,	# sys-libs/glibc
+/usr/lib{,32,64}/locale/**/				r,	# sys-libs/glibc
+/usr/lib{,32,64}/locale/{,**/}*				mr,	# sys-libs/glibc
 /usr/lib{,32,64}/gconv/*.so				mr,	# sys-libs/glibc
 /usr/lib{,32,64}/gconv/gconv-modules*			mr,	# sys-libs/glibc

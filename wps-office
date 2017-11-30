@@ -56,16 +56,16 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   
   # READS/WRITES ---------------------------------------
   /etc/os-release					r,
-  /opt/kingsoft/wps-office/office6/			r,
-  /opt/kingsoft/wps-office/office6/**			mrk,
+  /opt/kingsoft/wps-office/office6/{,**/}		r,
+  /opt/kingsoft/wps-office/office6/{,**/}*		mrk,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/{K,k}ingsoft/			rw,
-  owner @{HOME}/.config/{K,k}ingsoft/**			rwk,
-  owner @{HOME}/.kingsoft/office6/			rw,
-  owner @{HOME}/.kingsoft/office6/**			rwk,
-  owner @{HOME}/.local/share/data/Kingsoft/		rw,
-  owner @{HOME}/.local/share/data/Kingsoft/**		rwk,
+  owner @{HOME}/.config/{K,k}ingsoft/{,**/}		rw,
+  owner @{HOME}/.config/{K,k}ingsoft/{,**/}*		rwk,
+  owner @{HOME}/.kingsoft/office6/{,**/}		rw,
+  owner @{HOME}/.kingsoft/office6/{,**/}*		rwk,
+  owner @{HOME}/.local/share/data/Kingsoft/{,**/}	rw,
+  owner @{HOME}/.local/share/data/Kingsoft/{,**/}*	rwk,
   
   # TEMP -----------------------------------------------
   audit owner /tmp/qt_temp.*				rwk,	# FIX ME! Использовать @{TMP} переменные.

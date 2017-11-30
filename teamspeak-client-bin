@@ -64,8 +64,8 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   /opt/teamspeak3-client/{,**/}*.so*			m,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.ts3client/				rw,
-  owner @{HOME}/.ts3client/**				rwk,
+  owner @{HOME}/.ts3client/{,**/}			rw,
+  owner @{HOME}/.ts3client/{,**/}*			rwk,
   owner @{HOME}/.ts3client/plugins/*.so			m,	# IMPROVE! Не будет работать с IMA/EVM без IMA digsig.
   owner @{HOME}/.pki/nssdb/*				rwk,
   
