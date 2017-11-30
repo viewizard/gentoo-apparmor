@@ -29,6 +29,7 @@ profile apparmor-utils.aa-status @{PYTHON_EXEC}/aa-status flags=(attach_disconne
   owner @{PROC}/@{pid}/mounts				r,
   
   # READS/WRITES ---------------------------------------
+  @{PYTHON_PACKAGES}/apparmor/{,**/}			w,
   @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
   
   # TEMP -----------------------------------------------
@@ -67,6 +68,7 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   # READS/WRITES ---------------------------------------
   /etc/apparmor/logprof.conf				r,
   /etc/inputrc						r,
+  @{PYTHON_PACKAGES}/apparmor/{,**/}			w,
   @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
   @{PYTHON_PACKAGES}/LibAppArmor/**.pyc{,.*}		w,
   
@@ -116,6 +118,7 @@ profile apparmor-utils.aa-complain @{PYTHON_EXEC}/aa-complain {
   /etc/apparmor/logprof.conf				r,
   /etc/apparmor.d/{,**}					r,
   /etc/apparmor.d/*					w,
+  @{PYTHON_PACKAGES}/apparmor/{,**/}			w,
   @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
   @{PYTHON_PACKAGES}/LibAppArmor/**.pyc{,.*}		w,
   
@@ -141,6 +144,7 @@ profile apparmor-utils.aa-enforce @{PYTHON_EXEC}/aa-enforce {
   /etc/apparmor/logprof.conf				r,
   /etc/apparmor.d/{,**}					r,
   /etc/apparmor.d/*					w,
+  @{PYTHON_PACKAGES}/apparmor/{,**/}			w,
   @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
   @{PYTHON_PACKAGES}/LibAppArmor/**.pyc{,.*}		w,
   
@@ -166,6 +170,7 @@ profile apparmor-utils.aa-disable @{PYTHON_EXEC}/aa-disable {
   /etc/apparmor/logprof.conf				r,
   /etc/apparmor.d/{,**}					r,
   /etc/apparmor.d/disable/*				w,
+  @{PYTHON_PACKAGES}/apparmor/{,**/}			w,
   @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
   @{PYTHON_PACKAGES}/LibAppArmor/**.pyc{,.*}		w,
   

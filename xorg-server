@@ -89,7 +89,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   /var/lib/xkb/server-@{X_DISPLAY}.xkm			rw,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.serverauth*				r,
+  owner @{HOME}/.serverauth.*				r,	# * - 1-8 символов @{pid} + 0(нет) или 2 символа {[a-z],-}
   owner @{HOME}/.local/share/xorg/{,**}			rw,	# Нужно для запуска под пользователем (без suid), хранит там логи сервера.
   
   # TEMP -----------------------------------------------
