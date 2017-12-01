@@ -23,7 +23,7 @@ profile kmod /{bin/kmod,sbin/modprobe,sbin/modeinfo} {
   /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
-  /sys/module/**					r,
+  @{sys}/module/**					r,
   @{PROC}/{cmdline,modules}				r,
   
   # EXECUTABLES ----------------------------------------

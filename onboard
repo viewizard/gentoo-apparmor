@@ -98,10 +98,10 @@ profile onboard_settings /usr/bin/onboard-settings {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  /sys/bus/						r,
-  /sys/class/						r,
-  /sys/class/input/					r,
-  /sys/devices/**/input**/uevent			r,
+  @{sys}/bus/						r,
+  @{sys}/class/						r,
+  @{sys}/class/input/					r,
+  @{sys}/devices/**/input**/uevent			r,
   owner @{PROC}/@{pid}/fd/				r,
   owner @{PROC}/@{pid}/mounts				r,
   

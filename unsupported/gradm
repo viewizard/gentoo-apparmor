@@ -63,9 +63,9 @@ profile gradm.init.d /etc/init.d/gradm flags=(attach_disconnected) {	# attach_di
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  /sys/fs/cgroup/openrc/gradm/tasks			w,
-  /sys/fs/cgroup/unified/gradm/cgroup.procs		w,
-  /sys/fs/cgroup/unified/gradm/cgroup.events		r,
+  @{sys}/fs/cgroup/openrc/gradm/tasks			w,
+  @{sys}/fs/cgroup/unified/gradm/cgroup.procs		w,
+  @{sys}/fs/cgroup/unified/gradm/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -93,7 +93,7 @@ profile gradm.init.d /etc/init.d/gradm flags=(attach_disconnected) {	# attach_di
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/{openrc,unified}/gradm/		w,
+    @{sys}/fs/cgroup/{openrc,unified}/gradm/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -106,7 +106,7 @@ profile gradm.init.d /etc/init.d/gradm flags=(attach_disconnected) {	# attach_di
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/gradm/cgroup.procs		r,
+    @{sys}/fs/cgroup/unified/gradm/cgroup.procs		r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -122,7 +122,7 @@ profile gradm.init.d /etc/init.d/gradm flags=(attach_disconnected) {	# attach_di
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/gradm/			w,
+    @{sys}/fs/cgroup/unified/gradm/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

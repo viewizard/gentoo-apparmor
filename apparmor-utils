@@ -23,7 +23,7 @@ profile apparmor-utils.aa-status @{PYTHON_EXEC}/aa-status flags=(attach_disconne
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  /sys/kernel/security/apparmor/*			r,
+  @{sys}/kernel/security/apparmor/*			r,
   @{PROC}/						r,
   @{PROC}/@{pids}/attr/{current,prev,exec}		r,
   owner @{PROC}/@{pid}/mounts				r,

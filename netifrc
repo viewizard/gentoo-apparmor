@@ -22,14 +22,14 @@ profile netifrc.init.d /etc/init.d/net.* flags=(attach_disconnected) {	# attach_
   
   # PSEUDO ---------------------------------------------
   /dev/net/tun						rw,
-  /sys/devices/virtual/net/tap*/{,**}			r,
-  /sys/devices/virtual/net/br*/				r,
-  /sys/devices/virtual/net/br*/**			rw,
-  /sys/devices/pci@{PCI2}/@{PCI4}/**/net/@{NIC}/{,**} r,
-  /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/**/net/usb@{USB1}/ifindex r,
-  /sys/fs/cgroup/openrc/net.*/tasks			w,
-  /sys/fs/cgroup/unified/net.*/cgroup.procs		w,
-  /sys/fs/cgroup/unified/net.*/cgroup.events		r,
+  @{sys}/devices/virtual/net/tap*/{,**}			r,
+  @{sys}/devices/virtual/net/br*/			r,
+  @{sys}/devices/virtual/net/br*/**			rw,
+  @{sys}/devices/pci@{PCI2}/@{PCI4}/**/net/@{NIC}/{,**}	r,
+  @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/**/net/usb@{USB1}/ifindex r,
+  @{sys}/fs/cgroup/openrc/net.*/tasks			w,
+  @{sys}/fs/cgroup/unified/net.*/cgroup.procs		w,
+  @{sys}/fs/cgroup/unified/net.*/cgroup.events		r,
   audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
   audit @{PROC}/@{pid}/net/dev				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
   @{PROC}/sys/net/ipv4/route/flush			w,
@@ -92,7 +92,7 @@ profile netifrc.init.d /etc/init.d/net.* flags=(attach_disconnected) {	# attach_
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/net.*/cgroup.procs		r,
+    @{sys}/fs/cgroup/unified/net.*/cgroup.procs		r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -129,7 +129,7 @@ profile netifrc.init.d /etc/init.d/net.* flags=(attach_disconnected) {	# attach_
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/{openrc,unified}/net.*/		w,
+    @{sys}/fs/cgroup/{openrc,unified}/net.*/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -145,7 +145,7 @@ profile netifrc.init.d /etc/init.d/net.* flags=(attach_disconnected) {	# attach_
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/net.*/			w,
+    @{sys}/fs/cgroup/unified/net.*/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

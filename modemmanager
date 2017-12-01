@@ -38,13 +38,13 @@ profile modemmanager.ModemManager /usr/sbin/ModemManager {
   
   # PSEUDO -------------------------------------------
   /dev/console						w,
-  /sys/bus/						r,
-  /sys/bus/usb/devices/					r,
-  /sys/class/						r,
-  /sys/class/tty/					r,
-  /sys/class/net/					r,
-  /sys/class/usbmisc/					r,
-  /sys/devices/**/uevent				r,
+  @{sys}/bus/						r,
+  @{sys}/bus/usb/devices/				r,
+  @{sys}/class/						r,
+  @{sys}/class/tty/					r,
+  @{sys}/class/net/					r,
+  @{sys}/class/usbmisc/					r,
+  @{sys}/devices/**/uevent				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/ModemManager				mr,

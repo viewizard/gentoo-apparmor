@@ -19,9 +19,9 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev flags=(attach_disconnecte
   capability sys_admin,
   
   # PSEUDO ---------------------------------------------
-  /sys/fs/cgroup/openrc/udev/tasks			w,
-  /sys/fs/cgroup/unified/udev/cgroup.procs		w,
-  /sys/fs/cgroup/unified/udev/cgroup.events		r,
+  @{sys}/fs/cgroup/openrc/udev/tasks			w,
+  @{sys}/fs/cgroup/unified/udev/cgroup.procs		w,
+  @{sys}/fs/cgroup/unified/udev/cgroup.events		r,
   audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
   @{PROC}/sys/kernel/hotplug				w,
   
@@ -54,7 +54,7 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev flags=(attach_disconnecte
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /dev/pts/						w,
-    /sys/fs/cgroup/{openrc,unified}/udev/		w,
+    @{sys}/fs/cgroup/{openrc,unified}/udev/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -67,7 +67,7 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev flags=(attach_disconnecte
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/udev/cgroup.procs		r,
+    @{sys}/fs/cgroup/unified/udev/cgroup.procs		r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -83,7 +83,7 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev flags=(attach_disconnecte
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/udev/			w,
+    @{sys}/fs/cgroup/unified/udev/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -96,9 +96,9 @@ profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger flags=(at
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  /sys/fs/cgroup/openrc/udev-trigger/tasks		w,
-  /sys/fs/cgroup/unified/udev-trigger/cgroup.procs	w,
-  /sys/fs/cgroup/unified/udev-trigger/cgroup.events	r,
+  @{sys}/fs/cgroup/openrc/udev-trigger/tasks		w,
+  @{sys}/fs/cgroup/unified/udev-trigger/cgroup.procs	w,
+  @{sys}/fs/cgroup/unified/udev-trigger/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -128,7 +128,7 @@ profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger flags=(at
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/{openrc,unified}/udev-trigger/	w,
+    @{sys}/fs/cgroup/{openrc,unified}/udev-trigger/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -144,7 +144,7 @@ profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger flags=(at
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/udev-trigger/cgroup.procs	r,
+    @{sys}/fs/cgroup/unified/udev-trigger/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -160,7 +160,7 @@ profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger flags=(at
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/udev-trigger/		w,
+    @{sys}/fs/cgroup/unified/udev-trigger/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -186,9 +186,9 @@ profile udev-init-scripts.udev-settle.init.d /etc/init.d/udev-settle flags=(atta
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  /sys/fs/cgroup/openrc/udev-settle/tasks		w,
-  /sys/fs/cgroup/unified/udev-settle/cgroup.procs	w,
-  /sys/fs/cgroup/unified/udev-settle/cgroup.events	r,
+  @{sys}/fs/cgroup/openrc/udev-settle/tasks		w,
+  @{sys}/fs/cgroup/unified/udev-settle/cgroup.procs	w,
+  @{sys}/fs/cgroup/unified/udev-settle/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -216,7 +216,7 @@ profile udev-init-scripts.udev-settle.init.d /etc/init.d/udev-settle flags=(atta
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/{openrc,unified}/udev-settle/	w,
+    @{sys}/fs/cgroup/{openrc,unified}/udev-settle/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -229,7 +229,7 @@ profile udev-init-scripts.udev-settle.init.d /etc/init.d/udev-settle flags=(atta
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/udev-settle/cgroup.procs	r,
+    @{sys}/fs/cgroup/unified/udev-settle/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -245,7 +245,7 @@ profile udev-init-scripts.udev-settle.init.d /etc/init.d/udev-settle flags=(atta
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/udev-settle/			w,
+    @{sys}/fs/cgroup/unified/udev-settle/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

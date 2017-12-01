@@ -48,8 +48,9 @@ profile dbus.dbus-daemon /usr/bin/dbus-daemon {
   /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
-  /sys/kernel/security/apparmor/features/dbus/mask	r,	# AppArmor dbus mediation
-  /sys/kernel/security/apparmor/.access			rw,	# AppArmor dbus mediation
+  @{sys}/module/apparmor/parameters/enabled		r,	# AppArmor dbus mediation
+  @{sys}/kernel/security/apparmor/features/dbus/mask	r,	# AppArmor dbus mediation
+  @{sys}/kernel/security/apparmor/.access		rw,	# AppArmor dbus mediation
   @{PROC}/@{pids}/cmdline				r,
   @{PROC}/@{pid}/mounts					r,	# AppArmor dbus mediation	# IMPROVE! UID=messagebus(owner),root
   owner @{PROC}/@{pid}/oom_score_adj			w,
@@ -191,9 +192,9 @@ profile dbus.init.d /etc/init.d/dbus flags=(attach_disconnected) {	# attach_disc
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  /sys/fs/cgroup/openrc/dbus/tasks			w,
-  /sys/fs/cgroup/unified/dbus/cgroup.procs		w,
-  /sys/fs/cgroup/unified/dbus/cgroup.events		r,
+  @{sys}/fs/cgroup/openrc/dbus/tasks			w,
+  @{sys}/fs/cgroup/unified/dbus/cgroup.procs		w,
+  @{sys}/fs/cgroup/unified/dbus/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   /etc/init.d/{cupsd,consolekit,xdm,net.*}		Px,
@@ -246,7 +247,7 @@ profile dbus.init.d /etc/init.d/dbus flags=(attach_disconnected) {	# attach_disc
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/{openrc,unified}/dbus/		w,
+    @{sys}/fs/cgroup/{openrc,unified}/dbus/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -259,7 +260,7 @@ profile dbus.init.d /etc/init.d/dbus flags=(attach_disconnected) {	# attach_disc
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/dbus/cgroup.procs		r,
+    @{sys}/fs/cgroup/unified/dbus/cgroup.procs		r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -275,7 +276,7 @@ profile dbus.init.d /etc/init.d/dbus flags=(attach_disconnected) {	# attach_disc
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/dbus/			w,
+    @{sys}/fs/cgroup/unified/dbus/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

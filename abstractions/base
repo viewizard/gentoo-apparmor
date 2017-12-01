@@ -32,7 +32,7 @@ audit deny unix (receive) peer=(label=unconfined),		# unconfined процесс�
 /dev/null						rw,
 /dev/zero						rw,
 /dev/full						rw,
-/sys/devices/system/cpu/online				r,
+@{sys}/devices/system/cpu/online			r,
 @{PROC}/{cpuinfo,stat,meminfo}				r,
 owner @{PROC}/@{pid}/maps				r,
 owner @{PROC}/@{pid}/status				r,

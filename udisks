@@ -68,12 +68,12 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {
   
   # PSEUDO ---------------------------------------------
   /dev/@{BLOCK_ALL}					r,
-  /sys/bus/						r,
-  /sys/class/						r,
-  /sys/class/block/					r,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-  /sys/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
-  /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/{,**/}{remove,uevent} rw,
+  @{sys}/bus/						r,
+  @{sys}/class/						r,
+  @{sys}/class/block/					r,
+  @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+  @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
+  @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/{,**/}{remove,uevent} rw,
   @{PROC}/swaps						r,
   owner @{PROC}/@{pid}/mountinfo			r,
   owner @{PROC}/@{pid}/fd/				r,
@@ -102,7 +102,7 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {
     capability dac_override,
     
     # PSEUDO -------------------------------------------
-    /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+    @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
     
     # MOUNT --------------------------------------------	# Важно! noexec - т.к. используется патч в udisks (patches portage).
     mount options=(ro, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /media/*/,
@@ -126,7 +126,7 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {
     capability sys_admin,
     
     # PSEUDO -------------------------------------------
-    /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+    @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
     
     # MOUNT --------------------------------------------
     umount /media/*/,

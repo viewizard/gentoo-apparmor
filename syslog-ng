@@ -46,7 +46,7 @@ profile syslog-ng /usr/sbin/syslog-ng {
   /dev/log						rw,
   /dev/syslog						w,
   /dev/xconsole						rw,
-  /sys/devices/system/cpu/online			r,
+  @{sys}/devices/system/cpu/online			r,
   @{PROC}/kmsg						r,
   @{PROC}/uptime					r,
   owner @{PROC}/1/cgroup				r,
@@ -86,9 +86,9 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng flags=(attach_disconnected) {	# a
   capability setgid,
   
   # PSEUDO ---------------------------------------------
-  /sys/fs/cgroup/openrc/syslog-ng/tasks			w,
-  /sys/fs/cgroup/unified/syslog-ng/cgroup.procs		w,
-  /sys/fs/cgroup/unified/syslog-ng/cgroup.events	r,
+  @{sys}/fs/cgroup/openrc/syslog-ng/tasks		w,
+  @{sys}/fs/cgroup/unified/syslog-ng/cgroup.procs	w,
+  @{sys}/fs/cgroup/unified/syslog-ng/cgroup.events	r,
   audit @{PROC}/@{pid}/uid_map				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
   owner @{PROC}/@{pid}/loginuid				rw,
   @{PROC}/sys/kernel/ngroups_max			r,
@@ -124,7 +124,7 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng flags=(attach_disconnected) {	# a
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/{openrc,unified}/syslog-ng/		w,
+    @{sys}/fs/cgroup/{openrc,unified}/syslog-ng/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -137,7 +137,7 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng flags=(attach_disconnected) {	# a
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/syslog-ng/cgroup.procs	r,
+    @{sys}/fs/cgroup/unified/syslog-ng/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -153,7 +153,7 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng flags=(attach_disconnected) {	# a
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/syslog-ng/			w,
+    @{sys}/fs/cgroup/unified/syslog-ng/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

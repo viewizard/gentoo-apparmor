@@ -92,9 +92,9 @@ profile ntp.init.d /etc/init.d/ntpd flags=(attach_disconnected) {	# attach_disco
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  /sys/fs/cgroup/openrc/ntpd/tasks			w,
-  /sys/fs/cgroup/unified/ntpd/cgroup.procs		w,
-  /sys/fs/cgroup/unified/ntpd/cgroup.events		r,
+  @{sys}/fs/cgroup/openrc/ntpd/tasks			w,
+  @{sys}/fs/cgroup/unified/ntpd/cgroup.procs		w,
+  @{sys}/fs/cgroup/unified/ntpd/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/ntpd					Px,
@@ -123,7 +123,7 @@ profile ntp.init.d /etc/init.d/ntpd flags=(attach_disconnected) {	# attach_disco
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/{openrc,unified}/ntpd/		w,
+    @{sys}/fs/cgroup/{openrc,unified}/ntpd/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -136,7 +136,7 @@ profile ntp.init.d /etc/init.d/ntpd flags=(attach_disconnected) {	# attach_disco
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/ntpd/cgroup.procs		r,
+    @{sys}/fs/cgroup/unified/ntpd/cgroup.procs		r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -152,7 +152,7 @@ profile ntp.init.d /etc/init.d/ntpd flags=(attach_disconnected) {	# attach_disco
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/ntpd/			w,
+    @{sys}/fs/cgroup/unified/ntpd/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

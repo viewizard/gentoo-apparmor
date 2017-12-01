@@ -26,12 +26,12 @@ profile qemu.qemu-system /usr/bin/qemu-system-{arm,i386,x86_64} {
   /dev/kvm						rw,
   /dev/vhost-net					rw,
   /dev/net/tun						rw,
-  /sys/bus/						r,
   /dev/bus/usb/						r,
-  /sys/bus/usb/devices/					r,
-  /sys/class/						r,
-  /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/**		r,
-  /sys/module/vhost/parameters/max_mem_regions		r,
+  @{sys}/bus/						r,
+  @{sys}/bus/usb/devices/				r,
+  @{sys}/class/						r,
+  @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/**	r,
+  @{sys}/module/vhost/parameters/max_mem_regions	r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/qemu-system-{arm,i386,x86_64}		mr,

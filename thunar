@@ -65,8 +65,8 @@ profile thunar /usr/bin/{Thunar,thunar} {
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  /sys/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,*/}uevent r,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
+  @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,*/}uevent r,
+  @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
   owner @{PROC}/@{pid}/fd/				r,
   owner @{PROC}/@{pid}/mount{s,info}			r,
   
@@ -125,9 +125,9 @@ profile thunar /usr/bin/{Thunar,thunar} {
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     /dev/@{BLOCK_ALL}					r,
-    /sys/block/						r,
-    /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-    /sys/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
+    @{sys}/block/					r,
+    @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+    @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
     @{PROC}/partitions					r,
     
     # EXECUTABLES --------------------------------------
@@ -221,8 +221,8 @@ profile thunar_root {
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  /sys/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,*/}uevent r,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
+  @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,*/}uevent r,
+  @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
   owner @{PROC}/@{pid}/fd/				r,
   owner @{PROC}/@{pid}/mount{s,info}			r,
   
@@ -282,9 +282,9 @@ profile thunar_root {
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     /dev/@{BLOCK_ALL}					r,
-    /sys/block/						r,
-    /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-    /sys/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
+    @{sys}/block/					r,
+    @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+    @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
     @{PROC}/partitions					r,
     
     # EXECUTABLES --------------------------------------

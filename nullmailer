@@ -124,9 +124,9 @@ profile nullmailer.init.d /etc/init.d/nullmailer flags=(attach_disconnected) {	#
   capability setgid,
   
   # PSEUDO ---------------------------------------------
-  /sys/fs/cgroup/openrc/nullmailer/tasks		w,
-  /sys/fs/cgroup/unified/nullmailer/cgroup.procs	w,
-  /sys/fs/cgroup/unified/nullmailer/cgroup.events	r,
+  @{sys}/fs/cgroup/openrc/nullmailer/tasks		w,
+  @{sys}/fs/cgroup/unified/nullmailer/cgroup.procs	w,
+  @{sys}/fs/cgroup/unified/nullmailer/cgroup.events	r,
   audit @{PROC}/@{pid}/uid_map				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
   owner @{PROC}/@{pid}/loginuid				wr,
   @{PROC}/sys/kernel/ngroups_max			r,
@@ -162,7 +162,7 @@ profile nullmailer.init.d /etc/init.d/nullmailer flags=(attach_disconnected) {	#
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/{openrc,unified}/nullmailer/		w,
+    @{sys}/fs/cgroup/{openrc,unified}/nullmailer/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -175,7 +175,7 @@ profile nullmailer.init.d /etc/init.d/nullmailer flags=(attach_disconnected) {	#
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/nullmailer/cgroup.procs	r,
+    @{sys}/fs/cgroup/unified/nullmailer/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -191,7 +191,7 @@ profile nullmailer.init.d /etc/init.d/nullmailer flags=(attach_disconnected) {	#
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/nullmailer/			w,
+    @{sys}/fs/cgroup/unified/nullmailer/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

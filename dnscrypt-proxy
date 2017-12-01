@@ -66,9 +66,9 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy flags=(attach_disconnec
   capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
-  /sys/fs/cgroup/openrc/dnscrypt-proxy/tasks		w,
-  /sys/fs/cgroup/unified/dnscrypt-proxy/cgroup.procs	w,
-  /sys/fs/cgroup/unified/dnscrypt-proxy/cgroup.events	r,
+  @{sys}/fs/cgroup/openrc/dnscrypt-proxy/tasks		w,
+  @{sys}/fs/cgroup/unified/dnscrypt-proxy/cgroup.procs	w,
+  @{sys}/fs/cgroup/unified/dnscrypt-proxy/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/dnscrypt-proxy				Px,
@@ -97,7 +97,7 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy flags=(attach_disconnec
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/{openrc,unified}/dnscrypt-proxy/	w,
+    @{sys}/fs/cgroup/{openrc,unified}/dnscrypt-proxy/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -110,7 +110,7 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy flags=(attach_disconnec
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/dnscrypt-proxy/cgroup.procs	r,
+    @{sys}/fs/cgroup/unified/dnscrypt-proxy/cgroup.procs r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -126,7 +126,7 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy flags=(attach_disconnec
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/dnscrypt-proxy/		w,
+    @{sys}/fs/cgroup/unified/dnscrypt-proxy/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

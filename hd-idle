@@ -37,9 +37,9 @@ profile hd-idle.init.d /etc/init.d/hd-idle flags=(attach_disconnected) {	# attac
   capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
-  /sys/fs/cgroup/openrc/hd-idle/tasks			w,
-  /sys/fs/cgroup/unified/hd-idle/cgroup.procs		w,
-  /sys/fs/cgroup/unified/hd-idle/cgroup.events		r,
+  @{sys}/fs/cgroup/openrc/hd-idle/tasks			w,
+  @{sys}/fs/cgroup/unified/hd-idle/cgroup.procs		w,
+  @{sys}/fs/cgroup/unified/hd-idle/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/hd-idle					Px,
@@ -67,7 +67,7 @@ profile hd-idle.init.d /etc/init.d/hd-idle flags=(attach_disconnected) {	# attac
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/{openrc,unified}/hd-idle/		w,
+    @{sys}/fs/cgroup/{openrc,unified}/hd-idle/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -80,7 +80,7 @@ profile hd-idle.init.d /etc/init.d/hd-idle flags=(attach_disconnected) {	# attac
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/hd-idle/cgroup.procs		r,
+    @{sys}/fs/cgroup/unified/hd-idle/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -96,7 +96,7 @@ profile hd-idle.init.d /etc/init.d/hd-idle flags=(attach_disconnected) {	# attac
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/hd-idle/			w,
+    @{sys}/fs/cgroup/unified/hd-idle/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

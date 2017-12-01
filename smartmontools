@@ -22,7 +22,7 @@ profile smartmontools.smartd /usr/sbin/smartd {
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_REAL}					r,
-  /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/**/{idVendor,idProduct,bcdDevice} r,
+  @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/**/{idVendor,idProduct,bcdDevice} r,
   @{PROC}/devices					r,
   
   # EXECUTABLES ----------------------------------------
@@ -70,9 +70,9 @@ profile smartmontools.init.d /etc/init.d/smartd flags=(attach_disconnected) {	# 
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  /sys/fs/cgroup/openrc/smartd/tasks			w,
-  /sys/fs/cgroup/unified/smartd/cgroup.procs		w,
-  /sys/fs/cgroup/unified/smartd/cgroup.events		r,
+  @{sys}/fs/cgroup/openrc/smartd/tasks			w,
+  @{sys}/fs/cgroup/unified/smartd/cgroup.procs		w,
+  @{sys}/fs/cgroup/unified/smartd/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/smartd					Px,
@@ -101,7 +101,7 @@ profile smartmontools.init.d /etc/init.d/smartd flags=(attach_disconnected) {	# 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/{openrc,unified}/smartd/		w,
+    @{sys}/fs/cgroup/{openrc,unified}/smartd/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -114,7 +114,7 @@ profile smartmontools.init.d /etc/init.d/smartd flags=(attach_disconnected) {	# 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/smartd/cgroup.procs		r,
+    @{sys}/fs/cgroup/unified/smartd/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -130,7 +130,7 @@ profile smartmontools.init.d /etc/init.d/smartd flags=(attach_disconnected) {	# 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/smartd/			w,
+    @{sys}/fs/cgroup/unified/smartd/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

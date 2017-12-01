@@ -113,19 +113,19 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   owner /dev/shm/.org.chromium.Chromium.@{TMP6}		rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-  /sys/bus/{,**}					r,
-  /sys/class/{,**}					r,
-  /sys/devices/system/cpu/				r,
-  /sys/devices/system/cpu/cpu*/cpufreq/cpuinfo_max_freq	r,
-  /sys/devices/system/cpu/cpufreq/policy*/cpuinfo_max_freq r,
-  /sys/devices/pci@{PCI2}/@{PCI4}/{device,class,irq,resource,vendor} r,
-  /sys/devices/pci@{PCI2}/**/@{PCI4}/{device,class,irq,resource,vendor} r,
-  /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/	r,
-  /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/@{USB4}/{,**} r,
-  audit /sys/devices/pci@{PCI2}/**/{removable,uevent}	r,	# FIX ME! audit 28.11.2017
-  audit /sys/devices/pci@{PCI2}/**/block/**/size	r,	# FIX ME! audit 28.11.2017
-  /sys/devices/virtual/block/**/{removable,uevent,size}	r,
-  /sys/devices/virtual/tty/tty[0-9]*/active		r,
+  @{sys}/bus/{,**}					r,
+  @{sys}/class/{,**}					r,
+  @{sys}/devices/system/cpu/				r,
+  @{sys}/devices/system/cpu/cpu*/cpufreq/cpuinfo_max_freq r,
+  @{sys}/devices/system/cpu/cpufreq/policy*/cpuinfo_max_freq r,
+  @{sys}/devices/pci@{PCI2}/@{PCI4}/{device,class,irq,resource,vendor} r,
+  @{sys}/devices/pci@{PCI2}/**/@{PCI4}/{device,class,irq,resource,vendor} r,
+  @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/	r,
+  @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/@{USB4}/{,**} r,
+  audit @{sys}/devices/pci@{PCI2}/**/{removable,uevent}	r,	# FIX ME! audit 28.11.2017
+  audit @{sys}/devices/pci@{PCI2}/**/block/**/size	r,	# FIX ME! audit 28.11.2017
+  @{sys}/devices/virtual/block/**/{removable,uevent,size} r,
+  @{sys}/devices/virtual/tty/tty[0-9]*/active		r,
   @{PROC}/						r,
   @{PROC}/filesystems					r,
   @{PROC}/vmstat					r,

@@ -36,9 +36,9 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors flags=(attach_disconnected) {	#
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  /sys/fs/cgroup/openrc/lm_sensors/tasks		w,
-  /sys/fs/cgroup/unified/lm_sensors/cgroup.procs	w,
-  /sys/fs/cgroup/unified/lm_sensors/cgroup.events	r,
+  @{sys}/fs/cgroup/openrc/lm_sensors/tasks		w,
+  @{sys}/fs/cgroup/unified/lm_sensors/cgroup.procs	w,
+  @{sys}/fs/cgroup/unified/lm_sensors/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/sensors					Px,
@@ -66,7 +66,7 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors flags=(attach_disconnected) {	#
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/{openrc,unified}/lm_sensors/		w,
+    @{sys}/fs/cgroup/{openrc,unified}/lm_sensors/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -79,7 +79,7 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors flags=(attach_disconnected) {	#
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/lm_sensors/cgroup.procs	r,
+    @{sys}/fs/cgroup/unified/lm_sensors/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -95,7 +95,7 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors flags=(attach_disconnected) {	#
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/lm_sensors/			w,
+    @{sys}/fs/cgroup/unified/lm_sensors/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

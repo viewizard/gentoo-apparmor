@@ -382,7 +382,7 @@ profile shell_root {
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+    @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
     audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
     audit @{PROC}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
     
@@ -404,7 +404,7 @@ profile shell_root {
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+    @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
     audit @{PROC}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
     
     # EXECUTABLES --------------------------------------
@@ -708,11 +708,11 @@ profile shell_chroot {
   audit deny /media/{,**}				xmrwkl,
   audit deny /mnt/{,**}					xmrwkl,
   audit deny /opt/{,**}					xmrwkl,
-  audit deny /@{PROC}/{,**}				xmrwkl,
+  audit deny @{PROC}/{,**}				xmrwkl,
   audit deny /root/{,**}				xmrwkl,
   audit deny /run/{,**}					xmrwkl,
   audit deny /sbin/{,**}				xmrwkl,
-  audit deny /sys/{,**}					xmrwkl,
+  audit deny @{sys}/{,**}				xmrwkl,
   audit deny /tmp/{,**}					xmrwkl,
   audit deny /usr/{,**}					xmrwkl,
   audit deny /var/cache/{,**}				xmrwkl,
@@ -783,7 +783,7 @@ profile shell_chroot {
   owner @{CHROOT}/dev/shm/**				wl,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   @{CHROOT}/sys/{,**}					r,
   @{CHROOT}/sys/fs/cgroup/portage/{,**}			w,
-  @{CHROOT}/@{PROC}/{,**}				r,
+  @{CHROOT}/proc/{,**}				r,
   audit deny @{CHROOT}/dev/@{BLOCK_ALL}			wk,	# Запрещаем работать с блочными устройствами.
   
   # EXECUTABLES ----------------------------------------

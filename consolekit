@@ -154,7 +154,7 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/console						rw,
-  /sys/devices/virtual/tty/tty*/active			r,
+  @{sys}/devices/virtual/tty/tty*/active		r,
   owner @{PROC}/@{pid}/fd/				r,
   @{PROC}/@{pids}/stat					r,
   @{PROC}/@{pids}/environ				r,
@@ -249,7 +249,7 @@ profile consolekit.udev-acl /usr/lib{,32,64}/ConsoleKit/udev-acl {
   capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
-  /sys/devices/**/uevent				r,
+  @{sys}/devices/**/uevent				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/ConsoleKit/udev-acl			m,
@@ -394,9 +394,9 @@ profile consolekit.init.d /etc/init.d/consolekit flags=(attach_disconnected) {	#
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  /sys/fs/cgroup/openrc/consolekit/tasks		w,
-  /sys/fs/cgroup/unified/consolekit/cgroup.procs	w,
-  /sys/fs/cgroup/unified/consolekit/cgroup.events	r,
+  @{sys}/fs/cgroup/openrc/consolekit/tasks		w,
+  @{sys}/fs/cgroup/unified/consolekit/cgroup.procs	w,
+  @{sys}/fs/cgroup/unified/consolekit/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/console-kit-daemon				Px,
@@ -426,7 +426,7 @@ profile consolekit.init.d /etc/init.d/consolekit flags=(attach_disconnected) {	#
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/{openrc,unified}/consolekit/		w,
+    @{sys}/fs/cgroup/{openrc,unified}/consolekit/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -439,7 +439,7 @@ profile consolekit.init.d /etc/init.d/consolekit flags=(attach_disconnected) {	#
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/consolekit/cgroup.procs	r,
+    @{sys}/fs/cgroup/unified/consolekit/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -455,7 +455,7 @@ profile consolekit.init.d /etc/init.d/consolekit flags=(attach_disconnected) {	#
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/consolekit/			w,
+    @{sys}/fs/cgroup/unified/consolekit/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

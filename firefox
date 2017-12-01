@@ -74,8 +74,8 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   /dev/pts/[0-9]*					rw,
   owner /dev/shm/org.chromium.@{TMP6}			rw,	# Нужено для adobe-flash (ppapi).
   								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-  /sys/devices/system/cpu/{,**}				r,
-  /sys/devices/pci@{PCI2}/@{PCI4}/**/uevent		r,
+  @{sys}/devices/system/cpu/{,**}			r,
+  @{sys}/devices/pci@{PCI2}/@{PCI4}/**/uevent		r,
   @{PROC}/						r,
   @{PROC}/filesystems					r,
   owner @{PROC}/@{pid}/fd/				r,
@@ -182,7 +182,7 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   /dev/pts/[0-9]*					rw,
   owner /dev/shm/org.chromium.@{TMP6}			rw,	# Нужено для adobe-flash (ppapi).
   								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-  /sys/devices/system/cpu/				r,
+  @{sys}/devices/system/cpu/				r,
   owner @{PROC}/@{pid}/stat				r,
   owner @{PROC}/@{pid}/cmdline				r,
   owner @{PROC}/@{pid}/task/@{pids}/stat		r,

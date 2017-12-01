@@ -188,10 +188,10 @@ profile cups.backend /usr/libexec/cups/backend/* {
   
   # PSEUDO ---------------------------------------------
   /dev/bus/usb/						r,
-  /sys/bus/						r,
-  /sys/bus/usb/devices/					r,
-  /sys/class/						r,
-  /sys/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/{,**}	r,
+  @{sys}/bus/						r,
+  @{sys}/bus/usb/devices/				r,
+  @{sys}/class/						r,
+  @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/{,**}	r,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/cups/backend/*				mr,
@@ -223,9 +223,9 @@ profile cups.init.d /etc/init.d/cupsd flags=(attach_disconnected) {	# attach_dis
   capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
-  /sys/fs/cgroup/openrc/cupsd/tasks			w,
-  /sys/fs/cgroup/unified/cupsd/cgroup.procs		w,
-  /sys/fs/cgroup/unified/cupsd/cgroup.events		r,
+  @{sys}/fs/cgroup/openrc/cupsd/tasks			w,
+  @{sys}/fs/cgroup/unified/cupsd/cgroup.procs		w,
+  @{sys}/fs/cgroup/unified/cupsd/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/cupsd					Px,
@@ -256,7 +256,7 @@ profile cups.init.d /etc/init.d/cupsd flags=(attach_disconnected) {	# attach_dis
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/{openrc,unified}/cupsd/		w,
+    @{sys}/fs/cgroup/{openrc,unified}/cupsd/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -269,7 +269,7 @@ profile cups.init.d /etc/init.d/cupsd flags=(attach_disconnected) {	# attach_dis
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/cupsd/cgroup.procs		r,
+    @{sys}/fs/cgroup/unified/cupsd/cgroup.procs		r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -285,7 +285,7 @@ profile cups.init.d /etc/init.d/cupsd flags=(attach_disconnected) {	# attach_dis
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/cupsd/			w,
+    @{sys}/fs/cgroup/unified/cupsd/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

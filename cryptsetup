@@ -39,7 +39,7 @@ profile cryptsetup /sbin/cryptsetup {
   /dev/@{BLOCK_ALL}					rw,
   /dev/mapper/						r,
   /dev/mapper/control					rw,
-  /sys/devices/virtual/bdi/*/read_ahead_kb		r,
+  @{sys}/devices/virtual/bdi/*/read_ahead_kb		r,
   @{PROC}/devices					r,
   
   # EXECUTABLES ----------------------------------------
@@ -66,9 +66,9 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# at
   capability mknod,
   
   # PSEUDO ---------------------------------------------
-  /sys/fs/cgroup/openrc/dmcrypt/tasks			w,
-  /sys/fs/cgroup/unified/dmcrypt/cgroup.procs		w,
-  /sys/fs/cgroup/unified/dmcrypt/cgroup.events		r,
+  @{sys}/fs/cgroup/openrc/dmcrypt/tasks			w,
+  @{sys}/fs/cgroup/unified/dmcrypt/cgroup.procs		w,
+  @{sys}/fs/cgroup/unified/dmcrypt/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -104,7 +104,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# at
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/dmcrypt/			w,
+    @{sys}/fs/cgroup/unified/dmcrypt/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -123,7 +123,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# at
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/dmcrypt/cgroup.procs		r,
+    @{sys}/fs/cgroup/unified/dmcrypt/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -187,7 +187,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# at
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/{openrc,unified}/dmcrypt/		w,
+    @{sys}/fs/cgroup/{openrc,unified}/dmcrypt/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -211,7 +211,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# at
     # PSEUDO -------------------------------------------
     /dev/console					rw,
     /dev/@{BLOCK_ALL}					r,
-    /sys/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
+    @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
     
     # EXECUTABLES --------------------------------------
     /bin/mount						mr,

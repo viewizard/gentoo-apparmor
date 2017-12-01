@@ -81,9 +81,9 @@ profile vixie-cron.init.d /etc/init.d/vixie-cron flags=(attach_disconnected) {	#
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  /sys/fs/cgroup/openrc/vixie-cron/tasks		w,
-  /sys/fs/cgroup/unified/vixie-cron/cgroup.procs	w,
-  /sys/fs/cgroup/unified/vixie-cron/cgroup.events	r,
+  @{sys}/fs/cgroup/openrc/vixie-cron/tasks		w,
+  @{sys}/fs/cgroup/unified/vixie-cron/cgroup.procs	w,
+  @{sys}/fs/cgroup/unified/vixie-cron/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/cron					Px,
@@ -112,7 +112,7 @@ profile vixie-cron.init.d /etc/init.d/vixie-cron flags=(attach_disconnected) {	#
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/{openrc,unified}/vixie-cron/		w,
+    @{sys}/fs/cgroup/{openrc,unified}/vixie-cron/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -125,7 +125,7 @@ profile vixie-cron.init.d /etc/init.d/vixie-cron flags=(attach_disconnected) {	#
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/vixie-cron/cgroup.procs	r,
+    @{sys}/fs/cgroup/unified/vixie-cron/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -141,7 +141,7 @@ profile vixie-cron.init.d /etc/init.d/vixie-cron flags=(attach_disconnected) {	#
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    /sys/fs/cgroup/unified/vixie-cron/			w,
+    @{sys}/fs/cgroup/unified/vixie-cron/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

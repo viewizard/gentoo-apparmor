@@ -29,8 +29,8 @@ profile dosfstools.mkfs.fat /usr/sbin/mkfs.fat {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rw,
-  /sys/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-  /sys/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
+  @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+  @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
   audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
   
   # EXECUTABLES ----------------------------------------
