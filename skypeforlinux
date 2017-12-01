@@ -10,6 +10,14 @@
 
 #include <local/tunables.d/>
 
+# BUG!
+# https://github.com/electron/electron/issues/10589
+# Доступные для пользователя файлы на запись/изменения нельзя давать на mmap:
+# /dev/shm/.org.chromium.Chromium.XXXXXX
+# @{HOME}/.config/skypeforlinux/**
+# @{HOME}/.cache/**
+# @{HOME}/.local/**
+
 profile skypeforlinux.launcher /opt/bin/skypeforlinux {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -109,7 +117,9 @@ profile skypeforlinux /opt/skypeforlinux/skypeforlinux {
   /dev/tty[0-9]*					rw,
   /dev/video*						m,	# camera
   /dev/snd/pcm*						m,	# alsa (по какой-то причине, больше не используют pulseaudio).
-  owner /dev/shm/.org.chromium.Chromium.@{TMP6}		mrw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /dev/shm/.org.chromium.Chromium.@{TMP6}		mrw,	# FIX ME! Плохо, надо разрешать mmap
+  								# (к этим файлам могут получить доступ другие процессы).
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   /sys/bus/pci/devices/					r,
   /sys/devices/system/cpu/				r,
   /sys/devices/system/cpu/cpu[0-9]*/			r,
@@ -153,8 +163,8 @@ profile skypeforlinux /opt/skypeforlinux/skypeforlinux {
   owner @{HOME}/.config/skypeforlinux/{,**/}*		rwk,
   owner @{HOME}/.config/autostart/skypeforlinux.desktop	rw,	# BUG! По какой-то причине, автозапуск не работает в XFCE4.
   owner @{HOME}/.pki/nssdb/*				rwk,
-  deny @{HOME}/.config/skypeforlinux/**			m,
-  deny @{HOME}/.local/share/mime/mime.cache		m,
+  deny @{HOME}/.config/skypeforlinux/**			m,	# Нельзя давать mmap на файлы, доступные пользователю на запись/изменение.
+  deny @{HOME}/.local/share/mime/mime.cache		m,	# Нельзя давать mmap на файлы, доступные пользователю на запись/изменение.
   
   # TEMP -----------------------------------------------
   /tmp/							r,
