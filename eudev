@@ -94,7 +94,7 @@ profile eudev.udevd /sbin/udevd {
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/queue/scheduler w,
   @{sys}/devices/virtual/**				r,
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/queue/scheduler w,
-  @{sys}/devices/**/input/input[0-9]*/{,capabilities/}*	r,
+  @{sys}/devices/**/input/input@{input}/{,capabilities/}* r,
   @{sys}/devices/pnp[0-9]*/*/rtc/rtc[0-9]*/hctosys	r,
   @{sys}/module/block/parameters/events_dfl_poll_msecs	rw,
   @{sys}/module/*/initstate				r,
@@ -109,12 +109,13 @@ profile eudev.udevd /sbin/udevd {
   /sbin/mdadm						Px,	# sys-fs/mdadm
   /usr/sbin/crda					Px,	# net-wireless/crda
   /usr/sbin/alsactl					Px,	# media-sound/alsa-utils
-  /lib{,32,64}/udev/net.sh				Px,
-  /lib{,32,64}/udev/nvidia-udev.sh			Px,
+  /lib{,32,64}/udev/net.sh				Px,	# net-misc/netifrc
+  /lib{,32,64}/udev/nvidia-udev.sh			Px,	# x11-drivers/nvidia-drivers
   /lib{,32,64}/udev/ata_id				Px,
   /lib{,32,64}/udev/scsi_id				Px,
   /lib{,32,64}/udev/v4l_id				Px,
   /lib{,32,64}/udev/cdrom_id				Px,
+  /lib{,32,64}/udev/libinput-device-group		Px,	# dev-libs/libinput
   /usr/lib{,32,64}/ConsoleKit/udev-acl			Px,	# sys-auth/consolekit
   
   # READS/WRITES ---------------------------------------

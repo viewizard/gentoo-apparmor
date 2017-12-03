@@ -296,8 +296,15 @@ profile eselect /usr/bin/eselect {
   profile chmod /bin/chmod {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/chmod						mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/lib/gentoo/news/news-gentoo.{,un}read		w,	# eselect news
   }
   
   profile cat /bin/cat {

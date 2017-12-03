@@ -53,6 +53,7 @@ profile xfdesktop /usr/bin/xfdesktop {
   	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
   
   # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,*/}name	r,
