@@ -73,7 +73,7 @@ profile cups.cupsd /usr/sbin/cupsd {
   /etc/papersize					r,
   /etc/printcap						rw,
   /etc/cups/{,**}					r,
-  /etc/cups/*.conf*					rw,
+  /etc/cups/*.conf{,.?,.default}			rw,
   /etc/cups/ppd/{,**}					rw,
   /usr/libexec/cups/**					r,
   /usr/share/cups/{,**}					r,
@@ -169,7 +169,7 @@ profile cups.filter /usr/libexec/cups/filter/* {
   /var/spool/cups/*					r,
   
   # TEMP -----------------------------------------------
-  audit owner /tmp/??????*				rw,	# FIX ME! audit 25.11.2017
+  audit owner /tmp/??????*				rw,	# FIX ME! audit 25.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
 }
 
 profile cups.backend /usr/libexec/cups/backend/* {

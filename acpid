@@ -26,8 +26,8 @@ profile acpid /usr/sbin/acpid {
   /dev/input/						r,
   /dev/input/by-id/					r,
   /dev/input/by-path/					r,
-  /dev/input/event*					r,
-  /dev/input/mouse*					r,
+  /dev/input/event[0-9]*				r,
+  /dev/input/mouse[0-9]*				r,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
@@ -134,7 +134,7 @@ profile acpid.kacpimon /usr/sbin/kacpimon {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  /dev/input/{,event*}					r,
+  /dev/input/{,event[0-9]*}				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/kacpimon					mr,

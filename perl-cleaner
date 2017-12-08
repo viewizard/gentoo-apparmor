@@ -194,8 +194,8 @@ profile perl_cleaner_shell {
   /bin/grep						Cx,	# sys-apps/grep
   /usr/bin/gawk						Cx,	# sys-apps/gawk
   /usr/bin/@{CHOST}-gcc					Cx,	# sys-devel/gcc
-  /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc			Cx -> gcc,	# sys-devel/gcc
-  /usr/libexec/gcc/@{CHOST}/*/cc1			Cx,	# sys-devel/gcc
+  /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-gcc		Cx -> gcc,	# sys-devel/gcc
+  /usr/libexec/gcc/@{CHOST}/[0-9]*/cc1			Cx,	# sys-devel/gcc
   
   # READS/WRITES -------------------------------------
   /etc/env.d/gcc/{,**}					r,	# sys-devel/gcc
@@ -222,10 +222,10 @@ profile perl_cleaner_shell {
     /usr/bin/@{CHOST}-gcc				mr,
   }
   
-  profile cc1 /usr/libexec/gcc/@{CHOST}/*/cc1 {
+  profile cc1 /usr/libexec/gcc/@{CHOST}/[0-9]*/cc1 {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
-    /usr/libexec/gcc/@{CHOST}/*/cc1			mr,
+    /usr/libexec/gcc/@{CHOST}/[0-9]*/cc1		mr,
   }
 }

@@ -37,7 +37,7 @@ profile ntp.ntpd /usr/sbin/ntpd {
   
   # READS/WRITES ---------------------------------------
   /etc/ntp.conf						r,
-  /usr/@{CHOST}/gcc-bin/[0-9]*.[0-9]*.[0-9]*/		r,
+  /usr/@{CHOST}/gcc-bin/[0-9]*/				r,
   /var/lib/ntp/ntp.drift*				rw,
   /var/log/ntp.log					w,
   /run/ntpd.pid						rw,

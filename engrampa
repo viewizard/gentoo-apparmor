@@ -64,7 +64,7 @@ profile engrampa /usr/bin/engrampa {
   /usr/bin/lzip						Cx,	# app-arch/lzip
   /usr/bin/xz						Cx,	# app-arch/xz-utils
   /usr/bin/dpkg-deb					Px -> engrampa_dpkg_deb,	# app-arch/dpkg
-  /usr/@{CHOST}/binutils-bin/*/ar			Cx,	# sys-devel/binutils
+  /usr/@{CHOST}/binutils-bin/[0-9]*/ar			Cx,	# sys-devel/binutils
   /opt/rar/rar						Cx,	# app-arch/rar
   
   # READS/WRITES ---------------------------------------
@@ -291,14 +291,14 @@ profile engrampa /usr/bin/engrampa {
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
   }
   
-  profile ar /usr/@{CHOST}/binutils-bin/*/ar {
+  profile ar /usr/@{CHOST}/binutils-bin/[0-9]*/ar {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
     #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
-    /usr/@{CHOST}/binutils-bin/*/ar			mr,
+    /usr/@{CHOST}/binutils-bin/[0-9]*/ar		mr,
     
     # DENY INHERIT -------------------------------------
     deny @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
@@ -567,7 +567,7 @@ profile engrampa_root {
   /usr/bin/lzip						Cx,	# app-arch/lzip
   /usr/bin/xz						Cx,	# app-arch/xz-utils
   /usr/bin/dpkg-deb					Px -> engrampa_dpkg_deb_root,	# app-arch/dpkg
-  /usr/@{CHOST}/binutils-bin/*/ar			Cx,	# sys-devel/binutils
+  /usr/@{CHOST}/binutils-bin/[0-9]*/ar			Cx,	# sys-devel/binutils
   /opt/rar/rar						Cx,	# app-arch/rar
   
   # READS/WRITES ---------------------------------------
@@ -811,7 +811,7 @@ profile engrampa_root {
     deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs
   }
   
-  profile ar /usr/@{CHOST}/binutils-bin/*/ar {
+  profile ar /usr/@{CHOST}/binutils-bin/[0-9]*/ar {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -819,7 +819,7 @@ profile engrampa_root {
     #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
-    /usr/@{CHOST}/binutils-bin/*/ar			mr,
+    /usr/@{CHOST}/binutils-bin/[0-9]*/ar		mr,
     
     # DENY INHERIT -------------------------------------
     deny /root/.local/share/gvfs-metadata/{,**}		rw,	# gnome-base/gvfs

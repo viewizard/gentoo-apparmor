@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile pinentry /usr/bin/pinentry-* {
+profile pinentry /usr/bin/pinentry-{curses,gnome3,gtk-2,tty,qt5} {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -33,5 +33,5 @@ profile pinentry /usr/bin/pinentry-* {
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/pinentry-*					mr,
+  /usr/bin/pinentry-{curses,gnome3,gtk-2,tty,qt5}	mr,
 }

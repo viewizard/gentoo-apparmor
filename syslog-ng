@@ -63,7 +63,7 @@ profile syslog-ng /usr/sbin/syslog-ng {
   /etc/hosts.{allow,deny}				r,	# sys-apps/tcp-wrappers
   /usr/share/syslog-ng/**				r,
   /usr/share/include/scl/{,**}				r,
-  /var/lib/*/dev/log					w,
+  audit /var/lib/*/dev/log				w,	# FIX ME! audit 8.12.2017
   /var/lib/syslog-ng/syslog-ng.persist*			rw,
   /var/log/**						w,
   /run/syslog-ng.pid					rwk,

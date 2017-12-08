@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile oracle-jdk-bin.java /opt/oracle-jdk-bin-*/{,jre/}bin/java {
+profile oracle-jdk-bin.java /opt/oracle-jdk-bin-[0-9]*/{,jre/}bin/java {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -18,12 +18,12 @@ profile oracle-jdk-bin.java /opt/oracle-jdk-bin-*/{,jre/}bin/java {
   @{sys}/devices/system/cpu/				r,
   
   # EXECUTABLES ----------------------------------------
-  /opt/oracle-jdk-bin-*/{,jre/}bin/java			ixmr,
+  /opt/oracle-jdk-bin-[0-9]*/{,jre/}bin/java		ixmr,
   
   # READS/WRITES ---------------------------------------
-  /opt/oracle-jdk-bin-*/**				r,
-  /opt/oracle-jdk-bin-*/lib/**.so			mr,
-  /opt/oracle-jdk-bin-*/jre/lib/**.so			mr,
+  /opt/oracle-jdk-bin-[0-9]*/**				r,
+  /opt/oracle-jdk-bin-[0-9]*/lib/**.so			mr,
+  /opt/oracle-jdk-bin-[0-9]*/jre/lib/**.so		mr,
   
   # NOISY ----------------------------------------------
   deny @{HOME}/						r,

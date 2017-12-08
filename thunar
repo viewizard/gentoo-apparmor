@@ -136,7 +136,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
     # READS/WRITES -------------------------------------
     /etc/fstab						r,
     /run/mount/utab					rw,
-    /run/blkid/blkid.tab*				rw,
+    audit /run/blkid/blkid.tab*				rw,	# FIX ME! audit 8.12.2017
     link subset /run/blkid/blkid.tab.old		-> /run/blkid/blkid.tab,
   }
   
@@ -293,7 +293,7 @@ profile thunar_root {
     # READS/WRITES -------------------------------------
     /etc/fstab						r,
     /run/mount/utab					rw,
-    /run/blkid/blkid.tab*				rw,
+    audit /run/blkid/blkid.tab*				rw,	# FIX ME! audit 8.12.2017
     link subset /run/blkid/blkid.tab.old		-> /run/blkid/blkid.tab,
   }
   

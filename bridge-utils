@@ -17,7 +17,7 @@ profile bridge-utils.brctl /sbin/brctl {
   capability net_admin,
   
   # PSEUDO ---------------------------------------------
-  @{sys}/devices/virtual/net/**				rw,
+  audit @{sys}/devices/virtual/net/**			rw,	# FIX ME! audit 5.12.2017
   
   # EXECUTABLES ----------------------------------------
   /sbin/brctl						mr,

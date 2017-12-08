@@ -33,7 +33,7 @@ profile cronbase.run-crons /usr/sbin/run-crons {
   /etc/cron.{daily,hourly,monthly,weekly}/*		Px,
   
   # READS/WRITES ---------------------------------------
-  /etc/cron.*/						r,
+  /etc/cron.{daily,hourly,monthly,weekly}/		r,
   
   profile ln /bin/ln {
     #include <abstractions/base>
@@ -42,7 +42,7 @@ profile cronbase.run-crons /usr/sbin/run-crons {
     /bin/ln						mr,
     
     # READS/WRITES -------------------------------------
-    /run/lock/cron.*					w,
+    /run/lock/cron.{daily,hourly,monthly,weekly}	w,
   }
   
   profile cat /bin/cat {
@@ -62,7 +62,7 @@ profile cronbase.run-crons /usr/sbin/run-crons {
     /bin/rm						mr,
     
     # READS/WRITES -------------------------------------
-    /run/lock/cron.*					w,
+    /run/lock/cron.{daily,hourly,monthly,weekly}	w,
   }
   
   profile touch /bin/touch {
@@ -72,7 +72,7 @@ profile cronbase.run-crons /usr/sbin/run-crons {
     /bin/touch						mr,
     
     # READS/WRITES -------------------------------------
-    /var/spool/cron/lastrun/cron.*			w,
+    /var/spool/cron/lastrun/cron.{daily,hourly,monthly,weekly} w,
   }
   
   profile readlink /bin/readlink {
@@ -106,5 +106,5 @@ profile cronbase_rm {
   /bin/rm						mr,
   
   # READS/WRITES ---------------------------------------
-  /var/spool/cron/lastrun/cron.*			w,
+  /var/spool/cron/lastrun/cron.{daily,hourly,monthly,weekly} w,
 }

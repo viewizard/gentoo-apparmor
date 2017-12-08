@@ -22,9 +22,8 @@ profile netifrc.init.d /etc/init.d/net.* flags=(attach_disconnected) {	# attach_
   
   # PSEUDO ---------------------------------------------
   /dev/net/tun						rw,
-  @{sys}/devices/virtual/net/tap*/{,**}			r,
-  @{sys}/devices/virtual/net/br*/			r,
-  @{sys}/devices/virtual/net/br*/**			rw,
+  @{sys}/devices/virtual/net/@{VNIC}/			r,
+  @{sys}/devices/virtual/net/@{VNIC}/**			rw,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/**/net/@{NIC}/{,**}	r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/**/net/usb@{USB1}/ifindex r,
   @{sys}/fs/cgroup/openrc/net.*/tasks			w,
@@ -61,8 +60,8 @@ profile netifrc.init.d /etc/init.d/net.* flags=(attach_disconnected) {	# attach_
   /etc/conf.d/net					r,
   /etc/init.d/net.*					r,
   /etc/iproute2/{,*}					r,	# sys-apps/iproute2
-  /run/dhcpcd-*.pid					rwk,	# net-misc/dhcpcd
-  /run/ifplugd.*.pid					rwk,	# sys-apps/ifplugd
+  audit /run/dhcpcd-*.pid				rwk,	# net-misc/dhcpcd	# FIX ME! 7.12.2017
+  audit /run/ifplugd.*.pid				rwk,	# sys-apps/ifplugd	# FIX ME! 7.12.2017
   
   profile shell @{shell} {
     #include <abstractions/base>

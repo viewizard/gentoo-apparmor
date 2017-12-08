@@ -33,7 +33,7 @@ profile ifplugd /usr/sbin/ifplugd {
   /etc/ifplugd/ifplugd.action				Px,
   
   # READS/WRITES ---------------------------------------
-  /run/ifplugd.*.pid					rwk,
+  audit /run/ifplugd.*.pid				rwk,	# FIX ME! audit 8.12.2017
 }
 
 profile ifplugd.action /etc/ifplugd/ifplugd.action {

@@ -51,7 +51,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
   /usr/bin/gcc						ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
   /usr/bin/cmp						ix,	# sys-apps/diffutils	# FS ACCESS!
   /usr/bin/find						ix,	# sys-apps/findutils	# FS ACCESS!
-  /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc			ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
+  /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-gcc		ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
   /usr/@{CHOST}/binutils-bin/[0-9]*/strip		ix,	# sys-devel/binutils	# FIX ME! Вынести в отдельный профиль.
   /var/tmp/portage/genkernel/*/busybox-*/scripts/**	ix,	# sys-kernel/genkernel-next
   
@@ -138,9 +138,9 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /usr/bin/gcc					ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
     /usr/bin/g++					ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
     /usr/bin/openssl					ix,	# dev-libs/openssl	# FIX ME! Вынести в отдельный профиль.
-    /usr/libexec/gcc/@{CHOST}/*/*			ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
-    /usr/@{CHOST}/gcc-bin/*/*				ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
-    /usr/@{CHOST}/binutils-bin/*/*			ix,	# sys-devel/binutils	# FIX ME! Вынести в отдельный профиль.
+    /usr/libexec/gcc/@{CHOST}/[0-9]*/*			ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
+    /usr/@{CHOST}/gcc-bin/[0-9]*/*			ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
+    /usr/@{CHOST}/binutils-bin/[0-9]*/*			ix,	# sys-devel/binutils	# FIX ME! Вынести в отдельный профиль.
     /usr/src/@{kernel}/{,**}				ixr,	# sys-kernel/gentoo-sources	# FIX ME! Вынести в отдельный профиль. r - т.к. могут быть скрипты.
     /var/tmp/portage/genkernel/*/busybox-*/**		ix,	# sys-kernel/genkernel-next
     
@@ -148,7 +148,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /etc/ld.so.conf					r,
     /etc/ld.so.conf.d/{,*}				r,
     /etc/env.d/gcc/{,**}				r,	# sys-devel/gcc
-    /usr/libexec/gcc/@{CHOST}/{,**}.so*			mr,	# sys-devel/gcc
+    /usr/libexec/gcc/@{CHOST}/[0-9]*/{,**}.so*		mr,	# sys-devel/gcc
     /usr/include/{,**}					r,
     /usr/share/gcc-data/@{CHOST}/[0-9]*/locale/**.mo	r,	# sys-devel/gcc
     /usr/share/binutils-data/@{CHOST}/[0-9]*/locale/**.mo r,	# sys-devel/binutils

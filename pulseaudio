@@ -51,7 +51,7 @@ profile pulseaudio /usr/bin/pulseaudio {
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
   /usr/lib{,32,64}/pulseaudio/{,**}			r,
-  /usr/lib{,32,64}/pulse-*/modules/**			m,
+  /usr/lib{,32,64}/pulse-[0-9]*/modules/**		m,
   /usr/share/pulseaudio/**				r,
   /usr/share/applications/{,*}				r,
   /run/udev/data/+sound:card*				r,

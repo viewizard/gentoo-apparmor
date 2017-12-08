@@ -59,8 +59,8 @@ profile gcc-config /usr/bin/gcc-config {
   /etc/env.d/						r,
   /etc/env.d/**						rw,
   /etc/ld.so.conf.d/*					rw,
-  /usr/lib{,32,64}/gcc/@{CHOST}/*/libgcc.a		rw,
-  /usr/@{CHOST}/gcc-bin/*/{,**}				r,
+  /usr/lib{,32,64}/gcc/@{CHOST}/[0-9]*/libgcc.a		rw,
+  /usr/@{CHOST}/gcc-bin/[0-9]*/{,**}			r,
   
   # TEMP -----------------------------------------------
   owner /tmp/@{TMP_SH}					rw,

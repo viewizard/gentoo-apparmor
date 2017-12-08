@@ -14,7 +14,11 @@
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="[^.]*.*"
 
-profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
+@{GIMP_VER}=[0-9].[0-9]
+@{BABL_VER}=[0-9].[0-9]
+@{GEGL_VER}=[0-9].[0-9]
+
+profile gimp /usr/bin/gimp{,-@{GIMP_VER},-console,-console-@{GIMP_VER}} {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -53,30 +57,31 @@ profile gimp /usr/bin/{gimp,gimp-*,gimp-console,gimp-console-*} {
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/gimp-*					rm,
-  /usr/bin/gimp-console-*				mr,
-  /usr/lib{,32,64}/gimp/[0-9].[0-9]/plug-ins/*		Px,
+  /usr/bin/gimp-@{GIMP_VER}				mr,
+  /usr/bin/gimp-console-@{GIMP_VER}			mr,
+  /usr/lib{,32,64}/gimp/@{GIMP_VER}/plug-ins/*		Px,
   
   # READS/WRITES ---------------------------------------
   /etc/gimp/{,**}					r,
   /usr/lib{,32,64}/gimp/{,**}				r,
-  /usr/lib{,32,64}/{babl,gegl}-[0-9].[0-9]/*.so		m,
+  /usr/lib{,32,64}/babl-@{BABL_VER}/*.so		m,
+  /usr/lib{,32,64}/gegl-@{GEGL_VER}/*.so		m,
   /usr/share/gimp/{,**}					r,
   /usr/share/xml/iso-codes/*				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_CACHE}/gegl-[0-9].[0-9]/{,**}		rw,
-  owner @{HOME}/.local/share/gegl-[0-9].[0-9]/{,**}	rw,
-  owner @{HOME}/.gimp-[0-9].[0-9]/			rw,
-  owner @{HOME}/.gimp-[0-9].[0-9]/**/			rw,
-  owner @{HOME}/.gimp-[0-9].[0-9]/{,**/}*		rwk,
+  owner @{HOME_CACHE}/gegl-@{GEGL_VER}/{,**}		rw,
+  owner @{HOME}/.local/share/gegl-@{GEGL_VER}/{,**}	rw,
+  owner @{HOME}/.gimp-@{GIMP_VER}/			rw,
+  owner @{HOME}/.gimp-@{GIMP_VER}/**/			rw,
+  owner @{HOME}/.gimp-@{GIMP_VER}/{,**/}*		rwk,
   
   # TEMP -----------------------------------------------
   audit owner /tmp/gdkpixbuf-save-tmp.*			rw,	# FIX ME! audit 25.11.2017
   audit owner /tmp/gtkprint_*				rw,	# FIX ME! audit 25.11.2017
 }
 
-profile gimp.plug-ins /usr/lib{,32,64}/gimp/[0-9].[0-9]/plug-ins/* {
+profile gimp.plug-ins /usr/lib{,32,64}/gimp/@{GIMP_VER}/plug-ins/* {
   #include <abstractions/base>
   #include <abstractions/fonts>
   #include <abstractions/freedesktop.org>
@@ -100,11 +105,11 @@ profile gimp.plug-ins /usr/lib{,32,64}/gimp/[0-9].[0-9]/plug-ins/* {
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/lib{,32,64}/gimp/[0-9].[0-9]/plug-ins/*		mr,
+  /usr/lib{,32,64}/gimp/@{GIMP_VER}/plug-ins/*		mr,
   
   # READS/WRITES ---------------------------------------
-  /usr/share/gimp/[0-9].[0-9]/scripts/{,*}		r,
+  /usr/share/gimp/@{GIMP_VER}/scripts/{,*}		r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.gimp-[0-9].[0-9]/**			rw,
+  owner @{HOME}/.gimp-@{GIMP_VER}/**			rw,
 }

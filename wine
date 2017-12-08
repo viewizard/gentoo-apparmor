@@ -158,9 +158,9 @@ profile wine.wine-preloader /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[
   @{sys}/class/						r,
   @{sys}/class/hidraw/					r,
   @{sys}/class/scsi_device/				r,
-  @{sys}/devices/system/cpu/cpu*/cpufreq/*		r,
-  @{sys}/devices/system/cpu/cpu*/cache/index*/*		r,
-  @{sys}/devices/system/cpu/cpufreq/policy*/{scaling_cur_freq,scaling_max_freq,cpuinfo_max_freq} r,
+  @{sys}/devices/system/cpu/cpu[0-9]*/cpufreq/*		r,
+  @{sys}/devices/system/cpu/cpu[0-9]*/cache/index[0-9]*/* r,
+  @{sys}/devices/system/cpu/cpufreq/policy[0-9]*/{scaling_cur_freq,scaling_max_freq,cpuinfo_max_freq} r,
   @{sys}/devices/system/node/**				r,
   @{PROC}/{cpu,mem}info					r,
   @{PROC}/scsi/scsi					r,
@@ -244,7 +244,7 @@ profile wine.wineserver /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]
   # READS/WRITES ---------------------------------------
   /etc/mime.types					r,
   /usr/lib{,32,64}/wine/*.so				m,
-  /usr/share/wine/**					rk,
+  /usr/share/wine{,-{any,d3d9,staging,vanilla}-[0-9]*}/** rk,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.local/share/icons/hicolor/**		w,

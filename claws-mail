@@ -46,12 +46,12 @@ profile claws-mail /usr/bin/claws-mail {
   
   # READS/WRITES ---------------------------------------
   /usr/lib{,32,64}/claws-mail/plugins/*.so		m,
-  /usr/lib{,32,64}/libproxy/**.so			m,
+  /usr/lib{,32,64}/libproxy/[0-9]*/modules/*.so		m,
   /usr/share/claws-mail/**				r,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.claws-mail/{,**}			rw,
-  owner @{HOME}/Mail/{,**}				rw,
+  owner @{HOME}/Mail/{,**}				rw,	# FIX ME! (?) вынести в <local/profile_blocks/claws-mail.d/>
   owner link subset @{HOME}/Mail/queue/[0-9]*		-> /{home/*,root}/.claws-mail/tmp/queue.*,	# TARGET! @{HOME}
   owner link subset @{HOME}/Mail/draft/[0-9]*		-> /{home/*,root}/.claws-mail/tmp/draft.*,	# TARGET! @{HOME}
   

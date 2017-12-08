@@ -73,7 +73,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   /usr/bin/rsync					Cx,	# net-misc/rsync
   /usr/bin/gcc-config					Px,	# sys-devel/gcc-config
   /usr/bin/free						Cx,	# sys-process/procps
-  /usr/@{CHOST}/binutils-bin/*/ld			Cx,	# sys-devel/binutils
+  /usr/@{CHOST}/binutils-bin/[0-9]*/ld			Cx,	# sys-devel/binutils
   /etc/portage/repo.postsync.d/*			Px,	# Выполняем скрипты, если у них есть профили.
   
   # READS/WRITES ---------------------------------------
@@ -231,7 +231,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /usr/bin/free					mr,
   }
   
-  profile ld /usr/@{CHOST}/binutils-bin/*/ld flags=(complain) {	# FIX ME! complain 06.10.2017
+  profile ld /usr/@{CHOST}/binutils-bin/[0-9]*/ld flags=(complain) {	# FIX ME! complain 06.10.2017
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -239,7 +239,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
-    /usr/@{CHOST}/binutils-bin/*/ld			mr,
+    /usr/@{CHOST}/binutils-bin/[0-9]*/ld		mr,
   }
   
   profile shell @{shell} {
@@ -400,8 +400,9 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /dev/ptmx						rw,
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
+    /dev/shm/sem.auto*					rw,
     owner /dev/shm/@{TMP6}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-    audit owner /dev/shm/sem.*				w,	# FIX ME! audit 24.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+    owner /dev/shm/sem.*-*				w,	# * - вида mp25561-1694533520001241164, где mp25561 привязано к pid-у процесса, * - только цифры, кол-во может быть различным	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
     owner /dev/shm/parted*/{,*}				w,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
     owner link subset /dev/shm/sem.*			-> /dev/shm/@{TMP6},
     @{sys}/{,**}					r,

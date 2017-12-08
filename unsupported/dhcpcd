@@ -29,7 +29,7 @@ profile dhcpcd /sbin/dhcpcd {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{sys}/devices/virtual/net/lo/uevent			r,
+  @{sys}/devices/virtual/net/@{VNIC}/uevent		r,
   @{sys}/devices/pci@{PCI2}/**/@{PCI4}/net/@{NIC}/uevent r,
   @{PROC}/sys/net/ipv4/conf/*/promote_secondaries	rwk,
   

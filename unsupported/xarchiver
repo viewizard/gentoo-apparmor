@@ -73,7 +73,7 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   /usr/bin/unzip					Cx,	# app-arch/unzip
   /usr/bin/lzip						Cx,	# app-arch/lzip
   /usr/bin/xz						Cx,	# app-arch/xz-utils
-  /usr/@{CHOST}/binutils-bin/*/ar			Cx,	# sys-devel/binutils
+  /usr/@{CHOST}/binutils-bin/[0-9]*/ar			Cx,	# sys-devel/binutils
   /opt/rar/rar						Cx,	# app-arch/rar
   
   # READS/WRITES ---------------------------------------
@@ -237,14 +237,14 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
     /usr/bin/xz						mr,
   }
   
-  profile ar /usr/@{CHOST}/binutils-bin/*/ar flags=(complain) {
+  profile ar /usr/@{CHOST}/binutils-bin/[0-9]*/ar flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
     #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
-    /usr/@{CHOST}/binutils-bin/*/ar			mr,
+    /usr/@{CHOST}/binutils-bin/[0-9]*/ar		mr,
   }
   
   profile rar /opt/rar/rar {
@@ -381,7 +381,7 @@ profile xarchiver_root flags=(complain) {
   /usr/bin/unzip					Cx,	# app-arch/unzip
   /usr/bin/lzip						Cx,	# app-arch/lzip
   /usr/bin/xz						Cx,	# app-arch/xz-utils
-  /usr/@{CHOST}/binutils-bin/*/ar			Cx,	# sys-devel/binutils
+  /usr/@{CHOST}/binutils-bin/[0-9]*/ar			Cx,	# sys-devel/binutils
   /opt/rar/rar						Cx,	# app-arch/rar
   
   # READS/WRITES ---------------------------------------
@@ -559,7 +559,7 @@ profile xarchiver_root flags=(complain) {
     /usr/bin/xz						mr,
   }
   
-  profile ar /usr/@{CHOST}/binutils-bin/*/ar flags=(complain) {
+  profile ar /usr/@{CHOST}/binutils-bin/[0-9]*/ar flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/access-by-pattern-systemusers>
@@ -567,7 +567,7 @@ profile xarchiver_root flags=(complain) {
     #include <abstractions/fs/deny-private-strict>
     
     # EXECUTABLES --------------------------------------
-    /usr/@{CHOST}/binutils-bin/*/ar			mr,
+    /usr/@{CHOST}/binutils-bin/[0-9]*/ar			mr,
   }
   
   profile rar /opt/rar/rar {

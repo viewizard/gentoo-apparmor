@@ -154,7 +154,8 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/console						rw,
-  @{sys}/devices/virtual/tty/tty*/active		r,
+  audit @{sys}/devices/virtual/tty/tty/active		r,	# FIX ME! audit 5.12.2017
+  @{sys}/devices/virtual/tty/tty[0-9]*/active		r,
   owner @{PROC}/@{pid}/fd/				r,
   @{PROC}/@{pids}/stat					r,
   @{PROC}/@{pids}/environ				r,

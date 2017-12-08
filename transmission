@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile transmission /usr/bin/transmission-* {
+profile transmission /usr/bin/transmission-gtk {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -59,7 +59,7 @@ profile transmission /usr/bin/transmission-* {
   owner @{PROC}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/transmission-*				mr,
+  /usr/bin/transmission-gtk				mr,
   /usr/bin/canberra-gtk-play				Px,	# media-libs/libcanberra
   
   # READS/WRITES ---------------------------------------

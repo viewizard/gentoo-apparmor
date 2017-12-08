@@ -31,7 +31,7 @@ profile dhcp.dhclient /sbin/dhclient {
   /usr/libexec/nm-dhcp-helper				Px,	# net-misc/networkmanager	# DELEGATION! networkmanager.NetworkManager
   
   # READS/WRITES ---------------------------------------
-  /run/dhclient-*.pid					rw,	# net-misc/networkmanager	# DELEGATION! networkmanager.NetworkManager
-  /var/lib/NetworkManager/dhclient-*.conf		r,	# net-misc/networkmanager	# DELEGATION! networkmanager.NetworkManager
-  /var/lib/NetworkManager/dhclient-*.lease		rw,	# net-misc/networkmanager	# DELEGATION! networkmanager.NetworkManager
+  /run/dhclient-*.pid					rw,	# net-misc/networkmanager	# DELEGATION! networkmanager.NetworkManager	# Зависит от конфигурации NetworkManager
+  /var/lib/NetworkManager/dhclient-*.conf		r,	# net-misc/networkmanager	# DELEGATION! networkmanager.NetworkManager	# Зависит от конфигурации NetworkManager
+  /var/lib/NetworkManager/dhclient-*.lease		rw,	# net-misc/networkmanager	# DELEGATION! networkmanager.NetworkManager	# Зависит от конфигурации NetworkManager
 }

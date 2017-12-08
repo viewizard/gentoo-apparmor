@@ -118,7 +118,7 @@ profile genkernel-next.genkernel /usr/bin/genkernel {
   /usr/src/@{kernel}/{sed*,.config}			w,	# sys-kernel/gentoo-sources
   /usr/share/genkernel/{,**}				r,
   /usr/share/misc/magic.mgc				r,	# sys-apps/file
-  /usr/portage/distfiles/busybox-*.tar.bz2		r,
+  /usr/portage/distfiles/busybox-[0-9]*.tar.bz2		r,
   /boot/initramfs-genkernel-*-@{kernel_ver}		w,
   /var/cache/genkernel/{,**}				rw,
   /var/log/genkernel.log				rw,
@@ -139,7 +139,7 @@ profile genkernel-next.genkernel /usr/bin/genkernel {
     /bin/bzip2						ix,	# FS ACCESS!
     
     # READS/WRITES -------------------------------------
-    /var/cache/genkernel/busybox-*.tar.bz2		rw,
+    /var/cache/genkernel/busybox-[0-9]*.tar.bz2		rw,
     
     # TEMP ---------------------------------------------
     /var/tmp/portage/genkernel/{,**}			rw,

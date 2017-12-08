@@ -73,6 +73,7 @@ profile mc_root {
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(cont) peer="shell_root",
+  signal (send) set=(cont) peer="mc.cons.saver",
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,

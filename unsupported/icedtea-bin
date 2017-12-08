@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile icedtea-bin.java /opt/icedtea-bin-*/{,jre/}bin/java {
+profile icedtea-bin.java /opt/icedtea-bin-[0-9]*/{,jre/}bin/java {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -18,12 +18,12 @@ profile icedtea-bin.java /opt/icedtea-bin-*/{,jre/}bin/java {
   @{sys}/devices/system/cpu/				r,
   
   # EXECUTABLES ----------------------------------------
-  /opt/icedtea-bin-*/{,jre/}bin/java			ixmr,
+  /opt/icedtea-bin-[0-9]*/{,jre/}bin/java		ixmr,
   
   # READS/WRITES ---------------------------------------
-  /opt/icedtea-bin-*/**					r,
-  /opt/icedtea-bin-*/lib/**.so				mr,
-  /opt/icedtea-bin-*/jre/lib/**.so			mr,
+  /opt/icedtea-bin-[0-9]*/**				r,
+  /opt/icedtea-bin-[0-9]*/lib/**.so			mr,
+  /opt/icedtea-bin-[0-9]*/jre/lib/**.so			mr,
   
   # NOISY ----------------------------------------------
   deny @{HOME}/						r,

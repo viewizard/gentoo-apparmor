@@ -44,7 +44,7 @@ profile codeblocks /usr/bin/codeblocks {
   /usr/bin/gcc						Cx -> build,	# sys-devel/gcc
   /usr/bin/g++						Cx -> build,	# sys-devel/gcc
   /usr/bin/llvm-ar					Cx -> build,	# sys-devel/llvm
-  /usr/bin/{,@{CHOST}-}clang-*				Cx -> build,	# sys-devel/clang
+  audit /usr/bin/{,@{CHOST}-}clang-*			Cx -> build,	# sys-devel/clang	# FIX ME! audit 5.12.2017
   deny /usr/bin/gfortran				x,	# sys-devel/gcc +fortran	# Не используем fortran.
   
   # READS/WRITES ---------------------------------------
@@ -73,14 +73,14 @@ profile codeblocks /usr/bin/codeblocks {
     /usr/bin/gcc					mr,	# sys-devel/gcc
     /usr/bin/g++					mr,	# sys-devel/gcc
     /usr/bin/llvm-ar					mr,	# sys-devel/llvm
-    /usr/bin/{,@{CHOST}-}clang-*			mr,	# sys-devel/clang
-    /usr/@{CHOST}/gcc-bin/*/@{CHOST}-gcc		ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
-    /usr/@{CHOST}/gcc-bin/*/@{CHOST}-g++		ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
-    /usr/libexec/gcc/@{CHOST}/*/cc1plus			ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
+    audit /usr/bin/{,@{CHOST}-}clang-*			mr,	# sys-devel/clang	# FIX ME! audit 5.12.2017
+    /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-gcc		ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
+    /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-g++		ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
+    /usr/libexec/gcc/@{CHOST}/[0-9]*/cc1plus		ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
     
     # READS/WRITES -------------------------------------
     /etc/lsb-release					r,
-    /etc/env.d/gcc/@{CHOST}-*				r,	# sys-devel/gcc
+    /etc/env.d/gcc/@{CHOST}-[0-9]*			r,	# sys-devel/gcc
     /etc/env.d/gcc/config-@{CHOST}			r,	# sys-devel/gcc
     /usr/include/**					r,
     /usr/share/gcc-data/@{CHOST}/[0-9]*/locale/**.mo	r,	# sys-devel/gcc
@@ -120,9 +120,9 @@ profile codeblocks_shell {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/g++					mr,
-    /usr/@{CHOST}/binutils-bin/*/as			ix,	# sys-devel/binutils	# Разрешаем ix для данного случая.
-    /usr/@{CHOST}/binutils-bin/*/ld			ix,	# sys-devel/binutils	# Разрешаем ix для данного случая.
-    /usr/@{CHOST}/gcc-bin/*/@{CHOST}-g++		ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
+    /usr/@{CHOST}/binutils-bin/[0-9]*/as		ix,	# sys-devel/binutils	# Разрешаем ix для данного случая.
+    /usr/@{CHOST}/binutils-bin/[0-9]*/ld		ix,	# sys-devel/binutils	# Разрешаем ix для данного случая.
+    /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-g++		ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
     /usr/libexec/gcc/@{CHOST}/*/cc1plus			ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
     /usr/libexec/gcc/@{CHOST}/*/collect2		ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
     
@@ -130,7 +130,7 @@ profile codeblocks_shell {
     /usr/include/**					r,
     /etc/ld.so.conf					r,
     /etc/ld.so.conf.d/{,*}				r,
-    /usr/libexec/gcc/@{CHOST}/*/*.so.[0-9]*		rm,	# sys-devel/gcc
+    /usr/libexec/gcc/@{CHOST}/[0-9]*/*.so.[0-9]*	rm,	# sys-devel/gcc
     /usr/share/gcc-data/@{CHOST}/[0-9]*/locale/**.mo	r,	# sys-devel/gcc
     /usr/share/binutils-data/@{CHOST}/[0-9]*/locale/**.mo r,	# sys-devel/binutils
     

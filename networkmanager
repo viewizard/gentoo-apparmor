@@ -139,7 +139,7 @@ profile networkmanager.NetworkManager /usr/sbin/NetworkManager {
   @{sys}/class/						r,
   @{sys}/class/net/					r,
   @{sys}/class/rfkill/					r,
-  @{sys}/devices/virtual/net/lo/{,*}			r,
+  @{sys}/devices/virtual/net/@{VNIC}/{,*}		r,
   @{sys}/devices/pci@{PCI2}/**/@{PCI4}/net/@{NIC}/{,uevent,ifindex,phys_port_id,dev_id} r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/@{USB4}/net/usb@{USB1}/{,uevent,ifindex,phys_port_id,dev_id} r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/**/@{USB4}/net/usb@{USB1}/{,uevent,ifindex,phys_port_id,dev_id} r,
@@ -168,9 +168,9 @@ profile networkmanager.NetworkManager /usr/sbin/NetworkManager {
   /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
   /run/NetworkManager/{,**}				rw,
   /run/udev/data/{,*}					r,	# sys-fs/eudev
-  /run/ConsoleKit/inhibit/inhibit.*.pipe		w,	# sys-auth/consolekit
+  /run/ConsoleKit/inhibit/inhibit.@{TMP6}.pipe		w,	# sys-auth/consolekit
   /run/ConsoleKit/database				r,	# sys-auth/consolekit
-  /run/dhclient-*.pid					rw,	# net-misc/dhcp
+  audit /run/dhclient-*.pid				rw,	# net-misc/dhcp		# FIX ME! 7.12.2017
   /var/lib/NetworkManager/{,**}				rw,
 }
 

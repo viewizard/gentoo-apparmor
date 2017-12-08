@@ -20,8 +20,8 @@ profile iceauth /usr/bin/iceauth {
   /usr/bin/iceauth					mr,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.ICEauthority*				rw,
-  owner link subset @{HOME}/.ICEauthority*		-> /{home/*,root}/.ICEauthority*,	# TARGET! @{HOME}
+  owner @{HOME}/.ICEauthority{,-@{TMP}}			rw,
+  owner link subset @{HOME}/.ICEauthority{,-@{TMP}}	-> /{home/*,root}/.ICEauthority{,-@{TMP}},	# TARGET! @{HOME}
   owner @{HOME}/.xfce4-session.verbose-log		w,	# xfce-base/xfce4-session
   
   # TEMP -----------------------------------------------

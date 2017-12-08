@@ -33,6 +33,7 @@
 @{GVFSD_NETWORK_SOCKET}+="chromium.chrome"			# www-client/chromium
 @{GVFSD_NETWORK_SOCKET}+="nm-applet.nm-connection-editor"	# gnome-extra/nm-applet
 @{GVFSD_NETWORK_SOCKET}+="nvidia-drivers.nvidia-settings"	# x11-drivers/nvidia-drivers
+@{GVFSD_NETWORK_SOCKET}+="firefox"				# www-client/firefox
 
 # Профили с доступом к gvfsd-smb сокету
 @{GVFSD_SMB_SOCKET}="gvfs.gvfsd-fuse"
@@ -69,6 +70,7 @@
 @{GVFSD_TRASH_SOCKET}+="chromium.chrome"			# www-client/chromium
 @{GVFSD_TRASH_SOCKET}+="nm-applet.nm-connection-editor"		# gnome-extra/nm-applet
 @{GVFSD_TRASH_SOCKET}+="nvidia-drivers.nvidia-settings"		# x11-drivers/nvidia-drivers
+@{GVFSD_TRASH_SOCKET}+="firefox"				# www-client/firefox
 
 # Профили с доступом к gvfsd-trash анонимному сокету
 #@{GVFSD_TRASH_ANON_SOCKET}=""
@@ -296,7 +298,7 @@ profile gvfs.gvfsd-http /usr/libexec/gvfsd-http {
   
   # READS/WRITES ---------------------------------------
   /usr/share/glib-[0-9]*/schemas/{,gschemas.compiled}	r,
-  /usr/lib{,32,64}/libproxy/[0-9]*.[0-9]*.[0-9]*/modules/*.so m,
+  /usr/lib{,32,64}/libproxy/[0-9]*/modules/*.so		m,
   
   # READS/WRITES ---------------------------------------
   /usr/share/mime/mime.cache				r,

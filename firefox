@@ -45,9 +45,12 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   #include <abstractions/X>
   #include <abstractions/fs/access-by-pattern-internet>
   #include <abstractions/fs/access-strict>
+  #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/notifications>
+  #include <abstractions/unix/gvfsd-trash>
+  #include <abstractions/unix/gvfsd-network>
   #include <abstractions/profile_transitions/users-mime-related>
   #include <local/profile_blocks/firefox.d>
   
@@ -70,6 +73,7 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   network inet6 stream,
   
   # PSEUDO ---------------------------------------------
+  /dev/							r,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   owner /dev/shm/org.chromium.@{TMP6}			rw,	# Нужено для adobe-flash (ppapi).
@@ -81,11 +85,11 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   owner @{PROC}/@{pid}/fd/				r,
   owner @{PROC}/@{pid}/mountinfo			r,
   owner @{PROC}/@{pid}/stat				r,
-  audit owner @{PROC}/@{pid}/statm			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
-  audit owner @{PROC}/@{pid}/smaps			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  owner @{PROC}/@{pids}/statm				r,
+  owner @{PROC}/@{pids}/smaps				r,
   audit owner @{PROC}/@{pid}/environ			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
   audit owner @{PROC}/@{pid}/auxv			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
-  audit owner @{PROC}/@{pid}/cmdline			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  owner @{PROC}/@{pid}/cmdline				r,
   owner @{PROC}/@{pid}/mounts				r,
   owner @{PROC}/@{pid}/task/@{pids}/stat		r,
   @{PROC}/@{pid}/net/arp				r,	# IMPROVE! UID=$USER(owner),root
@@ -103,7 +107,7 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   /usr/bin/which					Px,	# sys-apps/which
   /usr/lib{,32,64}/firefox/firefox			Px,	# Перезапуск, после установки обновлений.
   /usr/lib{,32,64}/firefox/plugin-container		Px,
-  owner @{HOME}/.mozilla/**/extensions/**		Px,	# Пользовательские расширения.
+  owner @{HOME}/.mozilla/firefox/@{TMP8}.default/extensions/** Px,	# Пользовательские расширения.
   /usr/lib{,32,64}/firefox/browser/extensions/**	Px,	# Системные расширения.
   
   # READS/WRITES ---------------------------------------
@@ -130,20 +134,20 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   /tmp/							r,
   owner /tmp/*						rw,	# Need for download files with any filename.
   								# IMPROVE! Потом работать с xattr, чтобы ограничить rw только на процесс.
-  owner /tmp/plugtmp/					rw,
-  owner /tmp/plugtmp/plugin-*				rw,	# * - имя с расширением файла (PL_HD.txt)
-  owner /tmp/mozilla-temp-*				rw,	# * - 9 цифр
+  owner /tmp/mozilla-temp-[0-9]*			rw,	# [0-9]* - 9 цифр
   audit owner /tmp/mozilla_*/{,**}			rw,	# FIX ME! audit 26.11.2017
+  owner /tmp/plugtmp{,-[0-9]*}/				rw,
+  owner /tmp/plugtmp{,-[0-9]*}/plugin-*			rw,	# * - имя с расширением файла (PL_HD.txt)
   owner /tmp/firefox_@{USER}/{,**/}			rw,
   owner /tmp/firefox_@{USER}/{,**/}*			rwk,
   /var/tmp/						r,
   owner /var/tmp/@{TMP_SQLITE}				rw,
   
   # DENY INHERIT ---------------------------------------
-  deny unix peer=(label="nvidia-drivers.nvidia-modprobe"),		# nvidia-drivers.nvidia-modprobe
+  deny unix peer=(label="nvidia-drivers.nvidia-modprobe"),	# nvidia-drivers.nvidia-modprobe
 }
 
-profile firefox.user_extensions @{HOME}/.mozilla/**/extensions/** {
+profile firefox.user_extensions @{HOME}/.mozilla/firefox/@{TMP8}.default/extensions/** {
   #include <abstractions/base>
   
   
@@ -180,9 +184,9 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   /dev/							r,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner /dev/shm/org.chromium.@{TMP6}			rw,	# Нужено для adobe-flash (ppapi).
+  owner /dev/shm/org.chromium.@{TMP6}			rw,	# Нужно для adobe-flash (ppapi).
   								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-  @{sys}/devices/system/cpu/				r,
+  @{sys}/devices/system/cpu/{,**}			r,
   owner @{PROC}/@{pid}/stat				r,
   owner @{PROC}/@{pid}/cmdline				r,
   owner @{PROC}/@{pid}/task/@{pids}/stat		r,
@@ -204,6 +208,9 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   /tmp/							r,
   owner /tmp/FreshStream@{TMP6}				rw,
   owner /tmp/FreshTemp@{TMP6}				rw,
+  owner /tmp/mozilla-temp-[0-9]*			rw,	# [0-9]* - 9 цифр
+  owner /tmp/plugtmp{,-[0-9]*}/				rw,
+  owner /tmp/plugtmp{,-[0-9]*}/plugin-*			rw,	# * - имя с расширением файла (PL_HD.txt)
   /var/tmp/						r,
   
   profile shell @{shell} {

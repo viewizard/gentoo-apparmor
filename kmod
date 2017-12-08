@@ -31,7 +31,7 @@ profile kmod /{bin/kmod,sbin/modprobe,sbin/modeinfo} {
   
   # READS/WRITES ---------------------------------------
   /etc/modprobe.d/{,*}					r,
-  /lib{,32,64}/modules/*/modules.*			rw,
+  /lib{,32,64}/modules/@{kernel_ver}/modules.*		rw,
   /usr/src/@{kernel}/System.map				r,
   /usr/src/@{kernel}/tar-install/lib/modules/@{kernel_ver}/ r,		# DELEGATION! make
   /usr/src/@{kernel}/tar-install/lib/modules/@{kernel_ver}/** rw,	# Вызывать kmod в make через "Px + {}"

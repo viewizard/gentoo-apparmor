@@ -35,7 +35,7 @@ profile exo.exo-open /usr/bin/exo-open flags=(attach_disconnected) {
   # READS/WRITES ---------------------------------------
   /etc/machine-id					r,
   /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
-  /usr/portage/licenses/{,*}				r,
+  audit /usr/portage/licenses/{,*}			r,	# FIX ME! audit 6.12.2017 - почему это тут?
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
@@ -169,7 +169,7 @@ profile exo_open_root flags=(attach_disconnected) {
   # READS/WRITES ---------------------------------------
   /etc/machine-id					r,
   /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
-  /usr/portage/licenses/{,*}				r,
+  audit /usr/portage/licenses/{,*}			r,	# FIX ME! audit 6.12.2017 - почему это тут?
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)

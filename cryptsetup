@@ -39,7 +39,7 @@ profile cryptsetup /sbin/cryptsetup {
   /dev/@{BLOCK_ALL}					rw,
   /dev/mapper/						r,
   /dev/mapper/control					rw,
-  @{sys}/devices/virtual/bdi/*/read_ahead_kb		r,
+  @{sys}/devices/virtual/bdi/[0-9]*:[0-9]*/read_ahead_kb r,
   @{PROC}/devices					r,
   
   # EXECUTABLES ----------------------------------------

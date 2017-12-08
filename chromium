@@ -116,8 +116,8 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   @{sys}/bus/{,**}					r,
   @{sys}/class/{,**}					r,
   @{sys}/devices/system/cpu/				r,
-  @{sys}/devices/system/cpu/cpu*/cpufreq/cpuinfo_max_freq r,
-  @{sys}/devices/system/cpu/cpufreq/policy*/cpuinfo_max_freq r,
+  @{sys}/devices/system/cpu/cpu[0-9]*/cpufreq/cpuinfo_max_freq r,
+  @{sys}/devices/system/cpu/cpufreq/policy[0-9]*/cpuinfo_max_freq r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{device,class,irq,resource,vendor} r,
   @{sys}/devices/pci@{PCI2}/**/@{PCI4}/{device,class,irq,resource,vendor} r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/	r,
@@ -179,7 +179,7 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   owner @{HOME}/.config/chromium/Dictionaries/*.bdic	m,
   owner @{HOME}/.config/chromium/**/Dictionaries/*.bdic	m,
   owner @{HOME}/.local/share/mime/mime.cache		m,
-  owner @{HOME}/.local/share/.org.chromium.Chromium.*	rw,
+  audit owner @{HOME}/.local/share/.org.chromium.Chromium.* rw,	# FIX ME! audit 6.12.2017
   
   # TEMP -----------------------------------------------
   /tmp/							r,

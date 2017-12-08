@@ -21,8 +21,8 @@ profile xauth /usr/bin/xauth {
   /usr/bin/xauth					mr,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.Xauthority*				rw,	# * - 0(нет) или 2 символа {[a-z],-}
-  owner link subset @{HOME}/.Xauthority*		-> /{home/*,root}/.Xauthority*,		# TARGET! @{HOME}	# * - 0(нет) или 2 символа {[a-z],-}
+  owner @{HOME}/.Xauthority{,-@{TMP}}			rw,
+  owner link subset @{HOME}/.Xauthority{,-@{TMP}}	-> /{home/*,root}/.Xauthority{,-@{TMP}},	# TARGET! @{HOME}
   owner @{HOME}/.serverauth.*				rw,	# * - 1-8 символов @{pid} + 0(нет) или 2 символа {[a-z],-}
   owner link subset @{HOME}/.serverauth.*		-> /{home/*,root}/.serverauth.*,	# TARGET! @{HOME}	# * - 1-8 символов @{pid} + 0(нет) или 2 символа {[a-z],-}
   owner @{HOME}/.xauth*					rw,	# * - 6-8 символов {[a-zA-Z0-9_.},-}

@@ -121,7 +121,7 @@ profile lvm2.lvm /sbin/lvm {
   @{sys}/class/block/					r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-  @{sys}/devices/virtual/bdi/*/read_ahead_kb		rw,
+  @{sys}/devices/virtual/bdi/[0-9]*:[0-9]*/read_ahead_kb rw,
   @{PROC}/devices					r,
   owner @{PROC}/@{pid}/fd/				r,
   owner @{PROC}/@{pid}/mounts				r,
