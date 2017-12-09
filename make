@@ -53,7 +53,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
   /usr/bin/find						ix,	# sys-apps/findutils	# FS ACCESS!
   /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-gcc		ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
   /usr/@{CHOST}/binutils-bin/[0-9]*/strip		ix,	# sys-devel/binutils	# FIX ME! Вынести в отдельный профиль.
-  /var/tmp/portage/genkernel/*/busybox-*/scripts/**	ix,	# sys-kernel/genkernel-next
+  /var/tmp/portage/genkernel/*/busybox-*/scripts/{,**/}* ix,	# sys-kernel/genkernel-next
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -61,7 +61,8 @@ profile make /usr/bin/{,g}make flags=(complain) {
   /lib{,32,64}/modules/{,**}				rw,
   /usr/share/gcc-data/@{CHOST}/[0-9]*/locale/**.mo	r,	# sys-devel/gcc
   /usr/share/binutils-data/@{CHOST}/[0-9]*/locale/**.mo	r,	# sys-devel/binutils
-  /usr/src/@{kernel}/{,**}				ixrw,	# sys-kernel/gentoo-sources	# r - т.к. могут быть скрипты.
+  /usr/src/@{kernel}/{,**}				rw,	# sys-kernel/gentoo-sources	# r - т.к. могут быть скрипты.
+  /usr/src/@{kernel}/{,**/}*				ix,	# sys-kernel/gentoo-sources
   owner /var/log/genkernel.log				w,	# sys-kernel/genkernel-next
   
   # USERS ----------------------------------------------
@@ -141,14 +142,15 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /usr/libexec/gcc/@{CHOST}/[0-9]*/*			ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
     /usr/@{CHOST}/gcc-bin/[0-9]*/*			ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
     /usr/@{CHOST}/binutils-bin/[0-9]*/*			ix,	# sys-devel/binutils	# FIX ME! Вынести в отдельный профиль.
-    /usr/src/@{kernel}/{,**}				ixr,	# sys-kernel/gentoo-sources	# FIX ME! Вынести в отдельный профиль. r - т.к. могут быть скрипты.
-    /var/tmp/portage/genkernel/*/busybox-*/**		ix,	# sys-kernel/genkernel-next
+    /usr/src/@{kernel}/{,**}				r,	# sys-kernel/gentoo-sources	# FIX ME! Вынести в отдельный профиль. r - т.к. могут быть скрипты.
+    /usr/src/@{kernel}/{,**/}*				ix,	# sys-kernel/gentoo-sources	# FIX ME! Вынести в отдельный профиль.
+    /var/tmp/portage/genkernel/*/busybox-*/{,**/}*	ix,	# sys-kernel/genkernel-next
     
     # READS/WRITES -------------------------------------
     /etc/ld.so.conf					r,
     /etc/ld.so.conf.d/{,*}				r,
     /etc/env.d/gcc/{,**}				r,	# sys-devel/gcc
-    /usr/libexec/gcc/@{CHOST}/[0-9]*/{,**}.so*		mr,	# sys-devel/gcc
+    /usr/libexec/gcc/@{CHOST}/[0-9]*/**.so{,.[0-9]*}	mr,	# sys-devel/gcc
     /usr/include/{,**}					r,
     /usr/share/gcc-data/@{CHOST}/[0-9]*/locale/**.mo	r,	# sys-devel/gcc
     /usr/share/binutils-data/@{CHOST}/[0-9]*/locale/**.mo r,	# sys-devel/binutils

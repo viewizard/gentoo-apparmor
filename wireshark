@@ -62,7 +62,7 @@ profile wireshark /usr/bin/wireshark{,-gtk} {
   # READS/WRITES ---------------------------------------
   /etc/libnl/classid					r,	# dev-libs/libnl
   /usr/share/wireshark/{,**}				r,
-  /usr/lib{,32,64}/wireshark/plugins/**{la,so}		m,
+  /usr/lib{,32,64}/wireshark/plugins/[0-9]*/*.{la,so}	m,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.wireshark/{,**}			rw,

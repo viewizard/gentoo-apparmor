@@ -107,8 +107,8 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   /usr/bin/which					Px,	# sys-apps/which
   /usr/lib{,32,64}/firefox/firefox			Px,	# Перезапуск, после установки обновлений.
   /usr/lib{,32,64}/firefox/plugin-container		Px,
-  owner @{HOME}/.mozilla/firefox/@{TMP8}.default/extensions/** Px,	# Пользовательские расширения.
-  /usr/lib{,32,64}/firefox/browser/extensions/**	Px,	# Системные расширения.
+  owner @{HOME}/.mozilla/firefox/@{TMP8}.default/extensions/{,**/}* Px,	# Пользовательские расширения.
+  /usr/lib{,32,64}/firefox/browser/extensions/{,**/}*	Px,	# Системные расширения.
   
   # READS/WRITES ---------------------------------------
   /etc/							r,

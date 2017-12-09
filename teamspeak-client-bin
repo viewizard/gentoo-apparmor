@@ -59,9 +59,9 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   deny /opt/teamspeak3-client/update			x,	# Не разрешать обновления, используем portage.
   
   # READS/WRITES ---------------------------------------
-  /opt/teamspeak3-client/				r,
-  /opt/teamspeak3-client/**				rk,
-  /opt/teamspeak3-client/{,**/}*.so*			m,
+  /opt/teamspeak3-client/{,**/}				r,
+  /opt/teamspeak3-client/{,**/}*			rk,
+  /opt/teamspeak3-client/{,**/}*.so{,.[0-9]*}		m,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.ts3client/{,**/}			rw,

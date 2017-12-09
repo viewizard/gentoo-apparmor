@@ -289,18 +289,18 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /etc/portage/bin/**					ix,
-    /bin/**						ix,
-    /sbin/**						ix,
+    /etc/portage/bin/{,**/}*				ix,
+    /bin/{,**/}*					ix,
+    /sbin/{,**/}*					ix,
     /sbin/udevadm					Px,	# sys-fs/eudev
-    /opt/**						ix,
-    /usr/bin/**						ix,
+    /opt/{,**/}*					ix,
+    /usr/bin/{,**/}*					ix,
     /usr/sbin/useradd					Px,	# sys-apps/shadow
     /usr/sbin/groupadd					Px,	# sys-apps/shadow
     /usr/sbin/lspci					Px,	# sys-apps/pciutils
-    /usr/sbin/**					ix,
-    /usr/lib{,32,64,exec}/**				ix,
-    /usr/@{CHOST}/**					ix,
+    /usr/sbin/{,**/}*					ix,
+    /usr/lib{,32,64,exec}/{,**/}*			ix,
+    /usr/@{CHOST}/{,**/}*				ix,
     /lib{,32,64}/rc/sh/gendepends.sh			Px,	# sys-apps/openrc
     /lib{,32,64}/rc/sh/migrate-to-run.sh		ix,	# sys-apps/openrc
     /lib{,32,64}/rc/bin/*				ix,	# sys-apps/openrc
@@ -410,15 +410,15 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     
     # EXECUTABLES ----------------------------------------
     @{shell}						mr,
-    /bin/**						ix,
-    /sbin/**						ix,
-    /opt/**						ix,
-    /lib{,32,64}/**					ix,
-    /usr/bin/**						ix,
-    /usr/sbin/**					ix,
-    /usr/lib{,32,64,exec}/**				ix,
-    /usr/share/**					ix,
-    /usr/@{CHOST}/**					ix,
+    /bin/{,**/}*					ix,
+    /sbin/{,**/}*					ix,
+    /opt/{,**/}*					ix,
+    /lib{,32,64}/{,**/}*				ix,
+    /usr/bin/{,**/}*					ix,
+    /usr/sbin/{,**/}*					ix,
+    /usr/lib{,32,64,exec}/{,**/}*			ix,
+    /usr/share/{,**/}*					ix,
+    /usr/@{CHOST}/{,**/}*				ix,
     
     # READS/WRITES -------------------------------------
     /							r,

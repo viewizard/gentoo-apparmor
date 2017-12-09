@@ -269,8 +269,8 @@ profile shell_root {
   /usr/sbin/nettop					Px,	# net-analyzer/nettop
   /usr/sbin/firewall					Px,	# net-firewall/iptables
   @{PYTHON_EXEC_WRAPPER}				Px -> python_exec_root,	# dev-lang/python-exec
-  /usr/local/bin/**					Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
-  /usr/local/sbin/**					Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
+  /usr/local/bin/*					Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
+  /usr/local/sbin/*					Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
   /etc/init.d/*						Px,	# sys-apps/openrc
   audit deny /usr/bin/startx*				x,	# RBAC! Запрещаем запуск Xorg-server под root. У нас
   								# нет полноценной ветки профилей для запуска всех
@@ -540,7 +540,7 @@ profile shell_root {
     /bin/bzip2						ix,	# app-arch/bzip2
     
     # READS/WRITES -------------------------------------
-    owner /**						l,	# Все правильно, в access-by-pattern-systemusers запрещаем, что нужно.
+    owner /{,**/}*					l,	# Все правильно, в access-by-pattern-systemusers запрещаем, что нужно.
   }
   
   profile head /bin/head {
@@ -783,7 +783,7 @@ profile shell_chroot {
   @{CHROOT}/dev/null					wk,
   @{CHROOT}/dev/zero					w,
   @{CHROOT}/dev/full					w,
-  owner @{CHROOT}/dev/shm/**				wl,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner @{CHROOT}/dev/shm/*				wl,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   @{CHROOT}/sys/{,**}					r,
   @{CHROOT}/sys/fs/cgroup/portage/{,**}			w,
   @{CHROOT}/proc/{,**}				r,
@@ -791,12 +791,12 @@ profile shell_chroot {
   
   # EXECUTABLES ----------------------------------------
   @{CHROOT}/@{shell}					mr,
-  @{CHROOT}/bin/**					ix,
-  @{CHROOT}/etc/**					ix,
-  @{CHROOT}/opt/**					ix,
-  @{CHROOT}/sbin/**					ix,
-  @{CHROOT}/usr/**					ix,
-  @{CHROOT}/var/tmp/portage/*/*/**			ix,
+  @{CHROOT}/bin/{,**/}*					ix,
+  @{CHROOT}/etc/{,**/}*					ix,
+  @{CHROOT}/opt/{,**/}*					ix,
+  @{CHROOT}/sbin/{,**/}*				ix,
+  @{CHROOT}/usr/{,**/}*					ix,
+  @{CHROOT}/var/tmp/portage/*/*/{,**/}*			ix,
   
   # READS/WRITES ---------------------------------------
   @{CHROOT}/						rw,
@@ -823,7 +823,7 @@ profile shell_chroot {
   @{CHROOT}/usr/{,**/}*					rwkl,
   @{CHROOT}/usr/lib{,32,64}/*.so{,.*}			m,
   @{CHROOT}/usr/lib{,32,64}/**/lib*.so{,.*}		m,
-  @{CHROOT}/usr/lib{,32,64}/locale/**			m,
+  @{CHROOT}/usr/lib{,32,64}/locale/{,**/}*		m,
   @{CHROOT}/usr/lib{,32,64}/gconv/*.so			m,
   @{CHROOT}/usr/lib{,32,64}/gconv/gconv-modules*	m,
   @{CHROOT}/usr/src/@{kernel}/tools/gcc/**.so		m,	# Плагины gcc.
