@@ -167,10 +167,10 @@ profile networkmanager.NetworkManager /usr/sbin/NetworkManager {
   /etc/NetworkManager/system-connections/*		w,
   /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
   /run/NetworkManager/{,**}				rw,
-  /run/udev/data/{,*}					r,	# sys-fs/eudev
+  /run/udev/data/[a-z]*[0-9]*				r,
   /run/ConsoleKit/inhibit/inhibit.@{TMP6}.pipe		w,	# sys-auth/consolekit
   /run/ConsoleKit/database				r,	# sys-auth/consolekit
-  audit /run/dhclient-*.pid				rw,	# net-misc/dhcp		# FIX ME! 7.12.2017
+  /run/dhclient-{@{NIC},@{VNIC}}.pid			rw,	# net-misc/dhcp
   /var/lib/NetworkManager/{,**}				rw,
 }
 

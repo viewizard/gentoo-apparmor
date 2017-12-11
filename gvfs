@@ -129,7 +129,7 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
   /etc/fstab						r,
   /etc/udev/udev.conf					r,
   /usr/share/mime/treemagic				r,
-  /run/udev/data/*					r,
+  /run/udev/data/[a-z]*[0-9]*:[0-9]*			r,
   /run/mount/utab					r,
   
   # USERS ----------------------------------------------
@@ -333,7 +333,7 @@ profile gvfs.gvfsd-metadata /usr/libexec/gvfsd-metadata {
   /etc/udev/udev.conf					r,
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,*/}uevent r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,*/}uevent r,
-  /run/udev/data/*					r,
+  /run/udev/data/[a-z]*[0-9]*:[0-9]*			r,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.local/share/gvfs-metadata/{,**}	rw,

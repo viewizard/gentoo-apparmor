@@ -79,7 +79,7 @@ profile nm-applet /usr/bin/nm-applet {
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,	# sys-fs/eudev
-  /run/udev/data/{,*}					r,
+  audit /run/udev/data/{,*}				r,	# FIX ME! audit 11.12.2017
 }
 
 profile nm-applet.nm-connection-editor /usr/bin/nm-connection-editor {

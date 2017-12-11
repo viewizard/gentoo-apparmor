@@ -68,7 +68,7 @@ profile util-linux.lsblk /bin/lsblk {
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,	# sys-fs/eudev
-  /run/udev/data/*:[0-9]*				r,
+  audit /run/udev/data/*:[0-9]*				r,	# FIX ME! audit 11.12.2017
   /run/mount/utab					r,
   
   # TEMP -----------------------------------------------

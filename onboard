@@ -115,7 +115,7 @@ profile onboard_settings /usr/bin/onboard-settings {
   /usr/share/onboard/{,**}				r,
   @{PYTHON_PACKAGES}/cairo/{,**/}			w,	# dev-python/pycairo
   @{PYTHON_PACKAGES}/cairo/**.pyc{,.*}			w,	# dev-python/pycairo
-  /run/udev/data/*					r,
+  audit /run/udev/data/*				r,	# FIX ME! audit 11.12.2017
   
   # USERS ----------------------------------------------
   owner @{HOME}/.local/share/onboard/{,**}		rw,

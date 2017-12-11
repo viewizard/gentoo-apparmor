@@ -84,7 +84,7 @@ profile lvm2.dmeventd /sbin/dmeventd {
   /run/dmeventd.pid					rwk,
   /run/dmeventd-{client,server}				rwk,
   /run/lock/lvm/*					rwk,
-  /run/udev/data/*					r,
+  audit /run/udev/data/*				r,	# FIX ME! audit 11.12.2017
   /run/lvm/lvmetad.socket				rw,
   
   # TEMP -----------------------------------------------
@@ -142,7 +142,7 @@ profile lvm2.lvm /sbin/lvm {
   link subset /etc/lvm/archive/*			-> /etc/lvm/archive/*,
   /etc/lvm/backup/					rw,
   /etc/lvm/backup/*					rwk,
-  /run/udev/data/*					r,
+  /run/udev/data/[a-z]*[0-9]*:[0-9]*			r,
   /run/lock/lvm/					w,
   /run/lock/lvm/*					rwk,
   /run/lvm/lvmetad.socket				rw,

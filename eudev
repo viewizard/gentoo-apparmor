@@ -196,7 +196,7 @@ profile eudev.cdrom_id /lib{,32,64}/udev/cdrom_id {
   
   # PSEUDO ---------------------------------------------
   /dev/@{BLOCK_MEDIA}					r,
-  audit @{PROC}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+  owner @{PROC}/@{pid}/mountinfo			r,
   
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/udev/cdrom_id				mr,

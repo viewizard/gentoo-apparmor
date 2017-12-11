@@ -48,7 +48,7 @@ profile thunar-volman /usr/bin/thunar-volman {
   /etc/fstab						r,
   /etc/udev/udev.conf					r,	# sys-fs/eudev
   /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
-  /run/udev/data/*					r,
+  /run/udev/data/{[a-z]*[0-9]*:[0-9]*,+usb:@{USB4}}	r,
   /run/mount/utab					r,
 }
 

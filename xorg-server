@@ -84,7 +84,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   /usr/lib{,32,64}/mesa/*.so				m,	# media-libs/mesa
   /usr/share/X11/{,**}					r,
   /run/acpid.socket					rw,	# sys-power/acpid
-  /run/udev/data/*					r,
+  /run/udev/data/{[a-z]*[0-9]*:[0-9]*,+input:input@{input}} r,
   /var/log/Xorg.@{X_DISPLAY}.log{,.old}			rw,
   /var/lib/xkb/server-@{X_DISPLAY}.xkm			rw,
   

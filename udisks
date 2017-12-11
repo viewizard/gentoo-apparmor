@@ -90,7 +90,7 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {
   /etc/udev/udev.conf					r,	# sys-fs/eudev
   /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
   /run/udisks2/{,mounted-fs*,unlocked-luks*}		rw,
-  /run/udev/data/*					r,	# sys-fs/eudev
+  /run/udev/data/[a-z]*[0-9]*:[0-9]*			r,
   /run/media/{,*/,*/*/}					w,
   /media/*/						w,
   

@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile openastromenace /usr/games/bin/openastromenace {
+profile openastromenace /usr/{,games/}bin/openastromenace {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
   #include <abstractions/fonts>
@@ -33,11 +33,10 @@ profile openastromenace /usr/games/bin/openastromenace {
   @{sys}/devices/pci@{PCI2}/@{PCI4}/**/sound/**/capabilities/* r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/games/bin/openastromenace			mr,
+  /usr/{,games/}bin/openastromenace			mr,
   
   # READS/WRITES ---------------------------------------
-  /usr/share/games/openastromenace/{,**}		r,
-  /run/udev/data/*					r,
+  /usr/share/{,games/}openastromenace/{,**}		r,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/astromenace/{,*}		rw,

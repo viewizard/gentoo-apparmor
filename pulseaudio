@@ -54,7 +54,7 @@ profile pulseaudio /usr/bin/pulseaudio {
   /usr/lib{,32,64}/pulse-[0-9]*/modules/{,**/}*		m,
   /usr/share/pulseaudio/**				r,
   /usr/share/applications/{,*}				r,
-  /run/udev/data/+sound:card*				r,
+  /run/udev/data/+sound:card[0-9]*			r,
   owner /run/user/@{UID}/{,pulse/}			w,
   owner /run/user/@{UID}/pulse/autospawn.lock		rwk,
   owner /run/user/@{UID}/pulse/cli			rw,

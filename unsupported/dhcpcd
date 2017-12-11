@@ -43,7 +43,7 @@ profile dhcpcd /sbin/dhcpcd {
   /etc/udev/udev.conf					r,	# sys-fs/eudev
   /run/dhcpcd{,-@{NIC}}.pid				rwk,
   /run/dhcpcd.{unpriv.,}sock				rw,
-  /run/udev/data/*					rw,
+  audit /run/udev/data/*				rw,	# FIX ME! audit 11.12.2017
   /var/lib/dhcpcd/					rw,
   /var/lib/dhcpcd/*					rwk,
 }

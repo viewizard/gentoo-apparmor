@@ -90,7 +90,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   /usr/share/Thunar/sendto/*.desktop			r,
   /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
   /opt/*/**.png						r,
-  /run/udev/data/*					r,
+  audit /run/udev/data/*				r,	# FIX ME! audit 11.12.2017
   /run/mount/utab					r,
   
   # USERS ----------------------------------------------
@@ -248,7 +248,7 @@ profile thunar_root {
   /usr/share/Thunar/sendto/*.desktop			r,
   /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
   /opt/*/**.png						r,
-  /run/udev/data/*					r,
+  audit /run/udev/data/*				r,	# FIX ME! audit 11.12.2017
   /run/mount/utab					r,
   
   # USERS ----------------------------------------------
