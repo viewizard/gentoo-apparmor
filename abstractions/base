@@ -13,17 +13,22 @@
 # PTRACE -----------------------------------------------
 ptrace (readby, tracedby),
 ptrace (read) peer=@{profile_name},
+# Не запрещаем ptrace исходящий от unconfined процессов, т.к. он не блокируется, см:
+# http://wiki.apparmor.net/index.php/TechnicalDo_Proc_and_ptrace#ptrace_and_unconfined
 
 # SIGNAL -----------------------------------------------
 signal peer=@{profile_name},
 signal (receive, send) set=("exists"),
 signal (receive) set=(hup, int, kill, term, cont, stop),
-audit deny signal (receive) peer=unconfined,			# unconfined процессов не должно быть вообще.
+audit deny signal (receive) peer=unconfined,			# Запрещаем принимать сигналы от unconfined процессов.
 
 # UNIX -------------------------------------------------
 unix peer=(label=@{profile_name}),
 unix (create, getattr, getopt, setopt, shutdown),
-audit deny unix (receive) peer=(label=unconfined),		# unconfined процессов не должно быть вообще.
+audit deny unix (receive) peer=(label=unconfined),		# Запрещаем работать через unix сокеты с unconfined процессами.
+
+# DBUS -----------------------------------------------
+audit deny dbus (send, receive) peer=(label=unconfined),	# Запрещаем работать через dbus с unconfined процессами.
 
 # PSEUDO -----------------------------------------------
 /dev/log						w,
@@ -34,11 +39,14 @@ audit deny unix (receive) peer=(label=unconfined),		# unconfined процесс�
 /dev/full						rw,
 @{sys}/devices/system/cpu/online			r,
 @{PROC}/{cpuinfo,stat,meminfo}				r,
-owner @{PROC}/@{pid}/maps				r,
+owner @{PROC}/@{pid}/maps				r,	# glibc's *printf protections read the maps file
 owner @{PROC}/@{pid}/status				r,
 @{PROC}/filesystems					r,
 @{PROC}/sys/vm/overcommit_memory			r,
 @{PROC}/sys/kernel/cap_last_cap				r,
+audit deny /dev/mem					rwl,	# Запрещаем доступ к памяти.
+audit deny /dev/kmem					rwl,	# Запрещаем доступ к памяти.
+audit deny @{PROC}/@{pids}/mem				wl,	# Запрещаем доступ к памяти.
 
 # READS/WRITES -----------------------------------------
 /etc/ld.so.cache					mr,
