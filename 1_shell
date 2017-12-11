@@ -387,7 +387,7 @@ profile shell_root {
     /dev/pts/[0-9]*					rw,
     @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
     audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
-    audit @{PROC}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+    owner @{PROC}/@{pid}/mountinfo			r,
     
     # EXECUTABLES --------------------------------------
     /bin/mount						mr,

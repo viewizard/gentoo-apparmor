@@ -12,13 +12,14 @@
 
 profile udisks.udisksd /usr/libexec/udisks2/udisksd {
   #include <abstractions/base>
+  #include <abstractions/nameservice>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/polkit>
   #include <abstractions/dbus/system-bind>
-  #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
   capability sys_rawio,
+  capability sys_admin,						# mount/umount с 2.6.5 используется через плагины libblockdev.
   capability mknod,
   
   # DBUS -----------------------------------------------
@@ -63,83 +64,47 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {
   	member=GetManagedObjects
   	peer=(name=":[0-9]*.[0-9]*"),
   
+  # MOUNT --------------------------------------------	# Важно! noexec - т.к. используется патч в udisks (patches portage).
+  mount options=(ro, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /media/*/,
+  mount options=(rw, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /media/*/,
+  mount options=(ro, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /run/media/@{USER}/*/,	# /run/media/$USER/VolumeName/
+  mount options=(rw, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /run/media/@{USER}/*/,	# /run/media/$USER/VolumeName/
+  umount /media/*/,
+  umount /run/media/*/*/,
+  
   # NETWORK --------------------------------------------
   network netlink raw,
+  network alg seqpacket,					# cryptsetup с 2.6.5 используется через плагины libblockdev.
   
   # PSEUDO ---------------------------------------------
   /dev/@{BLOCK_ALL}					r,
+  /dev/@{BLOCK_REAL}					rw,	# cryptsetup с 2.6.5 используется через плагины libblockdev.
+  /dev/mapper/control					rw,	# cryptsetup с 2.6.5 используется через плагины libblockdev.
   @{sys}/bus/						r,
   @{sys}/class/						r,
   @{sys}/class/block/					r,
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+  @{sys}/devices/virtual/bdi/[0-9]*:[0-9]*/read_ahead_kb r,	# cryptsetup с 2.6.5 используется через плагины libblockdev.
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/{,**/}{remove,uevent} rw,
   @{PROC}/swaps						r,
+  @{PROC}/devices					r,	# cryptsetup с 2.6.5 используется через плагины libblockdev.
   owner @{PROC}/@{pid}/mountinfo			r,
   owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/udisks2/udisksd				mr,
-  /bin/mount						Cx,	# sys-apps/util-linux
-  /bin/umount						Cx,	# sys-apps/util-linux
-  /sbin/cryptsetup					Px,	# sys-fs/cryptsetup
   /usr/bin/eject					Px,	# sys-apps/util-linux
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
+  /etc/udisks2/{,*}					r,
   /etc/udev/udev.conf					r,	# sys-fs/eudev
-  /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
-  /run/udisks2/{,mounted-fs*,unlocked-luks*}		rw,
+  /etc/libblockdev/conf.d/{,*}				r,
+  /run/udisks2/{,mounted-fs{,.@{TMP6}},unlocked-luks{,.@{TMP6}}} rw,
+  /run/mount/utab					rw,	# mount/umount с 2.6.5 используется через плагины libblockdev.
+  /run/mount/utab.{lock,@{TMP6}}			rwk,	# mount/umount с 2.6.5 используется через плагины libblockdev.
   /run/udev/data/[a-z]*[0-9]*:[0-9]*			r,
   /run/media/{,*/,*/*/}					w,
   /media/*/						w,
-  
-  profile mount /bin/mount {
-    #include <abstractions/base>
-    
-    # CAPABILITIES -------------------------------------
-    capability sys_admin,
-    capability dac_override,
-    
-    # PSEUDO -------------------------------------------
-    @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-    
-    # MOUNT --------------------------------------------	# Важно! noexec - т.к. используется патч в udisks (patches portage).
-    mount options=(ro, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /media/*/,
-    mount options=(rw, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /media/*/,
-    mount options=(ro, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /run/media/@{USER}/*/,	# /run/media/$USER/VolumeName/
-    mount options=(rw, nosuid, nodev, noexec) /dev/@{BLOCK_ALL} -> /run/media/@{USER}/*/,	# /run/media/$USER/VolumeName/
-    
-    # EXECUTABLES --------------------------------------
-    /bin/mount						mr,
-    
-    # READS/WRITES -------------------------------------
-    /etc/fstab						r,
-    /run/mount/utab					rw,
-    /run/mount/utab.*					rwk,
-  }
-  
-  profile umount /bin/umount {
-    #include <abstractions/base>
-    
-    # CAPABILITIES -------------------------------------
-    capability sys_admin,
-    
-    # PSEUDO -------------------------------------------
-    @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-    
-    # MOUNT --------------------------------------------
-    umount /media/*/,
-    umount /run/media/*/*/,
-    
-    # PSEUDO -------------------------------------------
-    owner @{PROC}/@{pid}/mountinfo			r,
-    
-    # EXECUTABLES --------------------------------------
-    /bin/umount						mr,
-    
-    # READS/WRITES -------------------------------------
-    /run/mount/utab					rw,
-    /run/mount/utab.*					rwk,
-  }
 }
