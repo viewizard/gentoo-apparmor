@@ -33,13 +33,11 @@ profile dbus.dbus-daemon /usr/bin/dbus-daemon {
   
   # DBUS -----------------------------------------------
   dbus receive
-  	bus={system,session,accessibility}
   	path="/org/freedesktop/DBus{,/**}"
   	interface="org.freedesktop.DBus"
   	member=Hello
   	peer=(name=":not.active.yet"),
   dbus receive
-  	bus={system,session,accessibility}
   	path="/org/freedesktop/DBus{,/**}"
   	interface="org.freedesktop.DBus{,.*}"
   	peer=(name=":[0-9]*.[0-9]*"),

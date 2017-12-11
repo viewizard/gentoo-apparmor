@@ -32,6 +32,7 @@ owner /**						rw,
 audit /etc/init.d/{,**}					l,	# FIX ME! audit 8.07.2017 потом добавить deny!
 								# Может потребоваться создание симлинка, разрешаем w.
 audit /etc/security/pam-script/{,**}			wl,	# sys-auth/pam-script	# FIX ME! audit 8.07.2017 потом добавить deny!
+audit /etc/cron.d/{,**}					wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /etc/cron.daily/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /etc/cron.hourly/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /etc/cron.monthly/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
@@ -51,6 +52,7 @@ audit /etc/NetworkManager/dispatcher.d/{,**}		wl,	# net-misc/networkmanager	# FI
 
 # audit deny /etc/portage/{,**}				wl,	# sys-apps/portage	# На пользовательских системах, запрещать изменение настроек.
 
+audit /boot/**						rwl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /bin/{,**}					wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /lib{,32,64}/{,**}				wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
 audit /opt/{,**}					wl,	# FIX ME! audit 8.07.2017 потом добавить deny!
