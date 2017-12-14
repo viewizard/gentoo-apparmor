@@ -761,6 +761,10 @@ profile openrc.netmount.init.d /etc/init.d/netmount flags=(attach_disconnected) 
   profile mount /bin/mount {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
     # MOUNT --------------------------------------------
     
     # EXECUTABLES --------------------------------------

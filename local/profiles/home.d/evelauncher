@@ -19,7 +19,7 @@ profile local.home.evelauncher.sh /home/@{USER}/evelauncher/evelauncher.sh {
   
   # EXECUTABLES ----------------------------------------
   owner @{HOME}/evelauncher/evelauncher.sh		r,
-  owner @{HOME}/evelauncher/evelauncher			px,
+  owner @{HOME}/evelauncher/evelauncher			px,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   @{shell}						mr,
   /bin/sed						Cx,	# sys-apps/sed
   /bin/basename						Px,	# sys-apps/coreutils
@@ -85,12 +85,12 @@ profile local.home.evelauncher /home/@{USER}/evelauncher/evelauncher flags=(atta
   deny @{PROC}/@{pids}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
-  owner @{HOME}/evelauncher/evelauncher			mr,
+  owner @{HOME}/evelauncher/evelauncher			mr,# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   /usr/bin/wine						Px,	# app-emulation/wine
   /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]*	Px,	# app-emulation/wine-*
-  owner @{HOME}/{.eve,evelauncher}/updater		px,
-  owner @{HOME}/evelauncher/QtWebEngineProcess		ix,
-  owner @{HOME}/evelauncher/LogLite			px,
+  owner @{HOME}/{.eve,evelauncher}/updater		px,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  owner @{HOME}/evelauncher/QtWebEngineProcess		ix,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  owner @{HOME}/evelauncher/LogLite			px,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   
   # READS/WRITES ---------------------------------------
   /etc/os-release					r,
@@ -101,7 +101,7 @@ profile local.home.evelauncher /home/@{USER}/evelauncher/evelauncher flags=(atta
   owner @{HOME}/					r,
   owner @{HOME}/evelauncher/				r,
   owner @{HOME}/evelauncher/**				rw,
-  owner @{HOME}/evelauncher/**.so{,.[0-9]*}		m,
+  owner @{HOME}/evelauncher/**.so{,.[0-9]*}		m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   owner @{HOME}/.eve/{,**}				rw,
   owner @{HOME}/.config/CCP/{,**/}			rw,
   owner @{HOME}/.config/CCP/{,**/}*			rwk,
@@ -134,8 +134,8 @@ profile local.home.evelauncher.updater /home/@{USER}/{.eve,evelauncher}/updater 
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  owner @{HOME}/{.eve,evelauncher}/updater		mr,
-  owner @{HOME}/evelauncher/evelauncher			px,
+  owner @{HOME}/{.eve,evelauncher}/updater		mr,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  owner @{HOME}/evelauncher/evelauncher			px,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   
   # USERS ----------------------------------------------
   owner @{HOME}/evelauncher/{,**}			rw,
@@ -155,7 +155,7 @@ profile local.home.evelauncher.LogLite.sh /home/@{USER}/evelauncher/LogLite.sh {
   /dev/tty						rw,
   
   # EXECUTABLES ----------------------------------------
-  owner @{HOME}/evelauncher/LogLite			px,
+  owner @{HOME}/evelauncher/LogLite			px,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   @{shell}						mr,
   /bin/sed						Cx,	# sys-apps/sed
   /bin/basename						Px,	# sys-apps/coreutils
@@ -184,11 +184,11 @@ profile local.home.evelauncher.LogLite /home/@{USER}/evelauncher/LogLite {
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  owner @{HOME}/evelauncher/LogLite			mr,
+  owner @{HOME}/evelauncher/LogLite			mr,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   
   # USERS ----------------------------------------------
   owner @{HOME}/evelauncher/{,**}			r,
-  owner @{HOME}/evelauncher/**.so{,.[0-9]*}		m,
+  owner @{HOME}/evelauncher/**.so{,.[0-9]*}		m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   owner @{HOME}/.config/CCP/{,**/}			rw,
   owner @{HOME}/.config/CCP/{,**/}*			rwk,
 }

@@ -40,6 +40,7 @@ profile dnscrypt-proxy /usr/sbin/dnscrypt-proxy {
   /etc/dnscrypt-proxy.conf				r,
   /usr/share/dnscrypt-proxy/{,*}			r,
   /run/dnscrypt-proxy.pid				rw,
+  /var/lib/dnscrypt.blacklist				r,	# FIX ME! Вынести в локальные части (?).	# Список запрещенных доменов (в конфигурации используем этот путь).
   /var/log/dnscrypt-proxy.log				rw,
 }
 

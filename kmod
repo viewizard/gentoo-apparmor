@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile kmod /{bin/kmod,sbin/modprobe,sbin/modeinfo} {
+profile kmod /{bin/kmod,sbin/modprobe,sbin/modeinfo} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -41,6 +41,7 @@ profile kmod /{bin/kmod,sbin/modprobe,sbin/modeinfo} {
   audit owner /tmp/depmod.*/{,**}			rw,	# FIX ME! audit 26.11.2017
   
   # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   deny /var/log/Xorg.@{X_DISPLAY}.log			w,	# x11-base/xorg-server, xorg-server.Xorg
   deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
 }

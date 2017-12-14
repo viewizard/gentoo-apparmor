@@ -13,6 +13,40 @@ https://bugs.launchpad.net/apparmor/+bug/1725335
 - AA + IMA/EVM
 https://sourceforge.net/p/linux-ima/mailman/linux-ima-devel/thread/20170829190401.18056-1-mjg59%40google.com/#msg36017307
 если добавят патч, дополнительно к уже существующим правилам: запуск codeblocks(astromenace), evelauncher, make, portage.emerge(shell,sandbox), kernel (профили скриптов) + сюда же добавить mmap nvidia-drivers (?) + wine
++ на самом деле что-то много получается всего (+ fontconfig + nvidia , которые могут быть в любых профилях)
+./abstractions/video:owner @{HOME}/.glvnd@{TMP6}				mrw,
+./abstractions/fonts:owner @{HOME}/.fontconfig/*				mrw,
+./abstractions/fonts:owner @{HOME_CACHE}/fontconfig/*			mrw,
+./abstractions/video-nvidia:owner @{HOMEDIRS}/@{USER}.nv/.gl@{TMP6}		m,
+./abstractions/video-nvidia:owner /tmp/.gl@{TMP6}					mrw,
+./chromium:  owner @{HOME_CACHE}/chromium/Cache/*			m,
+./chromium:  owner @{HOME}/.config/chromium/**/Cache/*		m,
+./chromium:  owner @{HOME}/.config/chromium/Dictionaries/*.bdic	m,
+./chromium:  owner @{HOME}/.config/chromium/**/Dictionaries/*.bdic	m,
+./chromium:  owner @{HOME}/.local/share/mime/mime.cache		m,
+./discord-bin:  owner @{HOME}/.config/discord/[0-9]*/modules/**.{node,so} m,
+./discord-bin:  owner /tmp/.org.chromium.Chromium.@{TMP6}		mrw,
+./firefox:  owner @{HOME}/.{firefox,mozilla}/{,**/}plugins/{,**/}* mr,
+./local/profiles/home.d/astromenace:  @{HOME}/**/AstroMenace/AstroMenace	mr,
+./local/profiles/home.d/evelauncher:  owner @{HOME}/evelauncher/evelauncher	px,
+./local/profiles/home.d/evelauncher:  owner @{HOME}/evelauncher/evelauncher	mr,
+./local/profiles/home.d/evelauncher:  owner @{HOME}/{.eve,evelauncher}/updater	px,
+./local/profiles/home.d/evelauncher:  owner @{HOME}/evelauncher/QtWebEngineProcess		ix,
+./local/profiles/home.d/evelauncher:  owner @{HOME}/evelauncher/LogLite		px,
+./local/profiles/home.d/evelauncher:  owner @{HOME}/evelauncher/**.so{,.[0-9]*}m,
+./local/profiles/home.d/evelauncher:  owner @{HOME}/{.eve,evelauncher}/updater	mr,
+./local/profiles/home.d/evelauncher:  owner @{HOME}/evelauncher/evelauncher	px,
+./local/profiles/home.d/evelauncher:  owner @{HOME}/evelauncher/LogLite		px,
+./local/profiles/home.d/evelauncher:  owner @{HOME}/evelauncher/LogLite		mr,
+./local/profiles/home.d/evelauncher:  owner @{HOME}/evelauncher/**.so{,.[0-9]*}m,
+./local/profile_blocks/wine.d/wine:owner @{HOME}/.wine/{,**/}*			mrwk,	# app-emulation/wine
+./local/profile_blocks/wine.d/astromenace:owner @{HOME}/Desktop/AstroMenace/{,**/}*.{exe,dll}	m,
+./local/profile_blocks/wine.d/evelauncher:owner @{HOME}/evelauncher/{,**/}*	mr,
+./local/profile_blocks/wine.d/evelauncher:owner @{HOME}/.eve/{,**/}*		mrwk,
+./local/profile_blocks/codeblocks.d/astromenace:owner @{HOME}/**/AstroMenace/AstroMenace		Px,
+./local/profile_blocks/xfce4-panel.d/evelauncher:owner @{HOME}/evelauncher/evelauncher.sh		Px,
+./teamspeak-client-bin:  owner @{HOME}/.ts3client/plugins/*.so			m,
+./wine:  owner /tmp/.wine-@{UID}/server-*-*/anonmap.*		mrw,
 
 
 - xattr labels
@@ -139,6 +173,7 @@ extended ownership tests (not currently supported)
  owner=(fred george)
  owner=(fred 1001)
 /etc/apparmor.d/abstractions/authentication, например, хорошо бы сделать с owner=0
+Потом ужесточить ВСЕ профили, чтобы все файлы были явно прописаны от каких UID они могут иметь владельцев. Нужно, чтобы мы не могли работать не с root/sys_user файлами в /bin/, /sbin/, etc. Будет хорошим подспорьем для IMA, т.к. мы можем использовать метаданные в правилах IMA.
 
 
 - когда появится возможность (новая внутренняя переменная) для PID процесса @{pid} (PID текущего процесса),
@@ -152,8 +187,6 @@ https://bugs.launchpad.net/apparmor/+bug/1546825
 profile foo { /foo Px -> foo//bar, }
 https://bugs.launchpad.net/apparmor/+bug/1713579
 
-
-- когда появится возможность ставить метки на файлах (через xattr), совместить эту возможность с IMA (лог файлы надо помечать, и не отслеживать на чтение-запись).
 
 - MLS (будет работать только с RBAC, т.к. нужен мепинг пользователей через pam_apparmor)
 http://wiki.apparmor.net/index.php/AppArmorMLS

@@ -266,11 +266,120 @@ profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
   }
 }
 
-profile xdg-utils.xdg-mime /usr/bin/xdg-mime {
+profile xdg-utils.xdg-mime /usr/bin/xdg-mime flags=(attach_disconnected) {
   #include <abstractions/base>
   
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  
   # EXECUTABLES ----------------------------------------
-  /usr/bin/xdg-mime					mr,
+  /usr/bin/xdg-mime					r,
+  @{shell}						mr,
+  /bin/tr						Cx,	# sys-apps/coreutils
+  /bin/cut						Cx,	# sys-apps/coreutils
+  /bin/sed						Cx,	# sys-apps/sed
+  /bin/grep						Cx,	# sys-apps/grep
+  /bin/head						Cx,	# sys-apps/coreutils
+  /usr/bin/gawk						Cx,	# sys-apps/gawk
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/applications/{,**/}			r,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.local/share/applications/{,**/}	r,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
+  
+  profile tr /bin/tr flags=(attach_disconnected) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/tr						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				rw,	# flags=(attach_disconnected)
+  }
+  
+  profile cut /bin/cut flags=(attach_disconnected) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cut						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				rw,	# flags=(attach_disconnected)
+  }
+  
+  profile sed /bin/sed flags=(attach_disconnected) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				rw,	# flags=(attach_disconnected)
+  }
+  
+  profile grep /bin/grep flags=(attach_disconnected) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/grep						mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/share/applications/**				r,
+    /opt/**.desktop					r,
+  
+    # USERS --------------------------------------------
+    owner @{HOME}/.local/share/applications/**		r,
+    
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				rw,	# flags=(attach_disconnected)
+  }
+  
+  profile head /bin/head flags=(attach_disconnected) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/head						mr,
+    
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				rw,	# flags=(attach_disconnected)
+  }
+  
+  profile gawk /usr/bin/gawk flags=(attach_disconnected) {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/gawk					mr,
+    
+    # USERS --------------------------------------------
+    owner @{HOME}/.config/mimeapps.list			r,
+    owner @{HOME}/.local/share/applications/mimeapps.list r,
+    
+    # DENY INHERIT -------------------------------------
+    deny /apparmor/.null				rw,	# flags=(attach_disconnected)
+  }
 }
 
 profile xdg_open_root {

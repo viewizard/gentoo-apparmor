@@ -49,9 +49,9 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
-  /dev/nvidiactl					rw,
-  /dev/nvidia[0-9]*					rw,
-  /dev/nvidia-modeset					rw,
+  /dev/nvidiactl					rw,	# x11-drivers/nvidia-drivers
+  /dev/nvidia[0-9]*					rw,	# x11-drivers/nvidia-drivers
+  /dev/nvidia-modeset					rw,	# x11-drivers/nvidia-drivers
   /dev/vga_arbiter					rw,
   /dev/dri/{,card[0-9]*}				rw,
   /dev/input/event[0-9]*				rw,
@@ -67,13 +67,14 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   @{PROC}/cmdline					r,
   @{PROC}/modules					r,
   @{PROC}/@{pids}/cmdline				r,
-  @{PROC}/driver/nvidia/params				r,
+  @{PROC}/driver/nvidia/params				r,	# x11-drivers/nvidia-drivers
   @{PROC}/sys/kernel/modprobe				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/Xorg						mr,
   @{shell}						Cx,
   /bin/kmod						Px,	# sys-apps/kmod
+  /opt/bin/nvidia-modprobe				Px,	# x11-drivers/nvidia-drivers
   
   # READS/WRITES ---------------------------------------
   /etc/drirc						r,	# media-libs/mesa

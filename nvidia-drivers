@@ -99,11 +99,15 @@ profile nvidia-drivers.nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe flags=(att
   capability sys_admin,
   capability syslog,
   capability mknod,
+  capability chown,
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
+  @{sys}/devices/pci@{PCI2}/@{PCI4}/config		r,
+  @{sys}/devices/pci@{PCI2}/**/@{PCI4}/config		r,
   @{PROC}/sys/kernel/modprobe				r,
+  
   
   # EXECUTABLES ----------------------------------------
   /{usr,opt}/bin/nvidia-modprobe			mr,
@@ -122,6 +126,7 @@ profile nvidia-drivers.nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe flags=(att
   deny @{HOME_CACHE}/CCP/{,**}				rw,	# local.home.evelauncher
   deny /tmp/FreshStream*				rw,	# www-client/firefox, firefox.plugin-container
   deny @{HOME}/.mozilla/firefox/*.default/extensions/{,**} r,	# www-client/firefox, firefox
+  deny @{HOME}/.local/share/xorg/Xorg.0.log		w,	# x11-base/xorg-server non-root запуск
   deny /media/{,**}					rw,
   deny /mnt/{,**}					rw,
 }

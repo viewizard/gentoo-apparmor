@@ -39,6 +39,7 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   signal (send) set=(term) peer="lsb-release",			# sys-apps/lsb-release
   
   # UNIX -----------------------------------------------
+  unix (send, receive) peer=(label="discord-bin.Discord//shell"),
   deny unix (send, receive) peer=(label="lsb-release"),		# sys-apps/lsb-release
   
   # NETWORK --------------------------------------------
@@ -69,6 +70,7 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   
   # EXECUTABLES ----------------------------------------
   /opt/discord/share/discord/Discord			Pxmr,
+  @{shell}						Cx,
   /usr/bin/lsb_release					Px,	# sys-apps/lsb-release
   
   # READS/WRITES ---------------------------------------
@@ -79,15 +81,36 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   # USERS ----------------------------------------------
   owner @{HOME}/.config/discord/{,**/}			rw,
   owner @{HOME}/.config/discord/{,**/}*			rwk,
-  owner @{HOME}/.config/discord/[0-9]*/modules/**.{node,so} m,	# Без этого не работает, учесть в IMA/EVM.
+  owner @{HOME}/.config/discord/[0-9]*/modules/**.{node,so} m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   owner @{HOME}/.config/autostart/*.desktop		rw,	# BUG! По какой-то причине, автозапуск не работает в XFCE4.
   owner @{HOME}/.pki/nssdb/*				rwk,
   
   # TEMP -----------------------------------------------
   /tmp/							r,
   owner /tmp/discord.sock				rw,
-  owner /tmp/.org.chromium.Chromium.@{TMP6}		mrw,
+  owner /tmp/.org.chromium.Chromium.@{TMP6}		mrw,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   owner "/tmp/Discord Crashes/{,**}"			rw,
   /var/tmp/						r,
   owner /var/tmp/@{TMP_SQLITE}				rw,
+  
+  profile shell @{shell} {
+    #include <abstractions/base>
+    
+    # UNIX ---------------------------------------------
+    unix (send, receive) peer=(label="discord-bin.Discord"),
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    @{shell}						mr,
+    /usr/bin/xdg-mime					Px,
+    
+    # DENY INHERIT -------------------------------------
+    deny unix,
+    deny /dev/shm/*					rw,
+    deny /usr/share/fonts/**				r,
+    deny /opt/discord/share/**				r,
+  }
 }

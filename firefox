@@ -125,7 +125,7 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   owner @{HOME}/.{firefox,mozilla}/{,**}		rw,
   owner @{HOME}/.{firefox,mozilla}/**/*.{db,parentlock,sqlite}* k,
   owner @{HOME}/.{firefox,mozilla}/{,**/}plugins/**/	r,
-  owner @{HOME}/.{firefox,mozilla}/{,**/}plugins/{,**/}* mr,
+  owner @{HOME}/.{firefox,mozilla}/{,**/}plugins/{,**/}* mr,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   owner @{HOME_CACHE}/mozilla/{,firefox/}		rw,
   owner @{HOME_CACHE}/mozilla/firefox/**		rw,
   owner @{HOME_CACHE}/mozilla/firefox/**/*.sqlite	k,

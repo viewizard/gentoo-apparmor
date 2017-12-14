@@ -258,7 +258,7 @@ profile wine.wineserver /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]
   owner /tmp/.wine-@{UID}/				rw,
   owner /tmp/.wine-@{UID}/server-*-*/			rw,
   owner /tmp/.wine-@{UID}/server-*-*/{lock,socket}	rwk,
-  owner /tmp/.wine-@{UID}/server-*-*/anonmap.*		mrw,
+  owner /tmp/.wine-@{UID}/server-*-*/anonmap.*		mrw,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   
   # NOISY ----------------------------------------------
   deny /						r,

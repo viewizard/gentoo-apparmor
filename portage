@@ -216,7 +216,8 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /usr/portage/{,**}					rw,
     
     # TEMP ---------------------------------------------
-    audit owner /tmp/tmp*				rw,	# FIX ME! audit 26.11.2017
+    owner /tmp/tmp@{TMP8}				rw,
+    owner /tmp/.tmp@{TMP8}.@{TMP6}			rw,
   }
   
   profile free /usr/bin/free flags=(complain) {			# FIX ME! complain 06.10.2017

@@ -66,7 +66,7 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   # USERS ----------------------------------------------
   owner @{HOME}/.ts3client/{,**/}			rw,
   owner @{HOME}/.ts3client/{,**/}*			rwk,
-  owner @{HOME}/.ts3client/plugins/*.so			m,	# IMPROVE! Не будет работать с IMA/EVM без IMA digsig.
+  owner @{HOME}/.ts3client/plugins/*.so			m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   owner @{HOME}/.pki/nssdb/*				rwk,
   
   # TEMP -----------------------------------------------
