@@ -14,7 +14,7 @@
 # Важно! Перезагрузка профиля выполняется командой:
 # apparmor_parser -r /etc/apparmor.d/2_local
 
-profile hosts.sh.cron.daily /etc/cron.daily/hosts.sh {
+profile blacklist.sh.cron.daily /etc/cron.daily/blacklist.sh {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -25,12 +25,14 @@ profile hosts.sh.cron.daily /etc/cron.daily/hosts.sh {
   /dev/tty						rw,
   
   # EXECUTABLES ----------------------------------------
-  /etc/cron.daily/hosts.sh				r,
+  /etc/cron.daily/blacklist.sh				r,
   @{shell}						mr,
   /bin/date						Cx,	# sys-apps/coreutils
   /bin/mv						Cx,	# sys-apps/coreutils
+  /bin/cp						Cx,	# sys-apps/coreutils
   /bin/chmod						Cx,	# sys-apps/coreutils
   /bin/basename						Px,	# sys-apps/coreutils
+  /bin/sed						Cx,	# sys-apps/sed
   /usr/bin/libnotify-notify-send-users			Px,	# x11-libs/libnotify
   /usr/bin/wget						Px,	# net-misc/wget
   /usr/bin/stat						Cx,	# sys-apps/coreutils
@@ -67,6 +69,20 @@ profile hosts.sh.cron.daily /etc/cron.daily/hosts.sh {
     owner /tmp/hosts					rw,
   }
   
+  profile cp /bin/cp {
+    #include <abstractions/base>
+    
+    # CAPABILITIES -------------------------------------
+    capability sys_admin,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cp						mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/lib/hosts.blacklist				r,
+    /var/lib/dnscrypt.blacklist				w,
+  }
+  
   profile chmod /bin/chmod {
     #include <abstractions/base>
     
@@ -75,6 +91,17 @@ profile hosts.sh.cron.daily /etc/cron.daily/hosts.sh {
     
     # READS/WRITES -------------------------------------
     /var/lib/hosts.blacklist				w,
+  }
+  
+  profile sed /bin/sed {
+    #include <abstractions/base>
+    
+    # EXECUTABLES --------------------------------------
+    /bin/sed						mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/lib/dnscrypt.blacklist				rw,
+    /var/lib/sed@{TMP6}					rw,
   }
   
   profile stat /usr/bin/stat {

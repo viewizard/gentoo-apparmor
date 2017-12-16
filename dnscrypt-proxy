@@ -8,6 +8,11 @@
 #
 # ------------------------------------------------------------------
 
+# Небольшие корректировки пакета через portage/env: добавляем возможность запуска
+# второго ресолвера через систему управления службами. Различие - наличие номера
+# после dnscrypt-proxy (цифра 2).
+# Базовый всегда остается как есть (dnscrypt-proxy) без номера.
+
 #include <local/tunables.d/>
 
 profile dnscrypt-proxy /usr/sbin/dnscrypt-proxy {
@@ -37,9 +42,9 @@ profile dnscrypt-proxy /usr/sbin/dnscrypt-proxy {
   /usr/sbin/dnscrypt-proxy				mr,
   
   # READS/WRITES ---------------------------------------
-  /etc/dnscrypt-proxy.conf				r,
+  /etc/dnscrypt-proxy{,2}.conf				r,
   /usr/share/dnscrypt-proxy/{,*}			r,
-  /run/dnscrypt-proxy.pid				rw,
+  /run/dnscrypt-proxy{,2}.pid				rw,
   /var/lib/dnscrypt.blacklist				r,	# FIX ME! Вынести в локальные части (?).	# Список запрещенных доменов (в конфигурации используем этот путь).
   /var/log/dnscrypt-proxy.log				rw,
 }
@@ -57,7 +62,7 @@ profile dnscrypt-proxy.hostip /usr/bin/hostip {
   /usr/bin/hostip					mr,
 }
 
-profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy{,2} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -67,9 +72,9 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy flags=(attach_disconnec
   capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/dnscrypt-proxy/tasks		w,
-  @{sys}/fs/cgroup/unified/dnscrypt-proxy/cgroup.procs	w,
-  @{sys}/fs/cgroup/unified/dnscrypt-proxy/cgroup.events	r,
+  @{sys}/fs/cgroup/openrc/dnscrypt-proxy{,2}/tasks	w,
+  @{sys}/fs/cgroup/unified/dnscrypt-proxy{,2}/cgroup.procs w,
+  @{sys}/fs/cgroup/unified/dnscrypt-proxy{,2}/cgroup.events r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/dnscrypt-proxy				Px,
@@ -79,8 +84,8 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy flags=(attach_disconnec
   /bin/rmdir						Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
-  /etc/{conf,init}.d/dnscrypt-proxy			r,
-  /run/dnscrypt-proxy.pid				r,
+  /etc/{conf,init}.d/dnscrypt-proxy{,2}			r,
+  /run/dnscrypt-proxy{,2}.pid				r,
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -98,7 +103,7 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy flags=(attach_disconnec
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/dnscrypt-proxy/	w,
+    @{sys}/fs/cgroup/{openrc,unified}/dnscrypt-proxy{,2}/ w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -111,7 +116,7 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy flags=(attach_disconnec
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/dnscrypt-proxy/cgroup.procs r,
+    @{sys}/fs/cgroup/unified/dnscrypt-proxy{,2}/cgroup.procs r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -127,7 +132,7 @@ profile dnscrypt-proxy.init.d /etc/init.d/dnscrypt-proxy flags=(attach_disconnec
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/dnscrypt-proxy/		w,
+    @{sys}/fs/cgroup/unified/dnscrypt-proxy{,2}/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

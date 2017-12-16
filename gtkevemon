@@ -29,6 +29,7 @@ profile gtkevemon /usr/bin/gtkevemon {
   #include <abstractions/dconf>
   #include <abstractions/fs/access-by-users-preset-rwk>
   #include <abstractions/nameservice>
+  #include <abstractions/profile_transitions/users-strict-web>
   
   # NETWORK --------------------------------------------
   network inet dgram,
@@ -40,6 +41,7 @@ profile gtkevemon /usr/bin/gtkevemon {
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
+  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gtkevemon					mr,

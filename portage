@@ -36,6 +36,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   # SIGNAL ---------------------------------------------
   signal (send) set=(term,kill) peer="portage.emerge//shell",
   signal (send) set=(term,kill) peer="portage.emerge//sandbox",
+  signal (send) set=(term,kill) peer="portage.emerge//rsync",
   
   # NETWORK --------------------------------------------
   network netlink raw,

@@ -214,8 +214,8 @@ profile util-linux.blkid /sbin/blkid {
   /sbin/blkid						mr,
   
   # READS/WRITES ---------------------------------------
-  audit /run/blkid/blkid.tab*				rw,	# FIX ME! audit 8.12.2017
-  audit link subset /run/blkid/blkid.tab*		-> /run/blkid/blkid.tab*,	# FIX ME! audit 8.12.2017
+  /run/blkid/blkid.tab{,.old,-@{TMP6}}			rw,
+  link subset /run/blkid/blkid.tab.old			-> /run/blkid/blkid.tab,
 }
 
 profile util-linux.switch_root /sbin/switch_root {

@@ -84,7 +84,7 @@ profile lvm2.dmeventd /sbin/dmeventd {
   /run/dmeventd.pid					rwk,
   /run/dmeventd-{client,server}				rwk,
   /run/lock/lvm/*					rwk,
-  audit /run/udev/data/*				r,	# FIX ME! audit 11.12.2017
+  /run/udev/data/[a-z]*[0-9]*:[0-9]*			r,
   /run/lvm/lvmetad.socket				rw,
   
   # TEMP -----------------------------------------------
