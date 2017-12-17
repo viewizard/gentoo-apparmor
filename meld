@@ -54,8 +54,8 @@ profile meld /usr/bin/meld {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   owner /dev/shm/@{TMP6}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-  owner /dev/shm/sem.mp@{pids}-[0-9]*			rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-  owner link subset /dev/shm/sem.mp@{pids}-[0-9]*	-> /dev/shm/@{TMP6},
+  owner /dev/shm/sem.mp-@{TMP8}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner link subset /dev/shm/sem.mp-@{TMP8}		-> /dev/shm/@{TMP6},
   owner @{PROC}/@{pid}/fd/				r,
   owner @{PROC}/@{pid}/mounts				r,
   
@@ -72,6 +72,7 @@ profile meld /usr/bin/meld {
   deny /usr/bin/git					x,	# dev-vcs/git
   
   # READS/WRITES ---------------------------------------
+  /usr/bin/						r,
   /usr/share/meld/{,**}					r,
   /usr/share/gtksourceview-[2-9]*/{,**}			r,	# x11-libs/gtksourceview
   @{PYTHON_PACKAGES}/cairo/{,**/}			w,	# dev-python/pycairo
@@ -133,8 +134,8 @@ profile meld_root {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   owner /dev/shm/@{TMP6}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-  owner /dev/shm/sem.mp@{pids}-[0-9]*			rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-  owner link subset /dev/shm/sem.mp@{pids}-[0-9]*	-> /dev/shm/@{TMP6},
+  owner /dev/shm/sem.mp-@{TMP8}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner link subset /dev/shm/sem.mp-@{TMP8}		-> /dev/shm/@{TMP6},
   owner @{PROC}/@{pid}/fd/				r,
   owner @{PROC}/@{pid}/mounts				r,
   
@@ -151,6 +152,7 @@ profile meld_root {
   deny /usr/bin/git					x,	# dev-vcs/git
   
   # READS/WRITES ---------------------------------------
+  /usr/bin/						r,
   /usr/share/meld/{,**}					r,
   /usr/share/gtksourceview-[2-9]*/{,**}			r,	# x11-libs/gtksourceview
   @{PYTHON_PACKAGES}/cairo/{,**/}			w,	# dev-python/pycairo
