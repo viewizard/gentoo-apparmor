@@ -61,7 +61,7 @@ profile sudo /usr/bin/sudo {
   /etc/environment					r,	# sys-libs/pam
   /etc/security/limits.d/{,*}				r,	# sys-libs/pam
   /usr/lib{,32,64}/sudo/sudoers.so			m,
-  /usr/libexec/sudo/libsudo_util.so*			mr,
+  /usr/libexec/sudo/libsudo_util.so{,.[0-9]*}		mr,
   /run/utmp						rk,
   /run/sudo/						rw,
   /run/sudo/ts/						rw,
@@ -108,4 +108,45 @@ profile sudo.gksudo /usr/bin/{gksu,gksudo} {
   @{shell}						mr,
   /usr/bin/{gksu,gksudo}				mr,
   /usr/bin/sudo						Px,
+}
+
+profile sudo.visudo /usr/sbin/visudo {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # CAPABILITIES ---------------------------------------
+  capability dac_override,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  owner @{PROC}/@{pid}/fd/				r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/visudo					mr,
+  /bin/nano						Cx,	# app-editors/nano
+  
+  # READS/WRITES ---------------------------------------
+  /etc/sudoers{,.tmp}					rwk,
+  /etc/sudoers.d/{,*}					rwk,
+  /usr/libexec/sudo/libsudo_util.so{,.[0-9]*}		mr,
+  
+  profile nano /bin/nano {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/ncurses>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/nano						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/sudoers.tmp					rw,
+    /etc/nanorc						r,
+    /usr/share/nano/{,**}				r,
+    /usr/share/misc/magic.mgc				r,
+  }
 }

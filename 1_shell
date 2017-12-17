@@ -219,6 +219,7 @@ profile shell_root {
   /sbin/blkid						Px,	# sys-apps/util-linux
   /sbin/ifcfg						Px,	# sys-apps/iproute2
   /sbin/ifstat						Px,	# sys-apps/iproute2
+  /usr/sbin/visudo					Px,	# app-admin/sudo
   /usr/bin/which					Px,	# sys-apps/which
   /usr/bin/git						Px -> git_root,	# dev-vcs/git	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
   /usr/bin/killall					Px,	# sys-process/psmisc
@@ -483,6 +484,8 @@ profile shell_root {
   
   profile nano /bin/nano {
     #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/ncurses>
     #include <abstractions/fs/access-by-pattern-filemanager>
     #include <abstractions/fs/access-by-pattern-systemusers>
     
@@ -492,6 +495,11 @@ profile shell_root {
     
     # EXECUTABLES --------------------------------------
     /bin/nano						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/nanorc						r,
+    /usr/share/nano/{,**}				r,
+    /usr/share/misc/magic.mgc				r,
   }
   
   profile cat /bin/cat {
