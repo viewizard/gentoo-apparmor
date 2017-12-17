@@ -195,12 +195,12 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   
   profile chrome-sandbox /usr/lib{,32,64}/chromium-browser/chrome-sandbox {
     # Be fanatical since it is setuid root and don't use an abstraction
-    /lib/libgcc_s.so*					mr,
-    /lib{,32,64}/libm-*.so*				mr,
-    /lib{,32,64}/libpthread-*.so*			mr,
-    /lib{,32,64}/libc-*.so*				mr,
-    /lib{,32,64}/libld-*.so*				mr,
-    /lib{,32,64}/ld-*.so*				mr,
+    /lib/libgcc_s.so{,.[0-9]*}				mr,
+    /lib{,32,64}/libm-*.so{,.[0-9]*}			mr,
+    /lib{,32,64}/libpthread-*.so{,.[0-9]*}		mr,
+    /lib{,32,64}/libc-*.so{,.[0-9]*}			mr,
+    /lib{,32,64}/libld-*.so{,.[0-9]*}			mr,
+    /lib{,32,64}/ld-*.so{,.[0-9]*}			mr,
     /etc/ld.so.cache					r,
     
     # CAPABILITIES -------------------------------------

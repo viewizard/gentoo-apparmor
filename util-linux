@@ -125,8 +125,8 @@ profile util-linux.fsck /sbin/fsck {
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
-  audit /run/blkid/blkid.tab*				rw,	# FIX ME! audit 8.12.2017
-  audit link subset /run/blkid/blkid.tab*		-> /run/blkid/blkid.tab*,	# FIX ME! audit 8.12.2017
+  /run/blkid/blkid.tab{,.old,-@{TMP6}}			rw,
+  link subset /run/blkid/blkid.tab.old			-> /run/blkid/blkid.tab,
 }
 
 profile util-linux.hwclock /sbin/hwclock {

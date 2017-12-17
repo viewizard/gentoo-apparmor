@@ -97,7 +97,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   owner @{HOME}/.config/Thunar/{,**/}			rw,
   owner @{HOME}/.config/Thunar/{,**/}*			rwk,
   owner @{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
-  owner @{HOME}/.local/share/gvfs-metadata/{,**}	rw,	# gnome-base/gvfs
+  owner @{HOME}/.local/share/gvfs-metadata/{,*}		rw,	# gnome-base/gvfs
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -136,7 +136,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
     # READS/WRITES -------------------------------------
     /etc/fstab						r,
     /run/mount/utab					rw,
-    audit /run/blkid/blkid.tab*				rw,	# FIX ME! audit 8.12.2017
+    /run/blkid/blkid.tab{,.old,-@{TMP6}}		rw,
     link subset /run/blkid/blkid.tab.old		-> /run/blkid/blkid.tab,
   }
   
@@ -255,7 +255,7 @@ profile thunar_root {
   owner @{HOME}/.config/Thunar/{,**/}			rw,
   owner @{HOME}/.config/Thunar/{,**/}*			rwk,
   owner @{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
-  owner @{HOME}/.local/share/gvfs-metadata/{,**}	rw,
+  owner @{HOME}/.local/share/gvfs-metadata/{,*}		rw,
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -293,7 +293,7 @@ profile thunar_root {
     # READS/WRITES -------------------------------------
     /etc/fstab						r,
     /run/mount/utab					rw,
-    audit /run/blkid/blkid.tab*				rw,	# FIX ME! audit 8.12.2017
+    /run/blkid/blkid.tab{,.old,-@{TMP6}}		rw,
     link subset /run/blkid/blkid.tab.old		-> /run/blkid/blkid.tab,
   }
   

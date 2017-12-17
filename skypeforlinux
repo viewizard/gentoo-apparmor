@@ -120,6 +120,7 @@ profile skypeforlinux /opt/skypeforlinux/skypeforlinux {
   owner /dev/shm/.org.chromium.Chromium.@{TMP6}		mrw,	# FIX ME! Плохо, надо разрешать mmap
   								# (к этим файлам могут получить доступ другие процессы).
   								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /dev/shm/cnd-@{pids}-[0-9]*			rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   @{sys}/bus/pci/devices/				r,
   @{sys}/devices/system/cpu/				r,
   @{sys}/devices/system/cpu/cpu[0-9]*/			r,

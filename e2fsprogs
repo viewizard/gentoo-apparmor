@@ -56,8 +56,8 @@ profile e2fsprogs.mke2fs /sbin/mke2fs {
   # READS/WRITES ---------------------------------------
   /etc/mke2fs.conf					r,
   /usr/share/misc/magic.mgc				r,
-  audit /run/blkid/blkid.tab*				rw,	# FIX ME! audit 5.12.2017
-  audit owner link subset /run/blkid/blkid.tab*		-> /run/blkid/blkid.tab,	# FIX ME! audit 5.12.2017
+  /run/blkid/blkid.tab{,.old,-@{TMP6}}			rw,
+  link subset /run/blkid/blkid.tab.old			-> /run/blkid/blkid.tab,
 }
 
 profile e2fsprogs.tune2fs /sbin/tune2fs {
@@ -69,13 +69,13 @@ profile e2fsprogs.tune2fs /sbin/tune2fs {
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rw,
   @{PROC}/swaps						r,
-  audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  owner @{PROC}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/tune2fs						mr,
   
   # READS/WRITES ---------------------------------------
-  audit /run/blkid/blkid.tab*				r,	# FIX ME! audit 5.12.2017
+  /run/blkid/blkid.tab					r,
 }
 
 profile e2fsprogs.resize2fs /sbin/resize2fs {
