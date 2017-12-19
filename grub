@@ -42,7 +42,7 @@ profile grub.grub-mkconfig /usr/sbin/grub-mkconfig {
   /usr/share/grub/{,**}					r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/@{TMP_SH}					rw,
+  owner /tmp/@{TMP_SH}					rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   profile rm /bin/rm {
     #include <abstractions/base>
@@ -72,7 +72,7 @@ profile grub.grub-mkconfig /usr/sbin/grub-mkconfig {
     /boot/grub/grub.cfg.new				w,
     
     # DENY INHERIT -------------------------------------
-    /tmp/@{TMP_SH}					rw,
+    owner /tmp/@{TMP_SH}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
   profile mv /bin/mv {
@@ -151,7 +151,7 @@ profile grub.grub.d /etc/grub.d/* {
   /usr/share/grub/{,**}					r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/@{TMP_SH}					rw,
+  owner /tmp/@{TMP_SH}					rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   profile cut /bin/cut {
     #include <abstractions/base>
@@ -179,7 +179,7 @@ profile grub.grub.d /etc/grub.d/* {
     
     # DENY INHERIT -------------------------------------
     /boot/grub/grub.cfg.new				w,
-    /tmp/@{TMP_SH}					rw,
+    owner /tmp/@{TMP_SH}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
   profile sed /bin/sed {
@@ -194,7 +194,7 @@ profile grub.grub.d /etc/grub.d/* {
     
     # DENY INHERIT -------------------------------------
     /boot/grub/grub.cfg.new				w,
-    /tmp/@{TMP_SH}					rw,
+    owner /tmp/@{TMP_SH}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
   profile tail /bin/tail {

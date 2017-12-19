@@ -113,7 +113,7 @@ profile local.home.evelauncher /home/@{USER}/evelauncher/evelauncher flags=(atta
   # TEMP -----------------------------------------------
   /tmp/							r,
   /var/tmp/						r,
-  owner /var/tmp/@{TMP_SQLITE}				rw,
+  owner /var/tmp/@{TMP_SQLITE}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   # DENY INHERIT ---------------------------------------
   deny unix (send, receive) peer=(label="wine*"),		# app-emulation/wine

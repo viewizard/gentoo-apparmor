@@ -12,6 +12,7 @@
 
 profile gnome-keyring.gnome-keyring-daemon /usr/bin/gnome-keyring-daemon {
   #include <abstractions/base>
+  #include <abstractions/dbus/system-strict>			# Нужен только с systemd (watching logind for session closure).
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/session-bind>
   

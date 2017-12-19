@@ -8,6 +8,9 @@
 #
 # ------------------------------------------------------------------
 
+# Список всех утилит, входящих в sys-devel/binutils
+@{BINUTILS}={addr2line,ar,as,c++filt,dwp,elfedit,gprof,ld,ld.bfd,ld.gold,nm,objcopy,objdump,ranlib,readelf,size,strings,strip}
+
 #include <local/tunables.d/>
 
 profile binutils-config /usr/bin/binutils-config {
@@ -47,7 +50,7 @@ profile binutils-config /usr/bin/binutils-config {
   /usr/@{CHOST}/binutils-bin/{,**}			r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/@{TMP_SH}					rw,
+  owner /tmp/@{TMP_SH}					rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   profile ln /bin/ln {
     #include <abstractions/base>
@@ -60,8 +63,10 @@ profile binutils-config /usr/bin/binutils-config {
     /bin/ln						mr,
     
     # READS/WRITES -------------------------------------
-    /usr/bin/*						w,
-    /usr/@{CHOST}/**					w,
+    /usr/@{CHOST}/lib/.binutils-config.tmp.ldscripts/ldscripts w,
+    /usr/@{CHOST}/bin/.binutils-config.tmp.@{BINUTILS}	w,
+    /usr/bin/.binutils-config.tmp.@{CHOST}-@{BINUTILS}	w,
+    /usr/bin/.binutils-config.tmp.@{BINUTILS}		w,
   }
   
   profile mv /bin/mv {
@@ -75,8 +80,14 @@ profile binutils-config /usr/bin/binutils-config {
     /bin/mv						mr,
     
     # READS/WRITES -------------------------------------
-    /usr/bin/*						rw,
-    /usr/@{CHOST}/**					rw,
+    /usr/@{CHOST}/lib/.binutils-config.tmp.ldscripts/ldscripts rw,
+    /usr/@{CHOST}/lib/ldscripts				w,
+    /usr/@{CHOST}/bin/.binutils-config.tmp.@{BINUTILS}	rw,
+    /usr/@{CHOST}/bin/@{BINUTILS}			w,
+    /usr/bin/.binutils-config.tmp.@{CHOST}-@{BINUTILS}	rw,
+    /usr/bin/@{CHOST}-@{BINUTILS}			w,
+    /usr/bin/.binutils-config.tmp.@{BINUTILS}		rw,
+    /usr/bin/@{BINUTILS}				w,
   }
   
   profile rm /bin/rm {
@@ -125,8 +136,15 @@ profile binutils-config /usr/bin/binutils-config {
   profile cat /bin/cat {
     #include <abstractions/base>
     
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
     # EXECUTABLES --------------------------------------
     /bin/cat						mr,
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/@{TMP_SH}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
   profile find /usr/bin/find {

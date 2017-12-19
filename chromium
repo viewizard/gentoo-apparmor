@@ -183,10 +183,10 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   
   # TEMP -----------------------------------------------
   /tmp/							r,
-  /tmp/.org.chromium.Chromium.@{TMP6}{,/,/**}		rw,
-  owner /tmp/scoped_dir@{TMP6}/{,**}			rw,
+  /tmp/.org.chromium.Chromium.@{TMP6}{,/,/**}		rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /tmp/scoped_dir@{TMP6}/{,**}			rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   /var/tmp/						r,
-  owner /var/tmp/@{TMP_SQLITE}				rw,
+  owner /var/tmp/@{TMP_SQLITE}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   # NOISY ----------------------------------------------
   deny /dev/bus/usb/					r,

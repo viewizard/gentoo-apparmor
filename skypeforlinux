@@ -169,7 +169,7 @@ profile skypeforlinux /opt/skypeforlinux/skypeforlinux {
   
   # TEMP -----------------------------------------------
   /tmp/							r,
-  owner /tmp/.org.chromium.Chromium.@{TMP6}/{,**}	rw,
+  owner /tmp/.org.chromium.Chromium.@{TMP6}/{,**}	rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   owner /tmp/skype-@{pid}/{,**}				rw,
   owner "/tmp/skypeforlinux Crashes/{,**}"		rw,
   /var/tmp/						r,

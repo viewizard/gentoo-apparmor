@@ -84,6 +84,7 @@ profile filezilla.fzsftp /usr/bin/fzsftp {
   
   # TEMP -----------------------------------------------
   owner /tmp/ssh-@{TMP12}/agent.@{pids}			rw,	# @{pids} - pid процесса /usr/bin/ssh-agent
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   profile shell @{shell} {
     #include <abstractions/base>

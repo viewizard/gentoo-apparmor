@@ -412,8 +412,8 @@ profile engrampa_dpkg_deb {
   owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/dpkg-deb.@{TMP6}/				rw,
-  owner /tmp/dpkg-deb.@{TMP6}/*				r,
+  owner /tmp/dpkg-deb.@{TMP6}/				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /tmp/dpkg-deb.@{TMP6}/*				r,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   profile rm /bin/rm {
     #include <abstractions/base>
@@ -425,7 +425,7 @@ profile engrampa_dpkg_deb {
     /bin/rm						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/dpkg-deb.@{TMP6}/{,**}			rw,
+    owner /tmp/dpkg-deb.@{TMP6}/{,**}			rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
   profile tar /bin/tar {
@@ -442,7 +442,7 @@ profile engrampa_dpkg_deb {
     owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
     
     # TEMP ---------------------------------------------
-    owner /tmp/dpkg-deb.@{TMP6}/{,**}			w,
+    owner /tmp/dpkg-deb.@{TMP6}/{,**}			w,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
 }
 
@@ -936,8 +936,8 @@ profile engrampa_dpkg_deb_root {
   /root/.cache/.fr-@{TMP6}/{,**}			rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/dpkg-deb.@{TMP6}/				rw,
-  owner /tmp/dpkg-deb.@{TMP6}/*				r,
+  owner /tmp/dpkg-deb.@{TMP6}/				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /tmp/dpkg-deb.@{TMP6}/*				r,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   profile rm /bin/rm {
     #include <abstractions/base>
@@ -950,7 +950,7 @@ profile engrampa_dpkg_deb_root {
     /bin/rm						mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/dpkg-deb.@{TMP6}/{,**}			rw,
+    owner /tmp/dpkg-deb.@{TMP6}/{,**}			rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
   profile tar /bin/tar {
@@ -968,7 +968,7 @@ profile engrampa_dpkg_deb_root {
     /root/.cache/.fr-@{TMP6}/{,**}			rw,
     
     # TEMP ---------------------------------------------
-    owner /tmp/dpkg-deb.@{TMP6}/{,**}			w,
+    owner /tmp/dpkg-deb.@{TMP6}/{,**}			w,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
 }
 

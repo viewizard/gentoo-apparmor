@@ -164,10 +164,10 @@ profile make /usr/bin/{,g}make flags=(complain) {
     owner @{HOME}/.subversion/{,*}			r,	# dev-vcs/subversion
     
     # TEMP ---------------------------------------------
-    owner /tmp/@{TMP_SH}				rw,
-    owner /tmp/cc*.{s,c,res,o,le,ld}			rw,
+    owner /tmp/@{TMP_SH}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+    owner /tmp/cc*.{s,c,res,o,le,ld}			rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
     owner /tmp/cpiolist.@{TMP6}				rw,
-    audit owner /tmp/tmp.*				rw,	# FIX ME! audit 26.11.2017
+    audit owner /tmp/tmp.*				rw,	# FIX ME! audit 26.11.2017		# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
     audit owner /tmp/depmod.*/{,**}			rw,	# FIX ME! audit 26.11.2017
     owner /var/tmp/portage/genkernel/*/busybox-*/{,**}	rw,	# sys-kernel/genkernel-next
     owner /var/tmp/portage/genkernel/initramfs-@{kernel_ver}.cpio r,	# sys-kernel/genkernel-next

@@ -29,5 +29,5 @@ profile xauth /usr/bin/xauth {
   owner link subset @{HOME}/.xauth*			-> /{home/*,root}/.xauth*,	# TARGET! @{HOME}	# * - 6-8 символов {[a-zA-Z0-9_.},-}
   
   # TEMP -----------------------------------------------
-  owner /tmp/@{TMP_SH}					rw,
+  owner /tmp/@{TMP_SH}					rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
 }

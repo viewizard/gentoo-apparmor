@@ -8,9 +8,11 @@
 #
 # ------------------------------------------------------------------
 
+@{GCC}={c++,cpp,g++,gcc,gcc-ar,gcc-nm,gcc-ranlib,gcov,gcov-dump,gcov-tool,cc}
+
 #include <local/tunables.d/>
 
-profile gcc-config /usr/bin/gcc-config {
+profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -57,16 +59,18 @@ profile gcc-config /usr/bin/gcc-config {
   /							r,
   /lib{,32,64}/						r,
   /etc/env.d/						r,
-  /etc/env.d/**						rw,
-  /etc/ld.so.conf.d/*					rw,
+  /etc/env.d/gcc/{,config-@{CHOST},@{CHOST}-[0-9]*}	r,
+  /etc/env.d/gcc/config-@{CHOST}			w,
+  /etc/env.d/[0-9]*gcc-@{CHOST}.tmp			w,
+  /etc/ld.so.conf.d/[0-9]*gcc-@{CHOST}.conf		w,
   /usr/lib{,32,64}/gcc/@{CHOST}/[0-9]*/libgcc.a		rw,
   /usr/@{CHOST}/gcc-bin/[0-9]*/{,**}			r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/@{TMP_SH}					rw,
+  owner /tmp/@{TMP_SH}					rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   owner /tmp/Code::Blocks-@{USER}			w,	# DELEGATION! codeblocks
   
-  profile mv /bin/mv {
+  profile mv /bin/mv flags=(complain) {				# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -77,13 +81,16 @@ profile gcc-config /usr/bin/gcc-config {
     /bin/mv						mr,
     
     # READS/WRITES -------------------------------------
-    /etc/env.d/*					rw,
-    /lib{,32,64}/*					rw,
+    /lib{,32,64}/.gcc.config.cpp			w,
+    /lib{,32,64}/cpp					w,
     /lib{,32,64}/.gcc.config.new/*			w,
-    /usr/bin/*						rw,
+    /usr/bin/.gcc.config.@{GCC}				rw,
+    /usr/bin/.gcc.config.@{CHOST}-@{GCC}		rw,
+    /usr/bin/@{GCC}					w,
+    /usr/bin/@{CHOST}-@{GCC}				w,
   }
   
-  profile cp /bin/cp {
+  profile cp /bin/cp flags=(complain) {				# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -98,12 +105,13 @@ profile gcc-config /usr/bin/gcc-config {
     
     # READS/WRITES -------------------------------------
     /etc/env.d/gcc/*					rw,
-    /lib{,32,64}/*					w,
+    /lib{,32,64}/.gcc.config.cpp			w,
     /lib{,32,64}/.gcc.config.new/*			w,
-    /usr/bin/*						w,
+    /usr/bin/.gcc.config.@{GCC}				w,
+    /usr/bin/.gcc.config.@{CHOST}-@{GCC}		w,
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm flags=(complain) {				# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -114,13 +122,14 @@ profile gcc-config /usr/bin/gcc-config {
     /bin/rm						mr,
     
     # READS/WRITES -------------------------------------
-    /etc/env.d/**					w,
-    /lib{,32,64}/*					w,
+    /etc/env.d/gcc/.NATIVE				w,
+    /etc/env.d/[0-9]*gcc-@{CHOST}.tmp			w,
+    /lib{,32,64}/.gcc.config.@{pids}			w,
     /usr/bin/gcc-[0-9]*					w,
     /usr/bin/@{CHOST}-gcc-[0-9]*			w,
   }
   
-  profile ln /bin/ln {
+  profile ln /bin/ln flags=(complain) {				# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -132,10 +141,10 @@ profile gcc-config /usr/bin/gcc-config {
     
     # READS/WRITES -------------------------------------
     /etc/env.d/gcc/**					w,	# sys-devel/gcc
-    link subset /lib{,32,64}/*				-> /usr/lib{,32,64}/gcc/@{CHOST}/{,**/}*,
+    link subset /lib{,32,64}/.gcc.config.@{pids}	-> /usr/lib{,32,64}/gcc/@{CHOST}/[0-9]*/*,
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat flags=(complain) {			# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -146,10 +155,10 @@ profile gcc-config /usr/bin/gcc-config {
     /bin/cat						mr,
     
     # READS/WRITES -------------------------------------
-    /etc/env.d/*					w,
+    /etc/env.d/[0-9]*gcc-@{CHOST}.tmp			w,
     
     # TEMP ---------------------------------------------
-    owner /tmp/@{TMP_SH}				rw,
+    owner /tmp/@{TMP_SH}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
   profile sed /bin/sed {
@@ -166,10 +175,10 @@ profile gcc-config /usr/bin/gcc-config {
     /etc/env.d/gcc/**					rw,	# sys-devel/gcc
     
     # TEMP ---------------------------------------------
-    audit owner /tmp/sed*				rw,	# FIX ME! audit 26.11.2017
+    audit owner /tmp/sed*				rw,	# FIX ME! audit 26.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
-  profile touch /bin/touch {
+  profile touch /bin/touch flags=(complain) {			# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -181,8 +190,9 @@ profile gcc-config /usr/bin/gcc-config {
     
     # READS/WRITES -------------------------------------
     /etc/env.d/gcc/@{CHOST}-[0-9]*			w,	# sys-devel/gcc
-    /lib{,32,64}/*					w,
-    /usr/bin/*						w,
+    /lib{,32,64}/.gcc.config.cpp			w,
+    /usr/bin/.gcc.config.@{GCC}				w,
+    /usr/bin/.gcc.config.@{CHOST}-@{GCC}		w,
   }
   
   profile sort /bin/sort {
@@ -280,7 +290,7 @@ profile gcc-config /usr/bin/gcc-config {
     /							r,
   }
   
-  profile cmp /usr/bin/cmp {
+  profile cmp /usr/bin/cmp flags=(complain) {			# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -291,10 +301,10 @@ profile gcc-config /usr/bin/gcc-config {
     /usr/bin/cmp					mr,
     
     # READS/WRITES -------------------------------------
-    /etc/env.d/*					r,
+    /etc/env.d/[0-9]*gcc-@{CHOST}{,.tmp}		r,
   }
   
-  profile gawk /usr/bin/gawk {
+  profile gawk /usr/bin/gawk flags=(complain) {			# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -305,7 +315,7 @@ profile gcc-config /usr/bin/gcc-config {
     /usr/bin/gawk					mr,
     
     # READS/WRITES -------------------------------------
-    /etc/env.d/*					w,
+    /etc/env.d/[0-9]*gcc-@{CHOST}.tmp			w,
     /etc/env.d/gcc/**					r,	# sys-devel/gcc
     
     # TEMP ---------------------------------------------
@@ -323,7 +333,7 @@ profile gcc-config /usr/bin/gcc-config {
     /usr/bin/tac					mr,
     
     # TEMP ---------------------------------------------
-    owner /tmp/tac@{TMP6}				rw,
+    owner /tmp/tac@{TMP6}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
   profile portageq {

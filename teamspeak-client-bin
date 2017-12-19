@@ -77,5 +77,5 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   audit owner /tmp/qt_temp.??????			rw,	# FIX ME! audit 25.11.2017
   owner /tmp/avatar					rw,
   /var/tmp/						r,
-  owner /var/tmp/@{TMP_SQLITE}				rw,
+  owner /var/tmp/@{TMP_SQLITE}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
 }

@@ -27,7 +27,7 @@ profile xkbcomp /usr/bin/xkbcomp {
   
   # TEMP -----------------------------------------------
   owner /tmp/server-@{X_DISPLAY}.xkm			w,
-  owner /tmp/file@{TMP6}				rw,
+  owner /tmp/file@{TMP6}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   # DENY INHERIT ---------------------------------------
   deny /dev/input/event[0-9]*				rw,	# xorg-server.Xorg

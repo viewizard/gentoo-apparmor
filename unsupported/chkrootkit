@@ -206,8 +206,8 @@ profile chkrootkit_find_head /bin/head {
   /bin/head						mr,
   
   # READS/WRITES ---------------------------------------
-  audit /tmp/**						r,	# FIX ME! Использовать @{TMP} переменные.
-  audit /var/tmp/**					r,	# FIX ME! Использовать @{TMP} переменные.
+  audit /tmp/**						r,	# FIX ME! Использовать @{TMP} переменные. Нельзя использовать xattr, т.к. должен сканировать содержимое на наличие зловредов.
+  audit /var/tmp/**					r,	# FIX ME! Использовать @{TMP} переменные. Нельзя использовать xattr, т.к. должен сканировать содержимое на наличие зловредов.
   
   # TEMP -----------------------------------------------
   owner /tmp/chkrootkit.cron.@{TMP6}			w,	# DELEGATION! chkrootkit.cron.daily
