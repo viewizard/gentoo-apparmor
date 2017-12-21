@@ -143,6 +143,8 @@ profile local.home.evelauncher.updater /home/@{USER}/{.eve,evelauncher}/updater 
   
   # DENY INHERIT ---------------------------------------
   deny network netlink raw,						# evelauncher
+  deny network inet stream,						# evelauncher
+  deny network inet6 stream,						# evelauncher
   deny /dev/shm/.org.chromium.Chromium.@{TMP6}		ra,		# evelauncher
   deny @{HOME_CACHE}/CCP/EVE/QtWebEngine/Default/Cache/{,**} rw,	# evelauncher
   deny @{HOME}/.local/share/CCP/EVE/QtWebEngine/Default/{,**} rw,	# evelauncher
