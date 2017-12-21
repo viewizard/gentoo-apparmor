@@ -253,6 +253,7 @@ profile shell_root {
   /usr/bin/eix						Px,	# app-portage/eix
   /usr/bin/eix-test-obsolete				Px,	# app-portage/eix
   /usr/bin/eix-sync					Px,	# app-portage/eix
+  /usr/bin/xargs					Cx,	# sys-apps/findutils
   /usr/bin/gpasswd					Px,	# sys-apps/shadow
   /usr/sbin/gdisk					Px,	# sys-apps/gptfdisk
   /usr/sbin/smartctl					Px,	# sys-apps/smartmontools
@@ -685,6 +686,20 @@ profile shell_root {
     # EXECUTABLES --------------------------------------
     /usr/bin/diff					mr,
   }
+  
+  profile xargs /usr/bin/xargs {
+    #include <abstractions/base>
+    #include <abstractions/fs/access-by-pattern-filemanager>
+    #include <abstractions/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/xargs					mr,
+    /bin/grep						ix,	# FIX ME! потом исправить на "Px -> shell_root//grep",	# sys-apps/grep
+  }
 }
 
 # профиль специального пользователя root (переключение через sudo)
@@ -809,42 +824,42 @@ profile shell_chroot {
   # READS/WRITES ---------------------------------------
   @{CHROOT}/						rw,
   @{CHROOT}/*						rwk,
-  @{CHROOT}/bin/{,**/}					rw,
-  @{CHROOT}/bin/{,**/}*					rwkl,
-  @{CHROOT}/boot/{,**/}					rw,
-  @{CHROOT}/boot/{,**/}*				rwkl,
-  @{CHROOT}/etc/{,**/}					rw,
-  @{CHROOT}/etc/{,**/}*					rwkl,
-  @{CHROOT}/lib{,32,64}/{,**/}				rw,
-  @{CHROOT}/lib{,32,64}/{,**/}*				rwkl,
+  @{CHROOT}/bin/{,**}					rw,
+  @{CHROOT}/bin/{,**/}*					kl,
+  @{CHROOT}/boot/{,**}					rw,
+  @{CHROOT}/boot/{,**/}*				kl,
+  @{CHROOT}/etc/{,**}					rw,
+  @{CHROOT}/etc/{,**/}*					kl,
+  @{CHROOT}/lib{,32,64}/{,**}				rw,
+  @{CHROOT}/lib{,32,64}/{,**/}*				kl,
   @{CHROOT}/lib{,32,64}/ld{,32,64}-*.so{,.*}		m,
   @{CHROOT}/lib{,32,64}/**/ld{,32,64}-*.so{,.*}		m,
   @{CHROOT}/lib{,32,64}/lib*.so{,.*}			m,
   @{CHROOT}/lib{,32,64}/**/lib*.so{,.*}			m,
-  @{CHROOT}/opt/{,**/}					rw,
-  @{CHROOT}/opt/{,**/}*					rwkl,
-  @{CHROOT}/run/{,**/}					rw,
-  @{CHROOT}/run/{,**/}*					rwkl,
-  @{CHROOT}/sbin/{,**/}					rw,
-  @{CHROOT}/sbin/{,**/}*				rwkl,
-  @{CHROOT}/usr/{,**/}					rw,
-  @{CHROOT}/usr/{,**/}*					rwkl,
+  @{CHROOT}/opt/{,**}					rw,
+  @{CHROOT}/opt/{,**/}*					kl,
+  @{CHROOT}/run/{,**}					rw,
+  @{CHROOT}/run/{,**/}*					kl,
+  @{CHROOT}/sbin/{,**}					rw,
+  @{CHROOT}/sbin/{,**/}*				kl,
+  @{CHROOT}/usr/{,**}					rw,
+  @{CHROOT}/usr/{,**/}*					kl,
   @{CHROOT}/usr/lib{,32,64}/*.so{,.*}			m,
   @{CHROOT}/usr/lib{,32,64}/**/lib*.so{,.*}		m,
   @{CHROOT}/usr/lib{,32,64}/locale/{,**/}*		m,
   @{CHROOT}/usr/lib{,32,64}/gconv/*.so			m,
   @{CHROOT}/usr/lib{,32,64}/gconv/gconv-modules*	m,
   @{CHROOT}/usr/src/@{kernel}/tools/gcc/**.so		m,	# Плагины gcc.
-  @{CHROOT}/var/{,**/}					rw,
-  @{CHROOT}/var/{,**/}*					rwkl,
+  @{CHROOT}/var/{,**}					rw,
+  @{CHROOT}/var/{,**/}*					kl,
   
   # USERS ----------------------------------------------
-  @{CHROOT}@{HOME}/{,**/}				rw,
-  @{CHROOT}@{HOME}/{,**/}*				rwk,
+  @{CHROOT}@{HOME}/{,**}				rw,
+  @{CHROOT}@{HOME}/{,**/}*				k,
   
   # TEMP -----------------------------------------------
-  @{CHROOT}/tmp/{,**/}					rw,
-  @{CHROOT}/tmp/{,**/}*					rwk,
-  @{CHROOT}/var/tmp/{,**/}				rw,
-  @{CHROOT}/var/tmp/{,**/}*				rwk,
+  @{CHROOT}/tmp/{,**}					rw,
+  @{CHROOT}/tmp/{,**/}*					k,
+  @{CHROOT}/var/tmp/{,**}				rw,
+  @{CHROOT}/var/tmp/{,**/}*				k,
 }

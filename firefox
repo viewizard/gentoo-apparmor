@@ -138,8 +138,8 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   audit owner /tmp/mozilla_*/{,**}			rw,	# FIX ME! audit 26.11.2017
   owner /tmp/plugtmp{,-[0-9]*}/				rw,
   owner /tmp/plugtmp{,-[0-9]*}/plugin-*			rw,	# * - имя с расширением файла (PL_HD.txt)
-  owner /tmp/firefox_@{USER}/{,**/}			rw,
-  owner /tmp/firefox_@{USER}/{,**/}*			rwk,
+  owner /tmp/firefox_@{USER}/{,**}			rw,
+  owner /tmp/firefox_@{USER}/{,**/}*			k,
   /var/tmp/						r,
   owner /var/tmp/@{TMP_SQLITE}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   

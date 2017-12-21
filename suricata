@@ -45,8 +45,8 @@ profile suricata /usr/bin/suricata {
   # READS/WRITES ---------------------------------------
   /etc/suricata/{,**}					r,
   /usr/share/misc/magic.mgc				r,	# sys-apps/file
-  /var/lib/suricata/**/					rw,
-  /var/lib/suricata/{,**/}*				rwk,
+  /var/lib/suricata/**					rw,
+  /var/lib/suricata/{,**/}*				k,
   /run/suricata/suricata.pid				rw,
   
   # TEMP -----------------------------------------------

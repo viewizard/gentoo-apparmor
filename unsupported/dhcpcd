@@ -75,8 +75,8 @@ profile run-hooks /lib{,32,64}/dhcpcd/dhcpcd-run-hooks {
   # READS/WRITES ---------------------------------------
   /etc/resolv.conf					rw,
   /etc/ntp.conf						r,	# net-misc/ntp
-  /run/dhcpcd/{,**/}					rw,
-  /run/dhcpcd/{,**/}*					rwk,
+  /run/dhcpcd/{,**}					rw,
+  /run/dhcpcd/{,**/}*					k,
   
   profile sed /bin/sed flags=(complain) {
     #include <abstractions/base>

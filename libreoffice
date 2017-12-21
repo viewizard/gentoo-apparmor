@@ -100,8 +100,8 @@ profile libreoffice.javaldx /usr/lib{,32,64}/libreoffice/program/javaldx {
   /opt/{oracle-jdk,icedtea}-bin-[0-9]*/jre/bin/java	Px,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/libreoffice/{,**/}		rw,
-  owner @{HOME}/.config/libreoffice/{,**/}*		rwk,
+  owner @{HOME}/.config/libreoffice/{,**}		rw,
+  owner @{HOME}/.config/libreoffice/{,**/}*		k,
 }
 
 profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
@@ -164,8 +164,8 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   /usr/lib{,32,64}/jvm/{,**}				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/libreoffice/{,**/}		rw,
-  owner @{HOME}/.config/libreoffice/{,**/}*		rwk,
+  owner @{HOME}/.config/libreoffice/{,**}		rw,
+  owner @{HOME}/.config/libreoffice/{,**/}*		k,
   owner @{HOME}/.languagetool-ooo.cfg			rw,
   owner @{HOME_CACHE}/fontconfig/{,**/}*		k,	# media-libs/fontconfig
   

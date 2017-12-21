@@ -56,8 +56,8 @@ profile claws-mail /usr/bin/claws-mail {
   owner link subset @{HOME}/Mail/draft/[0-9]*		-> /{home/*,root}/.claws-mail/tmp/draft.*,	# TARGET! @{HOME}
   
   # TEMP -----------------------------------------------
-  owner /tmp/claws-mail-@{UID}/{,**/}			rw,
-  owner /tmp/claws-mail-@{UID}/{,**/}*			rwk,
+  owner /tmp/claws-mail-@{UID}/{,**}			rw,
+  owner /tmp/claws-mail-@{UID}/{,**/}*			k,
   
   # NOISY ----------------------------------------------
   deny /						r,

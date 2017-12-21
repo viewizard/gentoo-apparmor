@@ -43,8 +43,8 @@ profile tor /usr/bin/tor {
   # READS/WRITES ---------------------------------------
   /etc/tor/{,*}						r,
   /usr/share/tor/**					r,
-  /var/lib/tor/**/					rw,
-  /var/lib/tor/{,**/}*					rwk,
+  /var/lib/tor/**					rw,
+  /var/lib/tor/{,**/}*					k,
   /run/tor/{,tor.pid}					rw,
 }
 

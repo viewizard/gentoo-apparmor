@@ -72,9 +72,8 @@ profile gimp /usr/bin/gimp{,-@{GIMP_VER},-console,-console-@{GIMP_VER}} {
   # USERS ----------------------------------------------
   owner @{HOME_CACHE}/gegl-@{GEGL_VER}/{,**}		rw,
   owner @{HOME}/.local/share/gegl-@{GEGL_VER}/{,**}	rw,
-  owner @{HOME}/.gimp-@{GIMP_VER}/			rw,
-  owner @{HOME}/.gimp-@{GIMP_VER}/**/			rw,
-  owner @{HOME}/.gimp-@{GIMP_VER}/{,**/}*		rwk,
+  owner @{HOME}/.gimp-@{GIMP_VER}/{,**}			rw,
+  owner @{HOME}/.gimp-@{GIMP_VER}/{,**/}*		k,
   
   # TEMP -----------------------------------------------
   audit owner /tmp/gdkpixbuf-save-tmp.*			rw,	# FIX ME! audit 25.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.

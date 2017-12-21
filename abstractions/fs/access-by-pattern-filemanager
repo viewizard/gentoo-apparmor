@@ -20,14 +20,14 @@
 /							r,
 @{HOMEDIRS}/						r,
 owner @{HOME}/						r,
-owner @{HOME}/**/					rw,
-owner @{HOME}/{,**/}*					rwk,
+owner @{HOME}/**					rw,
+owner @{HOME}/{,**/}*					k,
 owner /run/user/@{UID}/gvfs/*/				r,	# gnome-base/gvfs
-owner /run/user/@{UID}/gvfs/*/**/			rw,	# gnome-base/gvfs
-owner /run/user/@{UID}/gvfs/*/{,**/}*			rwk,	# gnome-base/gvfs
+owner /run/user/@{UID}/gvfs/*/**			rw,	# gnome-base/gvfs
+owner /run/user/@{UID}/gvfs/*/{,**/}*			k,	# gnome-base/gvfs
 /media/							r,
-/media/**/						rw,
-/media/{,**/}*						rwk,
+/media/**						rw,
+/media/{,**/}*						k,
 /run/media/@{USER}/					r,	# sys-fs/udisks, /run/media/$USER/
-/run/media/@{USER}/**/					rw,	# sys-fs/udisks, /run/media/$USER/
-/run/media/@{USER}/{,**/}*				rwk,	# sys-fs/udisks, /run/media/$USER/
+/run/media/@{USER}/**					rw,	# sys-fs/udisks, /run/media/$USER/
+/run/media/@{USER}/{,**/}*				k,	# sys-fs/udisks, /run/media/$USER/

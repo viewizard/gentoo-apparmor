@@ -55,13 +55,11 @@ audit deny @{PROC}/@{pids}/mem				wl,	# Запрещаем доступ к па�
 /usr/share/zoneinfo/{,**}				r,	# sys-libs/timezone-data
 /usr/share/X11/locale/**				r,	# x11-libs/libX11
 /lib{,32,64}/**						r,
-/lib{,32,64}/ld{,32,64}-*.so{,.[0-9]*}			mr,	# sys-libs/glibc
-/lib{,32,64}/lib*.so{,.[0-9]*}				mr,
-/lib{,32,64}/**/lib*.so{,.[0-9]*}			mr,	# Для упрощения, даем полный доступ всем процессам.
+/lib{,32,64}/ld{,32,64}-*.so{,.[0-9]*}			m,	# sys-libs/glibc
+/lib{,32,64}/{,**/}lib*.so{,.[0-9]*}			m,	# Для упрощения, даем полный доступ всем процессам.
 /usr/lib{,32,64}/**					r,
-/usr/lib{,32,64}/*.so{,.[0-9]*}				mr,
-/usr/lib{,32,64}/**/lib*.so{,.[0-9]*}			mr,	# Для упрощения, даем полный доступ всем процессам.
-/usr/lib{,32,64}/locale/**/				r,	# sys-libs/glibc
-/usr/lib{,32,64}/locale/{,**/}*				mr,	# sys-libs/glibc
+/usr/lib{,32,64}/{,**/}lib*.so{,.[0-9]*}		m,	# Для упрощения, даем полный доступ всем процессам.
+/usr/lib{,32,64}/locale/**				r,	# sys-libs/glibc
+/usr/lib{,32,64}/locale/{,**/}*				m,	# sys-libs/glibc
 /usr/lib{,32,64}/gconv/*.so				mr,	# sys-libs/glibc
 /usr/lib{,32,64}/gconv/gconv-modules*			mr,	# sys-libs/glibc

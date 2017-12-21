@@ -44,8 +44,8 @@ profile juffed /usr/bin/juffed {
   /usr/share/juffed/**					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/juff/{,**/}			rw,
-  owner @{HOME}/.config/juff/{,**/}*			rwk,
+  owner @{HOME}/.config/juff/{,**}			rw,
+  owner @{HOME}/.config/juff/{,**/}*			k,
   
   # TEMP -----------------------------------------------
   owner /tmp/qtsingleapp-juffed-@{TMP4}-@{UID_HEX}	rw,
@@ -89,8 +89,8 @@ profile juffed_root {
   /usr/share/juffed/**					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/juff/{,**/}			rw,
-  owner @{HOME}/.config/juff/{,**/}*			rwk,
+  owner @{HOME}/.config/juff/{,**}			rw,
+  owner @{HOME}/.config/juff/{,**/}*			k,
   
   # TEMP -----------------------------------------------
   owner /tmp/qtsingleapp-juffed-@{TMP4}-@{UID_ROOT_HEX}	rw,

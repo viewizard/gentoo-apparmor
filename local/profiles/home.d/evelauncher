@@ -103,10 +103,10 @@ profile local.home.evelauncher /home/@{USER}/evelauncher/evelauncher flags=(atta
   owner @{HOME}/evelauncher/**				rw,
   owner @{HOME}/evelauncher/**.so{,.[0-9]*}		m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   owner @{HOME}/.eve/{,**}				rw,
-  owner @{HOME}/.config/CCP/{,**/}			rw,
-  owner @{HOME}/.config/CCP/{,**/}*			rwk,
-  owner @{HOME}/.local/share/CCP/{,**/}			rw,
-  owner @{HOME}/.local/share/CCP/{,**/}*		rwk,
+  owner @{HOME}/.config/CCP/{,**}			rw,
+  owner @{HOME}/.config/CCP/{,**/}*			k,
+  owner @{HOME}/.local/share/CCP/{,**}			rw,
+  owner @{HOME}/.local/share/CCP/{,**/}*		k,
   owner @{HOME}/.pki/nssdb/*				rwk,
   owner @{HOME_CACHE}/CCP/{,**}				rw,
   
@@ -191,6 +191,6 @@ profile local.home.evelauncher.LogLite /home/@{USER}/evelauncher/LogLite {
   # USERS ----------------------------------------------
   owner @{HOME}/evelauncher/{,**}			r,
   owner @{HOME}/evelauncher/**.so{,.[0-9]*}		m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
-  owner @{HOME}/.config/CCP/{,**/}			rw,
-  owner @{HOME}/.config/CCP/{,**/}*			rwk,
+  owner @{HOME}/.config/CCP/{,**}			rw,
+  owner @{HOME}/.config/CCP/{,**/}*			k,
 }

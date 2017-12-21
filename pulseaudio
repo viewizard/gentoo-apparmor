@@ -60,8 +60,8 @@ profile pulseaudio /usr/bin/pulseaudio {
   owner /run/user/@{UID}/pulse/cli			rw,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/pulse/{,**/}			rw,
-  owner @{HOME}/.config/pulse/{,**/}*			rwk,
+  owner @{HOME}/.config/pulse/{,**}			rw,
+  owner @{HOME}/.config/pulse/{,**/}*			k,
   
   # TEMP -----------------------------------------------
   audit owner /tmp/pulse-*/				rw,	# FIX ME! audit 26.11.2017

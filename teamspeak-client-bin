@@ -59,13 +59,13 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   deny /opt/teamspeak3-client/update			x,	# Не разрешать обновления, используем portage.
   
   # READS/WRITES ---------------------------------------
-  /opt/teamspeak3-client/{,**/}				r,
-  /opt/teamspeak3-client/{,**/}*			rk,
+  /opt/teamspeak3-client/{,**}				r,
+  /opt/teamspeak3-client/{,**/}*			k,
   /opt/teamspeak3-client/{,**/}*.so{,.[0-9]*}		m,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.ts3client/{,**/}			rw,
-  owner @{HOME}/.ts3client/{,**/}*			rwk,
+  owner @{HOME}/.ts3client/{,**}			rw,
+  owner @{HOME}/.ts3client/{,**/}*			k,
   owner @{HOME}/.ts3client/plugins/*.so			m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   owner @{HOME}/.pki/nssdb/*				rwk,
   

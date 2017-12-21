@@ -68,10 +68,10 @@ profile mumble /usr/bin/mumble {
   /usr/bin/lsb_release					Px,	# sys-apps/lsb-release
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.local/share/data/Mumble/{,**/}		rw,
-  owner @{HOME}/.local/share/data/Mumble/{,**/}*	rwk,
-  owner @{HOME}/.config/Mumble/{,**/}			rw,
-  owner @{HOME}/.config/Mumble/{,**/}*			rwk,
+  owner @{HOME}/.local/share/data/Mumble/{,**}		rw,
+  owner @{HOME}/.local/share/data/Mumble/{,**/}*	k,
+  owner @{HOME}/.config/Mumble/{,**}			rw,
+  owner @{HOME}/.config/Mumble/{,**/}*			k,
   owner @{HOME}/.MumbleSocket				rw,
   owner @{HOME}/.MumbleOverlayPipe			rw,
 }

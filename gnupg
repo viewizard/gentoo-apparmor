@@ -54,8 +54,8 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} {
   owner link subset /var/lib/gentoo/gkeys/keyrings/gentoo/release/{,**/}* -> /var/lib/gentoo/gkeys/keyrings/gentoo/release/{,**/}*,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.gnupg/{,**/}				rw,
-  owner @{HOME}/.gnupg/{,**/}*				rwk,
+  owner @{HOME}/.gnupg/{,**}				rw,
+  owner @{HOME}/.gnupg/{,**/}*				k,
   owner link subset @{HOME}/.gnupg/{,**/}*		-> /{home/*,root}/.gnupg/{,**/}*,	# TARGET! @{HOME}
   
   # TEMP -----------------------------------------------
