@@ -179,11 +179,14 @@ profile local.home.evelauncher.LogLite /home/@{USER}/evelauncher/LogLite {
   #include <abstractions/qt>
   #include <abstractions/video>
   #include <abstractions/nameservice>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/accessibility-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
+  owner @{PROC}/@{pid}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   owner @{HOME}/evelauncher/LogLite			mr,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.

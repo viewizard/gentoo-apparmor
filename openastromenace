@@ -17,6 +17,7 @@ profile openastromenace /usr/{,games/}bin/openastromenace {
   #include <abstractions/audio>
   #include <abstractions/video>
   #include <abstractions/X>
+  #include <abstractions/dbus/session-strict>
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -30,7 +31,7 @@ profile openastromenace /usr/{,games/}bin/openastromenace {
   @{sys}/class/input/					r,
   @{sys}/class/sound/					r,
   @{sys}/devices/**/uevent				r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/**/sound/**/capabilities/* r,
+  @{sys}/devices/**/input@{input}/capabilities/*	r,
   
   # EXECUTABLES ----------------------------------------
   /usr/{,games/}bin/openastromenace			mr,
@@ -40,4 +41,7 @@ profile openastromenace /usr/{,games/}bin/openastromenace {
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/astromenace/{,*}		rw,
+  
+  # READS/WRITES ---------------------------------------
+  /run/udev/data/[a-z]*[0-9]*:[0-9]*			r,
 }

@@ -281,6 +281,7 @@ profile shell_root {
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
   /{,**/}						r,	# Разрешаем получать списки файлов в директориях.
+  /usr/src/patch.patch					w,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
   
   profile ls /bin/ls {
     #include <abstractions/base>
