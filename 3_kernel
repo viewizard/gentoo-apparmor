@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile kernel.sign-file /usr/src/@{kernel}/scripts/sign-file {
+profile kernel.scripts.sign-file /usr/src/@{kernel}/scripts/sign-file {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -64,7 +64,7 @@ profile kernel.gen-ima-certs /usr/src/IMA/certs/* {
   }
 }
 
-profile kernel.checkpatch.pl /usr/src/@{kernel}/scripts/checkpatch.pl {
+profile kernel.scripts.checkpatch.pl /usr/src/@{kernel}/scripts/checkpatch.pl {
   #include <abstractions/base>
   #include <abstractions/perl>
   
