@@ -34,6 +34,9 @@ profile smplayer /usr/bin/smplayer {
   signal (send) set=(kill,term) peer="mpv",			# media-video/mpv
   signal (send) set=(kill,term) peer="mplayer",			# media-video/mplayer
   
+  # NETWORK --------------------------------------------
+  deny network netlink raw,					# Запрещаем работу с сетью.
+  
   # PSEUDO ---------------------------------------------
   /dev/							r,
   /dev/tty						r,
