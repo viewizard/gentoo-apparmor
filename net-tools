@@ -49,8 +49,6 @@ profile net-tools.netstat /bin/netstat {
   
   # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
-  capability sys_admin,
-  capability syslog,
   capability dac_override,
   capability dac_read_search,
   
@@ -71,6 +69,9 @@ profile net-tools.netstat /bin/netstat {
   
   # EXECUTABLES ----------------------------------------
   /bin/netstat						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/networks						r,
   
   # DENY INHERIT ---------------------------------------
   deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily

@@ -14,6 +14,7 @@
 # https://github.com/electron/electron/issues/10589
 # Доступные для пользователя файлы на запись/изменения нельзя давать на mmap:
 # /dev/shm/.org.chromium.Chromium.XXXXXX
+# /dev/shm/cnd-@{pids}-[0-9]*
 # @{HOME}/.config/skypeforlinux/**
 # @{HOME}/.cache/**
 # @{HOME}/.local/**
@@ -120,7 +121,7 @@ profile skypeforlinux /opt/skypeforlinux/skypeforlinux {
   owner /dev/shm/.org.chromium.Chromium.@{TMP6}		mrw,	# FIX ME! Плохо, надо разрешать mmap
   								# (к этим файлам могут получить доступ другие процессы).
   								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-  owner /dev/shm/cnd-@{pids}-[0-9]*			rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /dev/shm/cnd-@{pids}-[0-9]*			mrw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   @{sys}/bus/pci/devices/				r,
   @{sys}/devices/system/cpu/				r,
   @{sys}/devices/system/cpu/cpu[0-9]*/			r,
