@@ -43,6 +43,9 @@ profile vlc /usr/bin/vlc {
   	interface="org.mpris.MediaPlayer[0-9]*.TrackList"
   	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
   
+  # NETWORK --------------------------------------------
+  deny network netlink raw,					# Запрещаем работу с сетью.
+  
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
   /dev/tty[0-9]*					rw,

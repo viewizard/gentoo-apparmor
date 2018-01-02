@@ -26,6 +26,7 @@ profile mdadm /sbin/mdadm {
   /dev/.tmp.md.*					w,
   @{sys}/block/						r,
   @{sys}/bus/pci/drivers/ahci/				r,
+  @{sys}/devices/pci@{PCI2}/@{PCI4}/{class,device,vendor} r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/**/{class,device,vendor} r,
   @{sys}/devices/virtual/block/md[0-9]*/*		r,
   @{sys}/devices/virtual/block/md[0-9]*/md/array_state	rw,

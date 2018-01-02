@@ -22,6 +22,7 @@ profile exo.exo-open /usr/bin/exo-open flags=(attach_disconnected) {
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
+  #include <abstractions/fs/access-strict>
   #include <abstractions/profile_transitions/users-mime-related>
   
   # PSEUDO ---------------------------------------------
@@ -35,7 +36,6 @@ profile exo.exo-open /usr/bin/exo-open flags=(attach_disconnected) {
   # READS/WRITES ---------------------------------------
   /etc/machine-id					r,
   /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
-  audit /usr/portage/licenses/{,*}			r,	# FIX ME! audit 6.12.2017 - почему это тут?
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
@@ -153,6 +153,7 @@ profile exo_open_root flags=(attach_disconnected) {
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
+  #include <abstractions/fs/access-strict>
   #include <abstractions/profile_transitions/root-mime-related>
   
   # CAPABILITIES ---------------------------------------
@@ -169,7 +170,6 @@ profile exo_open_root flags=(attach_disconnected) {
   # READS/WRITES ---------------------------------------
   /etc/machine-id					r,
   /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
-  audit /usr/portage/licenses/{,*}			r,	# FIX ME! audit 6.12.2017 - почему это тут?
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
