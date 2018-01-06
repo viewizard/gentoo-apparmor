@@ -51,6 +51,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
   /usr/bin/gcc						ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
   /usr/bin/cmp						ix,	# sys-apps/diffutils	# FS ACCESS!
   /usr/bin/find						ix,	# sys-apps/findutils	# FS ACCESS!
+  /usr/bin/getconf					ix,	# sys-libs/glibc	# FS ACCESS!
   /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-gcc		ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
   /usr/@{CHOST}/binutils-bin/[0-9]*/strip		ix,	# sys-devel/binutils	# FIX ME! Вынести в отдельный профиль.
   /var/tmp/portage/genkernel/*/busybox-*/scripts/{,**/}* ix,	# sys-kernel/genkernel-next
@@ -59,6 +60,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
   /							r,
   /etc/env.d/gcc/{,**}					r,	# sys-devel/gcc
   /lib{,32,64}/modules/{,**}				rw,
+  /usr/include/{,**}					r,
   /usr/share/gcc-data/@{CHOST}/[0-9]*/locale/**.mo	r,	# sys-devel/gcc
   /usr/share/binutils-data/@{CHOST}/[0-9]*/locale/**.mo	r,	# sys-devel/binutils
   /usr/src/@{kernel}/{,**}				rw,	# sys-kernel/gentoo-sources	# r - т.к. могут быть скрипты.
@@ -84,6 +86,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
+    owner @{PROC}/cmdline				r,
     owner @{PROC}/@{pid}/fd/				r,
     
     # EXECUTABLES --------------------------------------
@@ -112,7 +115,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /bin/expr						ix,	# sys-apps/coreutils	# FS ACCESS!
     /bin/sleep						Px,	# sys-apps/coreutils
     /bin/mkdir						ix,	# sys-apps/coreutils	# FS ACCESS!
-    /bin/kmod						Px,	# sys-apps/kmod
+    /bin/kmod						ix,	# sys-apps/kmod		# Все правильно, ix. Чтобы установить модули ядра, ставим IMA hash в IMA policy для make//shell профиля.
     /bin/mktemp						ix,	# sys-apps/coreutils	# FS ACCESS!
     /bin/hostname					Px,	# sys-apps/net-tools
     /bin/touch						ix,	# sys-apps/coreutils	# FS ACCESS!

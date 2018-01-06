@@ -283,6 +283,7 @@ profile shell_root {
   /etc/profile.env					r,
   /{,**/}						r,	# Разрешаем получать списки файлов в директориях.
   /usr/src/patch.patch					w,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
+  /usr/src/*-patchset/**.patch				r,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
   
   profile ls /bin/ls {
     #include <abstractions/base>
@@ -643,6 +644,7 @@ profile shell_root {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/find					mr,
+    /bin/ln						ix,	# sys-apps/coreutils	# FIX ME!
   }
   
   profile gawk /usr/bin/gawk {

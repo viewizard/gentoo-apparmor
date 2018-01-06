@@ -120,6 +120,7 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean {
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
   /bin/stty						Px,	# sys-apps/coreutils
+  /bin/bzip2						Cx,	# app-arch/bzip2
   /usr/bin/sandbox					cx,	# sys-apps/sandbox
   /usr/bin/id						Px,	# sys-apps/coreutils
   
@@ -151,6 +152,20 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean {
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /bin/uname						Px,	# sys-apps/coreutils
+  }
+  
+  profile bzip2 /bin/bzip2 {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/bzip2						mr,
+    
+    # READS/WRITES -------------------------------------
+    /var/db/pkg/*/*/**.bz2				r,
   }
   
   profile sandbox /usr/bin/sandbox {
