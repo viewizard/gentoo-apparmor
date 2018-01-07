@@ -2,7 +2,7 @@
 #
 #  Copyright (C) 2002-2009 Novell/SUSE
 #  Copyright (C) 2009-2011 Canonical Ltd.
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -39,8 +39,8 @@ audit deny dbus (send, receive) peer=(label=unconfined),	# Запрещаем р
 /dev/full						rw,
 @{sys}/devices/system/cpu/online			r,
 @{PROC}/{cpuinfo,stat,meminfo}				r,
-owner @{PROC}/@{pid}/maps				r,	# glibc's *printf protections read the maps file
-owner @{PROC}/@{pid}/status				r,
+@{PROC}/@{pid}/{maps,status}				r,	# glibc's *printf protections read the maps file
+								# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
 @{PROC}/filesystems					r,
 @{PROC}/sys/vm/overcommit_memory			r,
 @{PROC}/sys/kernel/cap_last_cap				r,

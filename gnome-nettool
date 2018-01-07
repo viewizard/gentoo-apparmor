@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -47,7 +47,7 @@ profile gnome-nettool /usr/bin/gnome-nettool {
   /dev/pts/[0-9]*					rw,
   @{sys}/devices/pci@{PCI2}/**/@{PCI4}/net/@{NIC}/statistics/* r,
   @{sys}/devices/virtual/net/@{VNIC}/statistics/*	r,
-  owner @{PROC}/@{pid}/fd/				r,
+  @{PROC}/@{pid}/fd/					r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
   @{PROC}/@{pid}/net/dev				r,	# IMPROVE! UID=$USER(owner),root
   audit @{PROC}/@{pid}/net/{tcp,udp,udplite,raw,igmp}	r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
   

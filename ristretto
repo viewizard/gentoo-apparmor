@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -35,14 +35,34 @@ profile ristretto /usr/bin/ristretto {
   #include <abstractions/unix/gvfsd-smb-virtual>
   #include <abstractions/profile_transitions/users-strict-web>
   
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/org/xfce/FileManager"
+  	interface="org.freedesktop.DBus.Properties"
+  	peer=(name=":[0-9]*.[0-9]*",label="thunar"),	# xfce-base/thunar
+  dbus send
+  	bus=session
+  	path="/org/freedesktop/thumbnails/Thumbnailer*"
+  	interface="org.freedesktop.DBus.Properties"
+  	peer=(name=":[0-9]*.[0-9]*",label="tumbler"),	# xfce-extra/tumbler
+  dbus send
+  	bus=session
+  	path="/org/freedesktop/thumbnails/Thumbnailer*"
+  	interface="org.freedesktop.thumbnails.Thumbnailer*"
+  	peer=(name=":[0-9]*.[0-9]*",label="tumbler"),	# xfce-extra/tumbler
+  
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/fd/				r,
+  @{PROC}/@{pid}/fd/					r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/ristretto					mr,
   /usr/bin/exo-open					Px,	# xfce-base/exo
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/misc/magic.mgc				r,	# sys-apps/file
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/xfce4/help.rc			rw,

@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -57,6 +57,7 @@ profile xsane /usr/bin/xsane {
   /etc/udev/udev.conf					r,	# sys-fs/eudev
   /etc/sane.d/{,**}					r,
   /usr/share/sane/xsane/{,**}				r,
+  /run/udev/data/{[a-z]*[0-9]*:[0-9]*,+usb:@{USB4}}	r,
   
   # USERS ----------------------------------------------
   owner @{HOME}/.sane/{,**}				rw,

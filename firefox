@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -82,16 +82,15 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   @{sys}/devices/pci@{PCI2}/@{PCI4}/**/uevent		r,
   @{PROC}/						r,
   @{PROC}/filesystems					r,
-  owner @{PROC}/@{pid}/fd/				r,
-  owner @{PROC}/@{pid}/mountinfo			r,
-  owner @{PROC}/@{pid}/stat				r,
+  @{PROC}/@{pid}/fd/					r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
+  @{PROC}/@{pid}/mount{s,info}				r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
+  @{PROC}/@{pid}/stat					r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
   owner @{PROC}/@{pids}/statm				r,
   owner @{PROC}/@{pids}/smaps				r,
   audit owner @{PROC}/@{pid}/environ			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
   audit owner @{PROC}/@{pid}/auxv			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
   owner @{PROC}/@{pid}/cmdline				r,
-  owner @{PROC}/@{pid}/mounts				r,
-  owner @{PROC}/@{pid}/task/@{pids}/stat		r,
+  @{PROC}/@{pid}/task/@{pids}/stat			r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
   @{PROC}/@{pid}/net/arp				r,	# IMPROVE! UID=$USER(owner),root
   audit @{PROC}/@{pid}/net/if_inet6			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
   audit @{PROC}/@{pid}/net/ipv6_route			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017

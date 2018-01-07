@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -139,7 +139,6 @@ profile skypeforlinux /opt/skypeforlinux/skypeforlinux {
   @{PROC}/sys/kernel/ostype				r,
   @{PROC}/sys/kernel/osrelease				r,
   audit owner @{PROC}/@{pids}/auxv			r,	# FIX ME! audit 28.11.2017 был нужен бета версии.
-  owner @{PROC}/@{pid}/fd/				r,
   owner @{PROC}/@{pids}/task/				r,
   owner @{PROC}/@{pids}/task/@{pids}/status		r,
   deny /dev/nvidiactl					m,

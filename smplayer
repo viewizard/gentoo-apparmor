@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -24,6 +24,8 @@ profile smplayer /usr/bin/smplayer {
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
+  #include <abstractions/dbus/session-bind>
+  #include <abstractions/dbus/mpris2-server>
   #include <abstractions/fs/access-by-users-preset-rk>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/unix/gvfsd-smb>
@@ -45,7 +47,7 @@ profile smplayer /usr/bin/smplayer {
   /dev/tty						r,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/cmdline				r,
+  @{PROC}/@{pid}/cmdline				r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/smplayer					mr,

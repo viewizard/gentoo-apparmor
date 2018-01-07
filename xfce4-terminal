@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -45,7 +45,7 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
   /dev/ptmx						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/fd/				r,
+  @{PROC}/@{pid}/fd/					r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-terminal				mr,

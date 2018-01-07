@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -119,8 +119,7 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   owner @{PROC}/@{pid}/fd/				r,
-  audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
-  owner @{PROC}/@{pid}/mountinfo			r,
+  @{PROC}/@{pid}/mount{s,info}				r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfs-udisks2-volume-monitor		mr,
@@ -154,7 +153,8 @@ profile gvfs.gvfsd /usr/libexec/gvfsd {
   	peer=(name=":[0-9]*.[0-9]*"),
   
   # PSEUDO ---------------------------------------------
-  owner @{PROC}/@{pid}/fd/				rw,
+  @{PROC}/@{pid}/fd/					r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
+  audit @{PROC}/@{pid}/fd/				w,	# FIX ME! audit 08.01.2018	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd					mr,
@@ -517,8 +517,7 @@ profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   
   # PSEUDO ---------------------------------------------
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,*/}name	r,
-  audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
-  owner @{PROC}/@{pid}/mountinfo			r,
+  @{PROC}/@{pid}/mount{s,info}				r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-trash				mr,

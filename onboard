@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -46,8 +46,8 @@ profile onboard /usr/bin/onboard {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/fd/				r,
-  owner @{PROC}/@{pid}/mounts				r,
+  owner @{PROC}/@{pid}/fd/				r,	# FIX ME! Проверить доступ.
+  owner @{PROC}/@{pid}/mounts				r,	# FIX ME! Проверить доступ.
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/onboard					mr,
@@ -102,8 +102,8 @@ profile onboard_settings /usr/bin/onboard-settings {
   @{sys}/class/						r,
   @{sys}/class/input/					r,
   @{sys}/devices/**/input@{input}/uevent		r,
-  owner @{PROC}/@{pid}/fd/				r,
-  owner @{PROC}/@{pid}/mounts				r,
+  owner @{PROC}/@{pid}/fd/				r,	# FIX ME! Проверить доступ.
+  owner @{PROC}/@{pid}/mounts				r,	# FIX ME! Проверить доступ.
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/onboard-settings				mr,

@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -22,6 +22,7 @@ profile qtox /usr/bin/qtox {
   #include <abstractions/fs/access-by-pattern-internet>
   #include <abstractions/nameservice>
   #include <abstractions/audio>
+  #include <abstractions/xdg-open>
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -34,10 +35,14 @@ profile qtox /usr/bin/qtox {
   /dev/							r,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/cmdline				r,
+  @{PROC}/@{pid}/cmdline				r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/qtox						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/os-release					r,
+  /etc/lsb-release					r,
   
   # USERS ----------------------------------------------
   owner @{HOME_CACHE}/Tox/				rw,

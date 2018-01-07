@@ -1,0 +1,38 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2018 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# MPRIS2
+# Корректировать @{MPRIS2_CLIENTS} в /etc/apparmor.d/local/tunables.d/mpris2
+
+dbus receive
+	bus=session
+	path="/org/mpris/MediaPlayer2"
+	interface="org.freedesktop.DBus.Properties"
+	peer=(name=":[0-9]*.[0-9]*",label="@{MPRIS2_CLIENTS}"),
+dbus receive
+	bus=session
+	path="/org/mpris/MediaPlayer2"
+	interface="org.mpris.MediaPlayer2.Playlists"
+	peer=(name=":[0-9]*.[0-9]*",label="@{MPRIS2_CLIENTS}"),
+dbus send
+	bus=session
+	path="/org/mpris/MediaPlayer2"
+	interface="org.freedesktop.DBus.Properties"
+	peer=(name="org.freedesktop.DBus",label="@{MPRIS2_CLIENTS}"),
+dbus send
+	bus=session
+	path="/org/mpris/MediaPlayer2"
+	interface="org.mpris.MediaPlayer2.Player"
+	peer=(name="org.freedesktop.DBus",label="@{MPRIS2_CLIENTS}"),
+dbus receive
+	bus=session
+	path="/org/mpris/MediaPlayer2"
+	interface="org.mpris.MediaPlayer2.Player"
+	peer=(name=":[0-9]*.[0-9]*",label="@{MPRIS2_CLIENTS}"),

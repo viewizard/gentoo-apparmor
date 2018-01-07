@@ -288,6 +288,12 @@ grep -rlE "acpid|/dev/console" ./*
 
 /var/log/audit.log
 
+Важно!!!
+apparmor="DENIED" operation="open" profile="porthole" name="/proc/1620/mounts" pid=1620 comm="porthole" requested_mask="r" denied_mask="r" fsuid=1000 ouid=0
+fsuid - (!!!) UID с которым работаем с объектами файловой системой
+ouid - (!!!) UID объекта файловой системы
+
+
 flags=(complain)
 apparmor_parser -r /etc/apparmor.d/bash
 apparmor_parser -R /etc/apparmor.d/bash

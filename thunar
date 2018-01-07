@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -57,6 +57,11 @@ profile thunar /usr/bin/{Thunar,thunar} {
   	path="/org/xfce/FileManager"
   	interface="org.xfce.{FileManager,Thunar}"
   	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
+  dbus receive
+  	bus=session
+  	path="/org/xfce/FileManager"
+  	interface="org.freedesktop.DBus.Properties"
+  	peer=(name=":[0-9]*.[0-9]*"),
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -67,8 +72,8 @@ profile thunar /usr/bin/{Thunar,thunar} {
   /dev/pts/[0-9]*					rw,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
-  owner @{PROC}/@{pid}/fd/				r,
-  owner @{PROC}/@{pid}/mount{s,info}			r,
+  @{PROC}/@{pid}/fd/					r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
+  @{PROC}/@{pid}/mount{s,info}				r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar					mr,
@@ -213,6 +218,11 @@ profile thunar_root {
   	path="/org/xfce/FileManager"
   	interface="org.xfce.{FileManager,Thunar}"
   	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
+  dbus receive
+  	bus=session
+  	path="/org/xfce/FileManager"
+  	interface="org.freedesktop.DBus.Properties"
+  	peer=(name=":[0-9]*.[0-9]*"),
   
   # NETWORK --------------------------------------------
   network netlink raw,

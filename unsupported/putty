@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -32,7 +32,7 @@ profile putty /usr/bin/putty flags=(complain) {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/loginuid				r,
+#  owner @{PROC}/@{pid}/loginuid			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/putty					mr,

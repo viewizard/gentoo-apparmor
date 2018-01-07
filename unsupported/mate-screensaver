@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -25,7 +25,7 @@ profile mate-screensaver /usr/bin/mate-screensaver {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/fd/				r,
+#  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mate-screensaver				mr,
@@ -78,7 +78,7 @@ profile mate-screensaver-preferences /usr/bin/mate-screensaver-preferences {
   #include <abstractions/dconf>
   
   # PSEUDO ---------------------------------------------
-  owner @{PROC}/@{pid}/fd/				r,
+#  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mate-screensaver-preferences			mr,
@@ -155,7 +155,7 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
   #include <abstractions/authentication>
   
   # PSEUDO ---------------------------------------------
-  owner @{PROC}/@{pid}/fd/				r,
+#  owner @{PROC}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/mate-screensaver-dialog			mr,

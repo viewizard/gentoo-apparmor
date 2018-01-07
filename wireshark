@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -51,7 +51,6 @@ profile wireshark /usr/bin/wireshark{,-gtk} {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{PROC}/@{pid}/net/dev				r,	# IMPROVE! UID=$USER(owner),root
-  audit owner @{PROC}/@{pid}/cmdline			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/wireshark{,-gtk}				mr,

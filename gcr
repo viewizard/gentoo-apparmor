@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -25,20 +25,27 @@ profile gcr.gcr-viewer /usr/bin/gcr-viewer {
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
+  #include <abstractions/dbus/gvfs>
   #include <abstractions/fs/access-by-users-preset-rk>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/fs/deny-private-strict>
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   owner @{PROC}/@{pid}/fd/				r,
+  @{PROC}/@{pid}/mounts					r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gcr-viewer					mr,
   
   # READS/WRITES ---------------------------------------
-  /usr/share/p11-kit/modules/{,*.module}		r,
   /usr/lib{,32,64}/pkcs11/*.so				m,
+  /usr/share/locale/*/LC_MESSAGES/*.mo			m,
+  /usr/share/p11-kit/modules/{,*.module}		r,
+  /usr/share/p11-kit/modules/*.module			m,
+  /usr/share/fonts/**/*.ttf				m,
 }
 
 profile gcr.gcr-prompter /usr/libexec/gcr-prompter {

@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -51,7 +51,7 @@ profile xfce4-panel /usr/bin/xfce4-panel {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/fd/				r,
+  @{PROC}/@{pid}/fd/					r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-panel					Pxmr,	# Все парвильно, запуск и mmap.
@@ -138,7 +138,7 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   /dev/pts/[0-9]*					rw,
   @{sys}/devices/system/cpu/cpufreq/policy[0-9]*/scaling_* r,
   @{PROC}/uptime					r,
-  owner @{PROC}/@{pid}/fd/				r,
+  @{PROC}/@{pid}/fd/					r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/panel/wrapper-1.0		m,
@@ -164,7 +164,6 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   owner @{HOME}/.config/xfce4/xfce4-notes.gtkrc*	rw,	# xfce-extra/xfce4-notes-plugin
   owner @{HOME}/.config/xfce4/help.rc			r,
   owner @{HOME_CACHE}/xfce4/				rw,
-  owner @{HOME_CACHE}/xfce4/clipman/{,*}		rw,	# xfce-extra/xfce4-clipman-plugin
   owner @{HOME_CACHE}/xfce4/weather/{,*}		rw,	# xfce-extra/xfce4-weather-plugin
   owner @{HOME}/.local/share/applications/**.desktop	rw,
   owner @{HOME}/.local/share/desktop-directories/{,*.directory} r,
@@ -185,10 +184,12 @@ profile xfce4-panel.wrapper-2.0 /usr/lib{,32,64}/xfce4/panel/wrapper-2.0 {
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
+  #include <abstractions/dbus/session-bind>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/xfconf>
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/notifications>
+  #include <abstractions/dbus/mpris2-client>			# xfce-extra/xfce4-pulseaudio-plugin
   #include <abstractions/profile_transitions/users-all>
   #include <local/profile_blocks/xfce4-panel.d/>
   
@@ -202,12 +203,20 @@ profile xfce4-panel.wrapper-2.0 /usr/lib{,32,64}/xfce4/panel/wrapper-2.0 {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
+  @{PROC}/@{pid}/fd/					r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/panel/wrapper-2.0		m,
   /usr/sbin/xfpm-power-backlight-helper			Px,	# xfce-extra/xfce4-power-manager
   
+  # READS/WRITES ---------------------------------------
+  /etc/xdg/xfce4/panel/{,**}				r,
+  /usr/share/xfce4/xkb/flags/*.svg			r,	# xfce-extra/xfce4-xkb-plugin
+  
   # USERS ----------------------------------------------
+  owner @{HOME}/.config/xfce4/help.rc			r,
+  owner @{HOME}/.config/xfce4/panel/{,**}		rw,
   owner @{HOME_CACHE}/xfce4/notifyd/{,**}		rw,	# xfce-extra/xfce4-notifyd
+  owner @{HOME_CACHE}/xfce4/clipman/{,*}		rw,	# xfce-extra/xfce4-clipman-plugin
   owner @{HOME}/.local/share/gvfs-metadata/root{,-@{TMP8}.log} r,	# xfce-extra/xfce4-notifyd, gnome-base/gvfs
 }
