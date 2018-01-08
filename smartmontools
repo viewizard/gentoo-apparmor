@@ -56,12 +56,14 @@ profile smartmontools.smartctl /usr/sbin/smartctl {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_REAL}					r,
+  @{sys}/devices/pci@{PCI2}/@{PCI4}/ata[0-9]*/host[0-9]*/scsi_host/host[0-9]*/proc_name r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/smartctl					mr,
   
   # READS/WRITES ---------------------------------------
   /usr/share/smartmontools/**				r,
+  /var/db/smartmontools/**				r,
 }
 
 profile smartmontools.init.d /etc/init.d/smartd flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
