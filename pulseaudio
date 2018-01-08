@@ -116,8 +116,6 @@ profile pulseaudio.pacmd /usr/bin/pacmd {
   # READS/WRITES ---------------------------------------
   owner /run/user/@{UID}/pulse/				r,
   owner /run/user/@{UID}/pulse/pid			rk,
-  owner /run/user/@{UID}/pulse/cli			rw,	# FIX ME! smplayer, проигрывая через mplayer постоянно
-  								# запрашивает доступ на чтение с fsuid=1000 ouid=0
-  								# (запускаем pulseaudio и smplayer в сессии пользователя,
-  								# откуда у него поток от root - непонятно).
+  /run/user/@{UID}/pulse/cli				r,	# IMPROVE! ouid=$USER(owner),root
+  owner /run/user/@{UID}/pulse/cli			w,
 }

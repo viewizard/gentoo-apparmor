@@ -43,6 +43,17 @@ profile xfce4-power-manager /usr/bin/xfce4-power-manager {
   	peer=(name=":[0-9]*.[0-9]*",label=@{profile_name}),
   dbus receive
   	bus=session
+  	path="/org/freedesktop/PowerManagement/Inhibit"
+  	interface="org.freedesktop.DBus.Properties"
+	member=GetAll
+  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-panel.wrapper-2.0"),	# Для xfce4-panel плагина.
+  dbus receive
+  	bus=session
+  	path="/org/freedesktop/PowerManagement/Inhibit"
+  	interface="org.freedesktop.PowerManagement.Inhibit"
+  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-panel.wrapper-2.0"),	# Для xfce4-panel плагина.
+  dbus receive
+  	bus=session
   	path="/org/xfce/PowerManager"
   	interface="org.xfce.Power.Manager"
   	peer=(name=":[0-9]*.[0-9]*",label="xfce4-power-manager.xfce4-power-manager-settings"),
