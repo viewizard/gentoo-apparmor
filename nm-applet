@@ -71,7 +71,7 @@ profile nm-applet /usr/bin/nm-applet {
   @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/uevent r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/@{USB4}/uevent r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/**/@{USB4}/uevent r,
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
+  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/nm-applet					mr,

@@ -47,8 +47,8 @@ profile gnome-nettool /usr/bin/gnome-nettool {
   /dev/pts/[0-9]*					rw,
   @{sys}/devices/pci@{PCI2}/**/@{PCI4}/net/@{NIC}/statistics/* r,
   @{sys}/devices/virtual/net/@{VNIC}/statistics/*	r,
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
-  @{PROC}/@{pid}/net/dev				r,	# IMPROVE! UID=$USER(owner),root
+  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC}/@{pid}/net/dev				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   audit @{PROC}/@{pid}/net/{tcp,udp,udplite,raw,igmp}	r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
   
   # EXECUTABLES ----------------------------------------

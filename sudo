@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -40,7 +40,7 @@ profile sudo /usr/bin/sudo {
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! UID=$USER(owner),root
+  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   owner @{PROC}/@{pid}/stat				r,
   owner @{PROC}/@{pid}/attr/current			w,
   audit @{PROC}/@{pid}/attr/exec			w,	# FIX ME! @{pid}/@{pids} audit 19.10.2017

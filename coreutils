@@ -20,7 +20,7 @@ profile coreutils.df /bin/df {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/mount{s,info}				r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
+  @{PROC}/@{pid}/mount{s,info}				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /bin/df						mr,
@@ -37,7 +37,7 @@ profile coreutils.stat /usr/bin/stat {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/mount{s,info}				r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
+  @{PROC}/@{pid}/mount{s,info}				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/stat						mr,

@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -50,9 +50,11 @@ profile dbus.dbus-daemon /usr/bin/dbus-daemon {
   @{sys}/kernel/security/apparmor/features/dbus/mask	r,	# AppArmor dbus mediation
   @{sys}/kernel/security/apparmor/.access		rw,	# AppArmor dbus mediation
   @{PROC}/@{pids}/cmdline				r,
-  @{PROC}/@{pid}/mounts					r,	# AppArmor dbus mediation	# IMPROVE! UID=messagebus(owner),root
+  @{PROC}/@{pid}/mounts					r,	# AppArmor dbus mediation
+  								# IMPROVE! Ограничить (fsuid=messagebus && ouid=messagebus,root).
   owner @{PROC}/@{pid}/oom_score_adj			w,
-  @{PROC}/@{pid}/attr/current				r,	# AppArmor dbus mediation	# IMPROVE! UID=messagebus(owner),root
+  @{PROC}/@{pid}/attr/current				r,	# AppArmor dbus mediation
+  								# IMPROVE! Ограничить (fsuid=messagebus && ouid=messagebus,root).
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dbus-daemon					mr,

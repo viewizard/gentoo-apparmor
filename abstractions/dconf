@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -11,8 +11,8 @@
 #include <abstractions/dbus/dconf>
 
 # READS/WRITES -----------------------------------------
-owner /run/user/@{UID}/dconf/{,user}			rw,	# IMPROVE! Только для пользователей (owner>=1000).
+owner /run/user/@{UID}/dconf/{,user}			rw,	# IMPROVE! Только для (fsuid>=1000 && ouid>=1000).
 
 # USERS ------------------------------------------------
-owner @{HOME_CACHE}/dconf/{,user}			rw,	# IMPROVE! Только для root (owner==root).
+owner @{HOME_CACHE}/dconf/{,user}			rw,	# IMPROVE! Только для (fsuid==root && ouid==root).
 owner @{HOME}/.config/dconf/user			r,

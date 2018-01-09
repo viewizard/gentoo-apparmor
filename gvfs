@@ -34,6 +34,7 @@
 @{GVFSD_NETWORK_SOCKET}+="nm-applet.nm-connection-editor"	# gnome-extra/nm-applet
 @{GVFSD_NETWORK_SOCKET}+="nvidia-drivers.nvidia-settings"	# x11-drivers/nvidia-drivers
 @{GVFSD_NETWORK_SOCKET}+="firefox"				# www-client/firefox
+@{GVFSD_NETWORK_SOCKET}+="audacious"				# media-sound/audacious
 
 # Профили с доступом к gvfsd-smb сокету
 @{GVFSD_SMB_SOCKET}="gvfs.gvfsd-fuse"
@@ -71,6 +72,7 @@
 @{GVFSD_TRASH_SOCKET}+="nm-applet.nm-connection-editor"		# gnome-extra/nm-applet
 @{GVFSD_TRASH_SOCKET}+="nvidia-drivers.nvidia-settings"		# x11-drivers/nvidia-drivers
 @{GVFSD_TRASH_SOCKET}+="firefox"				# www-client/firefox
+@{GVFSD_TRASH_SOCKET}+="audacious"				# media-sound/audacious
 
 # Профили с доступом к gvfsd-trash анонимному сокету
 #@{GVFSD_TRASH_ANON_SOCKET}=""
@@ -119,7 +121,7 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   owner @{PROC}/@{pid}/fd/				r,
-  @{PROC}/@{pid}/mount{s,info}				r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
+  @{PROC}/@{pid}/mount{s,info}				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfs-udisks2-volume-monitor		mr,
@@ -153,8 +155,8 @@ profile gvfs.gvfsd /usr/libexec/gvfsd {
   	peer=(name=":[0-9]*.[0-9]*"),
   
   # PSEUDO ---------------------------------------------
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
-  audit @{PROC}/@{pid}/fd/				w,	# FIX ME! audit 08.01.2018	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
+  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  audit @{PROC}/@{pid}/fd/				w,	# FIX ME! audit 08.01.2018	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd					mr,
@@ -517,7 +519,7 @@ profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   
   # PSEUDO ---------------------------------------------
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,*/}name	r,
-  @{PROC}/@{pid}/mount{s,info}				r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
+  @{PROC}/@{pid}/mount{s,info}				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-trash				mr,

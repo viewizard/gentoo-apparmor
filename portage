@@ -13,11 +13,15 @@
 # необходимо использовать переключение профиля px/cx/ix, если
 # есть взаимодействие с sandbox.
 
+# ВАЖНО!
+# Т.к. abstractions/python может содержать ограничения на запись
+# файлов с байткодом (запись файлов .pyc и .pyo), нельзя её
+# использовать в профиле portage.emerge (и вложенных профилях).
+
 #include <local/tunables.d/>
 
 profile portage.emerge @{PYTHON_EXEC}/emerge {
   #include <abstractions/base>
-  #include <abstractions/python>
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
@@ -74,6 +78,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   /usr/bin/rsync					Cx,	# net-misc/rsync
   /usr/bin/gcc-config					Px,	# sys-devel/gcc-config
   /usr/bin/free						Cx,	# sys-process/procps
+  /usr/bin/@{PYTHON}{,m}				ixr,	# r - нужно для детектирования версии программами.
   /usr/@{CHOST}/binutils-bin/[0-9]*/ld			Cx,	# sys-devel/binutils
   /etc/portage/repo.postsync.d/*			Px,	# Выполняем скрипты, если у них есть профили.
   
@@ -88,6 +93,8 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   /sbin/{,**}						rw,
   /usr/{,**}						rw,
   /usr/{,**/}*						l,	# l - все правильно, разрешаем на /**.
+  /usr/lib{,32,64}/@{PYTHON}/{,**/}*.{pyc,so}		m,
+  /usr/lib{,32,64}/@{PYTHON}/lib-dynload/*.so		m,
   /usr/portage/distfiles/**				rw,
   /usr/portage/distfiles/{,**/}*			k,
   /usr/portage/packages/**				rw,
@@ -98,7 +105,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   audit deny /usr/local/**				w,	# Исключаем работу с /usr/local/.
   
   # TEMP -----------------------------------------------
-  /tmp/*						rwk,	# IMPROVE! Потом ограничить fsuid/uid == 0 или 250.
+  /tmp/*						rwk,	# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
   								# IMPROVE! (?) Потом работать с xattr, чтобы ограничить только на процесс.
   
   profile mount /bin/mount {
@@ -150,6 +157,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /							r,
     /etc/{,**}						r,
     /etc/portage/{,**}					r,
+    /usr/local/portage/{,**}				r,
   }
   
   profile install-info /usr/bin/install-info flags=(complain) {	# FIX ME! complain 06.10.2017
@@ -246,7 +254,6 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   
   profile shell @{shell} {
     #include <abstractions/base>
-    #include <abstractions/python>
     #include <abstractions/nameservice>
     #include <abstractions/X-connection-strict>
     #include <abstractions/dbus/session-strict>
@@ -323,6 +330,8 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /usr/						r,
     /usr/**						rw,
     /usr/{,**/}*					kl,	# l - все правильно, разрешаем на /**.
+    /usr/lib{,32,64}/@{PYTHON}/{,**/}*.{pyc,so}		m,
+    /usr/lib{,32,64}/@{PYTHON}/lib-dynload/*.so		m,
     /usr/portage/packages/**				rw,
     /usr/portage/packages/{,**/}*			k,
     /lib{,32,64}/					r,
@@ -406,7 +415,9 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /dev/pts/[0-9]*					rw,
     /dev/shm/sem.auto*					rw,
     owner /dev/shm/@{TMP6}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-    owner /dev/shm/sem.*-*				w,	# * - вида mp25561-1694533520001241164, где mp25561 привязано к pid-у процесса, * - только цифры, кол-во может быть различным	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+    owner /dev/shm/sem.*-*				w,	# * - вида mp25561-1694533520001241164, где mp25561 привязано к
+    								# pid-у процесса, * - только цифры, кол-во может быть различным
+    								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
     owner /dev/shm/parted*/{,*}				w,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
     owner link subset /dev/shm/sem.*			-> /dev/shm/@{TMP6},
     @{sys}/{,**}					r,
@@ -449,10 +460,13 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     owner /tmp/**					rw,	# Исключительный случай, разрешаем полный доступ.
     owner /tmp/{,**/}*					k,	# Исключительный случай, разрешаем полный доступ.
     								# IMPROVE! (?) Потом работать с xattr, чтобы ограничить только на процесс.
-    /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
+    /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily
+    								# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
     /var/tmp/						r,
     /var/tmp/**						rw,	# Исключительный случай, разрешаем полный доступ.
-    /var/tmp/{,**/}*					k,	# Исключительный случай, разрешаем полный доступ.	# IMPROVE! UID 0, 250
+    								# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
+    /var/tmp/{,**/}*					k,	# Исключительный случай, разрешаем полный доступ.
+    								# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
     								# IMPROVE! (?) Потом работать с xattr, чтобы ограничить только на процесс.
     link subset /var/tmp/portage/{,**/}*		-> /var/tmp/portage/{,**/}*,
   }
@@ -522,8 +536,10 @@ profile portage.env-update @{PYTHON_EXEC}/env-update {
   /var/lib/portage/config				rwk,
   
   # TEMP -----------------------------------------------
-  owner /tmp/{@{TMP6},@{TMP8}}				rw,	# TMP6 - python2, TMP8 - python3	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-  owner /tmp/tmp{@{TMP6},@{TMP8}}			rwk,	# TMP6 - python2, TMP8 - python3	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /tmp/{@{TMP6},@{TMP8}}				rw,	# TMP6 - python2, TMP8 - python3
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /tmp/tmp{@{TMP6},@{TMP8}}			rwk,	# TMP6 - python2, TMP8 - python3
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -673,7 +689,8 @@ profile portage.portageq @{PYTHON_EXEC}/portageq {
   /var/cache/edb/{,**}					r,
   
   # TEMP -----------------------------------------------
-  /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
+  /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily
+  								# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
   owner /tmp/Code::Blocks-@{USER}			w,	# DELEGATION! codeblocks
   
   profile shell @{shell} {
@@ -689,7 +706,8 @@ profile portage.portageq @{PYTHON_EXEC}/portageq {
     /bin/uname						Px,	# sys-apps/coreutils
     
     # TEMP ---------------------------------------------
-    /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
+    /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily
+    								# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
     owner /tmp/Code::Blocks-@{USER}			w,	# DELEGATION! codeblocks
   }
 }
@@ -1013,7 +1031,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     /bin/rm						mr,
     
     # TEMP ---------------------------------------------
-    /var/tmp/portage/webrsync-@{TMP6}/{,**}		rw,	# IMPROVE! UID может быть 250 (portage) или 0 (root).
+    /var/tmp/portage/webrsync-@{TMP6}/{,**}		rw,	# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
   }
   
   profile cut /bin/cut {
@@ -1079,7 +1097,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     /bin/tar						mr,
     
     # TEMP ---------------------------------------------
-    /var/tmp/portage/webrsync-@{TMP6}/**		w,	# IMPROVE! UID может быть 250 (portage) или 0 (root).
+    /var/tmp/portage/webrsync-@{TMP6}/**		w,	# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
   }
   
   profile chown /bin/chown {
@@ -1097,7 +1115,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     /bin/chown						mr,
     
     # TEMP ---------------------------------------------
-    /var/tmp/portage/webrsync-@{TMP6}/**		rw,	# IMPROVE! UID может быть 250 (portage) или 0 (root).
+    /var/tmp/portage/webrsync-@{TMP6}/**		rw,	# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
   }
   
   profile xz /usr/bin/xz {
@@ -1212,8 +1230,10 @@ profile portage.emaint @{PYTHON_EXEC}/emaint {
   /var/cache/edb/{,**}					r,
   
   # TEMP -----------------------------------------------
-  owner /tmp/{@{TMP6},@{TMP8}}				rw,	# TMP6 - python2, TMP8 - python3	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-  owner /tmp/tmp{@{TMP6},@{TMP8}}			rwk,	# TMP6 - python2, TMP8 - python3	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /tmp/{@{TMP6},@{TMP8}}				rw,	# TMP6 - python2, TMP8 - python3
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /tmp/tmp{@{TMP6},@{TMP8}}			rwk,	# TMP6 - python2, TMP8 - python3
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -1299,5 +1319,6 @@ profile portage.ebuild.sh /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh {
   
   # TEMP -----------------------------------------------
   owner /tmp/ebuild-cache.{@{TMP6},@{TMP8}}		rw,	# DELEGATION! eix
-  /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
+  /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily
+  								# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
 }

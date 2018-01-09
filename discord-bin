@@ -63,7 +63,7 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   @{PROC}/@{pids}/stat					r,
   owner @{PROC}/@{pids}/auxv				r,
   owner @{PROC}/@{pids}/task/				r,
-  @{PROC}/@{pids}/task/@{pids}/status			r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
+  @{PROC}/@{pids}/task/@{pids}/status			r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   deny @{PROC}/@{pids}/oom_score_adj			rw,
   deny @{PROC}/@{pids}/cmdline				r,	# Лазит по процессам и смотрит параметры запуска.
   

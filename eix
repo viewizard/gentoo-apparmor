@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -52,7 +52,8 @@ profile eix /usr/bin/eix {
     @{PYTHON_EXEC}/portageq				Px,	# sys-apps/portage
     
     # TEMP ---------------------------------------------
-    /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily	# IMPROVE! UID 0,250
+    /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily
+    								# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
   }
 }
 

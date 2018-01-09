@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -52,7 +52,9 @@ profile polkit.polkitd /usr/lib{,32,64}/polkit-1/polkitd {
   
   # PSEUDO ---------------------------------------------
   @{PROC}/sys/kernel/ngroups_max			r,
-  @{PROC}/@{pid}/maps					r,	# IMPROVE! UID=polkitd(owner),root
+  @{PROC}/@{pid}/maps					r,	# IMPROVE! Ограничить (fsuid=polkitd && ouid=polkitd,root).
+  								# Остальные блокировать (?), т.к. в <abstractions/base>
+  								# разрешаем больше, чем надо.
   @{PROC}/@{pids}/status				r,
   @{PROC}/@{pids}/stat					r,
   @{PROC}/@{pids}/cmdline				r,

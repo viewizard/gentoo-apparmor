@@ -40,7 +40,7 @@ audit deny dbus (send, receive) peer=(label=unconfined),	# Запрещаем р
 @{sys}/devices/system/cpu/online			r,
 @{PROC}/{cpuinfo,stat,meminfo}				r,
 @{PROC}/@{pid}/{maps,status}				r,	# glibc's *printf protections read the maps file
-								# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
+								# IMPROVE! fsuid=$USER ouid=$USER,root
 @{PROC}/filesystems					r,
 @{PROC}/sys/vm/overcommit_memory			r,
 @{PROC}/sys/kernel/cap_last_cap				r,

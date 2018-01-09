@@ -54,8 +54,8 @@ profile transmission /usr/bin/transmission-gtk {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
-  @{PROC}/@{pid}/mounts					r,	# IMPROVE! UID=$USER(owner),root (!root - после удаления bprm_secureexec)
+  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC}/@{pid}/mounts					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   @{PROC}/sys/kernel/random/uuid			r,
   
   # EXECUTABLES ----------------------------------------
