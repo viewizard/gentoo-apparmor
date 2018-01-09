@@ -21,7 +21,7 @@ deny /opt/**/*.{pyo,pyc}{,.*}				w,	# IMA! Нельзя создавать ба�
 
 # USERS ------------------------------------------------
 /etc/@{PYTHON}/**					r,
-/usr/lib{,32,64}/@{PYTHON}/**.{pyc,so}			mr,
+/usr/lib{,32,64}/@{PYTHON}/{,**/}*.{pyc,so}		mr,
 /usr/lib{,32,64}/@{PYTHON}/**.{egg,py,pth}		r,
 /usr/lib{,32,64}/@{PYTHON}/{site,dist}-packages/	r,
 /usr/lib{,32,64}/@{PYTHON}/lib-dynload/*.so		mr,
