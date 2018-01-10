@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -66,6 +66,7 @@ profile shell_users {
   /usr/bin/git						Px,	# dev-vcs/git	# FIX ME! (?) вынести в <local/shell/shell_users.d/>
   /usr/bin/sudo						Px,	# app-admin/sudo
   /usr/bin/whoami					Px,	# sys-apps/coreutils
+  /usr/bin/gpg{,2}					Px,	# app-crypt/gnupg	# Если надо вручную импортировать ключ.
   /usr/bin/id						Px,	# sys-apps/coreutils
   /usr/bin/startx					Px,	# x11-apps/xinit	# FIX ME! (?) вынести в <local/shell/shell_users.d/>
   /usr/bin/startxfce4					Px,	# xfce-base/xfce4-session	# FIX ME! (?) вынести в <local/shell/shell_users.d/>
@@ -270,6 +271,8 @@ profile shell_root {
   /usr/sbin/iftop					Px,	# net-analyzer/iftop
   /usr/sbin/nettop					Px,	# net-analyzer/nettop
   /usr/sbin/firewall					Px,	# net-firewall/iptables
+  /usr/sbin/aa-decode					Px,	# sys-apps/apparmor-utils	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
+  /usr/sbin/iucode_tool					Px,	# sys-apps/iucode_tool	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
   @{PYTHON_EXEC_WRAPPER}				Px -> python_exec_root,	# dev-lang/python-exec
   /usr/local/bin/*					Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
   /usr/local/sbin/*					Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>

@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -30,6 +30,9 @@ profile claws-mail /usr/bin/claws-mail {
   #include <abstractions/fs/access-by-pattern-internet>
   #include <abstractions/xdg-open>
   
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term) peer="gnupg.gpg",
+  
   # NETWORK --------------------------------------------
   network netlink raw,
   network inet dgram,
@@ -43,6 +46,9 @@ profile claws-mail /usr/bin/claws-mail {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/claws-mail					mr,
+  /usr/bin/gpgconf					Px,	# app-crypt/gnupg
+  /usr/bin/gpg{,2}					Px,	# app-crypt/gnupg
+  /usr/bin/gpgsm					Px,	# app-crypt/gnupg
   
   # READS/WRITES ---------------------------------------
   /usr/lib{,32,64}/claws-mail/plugins/*.so		m,

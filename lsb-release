@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -31,6 +31,7 @@ profile lsb-release /usr/bin/lsb_release flags=(attach_disconnected) {
   /etc/lsb-release					r,	# sys-apps/lsb-release
   
   # DENY INHERIT ---------------------------------------
+  deny network netlink raw,					# net-im/discord-bin, discord-bin.Discord
   deny unix (send, receive) peer=(label="discord-bin.Discord"),	# net-im/discord-bin, discord-bin.Discord
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   deny /etc/apparmor.d/					r,	# sys-apps/apparmor, apparmor
@@ -38,6 +39,7 @@ profile lsb-release /usr/bin/lsb_release flags=(attach_disconnected) {
   deny /usr/share/inkscape/extensions/			r,	# media-gfx/inkscape, inkscape
   deny /opt/teamspeak3-client/				r,	# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
   deny /run/user/@{UID}/poedit.*			rw,	# app-i18n/poedit, poedit
+  deny @{HOME}/.config/discord/[0-9]*/modules/**	r,	# net-im/discord-bin, discord-bin.Discord
   
   profile sed /bin/sed flags=(attach_disconnected) {
     #include <abstractions/base>

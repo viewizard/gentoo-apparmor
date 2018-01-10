@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -198,4 +198,51 @@ profile apparmor-utils.aa-logprof @{PYTHON_EXEC}/aa-logprof {
   
   # TEMP -----------------------------------------------
   audit owner /tmp/????????				rw,	# FIX ME! audit 26.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+}
+
+profile apparmor-utils.aa-decode /usr/sbin/aa-decode {
+  #include <abstractions/base>
+  #include <abstractions/perl>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/sbin/aa-decode					r,
+  @{shell}						mr,
+  /bin/egrep						Cx,	# sys-apps/grep
+  /bin/cat						Cx,	# sys-apps/coreutils
+  
+  # TEMP -----------------------------------------------
+  /tmp/@{TMP_SH}					rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  
+  profile egrep /bin/egrep {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/egrep						r,
+    @{shell}						mr,
+    /bin/grep						ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
+  }
+  
+  profile cat /bin/cat {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/cat						mr,
+    
+    # TEMP ---------------------------------------------
+    /tmp/@{TMP_SH}					r,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  }
 }

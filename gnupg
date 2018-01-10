@@ -35,15 +35,20 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
+  # NETWORK --------------------------------------------
+  network inet stream,						# Импорт идентификатора ключа.
+  network inet6 stream,						# Импорт идентификатора ключа.
+  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/fd/				r,
+  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gpg{,2,-static}				mr,
   /usr/bin/gpg-agent					Px,
+  /usr/bin/dirmngr					Px,
   
   # READS/WRITES ---------------------------------------
   /etc/inputrc						r,
@@ -71,7 +76,7 @@ profile gnupg.gpgconf /usr/bin/gpgconf {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/fd/				r,
+  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gpgconf					mr,
@@ -92,4 +97,31 @@ profile gnupg.gpgsm /usr/bin/gpgsm {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gpgsm					mr,
+}
+
+profile gnupg.dirmngr /usr/bin/dirmngr {
+  #include <abstractions/base>
+  
+  # NETWORK --------------------------------------------
+  network inet stream,						# Импорт идентификатора ключа.
+  network inet6 stream,						# Импорт идентификатора ключа.
+  network inet dgram,						# Импорт идентификатора ключа.
+  network inet6 dgram,						# Импорт идентификатора ключа.
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  @{PROC}/@{pid}/task/@{pids}/comm			rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/dirmngr					mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/hosts						r,
+  /etc/ssl/certs/{,**}					r,
+  /usr/share/gnupg/{,**}				r,
+  owner /run/user/@{UID}/gnupg/S.dirmngr		rw,
+  
+  # USERS ----------------------------------------------
+  owner @{HOME}/.gnupg/{,**}				rw,
 }
