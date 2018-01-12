@@ -12,7 +12,8 @@
 
 # предустановка для abstractions/fs/access-by-user-preset-rwk
 @{USERS_DIR_rwk}="[^.]**"
-@{USERS_FILE_rwk}="[^.]*"
+@{USERS_FILE_rwk}="{[^.]*,.goutputstream-@{TMP6}}"
+# .goutputstream-@{TMP6} -> # IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
 
 profile meld /usr/bin/meld {
   #include <abstractions/base>
@@ -77,16 +78,10 @@ profile meld /usr/bin/meld {
   /usr/share/gtksourceview-[2-9]*/{,**}			r,	# x11-libs/gtksourceview
   @{PYTHON_PACKAGES}/cairo/{,**/}			w,	# dev-python/pycairo
   @{PYTHON_PACKAGES}/cairo/**.pyc{,.*}			w,	# dev-python/pycairo
-  owner /run/user/@{UID}/gvfs/**/.goutputstream-@{TMP6}	rw,	# gnome-base/gvfs
-  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-  /media/**/.goutputstream-@{TMP6}			rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-  /run/media/@{USER}/**/.goutputstream-@{TMP6}		rw,	# sys-fs/udisks, /run/media/$USER/VolumeName/
-  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/meld/{,**}			rw,
   owner @{HOME}/.local/share/meld/{,**}			rw,
-  owner @{HOME}/{,**/}.goutputstream-@{TMP6}		rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   # TEMP -----------------------------------------------
   owner /tmp/*						rw,	# системы контроля версий передают файлы на проверку через tmp.
@@ -163,16 +158,10 @@ profile meld_root {
   /usr/share/gtksourceview-[2-9]*/{,**}			r,	# x11-libs/gtksourceview
   @{PYTHON_PACKAGES}/cairo/{,**/}			w,	# dev-python/pycairo
   @{PYTHON_PACKAGES}/cairo/**.pyc{,.*}			w,	# dev-python/pycairo
-  owner /run/user/@{UID}/gvfs/**/.goutputstream-@{TMP6}	rw,	# gnome-base/gvfs
-  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-  /media/**/.goutputstream-@{TMP6}			rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-  /run/media/@{USER}/**/.goutputstream-@{TMP6}		rw,	# sys-fs/udisks, /run/media/$USER/VolumeName/
-  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   # USERS ----------------------------------------------
   owner @{HOME}/.config/meld/{,**}			rw,
   owner @{HOME}/.local/share/meld/{,**}			rw,
-  owner @{HOME}/{,**/}.goutputstream-@{TMP6}		rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   # TEMP -----------------------------------------------
   /tmp/							r,
