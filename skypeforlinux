@@ -19,6 +19,11 @@
 # @{HOME}/.cache/**
 # @{HOME}/.local/**
 
+# .ttf, .ttc
+@{local_ext_font}=[tT][tT][fFcC]
+# .otf
+@{local_ext_font}+=[oO][tT][fF]
+
 profile skypeforlinux.launcher /opt/bin/skypeforlinux {
   #include <abstractions/base>
   #include <abstractions/freedesktop.org>
@@ -155,8 +160,8 @@ profile skypeforlinux /opt/skypeforlinux/skypeforlinux {
   /opt/skypeforlinux/**					r,
   /opt/skypeforlinux/{,**/}*				m,
   /usr/share/mime/mime.cache				m,
-  /usr/share/locale/**.mo				m,
-  /usr/share/fonts/**.{ttf,ttc,otf}			m,
+  /usr/share/locale/{,**/}*.mo				m,
+  /usr/share/fonts/{,**/}*.@{local_ext_font}		m,
   audit /usr/share/icons/*/icon-theme.cache		m,	# FIX ME! audit 28.11.2017 был нужен бета версии.
   
   # USERS ----------------------------------------------

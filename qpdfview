@@ -10,7 +10,13 @@
 
 #include <local/tunables.d/>
 
-@{local_ext}="{pdf,ps,eps,djvu,djv,PDF,PS,EPS,DJVU,DJV}"
+# .pfg
+@{local_ext}=[pP][dD][fF]
+# .ps, .eps
+@{local_ext}+={,[eE]}[pP][sS]
+# .djv, .djvu
+@{local_ext}+=[dD][jJ][vV]{,[uU]}
+
 # предустановка для abstractions/fs/access-by-user-preset-rwk
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="[^.]*.@{local_ext}"

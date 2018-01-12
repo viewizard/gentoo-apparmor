@@ -10,9 +10,120 @@
 
 #include <local/tunables.d/>
 
+# .odt, .odm, .ods, .odp, .odg
+@{local_ext}=[oO][dD][tTmMsSpPgG]
+# .ott, .oth, .ots, .otp, .otg
+@{local_ext}+=[oO][tT][tThHsSpPgG]
+# .sxw, .sxg, .sxc, .sxi, .sxd
+@{local_ext}+=[sS][xX][wWgGcCiIdD]
+# .stw, .stc, .sti, .std
+@{local_ext}+=[sS][tT][wWcCiIdD]
+# .doc, .dot
+@{local_ext}+=[dD][oO][cCtT]
+# .xml
+@{local_ext}+=[xX][mM][lL]
+# .docx, .docm, .dotx, .dotm
+@{local_ext}+=[dD][oO][cCtT][xXmM]
+# .wpd, .wps
+@{local_ext}+=[wW][pP][dDsS]
+# .rtf
+@{local_ext}+=[rR][tT][fF]
+# .txt
+@{local_ext}+=[tT][xX][tT]
+# .csv
+@{local_ext}+=[cC][sS][vV]
+# .sgl, .sgv, .sgf
+@{local_ext}+=[sS][gG][lLvVfF]
+# .vor
+@{local_ext}+=[vV][oO][rR]
+# .uot, .uof, .uos, .uop
+@{local_ext}+=[uU][oO][tTfFsSpP]
+# .htm, .html
+@{local_ext}+=[hH][tT][mM]{,[lL]}
+# .jtd, .jtt
+@{local_ext}+=[jJ][tT][dDtT]
+# .hwp
+@{local_ext}+=[hH][wW][pP]
+# .602
+@{local_ext}+=602
+# .pdb
+@{local_ext}+=[pP][dD][bB]
+# .psw
+@{local_ext}+=[pP][sS][wW]
+# .xls, .xlw, .xlt
+@{local_ext}+=[xX][lL][sSwWtT]
+# .xlsx, .xlsm, .xltx, .xltm, .xlsb
+@{local_ext}+=[xX][lL]{[sStT][xXmM],[sS][bB]}
+# .wk1, .wks
+@{local_ext}+=[wW][kK][1sS]
+# .123
+@{local_ext}+=123
+# .dif, .dbf
+@{local_ext}+=[dD][iIbB][fF]
+# .slk
+@{local_ext}+=[sS][lL][kK]
+# .pxl
+@{local_ext}+=[pP][xX][lL]
+# .wb2
+@{local_ext}+=[wW][bB]2
+# .pps, .ppt
+@{local_ext}+=[pP][pP][tTsS]
+# .pot
+@{local_ext}+=[pP][oO][tT]
+# .pptx, .pptm, .potx, .potm
+@{local_ext}+=[pP][pPoO][tT][xXmM]
+# .sdc, .sda, .sdd, .sdp, .sdw
+@{local_ext}+=[sS][dD][cCaAdDpPwW]
+# .cgm, .pgm
+@{local_ext}+=[cCpP][gG][mM]
+# .pdf
+@{local_ext}+=[pP][dD][fF]
+# .bmp
+@{local_ext}+=[bB][mM][pP]
+# .jpeg, .jpg, .jpe
+@{local_ext}+=[jJ][pP]{[eE][gG],[eEgG]}
+# .pcx
+@{local_ext}+=[pP][cC][xX]
+# .psd
+@{local_ext}+=[pP][sS][dD]
+# .wmf
+@{local_ext}+=[wW][mM][fF]
+# .dxf
+@{local_ext}+=[dD][xX][fF]
+# .met
+@{local_ext}+=[mM][eE][tT]
+# .pbm, .xbm
+@{local_ext}+=[pPxX][bB][mM]
+# .ras
+@{local_ext}+=[rR][aA][sS]
+# .svm
+@{local_ext}+=[sS][vV][mM]
+# .emf
+@{local_ext}+=[eE][mM][fF]
+# .plt
+@{local_ext}+=[pP][lL][tT]
+# .tga
+@{local_ext}+=[tT][gG][aA]
+# .xpm, .ppm
+@{local_ext}+=[xXpP][pP][mM]
+# .eps
+@{local_ext}+=[eE][pP][sS]
+# .pcd
+@{local_ext}+=[pP][cC][dD]
+# .png
+@{local_ext}+=[pP][nN][gG]
+# .tiff, .tif
+@{local_ext}+=[tT][iI][fF]{,[fF]}
+# .gif
+@{local_ext}+=[gG][iI][fF]
+# .pct
+@{local_ext}+=[pP][cC][tT]
+# .bas
+@{local_ext}+=[bB][aA][sS]
+
 # предустановка для abstractions/fs/access-by-user-preset-rwk
 @{USERS_DIR_rwk}="[^.]**"
-@{USERS_FILE_rwk}="{[^.],.~}*.{odt,ott,oth,odm,ods,ots,sxw,stw,sxg,sxc,stc,odp,odg,otp,sxi,sti,odg,otg,sxd,std,doc,dot,xml,docx,docm,dotx,dotm,wpd,wps,rtf,txt,csv,sdw,sgl,vor,uot,html,htm,uof,jtd,jtt,hwp,602,pdb,psw,xls,xlw,xlt,xlsx,xlsm,xltx,xltm,xlsb,wk1,wks,123,dif,sdc,dbf,slk,uos,pxl,wb2,ppt,pps,pot,pptx,pptm,potx,potm,sda,sdd,sdp,uop,cgm,pdf,bmp,jpeg,jpg,pcx,psd,sgv,wmf,dxf,met,pgm,ras,svm,xbm,emf,pbm,plt,tga,xpm,eps,pcd,png,tif,tiff,gif,pct,ppm,sgf,bas,ODT,OTT,OTH,ODM,ODS,OTS,SXW,STW,SXG,SXC,STC,ODP,ODG,OTP,SXI,STI,ODG,OTG,SXD,STD,DOC,DOT,XML,DOCX,DOCM,DOTX,DOTM,WPD,WPS,RTF,TXT,CSV,SDW,SGL,VOR,UOT,HTML,HTM,UOF,JTD,JTT,HWD,PDB,PSW,XLS,XLW,XLT,XLSX,XLSM,XLTX,XLTM,XLSB,WK1,WKS,DIF,SDC,DBF,SLK,UOS,PXL,WB2,PPT,PPS,POT,PPTX,PPTM,POTX,POTM,SDA,SDD,SDP,UOP,CGM,PDF,BMP,JPEG,JPG,PCX,PSD,SGC,WMF,DXF,MET,PGM,RAS,SVM,XBM,EMF,PBM,PLT,TGA,XPM,EPS,PCD,PNG,TIF,TIFF,GIF,PCT,PPM,SGF,BAS}{,#}"
+@{USERS_FILE_rwk}="{[^.],.~}*.@{local_ext}{,#}"
 
 profile libreoffice /usr/{bin,lib{,32,64}/libreoffice/program}/soffice {
   #include <abstractions/base>

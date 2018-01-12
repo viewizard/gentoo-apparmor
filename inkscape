@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,9 +10,82 @@
 
 #include <local/tunables.d/>
 
+# .cdr, .cdt
+@{local_ext}=[cC][dD][rRtT]
+# .ccx, .cmx
+@{local_ext}+=[cC][cCmM][xX]
+# .ggr
+@{local_ext}+=[gG][gG][rR]
+# .ai
+@{local_ext}+=[aA][iI]
+# .svg, .svgz
+@{local_ext}+=[sS][vV][gG]{,[zZ]}
+# .plt
+@{local_ext}+=[pP][lL][tT]
+# .hpgl
+@{local_ext}+=[hH][pP][gG][lL]
+# .cgm
+@{local_ext}+=[cC][gG][mM]
+# .xaml
+@{local_ext}+=[xX][aA][mM][lL]
+# .dxf
+@{local_ext}+=[dD][xX][fF]
+# .sk1
+@{local_ext}+=[sS][kK]1
+# .eps, .ps
+@{local_ext}+={,[eE]}[pP][sS]
+# .dhw
+@{local_ext}+=[dD][hH][wW]
+# .gdkp
+@{local_ext}+=[gG][dD][kK][pP]
+# .gtif
+@{local_ext}+=[gG][tT][iI][fF]
+# .qif
+@{local_ext}+=[qQ][iI][fF]
+# .xbm, .xpm
+@{local_ext}+=[xX][bBpP][mM]
+# .jpeg, .jpg, .jpe
+@{local_ext}+=[jJ][pP]{[eE][gG],[eEgG]}
+# .gif
+@{local_ext}+=[gG][iI][fF]
+# .pnm, .pbm, .pgm, .ppm
+@{local_ext}+=[pP][nNbBgGpP][mM]
+# .ico
+@{local_ext}+=[iI][cC][oO]
+# .cur
+@{local_ext}+=[cC][uU][rR]
+# .fxg
+@{local_ext}+=[fF][xX][gG]
+# .ani
+@{local_ext}+=[aA][nN][iI]
+# .tga, .targa
+@{local_ext}+=[tT]{,[aA][rR]}[gG][aA]
+# .png
+@{local_ext}+=[pP][nN][gG]
+# .icns
+@{local_ext}+=[iI][cC][nN][sS]
+# .tiff, .tif
+@{local_ext}+=[tT][iI][fF]{,[fF]}
+# .bmp
+@{local_ext}+=[bB][mM][pP]
+# .pdf
+@{local_ext}+=[pP][dD][fF]
+# .vsd
+@{local_ext}+=[vV][sS][dD]
+# .tex
+@{local_ext}+=[tT][eE][xX]
+# .pov
+@{local_ext}+=[pP][oO][vV]
+# .sig
+@{local_ext}+=[sS][iI][gG]
+# .htm, .html
+@{local_ext}+=[hH][tT][mM]{,[lL]}
+# .emf, wmf
+@{local_ext}+=[eEwW][mM][fF]
+
 # предустановка для abstractions/fs/access-by-user-preset-rwk
 @{USERS_DIR_rwk}="[^.]**"
-@{USERS_FILE_rwk}="[^.]*.{cdr,cdt,ccx,cmx,ggr,ai,svg,svgz,plt,hpgl,cgm,ai,xaml,dxf,sk1,eps,ps,dhw,gdkp,gtif,qif,xbm,jpeg,jpe,jpg,gif,pnm,pbm,pgm,ppm,ico,cur,fxg,ani,tga,targa,xpm,png,icns,tiff,tif,bmp,pdf,vsd,tex,pov,sig,htm,html,emf,wmf,cgm,CDR,CDT,CCX,CMX,GGR,AI,SVG,SVGZ,PLT,HPGL,CGM,AI,XAML,DXF,SK1,EPS,PS,DHW,GDKP,GTIF,QIF,XMB,JPEG,JPE,JPG,GIF,PNM,PBM,PGM,PPM,ICO,CUR,FXG,ANI,TGA,TARGA,XPM,PNG,ICNS,TIFF,TIF,BMP,PDF,VSD,TEX,POV,SIG,HTM,HTMPL,EMF,WMF,CGM}"
+@{USERS_FILE_rwk}="[^.]*.@{local_ext}"
 
 profile inkscape /usr/bin/inkscape {
   #include <abstractions/base>

@@ -10,9 +10,16 @@
 
 #include <local/tunables.d/>
 
+# .mkv
+@{local_ext}=[mM][kK][vV]
+# .avi
+@{local_ext}+=[aA][vV][iI]
+# .gif
+@{local_ext}+=[gG][iI][fF]
+
 # предустановка для abstractions/fs/access-by-user-preset-rwk
 @{USERS_DIR_rwk}="[^.]**"
-@{USERS_FILE_rwk}="{qt_temp.*,[^.]*.{mkv,avi,gif,MKV,AVI,GIF}}"
+@{USERS_FILE_rwk}="{qt_temp.*,[^.]*.@{local_ext}}"
 
 profile vokoscreen /usr/bin/vokoscreen {
   #include <abstractions/base>

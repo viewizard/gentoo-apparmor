@@ -10,9 +10,22 @@
 
 #include <local/tunables.d/>
 
+# .ogg
+@{local_ext}=[oO][gG][gG]
+# .mp3, .mp4
+@{local_ext}+=[mM][pP][34]
+# .wma
+@{local_ext}+=[wW][mM][aA]
+# .s3m, .stm
+@{local_ext}+=[sS][3tT][mM]
+# .wav
+@{local_ext}+=[wW][aA][vV]
+# .m3u
+@{local_ext}+=[mM]3[uU]
+
 # предустановка для abstractions/fs/access-by-user-preset-rk
 @{USERS_DIR_rk}="[^.]**"
-@{USERS_FILE_rk}="[^.]*.{ogg,mp3,mp4,wma,s3m,stm,wav,m3u,OGG,MP3,MP4,WMA,S3M,STM,WAV,M3U}"
+@{USERS_FILE_rk}="[^.]*.@{local_ext}"
 
 profile qmmp /usr/bin/qmmp {
   #include <abstractions/base>

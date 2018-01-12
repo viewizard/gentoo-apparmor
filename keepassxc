@@ -10,9 +10,14 @@
 
 #include <local/tunables.d/>
 
+# .kdbx
+@{local_ext}=[kK][dD][bB][xX]
+# .csv
+@{local_ext}+=[cC][sS][vV]
+
 # предустановка для abstractions/fs/access-by-user-preset-rwk
 @{USERS_DIR_rwk}="**"
-@{USERS_FILE_rwk}="{,.}*.{kdbx,csv,KDBX,CSV}{,.lock}"
+@{USERS_FILE_rwk}="{,.}*.@{local_ext}{,.lock}"
 
 profile keepassxc /usr/bin/keepassxc {
   #include <abstractions/base>

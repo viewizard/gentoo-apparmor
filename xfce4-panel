@@ -10,9 +10,12 @@
 
 #include <local/tunables.d/>
 
+# .png
+@{local_ext}=[pP][nN][gG]
+
 # предустановка для abstractions/fs/access-by-user-preset-rwk
 @{USERS_DIR_rwk}="[^.]**"
-@{USERS_FILE_rwk}="[^.]*.{png,PNG}"  # xfce-extra/xfce4-screenshooter
+@{USERS_FILE_rwk}="[^.]*.@{local_ext}"  # xfce-extra/xfce4-screenshooter
 
 profile xfce4-panel /usr/bin/xfce4-panel {
   #include <abstractions/base>

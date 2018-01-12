@@ -10,9 +10,78 @@
 
 #include <local/tunables.d/>
 
+# .xcf, xcf.gz, xcfgz, .xcf.bz2, .xcfbz2
+@{local_ext}=[xX][cC][fF]{,{,.}[gG][zZ],{,.}[bB][zZ]2}
+# .gbr
+@{local_ext}+=[gG][bB][rR]
+# .gif, .gih
+@{local_ext}+=[gG][iI][fFhH]
+# .pat
+@{local_ext}+=[pP][aA][tT]
+# .bmp
+@{local_ext}+=[bB][mM][pP]
+# .dib
+@{local_ext}+=[dD][iI][bB]
+# .htm, .html
+@{local_ext}+=[hH][tT][mM]{,[lL]}
+# .ico, .icon
+@{local_ext}+=[iI][cC][oO]{,[nN]}
+# .jpeg, .jpg, .jpe
+@{local_ext}+=[jJ][pP]{[eE][gG],[eEgG]}
+# .png
+@{local_ext}+=[pP][nN][gG]
+# .pnm, .pbm, .pgm, .ppm, .pam
+@{local_ext}+=[pP][nNbBgGpPaA][mM]
+# .eps, .ps
+@{local_ext}+={,[eE]}[pP][sS]
+# .psd
+@{local_ext}+=[pP][sS][dD]
+# .tga, .targa
+@{local_ext}+=[tT]{,[aA][rR]}[gG][aA]
+# .tiff, .tif
+@{local_ext}+=[tT][iI][fF]{,[fF]}
+# .xbm, .xpm
+@{local_ext}+=[xX][bBpP][mM]
+# .pix
+@{local_ext}+=[pP][iI][xX]
+# .matte
+@{local_ext}+=[mM][aA][tT][tT][eE]
+# .mask
+@{local_ext}+=[mM][aA][sS][kK]
+# .alpha
+@{local_ext}+=[aA][lL][pP][hH][aA]
+# .als
+@{local_ext}+=[aA][lL][sS]
+# .fli, .flc
+@{local_ext}+=[fF][lL][iIcC]
+# .c, .h
+@{local_ext}+=[cChH]
+# .dcm
+@{local_ext}+=[dD][cC][mM]
+# .dicom
+@{local_ext}+=[dD][iI][cC][oO][mM]
+# .fit, .fits
+@{local_ext}+=[fF][iI][tT]{,[sS]}
+# .cel
+@{local_ext}+=[cC][eE][lL]
+# .sgi
+@{local_ext}+=[sS][gG][iI]
+# .rgb
+@{local_ext}+=[rR][gG][bB]
+# .bw
+@{local_ext}+=[bB][wW]
+# .im1, .im8, .im24, .im32
+@{local_ext}+=[iI][mM]{1,8,24,32}
+# .ras, .rs
+@{local_ext}+=[rR]{,[aA]}[sS]
+# .pcx, .pcc
+@{local_ext}+=[pP][cC][xXcC]
+# .xwd
+@{local_ext}+=[xX][wW][dD]
+
 # предустановка для abstractions/fs/access-by-user-preset-rwk
 @{USERS_DIR_rwk}="[^.]**"
-@{USERS_FILE_rwk}="[^.]*.*"
+@{USERS_FILE_rwk}="[^.]*.@{local_ext}"
 
 @{GIMP_VER}=[0-9].[0-9]
 @{BABL_VER}=[0-9].[0-9]

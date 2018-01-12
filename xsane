@@ -10,9 +10,24 @@
 
 #include <local/tunables.d/>
 
+# .jpeg, .jpg, .jpe
+@{local_ext}=[jJ][pP]{[eE][gG],[eEgG]}
+# .tiff, .tif
+@{local_ext}+=[tT][iI][fF]{,[fF]}
+# .png, .pnm
+@{local_ext}+=[pP][nN][gGmM]
+# .ps
+@{local_ext}+=[pP][sS]
+# .pdf
+@{local_ext}+=[pP][dD][fF]
+# .rgba
+@{local_ext}+=[rR][gG][bB][aA]
+# .txt
+@{local_ext}+=[tT][xX][tT]
+
 # предустановка для abstractions/fs/access-by-user-preset-rwk
 @{USERS_DIR_rwk}="[^.]**"
-@{USERS_FILE_rwk}="[^.]*.{jpg,jpeg,tif,tiff,png,pnm,ps,pdf,rgba,txt,JPG,JPEG,TIF,TIFF,PNG,PNM,PS,PDF,RGBA,TXT}"
+@{USERS_FILE_rwk}="[^.]*.@{local_ext}"
 
 profile xsane /usr/bin/xsane {
   #include <abstractions/base>

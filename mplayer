@@ -10,9 +10,68 @@
 
 #include <local/tunables.d/>
 
+# .mpg, .mpeg
+@{local_ext}=[mM][pP]{,[eE]}[gG]
+# .vob
+@{local_ext}+=[vV][oO][bB]
+# .ogg, .ogm
+@{local_ext}+=[oO][gG][gGmM]
+# .asf
+@{local_ext}+=[aA][sS][fF]
+# .wav
+@{local_ext}+=[wW][aA][vV]
+# .wmv, .wma
+@{local_ext}+=[wW][mM][vVaA]
+# .mov
+@{local_ext}+=[mM][oO][vV]
+# .mp3, .mp4
+@{local_ext}+=[mM][pP][34]
+# .avi
+@{local_ext}+=[aA][vV][iI]
+# .mkv, .mka
+@{local_ext}+=[mM][kK][vVaA]
+# .webm
+@{local_ext}+=[wW][eE][bB][mM]
+# .vivo
+@{local_ext}+=[vV][iI][vV][oO]
+# .ts
+@{local_ext}+=[tT][sS]
+# .aac
+@{local_ext}+=[aA][aA][cC]
+# .h264
+@{local_ext}+=[hH]264
+# .3p2
+@{local_ext}+=3[pP]2
+# .3ga, .3gp
+@{local_ext}+=3[gG][pPaA]
+# .flv
+@{local_ext}+=[fF][lL][vV]
+# .ass
+@{local_ext}+=[aA][sS][sS]
+# .smi
+@{local_ext}+=[sS][mM][iI]
+# .srt
+@{local_ext}+=[sS][rR][tT]
+# .sub
+@{local_ext}+=[sS][uU][bB]
+# .txt
+@{local_ext}+=[tT][xX][tT]
+# .mdv
+@{local_ext}+=[mM][dD][vV]
+# .ssa
+@{local_ext}+=[sS][sS][aA]
+# .sup
+@{local_ext}+=[sS][uU][pP]
+# .tt
+@{local_ext}+=[tT][tT]
+# .smil
+@{local_ext}+=[sS][mM][iI][lL]
+# .gif
+@{local_ext}+=[gG][iI][fF]
+
 # предустановка для abstractions/fs/access-by-user-preset-rk
 @{USERS_DIR_rk}="[^.]**"
-@{USERS_FILE_rk}="[^.]*.{mpeg,vob,ogg,asf,wav,wmv,wma,mov,mp3,mp4,avi,mkv,mka,webm,vivo,ts,ogm,aac,h264,3p2,3gp,3ga,flv,ass,smi,srt,sub,txt,mdv,ssa,sup,tt,smil,gif,MPEG,VOB,OGG,ASF,WAV,WMV,WMA,MOV,MP3,MP4,AVI,MKV,MKA,WEBM,VIVO,TS,OGM,AAC,H264,3P2,3GP,3GA,FLV,ASS,SMI,SRT,SUB,TXT,MDV,SSA,SUP,TT,SMIL,GIF}"
+@{USERS_FILE_rk}="[^.]*.@{local_ext}"
 
 profile mplayer /usr/bin/mplayer {
   #include <abstractions/base>

@@ -10,9 +10,38 @@
 
 #include <local/tunables.d/>
 
+# .jpeg, .jpg, .jpe
+@{local_ext}=[jJ][pP]{[eE][gG],[eEgG]}
+# .tiff, .tif
+@{local_ext}+=[tT][iI][fF]{,[fF]}
+# .svg, .svgz
+@{local_ext}+=[sS][vV][gG]{,[zZ]}
+# .png
+@{local_ext}+=[pP][nN][gG]
+# .gif
+@{local_ext}+=[gG][iI][fF]
+# .bmp
+@{local_ext}+=[bB][mM][pP]
+# .xpm
+@{local_ext}+=[xX][pP][mM]
+# .dng
+@{local_ext}+=[dD][nN][gG]
+# .cr2
+@{local_ext}+=[cC][rR]2
+# .dcr
+@{local_ext}+=[dD][cC][rR]
+# .k25
+@{local_ext}+=[kK]25
+# .nef, .pef
+@{local_ext}+=[nNpP][eE][fF]
+# .arw
+@{local_ext}+=[aA][rR][wW]
+# .sr2, .srf
+@{local_ext}+=[sS][rR][2fF]
+
 # предустановка для abstractions/fs/access-by-user-preset-rwk
 @{USERS_DIR_rwk}="[^.]**"
-@{USERS_FILE_rwk}="[^.]*.*"
+@{USERS_FILE_rwk}="[^.]*.@{local_ext}"
 
 profile ristretto /usr/bin/ristretto {
   #include <abstractions/base>

@@ -3,6 +3,17 @@ out of tree patches (kernel) git://kernel.ubuntu.com/jj/apparmor-backports
 out of tree patches (user-space) git://git.launchpad.net/~jjohansen/apparmor
 
 
+- добавление коментариев в строки переменных
+https://bugs.launchpad.net/apparmor/+bug/1741584
+# .m3u
+@{local_ext_playlist}=[mM]3[uU]
+# .audpl
+@{local_ext_playlist}+=[aA][uU][dD][pP][lL]
+переделать в 
+@{local_ext_playlist}=[mM]3[uU]			# .m3u
+@{local_ext_playlist}+=[aA][uU][dD][pP][lL]	# .audpl
+
+
 -Conditional include
 #include if exists, как только добавят в apparmor_parser поддержку, переделать профили (!)
 https://gitlab.com/apparmor/apparmor/merge_requests/51

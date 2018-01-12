@@ -10,9 +10,14 @@
 
 #include <local/tunables.d/>
 
+# .ics
+@{local_ext}=[iI][cC][sS]
+# .orage
+@{local_ext}+=[oO][rR][aA][gG][eE]
+
 # предустановка для abstractions/fs/access-by-user-preset-rwk
 @{USERS_DIR_rwk}="[^.]**"
-@{USERS_FILE_rwk}="[^.]*.{ics,ics.*,orage,orage.*}"
+@{USERS_FILE_rwk}="[^.]*.@{local_ext}{,.*}"
 
 profile orage /usr/bin/orage {
   #include <abstractions/base>

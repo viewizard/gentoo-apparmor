@@ -8,11 +8,16 @@
 #
 # ------------------------------------------------------------------
 
-
-# FIX ME! @{pid}/@{pids} - выставить правильные.
-
-
 #include <local/tunables.d/>
+
+# .jpeg, .jpg, .jpe
+@{local_ext_image}=[jJ][pP]{[eE][gG],[eEgG]}
+# .tga
+@{local_ext_image}+=[tT][gG][aA]
+# .png
+@{local_ext_image}+=[pP][nN][gG]
+# .bmp
+@{local_ext_image}+=[bB][mM][pP]
 
 profile mate-screensaver /usr/bin/mate-screensaver {
   #include <abstractions/base>
@@ -25,7 +30,7 @@ profile mate-screensaver /usr/bin/mate-screensaver {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-#  owner @{PROC}/@{pid}/fd/				r,
+  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mate-screensaver				mr,
@@ -78,7 +83,7 @@ profile mate-screensaver-preferences /usr/bin/mate-screensaver-preferences {
   #include <abstractions/dconf>
   
   # PSEUDO ---------------------------------------------
-#  owner @{PROC}/@{pid}/fd/				r,
+  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mate-screensaver-preferences			mr,
@@ -130,9 +135,9 @@ profile mate-screensaver.slideshow /usr/libexec/mate-screensaver/slideshow {
   
   # READS/WRITES ---------------------------------------
   /usr/share/backgrounds/cosmos/			r,
-  /usr/share/backgrounds/cosmos/*.{jpg,jpeg,tga,png,bmp} r,
+  /usr/share/backgrounds/cosmos/*.@{local_ext_image}	r,
   /usr/local/share/backgrounds/				r,
-  /usr/local/share/backgrounds/*.{jpg,jpeg,tga,png,bmp}	r,
+  /usr/local/share/backgrounds/*.@{local_ext_image}	r,
 }
 
 profile mate-screensaver-gl-helper /usr/libexec/mate-screensaver-gl-helper {
@@ -155,7 +160,7 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
   #include <abstractions/authentication>
   
   # PSEUDO ---------------------------------------------
-#  owner @{PROC}/@{pid}/fd/				r,
+  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/mate-screensaver-dialog			mr,

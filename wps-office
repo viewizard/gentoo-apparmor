@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,9 +10,54 @@
 
 #include <local/tunables.d/>
 
+# .wps, .wpt
+@{local_ext}=[wW][pP][sStT]
+# .doc, .dot
+@{local_ext}+=[dD][oO][cCtT]
+# .rtf
+@{local_ext}+=[rR][tT][fF]
+# .txt
+@{local_ext}+=[tT][xX][tT]
+# .docx, .docm, .dotx, .dotm
+@{local_ext}+=[dD][oO][cCtT][xXmM]
+# .xml
+@{local_ext}+=[xX][mM][lL]
+# .mht, .mhtml
+@{local_ext}+=[mM][hH][tT]{,[mM][lL]}
+# .htm, .html
+@{local_ext}+=[hH][tT][mM]{,[lL]}
+# .et, .ett
+@{local_ext}+=[eE][tT]{,[tT]}
+# .xls, .xlt
+@{local_ext}+=[xX][lL][sStT]
+# .dbf
+@{local_ext}+=[dD][bB][fF]
+# .prn
+@{local_ext}+=[pP][rR][nN]
+# .csv
+@{local_ext}+=[cC][sS][vV]
+# .xlsx, .xlsm
+@{local_ext}+=[xX][lL][sS][xXmM]
+# .dpt, .dps, .ppt, .pps
+@{local_ext}+=[dDpP][pP][tTsS]
+# .pot
+@{local_ext}+=[pP][oO][tT]
+# .pptx, .ppsx
+@{local_ext}+=[pP][pP][tTsS][xX]
+# .jpeg, .jpg, .jpe
+@{local_ext}+=[jJ][pP]{[eE][gG],[eEgG]}
+# .tiff, .tif
+@{local_ext}+=[tT][iI][fF]{,[fF]}
+# .png
+@{local_ext}+=[pP][nN][gG]
+# .bmp
+@{local_ext}+=[bB][mM][pP]
+# .pdf
+@{local_ext}+=[pP][dD][fF]
+
 # предустановка для abstractions/fs/access-by-user-preset-rwk
 @{USERS_DIR_rwk}="[^.]**"
-@{USERS_FILE_rwk}="{[^.],.~}*.{wps,wpt,doc,dot,rtf,txt,docx,dotx,docm,dotm,xml,mht,mhtml,html,htm,et,ett,xls,xlt,dbf,prn,csv,xlsx,xlsm,dps,dpt,ppt,pps,pot,pptx,ppsx,jpeg,jpg,tiff,tif,png,bmp,pdf,WPS,WPT,DOC,DOT,RTF,TXT,DOCX,DOTX,DOCM,DOTM,XML,MHT,MHTML,HTML,HTM,ET,ETT,XLS,XLT,DBF,PRN,CSV,XLSX,XLSM,DPS,DPT,PPT,PPS,POT,PPTX,PPSX,JPEG,JPG,TIFF,TIF,PNG,BMP,PDF}"
+@{USERS_FILE_rwk}="{[^.],.~}*.@{local_ext}"
 
 profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   #include <abstractions/base>

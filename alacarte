@@ -10,9 +10,12 @@
 
 #include <local/tunables.d/>
 
+# .png
+@{local_ext}=[pP][nN][gG]
+
 # предустановка для abstractions/fs/access-by-user-preset-rk
 @{USERS_DIR_rk}="[^.]**"
-@{USERS_FILE_rk}="[^.]*.{png,PNG}"
+@{USERS_FILE_rk}="[^.]*.@{local_ext}"
 
 profile alacarte @{PYTHON2_EXEC}/alacarte {
   #include <abstractions/base>

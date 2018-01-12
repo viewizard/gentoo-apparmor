@@ -10,9 +10,14 @@
 
 #include <local/tunables.d/>
 
+# .emp
+@{local_ext}=[eE][mM][pP]
+# .xml
+@{local_ext}+=[xX][mM][lL]
+
 # предустановка для abstractions/fs/access-by-user-preset-rwk
 @{USERS_DIR_rwk}="[^.]**"
-@{USERS_FILE_rwk}="[^.]*.{emp,xml,EMP,XML}"
+@{USERS_FILE_rwk}="[^.]*.@{local_ext}"
 
 profile gtkevemon /usr/bin/gtkevemon {
   #include <abstractions/base>

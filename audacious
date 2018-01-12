@@ -10,12 +10,38 @@
 
 #include <local/tunables.d/>
 
+# форматы для проигрывания (открываем на чтение)
+# .ogg
+@{local_ext_music}=[oO][gG][gG]
+# .mp3, .mp4
+@{local_ext_music}+=[mM][pP][34]
+# .wma
+@{local_ext_music}+=[wW][mM][aA]
+# .s3m
+@{local_ext_music}+=[sS]3[mM]
+# .stm
+@{local_ext_music}+=[sS][tT][mM]
+# .wav
+@{local_ext_music}+=[wW][aA][vV]
+
+# форматы плей листов (открываем на чтение и запись)
+# .m3u
+@{local_ext_playlist}=[mM]3[uU]
+# .audpl
+@{local_ext_playlist}+=[aA][uU][dD][pP][lL]
+# .asx
+@{local_ext_playlist}+=[aA][sS][xX]
+# .xspf
+@{local_ext_playlist}+=[xX][sS][pP][fF]
+# .pls
+@{local_ext_playlist}+=[pP][lL][sS]
+
 # предустановка для abstractions/fs/access-by-user-preset-rk
 @{USERS_DIR_rk}="[^.]**"
-@{USERS_FILE_rk}="[^.]*.{ogg,mp3,mp4,wma,s3m,stm,wav,OGG,MP3,MP4,WMA,S3M,STM,WAV}"
+@{USERS_FILE_rk}="[^.]*.@{local_ext_music}"
 # предустановка для abstractions/fs/access-by-user-preset-rwk
 @{USERS_DIR_rwk}="[^.]**"
-@{USERS_FILE_rwk}="[^.]*.{m3u,audpl,asx,xspf,pls,M3U,AUDPL,ASX,XSPF,PLS}"
+@{USERS_FILE_rwk}="[^.]*.@{local_ext_playlist}"
 
 profile audacious /usr/bin/audacious {
   #include <abstractions/base>

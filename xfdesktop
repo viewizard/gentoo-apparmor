@@ -10,7 +10,12 @@
 
 #include <local/tunables.d/>
 
-@{local_ext}="{png,jpeg,jpg,bmp,PNG,JPEG,JPG,BMP}"
+# .jpeg, .jpg, .jpe
+@{local_ext}=[jJ][pP]{[eE][gG],[eEgG]}
+# .png
+@{local_ext}+=[pP][nN][gG]
+# .bmp
+@{local_ext}+=[bB][mM][pP]
 
 profile xfdesktop /usr/bin/xfdesktop {
   #include <abstractions/base>

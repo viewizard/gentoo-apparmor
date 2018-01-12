@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,7 +10,19 @@
 
 #include <local/tunables.d/>
 
-@{local_ext}="{xpm,tiff,tga,pnm,jpeg,jpg,gif,XPM,TIFF,TGA,PNM,JPEG,JPG,GIF}"
+# .xpm
+@{local_ext}=[xX][pP][mM]
+# .tiff, .tif
+@{local_ext}+=[tT][iI][fF]{,[fF]}
+# .tga
+@{local_ext}+=[tT][gG][aA]
+# .pnm
+@{local_ext}+=[pP][nN][mM]
+# .jpeg, .jpg, .jpe
+@{local_ext}+=[jJ][pP]{[eE][gG],[eEgG]}
+# .gif
+@{local_ext}+=[gG][iI][fF]
+
 # предустановка для abstractions/fs/access-by-user-preset-rk
 @{USERS_DIR_rk}="[^.]**"
 @{USERS_FILE_rk}="[^.]*.@{local_ext}"
