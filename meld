@@ -10,10 +10,12 @@
 
 #include <local/tunables.d/>
 
+# предустановка для abstractions/fs/access-by-user-preset-w
+@{USERS_DIR_w}="[^.]**"
+@{USERS_FILE_w}=".goutputstream-@{TMP6}"
 # предустановка для abstractions/fs/access-by-user-preset-rwk
 @{USERS_DIR_rwk}="[^.]**"
-@{USERS_FILE_rwk}="{[^.]*,.goutputstream-@{TMP6}}"
-# .goutputstream-@{TMP6} -> # IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+@{USERS_FILE_rwk}="[^.]*"
 
 profile meld /usr/bin/meld {
   #include <abstractions/base>
@@ -32,6 +34,7 @@ profile meld /usr/bin/meld {
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/session-bind>
+  #include <abstractions/fs/access-by-users-preset-w>		# Разрешаем только создание/запись в файл .goutputstream-@{TMP6}.
   #include <abstractions/fs/access-by-users-preset-rwk>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/fs/deny-private-strict>

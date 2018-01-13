@@ -98,5 +98,6 @@ profile lsb-release /usr/bin/lsb_release flags=(attach_disconnected) {
     deny /usr/share/inkscape/extensions/		r,	# media-gfx/inkscape, inkscape
     deny /opt/teamspeak3-client/			r,	# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
     deny /run/user/@{UID}/poedit.*			rw,	# app-i18n/poedit, poedit
+    deny /run/user/@{UID}/gvfs/smb-share**		r,	# gvfs-smb + chromium
   }
 }

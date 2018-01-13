@@ -78,6 +78,8 @@
 @{local_ext}+=[pP][cC][xXcC]
 # .xwd
 @{local_ext}+=[xX][wW][dD]
+# .svg
+@{local_ext}+=[sS][vV][gG]
 
 # предустановка для abstractions/fs/access-by-user-preset-rwk
 @{USERS_DIR_rwk}="[^.]**"
@@ -102,6 +104,7 @@ profile gimp /usr/bin/gimp{,-@{GIMP_VER},-console,-console-@{GIMP_VER}} {
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/session-bind>
+  #include <abstractions/unix/gvfsd-smb>
   #include <abstractions/fs/access-by-users-preset-rwk>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/fs/deny-private-strict>

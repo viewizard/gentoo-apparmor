@@ -116,10 +116,12 @@ profile xdg-utils.xdg-screensaver /usr/bin/xdg-screensaver {
   /bin/mv						Cx,	# sys-apps/coreutils
   /bin/sed						Cx,	# sys-apps/sed
   /bin/hostname						Px,	# sys-apps/net-tools
+  /bin/uname						Px,	# sys-apps/coreutils
   /usr/bin/which					Px,	# sys-apps/which
   /usr/bin/dbus-send					Px,	# sys-apps/dbus
   /usr/bin/xset						ix,	# x11-apps/xset		# FIX ME! Вынести в отдельный профиль.
   /usr/bin/xautolock					Px,	# x11-misc/xautolock
+  /usr/bin/xprop					Px,	# x11-apps/xprop
   
   profile grep /bin/grep {
     #include <abstractions/base>
@@ -183,11 +185,14 @@ profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
   /bin/touch						Cx,	# sys-apps/coreutils
   /bin/cut						Cx,	# sys-apps/coreutils
   /bin/dirname						Px,	# sys-apps/coreutils
+  /bin/uname						Px,	# sys-apps/coreutils
   /usr/bin/which					Px,	# sys-apps/which
   /usr/bin/basename					Px,	# sys-apps/coreutils
   /usr/bin/gconftool-2					Px,	# gnome-base/gconf	# Detect proxy settings for gnome2/gnome3.
   /usr/bin/gawk						Cx,	# sys-apps/gawk
   /usr/bin/xdg-mime					Px,
+  /usr/bin/xprop					Px,	# x11-apps/xprop
+  /usr/bin/dbus-send					Px,	# sys-apps/dbus
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/xfce4/helpers.rc				r,
@@ -282,7 +287,10 @@ profile xdg-utils.xdg-mime /usr/bin/xdg-mime flags=(attach_disconnected) {
   /bin/sed						Cx,	# sys-apps/sed
   /bin/grep						Cx,	# sys-apps/grep
   /bin/head						Cx,	# sys-apps/coreutils
+  /bin/uname						Px,	# sys-apps/coreutils
   /usr/bin/gawk						Cx,	# sys-apps/gawk
+  /usr/bin/xprop					Px,	# x11-apps/xprop
+  /usr/bin/dbus-send					Px,	# sys-apps/dbus
   
   # READS/WRITES ---------------------------------------
   /usr/share/applications/{,**/}			r,
