@@ -29,8 +29,8 @@ profile apparmor-utils.aa-status @{PYTHON_EXEC}/aa-status flags=(attach_disconne
   owner @{PROC_D}/@{pid}/mounts				r,
   
   # READS/WRITES ---------------------------------------
-  @{PYTHON_PACKAGES}/apparmor/{,**/}			w,
-  @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
+  @{PYTHON_PACKAGES_D}/apparmor/{,**/}			w,
+  @{PYTHON_PACKAGES_D}/apparmor/**.pyc{,.*}		w,
   
   # TEMP -----------------------------------------------
   audit owner /tmp/????????				rw,	# FIX ME! audit 26.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
@@ -68,9 +68,9 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   # READS/WRITES ---------------------------------------
   /etc/apparmor/logprof.conf				r,
   /etc/inputrc						r,
-  @{PYTHON_PACKAGES}/apparmor/{,**/}			w,
-  @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
-  @{PYTHON_PACKAGES}/LibAppArmor/**.pyc{,.*}		w,
+  @{PYTHON_PACKAGES_D}/apparmor/{,**/}			w,
+  @{PYTHON_PACKAGES_D}/apparmor/**.pyc{,.*}		w,
+  @{PYTHON_PACKAGES_D}/LibAppArmor/**.pyc{,.*}		w,
   
   # TEMP -----------------------------------------------
   audit owner /tmp/{,tmp}??????				rw,	# FIX ME! audit 26.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
@@ -118,9 +118,9 @@ profile apparmor-utils.aa-complain @{PYTHON_EXEC}/aa-complain {
   /etc/apparmor/logprof.conf				r,
   /etc/apparmor.d/{,**}					r,
   /etc/apparmor.d/*					w,
-  @{PYTHON_PACKAGES}/apparmor/{,**/}			w,
-  @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
-  @{PYTHON_PACKAGES}/LibAppArmor/**.pyc{,.*}		w,
+  @{PYTHON_PACKAGES_D}/apparmor/{,**/}			w,
+  @{PYTHON_PACKAGES_D}/apparmor/**.pyc{,.*}		w,
+  @{PYTHON_PACKAGES_D}/LibAppArmor/**.pyc{,.*}		w,
   
   # TEMP -----------------------------------------------
   audit owner /tmp/{,tmp}??????				rw,	# FIX ME! audit 26.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
@@ -144,9 +144,9 @@ profile apparmor-utils.aa-enforce @{PYTHON_EXEC}/aa-enforce {
   /etc/apparmor/logprof.conf				r,
   /etc/apparmor.d/{,**}					r,
   /etc/apparmor.d/*					w,
-  @{PYTHON_PACKAGES}/apparmor/{,**/}			w,
-  @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
-  @{PYTHON_PACKAGES}/LibAppArmor/**.pyc{,.*}		w,
+  @{PYTHON_PACKAGES_D}/apparmor/{,**/}			w,
+  @{PYTHON_PACKAGES_D}/apparmor/**.pyc{,.*}		w,
+  @{PYTHON_PACKAGES_D}/LibAppArmor/**.pyc{,.*}		w,
   
   # TEMP -----------------------------------------------
   audit owner /tmp/{,tmp}??????				rw,	# FIX ME! audit 26.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
@@ -170,9 +170,9 @@ profile apparmor-utils.aa-disable @{PYTHON_EXEC}/aa-disable {
   /etc/apparmor/logprof.conf				r,
   /etc/apparmor.d/{,**}					r,
   /etc/apparmor.d/disable/*				w,
-  @{PYTHON_PACKAGES}/apparmor/{,**/}			w,
-  @{PYTHON_PACKAGES}/apparmor/**.pyc{,.*}		w,
-  @{PYTHON_PACKAGES}/LibAppArmor/**.pyc{,.*}		w,
+  @{PYTHON_PACKAGES_D}/apparmor/{,**/}			w,
+  @{PYTHON_PACKAGES_D}/apparmor/**.pyc{,.*}		w,
+  @{PYTHON_PACKAGES_D}/LibAppArmor/**.pyc{,.*}		w,
   
   # TEMP -----------------------------------------------
   audit owner /tmp/{,tmp}??????				rw,	# FIX ME! audit 26.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
