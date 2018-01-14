@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -86,8 +86,8 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
-    owner @{PROC}/cmdline				r,
-    owner @{PROC}/@{pid}/fd/				r,
+    owner @{PROC_D}/cmdline				r,
+    owner @{PROC_D}/@{pid}/fd/				r,
     
     # EXECUTABLES --------------------------------------
     @{shell}						ixmr,	# Все правильно, запуск и mmap.

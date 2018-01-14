@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -33,12 +33,12 @@ profile openrc /sbin/openrc flags=(attach_disconnected,complain) {	# attach_disc
   @{sys}/fs/cgroup/					r,
   @{sys}/fs/cgroup/**					rw,
   @{sys}/fs/cgroup/{,**/}*				k,
-  @{PROC}/						r,
-  @{PROC}/cmdline					r,
-  @{PROC}/@{pids}/cmdline				r,
-  owner @{PROC}/1/environ				r,
-  audit @{PROC}/@{pid}/stat				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
-  audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  @{PROC_D}/						r,
+  @{PROC_D}/cmdline					r,
+  @{PROC_D}/@{pids}/cmdline				r,
+  owner @{PROC_D}/1/environ				r,
+  audit @{PROC_D}/@{pid}/stat				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  audit @{PROC_D}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
   
   # EXECUTABLES ----------------------------------------
   /sbin/openrc						mr,
@@ -144,10 +144,10 @@ profile openrc.rc-status /bin/rc-status flags=(attach_disconnected) {	# attach_d
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/						r,
-  @{PROC}/cmdline					r,
-  @{PROC}/@{pids}/cmdline				r,
-  audit @{PROC}/@{pid}/environ				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  @{PROC_D}/						r,
+  @{PROC_D}/cmdline					r,
+  @{PROC_D}/@{pids}/cmdline				r,
+  audit @{PROC_D}/@{pid}/environ			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
   
   # EXECUTABLES ----------------------------------------
   /bin/rc-status					mr,
@@ -346,7 +346,7 @@ profile openrc.init.sh /lib{,32,64}/rc/sh/init.sh flags=(complain) {
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    owner @{PROC}/@{pid}/environ			r,
+    owner @{PROC_D}/@{pid}/environ			r,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/md5sum					mr,
@@ -395,8 +395,8 @@ profile openrc.kill_all /lib{,32,64}/rc/bin/kill_all flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
-  @{PROC}/						r,
-  @{PROC}/@{pids}/status				r,
+  @{PROC_D}/						r,
+  @{PROC_D}/@{pids}/status				r,
   
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/rc/bin/kill_all				mr,
@@ -436,8 +436,8 @@ profile openrc.mountinfo /lib{,32,64}/rc/bin/mountinfo flags=(complain) {
   /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/cgroups					r,
-  owner @{PROC}/@{pid}/mounts				r,
+  @{PROC_D}/cgroups					r,
+  owner @{PROC_D}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/rc/bin/mountinfo				mr,
@@ -612,8 +612,8 @@ profile openrc.service /lib{,32,64}/rc/bin/service_* flags=(attach_disconnected,
   /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/						r,
-  @{PROC}/@{pids}/cmdline				r,
+  @{PROC_D}/						r,
+  @{PROC_D}/@{pids}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/rc/bin/service_*				mr,
@@ -783,7 +783,7 @@ profile openrc.netmount.init.d /etc/init.d/netmount flags=(attach_disconnected) 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    owner @{PROC}/@{pid}/mountinfo			r,
+    owner @{PROC_D}/@{pid}/mountinfo			r,
     
     # EXECUTABLES --------------------------------------
     /bin/umount						mr,
@@ -983,7 +983,7 @@ profile openrc.hwclock.init.d /etc/init.d/hwclock flags=(attach_disconnected) {	
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     @{sys}/fs/cgroup/unified/hwclock/cgroup.procs	r,
-    @{PROC}/devices					r,
+    @{PROC_D}/devices					r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -1190,7 +1190,7 @@ profile openrc.fsck.init.d /etc/init.d/fsck flags=(attach_disconnected) {	# atta
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{PROC}/cmdline					r,
+    @{PROC_D}/cmdline					r,
     
     # EXECUTABLES --------------------------------------
     /bin/cat						mr,
@@ -1482,8 +1482,8 @@ profile openrc.root.init.d /etc/init.d/root flags=(attach_disconnected) {	# atta
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-    audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
-    audit @{PROC}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+    audit @{PROC_D}/@{pid}/mounts			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+    audit @{PROC_D}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
     
     # EXECUTABLES --------------------------------------
     /bin/mount						mr,
@@ -1686,7 +1686,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount flags=(attach_disconnect
     /dev/pts/[0-9]*					rw,
     @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
     @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
-    owner @{PROC}/@{pid}/mountinfo			r,
+    owner @{PROC_D}/@{pid}/mountinfo			r,
     
     # EXECUTABLES --------------------------------------
     /bin/mount						mr,
@@ -1713,7 +1713,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount flags=(attach_disconnect
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    audit @{PROC}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+    audit @{PROC_D}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
     
     # EXECUTABLES --------------------------------------
     /bin/umount						mr,
@@ -2366,7 +2366,7 @@ profile openrc.urandom.init.d /etc/init.d/urandom flags=(attach_disconnected) {	
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{PROC}/sys/kernel/random/poolsize			r,
+    @{PROC_D}/sys/kernel/random/poolsize		r,
     
     # EXECUTABLES --------------------------------------
     /bin/cat						mr,
@@ -2768,7 +2768,7 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro flags=(attach_disconnected) 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    audit @{PROC}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+    audit @{PROC_D}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
     
     # EXECUTABLES --------------------------------------
     /bin/umount						mr,
@@ -3122,7 +3122,7 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs flags=(attach_disconnected) {	# at
   # PSEUDO ---------------------------------------------
   @{sys}/fs/cgroup/*/{,**}				w,
   @{sys}/fs/cgroup/unified/cgroup.controllers		r,
-  @{PROC}/cgroups					r,
+  @{PROC_D}/cgroups					r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -3215,7 +3215,7 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs flags=(attach_disconnected) {	# at
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{PROC}/cgroups					r,
+    @{PROC_D}/cgroups					r,
     
     # EXECUTABLES --------------------------------------
     /bin/mount						mr,

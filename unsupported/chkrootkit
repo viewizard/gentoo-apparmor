@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -260,7 +260,7 @@ profile chkrootkit.chkproc /usr/sbin/chkproc {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/						r,
+  @{PROC_D}/						r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/chkproc					mr,
@@ -330,9 +330,9 @@ profile chkrootkit.ifpromisc /usr/sbin/ifpromisc flags=(attach_disconnected) {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/						r,
-  @{PROC}/@{pid}/fd/					r,
-  @{PROC}/@{pid}/net/packet				r,
+  @{PROC_D}/						r,
+  @{PROC_D}/@{pid}/fd/					r,
+  @{PROC_D}/@{pid}/net/packet				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/ifpromisc					mr,

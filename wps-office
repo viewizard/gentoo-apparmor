@@ -90,8 +90,8 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   owner /dev/shm/sem.KCacheEngineWriterSem*		rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   owner link subset /dev/shm/sem.KCacheEngineReaderSem*	-> /dev/shm/@{TMP6},
   owner link subset /dev/shm/sem.KCacheEngineWriterSem*	-> /dev/shm/@{TMP6},
-  owner @{PROC}/@{pid}/auxv				r,
-  owner @{PROC}/@{pid}/cmdline				r,
+  owner @{PROC_D}/@{pid}/auxv				r,
+  owner @{PROC_D}/@{pid}/cmdline			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/{et,wpp,wps}					r,

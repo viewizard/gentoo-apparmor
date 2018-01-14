@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -22,8 +22,8 @@ profile util-linux.mkswap /sbin/mkswap {
   /dev/@{BLOCK_ALL}					rw,
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
-  @{PROC}/swaps						r,
-  audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
+  @{PROC_D}/swaps					r,
+  audit @{PROC_D}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
   
   # EXECUTABLES ----------------------------------------
   /sbin/mkswap						mr,
@@ -42,7 +42,7 @@ profile util-linux.swapon /sbin/swap{on,off} {
   /dev/@{BLOCK_ALL}					rw,
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
-  @{PROC}/swaps						r,
+  @{PROC_D}/swaps					r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/swap{on,off}					mr,
@@ -60,8 +60,8 @@ profile util-linux.lsblk /bin/lsblk {
   @{sys}/block/						r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/** r,
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-  @{PROC}/swaps 					r,
-  owner @{PROC}/@{pid}/mountinfo			r,
+  @{PROC_D}/swaps 					r,
+  owner @{PROC_D}/@{pid}/mountinfo			r,
   
   # EXECUTABLES ----------------------------------------
   /bin/lsblk						mr,
@@ -116,7 +116,7 @@ profile util-linux.fsck /sbin/fsck {
   @{sys}/block/						r,
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
-  @{PROC}/partitions					r,
+  @{PROC_D}/partitions					r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/fsck						mr,
@@ -150,7 +150,7 @@ profile util-linux.logger /usr/bin/logger {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/loginuid				r,
+  owner @{PROC_D}/@{pid}/loginuid			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/logger					mr,
@@ -166,7 +166,7 @@ profile util-linux.fdisk /sbin/{,c}fdisk {
   /dev/@{BLOCK_ALL}					rw,
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
-  @{PROC}/partitions					r,
+  @{PROC_D}/partitions					r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/{,c}fdisk					mr,
@@ -183,7 +183,7 @@ profile util-linux.eject /usr/bin/eject {
   /dev/@{BLOCK_REAL}					rw,
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
-  owner @{PROC}/@{pid}/mountinfo			r,
+  owner @{PROC_D}/@{pid}/mountinfo			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/eject					mr,
@@ -208,7 +208,7 @@ profile util-linux.blkid /sbin/blkid {
   @{sys}/block/						r,
   @{sys}/devices/virtual/block/**			r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/** r,
-  @{PROC}/partitions					r,
+  @{PROC_D}/partitions					r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/blkid						mr,
@@ -262,8 +262,8 @@ profile util-linux.cal /usr/bin/cal {
   # DENY INHERIT ---------------------------------------
   deny network inet dgram,					# app-admin/conky, conky_shell
   deny network inet6 dgram,					# app-admin/conky, conky_shell
-  deny @{PROC}/uptime					r,	# app-admin/conky, conky_shell
-  deny @{PROC}/@{pids}/net/dev				r,	# app-admin/conky, conky_shell
+  deny @{PROC_D}/uptime					r,	# app-admin/conky, conky_shell
+  deny @{PROC_D}/@{pids}/net/dev			r,	# app-admin/conky, conky_shell
 }
 
 profile util-linux.getopt /usr/bin/getopt flags=(attach_disconnected) {

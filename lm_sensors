@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -26,8 +26,8 @@ profile lm_sensors.sensors /usr/bin/sensors {
   # DENY INHERIT ---------------------------------------
   deny network inet dgram,					# app-admin/conky, conky_shell
   deny network inet6 dgram,					# app-admin/conky, conky_shell
-  deny @{PROC}/uptime					r,	# app-admin/conky, conky_shell
-  deny @{PROC}/@{pids}/net/dev				r,	# app-admin/conky, conky_shell
+  deny @{PROC_D}/uptime					r,	# app-admin/conky, conky_shell
+  deny @{PROC_D}/@{pids}/net/dev			r,	# app-admin/conky, conky_shell
 }
 
 profile lm_sensors.init.d /etc/init.d/lm_sensors flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"

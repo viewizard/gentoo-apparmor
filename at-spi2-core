@@ -31,7 +31,7 @@ profile at-spi2-core.at-spi-bus-launcher /usr/libexec/at-spi-bus-launcher {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/at-spi-bus-launcher			mr,

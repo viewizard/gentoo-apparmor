@@ -34,8 +34,8 @@ profile gcr.gcr-viewer /usr/bin/gcr-viewer {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/fd/				r,
-  @{PROC}/@{pid}/mounts					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  owner @{PROC_D}/@{pid}/fd/				r,
+  @{PROC_D}/@{pid}/mounts				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gcr-viewer					mr,
@@ -70,7 +70,7 @@ profile gcr.gcr-prompter /usr/libexec/gcr-prompter {
   	peer=(name=":[0-9]*.[0-9]*"),
   
   # PSEUDO ---------------------------------------------
-  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC_D}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gcr-prompter				mr,

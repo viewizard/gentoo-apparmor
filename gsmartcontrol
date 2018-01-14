@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -26,11 +26,11 @@ profile gsmartcontrol /usr/bin/gsmartcontrol {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/**/{idVendor,idProduct,bcdDevice} r,
-  @{PROC}/partitions					r,
-  @{PROC}/devices					r,
-  @{PROC}/scsi/scsi					r,
-  @{PROC}/scsi/sg/devices				r,
-  owner @{PROC}/@{pid}/fd/				r,
+  @{PROC_D}/partitions					r,
+  @{PROC_D}/devices					r,
+  @{PROC_D}/scsi/scsi					r,
+  @{PROC_D}/scsi/sg/devices				r,
+  owner @{PROC_D}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gsmartcontrol				mr,

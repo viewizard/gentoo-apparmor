@@ -53,7 +53,7 @@ profile mousepad /usr/bin/mousepad {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mousepad					mr,
@@ -106,7 +106,7 @@ profile mousepad_root {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC_D}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mousepad					mr,

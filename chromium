@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -126,23 +126,23 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   audit @{sys}/devices/pci@{PCI2}/**/block/**/size	r,	# FIX ME! audit 28.11.2017
   @{sys}/devices/virtual/block/**/{removable,uevent,size} r,
   @{sys}/devices/virtual/tty/tty[0-9]*/active		r,
-  @{PROC}/						r,
-  @{PROC}/filesystems					r,
-  @{PROC}/vmstat					r,
-  @{PROC}/sys/kernel/shmmax				r,
-  @{PROC}/sys/net/ipv4/tcp_fastopen			r,
-  @{PROC}/@{pids}/{stat,status}				r,
-  owner @{PROC}/@{pids}/task/				r,
-  @{PROC}/@{pids}/task/@{pids}/{stat,status}		r,
-  audit @{PROC}/@{pid}/{sched,smaps,statm}		r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
-  owner @{PROC}/@{pid}/io				r,
-  audit @{PROC}/@{pid}/net/if_inet6			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
-  audit @{PROC}/@{pid}/net/ipv6_route			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
-  audit owner @{PROC}/@{pid}/auxv			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
-  audit @{PROC}/@{pid}/setgroups			rw,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
-  audit @{PROC}/@{pid}/uid_map				rw,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
-  audit @{PROC}/@{pid}/gid_map				rw,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
-  deny @{PROC}/@{pids}/oom_{,score_}adj			w,
+  @{PROC_D}/						r,
+  @{PROC_D}/filesystems					r,
+  @{PROC_D}/vmstat					r,
+  @{PROC_D}/sys/kernel/shmmax				r,
+  @{PROC_D}/sys/net/ipv4/tcp_fastopen			r,
+  @{PROC_D}/@{pids}/{stat,status}			r,
+  owner @{PROC_D}/@{pids}/task/				r,
+  @{PROC_D}/@{pids}/task/@{pids}/{stat,status}		r,
+  audit @{PROC_D}/@{pid}/{sched,smaps,statm}		r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  owner @{PROC_D}/@{pid}/io				r,
+  audit @{PROC_D}/@{pid}/net/if_inet6			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  audit @{PROC_D}/@{pid}/net/ipv6_route			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  audit owner @{PROC_D}/@{pid}/auxv			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  audit @{PROC_D}/@{pid}/setgroups			rw,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  audit @{PROC_D}/@{pid}/uid_map			rw,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  audit @{PROC_D}/@{pid}/gid_map			rw,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  deny @{PROC_D}/@{pids}/oom_{,score_}adj		w,
   
   # EXECUTABLES ----------------------------------------
   /bin/ps						Px,	# sys-process/procps
@@ -243,12 +243,12 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
-    @{PROC}/						r,
-    @{PROC}/@{pids}/					r,
-    audit @{PROC}/@{pid}/fd/				r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
-    audit @{PROC}/@{pid}/status				r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
-    audit @{PROC}/@{pid}/task/@{pid}/stat		r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
-    deny @{PROC}/@{pids}/oom_{,score_}adj		w,
+    @{PROC_D}/						r,
+    @{PROC_D}/@{pids}/					r,
+    audit @{PROC_D}/@{pid}/fd/				r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+    audit @{PROC_D}/@{pid}/status			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+    audit @{PROC_D}/@{pid}/task/@{pid}/stat		r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+    deny @{PROC_D}/@{pids}/oom_{,score_}adj		w,
     
     # EXECUTABLES --------------------------------------
     /usr/lib{,32,64}/chromium-browser/chrome-sandbox	mr,

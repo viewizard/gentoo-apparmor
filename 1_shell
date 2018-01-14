@@ -395,8 +395,8 @@ profile shell_root {
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-    audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
-    owner @{PROC}/@{pid}/mountinfo			r,
+    audit @{PROC_D}/@{pid}/mounts			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+    owner @{PROC_D}/@{pid}/mountinfo			r,
     
     # EXECUTABLES --------------------------------------
     /bin/mount						mr,
@@ -417,7 +417,7 @@ profile shell_root {
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-    audit @{PROC}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+    audit @{PROC_D}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
     
     # EXECUTABLES --------------------------------------
     /bin/umount						mr,
@@ -743,7 +743,7 @@ profile shell_chroot {
   audit deny /media/{,**}				xmrwkl,
   audit deny /mnt/{,**}					xmrwkl,
   audit deny /opt/{,**}					xmrwkl,
-  audit deny @{PROC}/{,**}				xmrwkl,
+  audit deny @{PROC_D}/{,**}				xmrwkl,
   audit deny /root/{,**}				xmrwkl,
   audit deny /run/{,**}					xmrwkl,
   audit deny /sbin/{,**}				xmrwkl,

@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -47,13 +47,13 @@ profile syslog-ng /usr/sbin/syslog-ng {
   /dev/syslog						w,
   /dev/xconsole						rw,
   @{sys}/devices/system/cpu/online			r,
-  @{PROC}/kmsg						r,
-  @{PROC}/uptime					r,
-  owner @{PROC}/1/cgroup				r,
-  @{PROC}/@{pids}/sessionid				r,
-  @{PROC}/@{pids}/loginuid				r,
-  audit @{PROC}/@{pid}/status				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
-  @{PROC}/@{pids}/cmdline				r,
+  @{PROC_D}/kmsg					r,
+  @{PROC_D}/uptime					r,
+  owner @{PROC_D}/1/cgroup				r,
+  @{PROC_D}/@{pids}/sessionid				r,
+  @{PROC_D}/@{pids}/loginuid				r,
+  audit @{PROC_D}/@{pid}/status				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  @{PROC_D}/@{pids}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/syslog-ng					mr,
@@ -89,9 +89,9 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng flags=(attach_disconnected) {	# a
   @{sys}/fs/cgroup/openrc/syslog-ng/tasks		w,
   @{sys}/fs/cgroup/unified/syslog-ng/cgroup.procs	w,
   @{sys}/fs/cgroup/unified/syslog-ng/cgroup.events	r,
-  audit @{PROC}/@{pid}/uid_map				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
-  owner @{PROC}/@{pid}/loginuid				rw,
-  @{PROC}/sys/kernel/ngroups_max			r,
+  audit @{PROC_D}/@{pid}/uid_map			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  owner @{PROC_D}/@{pid}/loginuid			rw,
+  @{PROC_D}/sys/kernel/ngroups_max			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/syslog-ng					Px,

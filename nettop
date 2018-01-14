@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -50,8 +50,8 @@ profile nettop /usr/sbin/nettop {
   /dev/pts/[0-9]*					rw,
   @{sys}/class/net/					r,
   @{sys}/bus/usb/devices/				r,
-  owner @{PROC}/@{pid}/fd/				r,
-  owner @{PROC}/@{pid}/net/dev				r,
+  owner @{PROC_D}/@{pid}/fd/				r,
+  owner @{PROC_D}/@{pid}/net/dev			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/nettop					mr,

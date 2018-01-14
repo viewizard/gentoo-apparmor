@@ -173,7 +173,7 @@ profile gimp.plug-ins /usr/lib{,32,64}/gimp/@{GIMP_VER}/plug-ins/* {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/gimp/@{GIMP_VER}/plug-ins/*		mr,

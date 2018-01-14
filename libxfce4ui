@@ -24,7 +24,7 @@ profile libxfce4ui.xfce4-about /usr/bin/xfce4-about {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-about					mr,

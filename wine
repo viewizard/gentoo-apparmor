@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -55,10 +55,10 @@ profile wine /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/cpuinfo					r,
-  @{PROC}/meminfo					r,
-  @{PROC}/scsi/scsi					r,
-  audit owner @{PROC}/@{pid}/mem			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+  @{PROC_D}/cpuinfo					r,
+  @{PROC_D}/meminfo					r,
+  @{PROC_D}/scsi/scsi					r,
+  audit owner @{PROC_D}/@{pid}/mem			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
   
   # EXECUTABLES ----------------------------------------
   /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine mr,
@@ -163,12 +163,12 @@ profile wine.wine-preloader /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[
   @{sys}/devices/system/cpu/cpu[0-9]*/cache/index[0-9]*/* r,
   @{sys}/devices/system/cpu/cpufreq/policy[0-9]*/{scaling_cur_freq,scaling_max_freq,cpuinfo_max_freq} r,
   @{sys}/devices/system/node/**				r,
-  @{PROC}/{cpu,mem}info					r,
-  @{PROC}/scsi/scsi					r,
-  audit @{PROC}/@{pid}/stat{,m}				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
-  owner @{PROC}/@{pid}/mounts				r,
-  audit @{PROC}/@{pid}/net/dev				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
-  audit @{PROC}/@{pid}/task/@{pid}/stat			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+  @{PROC_D}/{cpu,mem}info				r,
+  @{PROC_D}/scsi/scsi					r,
+  audit @{PROC_D}/@{pid}/stat{,m}			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+  owner @{PROC_D}/@{pid}/mounts				r,
+  audit @{PROC_D}/@{pid}/net/dev			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+  audit @{PROC_D}/@{pid}/task/@{pid}/stat		r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
   
   # EXECUTABLES ----------------------------------------
   /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine-preloader Pxmr,	# Все правильно, права на запуск и на mmap.
@@ -238,7 +238,7 @@ profile wine.wineserver /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pids}/mem				r,
+  owner @{PROC_D}/@{pids}/mem				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wineserver mr,

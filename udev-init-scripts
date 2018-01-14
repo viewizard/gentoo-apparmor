@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -22,8 +22,8 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev flags=(attach_disconnecte
   @{sys}/fs/cgroup/openrc/udev/tasks			w,
   @{sys}/fs/cgroup/unified/udev/cgroup.procs		w,
   @{sys}/fs/cgroup/unified/udev/cgroup.events		r,
-  audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
-  @{PROC}/sys/kernel/hotplug				w,
+  audit @{PROC_D}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+  @{PROC_D}/sys/kernel/hotplug				w,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -173,7 +173,7 @@ profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger flags=(at
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{PROC}/cmdline					r,
+    @{PROC_D}/cmdline					r,
     
     # EXECUTABLES --------------------------------------
     /bin/cat						mr,

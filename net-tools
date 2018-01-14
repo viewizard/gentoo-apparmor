@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -18,7 +18,7 @@ profile net-tools.iptunnel /sbin/iptunnel {
   network inet6 dgram,
   
   # PSEUDO ---------------------------------------------
-  owner @{PROC}/@{pid}/net/dev				r,
+  owner @{PROC_D}/@{pid}/net/dev			r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/iptunnel					mr,
@@ -34,7 +34,7 @@ profile net-tools.ifconfig /bin/ifconfig {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/net/dev				r,
+  owner @{PROC_D}/@{pid}/net/dev			r,
   
   # EXECUTABLES ----------------------------------------
   /bin/ifconfig						mr,
@@ -62,10 +62,10 @@ profile net-tools.netstat /bin/netstat {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/						r,
-  @{PROC}/@{pids}/fd/					r,
-  @{PROC}/@{pids}/cmdline				r,
-  @{PROC}/@{pid}/net/*					r,
+  @{PROC_D}/						r,
+  @{PROC_D}/@{pids}/fd/					r,
+  @{PROC_D}/@{pids}/cmdline				r,
+  @{PROC_D}/@{pid}/net/*				r,
   
   # EXECUTABLES ----------------------------------------
   /bin/netstat						mr,

@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -86,7 +86,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     capability dac_read_search,
     
     # PSEUDO -------------------------------------------
-    owner @{PROC}/@{pid}/fd/				r,
+    owner @{PROC_D}/@{pid}/fd/				r,
     
     # EXECUTABLES --------------------------------------
     /bin/tar						mr,
@@ -237,7 +237,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
-  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC_D}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /etc/cron.weekly/backup_weekly.sh			r,
@@ -301,7 +301,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     capability dac_read_search,
     
     # PSEUDO -------------------------------------------
-    owner @{PROC}/@{pid}/fd/				r,
+    owner @{PROC_D}/@{pid}/fd/				r,
     
     # EXECUTABLES --------------------------------------
     /bin/tar						mr,

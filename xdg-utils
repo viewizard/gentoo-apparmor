@@ -20,7 +20,7 @@ profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC_D}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-open					r,
@@ -405,7 +405,7 @@ profile xdg_open_root {
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC_D}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-open					r,

@@ -37,8 +37,8 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
-  @{PROC}/@{pid}/cmdline				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pid}/cmdline				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /{usr,opt}/bin/nvidia-settings			mr,
@@ -80,7 +80,7 @@ profile nvidia_drivers_Xorg {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/cmdline					r,
+  owner @{PROC_D}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/Xorg						mr,
@@ -106,7 +106,7 @@ profile nvidia-drivers.nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe flags=(att
   /dev/pts/[0-9]*					rw,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/config		r,
   @{sys}/devices/pci@{PCI2}/**/@{PCI4}/config		r,
-  @{PROC}/sys/kernel/modprobe				r,
+  @{PROC_D}/sys/kernel/modprobe				r,
   
   
   # EXECUTABLES ----------------------------------------
@@ -144,8 +144,8 @@ profile nvidia-drivers.nvidia-smi /opt/bin/nvidia-smi {
   # PSEUDO ---------------------------------------------
   /dev/nvidiactl					rw,
   /dev/nvidia[0-9]*					rw,
-  @{PROC}/driver/nvidia/params				r,
-  @{PROC}/sys/kernel/modprobe				r,
+  @{PROC_D}/driver/nvidia/params			r,
+  @{PROC_D}/sys/kernel/modprobe				r,
   
   # EXECUTABLES ----------------------------------------
   /opt/bin/nvidia-smi					mr,

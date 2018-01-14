@@ -30,7 +30,7 @@ profile nmap /usr/bin/nmap {
   /dev/tty						r,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/net/dev				r,
+  owner @{PROC_D}/@{pid}/net/dev			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/nmap						mr,

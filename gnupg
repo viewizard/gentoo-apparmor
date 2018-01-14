@@ -16,7 +16,7 @@ profile gnupg.gpg-agent /usr/bin/gpg-agent {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gpg-agent					mr,
@@ -43,7 +43,7 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} {
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gpg{,2,-static}				mr,
@@ -76,7 +76,7 @@ profile gnupg.gpgconf /usr/bin/gpgconf {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gpgconf					mr,
@@ -111,7 +111,7 @@ profile gnupg.dirmngr /usr/bin/dirmngr {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/task/@{pids}/comm			rw,
+  @{PROC_D}/@{pid}/task/@{pids}/comm			rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dirmngr					mr,

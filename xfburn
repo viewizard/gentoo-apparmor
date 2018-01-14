@@ -44,8 +44,8 @@ profile xfburn /usr/bin/xfburn {
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/{vendor,model} r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,*/}uevent r,
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,*/}uevent r,
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
-  @{PROC}/sys/dev/cdrom/info				r,
+  @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/sys/dev/cdrom/info				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfburn					mr,

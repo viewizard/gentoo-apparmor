@@ -27,10 +27,10 @@ profile conky /usr/bin/conky {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{sys}/devices/system/cpu/present			r,
-  @{PROC}/						r,
-  @{PROC}/uptime					r,
-  @{PROC}/@{pid}/mounts					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
-  @{PROC}/@{pid}/net/dev				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/						r,
+  @{PROC_D}/uptime					r,
+  @{PROC_D}/@{pid}/mounts				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pid}/net/dev				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Px -> conky_shell,
@@ -57,8 +57,8 @@ profile conky_shell {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{sys}/devices/system/cpu/cpufreq/policy[0-9]*/scaling_governor r,
-  @{PROC}/uptime					r,
-  @{PROC}/@{pids}/net/dev				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/uptime					r,
+  @{PROC_D}/@{pids}/net/dev				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
@@ -90,8 +90,8 @@ profile conky_shell {
     # DENY INHERIT -------------------------------------
     deny network inet dgram,					# conky_shell
     deny network inet6 dgram,					# conky_shell
-    deny @{PROC}/uptime					r,	# conky_shell
-    deny @{PROC}/@{pids}/net/dev			r,	# conky_shell
+    deny @{PROC_D}/uptime				r,	# conky_shell
+    deny @{PROC_D}/@{pids}/net/dev			r,	# conky_shell
   }
   
   profile head /bin/head {
@@ -108,8 +108,8 @@ profile conky_shell {
     # DENY INHERIT -------------------------------------
     deny network inet dgram,					# conky_shell
     deny network inet6 dgram,					# conky_shell
-    deny @{PROC}/uptime					r,	# conky_shell
-    deny @{PROC}/@{pids}/net/dev			r,	# conky_shell
+    deny @{PROC_D}/uptime				r,	# conky_shell
+    deny @{PROC_D}/@{pids}/net/dev			r,	# conky_shell
   }
   
   profile date /bin/date {
@@ -126,8 +126,8 @@ profile conky_shell {
     # DENY INHERIT -------------------------------------
     deny network inet dgram,					# conky_shell
     deny network inet6 dgram,					# conky_shell
-    deny @{PROC}/uptime					r,	# conky_shell
-    deny @{PROC}/@{pids}/net/dev			r,	# conky_shell
+    deny @{PROC_D}/uptime				r,	# conky_shell
+    deny @{PROC_D}/@{pids}/net/dev			r,	# conky_shell
   }
   
   profile sed /bin/sed {
@@ -144,8 +144,8 @@ profile conky_shell {
     # DENY INHERIT -------------------------------------
     deny network inet dgram,					# conky_shell
     deny network inet6 dgram,					# conky_shell
-    deny @{PROC}/uptime					r,	# conky_shell
-    deny @{PROC}/@{pids}/net/dev			r,	# conky_shell
+    deny @{PROC_D}/uptime				r,	# conky_shell
+    deny @{PROC_D}/@{pids}/net/dev			r,	# conky_shell
   }
   
   profile cat /bin/cat {
@@ -166,8 +166,8 @@ profile conky_shell {
     # DENY INHERIT -------------------------------------
     deny network inet dgram,					# conky_shell
     deny network inet6 dgram,					# conky_shell
-    deny @{PROC}/uptime					r,	# conky_shell
-    deny @{PROC}/@{pids}/net/dev			r,	# conky_shell
+    deny @{PROC_D}/uptime				r,	# conky_shell
+    deny @{PROC_D}/@{pids}/net/dev			r,	# conky_shell
   }
   
   profile cut /bin/cut {
@@ -184,8 +184,8 @@ profile conky_shell {
     # DENY INHERIT -------------------------------------
     deny network inet dgram,					# conky_shell
     deny network inet6 dgram,					# conky_shell
-    deny @{PROC}/uptime					r,	# conky_shell
-    deny @{PROC}/@{pids}/net/dev			r,	# conky_shell
+    deny @{PROC_D}/uptime				r,	# conky_shell
+    deny @{PROC_D}/@{pids}/net/dev			r,	# conky_shell
   }
   
   profile grep /bin/grep {
@@ -202,8 +202,8 @@ profile conky_shell {
     # DENY INHERIT -------------------------------------
     deny network inet dgram,					# conky_shell
     deny network inet6 dgram,					# conky_shell
-    deny @{PROC}/uptime					r,	# conky_shell
-    deny @{PROC}/@{pids}/net/dev			r,	# conky_shell
+    deny @{PROC_D}/uptime				r,	# conky_shell
+    deny @{PROC_D}/@{pids}/net/dev			r,	# conky_shell
   }
   
   profile wc /bin/wc {
@@ -220,7 +220,7 @@ profile conky_shell {
     # DENY INHERIT -------------------------------------
     deny network inet dgram,					# conky_shell
     deny network inet6 dgram,					# conky_shell
-    deny @{PROC}/uptime					r,	# conky_shell
-    deny @{PROC}/@{pids}/net/dev			r,	# conky_shell
+    deny @{PROC_D}/uptime				r,	# conky_shell
+    deny @{PROC_D}/@{pids}/net/dev			r,	# conky_shell
   }
 }

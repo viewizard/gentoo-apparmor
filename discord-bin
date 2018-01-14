@@ -59,13 +59,13 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{device,class,irq,resource,vendor} r,
   @{sys}/devices/pci@{PCI2}/**/@{PCI4}/{device,class,irq,resource,vendor} r,
   @{sys}/devices/virtual/tty/tty[0-9]*/active		r,
-  @{PROC}/						r,
-  @{PROC}/@{pids}/stat					r,
-  owner @{PROC}/@{pids}/auxv				r,
-  owner @{PROC}/@{pids}/task/				r,
-  @{PROC}/@{pids}/task/@{pids}/status			r,	# IMPROVE! fsuid=$USER ouid=$USER,root
-  deny @{PROC}/@{pids}/oom_score_adj			rw,
-  deny @{PROC}/@{pids}/cmdline				r,	# Лазит по процессам и смотрит параметры запуска.
+  @{PROC_D}/						r,
+  @{PROC_D}/@{pids}/stat				r,
+  owner @{PROC_D}/@{pids}/auxv				r,
+  owner @{PROC_D}/@{pids}/task/				r,
+  @{PROC_D}/@{pids}/task/@{pids}/status			r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  deny @{PROC_D}/@{pids}/oom_score_adj			rw,
+  deny @{PROC_D}/@{pids}/cmdline			r,	# Лазит по процессам и смотрит параметры запуска.
   
   # EXECUTABLES ----------------------------------------
   /opt/discord/share/discord/Discord			Pxmr,

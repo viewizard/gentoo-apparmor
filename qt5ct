@@ -32,7 +32,7 @@ profile qt5ct /usr/bin/qt5ct {
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/cmdline				r,	# FIX ME! Проверить доступ.
+  owner @{PROC_D}/@{pid}/cmdline			r,	# FIX ME! Проверить доступ.
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/qt5ct					mr,

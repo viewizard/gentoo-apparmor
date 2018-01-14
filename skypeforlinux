@@ -145,15 +145,15 @@ profile skypeforlinux /opt/skypeforlinux/skypeforlinux {
   @{sys}/devices/virtual/net/@{VNIC}/speed		r,
   @{sys}/devices/virtual/tty/tty[0-9]*/active		r,
   @{sys}/devices/virtual/dmi/id/{board_vendor,product_name} r,
-  @{PROC}/version					r,
-  @{PROC}/sys/kernel/ostype				r,
-  @{PROC}/sys/kernel/osrelease				r,
-  owner @{PROC}/@{pids}/auxv				r,
-  owner @{PROC}/@{pids}/task/				r,
-  owner @{PROC}/@{pids}/task/@{pids}/status		r,
+  @{PROC_D}/version					r,
+  @{PROC_D}/sys/kernel/ostype				r,
+  @{PROC_D}/sys/kernel/osrelease			r,
+  owner @{PROC_D}/@{pids}/auxv				r,
+  owner @{PROC_D}/@{pids}/task/				r,
+  owner @{PROC_D}/@{pids}/task/@{pids}/status		r,
   deny /dev/nvidiactl					m,
-  deny @{PROC}/modules					r,
-  deny @{PROC}/@{pids}/oom_score_adj			rw,
+  deny @{PROC_D}/modules				r,
+  deny @{PROC_D}/@{pids}/oom_score_adj			rw,
   
   # EXECUTABLES ----------------------------------------
   /opt/skypeforlinux/skypeforlinux			ixmr,	# Все правильно, запуск и mmap.

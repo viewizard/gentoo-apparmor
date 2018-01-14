@@ -60,8 +60,8 @@ profile meld /usr/bin/meld {
   owner /dev/shm/@{TMP6}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   owner /dev/shm/sem.mp-@{TMP8}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   owner link subset /dev/shm/sem.mp-@{TMP8}		-> /dev/shm/@{TMP6},
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
-  @{PROC}/@{pid}/mounts					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pid}/mounts				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/meld						mr,
@@ -140,8 +140,8 @@ profile meld_root {
   owner /dev/shm/@{TMP6}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   owner /dev/shm/sem.mp-@{TMP8}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   owner link subset /dev/shm/sem.mp-@{TMP8}		-> /dev/shm/@{TMP6},
-  owner @{PROC}/@{pid}/fd/				r,
-  owner @{PROC}/@{pid}/mounts				r,
+  owner @{PROC_D}/@{pid}/fd/				r,
+  owner @{PROC_D}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/meld						mr,

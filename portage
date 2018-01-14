@@ -56,11 +56,11 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{sys}/fs/cgroup/portage/{,**}			rw,
-  audit owner @{PROC}/@{pid}/cmdline			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
-  owner @{PROC}/@{pid}/fd/				r,
-  owner @{PROC}/@{pid}/mounts				r,
-  owner @{PROC}/@{pid}/mountinfo			r,
-  @{PROC}/sys/kernel/osrelease				r,
+  audit owner @{PROC_D}/@{pid}/cmdline			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
+  owner @{PROC_D}/@{pid}/fd/				r,
+  owner @{PROC_D}/@{pid}/mounts				r,
+  owner @{PROC_D}/@{pid}/mountinfo			r,
+  @{PROC_D}/sys/kernel/osrelease			r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						cx,
@@ -216,7 +216,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
-    @{PROC}/sys/kernel/osrelease			r,
+    @{PROC_D}/sys/kernel/osrelease			r,
     
     # EXECUTABLES --------------------------------------
     /usr/bin/free					mr,
@@ -274,8 +274,8 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /dev/pts/[0-9]*					rw,
     /dev/initctl					w,
     @{sys}/{,**}					r,
-    @{PROC}/{,**}					r,
-    owner @{PROC}/@{pid}/fd/[0-9]*			w,
+    @{PROC_D}/{,**}					r,
+    owner @{PROC_D}/@{pid}/fd/[0-9]*			w,
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
@@ -402,7 +402,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     owner /dev/shm/parted*/{,*}				w,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
     owner link subset /dev/shm/sem.*			-> /dev/shm/@{TMP6},
     @{sys}/{,**}					r,
-    @{PROC}/{,**}					r,
+    @{PROC_D}/{,**}					r,
     
     # EXECUTABLES ----------------------------------------
     @{shell}						mr,
@@ -464,8 +464,8 @@ profile portage.env-update @{PYTHON_EXEC}/env-update {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/mounts				r,
-  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC_D}/@{pid}/mounts				r,
+  owner @{PROC_D}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -516,8 +516,8 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/mounts				r,
-  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC_D}/@{pid}/mounts				r,
+  owner @{PROC_D}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Px -> portage_dispatch_conf_shell,
@@ -622,8 +622,8 @@ profile portage.portageq @{PYTHON_EXEC}/portageq {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/mounts					r,	# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
+  @{PROC_D}/@{pid}/mounts				r,	# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
+  @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -1159,8 +1159,8 @@ profile portage.emaint @{PYTHON_EXEC}/emaint {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/mounts				r,
-  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC_D}/@{pid}/mounts				r,
+  owner @{PROC_D}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,

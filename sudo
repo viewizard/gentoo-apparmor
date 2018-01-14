@@ -40,14 +40,14 @@ profile sudo /usr/bin/sudo {
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
-  owner @{PROC}/@{pid}/stat				r,
-  owner @{PROC}/@{pid}/attr/current			w,
-  audit @{PROC}/@{pid}/attr/exec			w,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
-  audit @{PROC}/@{pid}/attr/current			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
-  audit @{PROC}/@{pid}/attr/prev			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
-  audit @{PROC}/@{pid}/attr/exec			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
-  @{PROC}/sys/kernel/ngroups_max			r,
+  @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  owner @{PROC_D}/@{pid}/stat				r,
+  owner @{PROC_D}/@{pid}/attr/current			w,
+  audit @{PROC_D}/@{pid}/attr/exec			w,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  audit @{PROC_D}/@{pid}/attr/current			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  audit @{PROC_D}/@{pid}/attr/prev			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  audit @{PROC_D}/@{pid}/attr/exec			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  @{PROC_D}/sys/kernel/ngroups_max			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/sudo						mr,
@@ -120,7 +120,7 @@ profile sudo.visudo /usr/sbin/visudo {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC_D}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/visudo					mr,

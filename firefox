@@ -80,22 +80,22 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   @{sys}/devices/system/cpu/{,**}			r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/**/uevent		r,
-  @{PROC}/						r,
-  @{PROC}/filesystems					r,
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
-  @{PROC}/@{pid}/mount{s,info}				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
-  @{PROC}/@{pid}/stat					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
-  owner @{PROC}/@{pids}/statm				r,
-  owner @{PROC}/@{pids}/smaps				r,
-  audit owner @{PROC}/@{pid}/environ			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
-  audit owner @{PROC}/@{pid}/auxv			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
-  owner @{PROC}/@{pid}/cmdline				r,
-  @{PROC}/@{pid}/task/@{pids}/stat			r,	# IMPROVE! fsuid=$USER ouid=$USER,root
-  @{PROC}/@{pid}/net/arp				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
-  audit @{PROC}/@{pid}/net/if_inet6			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
-  audit @{PROC}/@{pid}/net/ipv6_route			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
-  audit @{PROC}/@{pid}/net/dev				r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
-  audit @{PROC}/@{pid}/net/wireless			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  @{PROC_D}/						r,
+  @{PROC_D}/filesystems					r,
+  @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pid}/mount{s,info}			r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pid}/stat					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  owner @{PROC_D}/@{pids}/statm				r,
+  owner @{PROC_D}/@{pids}/smaps				r,
+  audit owner @{PROC_D}/@{pid}/environ			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  audit owner @{PROC_D}/@{pid}/auxv			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  owner @{PROC_D}/@{pid}/cmdline			r,
+  @{PROC_D}/@{pid}/task/@{pids}/stat			r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pid}/net/arp				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  audit @{PROC_D}/@{pid}/net/if_inet6			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  audit @{PROC_D}/@{pid}/net/ipv6_route			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  audit @{PROC_D}/@{pid}/net/dev			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
+  audit @{PROC_D}/@{pid}/net/wireless			r,	# FIX ME! @{pid}/@{pids} audit 17.10.2017
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/firefox/firefox{,-bin}		mr,
@@ -186,9 +186,9 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   owner /dev/shm/org.chromium.@{TMP6}			rw,	# Нужно для adobe-flash (ppapi).
   								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   @{sys}/devices/system/cpu/{,**}			r,
-  owner @{PROC}/@{pid}/stat				r,
-  owner @{PROC}/@{pid}/cmdline				r,
-  owner @{PROC}/@{pid}/task/@{pids}/stat		r,
+  owner @{PROC_D}/@{pid}/stat				r,
+  owner @{PROC_D}/@{pid}/cmdline			r,
+  owner @{PROC_D}/@{pid}/task/@{pids}/stat		r,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/firefox/plugin-container		m,

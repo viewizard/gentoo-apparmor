@@ -51,13 +51,13 @@ profile polkit.polkitd /usr/lib{,32,64}/polkit-1/polkitd {
   	peer=(name=":[0-9]*.[0-9]*"),
   
   # PSEUDO ---------------------------------------------
-  @{PROC}/sys/kernel/ngroups_max			r,
-  @{PROC}/@{pid}/maps					r,	# IMPROVE! Ограничить (fsuid=polkitd && ouid=polkitd,root).
+  @{PROC_D}/sys/kernel/ngroups_max			r,
+  @{PROC_D}/@{pid}/maps					r,	# IMPROVE! Ограничить (fsuid=polkitd && ouid=polkitd,root).
   								# Остальные блокировать (?), т.к. в <abstractions/base>
   								# разрешаем больше, чем надо.
-  @{PROC}/@{pids}/status				r,
-  @{PROC}/@{pids}/stat					r,
-  @{PROC}/@{pids}/cmdline				r,
+  @{PROC_D}/@{pids}/status				r,
+  @{PROC_D}/@{pids}/stat				r,
+  @{PROC_D}/@{pids}/cmdline				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/polkit-1/polkitd			m,
@@ -123,8 +123,8 @@ profile polkit.pkexec /usr/bin/pkexec {
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
-  @{PROC}/@{pids}/stat					r,
-  owner @{PROC}/@{pid}/attr/current			w,
+  @{PROC_D}/@{pids}/stat				r,
+  owner @{PROC_D}/@{pid}/attr/current			w,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pkexec					mr,

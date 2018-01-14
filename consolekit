@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -156,9 +156,9 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   /dev/console						rw,
   audit @{sys}/devices/virtual/tty/tty/active		r,	# FIX ME! audit 5.12.2017
   @{sys}/devices/virtual/tty/tty[0-9]*/active		r,
-  owner @{PROC}/@{pid}/fd/				r,
-  @{PROC}/@{pids}/stat					r,
-  @{PROC}/@{pids}/environ				r,
+  owner @{PROC_D}/@{pid}/fd/				r,
+  @{PROC_D}/@{pids}/stat				r,
+  @{PROC_D}/@{pids}/environ				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/console-kit-daemon				mr,
@@ -191,11 +191,11 @@ profile consolekit.ck-collect-session-info /usr/lib{,32,64}/ConsoleKit/ck-collec
   ptrace (trace) peer="shadow.login//*",			# sys-apps/shadow
   
   # PSEUDO ---------------------------------------------
-  @{PROC}/tty/drivers					r,
-  owner @{PROC}/@{pid}/fd/				r,
-  @{PROC}/@{pids}/stat					r,
-  @{PROC}/@{pids}/environ				r,
-  @{PROC}/@{pids}/sessionid				r,
+  @{PROC_D}/tty/drivers					r,
+  owner @{PROC_D}/@{pid}/fd/				r,
+  @{PROC_D}/@{pids}/stat				r,
+  @{PROC_D}/@{pids}/environ				r,
+  @{PROC_D}/@{pids}/sessionid				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/ConsoleKit/ck-collect-session-info	m,
@@ -211,8 +211,8 @@ profile consolekit.ck-get-x11-display-device /usr/lib{,32,64}/ConsoleKit/ck-get-
   ptrace (trace) peer="xorg-server.Xorg",			# x11-base/xorg-server
   
   # PSEUDO ---------------------------------------------
-  @{PROC}/tty/drivers					r,
-  owner @{PROC}/@{pids}/stat				r,
+  @{PROC_D}/tty/drivers					r,
+  owner @{PROC_D}/@{pids}/stat				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/ConsoleKit/ck-get-x11-display-device	m,

@@ -46,8 +46,8 @@ profile onboard /usr/bin/onboard {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC}/@{pid}/fd/				r,	# FIX ME! Проверить доступ.
-  owner @{PROC}/@{pid}/mounts				r,	# FIX ME! Проверить доступ.
+  owner @{PROC_D}/@{pid}/fd/				r,	# FIX ME! Проверить доступ.
+  owner @{PROC_D}/@{pid}/mounts				r,	# FIX ME! Проверить доступ.
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/onboard					mr,
@@ -101,8 +101,8 @@ profile onboard_settings /usr/bin/onboard-settings {
   @{sys}/class/						r,
   @{sys}/class/input/					r,
   @{sys}/devices/**/input@{input}/uevent		r,
-  owner @{PROC}/@{pid}/fd/				r,	# FIX ME! Проверить доступ.
-  owner @{PROC}/@{pid}/mounts				r,	# FIX ME! Проверить доступ.
+  owner @{PROC_D}/@{pid}/fd/				r,	# FIX ME! Проверить доступ.
+  owner @{PROC_D}/@{pid}/mounts				r,	# FIX ME! Проверить доступ.
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/onboard-settings				mr,

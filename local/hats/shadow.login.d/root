@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -28,8 +28,8 @@
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/urandom						r,
-  audit @{PROC}/@{pid}/fd/				r,	# FIX ME! @{pid}/@{pids} audit 16.10.2017
-  @{PROC}/sys/kernel/ngroups_max			r,
+  audit @{PROC_D}/@{pid}/fd/				r,	# FIX ME! @{pid}/@{pids} audit 16.10.2017
+  @{PROC_D}/sys/kernel/ngroups_max			r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Px -> shell_root,

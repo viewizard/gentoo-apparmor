@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -40,7 +40,7 @@ profile cryptsetup /sbin/cryptsetup {
   /dev/mapper/						r,
   /dev/mapper/control					rw,
   @{sys}/devices/virtual/bdi/[0-9]*:[0-9]*/read_ahead_kb r,
-  @{PROC}/devices					r,
+  @{PROC_D}/devices					r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/cryptsetup					mr,
@@ -158,7 +158,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# at
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{PROC}/cmdline					r,
+    @{PROC_D}/cmdline					r,
     
     # EXECUTABLES --------------------------------------
     /bin/cat						mr,

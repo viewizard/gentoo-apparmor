@@ -49,11 +49,11 @@ profile dbus.dbus-daemon /usr/bin/dbus-daemon {
   @{sys}/module/apparmor/parameters/enabled		r,	# AppArmor dbus mediation
   @{sys}/kernel/security/apparmor/features/dbus/mask	r,	# AppArmor dbus mediation
   @{sys}/kernel/security/apparmor/.access		rw,	# AppArmor dbus mediation
-  @{PROC}/@{pids}/cmdline				r,
-  @{PROC}/@{pid}/mounts					r,	# AppArmor dbus mediation
+  @{PROC_D}/@{pids}/cmdline				r,
+  @{PROC_D}/@{pid}/mounts				r,	# AppArmor dbus mediation
   								# IMPROVE! Ограничить (fsuid=messagebus && ouid=messagebus,root).
-  owner @{PROC}/@{pid}/oom_score_adj			w,
-  @{PROC}/@{pid}/attr/current				r,	# AppArmor dbus mediation
+  owner @{PROC_D}/@{pid}/oom_score_adj			w,
+  @{PROC_D}/@{pid}/attr/current				r,	# AppArmor dbus mediation
   								# IMPROVE! Ограничить (fsuid=messagebus && ouid=messagebus,root).
   
   # EXECUTABLES ----------------------------------------
@@ -141,7 +141,7 @@ profile dbus.dbus-send /usr/bin/dbus-send {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
-  owner @{PROC}/@{pid}/fd/				r,
+  owner @{PROC_D}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dbus-send					mr,
@@ -169,7 +169,7 @@ profile dbus.dbus-daemon-launch-helper /usr/libexec/dbus-daemon-launch-helper {
   capability setuid,
   
   # PSEUDO ---------------------------------------------
-  @{PROC}/sys/kernel/ngroups_max			r,
+  @{PROC_D}/sys/kernel/ngroups_max			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/dbus-daemon-launch-helper		mr,

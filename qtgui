@@ -24,7 +24,7 @@ profile qtgui.qtconfig /usr/lib{,32,64}/qt4/bin/qtconfig {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/cmdline				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pid}/cmdline				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/qt4/bin/qtconfig			mr,

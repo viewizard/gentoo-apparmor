@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -24,10 +24,10 @@ profile hxtools.ofl /usr/bin/ofl {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/						r,
-  @{PROC}/@{pids}/maps					r,
-  @{PROC}/@{pids}/task/					r,
-  @{PROC}/@{pids}/task/@{pids}/fd/			r,
+  @{PROC_D}/						r,
+  @{PROC_D}/@{pids}/maps				r,
+  @{PROC_D}/@{pids}/task/				r,
+  @{PROC_D}/@{pids}/task/@{pids}/fd/			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/ofl						mr,

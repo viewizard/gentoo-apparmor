@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -14,10 +14,10 @@ capability ipc_lock,
 # PSEUDO -----------------------------------------------
 /dev/nvidia{[0-9]*,ctl,-modeset}			rw,
 @{sys}/bus/pci/devices/					r,
-@{PROC}/interrupts					r,
-@{PROC}/sys/vm/max_map_count				r,
-@{PROC}/driver/nvidia/params				r,
-@{PROC}/modules						r,
+@{PROC_D}/interrupts					r,
+@{PROC_D}/sys/vm/max_map_count				r,
+@{PROC_D}/driver/nvidia/params				r,
+@{PROC_D}/modules					r,
 
 # EXECUTABLES ------------------------------------------
 /{usr,opt}/bin/nvidia-modprobe				Px,

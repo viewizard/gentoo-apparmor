@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -43,10 +43,10 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   @{sys}/devices/pci@{PCI2}/@{PCI4}/**/config		r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{device,class,irq,resource,vendor} r,
   @{sys}/devices/pci@{PCI2}/**/@{PCI4}/{device,class,irq,resource,vendor} r,
-  @{PROC}/						r,
-  @{PROC}/sys/kernel/shmmax				r,
-  deny @{PROC}/@{pids}/cmdline				r,
-  deny @{PROC}/@{pids}/oom_score_adj			rw,
+  @{PROC_D}/						r,
+  @{PROC_D}/sys/kernel/shmmax				r,
+  deny @{PROC_D}/@{pids}/cmdline			r,
+  deny @{PROC_D}/@{pids}/oom_score_adj			rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/teamspeak3					r,

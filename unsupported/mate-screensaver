@@ -30,7 +30,7 @@ profile mate-screensaver /usr/bin/mate-screensaver {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mate-screensaver				mr,
@@ -83,7 +83,7 @@ profile mate-screensaver-preferences /usr/bin/mate-screensaver-preferences {
   #include <abstractions/dconf>
   
   # PSEUDO ---------------------------------------------
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mate-screensaver-preferences			mr,
@@ -160,7 +160,7 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
   #include <abstractions/authentication>
   
   # PSEUDO ---------------------------------------------
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/mate-screensaver-dialog			mr,

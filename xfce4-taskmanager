@@ -49,9 +49,9 @@ profile xfce4-taskmanager /usr/bin/xfce4-taskmanager {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/						r,
-  @{PROC}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
-  @{PROC}/@{pids}/{cmdline,status,stat}			r,
+  @{PROC_D}/						r,
+  @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pids}/{cmdline,status,stat}		r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-taskmanager				mr,

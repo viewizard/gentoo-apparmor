@@ -38,15 +38,15 @@ audit deny dbus (send, receive) peer=(label=unconfined),	# Запрещаем р
 /dev/zero						rw,
 /dev/full						rw,
 @{sys}/devices/system/cpu/online			r,
-@{PROC}/{cpuinfo,stat,meminfo}				r,
-@{PROC}/@{pid}/{maps,status}				r,	# glibc's *printf protections read the maps file
+@{PROC_D}/{cpuinfo,stat,meminfo}			r,
+@{PROC_D}/@{pid}/{maps,status}				r,	# glibc's *printf protections read the maps file
 								# IMPROVE! fsuid=$USER ouid=$USER,root
-@{PROC}/filesystems					r,
-@{PROC}/sys/vm/overcommit_memory			r,
-@{PROC}/sys/kernel/cap_last_cap				r,
+@{PROC_D}/filesystems					r,
+@{PROC_D}/sys/vm/overcommit_memory			r,
+@{PROC_D}/sys/kernel/cap_last_cap			r,
 audit deny /dev/mem					rwl,	# Запрещаем доступ к памяти.
 audit deny /dev/kmem					rwl,	# Запрещаем доступ к памяти.
-audit deny @{PROC}/@{pids}/mem				wl,	# Запрещаем доступ к памяти.
+audit deny @{PROC_D}/@{pids}/mem			wl,	# Запрещаем доступ к памяти.
 
 # READS/WRITES -----------------------------------------
 /etc/ld.so.cache					mr,

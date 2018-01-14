@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -36,7 +36,7 @@ profile lvm2.dmsetup /sbin/dmsetup {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/mapper/control					rw,
-  @{PROC}/devices					r,
+  @{PROC_D}/devices					r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/dmsetup						mr,
@@ -65,9 +65,9 @@ profile lvm2.dmeventd /sbin/dmeventd {
   @{sys}/class/block/					r,
   @{sys}/devices/**/uevent				r,
   @{sys}/devices/virtual/bdi/[0-9]*:[0-9]*/read_ahead_kb r,
-  @{PROC}/devices					r,
-  owner @{PROC}/@{pid}/mounts				r,
-  owner @{PROC}/@{pid}/oom_score_adj			w,
+  @{PROC_D}/devices					r,
+  owner @{PROC_D}/@{pid}/mounts				r,
+  owner @{PROC_D}/@{pid}/oom_score_adj			w,
   
   # EXECUTABLES ----------------------------------------
   /sbin/dmeventd					mr,
@@ -122,11 +122,11 @@ profile lvm2.lvm /sbin/lvm {
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   @{sys}/devices/virtual/bdi/[0-9]*:[0-9]*/read_ahead_kb rw,
-  @{PROC}/devices					r,
-  owner @{PROC}/@{pid}/fd/				r,
-  owner @{PROC}/@{pid}/mounts				r,
-  audit @{PROC}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
-  owner @{PROC}/@{pids}/cmdline				r,
+  @{PROC_D}/devices					r,
+  owner @{PROC_D}/@{pid}/fd/				r,
+  owner @{PROC_D}/@{pid}/mounts				r,
+  audit @{PROC_D}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  owner @{PROC_D}/@{pids}/cmdline			r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/lvm						mr,
@@ -164,7 +164,7 @@ profile lvm2.fsadm /sbin/fsadm {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/**/name	r,
-  audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  audit @{PROC_D}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
   
   # EXECUTABLES ----------------------------------------
   /sbin/fsadm						r,
@@ -334,8 +334,8 @@ profile lvm2.lvm.init.d /etc/init.d/lvm flags=(attach_disconnected) {	# attach_d
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{PROC}/misc					r,
-    @{PROC}/devices					r,
+    @{PROC_D}/misc					r,
+    @{PROC_D}/devices					r,
     @{sys}/fs/cgroup/unified/lvm/cgroup.procs		r,
     
     # EXECUTABLES --------------------------------------

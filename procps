@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -26,16 +26,16 @@ profile procps.ps /bin/ps {
   /dev/tty						r,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/						r,
-  @{PROC}/uptime					r,
-  @{PROC}/sys/kernel/pid_max				r,
-  @{PROC}/sys/kernel/osrelease				r,
-  @{PROC}/tty/drivers					r,
-  @{PROC}/@{pids}/{stat,status,cmdline,wchan}		r,
-  @{PROC}/@{pids}/task/					r,
-  @{PROC}/@{pids}/task/@{pids}/				r,
-  @{PROC}/@{pids}/task/@{pids}/{stat,status,cmdline}	r,
-  @{PROC}/@{pids}/attr/current				r,	# Нужен для запуска с параметром -Z.
+  @{PROC_D}/						r,
+  @{PROC_D}/uptime					r,
+  @{PROC_D}/sys/kernel/pid_max				r,
+  @{PROC_D}/sys/kernel/osrelease			r,
+  @{PROC_D}/tty/drivers					r,
+  @{PROC_D}/@{pids}/{stat,status,cmdline,wchan}		r,
+  @{PROC_D}/@{pids}/task/				r,
+  @{PROC_D}/@{pids}/task/@{pids}/			r,
+  @{PROC_D}/@{pids}/task/@{pids}/{stat,status,cmdline}	r,
+  @{PROC_D}/@{pids}/attr/current			r,	# Нужен для запуска с параметром -Z.
   
   # EXECUTABLES ----------------------------------------
   /bin/ps						mr,
@@ -61,10 +61,10 @@ profile procps.pidof /usr/bin/pidof {
   ptrace (trace),
   
   # PSEUDO ---------------------------------------------
-  @{PROC}/						r,
-  @{PROC}/@{pids}/stat					r,
-  @{PROC}/@{pids}/cmdline				r,
-  @{PROC}/sys/kernel/osrelease				r,
+  @{PROC_D}/						r,
+  @{PROC_D}/@{pids}/stat				r,
+  @{PROC_D}/@{pids}/cmdline				r,
+  @{PROC_D}/sys/kernel/osrelease			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pidof					mr,
@@ -84,12 +84,12 @@ profile procps.pgrep /usr/bin/pgrep {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/						r,
-  @{PROC}/@{pids}/stat					r,
-  @{PROC}/@{pids}/status				r,
-  @{PROC}/@{pids}/cmdline				r,
-  audit @{PROC}/@{pid}/loginuid				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
-  @{PROC}/sys/kernel/osrelease				r,
+  @{PROC_D}/						r,
+  @{PROC_D}/@{pids}/stat				r,
+  @{PROC_D}/@{pids}/status				r,
+  @{PROC_D}/@{pids}/cmdline				r,
+  audit @{PROC_D}/@{pid}/loginuid			r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
+  @{PROC_D}/sys/kernel/osrelease			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pgrep					mr,
@@ -107,8 +107,8 @@ profile procps.sysctl /usr/sbin/sysctl {
   /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC}/sys/						r,
-  @{PROC}/sys/**					rw,
+  @{PROC_D}/sys/					r,
+  @{PROC_D}/sys/**					rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/sysctl					mr,

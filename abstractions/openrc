@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -30,11 +30,11 @@ signal (send) set=(term, hup),
 @{sys}/fs/cgroup/					r,
 @{sys}/fs/cgroup/*/tasks				w,
 @{sys}/fs/cgroup/unified/cgroup.procs			w,
-@{PROC}/						r,
-@{PROC}/cmdline						r,
-@{PROC}/@{pids}/environ					r,
-@{PROC}/@{pids}/stat					r,
-@{PROC}/@{pids}/cmdline					r,
+@{PROC_D}/						r,
+@{PROC_D}/cmdline					r,
+@{PROC_D}/@{pids}/environ				r,
+@{PROC_D}/@{pids}/stat					r,
+@{PROC_D}/@{pids}/cmdline				r,
 
 # EXECUTABLES ------------------------------------------
 /sbin/openrc-run					mr,

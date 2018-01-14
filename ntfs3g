@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -21,7 +21,7 @@ profile ntfs3g /usr/bin/ntfs-3g {
   /dev/fuse						rw,
   /dev/@{BLOCK_ALL}					rwk,
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,*/}name	r,
-  audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  audit @{PROC_D}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/ntfs-3g					mr,

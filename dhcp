@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -24,14 +24,21 @@ profile dhcp.dhclient /sbin/dhclient {
   network inet6 dgram,
   
   # PSEUDO ---------------------------------------------
-  owner @{PROC}/@{pid}/net/dev				r,
+  owner @{PROC_D}/@{pid}/net/dev			r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/dhclient					mr,
-  /usr/libexec/nm-dhcp-helper				Px,	# net-misc/networkmanager	# DELEGATION! networkmanager.NetworkManager
+  /usr/libexec/nm-dhcp-helper				Px,	# net-misc/networkmanager
+  								# DELEGATION! networkmanager.NetworkManager
   
   # READS/WRITES ---------------------------------------
-  /run/dhclient-*.pid					rw,	# net-misc/networkmanager	# DELEGATION! networkmanager.NetworkManager	# Зависит от конфигурации NetworkManager
-  /var/lib/NetworkManager/dhclient-*.conf		r,	# net-misc/networkmanager	# DELEGATION! networkmanager.NetworkManager	# Зависит от конфигурации NetworkManager
-  /var/lib/NetworkManager/dhclient-*.lease		rw,	# net-misc/networkmanager	# DELEGATION! networkmanager.NetworkManager	# Зависит от конфигурации NetworkManager
+  /run/dhclient-*.pid					rw,	# net-misc/networkmanager
+  								# DELEGATION! networkmanager.NetworkManager
+  								# Зависит от конфигурации NetworkManager
+  /var/lib/NetworkManager/dhclient-*.conf		r,	# net-misc/networkmanager
+  								# DELEGATION! networkmanager.NetworkManager
+  								# Зависит от конфигурации NetworkManager
+  /var/lib/NetworkManager/dhclient-*.lease		rw,	# net-misc/networkmanager
+  								# DELEGATION! networkmanager.NetworkManager
+  								# Зависит от конфигурации NetworkManager
 }

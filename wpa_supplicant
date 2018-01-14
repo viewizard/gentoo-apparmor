@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -67,7 +67,7 @@ profile wpa_supplicant /usr/sbin/wpa_supplicant {
   
   # PSEUDO ---------------------------------------------
   /dev/rfkill						r,
-  @{PROC}/sys/net/ipv{4,6}/conf/wlan[0-9]*/drop_unicast_in_l2_multicast rw,
+  @{PROC_D}/sys/net/ipv{4,6}/conf/wlan[0-9]*/drop_unicast_in_l2_multicast rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/wpa_supplicant				mr,

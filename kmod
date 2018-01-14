@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -24,7 +24,7 @@ profile kmod /{bin/kmod,sbin/modprobe,sbin/modeinfo} flags=(attach_disconnected)
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   @{sys}/module/**					r,
-  @{PROC}/{cmdline,modules}				r,
+  @{PROC_D}/{cmdline,modules}				r,
   
   # EXECUTABLES ----------------------------------------
   /bin/kmod						mr,

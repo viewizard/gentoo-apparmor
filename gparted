@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -49,13 +49,13 @@ profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}**/host*/target**/{vendor,model} r,
   @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
   @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-  @{PROC}/swaps						r,
-  @{PROC}/devices					r,
-  @{PROC}/mdstat					r,
-  @{PROC}/partitions					r,
-  @{PROC}/version					r,
-  owner @{PROC}/@{pid}/fd/				r,
-  owner @{PROC}/@{pid}/mounts				r,
+  @{PROC_D}/swaps					r,
+  @{PROC_D}/devices					r,
+  @{PROC_D}/mdstat					r,
+  @{PROC_D}/partitions					r,
+  @{PROC_D}/version					r,
+  owner @{PROC_D}/@{pid}/fd/				r,
+  owner @{PROC_D}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/gpartedbin					mr,

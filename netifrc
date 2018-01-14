@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -29,9 +29,9 @@ profile netifrc.init.d /etc/init.d/net.* flags=(attach_disconnected) {	# attach_
   @{sys}/fs/cgroup/openrc/net.*/tasks			w,
   @{sys}/fs/cgroup/unified/net.*/cgroup.procs		w,
   @{sys}/fs/cgroup/unified/net.*/cgroup.events		r,
-  audit @{PROC}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
-  audit @{PROC}/@{pid}/net/dev				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
-  @{PROC}/sys/net/ipv4/route/flush			w,
+  audit @{PROC_D}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
+  audit @{PROC_D}/@{pid}/net/dev			r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
+  @{PROC_D}/sys/net/ipv4/route/flush			w,
   
   # EXECUTABLES ----------------------------------------
   /etc/init.d/*						Px,
