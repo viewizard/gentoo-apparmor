@@ -22,11 +22,11 @@ profile xauth /usr/bin/xauth {
   
   # USERS ----------------------------------------------
   owner @{HOME_D}/.Xauthority{,-@{TMP}}			rw,
-  owner link subset @{HOME_D}/.Xauthority{,-@{TMP}}	-> /{home/*,root}/.Xauthority{,-@{TMP}},	# TARGET! @{HOME_D}
+  owner link subset @{HOME_D}/.Xauthority{,-@{TMP}}	-> @{HOME_D}/.Xauthority{,-@{TMP}},
   owner @{HOME_D}/.serverauth.*				rw,	# * - 1-8 символов @{pid} + 0(нет) или 2 символа {[a-z],-}
-  owner link subset @{HOME_D}/.serverauth.*		-> /{home/*,root}/.serverauth.*,	# TARGET! @{HOME_D}	# * - 1-8 символов @{pid} + 0(нет) или 2 символа {[a-z],-}
+  owner link subset @{HOME_D}/.serverauth.*		-> @{HOME_D}/.serverauth.*,	# * - 1-8 символов @{pid} + 0(нет) или 2 символа {[a-z],-}
   owner @{HOME_D}/.xauth*				rw,	# * - 6-8 символов {[a-zA-Z0-9_.},-}
-  owner link subset @{HOME_D}/.xauth*			-> /{home/*,root}/.xauth*,	# TARGET! @{HOME_D}	# * - 6-8 символов {[a-zA-Z0-9_.},-}
+  owner link subset @{HOME_D}/.xauth*			-> @{HOME_D}/.xauth*,	# * - 6-8 символов {[a-zA-Z0-9_.},-}
   
   # TEMP -----------------------------------------------
   owner /tmp/@{TMP_SH}					rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.

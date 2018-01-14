@@ -3198,18 +3198,18 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs flags=(attach_disconnected) {	# at
     capability dac_override,
     
     # MOUNT --------------------------------------------
-    mount fstype=securityfs options=(rw, nosuid, nodev, noexec) securityfs -> /sys/kernel/security/,	# TARGET! @{SYS_D}
-    mount fstype=configfs options=(rw, nosuid, nodev, noexec) configfs -> /sys/kernel/config/,		# TARGET! @{SYS_D}
-    mount fstype=fusectl options=(rw, nosuid, nodev, noexec) fusectl -> /sys/fs/fuse/connections/,	# TARGET! @{SYS_D}
-    mount fstype=tmpfs options=(rw, nosuid, nodev, noexec) cgroup_root -> /sys/fs/cgroup/,		# TARGET! @{SYS_D}
-    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) openrc -> /sys/fs/cgroup/openrc/,		# TARGET! @{SYS_D}
-    mount fstype=cgroup2 options=(rw, nosuid, nodev, noexec) none -> /sys/fs/cgroup/unified/,		# TARGET! @{SYS_D}
-    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) cpuset -> /sys/fs/cgroup/cpuset/,		# TARGET! @{SYS_D}
-    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) cpu -> /sys/fs/cgroup/cpu/,			# TARGET! @{SYS_D}
-    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) cpuacct -> /sys/fs/cgroup/cpuacct/,		# TARGET! @{SYS_D}
-    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) freezer -> /sys/fs/cgroup/freezer/,		# TARGET! @{SYS_D}
-    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) net_cls -> /sys/fs/cgroup/net_cls/,		# TARGET! @{SYS_D}
-    mount fstype=debugfs options=(rw, nosuid, nodev, noexec) debugfs -> /sys/kernel/debug/,		# TARGET! @{SYS_D}
+    mount fstype=securityfs options=(rw, nosuid, nodev, noexec) securityfs -> @{SYS_D}/kernel/security/,
+    mount fstype=configfs options=(rw, nosuid, nodev, noexec) configfs -> @{SYS_D}/kernel/config/,
+    mount fstype=fusectl options=(rw, nosuid, nodev, noexec) fusectl -> @{SYS_D}/fs/fuse/connections/,
+    mount fstype=tmpfs options=(rw, nosuid, nodev, noexec) cgroup_root -> @{SYS_D}/fs/cgroup/,
+    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) openrc -> @{SYS_D}/fs/cgroup/openrc/,
+    mount fstype=cgroup2 options=(rw, nosuid, nodev, noexec) none -> @{SYS_D}/fs/cgroup/unified/,
+    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) cpuset -> @{SYS_D}/fs/cgroup/cpuset/,
+    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) cpu -> @{SYS_D}/fs/cgroup/cpu/,
+    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) cpuacct -> @{SYS_D}/fs/cgroup/cpuacct/,
+    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) freezer -> @{SYS_D}/fs/cgroup/freezer/,
+    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) net_cls -> @{SYS_D}/fs/cgroup/net_cls/,
+    mount fstype=debugfs options=(rw, nosuid, nodev, noexec) debugfs -> @{SYS_D}/kernel/debug/,
   
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,

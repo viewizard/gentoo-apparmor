@@ -61,7 +61,7 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} {
   # USERS ----------------------------------------------
   owner @{HOME_D}/.gnupg/{,**}				rw,
   owner @{HOME_D}/.gnupg/{,**/}*			k,
-  owner link subset @{HOME_D}/.gnupg/{,**/}*		-> /{home/*,root}/.gnupg/{,**/}*,	# TARGET! @{HOME_D}
+  owner link subset @{HOME_D}/.gnupg/{,**/}*		-> @{HOME_D}/.gnupg/{,**/}*,
   
   # TEMP -----------------------------------------------
   owner /var/tmp/portage/webrsync-@{TMP6}/portage-*	r,	# DELEGATION! portage.emerge-webrsync

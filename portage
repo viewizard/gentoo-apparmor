@@ -116,7 +116,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     capability dac_override,
     
     # MOUNT --------------------------------------------
-    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) tmpfs -> /sys/fs/cgroup/portage/,		# TARGET! @{SYS_D}
+    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) tmpfs -> @{SYS_D}/fs/cgroup/portage/,
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,

@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 # MOUNT ----------------------------------------------
-mount fstype=tmpfs options=(rw, noexec) none -> /home/@{USER}.nv/,	# TARGET! Нельзя использовать @{HOME_D}/@{HOMEDIRS_D}.
-mount fstype=tmpfs options=(rw, noexec) none -> /home/@{USER}/.nv/,	# TARGET! Нельзя использовать @{HOME_D}/@{HOMEDIRS_D}.
-umount /home/@{USER}.nv/,						# TARGET! Нельзя использовать @{HOME_D}/@{HOMEDIRS_D}.
-umount /home/@{USER}/.nv/,						# TARGET! Нельзя использовать @{HOME_D}/@{HOMEDIRS_D}.
+mount fstype=tmpfs options=(rw, noexec) none -> @{HOMEDIRS_D}/@{USER}.nv/,
+mount fstype=tmpfs options=(rw, noexec) none -> @{HOME_D}/.nv/,
+umount @{HOMEDIRS_D}/@{USER}.nv/,
+umount @{HOME_D}/.nv/,
