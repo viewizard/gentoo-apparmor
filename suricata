@@ -36,7 +36,7 @@ profile suricata /usr/bin/suricata {
   /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
-  @{sys}/devices/system/cpu/				r,
+  @{SYS_D}/devices/system/cpu/				r,
   audit @{PROC_D}/@{pid}/net/dev			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
   
   # EXECUTABLES ----------------------------------------
@@ -68,9 +68,9 @@ profile suricata.init.d /etc/init.d/suricata flags=(attach_disconnected) {	# att
   signal (send) set=(usr2) peer="suricata",
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/suricata/tasks		w,
-  @{sys}/fs/cgroup/unified/suricata/cgroup.procs	w,
-  @{sys}/fs/cgroup/unified/suricata/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/suricata/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/suricata/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/suricata/cgroup.events	r,
   audit @{PROC_D}/@{pid}/cmdline			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
   
   # EXECUTABLES ----------------------------------------
@@ -125,7 +125,7 @@ profile suricata.init.d /etc/init.d/suricata flags=(attach_disconnected) {	# att
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/suricata/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/suricata/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -141,7 +141,7 @@ profile suricata.init.d /etc/init.d/suricata flags=(attach_disconnected) {	# att
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/suricata/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/suricata/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -160,7 +160,7 @@ profile suricata.init.d /etc/init.d/suricata flags=(attach_disconnected) {	# att
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/suricata/			w,
+    @{SYS_D}/fs/cgroup/unified/suricata/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -19,10 +19,10 @@ profile pciutils.lspci /usr/sbin/lspci {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{sys}/bus/pci/devices/				r,
-  @{sys}/bus/pci/slots/					r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/{resource,irq,vendor,device,class,config} r,
-  @{sys}/devices/pci@{PCI2}/**/@{PCI4}/{resource,irq,vendor,device,class,config} r,
+  @{SYS_D}/bus/pci/devices/				r,
+  @{SYS_D}/bus/pci/slots/				r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/{resource,irq,vendor,device,class,config} r,
+  @{SYS_D}/devices/pci@{PCI2}/**/@{PCI4}/{resource,irq,vendor,device,class,config} r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/lspci					mr,

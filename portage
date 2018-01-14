@@ -55,7 +55,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   /dev/ptmx						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{sys}/fs/cgroup/portage/{,**}			rw,
+  @{SYS_D}/fs/cgroup/portage/{,**}			rw,
   audit owner @{PROC_D}/@{pid}/cmdline			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
   owner @{PROC_D}/@{pid}/fd/				r,
   owner @{PROC_D}/@{pid}/mounts				r,
@@ -116,7 +116,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     capability dac_override,
     
     # MOUNT --------------------------------------------
-    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) tmpfs -> /sys/fs/cgroup/portage/,		# TARGET! @{sys}
+    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) tmpfs -> /sys/fs/cgroup/portage/,		# TARGET! @{SYS_D}
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -273,7 +273,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     /dev/initctl					w,
-    @{sys}/{,**}					r,
+    @{SYS_D}/{,**}					r,
     @{PROC_D}/{,**}					r,
     owner @{PROC_D}/@{pid}/fd/[0-9]*			w,
     
@@ -401,7 +401,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
     owner /dev/shm/parted*/{,*}				w,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
     owner link subset /dev/shm/sem.*			-> /dev/shm/@{TMP6},
-    @{sys}/{,**}					r,
+    @{SYS_D}/{,**}					r,
     @{PROC_D}/{,**}					r,
     
     # EXECUTABLES ----------------------------------------
@@ -1240,7 +1240,7 @@ profile portage.cgroup-release-agent /{usr/lib{,32,64}/portage/@{PYTHON},var/tmp
     capability dac_override,
     
     # PSEUDO -------------------------------------------
-    @{sys}/fs/cgroup/portage/{,**}			w,
+    @{SYS_D}/fs/cgroup/portage/{,**}			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

@@ -51,7 +51,7 @@ profile zfs.zpool /sbin/zpool flags=(complain) {
   /dev/zfs						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{sys}/module/spl/parameters/spl_hostid		r,
+  @{SYS_D}/module/spl/parameters/spl_hostid		r,
   @{PROC_D}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
@@ -108,9 +108,9 @@ profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed flags=(attach_disconnected) {	# a
   capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/zfs-zed/tasks			w,
-  @{sys}/fs/cgroup/unified/zfs-zed/cgroup.procs		w,
-  @{sys}/fs/cgroup/unified/zfs-zed/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/zfs-zed/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/zfs-zed/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/zfs-zed/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -152,7 +152,7 @@ profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed flags=(attach_disconnected) {	# a
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/zfs-zed/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/zfs-zed/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -165,7 +165,7 @@ profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed flags=(attach_disconnected) {	# a
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/zfs-zed/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/zfs-zed/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -181,7 +181,7 @@ profile zfs.zfs-zed.init.d /etc/init.d/zfs-zed flags=(attach_disconnected) {	# a
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/zfs-zed/			w,
+    @{SYS_D}/fs/cgroup/unified/zfs-zed/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -194,9 +194,9 @@ profile zfs.zfs-import.init.d /etc/init.d/zfs-import flags=(attach_disconnected)
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/zfs-import/tasks		w,
-  @{sys}/fs/cgroup/unified/zfs-import/cgroup.procs	w,
-  @{sys}/fs/cgroup/unified/zfs-import/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/zfs-import/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/zfs-import/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/zfs-import/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -230,7 +230,7 @@ profile zfs.zfs-import.init.d /etc/init.d/zfs-import flags=(attach_disconnected)
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/zfs-import/	w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/zfs-import/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -243,7 +243,7 @@ profile zfs.zfs-import.init.d /etc/init.d/zfs-import flags=(attach_disconnected)
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/zfs-import/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/zfs-import/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -259,7 +259,7 @@ profile zfs.zfs-import.init.d /etc/init.d/zfs-import flags=(attach_disconnected)
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/zfs-import/		w,
+    @{SYS_D}/fs/cgroup/unified/zfs-import/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

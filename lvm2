@@ -60,11 +60,11 @@ profile lvm2.dmeventd /sbin/dmeventd {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/mapper/control					rw,
-  @{sys}/bus/						r,
-  @{sys}/class/						r,
-  @{sys}/class/block/					r,
-  @{sys}/devices/**/uevent				r,
-  @{sys}/devices/virtual/bdi/[0-9]*:[0-9]*/read_ahead_kb r,
+  @{SYS_D}/bus/						r,
+  @{SYS_D}/class/					r,
+  @{SYS_D}/class/block/					r,
+  @{SYS_D}/devices/**/uevent				r,
+  @{SYS_D}/devices/virtual/bdi/[0-9]*:[0-9]*/read_ahead_kb r,
   @{PROC_D}/devices					r,
   owner @{PROC_D}/@{pid}/mounts				r,
   owner @{PROC_D}/@{pid}/oom_score_adj			w,
@@ -115,13 +115,13 @@ profile lvm2.lvm /sbin/lvm {
   /dev/@{BLOCK_ALL}					rw,
   /dev/mapper/						r,
   /dev/mapper/control					rw,
-  @{sys}/fs/						r,
-  @{sys}/bus/						r,
-  @{sys}/class/						r,
-  @{sys}/class/block/					r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
-  @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-  @{sys}/devices/virtual/bdi/[0-9]*:[0-9]*/read_ahead_kb rw,
+  @{SYS_D}/fs/						r,
+  @{SYS_D}/bus/						r,
+  @{SYS_D}/class/					r,
+  @{SYS_D}/class/block/					r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
+  @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+  @{SYS_D}/devices/virtual/bdi/[0-9]*:[0-9]*/read_ahead_kb rw,
   @{PROC_D}/devices					r,
   owner @{PROC_D}/@{pid}/fd/				r,
   owner @{PROC_D}/@{pid}/mounts				r,
@@ -163,7 +163,7 @@ profile lvm2.fsadm /sbin/fsadm {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{sys}/devices/virtual/block/@{BLOCK_VIRT}/**/name	r,
+  @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/**/name	r,
   audit @{PROC_D}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
   
   # EXECUTABLES ----------------------------------------
@@ -216,9 +216,9 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad flags=(attach_disconnected) {	# 
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/lvmetad/tasks			w,
-  @{sys}/fs/cgroup/unified/lvmetad/cgroup.procs		w,
-  @{sys}/fs/cgroup/unified/lvmetad/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/lvmetad/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/lvmetad/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/lvmetad/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   /etc/init.d/lvm					Px,
@@ -249,7 +249,7 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad flags=(attach_disconnected) {	# 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/lvmetad/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/lvmetad/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -262,7 +262,7 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad flags=(attach_disconnected) {	# 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/lvmetad/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/lvmetad/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -278,7 +278,7 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad flags=(attach_disconnected) {	# 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/lvmetad/			w,
+    @{SYS_D}/fs/cgroup/unified/lvmetad/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -291,9 +291,9 @@ profile lvm2.lvm.init.d /etc/init.d/lvm flags=(attach_disconnected) {	# attach_d
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/lvm/tasks			w,
-  @{sys}/fs/cgroup/unified/lvm/cgroup.procs		w,
-  @{sys}/fs/cgroup/unified/lvm/cgroup.events		r,
+  @{SYS_D}/fs/cgroup/openrc/lvm/tasks			w,
+  @{SYS_D}/fs/cgroup/unified/lvm/cgroup.procs		w,
+  @{SYS_D}/fs/cgroup/unified/lvm/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/lvm						Px,
@@ -321,7 +321,7 @@ profile lvm2.lvm.init.d /etc/init.d/lvm flags=(attach_disconnected) {	# attach_d
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/lvm/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/lvm/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -336,7 +336,7 @@ profile lvm2.lvm.init.d /etc/init.d/lvm flags=(attach_disconnected) {	# attach_d
     /dev/pts/[0-9]*					rw,
     @{PROC_D}/misc					r,
     @{PROC_D}/devices					r,
-    @{sys}/fs/cgroup/unified/lvm/cgroup.procs		r,
+    @{SYS_D}/fs/cgroup/unified/lvm/cgroup.procs		r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -352,7 +352,7 @@ profile lvm2.lvm.init.d /etc/init.d/lvm flags=(attach_disconnected) {	# attach_d
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/lvm/			w,
+    @{SYS_D}/fs/cgroup/unified/lvm/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

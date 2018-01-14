@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -23,15 +23,15 @@ profile usbutils.lsusb /usr/bin/lsusb {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/bus/usb/						r,
-  @{sys}/bus/						r,
-  @{sys}/bus/usb/devices/				r,
-  @{sys}/class/						r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/{uevent,busnum,speed,descriptors,devnum} r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/{uevent,busnum,speed,descriptors,devnum} r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/**/@{USB2}/{uevent,busnum,speed,descriptors,devnum} r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB4}/uevent r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/@{USB4}/uevent r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/**/@{USB4}/uevent r,
+  @{SYS_D}/bus/						r,
+  @{SYS_D}/bus/usb/devices/				r,
+  @{SYS_D}/class/					r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/{uevent,busnum,speed,descriptors,devnum} r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/{uevent,busnum,speed,descriptors,devnum} r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/**/@{USB2}/{uevent,busnum,speed,descriptors,devnum} r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB4}/uevent r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/@{USB4}/uevent r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/**/@{USB4}/uevent r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/lsusb					mr,

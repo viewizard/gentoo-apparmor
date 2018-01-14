@@ -19,9 +19,9 @@ profile apparmor.apparmor_parser /sbin/apparmor_parser {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{sys}/devices/system/cpu/				r,
-  @{sys}/kernel/security/apparmor/{,**}			r,
-  @{sys}/kernel/security/apparmor/.{load,replace,remove} w,
+  @{SYS_D}/devices/system/cpu/				r,
+  @{SYS_D}/kernel/security/apparmor/{,**}		r,
+  @{SYS_D}/kernel/security/apparmor/.{load,replace,remove} w,
   owner @{PROC_D}/@{pid}/mounts				r,
   @{PROC_D}/sys/kernel/osrelease			r,
   

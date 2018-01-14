@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -9,16 +9,16 @@
 # ------------------------------------------------------------------
 
 # PSEUDO -----------------------------------------------
-@{sys}/class/hwmon/					r,
-@{sys}/class/thermal/					r,
-@{sys}/class/i2c-adapter/				r,
-@{sys}/class/power_supply/				r,
-@{sys}/devices/pci@{PCI2}/@{PCI4}/i2c-[0-9]*/name	r,
-@{sys}/devices/pci@{PCI2}/**/@{PCI4}/i2c-[0-9]*/name	r,
-@{sys}/devices/platform/**				r,
-@{sys}/devices/system/cpu/cpufreq/**			r,
-@{sys}/devices/system/cpu/cpu[0-9]*/cpufreq/**		r,
-@{sys}/module/acpi/parameters/acpica_version		r,
+@{SYS_D}/class/hwmon/					r,
+@{SYS_D}/class/thermal/					r,
+@{SYS_D}/class/i2c-adapter/				r,
+@{SYS_D}/class/power_supply/				r,
+@{SYS_D}/devices/pci@{PCI2}/@{PCI4}/i2c-[0-9]*/name	r,
+@{SYS_D}/devices/pci@{PCI2}/**/@{PCI4}/i2c-[0-9]*/name	r,
+@{SYS_D}/devices/platform/**				r,
+@{SYS_D}/devices/system/cpu/cpufreq/**			r,
+@{SYS_D}/devices/system/cpu/cpu[0-9]*/cpufreq/**	r,
+@{SYS_D}/module/acpi/parameters/acpica_version		r,
 
 # READS/WRITES -----------------------------------------
 /etc/sensors3.conf					r,

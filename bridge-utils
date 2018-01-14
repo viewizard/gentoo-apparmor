@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -17,7 +17,7 @@ profile bridge-utils.brctl /sbin/brctl {
   capability net_admin,
   
   # PSEUDO ---------------------------------------------
-  audit @{sys}/devices/virtual/net/**			rw,	# FIX ME! audit 5.12.2017
+  audit @{SYS_D}/devices/virtual/net/**			rw,	# FIX ME! audit 5.12.2017
   
   # EXECUTABLES ----------------------------------------
   /sbin/brctl						mr,

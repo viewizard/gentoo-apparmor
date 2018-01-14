@@ -146,9 +146,9 @@ profile acpid.init.d /etc/init.d/acpid flags=(attach_disconnected) {	# attach_di
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/acpid/tasks			w,
-  @{sys}/fs/cgroup/unified/acpid/cgroup.procs		w,
-  @{sys}/fs/cgroup/unified/acpid/cgroup.events		r,
+  @{SYS_D}/fs/cgroup/openrc/acpid/tasks			w,
+  @{SYS_D}/fs/cgroup/unified/acpid/cgroup.procs		w,
+  @{SYS_D}/fs/cgroup/unified/acpid/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/acpid					Px,
@@ -176,7 +176,7 @@ profile acpid.init.d /etc/init.d/acpid flags=(attach_disconnected) {	# attach_di
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/acpid/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/acpid/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -189,7 +189,7 @@ profile acpid.init.d /etc/init.d/acpid flags=(attach_disconnected) {	# attach_di
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/acpid/cgroup.procs		r,
+    @{SYS_D}/fs/cgroup/unified/acpid/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -205,7 +205,7 @@ profile acpid.init.d /etc/init.d/acpid flags=(attach_disconnected) {	# attach_di
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/acpid/			w,
+    @{SYS_D}/fs/cgroup/unified/acpid/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

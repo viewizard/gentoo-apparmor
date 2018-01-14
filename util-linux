@@ -20,8 +20,8 @@ profile util-linux.mkswap /sbin/mkswap {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rw,
-  @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
+  @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
   @{PROC_D}/swaps					r,
   audit @{PROC_D}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 20.10.2017
   
@@ -40,8 +40,8 @@ profile util-linux.swapon /sbin/swap{on,off} {
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rw,
-  @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
+  @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
   @{PROC_D}/swaps					r,
   
   # EXECUTABLES ----------------------------------------
@@ -57,9 +57,9 @@ profile util-linux.lsblk /bin/lsblk {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{sys}/block/						r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/** r,
-  @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+  @{SYS_D}/block/					r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/** r,
+  @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
   @{PROC_D}/swaps 					r,
   owner @{PROC_D}/@{pid}/mountinfo			r,
   
@@ -113,9 +113,9 @@ profile util-linux.fsck /sbin/fsck {
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					r,
-  @{sys}/block/						r,
-  @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
+  @{SYS_D}/block/					r,
+  @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
   @{PROC_D}/partitions					r,
   
   # EXECUTABLES ----------------------------------------
@@ -164,8 +164,8 @@ profile util-linux.fdisk /sbin/{,c}fdisk {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rw,
-  @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
+  @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
   @{PROC_D}/partitions					r,
   
   # EXECUTABLES ----------------------------------------
@@ -181,8 +181,8 @@ profile util-linux.eject /usr/bin/eject {
   
   # PSEUDO ---------------------------------------------
   /dev/@{BLOCK_REAL}					rw,
-  @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
+  @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
   owner @{PROC_D}/@{pid}/mountinfo			r,
   
   # EXECUTABLES ----------------------------------------
@@ -205,9 +205,9 @@ profile util-linux.blkid /sbin/blkid {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					r,
-  @{sys}/block/						r,
-  @{sys}/devices/virtual/block/**			r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/** r,
+  @{SYS_D}/block/					r,
+  @{SYS_D}/devices/virtual/block/**			r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/** r,
   @{PROC_D}/partitions					r,
   
   # EXECUTABLES ----------------------------------------
@@ -320,8 +320,8 @@ profile util-linux.wipefs /sbin/wipefs {
   
   # PSEUDO ---------------------------------------------
   /dev/@{BLOCK_ALL}					rw,
-  @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
+  @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/wipefs						mr,
@@ -335,8 +335,8 @@ profile util-linux.sfdisk /sbin/sfdisk {
   
   # PSEUDO ---------------------------------------------
   /dev/@{BLOCK_ALL}					rw,
-  @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
+  @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/sfdisk						mr,

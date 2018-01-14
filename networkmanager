@@ -135,16 +135,16 @@ profile networkmanager.NetworkManager /usr/sbin/NetworkManager {
   /dev/rfkill						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{sys}/bus/						r,
-  @{sys}/class/						r,
-  @{sys}/class/net/					r,
-  @{sys}/class/rfkill/					r,
-  @{sys}/devices/virtual/net/@{VNIC}/{,*}		r,
-  @{sys}/devices/pci@{PCI2}/**/@{PCI4}/net/@{NIC}/{,uevent,ifindex,phys_port_id,dev_id} r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/@{USB4}/net/usb@{USB1}/{,uevent,ifindex,phys_port_id,dev_id} r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/**/@{USB4}/net/usb@{USB1}/{,uevent,ifindex,phys_port_id,dev_id} r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/uevent r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/**/@{USB2}/uevent r,
+  @{SYS_D}/bus/						r,
+  @{SYS_D}/class/					r,
+  @{SYS_D}/class/net/					r,
+  @{SYS_D}/class/rfkill/				r,
+  @{SYS_D}/devices/virtual/net/@{VNIC}/{,*}		r,
+  @{SYS_D}/devices/pci@{PCI2}/**/@{PCI4}/net/@{NIC}/{,uevent,ifindex,phys_port_id,dev_id} r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/@{USB4}/net/usb@{USB1}/{,uevent,ifindex,phys_port_id,dev_id} r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/**/@{USB4}/net/usb@{USB1}/{,uevent,ifindex,phys_port_id,dev_id} r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/@{USB2}/uevent r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/**/@{USB2}/uevent r,
   @{PROC_D}/@{pids}/stat				r,
   owner @{PROC_D}/@{pid}/fd/				r,
   @{PROC_D}/@{pids}/cmdline				r,
@@ -271,9 +271,9 @@ profile networkmanager.NetworkManager.init.d /etc/init.d/NetworkManager flags=(a
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/NetworkManager/tasks		w,
-  @{sys}/fs/cgroup/unified/NetworkManager/cgroup.procs	w,
-  @{sys}/fs/cgroup/unified/NetworkManager/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/NetworkManager/tasks	w,
+  @{SYS_D}/fs/cgroup/unified/NetworkManager/cgroup.procs w,
+  @{SYS_D}/fs/cgroup/unified/NetworkManager/cgroup.events r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -308,7 +308,7 @@ profile networkmanager.NetworkManager.init.d /etc/init.d/NetworkManager flags=(a
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/NetworkManager/	w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/NetworkManager/ w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -321,7 +321,7 @@ profile networkmanager.NetworkManager.init.d /etc/init.d/NetworkManager flags=(a
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/NetworkManager/cgroup.procs r,
+    @{SYS_D}/fs/cgroup/unified/NetworkManager/cgroup.procs r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -337,7 +337,7 @@ profile networkmanager.NetworkManager.init.d /etc/init.d/NetworkManager flags=(a
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/NetworkManager/		w,
+    @{SYS_D}/fs/cgroup/unified/NetworkManager/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

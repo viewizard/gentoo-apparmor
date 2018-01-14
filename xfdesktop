@@ -61,7 +61,7 @@ profile xfdesktop /usr/bin/xfdesktop {
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,*/}name	r,
+  @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/{,*/}name r,
   @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   @{PROC_D}/@{pid}/mount{s,info}			r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   

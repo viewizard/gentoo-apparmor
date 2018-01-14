@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -27,11 +27,11 @@ profile qemu.qemu-system /usr/bin/qemu-system-{arm,i386,x86_64} {
   /dev/vhost-net					rw,
   /dev/net/tun						rw,
   /dev/bus/usb/						r,
-  @{sys}/bus/						r,
-  @{sys}/bus/usb/devices/				r,
-  @{sys}/class/						r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/**	r,
-  @{sys}/module/vhost/parameters/max_mem_regions	r,
+  @{SYS_D}/bus/						r,
+  @{SYS_D}/bus/usb/devices/				r,
+  @{SYS_D}/class/					r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/**	r,
+  @{SYS_D}/module/vhost/parameters/max_mem_regions	r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/qemu-system-{arm,i386,x86_64}		mr,

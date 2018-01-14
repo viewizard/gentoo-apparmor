@@ -30,9 +30,9 @@ profile openrc /sbin/openrc flags=(attach_disconnected,complain) {	# attach_disc
   /dev/console						rw,
   /dev/ptmx						rw,
   /dev/pts/[0-9]*					rw,
-  @{sys}/fs/cgroup/					r,
-  @{sys}/fs/cgroup/**					rw,
-  @{sys}/fs/cgroup/{,**/}*				k,
+  @{SYS_D}/fs/cgroup/					r,
+  @{SYS_D}/fs/cgroup/**					rw,
+  @{SYS_D}/fs/cgroup/{,**/}*				k,
   @{PROC_D}/						r,
   @{PROC_D}/cmdline					r,
   @{PROC_D}/@{pids}/cmdline				r,
@@ -375,7 +375,7 @@ profile openrc.cgroup-release-agent.sh /lib{,32,64}/rc/sh/cgroup-release-agent.s
     capability dac_override,
     
     # PSEUDO -------------------------------------------
-    @{sys}/fs/cgroup/openrc/**				w,
+    @{SYS_D}/fs/cgroup/openrc/**			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -691,9 +691,9 @@ profile openrc.netmount.init.d /etc/init.d/netmount flags=(attach_disconnected) 
   capability mknod,
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/netmount/tasks		w,
-  @{sys}/fs/cgroup/unified/netmount/cgroup.procs	w,
-  @{sys}/fs/cgroup/unified/netmount/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/netmount/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/netmount/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/netmount/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -723,7 +723,7 @@ profile openrc.netmount.init.d /etc/init.d/netmount flags=(attach_disconnected) 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/netmount/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/netmount/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -736,7 +736,7 @@ profile openrc.netmount.init.d /etc/init.d/netmount flags=(attach_disconnected) 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/netmount/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/netmount/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -752,7 +752,7 @@ profile openrc.netmount.init.d /etc/init.d/netmount flags=(attach_disconnected) 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/netmount/			w,
+    @{SYS_D}/fs/cgroup/unified/netmount/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -796,9 +796,9 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont flags=(attach_disconne
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/consolefont/tasks		w,
-  @{sys}/fs/cgroup/unified/consolefont/cgroup.procs	w,
-  @{sys}/fs/cgroup/unified/consolefont/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/consolefont/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/consolefont/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/consolefont/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   /bin/mkdir						Cx,	# sys-apps/coreutils
@@ -819,7 +819,7 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont flags=(attach_disconne
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/consolefont/	w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/consolefont/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -835,7 +835,7 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont flags=(attach_disconne
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/consolefont/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/consolefont/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -851,7 +851,7 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont flags=(attach_disconne
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/consolefont/		w,
+    @{SYS_D}/fs/cgroup/unified/consolefont/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -865,9 +865,9 @@ profile openrc.local.init.d /etc/init.d/local flags=(attach_disconnected) {	# at
   #include <local/profile_blocks/openrc.local.d/>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/local/tasks			w,
-  @{sys}/fs/cgroup/unified/local/cgroup.procs		w,
-  @{sys}/fs/cgroup/unified/local/cgroup.events		r,
+  @{SYS_D}/fs/cgroup/openrc/local/tasks			w,
+  @{SYS_D}/fs/cgroup/unified/local/cgroup.procs		w,
+  @{SYS_D}/fs/cgroup/unified/local/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -895,7 +895,7 @@ profile openrc.local.init.d /etc/init.d/local flags=(attach_disconnected) {	# at
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/local/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/local/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -908,7 +908,7 @@ profile openrc.local.init.d /etc/init.d/local flags=(attach_disconnected) {	# at
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/local/cgroup.procs		r,
+    @{SYS_D}/fs/cgroup/unified/local/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -924,7 +924,7 @@ profile openrc.local.init.d /etc/init.d/local flags=(attach_disconnected) {	# at
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/local/			w,
+    @{SYS_D}/fs/cgroup/unified/local/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -938,9 +938,9 @@ profile openrc.hwclock.init.d /etc/init.d/hwclock flags=(attach_disconnected) {	
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
-  @{sys}/fs/cgroup/openrc/hwclock/tasks			w,
-  @{sys}/fs/cgroup/unified/hwclock/cgroup.procs		w,
-  @{sys}/fs/cgroup/unified/hwclock/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/hwclock/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/hwclock/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/hwclock/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -969,7 +969,7 @@ profile openrc.hwclock.init.d /etc/init.d/hwclock flags=(attach_disconnected) {	
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/hwclock/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/hwclock/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -982,7 +982,7 @@ profile openrc.hwclock.init.d /etc/init.d/hwclock flags=(attach_disconnected) {	
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/hwclock/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/hwclock/cgroup.procs	r,
     @{PROC_D}/devices					r,
     
     # EXECUTABLES --------------------------------------
@@ -999,7 +999,7 @@ profile openrc.hwclock.init.d /etc/init.d/hwclock flags=(attach_disconnected) {	
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/hwclock/			w,
+    @{SYS_D}/fs/cgroup/unified/hwclock/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -1012,9 +1012,9 @@ profile openrc.swap.init.d /etc/init.d/swap flags=(attach_disconnected) {	# atta
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/swap/tasks			w,
-  @{sys}/fs/cgroup/unified/swap/cgroup.procs		w,
-  @{sys}/fs/cgroup/unified/swap/cgroup.events		r,
+  @{SYS_D}/fs/cgroup/openrc/swap/tasks			w,
+  @{SYS_D}/fs/cgroup/unified/swap/cgroup.procs		w,
+  @{SYS_D}/fs/cgroup/unified/swap/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -1043,7 +1043,7 @@ profile openrc.swap.init.d /etc/init.d/swap flags=(attach_disconnected) {	# atta
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/swap/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/swap/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -1056,7 +1056,7 @@ profile openrc.swap.init.d /etc/init.d/swap flags=(attach_disconnected) {	# atta
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/swap/cgroup.procs		r,
+    @{SYS_D}/fs/cgroup/unified/swap/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -1072,7 +1072,7 @@ profile openrc.swap.init.d /etc/init.d/swap flags=(attach_disconnected) {	# atta
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/swap/			w,
+    @{SYS_D}/fs/cgroup/unified/swap/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -1085,9 +1085,9 @@ profile openrc.modules.init.d /etc/init.d/modules flags=(attach_disconnected) {	
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/modules/tasks			w,
-  @{sys}/fs/cgroup/unified/modules/cgroup.procs		w,
-  @{sys}/fs/cgroup/unified/modules/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/modules/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/modules/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/modules/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -1116,7 +1116,7 @@ profile openrc.modules.init.d /etc/init.d/modules flags=(attach_disconnected) {	
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/modules/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/modules/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -1129,7 +1129,7 @@ profile openrc.modules.init.d /etc/init.d/modules flags=(attach_disconnected) {	
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/modules/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/modules/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -1145,7 +1145,7 @@ profile openrc.modules.init.d /etc/init.d/modules flags=(attach_disconnected) {	
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/modules/			w,
+    @{SYS_D}/fs/cgroup/unified/modules/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -1161,9 +1161,9 @@ profile openrc.fsck.init.d /etc/init.d/fsck flags=(attach_disconnected) {	# atta
   capability mknod,
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/fsck/tasks			w,
-  @{sys}/fs/cgroup/unified/fsck/cgroup.procs		w,
-  @{sys}/fs/cgroup/unified/fsck/cgroup.events		r,
+  @{SYS_D}/fs/cgroup/openrc/fsck/tasks			w,
+  @{SYS_D}/fs/cgroup/unified/fsck/cgroup.procs		w,
+  @{SYS_D}/fs/cgroup/unified/fsck/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -1206,7 +1206,7 @@ profile openrc.fsck.init.d /etc/init.d/fsck flags=(attach_disconnected) {	# atta
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/fsck/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/fsck/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -1219,7 +1219,7 @@ profile openrc.fsck.init.d /etc/init.d/fsck flags=(attach_disconnected) {	# atta
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/fsck/cgroup.procs		r,
+    @{SYS_D}/fs/cgroup/unified/fsck/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -1235,7 +1235,7 @@ profile openrc.fsck.init.d /etc/init.d/fsck flags=(attach_disconnected) {	# atta
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/fsck/			w,
+    @{SYS_D}/fs/cgroup/unified/fsck/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -1248,9 +1248,9 @@ profile openrc.opentmpfiles-dev.init.d /etc/init.d/opentmpfiles-dev flags=(attac
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/opentmpfiles-dev/tasks	w,
-  @{sys}/fs/cgroup/unified/opentmpfiles-dev/cgroup.procs w,
-  @{sys}/fs/cgroup/unified/opentmpfiles-dev/cgroup.events r,
+  @{SYS_D}/fs/cgroup/openrc/opentmpfiles-dev/tasks	w,
+  @{SYS_D}/fs/cgroup/unified/opentmpfiles-dev/cgroup.procs w,
+  @{SYS_D}/fs/cgroup/unified/opentmpfiles-dev/cgroup.events r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -1278,7 +1278,7 @@ profile openrc.opentmpfiles-dev.init.d /etc/init.d/opentmpfiles-dev flags=(attac
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/opentmpfiles-dev/	w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/opentmpfiles-dev/ w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -1291,7 +1291,7 @@ profile openrc.opentmpfiles-dev.init.d /etc/init.d/opentmpfiles-dev flags=(attac
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/opentmpfiles-dev/cgroup.procs r,
+    @{SYS_D}/fs/cgroup/unified/opentmpfiles-dev/cgroup.procs r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -1307,7 +1307,7 @@ profile openrc.opentmpfiles-dev.init.d /etc/init.d/opentmpfiles-dev flags=(attac
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/opentmpfiles-dev/		w,
+    @{SYS_D}/fs/cgroup/unified/opentmpfiles-dev/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -1320,9 +1320,9 @@ profile openrc.opentmpfiles-setup.init.d /etc/init.d/opentmpfiles-setup flags=(a
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/opentmpfiles-setup/tasks	w,
-  @{sys}/fs/cgroup/unified/opentmpfiles-setup/cgroup.procs w,
-  @{sys}/fs/cgroup/unified/opentmpfiles-setup/cgroup.events r,
+  @{SYS_D}/fs/cgroup/openrc/opentmpfiles-setup/tasks	w,
+  @{SYS_D}/fs/cgroup/unified/opentmpfiles-setup/cgroup.procs w,
+  @{SYS_D}/fs/cgroup/unified/opentmpfiles-setup/cgroup.events r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -1350,7 +1350,7 @@ profile openrc.opentmpfiles-setup.init.d /etc/init.d/opentmpfiles-setup flags=(a
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/opentmpfiles-setup/ w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/opentmpfiles-setup/ w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -1363,7 +1363,7 @@ profile openrc.opentmpfiles-setup.init.d /etc/init.d/opentmpfiles-setup flags=(a
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/opentmpfiles-setup/cgroup.procs r,
+    @{SYS_D}/fs/cgroup/unified/opentmpfiles-setup/cgroup.procs r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -1379,7 +1379,7 @@ profile openrc.opentmpfiles-setup.init.d /etc/init.d/opentmpfiles-setup flags=(a
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/opentmpfiles-setup/	w,
+    @{SYS_D}/fs/cgroup/unified/opentmpfiles-setup/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -1392,9 +1392,9 @@ profile openrc.root.init.d /etc/init.d/root flags=(attach_disconnected) {	# atta
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/root/tasks			w,
-  @{sys}/fs/cgroup/unified/root/cgroup.procs		w,
-  @{sys}/fs/cgroup/unified/root/cgroup.events		r,
+  @{SYS_D}/fs/cgroup/openrc/root/tasks			w,
+  @{SYS_D}/fs/cgroup/unified/root/cgroup.procs		w,
+  @{SYS_D}/fs/cgroup/unified/root/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -1436,7 +1436,7 @@ profile openrc.root.init.d /etc/init.d/root flags=(attach_disconnected) {	# atta
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/root/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/root/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -1449,7 +1449,7 @@ profile openrc.root.init.d /etc/init.d/root flags=(attach_disconnected) {	# atta
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/root/cgroup.procs		r,
+    @{SYS_D}/fs/cgroup/unified/root/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -1465,7 +1465,7 @@ profile openrc.root.init.d /etc/init.d/root flags=(attach_disconnected) {	# atta
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/root/			w,
+    @{SYS_D}/fs/cgroup/unified/root/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -1481,7 +1481,7 @@ profile openrc.root.init.d /etc/init.d/root flags=(attach_disconnected) {	# atta
     # PSEUDO -------------------------------------------
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+    @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
     audit @{PROC_D}/@{pid}/mounts			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
     audit @{PROC_D}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
     
@@ -1500,9 +1500,9 @@ profile openrc.mtab.init.d /etc/init.d/mtab flags=(attach_disconnected) {	# atta
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/mtab/tasks			w,
-  @{sys}/fs/cgroup/unified/mtab/cgroup.procs		w,
-  @{sys}/fs/cgroup/unified/mtab/cgroup.events		r,
+  @{SYS_D}/fs/cgroup/openrc/mtab/tasks			w,
+  @{SYS_D}/fs/cgroup/unified/mtab/cgroup.procs		w,
+  @{SYS_D}/fs/cgroup/unified/mtab/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -1546,7 +1546,7 @@ profile openrc.mtab.init.d /etc/init.d/mtab flags=(attach_disconnected) {	# atta
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/mtab/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/mtab/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -1559,7 +1559,7 @@ profile openrc.mtab.init.d /etc/init.d/mtab flags=(attach_disconnected) {	# atta
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/mtab/cgroup.procs		r,
+    @{SYS_D}/fs/cgroup/unified/mtab/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -1575,7 +1575,7 @@ profile openrc.mtab.init.d /etc/init.d/mtab flags=(attach_disconnected) {	# atta
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/mtab/			w,
+    @{SYS_D}/fs/cgroup/unified/mtab/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -1588,9 +1588,9 @@ profile openrc.localmount.init.d /etc/init.d/localmount flags=(attach_disconnect
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/localmount/tasks		w,
-  @{sys}/fs/cgroup/unified/localmount/cgroup.procs	w,
-  @{sys}/fs/cgroup/unified/localmount/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/localmount/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/localmount/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/localmount/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -1637,7 +1637,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount flags=(attach_disconnect
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/localmount/	w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/localmount/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -1650,7 +1650,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount flags=(attach_disconnect
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/localmount/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/localmount/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -1666,7 +1666,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount flags=(attach_disconnect
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/localmount/		w,
+    @{SYS_D}/fs/cgroup/unified/localmount/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -1684,8 +1684,8 @@ profile openrc.localmount.init.d /etc/init.d/localmount flags=(attach_disconnect
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-    @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
+    @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+    @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
     owner @{PROC_D}/@{pid}/mountinfo			r,
     
     # EXECUTABLES --------------------------------------
@@ -1742,9 +1742,9 @@ profile openrc.sysctl.init.d /etc/init.d/sysctl flags=(attach_disconnected) {	# 
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/sysctl/tasks			w,
-  @{sys}/fs/cgroup/unified/sysctl/cgroup.procs		w,
-  @{sys}/fs/cgroup/unified/sysctl/cgroup.events		r,
+  @{SYS_D}/fs/cgroup/openrc/sysctl/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/sysctl/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/sysctl/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -1772,7 +1772,7 @@ profile openrc.sysctl.init.d /etc/init.d/sysctl flags=(attach_disconnected) {	# 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/sysctl/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/sysctl/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -1785,7 +1785,7 @@ profile openrc.sysctl.init.d /etc/init.d/sysctl flags=(attach_disconnected) {	# 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/sysctl/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/sysctl/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -1801,7 +1801,7 @@ profile openrc.sysctl.init.d /etc/init.d/sysctl flags=(attach_disconnected) {	# 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/sysctl/			w,
+    @{SYS_D}/fs/cgroup/unified/sysctl/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -1814,9 +1814,9 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/bootmisc/tasks		w,
-  @{sys}/fs/cgroup/unified/bootmisc/cgroup.procs	w,
-  @{sys}/fs/cgroup/unified/bootmisc/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/bootmisc/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/bootmisc/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/bootmisc/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -1944,7 +1944,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/bootmisc/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/bootmisc/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -1961,7 +1961,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/bootmisc/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/bootmisc/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -1977,7 +1977,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/bootmisc/			w,
+    @{SYS_D}/fs/cgroup/unified/bootmisc/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -2038,9 +2038,9 @@ profile openrc.hostname.init.d /etc/init.d/hostname flags=(attach_disconnected) 
   capability sys_admin,
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/hostname/tasks		w,
-  @{sys}/fs/cgroup/unified/hostname/cgroup.procs	w,
-  @{sys}/fs/cgroup/unified/hostname/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/hostname/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/hostname/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/hostname/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -2068,7 +2068,7 @@ profile openrc.hostname.init.d /etc/init.d/hostname flags=(attach_disconnected) 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/hostname/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/hostname/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -2081,7 +2081,7 @@ profile openrc.hostname.init.d /etc/init.d/hostname flags=(attach_disconnected) 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/hostname/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/hostname/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -2097,7 +2097,7 @@ profile openrc.hostname.init.d /etc/init.d/hostname flags=(attach_disconnected) 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/hostname/			w,
+    @{SYS_D}/fs/cgroup/unified/hostname/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -2110,9 +2110,9 @@ profile openrc.termencoding.init.d /etc/init.d/termencoding flags=(attach_discon
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/termencoding/tasks		w,
-  @{sys}/fs/cgroup/unified/termencoding/cgroup.procs	w,
-  @{sys}/fs/cgroup/unified/termencoding/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/termencoding/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/termencoding/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/termencoding/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -2142,7 +2142,7 @@ profile openrc.termencoding.init.d /etc/init.d/termencoding flags=(attach_discon
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/termencoding/	w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/termencoding/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -2158,7 +2158,7 @@ profile openrc.termencoding.init.d /etc/init.d/termencoding flags=(attach_discon
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/termencoding/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/termencoding/cgroup.procs r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -2174,7 +2174,7 @@ profile openrc.termencoding.init.d /etc/init.d/termencoding flags=(attach_discon
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/termencoding/		w,
+    @{SYS_D}/fs/cgroup/unified/termencoding/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -2187,9 +2187,9 @@ profile openrc.runsvdir.init.d /etc/init.d/runsvdir flags=(attach_disconnected) 
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/runsvdir/tasks		w,
-  @{sys}/fs/cgroup/unified/runsvdir/cgroup.procs	w,
-  @{sys}/fs/cgroup/unified/runsvdir/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/runsvdir/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/runsvdir/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/runsvdir/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -2216,7 +2216,7 @@ profile openrc.runsvdir.init.d /etc/init.d/runsvdir flags=(attach_disconnected) 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/runsvdir/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/runsvdir/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -2229,7 +2229,7 @@ profile openrc.runsvdir.init.d /etc/init.d/runsvdir flags=(attach_disconnected) 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/runsvdir/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/runsvdir/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -2245,7 +2245,7 @@ profile openrc.runsvdir.init.d /etc/init.d/runsvdir flags=(attach_disconnected) 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/runsvdir/			w,
+    @{SYS_D}/fs/cgroup/unified/runsvdir/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -2258,9 +2258,9 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps flags=(attach_disconnected) {	
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/keymaps/tasks			w,
-  @{sys}/fs/cgroup/unified/keymaps/cgroup.procs		w,
-  @{sys}/fs/cgroup/unified/keymaps/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/keymaps/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/keymaps/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/keymaps/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   /bin/mkdir						Cx,	# sys-apps/coreutils
@@ -2284,7 +2284,7 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps flags=(attach_disconnected) {	
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/keymaps/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/keymaps/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -2300,7 +2300,7 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps flags=(attach_disconnected) {	
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/keymaps/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/keymaps/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -2316,7 +2316,7 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps flags=(attach_disconnected) {	
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/keymaps/			w,
+    @{SYS_D}/fs/cgroup/unified/keymaps/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -2333,9 +2333,9 @@ profile openrc.urandom.init.d /etc/init.d/urandom flags=(attach_disconnected) {	
   
   # PSEUDO ---------------------------------------------
   /dev/urandom						w,
-  @{sys}/fs/cgroup/openrc/urandom/tasks			w,
-  @{sys}/fs/cgroup/unified/urandom/cgroup.procs		w,
-  @{sys}/fs/cgroup/unified/urandom/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/urandom/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/urandom/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/urandom/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -2415,7 +2415,7 @@ profile openrc.urandom.init.d /etc/init.d/urandom flags=(attach_disconnected) {	
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/urandom/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/urandom/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -2428,7 +2428,7 @@ profile openrc.urandom.init.d /etc/init.d/urandom flags=(attach_disconnected) {	
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/urandom/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/urandom/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -2444,7 +2444,7 @@ profile openrc.urandom.init.d /etc/init.d/urandom flags=(attach_disconnected) {	
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/urandom/			w,
+    @{SYS_D}/fs/cgroup/unified/urandom/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -2457,9 +2457,9 @@ profile openrc.loopback.init.d /etc/init.d/loopback flags=(attach_disconnected) 
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/loopback/tasks		w,
-  @{sys}/fs/cgroup/unified/loopback/cgroup.procs	w,
-  @{sys}/fs/cgroup/unified/loopback/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/loopback/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/loopback/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/loopback/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -2488,7 +2488,7 @@ profile openrc.loopback.init.d /etc/init.d/loopback flags=(attach_disconnected) 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/loopback/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/loopback/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -2501,7 +2501,7 @@ profile openrc.loopback.init.d /etc/init.d/loopback flags=(attach_disconnected) 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/loopback/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/loopback/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -2517,7 +2517,7 @@ profile openrc.loopback.init.d /etc/init.d/loopback flags=(attach_disconnected) 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/loopback/			w,
+    @{SYS_D}/fs/cgroup/unified/loopback/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -2530,9 +2530,9 @@ profile openrc.procfs.init.d /etc/init.d/procfs flags=(attach_disconnected) {	# 
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/procfs/tasks			w,
-  @{sys}/fs/cgroup/unified/procfs/cgroup.procs		w,
-  @{sys}/fs/cgroup/unified/procfs/cgroup.events		r,
+  @{SYS_D}/fs/cgroup/openrc/procfs/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/procfs/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/procfs/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -2559,7 +2559,7 @@ profile openrc.procfs.init.d /etc/init.d/procfs flags=(attach_disconnected) {	# 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/procfs/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/procfs/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -2572,7 +2572,7 @@ profile openrc.procfs.init.d /etc/init.d/procfs flags=(attach_disconnected) {	# 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/procfs/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/procfs/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -2588,7 +2588,7 @@ profile openrc.procfs.init.d /etc/init.d/procfs flags=(attach_disconnected) {	# 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/procfs/			w,
+    @{SYS_D}/fs/cgroup/unified/procfs/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -2606,9 +2606,9 @@ profile openrc.killprocs.init.d /etc/init.d/killprocs flags=(attach_disconnected
   								# запуска syslog-ng к этому моменту убивает процесс syslog-ng.
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/killprocs/tasks		w,
-  @{sys}/fs/cgroup/unified/killprocs/cgroup.procs	w,
-  @{sys}/fs/cgroup/unified/killprocs/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/killprocs/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/killprocs/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/killprocs/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -2637,7 +2637,7 @@ profile openrc.killprocs.init.d /etc/init.d/killprocs flags=(attach_disconnected
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/killprocs/	w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/killprocs/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -2650,7 +2650,7 @@ profile openrc.killprocs.init.d /etc/init.d/killprocs flags=(attach_disconnected
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/killprocs/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/killprocs/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -2666,7 +2666,7 @@ profile openrc.killprocs.init.d /etc/init.d/killprocs flags=(attach_disconnected
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/killprocs/			w,
+    @{SYS_D}/fs/cgroup/unified/killprocs/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -2679,9 +2679,9 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro flags=(attach_disconnected) 
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/mount-ro/tasks		w,
-  @{sys}/fs/cgroup/unified/mount-ro/cgroup.procs	w,
-  @{sys}/fs/cgroup/unified/mount-ro/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/mount-ro/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/mount-ro/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/mount-ro/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -2719,7 +2719,7 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro flags=(attach_disconnected) 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/mount-ro/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/mount-ro/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -2732,7 +2732,7 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro flags=(attach_disconnected) 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/mount-ro/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/mount-ro/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -2748,7 +2748,7 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro flags=(attach_disconnected) 
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/mount-ro/			w,
+    @{SYS_D}/fs/cgroup/unified/mount-ro/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -2784,9 +2784,9 @@ profile openrc.savecache.init.d /etc/init.d/savecache flags=(attach_disconnected
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/savecache/tasks		w,
-  @{sys}/fs/cgroup/unified/savecache/cgroup.procs	w,
-  @{sys}/fs/cgroup/unified/savecache/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/savecache/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/savecache/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/savecache/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -2828,7 +2828,7 @@ profile openrc.savecache.init.d /etc/init.d/savecache flags=(attach_disconnected
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/savecache/	w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/savecache/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -2841,7 +2841,7 @@ profile openrc.savecache.init.d /etc/init.d/savecache flags=(attach_disconnected
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/savecache/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/savecache/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -2857,7 +2857,7 @@ profile openrc.savecache.init.d /etc/init.d/savecache flags=(attach_disconnected
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/savecache/			w,
+    @{SYS_D}/fs/cgroup/unified/savecache/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -2883,9 +2883,9 @@ profile openrc.devfs.init.d /etc/init.d/devfs flags=(attach_disconnected) {	# at
   capability mknod,
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/devfs/tasks			w,
-  @{sys}/fs/cgroup/unified/devfs/cgroup.procs		w,
-  @{sys}/fs/cgroup/unified/devfs/cgroup.events		r,
+  @{SYS_D}/fs/cgroup/openrc/devfs/tasks			w,
+  @{SYS_D}/fs/cgroup/unified/devfs/cgroup.procs		w,
+  @{SYS_D}/fs/cgroup/unified/devfs/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -2914,7 +2914,7 @@ profile openrc.devfs.init.d /etc/init.d/devfs flags=(attach_disconnected) {	# at
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
     /dev/mqueue/					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/devfs/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/devfs/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -2927,7 +2927,7 @@ profile openrc.devfs.init.d /etc/init.d/devfs flags=(attach_disconnected) {	# at
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/devfs/cgroup.procs		r,
+    @{SYS_D}/fs/cgroup/unified/devfs/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -2943,7 +2943,7 @@ profile openrc.devfs.init.d /etc/init.d/devfs flags=(attach_disconnected) {	# at
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/devfs/			w,
+    @{SYS_D}/fs/cgroup/unified/devfs/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -2975,9 +2975,9 @@ profile openrc.dmesg.init.d /etc/init.d/dmesg flags=(attach_disconnected) {	# at
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/dmesg/tasks			w,
-  @{sys}/fs/cgroup/unified/dmesg/cgroup.procs		w,
-  @{sys}/fs/cgroup/unified/dmesg/cgroup.events		r,
+  @{SYS_D}/fs/cgroup/openrc/dmesg/tasks			w,
+  @{SYS_D}/fs/cgroup/unified/dmesg/cgroup.procs		w,
+  @{SYS_D}/fs/cgroup/unified/dmesg/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -3005,7 +3005,7 @@ profile openrc.dmesg.init.d /etc/init.d/dmesg flags=(attach_disconnected) {	# at
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/dmesg/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/dmesg/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -3018,7 +3018,7 @@ profile openrc.dmesg.init.d /etc/init.d/dmesg flags=(attach_disconnected) {	# at
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/dmesg/cgroup.procs		r,
+    @{SYS_D}/fs/cgroup/unified/dmesg/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -3034,7 +3034,7 @@ profile openrc.dmesg.init.d /etc/init.d/dmesg flags=(attach_disconnected) {	# at
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/dmesg/			w,
+    @{SYS_D}/fs/cgroup/unified/dmesg/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -3047,9 +3047,9 @@ profile openrc.kmod-static-nodes.init.d /etc/init.d/kmod-static-nodes flags=(att
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/kmod-static-nodes/tasks	w,
-  @{sys}/fs/cgroup/unified/kmod-static-nodes/cgroup.procs w,
-  @{sys}/fs/cgroup/unified/kmod-static-nodes/cgroup.events r,
+  @{SYS_D}/fs/cgroup/openrc/kmod-static-nodes/tasks	w,
+  @{SYS_D}/fs/cgroup/unified/kmod-static-nodes/cgroup.procs w,
+  @{SYS_D}/fs/cgroup/unified/kmod-static-nodes/cgroup.events r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -3078,7 +3078,7 @@ profile openrc.kmod-static-nodes.init.d /etc/init.d/kmod-static-nodes flags=(att
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/kmod-static-nodes/ w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/kmod-static-nodes/ w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -3091,7 +3091,7 @@ profile openrc.kmod-static-nodes.init.d /etc/init.d/kmod-static-nodes flags=(att
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/kmod-static-nodes/cgroup.procs r,
+    @{SYS_D}/fs/cgroup/unified/kmod-static-nodes/cgroup.procs r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -3107,7 +3107,7 @@ profile openrc.kmod-static-nodes.init.d /etc/init.d/kmod-static-nodes flags=(att
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/kmod-static-nodes/		w,
+    @{SYS_D}/fs/cgroup/unified/kmod-static-nodes/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -3120,8 +3120,8 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs flags=(attach_disconnected) {	# at
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/*/{,**}				w,
-  @{sys}/fs/cgroup/unified/cgroup.controllers		r,
+  @{SYS_D}/fs/cgroup/*/{,**}				w,
+  @{SYS_D}/fs/cgroup/unified/cgroup.controllers		r,
   @{PROC_D}/cgroups					r,
   
   # EXECUTABLES ----------------------------------------
@@ -3150,9 +3150,9 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs flags=(attach_disconnected) {	# at
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/						w,
-    @{sys}/fs/cgroup/*/					w,
-    @{sys}/fs/cgroup/{openrc,unified}/sysfs/		w,
+    @{SYS_D}/						w,
+    @{SYS_D}/fs/cgroup/*/				w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/sysfs/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -3168,7 +3168,7 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs flags=(attach_disconnected) {	# at
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/sysfs/cgroup.procs		r,
+    @{SYS_D}/fs/cgroup/unified/sysfs/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -3184,7 +3184,7 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs flags=(attach_disconnected) {	# at
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/sysfs/			w,
+    @{SYS_D}/fs/cgroup/unified/sysfs/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -3198,18 +3198,18 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs flags=(attach_disconnected) {	# at
     capability dac_override,
     
     # MOUNT --------------------------------------------
-    mount fstype=securityfs options=(rw, nosuid, nodev, noexec) securityfs -> /sys/kernel/security/,	# TARGET! @{sys}
-    mount fstype=configfs options=(rw, nosuid, nodev, noexec) configfs -> /sys/kernel/config/,		# TARGET! @{sys}
-    mount fstype=fusectl options=(rw, nosuid, nodev, noexec) fusectl -> /sys/fs/fuse/connections/,	# TARGET! @{sys}
-    mount fstype=tmpfs options=(rw, nosuid, nodev, noexec) cgroup_root -> /sys/fs/cgroup/,		# TARGET! @{sys}
-    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) openrc -> /sys/fs/cgroup/openrc/,		# TARGET! @{sys}
-    mount fstype=cgroup2 options=(rw, nosuid, nodev, noexec) none -> /sys/fs/cgroup/unified/,		# TARGET! @{sys}
-    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) cpuset -> /sys/fs/cgroup/cpuset/,		# TARGET! @{sys}
-    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) cpu -> /sys/fs/cgroup/cpu/,			# TARGET! @{sys}
-    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) cpuacct -> /sys/fs/cgroup/cpuacct/,		# TARGET! @{sys}
-    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) freezer -> /sys/fs/cgroup/freezer/,		# TARGET! @{sys}
-    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) net_cls -> /sys/fs/cgroup/net_cls/,		# TARGET! @{sys}
-    mount fstype=debugfs options=(rw, nosuid, nodev, noexec) debugfs -> /sys/kernel/debug/,		# TARGET! @{sys}
+    mount fstype=securityfs options=(rw, nosuid, nodev, noexec) securityfs -> /sys/kernel/security/,	# TARGET! @{SYS_D}
+    mount fstype=configfs options=(rw, nosuid, nodev, noexec) configfs -> /sys/kernel/config/,		# TARGET! @{SYS_D}
+    mount fstype=fusectl options=(rw, nosuid, nodev, noexec) fusectl -> /sys/fs/fuse/connections/,	# TARGET! @{SYS_D}
+    mount fstype=tmpfs options=(rw, nosuid, nodev, noexec) cgroup_root -> /sys/fs/cgroup/,		# TARGET! @{SYS_D}
+    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) openrc -> /sys/fs/cgroup/openrc/,		# TARGET! @{SYS_D}
+    mount fstype=cgroup2 options=(rw, nosuid, nodev, noexec) none -> /sys/fs/cgroup/unified/,		# TARGET! @{SYS_D}
+    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) cpuset -> /sys/fs/cgroup/cpuset/,		# TARGET! @{SYS_D}
+    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) cpu -> /sys/fs/cgroup/cpu/,			# TARGET! @{SYS_D}
+    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) cpuacct -> /sys/fs/cgroup/cpuacct/,		# TARGET! @{SYS_D}
+    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) freezer -> /sys/fs/cgroup/freezer/,		# TARGET! @{SYS_D}
+    mount fstype=cgroup options=(rw, nosuid, nodev, noexec) net_cls -> /sys/fs/cgroup/net_cls/,		# TARGET! @{SYS_D}
+    mount fstype=debugfs options=(rw, nosuid, nodev, noexec) debugfs -> /sys/kernel/debug/,		# TARGET! @{SYS_D}
   
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -3232,9 +3232,9 @@ profile openrc.modules-load.init.d /etc/init.d/modules-load flags=(attach_discon
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/modules-load/tasks		w,
-  @{sys}/fs/cgroup/unified/modules-load/cgroup.procs	w,
-  @{sys}/fs/cgroup/unified/modules-load/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/modules-load/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/modules-load/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/modules-load/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -3275,7 +3275,7 @@ profile openrc.modules-load.init.d /etc/init.d/modules-load flags=(attach_discon
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/modules-load/	w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/modules-load/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -3288,7 +3288,7 @@ profile openrc.modules-load.init.d /etc/init.d/modules-load flags=(attach_discon
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/modules-load/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/modules-load/cgroup.procs r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -3304,7 +3304,7 @@ profile openrc.modules-load.init.d /etc/init.d/modules-load flags=(attach_discon
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/modules-load/		w,
+    @{SYS_D}/fs/cgroup/unified/modules-load/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -3318,9 +3318,9 @@ profile openrc.agetty.init.d /etc/init.d/agetty flags=(attach_disconnected,compl
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/agetty.*/tasks		w,
-  @{sys}/fs/cgroup/unified/agetty.*/cgroup.procs	w,
-  @{sys}/fs/cgroup/unified/agetty.*/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/agetty.*/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/agetty.*/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/agetty.*/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -3349,7 +3349,7 @@ profile openrc.agetty.init.d /etc/init.d/agetty flags=(attach_disconnected,compl
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/agetty.*/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/agetty.*/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -3362,7 +3362,7 @@ profile openrc.agetty.init.d /etc/init.d/agetty flags=(attach_disconnected,compl
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/agetty.*/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/agetty.*/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -3378,7 +3378,7 @@ profile openrc.agetty.init.d /etc/init.d/agetty flags=(attach_disconnected,compl
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/agetty.*/			w,
+    @{SYS_D}/fs/cgroup/unified/agetty.*/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

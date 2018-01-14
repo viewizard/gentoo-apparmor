@@ -47,9 +47,9 @@ profile iptables.init.d /etc/init.d/iptables flags=(attach_disconnected) {	# att
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/iptables/tasks		w,
-  @{sys}/fs/cgroup/unified/iptables/cgroup.procs	w,
-  @{sys}/fs/cgroup/unified/iptables/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/iptables/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/iptables/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/iptables/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -93,7 +93,7 @@ profile iptables.init.d /etc/init.d/iptables flags=(attach_disconnected) {	# att
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/iptables/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/iptables/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -106,7 +106,7 @@ profile iptables.init.d /etc/init.d/iptables flags=(attach_disconnected) {	# att
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/iptables/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/iptables/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -122,7 +122,7 @@ profile iptables.init.d /etc/init.d/iptables flags=(attach_disconnected) {	# att
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/iptables/			w,
+    @{SYS_D}/fs/cgroup/unified/iptables/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

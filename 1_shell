@@ -394,7 +394,7 @@ profile shell_root {
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+    @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
     audit @{PROC_D}/@{pid}/mounts			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
     owner @{PROC_D}/@{pid}/mountinfo			r,
     
@@ -416,7 +416,7 @@ profile shell_root {
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+    @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
     audit @{PROC_D}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
     
     # EXECUTABLES --------------------------------------
@@ -747,7 +747,7 @@ profile shell_chroot {
   audit deny /root/{,**}				xmrwkl,
   audit deny /run/{,**}					xmrwkl,
   audit deny /sbin/{,**}				xmrwkl,
-  audit deny @{sys}/{,**}				xmrwkl,
+  audit deny @{SYS_D}/{,**}				xmrwkl,
   audit deny /tmp/{,**}					xmrwkl,
   audit deny /usr/{,**}					xmrwkl,
   audit deny /var/cache/{,**}				xmrwkl,

@@ -24,15 +24,15 @@ profile mdadm /sbin/mdadm {
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
   /dev/.tmp.md.*					w,
-  @{sys}/block/						r,
-  @{sys}/bus/pci/drivers/ahci/				r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/{class,device,vendor} r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/**/{class,device,vendor} r,
-  @{sys}/devices/virtual/block/md[0-9]*/*		r,
-  @{sys}/devices/virtual/block/md[0-9]*/md/array_state	rw,
-  @{sys}/devices/virtual/block/md[0-9]*/md/{,component_size,metadata_version} r,
-  @{sys}/devices/virtual/block/md[0-9]*/md/dev-@{BLOCK_REAL}/* r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,*/}dev r,
+  @{SYS_D}/block/					r,
+  @{SYS_D}/bus/pci/drivers/ahci/			r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/{class,device,vendor} r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/**/{class,device,vendor} r,
+  @{SYS_D}/devices/virtual/block/md[0-9]*/*		r,
+  @{SYS_D}/devices/virtual/block/md[0-9]*/md/array_state rw,
+  @{SYS_D}/devices/virtual/block/md[0-9]*/md/{,component_size,metadata_version} r,
+  @{SYS_D}/devices/virtual/block/md[0-9]*/md/dev-@{BLOCK_REAL}/* r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,*/}dev r,
   @{PROC_D}/{devices,mdstat,partitions}			r,
   
   # EXECUTABLES ----------------------------------------
@@ -52,8 +52,8 @@ profile mdadm.checkarray /usr/sbin/checkarray {
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{sys}/block/						r,
-  @{sys}/devices/virtual/block/md[0-9]*/{,**}		r,
+  @{SYS_D}/block/					r,
+  @{SYS_D}/devices/virtual/block/md[0-9]*/{,**}		r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/checkarray					r,
@@ -88,9 +88,9 @@ profile mdadm.init.d /etc/init.d/mdadm flags=(attach_disconnected) {	# attach_di
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/mdadm/tasks			w,
-  @{sys}/fs/cgroup/unified/mdadm/cgroup.procs		w,
-  @{sys}/fs/cgroup/unified/mdadm/cgroup.events		r,
+  @{SYS_D}/fs/cgroup/openrc/mdadm/tasks			w,
+  @{SYS_D}/fs/cgroup/unified/mdadm/cgroup.procs		w,
+  @{SYS_D}/fs/cgroup/unified/mdadm/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -138,7 +138,7 @@ profile mdadm.init.d /etc/init.d/mdadm flags=(attach_disconnected) {	# attach_di
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/mdadm/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/mdadm/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -151,7 +151,7 @@ profile mdadm.init.d /etc/init.d/mdadm flags=(attach_disconnected) {	# attach_di
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/mdadm/cgroup.procs		r,
+    @{SYS_D}/fs/cgroup/unified/mdadm/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -167,7 +167,7 @@ profile mdadm.init.d /etc/init.d/mdadm flags=(attach_disconnected) {	# attach_di
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/mdadm/			w,
+    @{SYS_D}/fs/cgroup/unified/mdadm/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

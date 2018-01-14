@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -38,13 +38,13 @@ profile modemmanager.ModemManager /usr/sbin/ModemManager {
   
   # PSEUDO -------------------------------------------
   /dev/console						w,
-  @{sys}/bus/						r,
-  @{sys}/bus/usb/devices/				r,
-  @{sys}/class/						r,
-  @{sys}/class/tty/					r,
-  @{sys}/class/net/					r,
-  @{sys}/class/usbmisc/					r,
-  @{sys}/devices/**/uevent				r,
+  @{SYS_D}/bus/						r,
+  @{SYS_D}/bus/usb/devices/				r,
+  @{SYS_D}/class/					r,
+  @{SYS_D}/class/tty/					r,
+  @{SYS_D}/class/net/					r,
+  @{SYS_D}/class/usbmisc/				r,
+  @{SYS_D}/devices/**/uevent				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/ModemManager				mr,

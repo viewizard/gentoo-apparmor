@@ -154,8 +154,8 @@ profile consolekit.console-kit-daemon /usr/sbin/console-kit-daemon {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/console						rw,
-  audit @{sys}/devices/virtual/tty/tty/active		r,	# FIX ME! audit 5.12.2017
-  @{sys}/devices/virtual/tty/tty[0-9]*/active		r,
+  audit @{SYS_D}/devices/virtual/tty/tty/active		r,	# FIX ME! audit 5.12.2017
+  @{SYS_D}/devices/virtual/tty/tty[0-9]*/active		r,
   owner @{PROC_D}/@{pid}/fd/				r,
   @{PROC_D}/@{pids}/stat				r,
   @{PROC_D}/@{pids}/environ				r,
@@ -250,7 +250,7 @@ profile consolekit.udev-acl /usr/lib{,32,64}/ConsoleKit/udev-acl {
   capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
-  @{sys}/devices/**/uevent				r,
+  @{SYS_D}/devices/**/uevent				r,
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/ConsoleKit/udev-acl			m,
@@ -395,9 +395,9 @@ profile consolekit.init.d /etc/init.d/consolekit flags=(attach_disconnected) {	#
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/consolekit/tasks		w,
-  @{sys}/fs/cgroup/unified/consolekit/cgroup.procs	w,
-  @{sys}/fs/cgroup/unified/consolekit/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/consolekit/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/consolekit/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/consolekit/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/console-kit-daemon				Px,
@@ -427,7 +427,7 @@ profile consolekit.init.d /etc/init.d/consolekit flags=(attach_disconnected) {	#
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/consolekit/	w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/consolekit/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -440,7 +440,7 @@ profile consolekit.init.d /etc/init.d/consolekit flags=(attach_disconnected) {	#
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/consolekit/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/consolekit/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -456,7 +456,7 @@ profile consolekit.init.d /etc/init.d/consolekit flags=(attach_disconnected) {	#
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/consolekit/		w,
+    @{SYS_D}/fs/cgroup/unified/consolekit/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

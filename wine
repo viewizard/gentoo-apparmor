@@ -155,14 +155,14 @@ profile wine.wine-preloader /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[
   owner /dev/shm/#@{pids}				rw,	# очень похоже на внутренний PID в wine
   								# (до 6 символов, только цифры), с PID процесса
   								# системы не совпадает.
-  @{sys}/bus/						r,
-  @{sys}/class/						r,
-  @{sys}/class/hidraw/					r,
-  @{sys}/class/scsi_device/				r,
-  @{sys}/devices/system/cpu/cpu[0-9]*/cpufreq/*		r,
-  @{sys}/devices/system/cpu/cpu[0-9]*/cache/index[0-9]*/* r,
-  @{sys}/devices/system/cpu/cpufreq/policy[0-9]*/{scaling_cur_freq,scaling_max_freq,cpuinfo_max_freq} r,
-  @{sys}/devices/system/node/**				r,
+  @{SYS_D}/bus/						r,
+  @{SYS_D}/class/					r,
+  @{SYS_D}/class/hidraw/				r,
+  @{SYS_D}/class/scsi_device/				r,
+  @{SYS_D}/devices/system/cpu/cpu[0-9]*/cpufreq/*	r,
+  @{SYS_D}/devices/system/cpu/cpu[0-9]*/cache/index[0-9]*/* r,
+  @{SYS_D}/devices/system/cpu/cpufreq/policy[0-9]*/{scaling_cur_freq,scaling_max_freq,cpuinfo_max_freq} r,
+  @{SYS_D}/devices/system/node/**			r,
   @{PROC_D}/{cpu,mem}info				r,
   @{PROC_D}/scsi/scsi					r,
   audit @{PROC_D}/@{pid}/stat{,m}			r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017

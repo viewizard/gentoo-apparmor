@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -26,12 +26,12 @@ profile openastromenace /usr/{,games/}bin/openastromenace {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/input/event[0-9]*				r,
-  @{sys}/bus/						r,
-  @{sys}/class/						r,
-  @{sys}/class/input/					r,
-  @{sys}/class/sound/					r,
-  @{sys}/devices/**/uevent				r,
-  @{sys}/devices/**/input@{input}/capabilities/*	r,
+  @{SYS_D}/bus/						r,
+  @{SYS_D}/class/					r,
+  @{SYS_D}/class/input/					r,
+  @{SYS_D}/class/sound/					r,
+  @{SYS_D}/devices/**/uevent				r,
+  @{SYS_D}/devices/**/input@{input}/capabilities/*	r,
   
   # EXECUTABLES ----------------------------------------
   /usr/{,games/}bin/openastromenace			mr,

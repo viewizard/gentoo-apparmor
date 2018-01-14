@@ -37,7 +37,7 @@ audit deny dbus (send, receive) peer=(label=unconfined),	# Запрещаем р
 /dev/null						rw,
 /dev/zero						rw,
 /dev/full						rw,
-@{sys}/devices/system/cpu/online			r,
+@{SYS_D}/devices/system/cpu/online			r,
 @{PROC_D}/{cpuinfo,stat,meminfo}			r,
 @{PROC_D}/@{pid}/{maps,status}				r,	# glibc's *printf protections read the maps file
 								# IMPROVE! fsuid=$USER ouid=$USER,root

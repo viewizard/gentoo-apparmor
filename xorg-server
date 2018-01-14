@@ -55,14 +55,14 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   /dev/vga_arbiter					rw,
   /dev/dri/{,card[0-9]*}				rw,
   /dev/input/event[0-9]*				rw,
-  @{sys}/bus/						r,
-  @{sys}/class/						r,
-  @{sys}/class/tty/					r,
-  @{sys}/class/drm/					r,
-  @{sys}/class/input/					r,
-  @{sys}/bus/pci/devices/				r,
-  @{sys}/devices/**/{id,uevent,name}			r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/{,**}		r,
+  @{SYS_D}/bus/						r,
+  @{SYS_D}/class/					r,
+  @{SYS_D}/class/tty/					r,
+  @{SYS_D}/class/drm/					r,
+  @{SYS_D}/class/input/					r,
+  @{SYS_D}/bus/pci/devices/				r,
+  @{SYS_D}/devices/**/{id,uevent,name}			r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/{,**}		r,
   @{PROC_D}/mtrr					rw,
   @{PROC_D}/cmdline					r,
   @{PROC_D}/modules					r,
@@ -128,9 +128,9 @@ profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup flags=(attach_disconn
   #include <abstractions/openrc>
   
   # PSEUDO ---------------------------------------------
-  @{sys}/fs/cgroup/openrc/xdm-setup/tasks		w,
-  @{sys}/fs/cgroup/unified/xdm-setup/cgroup.procs	w,
-  @{sys}/fs/cgroup/unified/xdm-setup/cgroup.events	r,
+  @{SYS_D}/fs/cgroup/openrc/xdm-setup/tasks		w,
+  @{SYS_D}/fs/cgroup/unified/xdm-setup/cgroup.procs	w,
+  @{SYS_D}/fs/cgroup/unified/xdm-setup/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -160,7 +160,7 @@ profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup flags=(attach_disconn
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/xdm-setup/	w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/xdm-setup/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -185,7 +185,7 @@ profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup flags=(attach_disconn
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/xdm-setup/cgroup.procs	r,
+    @{SYS_D}/fs/cgroup/unified/xdm-setup/cgroup.procs	r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -201,7 +201,7 @@ profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup flags=(attach_disconn
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/xdm-setup/			w,
+    @{SYS_D}/fs/cgroup/unified/xdm-setup/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
@@ -215,9 +215,9 @@ profile xorg-server.xdm.init.d /etc/init.d/xdm flags=(attach_disconnected) {	# a
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
-  @{sys}/fs/cgroup/openrc/xdm/tasks			w,
-  @{sys}/fs/cgroup/unified/xdm/cgroup.procs		w,
-  @{sys}/fs/cgroup/unified/xdm/cgroup.events		r,
+  @{SYS_D}/fs/cgroup/openrc/xdm/tasks			w,
+  @{SYS_D}/fs/cgroup/unified/xdm/cgroup.procs		w,
+  @{SYS_D}/fs/cgroup/unified/xdm/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
@@ -250,7 +250,7 @@ profile xorg-server.xdm.init.d /etc/init.d/xdm flags=(attach_disconnected) {	# a
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/{openrc,unified}/xdm/		w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/xdm/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -263,7 +263,7 @@ profile xorg-server.xdm.init.d /etc/init.d/xdm flags=(attach_disconnected) {	# a
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/xdm/cgroup.procs		r,
+    @{SYS_D}/fs/cgroup/unified/xdm/cgroup.procs		r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -282,7 +282,7 @@ profile xorg-server.xdm.init.d /etc/init.d/xdm flags=(attach_disconnected) {	# a
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/fs/cgroup/unified/xdm/			w,
+    @{SYS_D}/fs/cgroup/unified/xdm/			w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,

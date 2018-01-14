@@ -48,8 +48,8 @@ profile nettop /usr/sbin/nettop {
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{sys}/class/net/					r,
-  @{sys}/bus/usb/devices/				r,
+  @{SYS_D}/class/net/					r,
+  @{SYS_D}/bus/usb/devices/				r,
   owner @{PROC_D}/@{pid}/fd/				r,
   owner @{PROC_D}/@{pid}/net/dev			r,
   

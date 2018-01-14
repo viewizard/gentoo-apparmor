@@ -21,7 +21,7 @@ profile e2fsprogs.e2fsck /sbin/e2fsck {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rw,
-  @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**/}name	r,
+  @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/{,**/}name r,
   @{PROC_D}/swaps					r,
   owner @{PROC_D}/@{pid}/mounts				r,
   @{PROC_D}/acpi/ac_adapter/				r,	# Опция "defer_check_on_battery" (man e2fsck.conf).
@@ -44,9 +44,9 @@ profile e2fsprogs.mke2fs /sbin/mke2fs {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rw,
-  @{sys}/devices/virtual/block/@{BLOCK_VIRT}/		r,
-  @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,*/}uuid	r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
+  @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/		r,
+  @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/{,*/}uuid r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
   @{PROC_D}/swaps					r,
   audit @{PROC_D}/@{pid}/mounts				r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
   

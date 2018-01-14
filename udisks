@@ -80,13 +80,13 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {
   /dev/@{BLOCK_ALL}					r,
   /dev/@{BLOCK_REAL}					rw,	# cryptsetup с 2.6.5 используется через плагины libblockdev.
   /dev/mapper/control					rw,	# cryptsetup с 2.6.5 используется через плагины libblockdev.
-  @{sys}/bus/						r,
-  @{sys}/class/						r,
-  @{sys}/class/block/					r,
-  @{sys}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
-  @{sys}/devices/virtual/bdi/[0-9]*:[0-9]*/read_ahead_kb r,	# cryptsetup с 2.6.5 используется через плагины libblockdev.
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
-  @{sys}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/{,**/}{remove,uevent} rw,
+  @{SYS_D}/bus/						r,
+  @{SYS_D}/class/					r,
+  @{SYS_D}/class/block/					r,
+  @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,
+  @{SYS_D}/devices/virtual/bdi/[0-9]*:[0-9]*/read_ahead_kb r,	# cryptsetup с 2.6.5 используется через плагины libblockdev.
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/{,**/}{remove,uevent} rw,
   @{PROC_D}/swaps					r,
   @{PROC_D}/devices					r,	# cryptsetup с 2.6.5 используется через плагины libblockdev.
   owner @{PROC_D}/@{pid}/mountinfo			r,

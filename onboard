@@ -97,10 +97,10 @@ profile onboard_settings /usr/bin/onboard-settings {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{sys}/bus/						r,
-  @{sys}/class/						r,
-  @{sys}/class/input/					r,
-  @{sys}/devices/**/input@{input}/uevent		r,
+  @{SYS_D}/bus/						r,
+  @{SYS_D}/class/					r,
+  @{SYS_D}/class/input/					r,
+  @{SYS_D}/devices/**/input@{input}/uevent		r,
   owner @{PROC_D}/@{pid}/fd/				r,	# FIX ME! Проверить доступ.
   owner @{PROC_D}/@{pid}/mounts				r,	# FIX ME! Проверить доступ.
   

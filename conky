@@ -26,7 +26,7 @@ profile conky /usr/bin/conky {
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{sys}/devices/system/cpu/present			r,
+  @{SYS_D}/devices/system/cpu/present			r,
   @{PROC_D}/						r,
   @{PROC_D}/uptime					r,
   @{PROC_D}/@{pid}/mounts				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
@@ -56,7 +56,7 @@ profile conky_shell {
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{sys}/devices/system/cpu/cpufreq/policy[0-9]*/scaling_governor r,
+  @{SYS_D}/devices/system/cpu/cpufreq/policy[0-9]*/scaling_governor r,
   @{PROC_D}/uptime					r,
   @{PROC_D}/@{pids}/net/dev				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
@@ -155,7 +155,7 @@ profile conky_shell {
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
-    @{sys}/devices/system/cpu/cpufreq/policy[0-9]*/scaling_governor r,
+    @{SYS_D}/devices/system/cpu/cpufreq/policy[0-9]*/scaling_governor r,
     
     # EXECUTABLES --------------------------------------
     /bin/cat						mr,
