@@ -106,7 +106,7 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   /usr/bin/which					Px,	# sys-apps/which
   /usr/lib{,32,64}/firefox/firefox			Px,	# Перезапуск, после установки обновлений.
   /usr/lib{,32,64}/firefox/plugin-container		Px,
-  owner @{HOME}/.mozilla/firefox/@{TMP8}.default/extensions/{,**/}* Px,	# Пользовательские расширения.
+  owner @{HOME_D}/.mozilla/firefox/@{TMP8}.default/extensions/{,**/}* Px,	# Пользовательские расширения.
   /usr/lib{,32,64}/firefox/browser/extensions/{,**/}*	Px,	# Системные расширения.
   
   # READS/WRITES ---------------------------------------
@@ -119,15 +119,15 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   /etc/udev/udev.conf					r,	# sys-fs/eudev
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.macromedia/**				rw,
-  owner @{HOME}/.local/share/gvfs-metadata/home		r,
-  owner @{HOME}/.{firefox,mozilla}/{,**}		rw,
-  owner @{HOME}/.{firefox,mozilla}/**/*.{db,parentlock,sqlite}* k,
-  owner @{HOME}/.{firefox,mozilla}/{,**/}plugins/**/	r,
-  owner @{HOME}/.{firefox,mozilla}/{,**/}plugins/{,**/}* mr,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
-  owner @{HOME_CACHE}/mozilla/{,firefox/}		rw,
-  owner @{HOME_CACHE}/mozilla/firefox/**		rw,
-  owner @{HOME_CACHE}/mozilla/firefox/**/*.sqlite	k,
+  owner @{HOME_D}/.macromedia/**			rw,
+  owner @{HOME_D}/.local/share/gvfs-metadata/home	r,
+  owner @{HOME_D}/.{firefox,mozilla}/{,**}		rw,
+  owner @{HOME_D}/.{firefox,mozilla}/**/*.{db,parentlock,sqlite}* k,
+  owner @{HOME_D}/.{firefox,mozilla}/{,**/}plugins/**/	r,
+  owner @{HOME_D}/.{firefox,mozilla}/{,**/}plugins/{,**/}* mr,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  owner @{HOME_CACHE_D}/mozilla/{,firefox/}		rw,
+  owner @{HOME_CACHE_D}/mozilla/firefox/**		rw,
+  owner @{HOME_CACHE_D}/mozilla/firefox/**/*.sqlite	k,
   
   # TEMP -----------------------------------------------
   /tmp/							r,
@@ -146,7 +146,7 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   deny unix peer=(label="nvidia-drivers.nvidia-modprobe"),	# nvidia-drivers.nvidia-modprobe
 }
 
-profile firefox.user_extensions @{HOME}/.mozilla/firefox/@{TMP8}.default/extensions/** {
+profile firefox.user_extensions @{HOME_D}/.mozilla/firefox/@{TMP8}.default/extensions/** {
   #include <abstractions/base>
   
   
@@ -198,10 +198,10 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   /etc/ssl/openssl.cnf					r,	# dev-libs/openssl
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.adobe/Flash_Player/{,**}		r,
-  owner @{HOME}/.macromedia/Flash_Player/{,**}		rw,
-  owner @{HOME}/.mozilla/firefox/{,**}			r,
-  owner @{HOME}/.config/freshwrapper-data/{,**}		rw,
+  owner @{HOME_D}/.adobe/Flash_Player/{,**}		r,
+  owner @{HOME_D}/.macromedia/Flash_Player/{,**}	rw,
+  owner @{HOME_D}/.mozilla/firefox/{,**}		r,
+  owner @{HOME_D}/.config/freshwrapper-data/{,**}	rw,
   
   # TEMP -----------------------------------------------
   /tmp/							r,

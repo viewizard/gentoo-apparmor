@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -71,9 +71,9 @@ profile pidgin /usr/bin/pidgin {
   /usr/share/purple/ca-certs/{,**}			r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.purple/{,**}				rw,
-  owner @{HOME}/.purple/{,**/}*				k,
-  audit deny @{HOME}/.purple/plugins/**			m,	# Не разрешаем использовать плагины пользователя,
+  owner @{HOME_D}/.purple/{,**}				rw,
+  owner @{HOME_D}/.purple/{,**/}*			k,
+  audit deny @{HOME_D}/.purple/plugins/**		m,	# Не разрешаем использовать плагины пользователя,
   								# в любом случае их не пропустит IMA/EVM.
   
   # TEMP -----------------------------------------------

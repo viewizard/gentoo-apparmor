@@ -2,7 +2,7 @@
 #
 #  Copyright (C) 2006-2009 Novell/SUSE
 #  Copyright (C) 2010 Canonical Ltd.
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -14,16 +14,16 @@
 # * используется как цель в mount и link, проверять при изменении (см. маркер TARGET!)
 @{USER}=[a-z_]*
 
-# @{HOME_CACHE} is a space-separated list of per user cache directories.
-@{HOME_CACHE}=@{HOME}/.cache/
+# @{HOME_CACHE_D} is a space-separated list of per user cache directories.
+@{HOME_CACHE_D}=@{HOME_D}/.cache
 
-# @{HOME} is a space-separated list of all user home directories. While
+# @{HOME_D} is a space-separated list of all user home directories. While
 # it doesn't refer to a specific home directory (AppArmor doesn't
 # enforce discretionary access controls) it can be used as if it did
 # refer to a specific home directory
-@{HOME}=@{HOMEDIRS}/@{USER}/ /root/
+@{HOME_D}=@{HOMEDIRS_D}/@{USER} /root
 
-# @{HOMEDIRS} is a space-separated list of where user home directories
+# @{HOMEDIRS_D} is a space-separated list of where user home directories
 # are stored, for programs that must enumerate all home directories on a
 # system.
-@{HOMEDIRS}=/home/
+@{HOMEDIRS_D}=/home

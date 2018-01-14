@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -14,67 +14,67 @@
 # abstractions/fs/access-by-pattern-filemanager
 
 # Не разрешаем работать с доступными для интернет-программ ресурсами
-deny @{HOME}/@{XDG_PUBLICSHARE_DIR}/{,**}		mrwkl,
-deny @{HOME}/@{XDG_DOWNLOAD_DIR}/{,**}			mrwkl,
+deny @{HOME_D}/@{XDG_PUBLICSHARE_DIR}/{,**}		mrwkl,
+deny @{HOME_D}/@{XDG_DOWNLOAD_DIR}/{,**}		mrwkl,
 
 # qtox
-audit deny @{HOME}/.config/tox/{,**}			mrwkl,	# net-im/qtox
-audit deny @{HOME_CACHE}/Tox/{,**}			mrwkl,	# net-im/qtox
+audit deny @{HOME_D}/.config/tox/{,**}			mrwkl,	# net-im/qtox
+audit deny @{HOME_CACHE_D}/Tox/{,**}			mrwkl,	# net-im/qtox
 
 # transmission
-audit deny @{HOME}/.config/transmission/{,**}		mrwkl,	# net-p2p/transmission
-audit deny @{HOME_CACHE}/transmission/{,**}		mrwkl,	# net-p2p/transmission
+audit deny @{HOME_D}/.config/transmission/{,**}		mrwkl,	# net-p2p/transmission
+audit deny @{HOME_CACHE_D}/transmission/{,**}		mrwkl,	# net-p2p/transmission
 
 # pidgin
-audit deny @{HOME}/.purple/**				mrwkl,	# net-im/pidgin
+audit deny @{HOME_D}/.purple/**				mrwkl,	# net-im/pidgin
 
 # claws-mail
-audit deny @{HOME}/.claws-mail/{,**}			mrwkl,	# mail-client/claws-mail
-audit deny @{HOME}/Mail/{,**}				mrwkl,	# mail-client/claws-mail
-audit deny @{HOME_CACHE}/webkit/{,**}			mrwkl,	# net-libs/webkit-gtk
+audit deny @{HOME_D}/.claws-mail/{,**}			mrwkl,	# mail-client/claws-mail
+audit deny @{HOME_D}/Mail/{,**}				mrwkl,	# mail-client/claws-mail
+audit deny @{HOME_CACHE_D}/webkit/{,**}			mrwkl,	# net-libs/webkit-gtk
 
 # uget
-audit deny @{HOME}/.config/uGet/{,**}			rwkl,	# www-client/uget
+audit deny @{HOME_D}/.config/uGet/{,**}			rwkl,	# www-client/uget
 
 # firefox
-audit deny @{HOME}/.macromedia/{,**}			mrwkl,	# www-plugins/adobe-flash
-audit deny @{HOME}/.{firefox,mozilla}/{,**}		mrwkl,	# www-client/firefox
-audit deny @{HOME}/.config/freshwrapper-data/{,**}	mrwkl,	# www-plugins/freshplayerplugin
-audit deny @{HOME_CACHE}/mozilla/firefox/{,**}		mrwkl,	# www-client/firefox
+audit deny @{HOME_D}/.macromedia/{,**}			mrwkl,	# www-plugins/adobe-flash
+audit deny @{HOME_D}/.{firefox,mozilla}/{,**}		mrwkl,	# www-client/firefox
+audit deny @{HOME_D}/.config/freshwrapper-data/{,**}	mrwkl,	# www-plugins/freshplayerplugin
+audit deny @{HOME_CACHE_D}/mozilla/firefox/{,**}		mrwkl,	# www-client/firefox
 
 # chromium
-audit deny @{HOME}/.pki/nssdb/*				mrwkl,
-audit deny @{HOME}/.config/chromium/{,**}		mrwkl,	# www-client/chromium
-audit deny @{HOME_CACHE}/chromium/{,**}			mrwkl,	# www-client/chromium
+audit deny @{HOME_D}/.pki/nssdb/*			mrwkl,
+audit deny @{HOME_D}/.config/chromium/{,**}		mrwkl,	# www-client/chromium
+audit deny @{HOME_CACHE_D}/chromium/{,**}		mrwkl,	# www-client/chromium
 
 # links
-audit deny @{HOME}/.links/{,**}				mrwkl,	# www-client/links
+audit deny @{HOME_D}/.links/{,**}			mrwkl,	# www-client/links
 
 # teamspeak-client-bin
-audit deny @{HOME}/.ts3client/{,**}			mrwkl,	# media-sound/teamspeak-client-bin
-audit deny @{HOME}/.pki/nssdb/*				mrwkl,
+audit deny @{HOME_D}/.ts3client/{,**}			mrwkl,	# media-sound/teamspeak-client-bin
+audit deny @{HOME_D}/.pki/nssdb/*			mrwkl,
 
 # local.home.evelauncher
-audit deny @{HOME}/evelauncher/{,**}			mrwkl,
-audit deny @{HOME}/.eve/{,**}				mrwkl,
-audit deny @{HOME}/.config/CCP/{,**}			mrwkl,
-audit deny @{HOME}/.local/share/CCP/{,**}		mrwkl,
-audit deny @{HOME}/.pki/nssdb/*				mrwkl,
-audit deny @{HOME_CACHE}/CCP/{,**}			mrwkl,
+audit deny @{HOME_D}/evelauncher/{,**}			mrwkl,
+audit deny @{HOME_D}/.eve/{,**}				mrwkl,
+audit deny @{HOME_D}/.config/CCP/{,**}			mrwkl,
+audit deny @{HOME_D}/.local/share/CCP/{,**}		mrwkl,
+audit deny @{HOME_D}/.pki/nssdb/*			mrwkl,
+audit deny @{HOME_CACHE_D}/CCP/{,**}			mrwkl,
 
 # discord
-audit deny @{HOME}/.config/discord/{,**}		mrwkl,	# net-im/discord-bin
-audit deny @{HOME}/.pki/nssdb/*				mrwkl,
+audit deny @{HOME_D}/.config/discord/{,**}		mrwkl,	# net-im/discord-bin
+audit deny @{HOME_D}/.pki/nssdb/*			mrwkl,
 
 # mumble
-audit deny @{HOME}/.local/share/data/Mumble/{,**}	mrwkl,	# media-sound/mumble
-audit deny @{HOME}/.config/Mumble/{,**}			mrwkl,	# media-sound/mumble
-audit deny @{HOME}/.MumbleSocket			mrwkl,	# media-sound/mumble
-audit deny @{HOME}/.MumbleOverlayPipe			mrwkl,	# media-sound/mumble
+audit deny @{HOME_D}/.local/share/data/Mumble/{,**}	mrwkl,	# media-sound/mumble
+audit deny @{HOME_D}/.config/Mumble/{,**}		mrwkl,	# media-sound/mumble
+audit deny @{HOME_D}/.MumbleSocket			mrwkl,	# media-sound/mumble
+audit deny @{HOME_D}/.MumbleOverlayPipe			mrwkl,	# media-sound/mumble
 
 # linphone
-audit deny @{HOME}/.linphonerc				mrwkl,	# net-voip/linphone
-audit deny @{HOME}/.linphone-history.db			mrwkl,	# net-voip/linphone
+audit deny @{HOME_D}/.linphonerc			mrwkl,	# net-voip/linphone
+audit deny @{HOME_D}/.linphone-history.db		mrwkl,	# net-voip/linphone
 
 # gtkevemon
-audit deny @{HOME}/.gtkevemon/{,**}			mrwkl,	# games-util/gtkevemon
+audit deny @{HOME_D}/.gtkevemon/{,**}			mrwkl,	# games-util/gtkevemon

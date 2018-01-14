@@ -89,14 +89,14 @@ profile xfce4-session /usr/bin/xfce4-session {
   /etc/xdg/autostart/{,*}				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.ICEauthority				w,	# x11-apps/iceauth
-  owner @{HOME}/.xfce4-session.verbose-log*		rw,
-  owner @{HOME}/.config/				r,
-  owner @{HOME}/.config/autostart/{,*}			r,
-  owner @{HOME}/.dbus/session-bus/{,*}			rw,	# sys-apps/dbus
-  owner @{HOME_CACHE}/sessions/{,*}			rw,
-  owner @{HOME_CACHE}/sessions/thumbs*/{,*.png}		rw,
-  owner @{HOME_CACHE}/gpg-agent-info			rw,
+  owner @{HOME_D}/.ICEauthority				w,	# x11-apps/iceauth
+  owner @{HOME_D}/.xfce4-session.verbose-log*		rw,
+  owner @{HOME_D}/.config/				r,
+  owner @{HOME_D}/.config/autostart/{,*}		r,
+  owner @{HOME_D}/.dbus/session-bus/{,*}		rw,	# sys-apps/dbus
+  owner @{HOME_CACHE_D}/sessions/{,*}			rw,
+  owner @{HOME_CACHE_D}/sessions/thumbs*/{,*.png}	rw,
+  owner @{HOME_CACHE_D}/gpg-agent-info			rw,
   
   # TEMP -----------------------------------------------
   owner /tmp/.ICE-unix/@{pids}				w,
@@ -117,7 +117,7 @@ profile xfce4-session /usr/bin/xfce4-session {
     /usr/bin/conky					Px,	# app-admin/conky (запуск с задержкой, корректировка пакета через env portage)
     
     # USERS --------------------------------------------
-    owner @{HOME}/.xfce4-session.verbose-log		w,
+    owner @{HOME_D}/.xfce4-session.verbose-log		w,
   }
   
   profile env /bin/env {
@@ -137,7 +137,7 @@ profile xfce4-session /usr/bin/xfce4-session {
     /usr/bin/cairo-clock				Px,	# x11-misc/cairo-clock
     
     # USERS --------------------------------------------
-    owner @{HOME}/.xfce4-session.verbose-log		w,
+    owner @{HOME_D}/.xfce4-session.verbose-log		w,
   }
   
   profile rm /bin/rm {
@@ -150,7 +150,7 @@ profile xfce4-session /usr/bin/xfce4-session {
     /bin/rm						mr,
     
     # USERS --------------------------------------------
-    owner @{HOME_CACHE}/sessions/*			w,
+    owner @{HOME_CACHE_D}/sessions/*			w,
   }
 }
 
@@ -227,9 +227,9 @@ profile xfce4-session.xfce4-session-settings /usr/bin/xfce4-session-settings {
   /etc/xdg/autostart/{,*}				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/				r,
-  owner @{HOME}/.config/autostart/			r,
-  owner @{HOME}/.config/autostart/*			rw,
+  owner @{HOME_D}/.config/				r,
+  owner @{HOME_D}/.config/autostart/			r,
+  owner @{HOME_D}/.config/autostart/*			rw,
 }
 
 profile xfce4-session.xflock4 /usr/bin/xflock4 {
@@ -339,7 +339,7 @@ profile xfce4-session.xfce4-session-fix /etc/xdg/xfce4/xfce4-session-fix {
     /bin/cp						mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.config/xfce4/desktop/{,*}		rw,
+    owner @{HOME_D}/.config/xfce4/desktop/{,*}		rw,
     
     # TEMP ---------------------------------------------
     owner /tmp/xfdesktop-@{USER}/desktop/{,*}		rw,
@@ -368,7 +368,7 @@ profile xfce4-session.xfce4-session-fix /etc/xdg/xfce4/xfce4-session-fix {
     /usr/bin/diff					mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.config/xfce4/desktop/{,*}		r,
+    owner @{HOME_D}/.config/xfce4/desktop/{,*}		r,
     
     # TEMP ---------------------------------------------
     owner /tmp/xfdesktop-@{USER}/desktop/{,*}		r,

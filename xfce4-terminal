@@ -78,15 +78,15 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
   /usr/local/share/					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.local/share/				r,
-  owner @{HOME}/.local/share/xfce4/			r,
-  owner @{HOME}/.local/share/xfce4/terminal/{,**}	r,
-  owner @{HOME}/.config/				r,
-  owner @{HOME}/.config/xfce4/				r,
-  owner @{HOME}/.config/xfce4/terminal/			r,
-  owner @{HOME}/.config/xfce4/terminal/*		rw,
-  owner @{HOME}/.config/xfce4/help.rc*			rw,
-  owner @{HOME}/.dbus/{,**}				rw,
+  owner @{HOME_D}/.local/share/				r,
+  owner @{HOME_D}/.local/share/xfce4/			r,
+  owner @{HOME_D}/.local/share/xfce4/terminal/{,**}	r,
+  owner @{HOME_D}/.config/				r,
+  owner @{HOME_D}/.config/xfce4/			r,
+  owner @{HOME_D}/.config/xfce4/terminal/		r,
+  owner @{HOME_D}/.config/xfce4/terminal/*		rw,
+  owner @{HOME_D}/.config/xfce4/help.rc*		rw,
+  owner @{HOME_D}/.dbus/{,**}				rw,
   
   # TEMP -----------------------------------------------
   owner /tmp/#@{pids}					rw,	# На самом деле не PID, 5-6 символов (цифры).

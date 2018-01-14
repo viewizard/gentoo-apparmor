@@ -139,7 +139,7 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
   /run/mount/utab					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.local/share/mime/treemagic		r,
+  owner @{HOME_D}/.local/share/mime/treemagic		r,
 }
 
 profile gvfs.gvfsd /usr/libexec/gvfsd {
@@ -311,7 +311,7 @@ profile gvfs.gvfsd-http /usr/libexec/gvfsd-http {
   /usr/share/mime/mime.cache				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.local/share/mime/mime.cache		r,
+  owner @{HOME_D}/.local/share/mime/mime.cache		r,
 }
 
 profile gvfs.gvfsd-localtest /usr/libexec/gvfsd-localtest {
@@ -343,7 +343,7 @@ profile gvfs.gvfsd-metadata /usr/libexec/gvfsd-metadata {
   /run/udev/data/[a-z]*[0-9]*:[0-9]*			r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.local/share/gvfs-metadata/{,*}		rw,
+  owner @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,
 }
 
 profile gvfs.gvfsd-network /usr/libexec/gvfsd-network {
@@ -534,8 +534,8 @@ profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   /run/mount/utab					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.local/share/mime/mime.cache		r,
-  owner @{HOME}/.local/share/Trash/{,**}		rw,
+  owner @{HOME_D}/.local/share/mime/mime.cache		r,
+  owner @{HOME_D}/.local/share/Trash/{,**}		rw,
 }
 
 profile gvfs.gvfs-open /usr/bin/gvfs-open {

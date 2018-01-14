@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -42,7 +42,7 @@ profile gconf.gconfd-2 /usr/libexec/gconfd-2 {
   /etc/gconf/gconf.xml.{defaults,mandatory,system}/.testing.writeability w,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/gconf/{,**}			rw,
+  owner @{HOME_D}/.config/gconf/{,**}			rw,
 }
 
 profile gconf.gsettings-data-convert /usr/bin/gsettings-data-convert {
@@ -61,8 +61,8 @@ profile gconf.gsettings-data-convert /usr/bin/gsettings-data-convert {
   /usr/share/GConf/{,**}				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/gconf/{,**}			r,
-  owner @{HOME}/.local/share/gsettings-data-convert*	rw,
+  owner @{HOME_D}/.config/gconf/{,**}			r,
+  owner @{HOME_D}/.local/share/gsettings-data-convert*	rw,
 }
 
 profile gconf.gconftool-2 /usr/bin/gconftool-2 {

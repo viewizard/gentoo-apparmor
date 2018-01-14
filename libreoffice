@@ -211,8 +211,8 @@ profile libreoffice.javaldx /usr/lib{,32,64}/libreoffice/program/javaldx {
   /opt/{oracle-jdk,icedtea}-bin-[0-9]*/jre/bin/java	Px,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/libreoffice/{,**}		rw,
-  owner @{HOME}/.config/libreoffice/{,**/}*		k,
+  owner @{HOME_D}/.config/libreoffice/{,**}		rw,
+  owner @{HOME_D}/.config/libreoffice/{,**/}*		k,
 }
 
 profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
@@ -275,10 +275,10 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   /usr/lib{,32,64}/jvm/{,**}				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/libreoffice/{,**}		rw,
-  owner @{HOME}/.config/libreoffice/{,**/}*		k,
-  owner @{HOME}/.languagetool-ooo.cfg			rw,
-  owner @{HOME_CACHE}/fontconfig/{,**/}*		k,	# media-libs/fontconfig
+  owner @{HOME_D}/.config/libreoffice/{,**}		rw,
+  owner @{HOME_D}/.config/libreoffice/{,**/}*		k,
+  owner @{HOME_D}/.languagetool-ooo.cfg			rw,
+  owner @{HOME_CACHE_D}/fontconfig/{,**/}*		k,	# media-libs/fontconfig
   
   # TEMP -----------------------------------------------
   /tmp/							r,
@@ -290,7 +290,7 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   
   # NOISY ----------------------------------------------
   deny /usr/lib{,32,64}/libreoffice/share/uno_packages/cache/* w,
-  deny @{HOME}/.mozilla/firefox/profiles.ini		r,	# www-client/firefox
+  deny @{HOME_D}/.mozilla/firefox/profiles.ini		r,	# www-client/firefox
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -307,7 +307,7 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
     /bin/uname						Px,	# sys-apps/coreutils
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.config/libreoffice/**			rw,	# libreoffice.bin
+    deny @{HOME_D}/.config/libreoffice/**		rw,	# libreoffice.bin
     deny /tmp/*.tmp/*.tmp				rw,	# libreoffice.bin
   }
 }

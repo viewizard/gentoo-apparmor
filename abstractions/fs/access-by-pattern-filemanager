@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -18,10 +18,10 @@
 #include <abstractions/fs/deny-remove-home-sensitive>
 
 /							r,
-@{HOMEDIRS}/						r,
-owner @{HOME}/						r,
-owner @{HOME}/**					rw,
-owner @{HOME}/{,**/}*					k,
+@{HOMEDIRS_D}/						r,
+owner @{HOME_D}/					r,
+owner @{HOME_D}/**					rw,
+owner @{HOME_D}/{,**/}*					k,
 owner /run/user/@{UID}/gvfs/*/				r,	# gnome-base/gvfs
 owner /run/user/@{UID}/gvfs/*/**			rw,	# gnome-base/gvfs
 owner /run/user/@{UID}/gvfs/*/{,**/}*			k,	# gnome-base/gvfs

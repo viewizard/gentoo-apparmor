@@ -70,12 +70,12 @@ profile exo.exo-helper /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 {
   /etc/xdg/xfce4/helpers.rc				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/xfce4/helpers.rc*		rw,
-  owner @{HOME}/.config/mimeapps.list*			rw,
-  owner @{HOME}/.local/share/				r,
-  owner @{HOME}/.local/share/xfce4/			r,
-  owner @{HOME}/.local/share/xfce4/helpers/{,*}		r,
-  owner @{HOME}/.local/share/applications/{,**}		r,
+  owner @{HOME_D}/.config/xfce4/helpers.rc*		rw,
+  owner @{HOME_D}/.config/mimeapps.list*		rw,
+  owner @{HOME_D}/.local/share/				r,
+  owner @{HOME_D}/.local/share/xfce4/			r,
+  owner @{HOME_D}/.local/share/xfce4/helpers/{,*}	r,
+  owner @{HOME_D}/.local/share/applications/{,**}	r,
 }
 
 profile exo.exo-compose-mail /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 {
@@ -131,9 +131,9 @@ profile exo.exo-desktop-item-edit /usr/bin/exo-desktop-item-edit {
   /usr/local/bin/{,*}					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/xfce4/panel/**			rw,
-  owner @{HOME}/[^.]*/*.desktop				rw,
-  owner @{HOME}/Desktop/*.desktop{,.*}			rw,
+  owner @{HOME_D}/.config/xfce4/panel/**		rw,
+  owner @{HOME_D}/[^.]*/*.desktop			rw,
+  owner @{HOME_D}/Desktop/*.desktop{,.*}		rw,
   
   # NOISY ----------------------------------------------
   deny /usr/@{CHOST}/**					r,
@@ -198,12 +198,12 @@ profile exo_helper_root {
   /etc/xdg/xfce4/helpers.rc				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/xfce4/helpers.rc*		rw,
-  owner @{HOME}/.config/mimeapps.list*			rw,
-  owner @{HOME}/.local/share/				r,
-  owner @{HOME}/.local/share/xfce4/			r,
-  owner @{HOME}/.local/share/xfce4/helpers/{,*}		r,
-  owner @{HOME}/.local/share/applications/{,**}		r,
+  owner @{HOME_D}/.config/xfce4/helpers.rc*		rw,
+  owner @{HOME_D}/.config/mimeapps.list*		rw,
+  owner @{HOME_D}/.local/share/				r,
+  owner @{HOME_D}/.local/share/xfce4/			r,
+  owner @{HOME_D}/.local/share/xfce4/helpers/{,*}	r,
+  owner @{HOME_D}/.local/share/applications/{,**}	r,
 }
 
 profile exo_compose_mail_root {

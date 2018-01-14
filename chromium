@@ -170,16 +170,16 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   /usr/lib{,32,64}/chromium-browser/locales/*		mr,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.pki/nssdb/*				rwk,
-  owner @{HOME_CACHE}/chromium/{,**}			rw,
-  owner @{HOME_CACHE}/chromium/Cache/*			m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
-  owner @{HOME}/.config/chromium/{,**}			rw,
-  owner @{HOME}/.config/chromium/{,**/}*		k,
-  owner @{HOME}/.config/chromium/**/Cache/*		m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
-  owner @{HOME}/.config/chromium/Dictionaries/*.bdic	m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
-  owner @{HOME}/.config/chromium/**/Dictionaries/*.bdic	m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
-  owner @{HOME}/.local/share/mime/mime.cache		m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
-  owner @{HOME}/.local/share/.org.chromium.Chromium.@{TMP6} rw,
+  owner @{HOME_D}/.pki/nssdb/*				rwk,
+  owner @{HOME_CACHE_D}/chromium/{,**}			rw,
+  owner @{HOME_CACHE_D}/chromium/Cache/*		m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  owner @{HOME_D}/.config/chromium/{,**}		rw,
+  owner @{HOME_D}/.config/chromium/{,**/}*		k,
+  owner @{HOME_D}/.config/chromium/**/Cache/*		m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  owner @{HOME_D}/.config/chromium/Dictionaries/*.bdic	m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  owner @{HOME_D}/.config/chromium/**/Dictionaries/*.bdic m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  owner @{HOME_D}/.local/share/mime/mime.cache		m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  owner @{HOME_D}/.local/share/.org.chromium.Chromium.@{TMP6} rw,
   
   # TEMP -----------------------------------------------
   /tmp/							r,
@@ -191,7 +191,7 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   # NOISY ----------------------------------------------
   deny /dev/bus/usb/					r,
   deny /usr/lib{,32,64}/chromium-browser/**		w,
-  deny @{HOME}/.mozilla/{,**}				r,	# www-client/firefox
+  deny @{HOME_D}/.mozilla/{,**}				r,	# www-client/firefox
   
   profile chrome-sandbox /usr/lib{,32,64}/chromium-browser/chrome-sandbox {
     # Be fanatical since it is setuid root and don't use an abstraction

@@ -47,14 +47,14 @@ profile uget.uget-gtk /usr/bin/uget-gtk {
   /etc/ssl/openssl.cnf					r,	# dev-libs/openssl
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/uGet/{,**}			rw,
+  owner @{HOME_D}/.config/uGet/{,**}			rw,
   
   # TEMP -----------------------------------------------
   owner /tmp/uGetIPC-@{USER}				rw,
   
   # NOISY ----------------------------------------------
-  deny @{HOMEDIRS}/					r,
-  deny @{HOME}/						r,
+  deny @{HOMEDIRS_D}/					r,
+  deny @{HOME_D}/					r,
 }
 
 profile uget.uget-cmd /usr/bin/uget-cmd {
@@ -74,5 +74,5 @@ profile uget.uget-cmd /usr/bin/uget-cmd {
   /etc/ssl/openssl.cnf					r,	# dev-libs/openssl
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/uGet/{,**}			rw,
+  owner @{HOME_D}/.config/uGet/{,**}			rw,
 }

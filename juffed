@@ -44,15 +44,15 @@ profile juffed /usr/bin/juffed {
   /usr/share/juffed/**					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/juff/{,**}			rw,
-  owner @{HOME}/.config/juff/{,**/}*			k,
+  owner @{HOME_D}/.config/juff/{,**}			rw,
+  owner @{HOME_D}/.config/juff/{,**/}*			k,
   
   # TEMP -----------------------------------------------
   owner /tmp/qtsingleapp-juffed-@{TMP4}-@{UID_HEX}	rw,
   owner /tmp/qtsingleapp-juffed-@{TMP4}-@{UID_HEX}-lockfile rwk,
   
   # NOISY ----------------------------------------------
-  deny @{HOMEDIRS}/					r,
+  deny @{HOMEDIRS_D}/					r,
 }
 
 profile juffed_root {
@@ -89,13 +89,13 @@ profile juffed_root {
   /usr/share/juffed/**					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/juff/{,**}			rw,
-  owner @{HOME}/.config/juff/{,**/}*			k,
+  owner @{HOME_D}/.config/juff/{,**}			rw,
+  owner @{HOME_D}/.config/juff/{,**/}*			k,
   
   # TEMP -----------------------------------------------
   owner /tmp/qtsingleapp-juffed-@{TMP4}-@{UID_ROOT_HEX}	rw,
   owner /tmp/qtsingleapp-juffed-@{TMP4}-@{UID_ROOT_HEX}-lockfile rwk,
   
   # NOISY ----------------------------------------------
-  deny @{HOMEDIRS}/					r,
+  deny @{HOMEDIRS_D}/					r,
 }

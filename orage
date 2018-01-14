@@ -64,9 +64,9 @@ profile orage /usr/bin/orage {
   /usr/share/orage/{,**}				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/orage/{,**}			rw,
-  owner @{HOME}/.local/share/orage/{,**}		rw,
-  owner @{HOME}/.local/share/orage/{,**/}*		k,
+  owner @{HOME_D}/.config/orage/{,**}			rw,
+  owner @{HOME_D}/.local/share/orage/{,**}		rw,
+  owner @{HOME_D}/.local/share/orage/{,**/}*		k,
   
   profile sox /usr/bin/sox {					# /usr/bin/play -> sox (media-sound/sox)
     #include <abstractions/base>
@@ -106,5 +106,5 @@ profile orage.globaltime /usr/bin/globaltime {
   /usr/bin/globaltime					mr,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/globaltime/{,**}		rw,
+  owner @{HOME_D}/.config/globaltime/{,**}		rw,
 }

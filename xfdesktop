@@ -87,17 +87,17 @@ profile xfdesktop /usr/bin/xfdesktop {
   /run/mount/utab					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/					r,
-  owner @{HOME}/[^.]**					r,
-  owner @{HOME}/**.@{local_ext}				r,
-  owner @{HOME}/[^.]**/					r,
-  owner @{HOME}/.config/xfce4/desktop/{,**}		rw,
-  owner @{HOME}/.config/Thunar/{,**}			rw,	# xfce-base/thunar
-  owner @{HOME}/.config/menus/**.menu			r,
-  owner @{HOME}/.config/menus/applications-merged/	r,
-  owner @{HOME}/.local/share/desktop-directories/{,*.directory} r,
-  owner @{HOME}/.local/share/gvfs-metadata/{,*}		r,	# gnome-base/gvfs
-  owner @{HOME}/.xfce4-session.verbose-log		rw,
+  owner @{HOME_D}/					r,
+  owner @{HOME_D}/[^.]**				r,
+  owner @{HOME_D}/**.@{local_ext}			r,
+  owner @{HOME_D}/[^.]**/				r,
+  owner @{HOME_D}/.config/xfce4/desktop/{,**}		rw,
+  owner @{HOME_D}/.config/Thunar/{,**}			rw,	# xfce-base/thunar
+  owner @{HOME_D}/.config/menus/**.menu			r,
+  owner @{HOME_D}/.config/menus/applications-merged/	r,
+  owner @{HOME_D}/.local/share/desktop-directories/{,*.directory} r,
+  owner @{HOME_D}/.local/share/gvfs-metadata/{,*}	r,	# gnome-base/gvfs
+  owner @{HOME_D}/.xfce4-session.verbose-log		rw,
   
   # TEMP -----------------------------------------------
   audit owner /tmp/gdkpixbuf-xpm-tmp.*			rw,	# FIX ME! audit 25.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
@@ -146,8 +146,8 @@ profile xfdesktop.xfdesktop-settings /usr/bin/xfdesktop-settings {
   /opt/**.@{local_ext}					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/					r,
-  owner @{HOME}/**.@{local_ext}				r,
-  owner @{HOME}/**/					r,
-  owner @{HOME}/.local/share/gvfs-metadata/{home,root}{,-@{TMP8}.log} r,	# gnome-base/gvfs
+  owner @{HOME_D}/					r,
+  owner @{HOME_D}/**.@{local_ext}			r,
+  owner @{HOME_D}/**/					r,
+  owner @{HOME_D}/.local/share/gvfs-metadata/{home,root}{,-@{TMP8}.log} r,	# gnome-base/gvfs
 }

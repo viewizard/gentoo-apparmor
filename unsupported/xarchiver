@@ -80,7 +80,7 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
   /etc/fstab						r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/xarchiver/{,**}			rw,
+  owner @{HOME_D}/.config/xarchiver/{,**}		rw,
   
   # TEMP -----------------------------------------------
   audit owner /tmp/xarchiver_*_socket			rw,	# FIX ME! Использовать @{TMP} переменные.
@@ -96,7 +96,7 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
     /bin/mv						mr,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
+    deny @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
   profile rm /bin/rm flags=(complain) {
@@ -224,7 +224,7 @@ profile xarchiver /usr/bin/xarchiver flags=(complain) {
     /usr/bin/lzip					mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.xa-*/{,**}				rw,
+    owner @{HOME_D}/.xa-*/{,**}				rw,
   }
   
   profile xz /usr/bin/xz flags=(complain) {
@@ -388,7 +388,7 @@ profile xarchiver_root flags=(complain) {
   /etc/fstab						r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/xarchiver/{,**}			rw,
+  owner @{HOME_D}/.config/xarchiver/{,**}		rw,
   
   # TEMP -----------------------------------------------
   audit owner /tmp/xarchiver_*_socket			rw,	# FIX ME! Использовать @{TMP} переменные.

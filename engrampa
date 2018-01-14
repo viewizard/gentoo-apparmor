@@ -71,9 +71,9 @@ profile engrampa /usr/bin/engrampa {
   /usr/share/engrampa/{,**}				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
-  owner @{HOME}/.config/mimeapps.list*			rw,
-  owner @{HOME}/.local/share/gvfs-metadata/{,*}		rw,	# gnome-base/gvfs
+  owner @{HOME_D}/.fr-@{TMP6}/{,**}			rw,
+  owner @{HOME_D}/.config/mimeapps.list*		rw,
+  owner @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -96,7 +96,7 @@ profile engrampa /usr/bin/engrampa {
     /bin/mv						mr,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
+    deny @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
   profile rm /bin/rm {
@@ -113,10 +113,10 @@ profile engrampa /usr/bin/engrampa {
     /bin/rm						mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
+    owner @{HOME_D}/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
+    deny @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
   profile cp /bin/cp {
@@ -129,10 +129,10 @@ profile engrampa /usr/bin/engrampa {
     /bin/cp						mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
+    owner @{HOME_D}/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
+    deny @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
   profile tar /bin/tar {
@@ -151,10 +151,10 @@ profile engrampa /usr/bin/engrampa {
     /usr/bin/xz						ix,	# app-arch/xz-utils	# Oставляем запуск через ix.
     
     # USERS --------------------------------------------
-    owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
+    owner @{HOME_D}/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
+    deny @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
   profile bzip2 /bin/bzip2 {
@@ -167,10 +167,10 @@ profile engrampa /usr/bin/engrampa {
     /bin/bzip2						mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
+    owner @{HOME_D}/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
+    deny @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
   profile gzip /bin/gzip {
@@ -183,10 +183,10 @@ profile engrampa /usr/bin/engrampa {
     /bin/gzip						mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
+    owner @{HOME_D}/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
+    deny @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
   profile 7z /usr/bin/7z {
@@ -208,10 +208,10 @@ profile engrampa /usr/bin/engrampa {
     /usr/lib64/p7zip/7z.so				m,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
+    owner @{HOME_D}/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
+    deny @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
   profile 7za /usr/bin/7za {
@@ -230,7 +230,7 @@ profile engrampa /usr/bin/engrampa {
     /usr/lib{,32,64}/p7zip/7za				ix,	# app-arch/p7zip	# Все правильно, для 7za используем с ix.
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
+    deny @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
   profile zip /usr/bin/zip {
@@ -243,7 +243,7 @@ profile engrampa /usr/bin/engrampa {
     /usr/bin/zip					mr,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
+    deny @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
   profile unzip /usr/bin/unzip {
@@ -256,7 +256,7 @@ profile engrampa /usr/bin/engrampa {
     /usr/bin/unzip					mr,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
+    deny @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
   profile lzip /usr/bin/lzip {
@@ -269,10 +269,10 @@ profile engrampa /usr/bin/engrampa {
     /usr/bin/lzip					mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
+    owner @{HOME_D}/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
+    deny @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
   profile xz /usr/bin/xz {
@@ -285,10 +285,10 @@ profile engrampa /usr/bin/engrampa {
     /usr/bin/xz						mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
+    owner @{HOME_D}/.fr-@{TMP6}/{,**}			rw,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
+    deny @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
   profile ar /usr/@{CHOST}/binutils-bin/[0-9]*/ar {
@@ -301,7 +301,7 @@ profile engrampa /usr/bin/engrampa {
     /usr/@{CHOST}/binutils-bin/[0-9]*/ar		mr,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
+    deny @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
   profile rar /opt/rar/rar {
@@ -314,14 +314,14 @@ profile engrampa /usr/bin/engrampa {
     /opt/rar/rar					mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
+    owner @{HOME_D}/.fr-@{TMP6}/{,**}			rw,
     
     # NOISY --------------------------------------------
     deny /etc/						r,
     deny /usr/{,local/}lib{,32,64}/			r,
     
     # DENY INHERIT -------------------------------------
-    deny @{HOME}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
+    deny @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
 }
 
@@ -409,7 +409,7 @@ profile engrampa_dpkg_deb {
   /bin/tar						Cx,	# app-arch/tar
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
+  owner @{HOME_D}/.fr-@{TMP6}/{,**}			rw,
   
   # TEMP -----------------------------------------------
   owner /tmp/dpkg-deb.@{TMP6}/				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
@@ -439,7 +439,7 @@ profile engrampa_dpkg_deb {
     /bin/tar						mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.fr-@{TMP6}/{,**}			rw,
+    owner @{HOME_D}/.fr-@{TMP6}/{,**}			rw,
     
     # TEMP ---------------------------------------------
     owner /tmp/dpkg-deb.@{TMP6}/{,**}			w,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.

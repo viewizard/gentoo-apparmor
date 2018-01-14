@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -36,7 +36,7 @@ profile wget /usr/bin/wget {
   /usr/portage/distfiles/**				rw,	# sys-apps/portage	# DELEGATION! portage
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.wget-hsts				rw,
+  owner @{HOME_D}/.wget-hsts				rw,
   
   # READS/WRITES ---------------------------------------
   /.wget-hsts						rwk,	# Мусорит в корень, использовать --hsts-file=file.
@@ -82,5 +82,5 @@ profile wget_root {
   								# Процессы запущенные из cron работают некорректно с wget.
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.wget-hsts				rwk,
+  owner @{HOME_D}/.wget-hsts				rwk,
 }

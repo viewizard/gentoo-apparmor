@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------
 
 # MOUNT ----------------------------------------------
-mount fstype=tmpfs options=(rw, noexec) none -> /home/@{USER}.nv/,	# TARGET! Нельзя использовать @{HOME}/@{HOMEDIRS}.
-mount fstype=tmpfs options=(rw, noexec) none -> /home/@{USER}/.nv/,	# TARGET! Нельзя использовать @{HOME}/@{HOMEDIRS}.
-umount /home/@{USER}.nv/,						# TARGET! Нельзя использовать @{HOME}/@{HOMEDIRS}.
-umount /home/@{USER}/.nv/,						# TARGET! Нельзя использовать @{HOME}/@{HOMEDIRS}.
+mount fstype=tmpfs options=(rw, noexec) none -> /home/@{USER}.nv/,	# TARGET! Нельзя использовать @{HOME_D}/@{HOMEDIRS_D}.
+mount fstype=tmpfs options=(rw, noexec) none -> /home/@{USER}/.nv/,	# TARGET! Нельзя использовать @{HOME_D}/@{HOMEDIRS_D}.
+umount /home/@{USER}.nv/,						# TARGET! Нельзя использовать @{HOME_D}/@{HOMEDIRS_D}.
+umount /home/@{USER}/.nv/,						# TARGET! Нельзя использовать @{HOME_D}/@{HOMEDIRS_D}.

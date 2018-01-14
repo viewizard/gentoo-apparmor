@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -51,8 +51,8 @@ profile xfce4-notifyd /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd {
   /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd		mr,
   
   # USERS ----------------------------------------------
-  owner @{HOME_CACHE}/xfce4-notifyd-theme.rc*		rw,
-  owner @{HOME_CACHE}/xfce4/notifyd/{,**}		rw,
+  owner @{HOME_CACHE_D}/xfce4-notifyd-theme.rc*		rw,
+  owner @{HOME_CACHE_D}/xfce4/notifyd/{,**}		rw,
 }
 
 profile xfce4-notifyd.xfce4-notifyd-config /usr/bin/xfce4-notifyd-config {
@@ -77,6 +77,6 @@ profile xfce4-notifyd.xfce4-notifyd-config /usr/bin/xfce4-notifyd-config {
   /usr/bin/xfce4-notifyd-config				mr,
   
   # USERS ----------------------------------------------
-  owner @{HOME_CACHE}/xfce4/notifyd/{,**}		rw,
-  owner @{HOME}/.local/share/gvfs-metadata/root{,-@{TMP8}.log} r,	# gnome-base/gvfs
+  owner @{HOME_CACHE_D}/xfce4/notifyd/{,**}		rw,
+  owner @{HOME_D}/.local/share/gvfs-metadata/root{,-@{TMP8}.log} r,	# gnome-base/gvfs
 }

@@ -18,19 +18,19 @@
 # <abstractions/fs/access-by-*>, т.к. возможны коллизии.
 
 # USERS ------------------------------------------------
-owner @{HOME}/						r,
-owner @{HOME}/@{XDG_PUBLICSHARE_DIR}/			r,
-owner @{HOME}/@{XDG_PUBLICSHARE_DIR}/**			r,
-owner @{HOME}/@{XDG_DOWNLOAD_DIR}/			r,
-owner @{HOME}/@{XDG_DOWNLOAD_DIR}/**			rw,
-owner @{HOME}/@{XDG_DOWNLOAD_DIR}/{,**/}*		k,
-owner link subset @{HOME}/@{XDG_DOWNLOAD_DIR}/{,**/}*	-> @{HOME}/@{XDG_DOWNLOAD_DIR}/{,**/}*,
+owner @{HOME_D}/					r,
+owner @{HOME_D}/@{XDG_PUBLICSHARE_DIR}/			r,
+owner @{HOME_D}/@{XDG_PUBLICSHARE_DIR}/**		r,
+owner @{HOME_D}/@{XDG_DOWNLOAD_DIR}/			r,
+owner @{HOME_D}/@{XDG_DOWNLOAD_DIR}/**			rw,
+owner @{HOME_D}/@{XDG_DOWNLOAD_DIR}/{,**/}*		k,
+owner link subset @{HOME_D}/@{XDG_DOWNLOAD_DIR}/{,**/}*	-> @{HOME_D}/@{XDG_DOWNLOAD_DIR}/{,**/}*,
 
 # NOISY ------------------------------------------------		# Подавляем вывод об ошибке доступа в местах, аналогичных
 									# используемым в <abstractions/fs/access-by-users-preset-*>.
 									# Данные программы 100% не должны иметь право записи в этих
 									# местах.
-deny /mnt/{,**}							r,
-deny /media/{,**}						r,
-deny /run/user/@{UID}/gvfs/*/{,**}				r,	# gnome-base/gvfs
-deny /run/media/@{USER}/{,**}					r,	# sys-fs/udisks, /run/media/$USER/VolumeName/
+deny /mnt/{,**}						r,
+deny /media/{,**}					r,
+deny /run/user/@{UID}/gvfs/*/{,**}			r,	# gnome-base/gvfs
+deny /run/media/@{USER}/{,**}				r,	# sys-fs/udisks, /run/media/$USER/VolumeName/

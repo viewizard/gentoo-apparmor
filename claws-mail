@@ -56,10 +56,10 @@ profile claws-mail /usr/bin/claws-mail {
   /usr/share/claws-mail/**				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.claws-mail/{,**}			rw,
-  owner @{HOME}/Mail/{,**}				rw,	# FIX ME! (?) вынести в <local/profile_blocks/claws-mail.d/>
-  owner link subset @{HOME}/Mail/queue/[0-9]*		-> /{home/*,root}/.claws-mail/tmp/queue.*,	# TARGET! @{HOME}
-  owner link subset @{HOME}/Mail/draft/[0-9]*		-> /{home/*,root}/.claws-mail/tmp/draft.*,	# TARGET! @{HOME}
+  owner @{HOME_D}/.claws-mail/{,**}			rw,
+  owner @{HOME_D}/Mail/{,**}				rw,	# FIX ME! (?) вынести в <local/profile_blocks/claws-mail.d/>
+  owner link subset @{HOME_D}/Mail/queue/[0-9]*		-> /{home/*,root}/.claws-mail/tmp/queue.*,	# TARGET! @{HOME_D}
+  owner link subset @{HOME_D}/Mail/draft/[0-9]*		-> /{home/*,root}/.claws-mail/tmp/draft.*,	# TARGET! @{HOME_D}
   
   # TEMP -----------------------------------------------
   owner /tmp/claws-mail-@{UID}/{,**}			rw,

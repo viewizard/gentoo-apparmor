@@ -46,14 +46,14 @@ profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
   deny /usr/share/qt[0-9]*/**				r,	# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
   deny /usr/share/pyfa/imgs.zip				r,	# games-util/pyfa, pyfa
   deny /run/user/@{UID}/poedit.lock			w,	# app-i18n/poedit, poedit
-  deny @{HOME}/.local/share/poedit/TranslationMemory/*	rw,	# app-i18n/poedit, poedit
-  deny @{HOME}/.kingsoft/office6/**			rw,	# app-office/wps-office, wps-office
-  deny @{HOME}/.ts3client/**				rw,	# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
-  deny @{HOME}/evelauncher/**				r,	# local.home.evelauncher
-  deny @{HOME}/.local/share/CCP/**			rw,	# local.home.evelauncher
-  deny @{HOME}/.pyfa/Pyfa-[0-9]*.log			w,	# games-util/pyfa, pyfa
-  deny @{HOME_CACHE}/Tox/qTox/qtox.log			w,	# net-im/qtox
-  deny @{HOME_CACHE}/CCP/**				rw,	# local.home.evelauncher
+  deny @{HOME_D}/.local/share/poedit/TranslationMemory/* rw,	# app-i18n/poedit, poedit
+  deny @{HOME_D}/.kingsoft/office6/**			rw,	# app-office/wps-office, wps-office
+  deny @{HOME_D}/.ts3client/**				rw,	# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
+  deny @{HOME_D}/evelauncher/**				r,	# local.home.evelauncher
+  deny @{HOME_D}/.local/share/CCP/**			rw,	# local.home.evelauncher
+  deny @{HOME_D}/.pyfa/Pyfa-[0-9]*.log			w,	# games-util/pyfa, pyfa
+  deny @{HOME_CACHE_D}/Tox/qTox/qtox.log		w,	# net-im/qtox
+  deny @{HOME_CACHE_D}/CCP/**				rw,	# local.home.evelauncher
   
   profile grep /bin/grep {
     #include <abstractions/base>
@@ -196,9 +196,9 @@ profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/xfce4/helpers.rc				r,
-  owner @{HOME}/.config/xfce4/helpers.rc		r,
-  owner @{HOME}/.local/share/applications/		w,
-  owner @{HOME}/.local/share/applications/mimeapps.list* rw,
+  owner @{HOME_D}/.config/xfce4/helpers.rc		r,
+  owner @{HOME_D}/.local/share/applications/		w,
+  owner @{HOME_D}/.local/share/applications/mimeapps.list* rw,
   
   # NOISY ----------------------------------------------
   deny @{shell}						x,	# checking default browser
@@ -215,7 +215,7 @@ profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
     /bin/grep						mr,
     
     # READS/WRITES -------------------------------------
-    owner @{HOME}/.config/xfce4/helpers.rc		r,
+    owner @{HOME_D}/.config/xfce4/helpers.rc		r,
   }
   
   profile readlink /bin/readlink {
@@ -296,7 +296,7 @@ profile xdg-utils.xdg-mime /usr/bin/xdg-mime flags=(attach_disconnected) {
   /usr/share/applications/{,**/}			r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.local/share/applications/{,**/}	r,
+  owner @{HOME_D}/.local/share/applications/{,**/}	r,
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
@@ -356,7 +356,7 @@ profile xdg-utils.xdg-mime /usr/bin/xdg-mime flags=(attach_disconnected) {
     /opt/**.desktop					r,
   
     # USERS --------------------------------------------
-    owner @{HOME}/.local/share/applications/**		r,
+    owner @{HOME_D}/.local/share/applications/**	r,
     
     # DENY INHERIT -------------------------------------
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
@@ -386,8 +386,8 @@ profile xdg-utils.xdg-mime /usr/bin/xdg-mime flags=(attach_disconnected) {
     /usr/bin/gawk					mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.config/mimeapps.list			r,
-    owner @{HOME}/.local/share/applications/mimeapps.list r,
+    owner @{HOME_D}/.config/mimeapps.list		r,
+    owner @{HOME_D}/.local/share/applications/mimeapps.list r,
     
     # DENY INHERIT -------------------------------------
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)

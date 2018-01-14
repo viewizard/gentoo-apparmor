@@ -51,7 +51,7 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings {
   /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.nvidia-settings-rc			rw,
+  owner @{HOME_D}/.nvidia-settings-rc			rw,
   
   # TEMP -----------------------------------------------
   owner /tmp/.xconfig.tmp.@{TMP6}			rw,
@@ -118,15 +118,15 @@ profile nvidia-drivers.nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe flags=(att
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   deny /dev/shm/.org.chromium.Chromium.*		rw,	# local.home.evelauncher
   deny /dev/shm/org.chromium.*				rw,	# www-client/firefox, firefox
-  deny @{HOME}/evelauncher/{,**}			rw,	# local.home.evelauncher
-  deny @{HOME}/.eve/{,**}				rw,	# local.home.evelauncher
-  deny @{HOME}/.local/share/CCP/{,**}			rw,	# local.home.evelauncher
-  deny @{HOME}/.config/skypeforlinux/logs/skype-startup.log w,	# net-im/skypeforlinux, skypeforlinux
+  deny @{HOME_D}/evelauncher/{,**}			rw,	# local.home.evelauncher
+  deny @{HOME_D}/.eve/{,**}				rw,	# local.home.evelauncher
+  deny @{HOME_D}/.local/share/CCP/{,**}			rw,	# local.home.evelauncher
+  deny @{HOME_D}/.config/skypeforlinux/logs/skype-startup.log w,	# net-im/skypeforlinux, skypeforlinux
   deny /opt/skypeforlinux/icudtl.dat			r,	# net-im/skypeforlinux, skypeforlinux
-  deny @{HOME_CACHE}/CCP/{,**}				rw,	# local.home.evelauncher
+  deny @{HOME_CACHE_D}/CCP/{,**}			rw,	# local.home.evelauncher
   deny /tmp/FreshStream*				rw,	# www-client/firefox, firefox.plugin-container
-  deny @{HOME}/.mozilla/firefox/*.default/extensions/{,**} r,	# www-client/firefox, firefox
-  deny @{HOME}/.local/share/xorg/Xorg.0.log		w,	# x11-base/xorg-server non-root запуск
+  deny @{HOME_D}/.mozilla/firefox/*.default/extensions/{,**} r,	# www-client/firefox, firefox
+  deny @{HOME_D}/.local/share/xorg/Xorg.0.log		w,	# x11-base/xorg-server non-root запуск
   deny /media/{,**}					rw,
   deny /mnt/{,**}					rw,
 }

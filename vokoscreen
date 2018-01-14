@@ -68,10 +68,10 @@ profile vokoscreen /usr/bin/vokoscreen {
   /etc/os-release					r,	# sys-apps/baselayout
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/vokoscreen/{,**}		rw,
-  owner @{HOME}/.config/vokoscreen/{,**/}*		k,
-  owner @{HOME}/{,[^.]**/}				r,	# Разрешаем выбирать любую папку.
-  owner @{HOME}/{,[^.]**/}.vokoscreen-recording/	w,	# Создание временной папки.
+  owner @{HOME_D}/.config/vokoscreen/{,**}		rw,
+  owner @{HOME_D}/.config/vokoscreen/{,**/}*		k,
+  owner @{HOME_D}/{,[^.]**/}				r,	# Разрешаем выбирать любую папку.
+  owner @{HOME_D}/{,[^.]**/}.vokoscreen-recording/	w,	# Создание временной папки.
   
   # TEMP -----------------------------------------------
   owner /tmp/mergeFile.txt				rw,
@@ -90,7 +90,7 @@ profile vokoscreen /usr/bin/vokoscreen {
     /usr/bin/ffmpeg					mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.config/vokoscreen/ffmpeg-*.log	w,
+    owner @{HOME_D}/.config/vokoscreen/ffmpeg-*.log	w,
     
     # TEMP ---------------------------------------------
     owner /tmp/mergeFile.txt				r,

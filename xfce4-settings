@@ -70,12 +70,12 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
   /opt/**.png						r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.local/share/				r,
-  owner @{HOME}/.config/				r,
-  owner @{HOME}/.config/autostart/			r,
-  owner @{HOME}/.config/autostart/*			rw,
-  owner @{HOME}/.config/mimeapps.list*			rw,
-  owner @{HOME}/.config/xfce4/help.rc*			rw,
+  owner @{HOME_D}/.local/share/				r,
+  owner @{HOME_D}/.config/				r,
+  owner @{HOME_D}/.config/autostart/			r,
+  owner @{HOME_D}/.config/autostart/*			rw,
+  owner @{HOME_D}/.config/mimeapps.list*		rw,
+  owner @{HOME_D}/.config/xfce4/help.rc*		rw,
   
   profile alacarte {
     #include <abstractions/base>
@@ -121,7 +121,7 @@ profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd {
   /etc/xdg/autostart/xfsettingsd.desktop		r,	# xfce-base/xfdesktop
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.xfce4-session.verbose-log		w,
+  owner @{HOME_D}/.xfce4-session.verbose-log		w,
   
   # TEMP -----------------------------------------------
   owner /tmp/file@{TMP6}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.

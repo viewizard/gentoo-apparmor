@@ -99,10 +99,10 @@ profile thunar /usr/bin/{Thunar,thunar} {
   /run/mount/utab					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/Thunar/{,**}			rw,
-  owner @{HOME}/.config/Thunar/{,**/}*			k,
-  owner @{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
-  owner @{HOME}/.local/share/gvfs-metadata/{,*}		rw,	# gnome-base/gvfs
+  owner @{HOME_D}/.config/Thunar/{,**}			rw,
+  owner @{HOME_D}/.config/Thunar/{,**/}*		k,
+  owner @{HOME_D}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
+  owner @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -262,10 +262,10 @@ profile thunar_root {
   /run/mount/utab					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/Thunar/{,**}			rw,
-  owner @{HOME}/.config/Thunar/{,**/}*			k,
-  owner @{HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
-  owner @{HOME}/.local/share/gvfs-metadata/{,*}		rw,
+  owner @{HOME_D}/.config/Thunar/{,**}			rw,
+  owner @{HOME_D}/.config/Thunar/{,**/}*		k,
+  owner @{HOME_D}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
+  owner @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,
   
   profile shell @{shell} {
     #include <abstractions/base>

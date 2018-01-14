@@ -51,8 +51,8 @@ profile qgit /usr/bin/qgit {
   /usr/bin/juffed					Px,	# app-editors/juffed (выбирается пользователем через настройки)
   
   # READS/WRITES ---------------------------------------
-  owner @{HOME}/.config/qgit/{,**}			rw,
-  owner @{HOME}/.config/qgit/{,**/}*			k,
+  owner @{HOME_D}/.config/qgit/{,**}			rw,
+  owner @{HOME_D}/.config/qgit/{,**/}*			k,
   
   # TEMP -----------------------------------------------
   owner /tmp/qgit4.@{TMP6}				rw,
@@ -116,8 +116,8 @@ profile qgit_root {
   /usr/bin/juffed					Px -> juffed_root,	# app-editors/juffed (выбирается пользователем через настройки)
   
   # READS/WRITES ---------------------------------------
-  owner @{HOME}/.config/qgit/{,**}			rw,
-  owner @{HOME}/.config/qgit/{,**/}*			k,
+  owner @{HOME_D}/.config/qgit/{,**}			rw,
+  owner @{HOME_D}/.config/qgit/{,**/}*			k,
   
   # TEMP -----------------------------------------------
   /tmp/							r,

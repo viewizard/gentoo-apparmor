@@ -46,7 +46,7 @@ profile mate-screensaver /usr/bin/mate-screensaver {
   /usr/share/{,mate/}desktop-directories/{,*.directory}	r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.local/share/desktop-directories/{,*.directory} r,
+  owner @{HOME_D}/.local/share/desktop-directories/{,*.directory} r,
 }
 
 profile mate-screensaver.sh /usr/bin/mate-screensaver.sh {
@@ -98,7 +98,7 @@ profile mate-screensaver-preferences /usr/bin/mate-screensaver-preferences {
   /usr/share/{,mate/}desktop-directories/{,*.directory}	r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.local/share/desktop-directories/{,*.directory} r,
+  owner @{HOME_D}/.local/share/desktop-directories/{,*.directory} r,
 }
 
 profile mate-screensaver.popsquares /usr/libexec/mate-screensaver/popsquares {
@@ -173,7 +173,7 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
   /run/utmp						rk,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.face					r,
+  owner @{HOME_D}/.face					r,
   
   profile shell @{shell} {
     #include <abstractions/base>

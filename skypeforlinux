@@ -15,9 +15,9 @@
 # Доступные для пользователя файлы на запись/изменения нельзя давать на mmap:
 # /dev/shm/.org.chromium.Chromium.XXXXXX
 # /dev/shm/cnd-@{pids}-[0-9]*
-# @{HOME}/.config/skypeforlinux/**
-# @{HOME}/.cache/**
-# @{HOME}/.local/**
+# @{HOME_D}/.config/skypeforlinux/**
+# @{HOME_D}/.cache/**
+# @{HOME_D}/.local/**
 
 # .ttf, .ttc
 @{local_ext_font}=[tT][tT][fFcC]
@@ -41,7 +41,7 @@ profile skypeforlinux.launcher /opt/bin/skypeforlinux {
   /usr/bin/nohup					cx,	# sys-apps/coreutils	# Используем переменные окружения.
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/skypeforlinux/logs/skype-startup.log w,
+  owner @{HOME_D}/.config/skypeforlinux/logs/skype-startup.log w,
   
   profile readlink /bin/readlink {
     #include <abstractions/base>
@@ -63,7 +63,7 @@ profile skypeforlinux.launcher /opt/bin/skypeforlinux {
     /bin/mkdir						mr,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.config/skypeforlinux/{,**/}		rw,
+    owner @{HOME_D}/.config/skypeforlinux/{,**/}	rw,
   }
   
   profile nohup /usr/bin/nohup {
@@ -77,7 +77,7 @@ profile skypeforlinux.launcher /opt/bin/skypeforlinux {
     /opt/skypeforlinux/skypeforlinux			px,	# Используем переменные окружения.
     
     # USERS --------------------------------------------
-    owner @{HOME}/.config/skypeforlinux/logs/skype-startup.log w,
+    owner @{HOME_D}/.config/skypeforlinux/logs/skype-startup.log w,
   }
 }
 
@@ -172,12 +172,12 @@ profile skypeforlinux /opt/skypeforlinux/skypeforlinux {
   deny /etc/conf.d/hostname				r,	# Непонятно, зачем он это хочет.
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/skypeforlinux/{,**}		rw,
-  owner @{HOME}/.config/skypeforlinux/{,**/}*		k,
-  owner @{HOME}/.config/autostart/skypeforlinux.desktop	rw,	# BUG! По какой-то причине, автозапуск не работает в XFCE4.
-  owner @{HOME}/.pki/nssdb/*				rwk,
-  deny @{HOME}/.config/skypeforlinux/**			m,	# Нельзя давать mmap на файлы, доступные пользователю на запись/изменение.
-  deny @{HOME}/.local/share/mime/mime.cache		m,	# Нельзя давать mmap на файлы, доступные пользователю на запись/изменение.
+  owner @{HOME_D}/.config/skypeforlinux/{,**}		rw,
+  owner @{HOME_D}/.config/skypeforlinux/{,**/}*		k,
+  owner @{HOME_D}/.config/autostart/skypeforlinux.desktop rw,	# BUG! По какой-то причине, автозапуск не работает в XFCE4.
+  owner @{HOME_D}/.pki/nssdb/*				rwk,
+  deny @{HOME_D}/.config/skypeforlinux/**		m,	# Нельзя давать mmap на файлы, доступные пользователю на запись/изменение.
+  deny @{HOME_D}/.local/share/mime/mime.cache		m,	# Нельзя давать mmap на файлы, доступные пользователю на запись/изменение.
   
   # TEMP -----------------------------------------------
   /tmp/							r,

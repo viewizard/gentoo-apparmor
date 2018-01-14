@@ -39,7 +39,7 @@ profile lsb-release /usr/bin/lsb_release flags=(attach_disconnected) {
   deny /usr/share/inkscape/extensions/			r,	# media-gfx/inkscape, inkscape
   deny /opt/teamspeak3-client/				r,	# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
   deny /run/user/@{UID}/poedit.*			rw,	# app-i18n/poedit, poedit
-  deny @{HOME}/.config/discord/[0-9]*/modules/**	r,	# net-im/discord-bin, discord-bin.Discord
+  deny @{HOME_D}/.config/discord/[0-9]*/modules/**	r,	# net-im/discord-bin, discord-bin.Discord
   
   profile sed /bin/sed flags=(attach_disconnected) {
     #include <abstractions/base>
@@ -88,7 +88,7 @@ profile lsb-release /usr/bin/lsb_release flags=(attach_disconnected) {
     
     # NOISY --------------------------------------------
     deny /usr/bin/					r,	# Вызов chromium из smplayer.
-    deny @{HOMEDIRS}/**					r,	# app-i18n/poedit, poedit
+    deny @{HOMEDIRS_D}/**				r,	# app-i18n/poedit, poedit
     
     # DENY INHERIT -------------------------------------
     deny unix (send, receive) peer=(label="discord-bin.Discord"),	# net-im/discord-bin, discord-bin.Discord

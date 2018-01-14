@@ -78,11 +78,11 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   owner /run/user/@{UID}/discord-ipc-[0-9]*		rw,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/discord/{,**}			rw,
-  owner @{HOME}/.config/discord/{,**/}*			k,
-  owner @{HOME}/.config/discord/[0-9]*/modules/**.{node,so} m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
-  owner @{HOME}/.config/autostart/*.desktop		rw,	# BUG! По какой-то причине, автозапуск не работает в XFCE4.
-  owner @{HOME}/.pki/nssdb/*				rwk,
+  owner @{HOME_D}/.config/discord/{,**}			rw,
+  owner @{HOME_D}/.config/discord/{,**/}*		k,
+  owner @{HOME_D}/.config/discord/[0-9]*/modules/**.{node,so} m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  owner @{HOME_D}/.config/autostart/*.desktop		rw,	# BUG! По какой-то причине, автозапуск не работает в XFCE4.
+  owner @{HOME_D}/.pki/nssdb/*				rwk,
   
   # TEMP -----------------------------------------------
   /tmp/							r,
@@ -111,6 +111,6 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
     deny /dev/shm/*					rw,
     deny /usr/share/fonts/**				r,
     deny /opt/discord/share/**				r,
-    deny @{HOME}/.config/discord/{,**}			r,
+    deny @{HOME_D}/.config/discord/{,**}		r,
   }
 }

@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -14,27 +14,27 @@
 # соответствующих процессов.
 
 # Элементы авторизации X-сервера.
-audit deny @{HOME}/.ICEauthority			w,
-audit deny @{HOME}/.serverauth.*			w,
-audit deny @{HOME}/.Xauthority				w,
+audit deny @{HOME_D}/.ICEauthority			w,
+audit deny @{HOME_D}/.serverauth.*			w,
+audit deny @{HOME_D}/.Xauthority			w,
 
 # Важные для работы DE директории (запрещаем удалять директории).
-audit deny @{HOME}/.cache/				w,
-audit deny @{HOME}/.config/				w,
-audit deny @{HOME}/.cups/				w,	# net-print/cups
-audit deny @{HOME}/.dbus/				w,	# sys-apps/dbus
-audit deny @{HOME}/.fontconfig/				w,	# media-libs/fontconfig
-audit deny @{HOME}/.gvfs/				w,	# gnome-base/gvfs
-audit deny @{HOME}/.local/				w,
-audit deny @{HOME}/.nv/					w,	# x11-drivers/nvidia-drivers
-audit deny @{HOME}/.thumbnails/				w,
+audit deny @{HOME_D}/.cache/				w,
+audit deny @{HOME_D}/.config/				w,
+audit deny @{HOME_D}/.cups/				w,	# net-print/cups
+audit deny @{HOME_D}/.dbus/				w,	# sys-apps/dbus
+audit deny @{HOME_D}/.fontconfig/			w,	# media-libs/fontconfig
+audit deny @{HOME_D}/.gvfs/				w,	# gnome-base/gvfs
+audit deny @{HOME_D}/.local/				w,
+audit deny @{HOME_D}/.nv/				w,	# x11-drivers/nvidia-drivers
+audit deny @{HOME_D}/.thumbnails/			w,
 
 # XDG директории (запрещаем удалять директории).
-audit deny @{HOME}/@{XDG_DESKTOP_DIR}/			w,
-audit deny @{HOME}/@{XDG_DOWNLOAD_DIR}/			w,
-audit deny @{HOME}/@{XDG_TEMPLATES_DIR}/		w,
-audit deny @{HOME}/@{XDG_PUBLICSHARE_DIR}/		w,
-audit deny @{HOME}/@{XDG_DOCUMENTS_DIR}/		w,
-audit deny @{HOME}/@{XDG_MUSIC_DIR}/			w,
-audit deny @{HOME}/@{XDG_PICTURES_DIR}/			w,
-audit deny @{HOME}/@{XDG_VIDEOS_DIR}/			w,
+audit deny @{HOME_D}/@{XDG_DESKTOP_DIR}/		w,
+audit deny @{HOME_D}/@{XDG_DOWNLOAD_DIR}/		w,
+audit deny @{HOME_D}/@{XDG_TEMPLATES_DIR}/		w,
+audit deny @{HOME_D}/@{XDG_PUBLICSHARE_DIR}/		w,
+audit deny @{HOME_D}/@{XDG_DOCUMENTS_DIR}/		w,
+audit deny @{HOME_D}/@{XDG_MUSIC_DIR}/			w,
+audit deny @{HOME_D}/@{XDG_PICTURES_DIR}/		w,
+audit deny @{HOME_D}/@{XDG_VIDEOS_DIR}/			w,

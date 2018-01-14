@@ -56,10 +56,10 @@ profile poedit /usr/bin/poedit {
   owner /run/user/@{UID}/poedit.*			rwk,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.poedit/{,**}				rw,
-  owner @{HOME}/.config/poedit/{,**}			rw,
-  owner @{HOME}/.local/share/poedit/{,**}		rw,
-  owner @{HOME}/.local/share/poedit/{,**/}*		k,
+  owner @{HOME_D}/.poedit/{,**}				rw,
+  owner @{HOME_D}/.config/poedit/{,**}			rw,
+  owner @{HOME_D}/.local/share/poedit/{,**}		rw,
+  owner @{HOME_D}/.local/share/poedit/{,**/}*		k,
   
   # TEMP -----------------------------------------------
   owner /tmp/poedit@{TMP6}/{,**}			rw,
@@ -99,7 +99,7 @@ profile poedit /usr/bin/poedit {
     
     # DENY INHERIT -------------------------------------
     deny /run/user/@{UID}/poedit.lock			w,
-    deny @{HOME}/.local/share/poedit/{,**}		rw,
+    deny @{HOME_D}/.local/share/poedit/{,**}		rw,
   }
   
   profile msgfmt /usr/bin/msgfmt {
@@ -119,7 +119,7 @@ profile poedit /usr/bin/poedit {
     
     # DENY INHERIT -------------------------------------
     deny /run/user/@{UID}/poedit.lock			w,
-    deny @{HOME}/.local/share/poedit/{,**}		rw,
+    deny @{HOME_D}/.local/share/poedit/{,**}		rw,
   }
   
   profile msgcat /usr/bin/msgcat {
@@ -136,6 +136,6 @@ profile poedit /usr/bin/poedit {
     
     # DENY INHERIT -------------------------------------
     deny /run/user/@{UID}/poedit.lock			w,
-    deny @{HOME}/.local/share/poedit/{,**}		rw,
+    deny @{HOME_D}/.local/share/poedit/{,**}		rw,
   }
 }

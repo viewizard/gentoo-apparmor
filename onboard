@@ -63,10 +63,10 @@ profile onboard /usr/bin/onboard {
   @{PYTHON_PACKAGES_D}/cairo/**.pyc{,.*}		w,	# dev-python/pycairo
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.local/share/onboard/{,**}		rw,
+  owner @{HOME_D}/.local/share/onboard/{,**}		rw,
   
   # NOISY ----------------------------------------------
-  deny @{HOME}/						r,
+  deny @{HOME_D}/					r,
 }
 
 profile onboard_settings /usr/bin/onboard-settings {
@@ -117,8 +117,8 @@ profile onboard_settings /usr/bin/onboard-settings {
   audit /run/udev/data/*				r,	# FIX ME! audit 11.12.2017
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.local/share/onboard/{,**}		rw,
+  owner @{HOME_D}/.local/share/onboard/{,**}		rw,
   
   # NOISY ----------------------------------------------
-  deny @{HOME}/						r,
+  deny @{HOME_D}/					r,
 }

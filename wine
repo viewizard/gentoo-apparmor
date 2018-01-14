@@ -28,9 +28,9 @@ profile wine.wine-wrapper /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]* {
   deny network netlink,						# local.home.evelauncher
   deny unix,							# local.home.evelauncher
   deny /dev/shm/.org.chromium.Chromium.*		rw,	# local.home.evelauncher
-  deny @{HOME}/evelauncher/**				r,	# local.home.evelauncher
-  deny @{HOME}/.local/share/CCP/**			rw,	# local.home.evelauncher
-  deny @{HOME_CACHE}/CCP/**				rw,	# local.home.evelauncher
+  deny @{HOME_D}/evelauncher/**				r,	# local.home.evelauncher
+  deny @{HOME_D}/.local/share/CCP/**			rw,	# local.home.evelauncher
+  deny @{HOME_CACHE_D}/CCP/**				rw,	# local.home.evelauncher
 }
 
 profile wine /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine flags=(attach_disconnected) {
@@ -99,9 +99,9 @@ profile wine.ntlm_auth /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*
   deny network inet,						# local.home.evelauncher
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   deny /dev/shm/.org.chromium.Chromium.*		rw,	# local.home.evelauncher
-  deny @{HOME}/evelauncher/**				r,	# local.home.evelauncher
-  deny @{HOME}/.local/share/CCP/**			rw,	# local.home.evelauncher
-  deny @{HOME_CACHE}/CCP/**				rw,	# local.home.evelauncher
+  deny @{HOME_D}/evelauncher/**				r,	# local.home.evelauncher
+  deny @{HOME_D}/.local/share/CCP/**			rw,	# local.home.evelauncher
+  deny @{HOME_CACHE_D}/CCP/**				rw,	# local.home.evelauncher
 }
 
 # IMPROVE! В идеале, иметь профиль на каждую программу, см.
@@ -188,8 +188,8 @@ profile wine.wine-preloader /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[
   /usr/share/icons/**					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_CACHE}/winetricks/			r,
-  owner @{HOME_CACHE}/winetricks/**			rw,
+  owner @{HOME_CACHE_D}/winetricks/			r,
+  owner @{HOME_CACHE_D}/winetricks/**			rw,
   
   # TEMP -----------------------------------------------
   owner /tmp/.wine-@{UID}/server-*-*/{,lock}		r,
@@ -250,9 +250,9 @@ profile wine.wineserver /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]
   /usr/share/wine{,-{any,d3d9,staging,vanilla}-[0-9]*}/{,**/}* k,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.local/share/icons/hicolor/**		w,
-  owner @{HOME_CACHE}/winetricks/			r,
-  owner @{HOME_CACHE}/winetricks/**			rw,
+  owner @{HOME_D}/.local/share/icons/hicolor/**		w,
+  owner @{HOME_CACHE_D}/winetricks/			r,
+  owner @{HOME_CACHE_D}/winetricks/**			rw,
   
   # TEMP -----------------------------------------------
   owner /tmp/.wine-@{UID}/				rw,
@@ -264,7 +264,7 @@ profile wine.wineserver /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]
   deny /						r,
   deny /media/*/					r,
   deny /mnt/*/						r,
-  deny @{HOME}/						r,
+  deny @{HOME_D}/					r,
   deny /dev/@{BLOCK_REAL}				r,
   
   # DENY INHERIT ---------------------------------------

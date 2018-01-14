@@ -83,8 +83,8 @@ profile meld /usr/bin/meld {
   @{PYTHON_PACKAGES_D}/cairo/**.pyc{,.*}		w,	# dev-python/pycairo
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/meld/{,**}			rw,
-  owner @{HOME}/.local/share/meld/{,**}			rw,
+  owner @{HOME_D}/.config/meld/{,**}			rw,
+  owner @{HOME_D}/.local/share/meld/{,**}		rw,
   
   # TEMP -----------------------------------------------
   owner /tmp/*						rw,	# системы контроля версий передают файлы на проверку через tmp.
@@ -163,8 +163,8 @@ profile meld_root {
   @{PYTHON_PACKAGES_D}/cairo/**.pyc{,.*}		w,	# dev-python/pycairo
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.config/meld/{,**}			rw,
-  owner @{HOME}/.local/share/meld/{,**}			rw,
+  owner @{HOME_D}/.config/meld/{,**}			rw,
+  owner @{HOME_D}/.local/share/meld/{,**}		rw,
   
   # TEMP -----------------------------------------------
   /tmp/							r,

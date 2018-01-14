@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -41,7 +41,7 @@ profile git /usr/{bin,libexec/git-core}/git {
   /usr/share/git-core/**				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.gitconfig				rw,
+  owner @{HOME_D}/.gitconfig				rw,
   
   # TEMP -----------------------------------------------
   owner /tmp/qgit4.@{TMP6}				rw,	# dev-vcs/qgit
@@ -83,7 +83,7 @@ profile git /usr/{bin,libexec/git-core}/git {
     /usr/{bin,libexec/git-core}/git			Px,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.gitconfig				r,
+    owner @{HOME_D}/.gitconfig				r,
   }
 }
 
@@ -120,7 +120,7 @@ profile git_root {
   owner link subset /**/.git/objects/{,**/}*		-> /**/.git/objects/{,**/}*,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.gitconfig				rw,
+  owner @{HOME_D}/.gitconfig				rw,
   
   # TEMP -----------------------------------------------
   owner /tmp/qgit4.@{TMP6}				rw,	# dev-vcs/qgit
@@ -166,6 +166,6 @@ profile git_root {
     /usr/{bin,libexec/git-core}/git			Px -> git_root,
     
     # USERS --------------------------------------------
-    owner @{HOME}/.gitconfig				r,
+    owner @{HOME_D}/.gitconfig				r,
   }
 }

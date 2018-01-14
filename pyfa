@@ -65,10 +65,10 @@ profile pyfa @{PYTHON2_EXEC}/pyfa {
   @{PYTHON2_PACKAGES_D}/wxversion.pyc{,.*}		w,
   
   # USERS ----------------------------------------------
-  owner @{HOME}/.pyfa/{,**}				rw,
-  owner @{HOME}/.pyfa/{,**/}*				k,
-  owner @{HOME}/.config/matplotlib/{,**}		rw,	# dev-python/matplotlib
-  owner @{HOME_CACHE}/matplotlib/{,**}			rw,	# dev-python/matplotlib
+  owner @{HOME_D}/.pyfa/{,**}				rw,
+  owner @{HOME_D}/.pyfa/{,**/}*				k,
+  owner @{HOME_D}/.config/matplotlib/{,**}		rw,	# dev-python/matplotlib
+  owner @{HOME_CACHE_D}/matplotlib/{,**}		rw,	# dev-python/matplotlib
   
   # TEMP -----------------------------------------------
   audit owner /tmp/tmp??????				rw,	# FIX ME! audit 25.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.

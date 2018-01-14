@@ -8,15 +8,15 @@
 #
 # ------------------------------------------------------------------
 
-# доступ к файлам в @{HOME}, gvfs и /media с пользовательской
+# доступ к файлам в @{HOME_D}, gvfs и /media с пользовательской
 # предустановкой для abstractions/fs/access-by-user-preset-w
 
 /							r,
-@{HOMEDIRS}/						r,
-owner @{HOME}/						r,
-owner @{HOME}/@{USERS_DIR_w}/				r,
-owner @{HOME}/@{USERS_FILE_w}				rw,
-owner @{HOME}/@{USERS_DIR_w}/@{USERS_FILE_w}		rw,
+@{HOMEDIRS_D}/						r,
+owner @{HOME_D}/					r,
+owner @{HOME_D}/@{USERS_DIR_w}/				r,
+owner @{HOME_D}/@{USERS_FILE_w}				rw,
+owner @{HOME_D}/@{USERS_DIR_w}/@{USERS_FILE_w}		rw,
 owner /run/user/@{UID}/gvfs/				r,	# gnome-base/gvfs
 owner /run/user/@{UID}/gvfs/*/@{USERS_DIR_w}/		r,	# gnome-base/gvfs
 owner /run/user/@{UID}/gvfs/*/@{USERS_FILE_w}		rw,	# gnome-base/gvfs
