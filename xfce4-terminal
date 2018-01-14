@@ -32,8 +32,9 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
   #include <abstractions/dbus/session-bind>
   #include <abstractions/unix/gvfsd-trash>
   #include <abstractions/unix/gvfsd-network>
-  #include <abstractions/fs/access-by-users-preset-w>		# Разрешаем только запись для сохранения содержимого в файл.
-  								# В терминале ПКМ -> Сохранить содержимое...
+  #include <abstractions/unix/gvfsd-smb-browse>
+  #include <abstractions/fs/access-by-users-preset-w>		# Разрешаем только запись для сохранения содержимого в файл,
+  								# в терминале над окном вывода ПКМ -> Сохранить содержимое...
   								# Разрешаем только создание/запись в файл .goutputstream-@{TMP6}.
   #include <abstractions/profile_transitions/users-strict-web>
   

@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -53,8 +53,8 @@ profile uget.uget-gtk /usr/bin/uget-gtk {
   owner /tmp/uGetIPC-@{USER}				rw,
   
   # NOISY ----------------------------------------------
-  deny @{HOMEDIRS}					r,
-  deny @{HOME}						r,
+  deny @{HOMEDIRS}/					r,
+  deny @{HOME}/						r,
 }
 
 profile uget.uget-cmd /usr/bin/uget-cmd {

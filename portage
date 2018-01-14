@@ -71,7 +71,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   /usr/bin/sandbox					cx,	# sys-apps/sandbox
   /usr/bin/find						Cx,	# sys-apps/findutils
   /usr/bin/id						Px,	# sys-apps/coreutils
-  /usr/bin/install-info					Cx,	# sys-apps/texinfo
+  /usr/bin/install-info					Px,	# sys-apps/texinfo
   /usr/bin/scanelf					Cx,	# app-misc/pax-utils
   /usr/bin/wget						Px,	# net-misc/wget
   /usr/bin/desktop-file-validate			Cx,	# dev-util/desktop-file-utils
@@ -158,25 +158,6 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /etc/{,**}						r,
     /etc/portage/{,**}					r,
     /usr/local/portage/{,**}				r,
-  }
-  
-  profile install-info /usr/bin/install-info flags=(complain) {	# FIX ME! complain 06.10.2017
-    #include <abstractions/base>
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					rw,
-    /dev/pts/[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /usr/bin/install-info				mr,
-    @{shell}						Px -> portage_emerge_install_info_shell,
-    
-    /usr/share/info/{,**}				r,
-    /usr/share/info/dir					w,
-    /usr/share/binutils-data/@{CHOST}/[0-9]*/info/{,**}	r,	# sys-devel/binutils
-    /usr/share/binutils-data/@{CHOST}/[0-9]*/info/dir	w,	# sys-devel/binutils
-    /usr/share/gcc-data/@{CHOST}/[0-9]*/info/{,**}	r,	# sys-devel/gcc
-    /usr/share/gcc-data/@{CHOST}/[0-9]*/info/dir	w,	# sys-devel/gcc
   }
   
   profile scanelf /usr/bin/scanelf flags=(complain) {		# FIX ME! complain 06.10.2017
@@ -469,38 +450,6 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     								# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
     								# IMPROVE! (?) Потом работать с xattr, чтобы ограничить только на процесс.
     link subset /var/tmp/portage/{,**/}*		-> /var/tmp/portage/{,**/}*,
-  }
-}
-
-# IMPROVE! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
-# множественные вложенные профили, выносим в отдельный профиль.
-profile portage_emerge_install_info_shell flags=(complain) {	# FIX ME! complain 18.10.2017
-  #include <abstractions/base>
-  
-  # PSEUDO ---------------------------------------------
-  /dev/tty						rw,
-  /dev/tty[0-9]*					rw,
-  /dev/pts/[0-9]*					rw,
-  
-  # EXECUTABLES ----------------------------------------
-  @{shell}						mr,
-  /bin/bzip2						Cx,	# app-arch/bzip2
-  
-  # READS/WRITES ---------------------------------------
-  /usr/share/info/**.bz2				r,
-  
-  profile bzip2 /bin/bzip2 flags=(complain) {			# FIX ME! complain 18.10.2017
-    #include <abstractions/base>
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					rw,
-    /dev/pts/[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /bin/bzip2						mr,
-    
-    # READS/WRITES -------------------------------------
-    /usr/share/info/**.bz2				r,
   }
 }
 

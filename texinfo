@@ -1,0 +1,83 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2018 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <local/tunables.d/>
+
+profile texinfo.install-info /usr/bin/install-info {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/install-info					mr,
+  @{shell}						Px -> texinfo_info_shell,
+  
+  # READS/WRITES -------------------------------------
+  /usr/share/info/{,**}					r,
+  /usr/share/info/dir					w,
+  /usr/share/binutils-data/@{CHOST}/[0-9]*/info/{,**}	r,	# sys-devel/binutils
+  /usr/share/binutils-data/@{CHOST}/[0-9]*/info/dir	w,	# sys-devel/binutils
+  /usr/share/gcc-data/@{CHOST}/[0-9]*/info/{,**}	r,	# sys-devel/gcc
+  /usr/share/gcc-data/@{CHOST}/[0-9]*/info/dir		w,	# sys-devel/gcc
+}
+
+profile texinfo.info /usr/bin/info {
+  #include <abstractions/base>
+  #include <abstractions/ncurses>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/info						mr,
+  @{shell}						Px -> texinfo_info_shell,
+  
+  # READS/WRITES -------------------------------------
+  /usr/share/info/dir					r,
+  /usr/share/binutils-data/@{CHOST}/[0-9]*/info/dir	r,	# sys-devel/binutils
+  /usr/share/binutils-data/@{CHOST}/[0-9]*/info/*.info	r,	# sys-devel/binutils
+  /usr/share/gcc-data/@{CHOST}/[0-9]*/info/dir		r,	# sys-devel/gcc
+  /usr/share/gcc-data/@{CHOST}/[0-9]*/info/*.info	r,	# sys-devel/gcc
+}
+
+# IMPROVE! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
+# множественные вложенные профили, выносим в отдельный профиль.
+profile texinfo_info_shell {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  @{shell}						mr,
+  /bin/bzip2						Cx,	# app-arch/bzip2
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/info/**.bz2				r,
+  
+  profile bzip2 /bin/bzip2 {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/bzip2						mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/share/info/**.bz2				r,
+  }
+}
