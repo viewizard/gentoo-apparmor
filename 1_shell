@@ -649,6 +649,7 @@ profile shell_root {
     # EXECUTABLES --------------------------------------
     /usr/bin/find					mr,
     /bin/ln						ix,	# sys-apps/coreutils	# FIX ME!
+    /bin/sed						ix,	# sys-apps/sed		# FIX ME!
   }
   
   profile gawk /usr/bin/gawk {
@@ -794,7 +795,7 @@ profile shell_chroot {
   # DBUS -----------------------------------------------
   
   # MOUNT ----------------------------------------------
-  mount fstype=cgroup options=(rw, nosuid, nodev, noexec) tmpfs -> @{CHROOT}/sys/fs/cgroup/portage/,
+  mount fstype=cgroup options=(rw, nosuid, nodev, noexec) tmpfs -> @{CHROOT_D}/sys/fs/cgroup/portage/,
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -805,69 +806,69 @@ profile shell_chroot {
   
   # PSEUDO ---------------------------------------------	# Т.к. мы передаем /dev, /sys, /proc в новый рут, максимально
   								# ограничиваем доступ к этим участкам.
-  @{CHROOT}/dev/{,**}					r,
-  @{CHROOT}/dev/tty					w,
-  @{CHROOT}/dev/tty[0-9]*				rw,
-  @{CHROOT}/dev/pts/[0-9]*				rw,
-  @{CHROOT}/dev/ptmx					w,
-  @{CHROOT}/dev/log					w,
-  @{CHROOT}/dev/null					wk,
-  @{CHROOT}/dev/zero					w,
-  @{CHROOT}/dev/full					w,
-  owner @{CHROOT}/dev/shm/*				wl,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-  @{CHROOT}/sys/{,**}					r,
-  @{CHROOT}/sys/fs/cgroup/portage/{,**}			w,
-  @{CHROOT}/proc/{,**}				r,
-  audit deny @{CHROOT}/dev/@{BLOCK_ALL}			wk,	# Запрещаем работать с блочными устройствами.
+  @{CHROOT_D}/dev/{,**}					r,
+  @{CHROOT_D}/dev/tty					w,
+  @{CHROOT_D}/dev/tty[0-9]*				rw,
+  @{CHROOT_D}/dev/pts/[0-9]*				rw,
+  @{CHROOT_D}/dev/ptmx					w,
+  @{CHROOT_D}/dev/log					w,
+  @{CHROOT_D}/dev/null					wk,
+  @{CHROOT_D}/dev/zero					w,
+  @{CHROOT_D}/dev/full					w,
+  owner @{CHROOT_D}/dev/shm/*				wl,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  @{CHROOT_D}/sys/{,**}					r,
+  @{CHROOT_D}/sys/fs/cgroup/portage/{,**}		w,
+  @{CHROOT_D}/proc/{,**}				r,
+  audit deny @{CHROOT_D}/dev/@{BLOCK_ALL}		wk,	# Запрещаем работать с блочными устройствами.
   
   # EXECUTABLES ----------------------------------------
-  @{CHROOT}/@{shell}					mr,
-  @{CHROOT}/bin/{,**/}*					ix,
-  @{CHROOT}/etc/{,**/}*					ix,
-  @{CHROOT}/opt/{,**/}*					ix,
-  @{CHROOT}/sbin/{,**/}*				ix,
-  @{CHROOT}/usr/{,**/}*					ix,
-  @{CHROOT}/var/tmp/portage/*/*/{,**/}*			ix,
+  @{CHROOT_D}/@{shell}					mr,
+  @{CHROOT_D}/bin/{,**/}*				ix,
+  @{CHROOT_D}/etc/{,**/}*				ix,
+  @{CHROOT_D}/opt/{,**/}*				ix,
+  @{CHROOT_D}/sbin/{,**/}*				ix,
+  @{CHROOT_D}/usr/{,**/}*				ix,
+  @{CHROOT_D}/var/tmp/portage/*/*/{,**/}*		ix,
   
   # READS/WRITES ---------------------------------------
-  @{CHROOT}/						rw,
-  @{CHROOT}/*						rwk,
-  @{CHROOT}/bin/{,**}					rw,
-  @{CHROOT}/bin/{,**/}*					kl,
-  @{CHROOT}/boot/{,**}					rw,
-  @{CHROOT}/boot/{,**/}*				kl,
-  @{CHROOT}/etc/{,**}					rw,
-  @{CHROOT}/etc/{,**/}*					kl,
-  @{CHROOT}/lib{,32,64}/{,**}				rw,
-  @{CHROOT}/lib{,32,64}/{,**/}*				kl,
-  @{CHROOT}/lib{,32,64}/ld{,32,64}-*.so{,.*}		m,
-  @{CHROOT}/lib{,32,64}/**/ld{,32,64}-*.so{,.*}		m,
-  @{CHROOT}/lib{,32,64}/lib*.so{,.*}			m,
-  @{CHROOT}/lib{,32,64}/**/lib*.so{,.*}			m,
-  @{CHROOT}/opt/{,**}					rw,
-  @{CHROOT}/opt/{,**/}*					kl,
-  @{CHROOT}/run/{,**}					rw,
-  @{CHROOT}/run/{,**/}*					kl,
-  @{CHROOT}/sbin/{,**}					rw,
-  @{CHROOT}/sbin/{,**/}*				kl,
-  @{CHROOT}/usr/{,**}					rw,
-  @{CHROOT}/usr/{,**/}*					kl,
-  @{CHROOT}/usr/lib{,32,64}/*.so{,.*}			m,
-  @{CHROOT}/usr/lib{,32,64}/**/lib*.so{,.*}		m,
-  @{CHROOT}/usr/lib{,32,64}/locale/{,**/}*		m,
-  @{CHROOT}/usr/lib{,32,64}/gconv/*.so			m,
-  @{CHROOT}/usr/lib{,32,64}/gconv/gconv-modules*	m,
-  @{CHROOT}/usr/src/@{kernel}/tools/gcc/**.so		m,	# Плагины gcc.
-  @{CHROOT}/var/{,**}					rw,
-  @{CHROOT}/var/{,**/}*					kl,
+  @{CHROOT_D}/						rw,
+  @{CHROOT_D}/*						rwk,
+  @{CHROOT_D}/bin/{,**}					rw,
+  @{CHROOT_D}/bin/{,**/}*				kl,
+  @{CHROOT_D}/boot/{,**}				rw,
+  @{CHROOT_D}/boot/{,**/}*				kl,
+  @{CHROOT_D}/etc/{,**}					rw,
+  @{CHROOT_D}/etc/{,**/}*				kl,
+  @{CHROOT_D}/lib{,32,64}/{,**}				rw,
+  @{CHROOT_D}/lib{,32,64}/{,**/}*			kl,
+  @{CHROOT_D}/lib{,32,64}/ld{,32,64}-*.so{,.*}		m,
+  @{CHROOT_D}/lib{,32,64}/**/ld{,32,64}-*.so{,.*}	m,
+  @{CHROOT_D}/lib{,32,64}/lib*.so{,.*}			m,
+  @{CHROOT_D}/lib{,32,64}/**/lib*.so{,.*}		m,
+  @{CHROOT_D}/opt/{,**}					rw,
+  @{CHROOT_D}/opt/{,**/}*				kl,
+  @{CHROOT_D}/run/{,**}					rw,
+  @{CHROOT_D}/run/{,**/}*				kl,
+  @{CHROOT_D}/sbin/{,**}				rw,
+  @{CHROOT_D}/sbin/{,**/}*				kl,
+  @{CHROOT_D}/usr/{,**}					rw,
+  @{CHROOT_D}/usr/{,**/}*				kl,
+  @{CHROOT_D}/usr/lib{,32,64}/*.so{,.*}			m,
+  @{CHROOT_D}/usr/lib{,32,64}/**/lib*.so{,.*}		m,
+  @{CHROOT_D}/usr/lib{,32,64}/locale/{,**/}*		m,
+  @{CHROOT_D}/usr/lib{,32,64}/gconv/*.so		m,
+  @{CHROOT_D}/usr/lib{,32,64}/gconv/gconv-modules*	m,
+  @{CHROOT_D}/usr/src/@{kernel}/tools/gcc/**.so		m,	# Плагины gcc.
+  @{CHROOT_D}/var/{,**}					rw,
+  @{CHROOT_D}/var/{,**/}*				kl,
   
   # USERS ----------------------------------------------
-  @{CHROOT}@{HOME}/{,**}				rw,
-  @{CHROOT}@{HOME}/{,**/}*				k,
+  @{CHROOT_D}@{HOME}/{,**}				rw,
+  @{CHROOT_D}@{HOME}/{,**/}*				k,
   
   # TEMP -----------------------------------------------
-  @{CHROOT}/tmp/{,**}					rw,
-  @{CHROOT}/tmp/{,**/}*					k,
-  @{CHROOT}/var/tmp/{,**}				rw,
-  @{CHROOT}/var/tmp/{,**/}*				k,
+  @{CHROOT_D}/tmp/{,**}					rw,
+  @{CHROOT_D}/tmp/{,**/}*				k,
+  @{CHROOT_D}/var/tmp/{,**}				rw,
+  @{CHROOT_D}/var/tmp/{,**/}*				k,
 }
