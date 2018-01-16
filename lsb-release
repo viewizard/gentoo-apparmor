@@ -88,7 +88,7 @@ profile lsb-release /usr/bin/lsb_release flags=(attach_disconnected) {
     
     # NOISY --------------------------------------------
     deny /usr/bin/					r,	# Вызов chromium из smplayer.
-    deny @{HOMEDIRS_D}/**				r,	# app-i18n/poedit, poedit
+    deny @{USER_HOMEDIRS_D}/**				r,	# app-i18n/poedit, poedit
     
     # DENY INHERIT -------------------------------------
     deny unix (send, receive) peer=(label="discord-bin.Discord"),	# net-im/discord-bin, discord-bin.Discord
