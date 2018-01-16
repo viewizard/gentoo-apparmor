@@ -863,8 +863,10 @@ profile shell_chroot {
   @{CHROOT_D}/var/{,**/}*				kl,
   
   # USERS ----------------------------------------------
-  @{CHROOT_D}@{HOME_D}/{,**}				rw,
-  @{CHROOT_D}@{HOME_D}/{,**/}*				k,
+  @{CHROOT_D}@{USER_HOME_D}/{,**}			rw,
+  @{CHROOT_D}@{USER_HOME_D}/{,**/}*			k,
+  @{CHROOT_D}@{ROOT_HOME_D}/{,**}			rw,
+  @{CHROOT_D}@{ROOT_HOME_D}/{,**/}*			k,
   
   # TEMP -----------------------------------------------
   @{CHROOT_D}/tmp/{,**}					rw,
