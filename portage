@@ -339,6 +339,9 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /var/log/emerge-fetch.log				a,	# DELEGATION! portage.emerge
     audit deny /usr/local/**				w,	# Исключаем работу с /usr/local/.
     
+    # USERS --------------------------------------------
+    owner @{HOME_D}/.wget-hsts				rw,
+    
     # TEMP ---------------------------------------------
     /tmp/						r,
     owner /tmp/**					rw,	# Исключительный случай, разрешаем полный доступ.
