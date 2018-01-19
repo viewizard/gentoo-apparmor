@@ -10,19 +10,18 @@
 #
 # ------------------------------------------------------------------
 
-# Паттерн имени пользователя.
+# Имя обычного пользователя.
 @{USER}=[a-z_]*
 
-# @{HOME_CACHE_D} is a space-separated list of per user cache directories.
-@{HOME_CACHE_D}=@{HOME_D}/.cache
+# Расположение домашних директорий обычных пользователей.
+@{USER_HOMEDIRS_D}=/home
 
-# @{HOME_D} is a space-separated list of all user home directories. While
-# it doesn't refer to a specific home directory (AppArmor doesn't
-# enforce discretionary access controls) it can be used as if it did
-# refer to a specific home directory
-@{HOME_D}=@{HOMEDIRS_D}/@{USER} /root
+# Домашняя директория обычного пользователя.
+@{USER_HOME_D}=@{USER_HOMEDIRS_D}/@{USER}
+# Домашняя директория супер пользователя.
+@{ROOT_HOME_D}=/root
 
-# @{HOMEDIRS_D} is a space-separated list of where user home directories
-# are stored, for programs that must enumerate all home directories on a
-# system.
-@{HOMEDIRS_D}=/home
+# Кэш директория обычного пользователя.
+@{USER_HOME_CACHE_D}=@{USER_HOME_D}/.cache
+# Кэш директория супер пользователя.
+@{ROOT_HOME_CACHE_D}=@{ROOT_HOME_D}/.cache
