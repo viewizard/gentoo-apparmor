@@ -37,6 +37,7 @@ profile default {
   
   # SIGNAL ---------------------------------------------
   signal (send, receive) peer="default",
+  signal (receive) set=(cont,stop) peer="openrc.kill_all",	# sys-apps/openrc
   
   # NETWORK --------------------------------------------
   network netlink raw,

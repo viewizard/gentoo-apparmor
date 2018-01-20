@@ -136,6 +136,9 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# at
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
+    # CAPABILITIES -------------------------------------
+    capability sys_tty_config,
+    
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
     /dev/tty[0-9]*					rw,

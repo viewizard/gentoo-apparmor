@@ -395,6 +395,7 @@ profile openrc.kill_all /lib{,32,64}/rc/bin/kill_all flags=(complain) {
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
+  /dev/console						rw,
   @{PROC_D}/						r,
   @{PROC_D}/@{pids}/status				r,
   
@@ -468,6 +469,9 @@ profile openrc.eval_ecolors /lib{,32,64}/rc/bin/eval_ecolors flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
+  # CAPABILITIES ---------------------------------------
+  capability sys_tty_config,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/console						rw,
@@ -482,6 +486,7 @@ profile openrc.ebegin /lib{,32,64}/rc/bin/ebegin flags=(attach_disconnected,comp
   #include <abstractions/ncurses>
   
   # CAPABILITIES ---------------------------------------
+  capability sys_tty_config,
   capability mknod,
   
   # PSEUDO ---------------------------------------------
@@ -502,6 +507,7 @@ profile openrc.eend /lib{,32,64}/rc/bin/eend flags=(attach_disconnected,complain
   #include <abstractions/ncurses>
   
   # CAPABILITIES ---------------------------------------
+  capability sys_tty_config,
   capability mknod,
   
   # PSEUDO ---------------------------------------------
@@ -2692,6 +2698,7 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro flags=(attach_disconnected) 
   /bin/grep						Cx,	# sys-apps/grep
   /bin/rmdir						Cx,	# sys-apps/coreutils
   /bin/umount						Cx,	# sys-apps/util-linux
+  /usr/bin/timeout					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/mount-ro				r,
@@ -2704,6 +2711,9 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro flags=(attach_disconnected) 
   
   profile sed /bin/sed {
     #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/sed						mr,
@@ -2776,6 +2786,19 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro flags=(attach_disconnected) 
     # READS/WRITES -------------------------------------
     /run/mount/utab					rw,
   }
+  
+  profile timeout /usr/bin/timeout {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/console					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/timeout					mr,
+    /bin/fuser						Px,	# sys-process/psmisc
+  }
 }
 
 profile openrc.savecache.init.d /etc/init.d/savecache flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
@@ -2809,6 +2832,9 @@ profile openrc.savecache.init.d /etc/init.d/savecache flags=(attach_disconnected
   
   profile cp /bin/cp {
     #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/console					rw,
     
     # EXECUTABLES --------------------------------------
     /bin/cp						mr,

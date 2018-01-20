@@ -124,8 +124,7 @@ profile lvm2.lvm /sbin/lvm {
   @{SYS_D}/devices/virtual/bdi/[0-9]*:[0-9]*/read_ahead_kb rw,
   @{PROC_D}/devices					r,
   owner @{PROC_D}/@{pid}/fd/				r,
-  owner @{PROC_D}/@{pid}/mounts				r,
-  audit @{PROC_D}/@{pid}/mountinfo			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
+  owner @{PROC_D}/@{pid}/mount{s,info}			r,
   owner @{PROC_D}/@{pids}/cmdline			r,
   
   # EXECUTABLES ----------------------------------------

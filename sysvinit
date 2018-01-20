@@ -20,6 +20,9 @@ profile sysvinit.halt /sbin/{halt,poweroff,reboot} {
   /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
+  /dev/block/						r,
+  @{SYS_D}/block/					r,
+  @{SYS_D}/devices/pci@{PCI2}/**/{removable,manage_start_stop} r,
   
   # EXECUTABLES ----------------------------------------
   /sbin/{halt,poweroff,reboot}				mr,
