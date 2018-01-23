@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile apparmor.apparmor_parser /sbin/apparmor_parser {
+profile apparmor.apparmor_parser@{p_root} /sbin/apparmor_parser@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -32,7 +32,4 @@ profile apparmor.apparmor_parser /sbin/apparmor_parser {
   /etc/apparmor/parser.conf				r,
   /etc/apparmor.d/{,**}					r,
   /etc/apparmor.d/cache/{,*}				w,
-}
-
-profile apparmor.init.d /etc/init.d/apparmor {			# Не используем запуск как сервис, загружаем профили в ядре.
 }

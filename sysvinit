@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile sysvinit.halt /sbin/{halt,poweroff,reboot} {
+profile sysvinit.halt@{p_root} /sbin/{halt,poweroff,reboot}@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -26,14 +26,14 @@ profile sysvinit.halt /sbin/{halt,poweroff,reboot} {
   
   # EXECUTABLES ----------------------------------------
   /sbin/{halt,poweroff,reboot}				mr,
-  /sbin/shutdown					Px,
+  /sbin/shutdown@{t_root}				Px,
   
   # READS/WRITES ---------------------------------------
   /run/utmp						rk,
   /var/log/wtmp						wk,
 }
 
-profile sysvinit.shutdown /sbin/shutdown {
+profile sysvinit.shutdown@{p_root} /sbin/shutdown@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -49,14 +49,14 @@ profile sysvinit.shutdown /sbin/shutdown {
   
   # EXECUTABLES ----------------------------------------
   /sbin/shutdown					mr,
-  /sbin/init						Px,
+  /sbin/init@{t_root}					Px,
   
   # READS/WRITES ---------------------------------------
   /run/shutdown.pid					w,
   /run/utmp						rk,
 }
 
-profile sysvinit.init /sbin/init {
+profile sysvinit.init@{p_root} /sbin/init@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -75,13 +75,14 @@ profile sysvinit.init /sbin/init {
   /dev/console						rw,
   
   # EXECUTABLES ----------------------------------------
-  /sbin/init						Pxmr,
-  /sbin/openrc						Px,	# sys-apps/openrc
-  /sbin/{halt,poweroff,reboot}				Px,
-  /sbin/agetty						Px,	# sys-apps/util-linux
-  /sbin/shutdown					Px,
-#  /sbin/sulogin					Px,	# sys-apps/util-linux	# не задействуем
-#  /etc/X11/startDM.sh					Px,	# x11-apps/xinit	# не задействуем
+  /sbin/init						mr,
+  /sbin/init@{t_root}					Px,
+  /sbin/openrc@{t_root}					Px,	# sys-apps/openrc
+  /sbin/{halt,poweroff,reboot}@{t_root}			Px,
+  /sbin/agetty@{t_root}					Px,	# sys-apps/util-linux
+  /sbin/shutdown@{t_root}				Px,
+#  /sbin/sulogin@{t_root}				Px,	# sys-apps/util-linux	# не задействуем
+#  /etc/X11/startDM.sh@{t_root}				Px,	# x11-apps/xinit	# не задействуем
   
   # READS/WRITES ---------------------------------------
   /etc/inittab						r,
@@ -89,7 +90,7 @@ profile sysvinit.init /sbin/init {
   /var/log/wtmp						wk,
 }
 
-profile sysvinit.killall5 /sbin/killall5 {
+profile sysvinit.killall5@{p_root} /sbin/killall5@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   

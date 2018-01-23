@@ -15,18 +15,19 @@
 @{USERS_FILE_rwk}="**"
 
 # профиль используется службами без аутентификации
-profile shell_service @{shell} {
+profile shell_service @{shell}@{t_root} {
   #include <abstractions/base>
   #include <abstractions/consoles>
   #include <abstractions/nameservice>
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/sed						Cx,	# sys-apps/sed
-  /bin/uname						Px,	# sys-apps/coreutils
-  /sbin/mdadm						Px,	# sys-fs/mdadm	# FIX ME! (?) вынести в <local/shell/shell_service.d/>
+  /bin/sed@{t_root}					Cx,	# sys-apps/sed
+  /bin/uname@{t_root}					Px,	# sys-apps/coreutils
+  /sbin/mdadm@{t_root}					Px,	# sys-fs/mdadm
+  								# FIX ME! (?) вынести в <local/shell/shell_service.d/>
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -49,38 +50,46 @@ profile shell_users {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/ls						Cx,	# sys-apps/coreutils
-  /bin/ln						Cx,	# sys-apps/coreutils
-  /bin/df						Px,	# sys-apps/coreutils
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/tty						Px,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/ps						Px,	# sys-process/procps
-  /bin/passwd						Px,	# sys-apps/shadow
-  /bin/uname						Px,	# sys-apps/coreutils
-  /bin/su						Px,	# sys-apps/shadow
-  /bin/rc-status					Px,	# sys-apps/openrc
-  /bin/sleep						Px,	# sys-apps/coreutils
-  /usr/bin/which					Px,	# sys-apps/which
-  /usr/bin/git						Px,	# dev-vcs/git	# FIX ME! (?) вынести в <local/shell/shell_users.d/>
-  /usr/bin/sudo						Px,	# app-admin/sudo
-  /usr/bin/whoami					Px,	# sys-apps/coreutils
-  /usr/bin/gpg{,2}					Px,	# app-crypt/gnupg	# Если надо вручную импортировать ключ.
-  /usr/bin/id						Px,	# sys-apps/coreutils
-  /usr/bin/startx					Px,	# x11-apps/xinit	# FIX ME! (?) вынести в <local/shell/shell_users.d/>
-  /usr/bin/startxfce4					Px,	# xfce-base/xfce4-session	# FIX ME! (?) вынести в <local/shell/shell_users.d/>
-  /usr/bin/clear					Px,	# sys-libs/ncurses
-  /usr/bin/wine						Px,	# app-emulation/wine	# FIX ME! (?) вынести в <local/shell/shell_users.d/>
-  /usr/bin/winecfg					Px,	# app-emulation/wine	# FIX ME! (?) вынести в <local/shell/shell_users.d/>
-  /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]*	Px,	# app-emulation/wine-*	# FIX ME! (?) вынести в <local/shell/shell_users.d/>
-  /usr/bin/winecfg-{any,d3d9,staging,vanilla}-[0-9]*	Px,	# app-emulation/wine-*	# FIX ME! (?) вынести в <local/shell/shell_users.d/>
-  /usr/bin/dircolors					Px,	# sys-apps/coreutils
-  /usr/bin/libnotify-notify-send			Px,	# x11-libs/libnotify	# /usr/bin/libnotify-notify-send-users запускает в шеле пользователя.
+  /bin/ls@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/ln@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/df@{t_user}					Px,	# sys-apps/coreutils
+  /bin/rm@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/tty@{t_user}					Px,	# sys-apps/coreutils
+  /bin/grep@{t_user}					Cx,	# sys-apps/grep
+  /bin/ps@{t_user}					Px,	# sys-process/procps
+  /bin/passwd@{t_user}					Px,	# sys-apps/shadow
+  /bin/uname@{t_user}					Px,	# sys-apps/coreutils
+  /bin/su@{t_user}					Px,	# sys-apps/shadow
+  /bin/rc-status@{t_user}				Px,	# sys-apps/openrc
+  /bin/sleep@{t_user}					Px,	# sys-apps/coreutils
+  /usr/bin/which@{t_user}				Px,	# sys-apps/which
+  /usr/bin/git@{t_user}					Px,	# dev-vcs/git
+  								# FIX ME! (?) вынести в <local/shell/shell_users.d/>
+  /usr/bin/sudo@{t_user}				Px,	# app-admin/sudo
+  /usr/bin/whoami@{t_user}				Px,	# sys-apps/coreutils
+  /usr/bin/gpg{,2}@{t_user}				Px,	# app-crypt/gnupg	# Если надо вручную импортировать ключ.
+  /usr/bin/id@{t_user}					Px,	# sys-apps/coreutils
+  /usr/bin/startx@{t_user}				Px,	# x11-apps/xinit
+  								# FIX ME! (?) вынести в <local/shell/shell_users.d/>
+  /usr/bin/startxfce4@{t_user}				Px,	# xfce-base/xfce4-session
+  								# FIX ME! (?) вынести в <local/shell/shell_users.d/>
+  /usr/bin/clear@{t_user}				Px,	# sys-libs/ncurses
+  /usr/bin/wine@{t_user}				Px,	# app-emulation/wine
+  								# FIX ME! (?) вынести в <local/shell/shell_users.d/>
+  /usr/bin/winecfg@{t_user}				Px,	# app-emulation/wine
+  								# FIX ME! (?) вынести в <local/shell/shell_users.d/>
+  /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]*@{t_user} Px,	# app-emulation/wine-*
+  								# FIX ME! (?) вынести в <local/shell/shell_users.d/>
+  /usr/bin/winecfg-{any,d3d9,staging,vanilla}-[0-9]*@{t_user} Px,	# app-emulation/wine-*
+  								# FIX ME! (?) вынести в <local/shell/shell_users.d/>
+  /usr/bin/dircolors@{t_user}				Px,	# sys-apps/coreutils
+  /usr/bin/libnotify-notify-send@{t_user}		Px,	# x11-libs/libnotify
+  								# /usr/bin/libnotify-notify-send-users запускает в шеле пользователя.
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwk>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -93,7 +102,7 @@ profile shell_users {
     /bin/grep						mr,
   }
   
-  profile ln /bin/ln {
+  profile ln /bin/ln@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwk>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -106,7 +115,7 @@ profile shell_users {
     /bin/ln						mr,
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwk>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -119,7 +128,7 @@ profile shell_users {
     /bin/rm						mr,
   }
   
-  profile ls /bin/ls {
+  profile ls /bin/ls@{t_user} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions-user/fs/access-by-users-preset-rwk>
@@ -154,130 +163,140 @@ profile shell_root {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/ls						Cx,	# sys-apps/coreutils
-  /bin/ln						Cx,	# sys-apps/coreutils
-  /bin/df						Px,	# sys-apps/coreutils
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/cut						Cx,	# sys-apps/coreutils
-  /bin/tty						Px,	# sys-apps/coreutils
-  /bin/tr						Px,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/ps						Px,	# sys-process/procps
-  /bin/env						Cx,	# sys-apps/coreutils
-  /bin/sed						Cx,	# sys-apps/sed
-  /bin/mount						Cx,	# sys-apps/util-linux
-  /bin/umount						Cx,	# sys-apps/util-linux
-  /bin/sleep						Px,	# sys-apps/coreutils
-  /bin/passwd						Px,	# sys-apps/shadow
-  /bin/uname						Px,	# sys-apps/coreutils
-  /bin/su						Px,	# sys-apps/shadow
-  /bin/cp						Cx,	# sys-apps/coreutils
-  /bin/mv						Cx,	# sys-apps/coreutils
-  /bin/chown						Cx,	# sys-apps/coreutils
-  /bin/chmod						Cx,	# sys-apps/coreutils
-  /bin/nano						Cx,	# app-editors/nano
-  /bin/kmod						Px,	# sys-apps/kmod
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/dd						Cx,	# sys-apps/coreutils
-  /bin/ping						Px,	# net-misc/iputils
-  /bin/ifconfig						Px,	# sys-apps/net-tools
-  /bin/ip						Px,	# sys-apps/iproute2
-  /bin/rc-status					Px,	# sys-apps/openrc
-  /bin/date						Px,	# sys-apps/coreutils
-  /bin/netstat						Px,	# sys-apps/net-tools
-  /bin/getfacl						Px,	# sys-apps/acl
-  /bin/setfacl						Px,	# sys-apps/acl
-  /bin/tar						Cx,	# app-arch/tar
-  /bin/head						Cx,	# sys-apps/coreutils
-  /bin/tail						Cx,	# sys-apps/coreutils
-  /bin/getfattr						Px,	# sys-apps/attr
-  /bin/setfattr						Px,	# sys-apps/attr
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/touch						Cx,	# sys-apps/coreutils
-  /bin/lsblk						Px,	# sys-apps/util-linux
-  /bin/sync						Px,	# sys-apps/coreutils
-  /bin/udevadm						Px,	# sys-fs/eudev
-  /bin/dmesg						Px,	# sys-apps/util-linux
-  /sbin/mdadm						Px,	# sys-fs/mdadm		# FIX ME! (?) вынести в <local/shell/shell_root.d/>
-  /sbin/shutdown					Px,	# sys-apps/sysvinit
-  /sbin/{halt,poweroff,reboot}				Px,	# sys-apps/sysvinit
-  /sbin/openrc-shutdown					Px,	# sys-apps/openrc (openrc-init)
-  /sbin/cryptsetup					Px,	# sys-fs/cryptsetup	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
-  /sbin/apparmor_parser					Px,	# sys-apps/apparmor
-  /sbin/{,c}fdisk					Px,	# sys-apps/util-linux
-  /sbin/lvm						Px,	# sys-fs/lvm2		# FIX ME! (?) вынести в <local/shell/shell_root.d/>
-  /sbin/e2fsck						Px,	# sys-fs/e2fsprogs
-  /sbin/mke2fs						Px,	# sys-fs/e2fsprogs
-  /sbin/tune2fs						Px,	# sys-fs/e2fsprogs
-  /sbin/resize2fs					Px,	# sys-fs/e2fsprogs
-  /sbin/dumpe2fs					Px,	# sys-fs/e2fsprogs
-  /sbin/mkswap						Px,	# sys-apps/util-linux
-  /sbin/rc-update					Px,	# sys-apps/openrc
-  /sbin/fsck						Px,	# sys-apps/util-linux
-  /sbin/rc-service					Px,	# sys-apps/openrc
-  /sbin/xtables-multi					Px,	# net-firewall/iptables
-  /sbin/blkid						Px,	# sys-apps/util-linux
-  /sbin/ifcfg						Px,	# sys-apps/iproute2
-  /sbin/ifstat						Px,	# sys-apps/iproute2
-  /usr/sbin/visudo					Px,	# app-admin/sudo
-  /usr/bin/which					Px,	# sys-apps/which
-  /usr/bin/git						Px -> git_root,	# dev-vcs/git	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
-  /usr/bin/killall					Px,	# sys-process/psmisc
-  /usr/bin/gsettings					Px,	# dev-libs/glib
-  /usr/bin/revdep-rebuild				Px,	# app-portage/gentoolkit
-  /usr/bin/whoami					Px,	# sys-apps/coreutils
-  /usr/bin/id						Px,	# sys-apps/coreutils
-  /usr/bin/rsync					Cx,	# net-misc/rsync
-  /usr/bin/htop						Px,	# sys-process/htop
-  /usr/bin/mc						Px -> mc_root,	# app-misc/mc
-  /usr/bin/eselect					Px,	# app-admin/eselect
-  /usr/bin/ntpq						Px,	# net-misc/ntp
-  /usr/bin/stat						Px,	# sys-apps/coreutils
-  /usr/bin/file						Cx,	# sys-apps/file
-  /usr/bin/lsusb					Px,	# sys-apps/usbutils
-  /usr/bin/gpg{,2,-static}				Px,	# app-crypt/gnupg
-  /usr/bin/find						Cx,	# sys-apps/findutils
-  /usr/bin/nmap						Px,	# net-analyzer/nmap
-  /usr/bin/wget						Px -> wget_root,	# net-misc/wget
-  /usr/bin/man						Px,	# sys-apps/man-db
-  /usr/bin/info						Px,	# sys-apps/texinfo
-  /usr/bin/locale					Px,	# sys-libs/glibc
-  /usr/bin/ldd						Px,	# sys-libs/glibc
-  /usr/bin/evmctl					Px,	# app-crypt/ima-evm-utils
-  /usr/bin/gawk						Cx,	# sys-apps/gawk
-  /usr/bin/patch					Cx,	# sys-devel/patch	# FIX ME! (?) вынести в <local/shell/shell_root.d/> (вместе с профилем!)
-  /usr/bin/diff						Cx,	# sys-apps/diffutils	# FIX ME! (?) вынести в <local/shell/shell_root.d/> (вместе с профилем!)
-  /usr/bin/gcc-config					Px,	# sys-devel/gcc-config
-  /usr/bin/ck-list-sessions				Px,	# sys-auth/consolekit
-  /usr/bin/dig						Px,	# net-dns/bind-tools
-  /usr/bin/dircolors					Px,	# sys-apps/coreutils
-  /usr/bin/eix						Px,	# app-portage/eix
-  /usr/bin/eix-test-obsolete				Px,	# app-portage/eix
-  /usr/bin/eix-sync					Px,	# app-portage/eix
-  /usr/bin/xargs					Cx,	# sys-apps/findutils
-  /usr/bin/gpasswd					Px,	# sys-apps/shadow
-  /usr/sbin/gdisk					Px,	# sys-apps/gptfdisk
-  /usr/sbin/smartctl					Px,	# sys-apps/smartmontools
-  /usr/sbin/useradd					Px,	# sys-apps/shadow
-  /usr/sbin/userdel					Px,	# sys-apps/shadow
-  /usr/sbin/usermod					Px,	# sys-apps/shadow
-  /usr/sbin/groupadd					Px,	# sys-apps/shadow
-  /usr/sbin/groupdel					Px,	# sys-apps/shadow
-  /usr/sbin/lspci					Px,	# sys-apps/pciutils
-  /usr/sbin/etc-update					Px,	# sys-apps/portage
-  /usr/sbin/grub-mkconfig				Px,	# sys-boot/grub		# FIX ME! (?) вынести в <local/shell/shell_root.d/>
-  /usr/sbin/grub-install				Px,	# sys-boot/grub		# FIX ME! (?) вынести в <local/shell/shell_root.d/>
-  /usr/sbin/perl-cleaner				Px,	# app-admin/perl-cleaner
-  /usr/sbin/iftop					Px,	# net-analyzer/iftop
-  /usr/sbin/nettop					Px,	# net-analyzer/nettop
-  /usr/sbin/firewall					Px,	# net-firewall/iptables
-  /usr/sbin/aa-decode					Px,	# sys-apps/apparmor-utils	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
-  /usr/sbin/iucode_tool					Px,	# sys-apps/iucode_tool	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
-  @{PYTHON_EXEC_WRAPPER}				Px -> python_exec_root,	# dev-lang/python-exec
-  /usr/local/bin/*					Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
-  /usr/local/sbin/*					Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
-  /usr/src/@{kernel}/scripts/*				Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
-  /etc/init.d/*						Px,	# sys-apps/openrc
+  /bin/ls@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/ln@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/df@{t_root}					Px,	# sys-apps/coreutils
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/cut@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/tty@{t_root}					Px,	# sys-apps/coreutils
+  /bin/tr@{t_root}					Px,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/ps@{t_root}					Px,	# sys-process/procps
+  /bin/env@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/sed@{t_root}					Cx,	# sys-apps/sed
+  /bin/mount@{t_root}					Cx,	# sys-apps/util-linux
+  /bin/umount@{t_root}					Cx,	# sys-apps/util-linux
+  /bin/sleep@{t_root}					Px,	# sys-apps/coreutils
+  /bin/passwd@{t_root}					Px,	# sys-apps/shadow
+  /bin/uname@{t_root}					Px,	# sys-apps/coreutils
+  /bin/su@{t_root}					Px,	# sys-apps/shadow
+  /bin/cp@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mv@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/chown@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/chmod@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/nano@{t_root}					Cx,	# app-editors/nano
+  /bin/kmod@{t_root}					Px,	# sys-apps/kmod
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/dd@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/ping@{t_root}					Px,	# net-misc/iputils
+  /bin/ifconfig@{t_root}				Px,	# sys-apps/net-tools
+  /bin/ip@{t_root}					Px,	# sys-apps/iproute2
+  /bin/rc-status@{t_root}				Px,	# sys-apps/openrc
+  /bin/date@{t_root}					Px,	# sys-apps/coreutils
+  /bin/netstat@{t_root}					Px,	# sys-apps/net-tools
+  /bin/getfacl@{t_root}					Px,	# sys-apps/acl
+  /bin/setfacl@{t_root}					Px,	# sys-apps/acl
+  /bin/tar@{t_root}					Cx,	# app-arch/tar
+  /bin/head@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/tail@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/getfattr@{t_root}				Px,	# sys-apps/attr
+  /bin/setfattr@{t_root}				Px,	# sys-apps/attr
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/touch@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/lsblk@{t_root}					Px,	# sys-apps/util-linux
+  /bin/sync@{t_root}					Px,	# sys-apps/coreutils
+  /bin/udevadm@{t_root}					Px,	# sys-fs/eudev
+  /bin/dmesg@{t_root}					Px,	# sys-apps/util-linux
+  /sbin/mdadm@{t_root}					Px,	# sys-fs/mdadm
+  								# FIX ME! (?) вынести в <local/shell/shell_root.d/>
+  /sbin/shutdown@{t_root}				Px,	# sys-apps/sysvinit
+  /sbin/{halt,poweroff,reboot}@{t_root}			Px,	# sys-apps/sysvinit
+  /sbin/openrc-shutdown@{t_root}			Px,	# sys-apps/openrc (openrc-init)
+  /sbin/cryptsetup@{t_root}				Px,	# sys-fs/cryptsetup
+  								# FIX ME! (?) вынести в <local/shell/shell_root.d/>
+  /sbin/apparmor_parser@{t_root}			Px,	# sys-apps/apparmor
+  /sbin/{,c}fdisk@{t_root}				Px,	# sys-apps/util-linux
+  /sbin/lvm@{t_root}					Px,	# sys-fs/lvm2
+  								# FIX ME! (?) вынести в <local/shell/shell_root.d/>
+  /sbin/e2fsck@{t_root}					Px,	# sys-fs/e2fsprogs
+  /sbin/mke2fs@{t_root}					Px,	# sys-fs/e2fsprogs
+  /sbin/tune2fs@{t_root}				Px,	# sys-fs/e2fsprogs
+  /sbin/resize2fs@{t_root}				Px,	# sys-fs/e2fsprogs
+  /sbin/dumpe2fs@{t_root}				Px,	# sys-fs/e2fsprogs
+  /sbin/mkswap@{t_root}					Px,	# sys-apps/util-linux
+  /sbin/rc-update@{t_root}				Px,	# sys-apps/openrc
+  /sbin/fsck@{t_root}					Px,	# sys-apps/util-linux
+  /sbin/rc-service@{t_root}				Px,	# sys-apps/openrc
+  /sbin/xtables-multi@{t_root}				Px,	# net-firewall/iptables
+  /sbin/blkid@{t_root}					Px,	# sys-apps/util-linux
+  /sbin/ifcfg@{t_root}					Px,	# sys-apps/iproute2
+  /sbin/ifstat@{t_root}					Px,	# sys-apps/iproute2
+  /usr/sbin/visudo@{t_root}				Px,	# app-admin/sudo
+  /usr/bin/which@{t_root}				Px,	# sys-apps/which
+  /usr/bin/git@{t_root}					Px,	# dev-vcs/git
+  								# FIX ME! (?) вынести в <local/shell/shell_root.d/>
+  /usr/bin/killall@{t_root}				Px,	# sys-process/psmisc
+  /usr/bin/gsettings@{t_root}				Px,	# dev-libs/glib
+  /usr/bin/revdep-rebuild@{t_root}			Px,	# app-portage/gentoolkit
+  /usr/bin/whoami@{t_root}				Px,	# sys-apps/coreutils
+  /usr/bin/id@{t_root}					Px,	# sys-apps/coreutils
+  /usr/bin/rsync@{t_root}				Cx,	# net-misc/rsync
+  /usr/bin/htop@{t_root}				Px,	# sys-process/htop
+  /usr/bin/mc@{t_root}					Px,	# app-misc/mc
+  /usr/bin/eselect@{t_root}				Px,	# app-admin/eselect
+  /usr/bin/ntpq@{t_root}				Px,	# net-misc/ntp
+  /usr/bin/stat@{t_root}				Px,	# sys-apps/coreutils
+  /usr/bin/file@{t_root}				Cx,	# sys-apps/file
+  /usr/bin/lsusb@{t_root}				Px,	# sys-apps/usbutils
+  /usr/bin/gpg{,2,-static}@{t_root}			Px,	# app-crypt/gnupg
+  /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils
+  /usr/bin/nmap@{t_root}				Px,	# net-analyzer/nmap
+  /usr/bin/wget@{t_root}				Px,	# net-misc/wget
+  /usr/bin/man@{t_root}					Px,	# sys-apps/man-db
+  /usr/bin/info@{t_root}				Px,	# sys-apps/texinfo
+  /usr/bin/locale@{t_root}				Px,	# sys-libs/glibc
+  /usr/bin/ldd@{t_root}					Px,	# sys-libs/glibc
+  /usr/bin/evmctl@{t_root}				Px,	# app-crypt/ima-evm-utils
+  /usr/bin/gawk@{t_root}				Cx,	# sys-apps/gawk
+  /usr/bin/patch@{t_root}				Cx,	# sys-devel/patch
+  								# FIX ME! (?) вынести в <local/shell/shell_root.d/> (вместе с профилем!)
+  /usr/bin/diff@{t_root}				Cx,	# sys-apps/diffutils
+  								# FIX ME! (?) вынести в <local/shell/shell_root.d/> (вместе с профилем!)
+  /usr/bin/gcc-config@{t_root}				Px,	# sys-devel/gcc-config
+  /usr/bin/ck-list-sessions@{t_root}			Px,	# sys-auth/consolekit
+  /usr/bin/dig@{t_root}					Px,	# net-dns/bind-tools
+  /usr/bin/dircolors@{t_root}				Px,	# sys-apps/coreutils
+  /usr/bin/eix@{t_root}					Px,	# app-portage/eix
+  /usr/bin/eix-test-obsolete@{t_root}			Px,	# app-portage/eix
+  /usr/bin/eix-sync@{t_root}				Px,	# app-portage/eix
+  /usr/bin/xargs@{t_root}				Cx,	# sys-apps/findutils
+  /usr/bin/gpasswd@{t_root}				Px,	# sys-apps/shadow
+  /usr/sbin/gdisk@{t_root}				Px,	# sys-apps/gptfdisk
+  /usr/sbin/smartctl@{t_root}				Px,	# sys-apps/smartmontools
+  /usr/sbin/useradd@{t_root}				Px,	# sys-apps/shadow
+  /usr/sbin/userdel@{t_root}				Px,	# sys-apps/shadow
+  /usr/sbin/usermod@{t_root}				Px,	# sys-apps/shadow
+  /usr/sbin/groupadd@{t_root}				Px,	# sys-apps/shadow
+  /usr/sbin/groupdel@{t_root}				Px,	# sys-apps/shadow
+  /usr/sbin/lspci@{t_root}				Px,	# sys-apps/pciutils
+  /usr/sbin/etc-update@{t_root}				Px,	# sys-apps/portage
+  /usr/sbin/grub-mkconfig@{t_root}			Px,	# sys-boot/grub
+  								# FIX ME! (?) вынести в <local/shell/shell_root.d/>
+  /usr/sbin/grub-install@{t_root}			Px,	# sys-boot/grub
+  								# FIX ME! (?) вынести в <local/shell/shell_root.d/>
+  /usr/sbin/perl-cleaner@{t_root}			Px,	# app-admin/perl-cleaner
+  /usr/sbin/iftop@{t_root}				Px,	# net-analyzer/iftop
+  /usr/sbin/nettop@{t_root}				Px,	# net-analyzer/nettop
+  /usr/sbin/firewall@{t_root}				Px,	# net-firewall/iptables
+  /usr/sbin/aa-decode@{t_root}				Px,	# sys-apps/apparmor-utils
+  								# FIX ME! (?) вынести в <local/shell/shell_root.d/>
+  /usr/sbin/iucode_tool@{t_root}			Px,	# sys-apps/iucode_tool
+  								# FIX ME! (?) вынести в <local/shell/shell_root.d/>
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Px,	# dev-lang/python-exec
+  /usr/local/bin/*@{t_root}				Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
+  /usr/local/sbin/*@{t_root}				Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
+  /usr/src/@{kernel}/scripts/*@{t_root}			Px,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
+  /etc/init.d/*@{t_root}				Px,	# sys-apps/openrc
   audit deny /usr/bin/startx*				x,	# RBAC! Запрещаем запуск Xorg-server под root. У нас
   								# нет полноценной ветки профилей для запуска всех
   								# дочерних процессов.
@@ -290,7 +309,7 @@ profile shell_root {
   /usr/src/patch.patch					w,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
   /usr/src/*-patchset/**.patch				r,	# FIX ME! (?) вынести в <local/shell/shell_root.d/>
   
-  profile ls /bin/ls {
+  profile ls /bin/ls@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -302,7 +321,7 @@ profile shell_root {
     /bin/ls						mr,
   }
   
-  profile ln /bin/ln {
+  profile ln /bin/ln@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -314,7 +333,7 @@ profile shell_root {
     /bin/ln						mr,
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -326,7 +345,7 @@ profile shell_root {
     /bin/rm						mr,
   }
   
-  profile cut /bin/cut {
+  profile cut /bin/cut@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -338,7 +357,7 @@ profile shell_root {
     /bin/cut						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -353,7 +372,7 @@ profile shell_root {
     /bin/grep						mr,
   }
   
-  profile env /bin/env {
+  profile env /bin/env@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -365,7 +384,7 @@ profile shell_root {
     /bin/env						mr,
   }
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -377,7 +396,7 @@ profile shell_root {
     /bin/sed						mr,
   }
   
-  profile mount /bin/mount {
+  profile mount /bin/mount@{t_root} {
     #include <abstractions/base>
     #include <local/profile_blocks/shell_root.mount.d/>		# Локальные правила монтирования и размонтирования.
     
@@ -400,7 +419,7 @@ profile shell_root {
     /run/mount/utab					rw,
   }
   
-  profile umount /bin/umount {
+  profile umount /bin/umount@{t_root} {
     #include <abstractions/base>
     #include <local/profile_blocks/shell_root.mount.d/>		# Локальные правила монтирования и размонтирования.
     
@@ -420,7 +439,7 @@ profile shell_root {
     /run/mount/utab					rw,
   }
   
-  profile cp /bin/cp {
+  profile cp /bin/cp@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -437,7 +456,7 @@ profile shell_root {
     /bin/cp						mr,
   }
   
-  profile mv /bin/mv {
+  profile mv /bin/mv@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -449,7 +468,7 @@ profile shell_root {
     /bin/mv						mr,
   }
   
-  profile chown /bin/chown {
+  profile chown /bin/chown@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -464,7 +483,7 @@ profile shell_root {
     /bin/chown						mr,
   }
   
-  profile chmod /bin/chmod {
+  profile chmod /bin/chmod@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -480,7 +499,7 @@ profile shell_root {
     /bin/chmod						mr,
   }
   
-  profile nano /bin/nano {
+  profile nano /bin/nano@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/ncurses>
@@ -499,7 +518,7 @@ profile shell_root {
     /usr/share/misc/magic.mgc				r,
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -511,7 +530,7 @@ profile shell_root {
     /bin/cat						mr,
   }
   
-  profile dd /bin/dd {
+  profile dd /bin/dd@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -523,7 +542,7 @@ profile shell_root {
     /bin/dd						mr,
   }
   
-  profile tar /bin/tar {
+  profile tar /bin/tar@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -539,13 +558,13 @@ profile shell_root {
     
     # EXECUTABLES --------------------------------------
     /bin/tar						mr,
-    /bin/bzip2						ix,	# app-arch/bzip2
+    /bin/bzip2@{t_root}					ix,	# app-arch/bzip2
     
     # READS/WRITES -------------------------------------
     owner /{,**/}*					l,	# Все правильно, в access-by-pattern-systemusers запрещаем, что нужно.
   }
   
-  profile head /bin/head {
+  profile head /bin/head@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -557,7 +576,7 @@ profile shell_root {
     /bin/head						mr,
   }
   
-  profile tail /bin/tail {
+  profile tail /bin/tail@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -569,7 +588,7 @@ profile shell_root {
     /bin/tail						mr,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -581,7 +600,7 @@ profile shell_root {
     /bin/mkdir						mr,
   }
   
-  profile touch /bin/touch {
+  profile touch /bin/touch@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -593,7 +612,7 @@ profile shell_root {
     /bin/touch						mr,
   }
   
-  profile rsync /usr/bin/rsync {
+  profile rsync /usr/bin/rsync@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -605,7 +624,7 @@ profile shell_root {
     /usr/bin/rsync					mr,
   }
   
-  profile file /usr/bin/file {
+  profile file /usr/bin/file@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -617,7 +636,7 @@ profile shell_root {
     /usr/bin/file					mr,
   }
   
-  profile find /usr/bin/find {
+  profile find /usr/bin/find@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -627,11 +646,11 @@ profile shell_root {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/find					mr,
-    /bin/ln						ix,	# sys-apps/coreutils	# FIX ME!
-    /bin/sed						ix,	# sys-apps/sed		# FIX ME!
+    /bin/ln@{t_root}					ix,	# sys-apps/coreutils	# FIX ME!
+    /bin/sed@{t_root}					ix,	# sys-apps/sed		# FIX ME!
   }
   
-  profile gawk /usr/bin/gawk {
+  profile gawk /usr/bin/gawk@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -643,7 +662,7 @@ profile shell_root {
     /usr/bin/gawk					mr,
   }
   
-  profile patch /usr/bin/patch {
+  profile patch /usr/bin/patch@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -660,7 +679,7 @@ profile shell_root {
     /usr/bin/patch					mr,
   }
   
-  profile diff /usr/bin/diff {
+  profile diff /usr/bin/diff@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -672,7 +691,7 @@ profile shell_root {
     /usr/bin/diff					mr,
   }
   
-  profile xargs /usr/bin/xargs {
+  profile xargs /usr/bin/xargs@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
     
@@ -682,7 +701,8 @@ profile shell_root {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/xargs					mr,
-    /bin/grep						ix,	# FIX ME! потом исправить на "Px -> shell_root//grep",	# sys-apps/grep
+    /bin/grep@{t_root}					ix,	# sys-apps/grep
+  								# FIX ME! потом исправить на "Px -> shell_root//grep",
   }
 }
 
@@ -699,7 +719,7 @@ profile shell_sudo {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /usr/bin/dircolors					Px,	# sys-apps/coreutils
+  /usr/bin/dircolors@{t_root}				Px,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
@@ -797,12 +817,12 @@ profile shell_chroot {
   
   # EXECUTABLES ----------------------------------------
   @{CHROOT_D}/@{shell}					mr,
-  @{CHROOT_D}/bin/{,**/}*				ix,
-  @{CHROOT_D}/etc/{,**/}*				ix,
-  @{CHROOT_D}/opt/{,**/}*				ix,
-  @{CHROOT_D}/sbin/{,**/}*				ix,
-  @{CHROOT_D}/usr/{,**/}*				ix,
-  @{CHROOT_D}/var/tmp/portage/*/*/{,**/}*		ix,
+  @{CHROOT_D}/bin/{,**/}*@{t_all}			ix,
+  @{CHROOT_D}/etc/{,**/}*@{t_all}			ix,
+  @{CHROOT_D}/opt/{,**/}*@{t_all}			ix,
+  @{CHROOT_D}/sbin/{,**/}*@{t_all}			ix,
+  @{CHROOT_D}/usr/{,**/}*@{t_all}			ix,
+  @{CHROOT_D}/var/tmp/portage/*/*/{,**/}*@{t_all}	ix,
   
   # READS/WRITES ---------------------------------------
   @{CHROOT_D}/						rw,
