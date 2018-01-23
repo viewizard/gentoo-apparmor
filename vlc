@@ -87,22 +87,22 @@
 
 profile vlc /usr/bin/vlc {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/audio>
-  #include <abstractions/qt>
-  #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/audio>
+  #include <abstractions-user/qt>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/session-bind>
   #include <abstractions/dbus/mpris2-server>
   #include <abstractions/unix/gvfsd-smb>
-  #include <abstractions/fs/access-by-users-preset-rk>
-  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions-user/fs/access-by-users-preset-rk>
+  #include <abstractions-user/fs/access-by-users-preset-rwk>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/nameservice>
-  #include <abstractions/xdg-open>
+  #include <abstractions-user/xdg-open>
   
   # DBUS -----------------------------------------------
   dbus send
@@ -133,9 +133,9 @@ profile vlc /usr/bin/vlc {
   /usr/lib{,32,64}/vlc/{,**}				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/vlc/{,**}			rw,
-  owner @{HOME_D}/.config/vlc/{,**/}*			k,
-  owner @{HOME_D}/.local/share/vlc/{,**}		rw,
+  owner @{USER_HOME_D}/.config/vlc/{,**}		rw,
+  owner @{USER_HOME_D}/.config/vlc/{,**/}*		k,
+  owner @{USER_HOME_D}/.local/share/vlc/{,**}		rw,
   
   # NOISY ----------------------------------------------
   deny /usr/lib{,32,64}/vlc/**				w,

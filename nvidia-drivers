@@ -16,13 +16,13 @@
 
 profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/gtk>
-  #include <abstractions/video-nvidia>
-  #include <abstractions/X>
-  #include <abstractions/dconf>
-  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/video-nvidia>
+  #include <abstractions-user/X>
+  #include <abstractions-user/dconf>
+  #include <abstractions-user/fs/access-by-users-preset-rwk>
   #include <abstractions/fs/deny-by-pattern-internet>		# Не ставим abstractions/fs/deny-private-strict,
   								# т.к. работает с *rc файлами.
   #include <abstractions/nameservice>
@@ -51,7 +51,7 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings {
   /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.nvidia-settings-rc			rw,
+  owner @{USER_HOME_D}/.nvidia-settings-rc		rw,
   
   # TEMP -----------------------------------------------
   owner /tmp/.xconfig.tmp.@{TMP6}			rw,
@@ -93,7 +93,7 @@ profile nvidia_drivers_Xorg {
 # видео модулями ядра поддерживаемые встроенной в хромиум версией mesa).
 profile nvidia-drivers.nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe flags=(attach_disconnected) {
   #include <abstractions/base>
-  #include <abstractions/video-nvidia>
+  #include <abstractions-user/video-nvidia>
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
@@ -118,22 +118,22 @@ profile nvidia-drivers.nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe flags=(att
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   deny /dev/shm/.org.chromium.Chromium.*		rw,	# local.home.evelauncher
   deny /dev/shm/org.chromium.*				rw,	# www-client/firefox, firefox
-  deny @{HOME_D}/evelauncher/{,**}			rw,	# local.home.evelauncher
-  deny @{HOME_D}/.eve/{,**}				rw,	# local.home.evelauncher
-  deny @{HOME_D}/.local/share/CCP/{,**}			rw,	# local.home.evelauncher
-  deny @{HOME_D}/.config/skypeforlinux/logs/skype-startup.log w,	# net-im/skypeforlinux, skypeforlinux
+  deny @{USER_HOME_D}/evelauncher/{,**}			rw,	# local.home.evelauncher
+  deny @{USER_HOME_D}/.eve/{,**}			rw,	# local.home.evelauncher
+  deny @{USER_HOME_D}/.local/share/CCP/{,**}		rw,	# local.home.evelauncher
+  deny @{USER_HOME_D}/.config/skypeforlinux/logs/skype-startup.log w,	# net-im/skypeforlinux, skypeforlinux
   deny /opt/skypeforlinux/icudtl.dat			r,	# net-im/skypeforlinux, skypeforlinux
-  deny @{HOME_CACHE_D}/CCP/{,**}			rw,	# local.home.evelauncher
+  deny @{USER_HOME_CACHE_D}/CCP/{,**}			rw,	# local.home.evelauncher
   deny /tmp/FreshStream*				rw,	# www-client/firefox, firefox.plugin-container
-  deny @{HOME_D}/.mozilla/firefox/*.default/extensions/{,**} r,	# www-client/firefox, firefox
-  deny @{HOME_D}/.local/share/xorg/Xorg.0.log		w,	# x11-base/xorg-server non-root запуск
+  deny @{USER_HOME_D}/.mozilla/firefox/*.default/extensions/{,**} r,	# www-client/firefox, firefox
+  deny @{USER_HOME_D}/.local/share/xorg/Xorg.0.log	w,	# x11-base/xorg-server non-root запуск
   deny /media/{,**}					rw,
   deny /mnt/{,**}					rw,
 }
 
 profile nvidia-drivers.nvidia-smi /opt/bin/nvidia-smi {
   #include <abstractions/base>
-  #include <abstractions/video-nvidia>
+  #include <abstractions-user/video-nvidia>
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,

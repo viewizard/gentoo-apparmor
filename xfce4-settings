@@ -12,18 +12,18 @@
 
 profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyboard,-mime,-mouse}-settings{,-editor,-manager} {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/gtk>
-  #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/xfconf>
   #include <abstractions/dbus/gvfs>
-  #include <abstractions/xdg-open>  # need for net-print/cups (web browser)
+  #include <abstractions-user/xdg-open>				# need for net-print/cups (web browser)
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -70,12 +70,12 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
   /opt/**.png						r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.local/share/				r,
-  owner @{HOME_D}/.config/				r,
-  owner @{HOME_D}/.config/autostart/			r,
-  owner @{HOME_D}/.config/autostart/*			rw,
-  owner @{HOME_D}/.config/mimeapps.list*		rw,
-  owner @{HOME_D}/.config/xfce4/help.rc*		rw,
+  owner @{USER_HOME_D}/.local/share/			r,
+  owner @{USER_HOME_D}/.config/				r,
+  owner @{USER_HOME_D}/.config/autostart/		r,
+  owner @{USER_HOME_D}/.config/autostart/*		rw,
+  owner @{USER_HOME_D}/.config/mimeapps.list*		rw,
+  owner @{USER_HOME_D}/.config/xfce4/help.rc*		rw,
   
   profile alacarte {
     #include <abstractions/base>
@@ -88,11 +88,11 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
 
 profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/gtk>
-  #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
@@ -121,7 +121,7 @@ profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd {
   /etc/xdg/autostart/xfsettingsd.desktop		r,	# xfce-base/xfdesktop
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.xfce4-session.verbose-log		w,
+  owner @{USER_HOME_D}/.xfce4-session.verbose-log	w,
   
   # TEMP -----------------------------------------------
   owner /tmp/file@{TMP6}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.

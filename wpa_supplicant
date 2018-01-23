@@ -12,18 +12,18 @@
 
 profile wpa_supplicant.wpa_gui /usr/bin/wpa_gui {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/X>
-  #include <abstractions/qt>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/X>
+  #include <abstractions-user/qt>
   #include <abstractions/nameservice>
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/wpa_gui					mr,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/wpa_supplicant/		rw,
-  owner @{HOME_D}/.config/wpa_supplicant/wpa_gui.conf	rwk,
+  owner @{USER_HOME_D}/.config/wpa_supplicant/		rw,
+  owner @{USER_HOME_D}/.config/wpa_supplicant/wpa_gui.conf rwk,
 }
 
 profile wpa_supplicant /usr/sbin/wpa_supplicant {

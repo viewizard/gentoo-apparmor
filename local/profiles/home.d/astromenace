@@ -10,11 +10,11 @@
 
 profile local.home.AstroMenace /home/**/AstroMenace/AstroMenace {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/audio>
-  #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/audio>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/fs/deny-private-strict>
@@ -34,11 +34,11 @@ profile local.home.AstroMenace /home/**/AstroMenace/AstroMenace {
   @{SYS_D}/devices/**/input@{input}/capabilities/*	r,
   
   # EXECUTABLES ----------------------------------------
-  @{HOME_D}/**/AstroMenace/AstroMenace			mr,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  @{USER_HOME_D}/**/AstroMenace/AstroMenace		mr,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/**/AstroMenace/{,**}			r,
-  owner @{HOME_D}/.config/astromenace/{,*}		rw,
+  owner @{USER_HOME_D}/**/AstroMenace/{,**}		r,
+  owner @{USER_HOME_D}/.config/astromenace/{,*}		rw,
   
   # READS/WRITES ---------------------------------------
   /run/udev/data/[a-z]*[0-9]*:[0-9]*			r,

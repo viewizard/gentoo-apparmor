@@ -13,7 +13,7 @@
 profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/dbus/session-strict>
-  #include <abstractions/freedesktop.org>
+  #include <abstractions-user/freedesktop.org>
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
@@ -46,14 +46,14 @@ profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
   deny /usr/share/qt[0-9]*/**				r,	# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
   deny /usr/share/pyfa/imgs.zip				r,	# games-util/pyfa, pyfa
   deny /run/user/@{UID}/poedit.lock			w,	# app-i18n/poedit, poedit
-  deny @{HOME_D}/.local/share/poedit/TranslationMemory/* rw,	# app-i18n/poedit, poedit
-  deny @{HOME_D}/.kingsoft/office6/**			rw,	# app-office/wps-office, wps-office
-  deny @{HOME_D}/.ts3client/**				rw,	# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
-  deny @{HOME_D}/evelauncher/**				r,	# local.home.evelauncher
-  deny @{HOME_D}/.local/share/CCP/**			rw,	# local.home.evelauncher
-  deny @{HOME_D}/.pyfa/Pyfa-[0-9]*.log			w,	# games-util/pyfa, pyfa
-  deny @{HOME_CACHE_D}/Tox/qTox/qtox.log		w,	# net-im/qtox
-  deny @{HOME_CACHE_D}/CCP/**				rw,	# local.home.evelauncher
+  deny @{USER_HOME_D}/.local/share/poedit/TranslationMemory/* rw,	# app-i18n/poedit, poedit
+  deny @{USER_HOME_D}/.kingsoft/office6/**		rw,	# app-office/wps-office, wps-office
+  deny @{USER_HOME_D}/.ts3client/**			rw,	# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
+  deny @{USER_HOME_D}/evelauncher/**			r,	# local.home.evelauncher
+  deny @{USER_HOME_D}/.local/share/CCP/**		rw,	# local.home.evelauncher
+  deny @{USER_HOME_D}/.pyfa/Pyfa-[0-9]*.log		w,	# games-util/pyfa, pyfa
+  deny @{USER_HOME_CACHE_D}/Tox/qTox/qtox.log		w,	# net-im/qtox
+  deny @{USER_HOME_CACHE_D}/CCP/**			rw,	# local.home.evelauncher
   
   profile grep /bin/grep {
     #include <abstractions/base>
@@ -102,7 +102,7 @@ profile xdg-utils.xdg-email /usr/bin/xdg-email {
 profile xdg-utils.xdg-screensaver /usr/bin/xdg-screensaver {
   #include <abstractions/base>
   #include <abstractions/dbus/session-strict>
-  #include <abstractions/X>
+  #include <abstractions-user/X>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -164,9 +164,9 @@ profile xdg-utils.xdg-screensaver /usr/bin/xdg-screensaver {
 # по умолчанию (в любом случае, в XFCE4 такой метод не работает).
 profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/gtk>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/gtk>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -196,9 +196,9 @@ profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/xfce4/helpers.rc				r,
-  owner @{HOME_D}/.config/xfce4/helpers.rc		r,
-  owner @{HOME_D}/.local/share/applications/		w,
-  owner @{HOME_D}/.local/share/applications/mimeapps.list* rw,
+  owner @{USER_HOME_D}/.config/xfce4/helpers.rc		r,
+  owner @{USER_HOME_D}/.local/share/applications/	w,
+  owner @{USER_HOME_D}/.local/share/applications/mimeapps.list* rw,
   
   # NOISY ----------------------------------------------
   deny @{shell}						x,	# checking default browser
@@ -215,7 +215,7 @@ profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
     /bin/grep						mr,
     
     # READS/WRITES -------------------------------------
-    owner @{HOME_D}/.config/xfce4/helpers.rc		r,
+    owner @{USER_HOME_D}/.config/xfce4/helpers.rc	r,
   }
   
   profile readlink /bin/readlink {
@@ -296,7 +296,7 @@ profile xdg-utils.xdg-mime /usr/bin/xdg-mime flags=(attach_disconnected) {
   /usr/share/applications/{,**/}			r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.local/share/applications/{,**/}	r,
+  owner @{USER_HOME_D}/.local/share/applications/{,**/}	r,
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
@@ -356,7 +356,7 @@ profile xdg-utils.xdg-mime /usr/bin/xdg-mime flags=(attach_disconnected) {
     /opt/**.desktop					r,
   
     # USERS --------------------------------------------
-    owner @{HOME_D}/.local/share/applications/**	r,
+    owner @{USER_HOME_D}/.local/share/applications/**	r,
     
     # DENY INHERIT -------------------------------------
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
@@ -386,8 +386,8 @@ profile xdg-utils.xdg-mime /usr/bin/xdg-mime flags=(attach_disconnected) {
     /usr/bin/gawk					mr,
     
     # USERS --------------------------------------------
-    owner @{HOME_D}/.config/mimeapps.list		r,
-    owner @{HOME_D}/.local/share/applications/mimeapps.list r,
+    owner @{USER_HOME_D}/.config/mimeapps.list		r,
+    owner @{USER_HOME_D}/.local/share/applications/mimeapps.list r,
     
     # DENY INHERIT -------------------------------------
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
@@ -397,9 +397,9 @@ profile xdg-utils.xdg-mime /usr/bin/xdg-mime flags=(attach_disconnected) {
 profile xdg_open_root {
   #include <abstractions/base>
   #include <abstractions/dbus/session-strict>
-  #include <abstractions/freedesktop.org>
+  #include <abstractions-root/freedesktop.org>
   #include <abstractions/nameservice>
-  #include <abstractions/X>
+  #include <abstractions-root/X>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,

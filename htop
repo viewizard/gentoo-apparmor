@@ -12,8 +12,10 @@
 
 profile htop /usr/bin/htop {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-root/freedesktop.org>			# RBAC! Должен быть отдельный профиль для root.
+  #include <abstractions-user/fonts>
+  #include <abstractions-root/fonts>				# RBAC! Должен быть отдельный профиль для root.
   #include <abstractions/nameservice>
   #include <abstractions/ncurses>
   
@@ -44,5 +46,6 @@ profile htop /usr/bin/htop {
   /usr/bin/htop mr,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/htop/{,htoprc}		rw,
+  owner @{USER_HOME_D}/.config/htop/{,htoprc}		rw,
+  owner @{ROOT_HOME_D}/.config/htop/{,htoprc}		rw,	# RBAC! Должен быть отдельный профиль для root.
 }

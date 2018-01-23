@@ -19,13 +19,13 @@
 
 profile tumbler /usr/lib{,32,64}/tumbler-1/tumblerd {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/video>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/video>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/session-bind>
-  #include <abstractions/fs/access-by-users-preset-rk>
+  #include <abstractions-user/fs/access-by-users-preset-rk>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/fs/deny-private-strict>
   #include <abstractions/fs/deny-by-pattern-trash>		# Запрещаем создавать превью в корзине.
@@ -58,10 +58,10 @@ profile tumbler /usr/lib{,32,64}/tumbler-1/tumblerd {
   /usr/local/share/backgrounds/**			r,	# FIX ME! (?) вынести в <local/profile_blocks/tumbler.d/>
   
   # USERS ----------------------------------------------
-  owner @{HOME_CACHE_D}/sessions/thumbs*/{,*.png}	r,
-  owner @{HOME_D}/.local/share/gvfs-metadata/*		r,	# gnome-base/gvfs
-  owner @{HOME_D}/.face*				r,
+  owner @{USER_HOME_CACHE_D}/sessions/thumbs*/{,*.png}	r,
+  owner @{USER_HOME_D}/.local/share/gvfs-metadata/*	r,	# gnome-base/gvfs
+  owner @{USER_HOME_D}/.face*				r,
   
   # NOISY ----------------------------------------------
-  deny @{HOME_D}/.purple/**				r,	# net-im/pidgin
+  deny @{USER_HOME_D}/.purple/**			r,	# net-im/pidgin
 }

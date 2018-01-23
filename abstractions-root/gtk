@@ -1,0 +1,29 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# READS/WRITES -----------------------------------------
+/etc/gtk-[0-9]*/*					r,
+/etc/fonts/*						r,
+audit /etc/pango/*					r,	# FIX ME! 10.11.2017 audit	# x11-libs/pango (GTK+-2.x)
+/usr/lib{,32,64}/gtk-[0-9]*/**				r,
+/usr/lib{,32,64}/gtk-[0-9]*/{,**/}*.so			mr,
+/usr/lib{,32,64}/gdk-pixbuf-[0-9]*/**			r,	# x11-libs/gdk-pixbuf
+/usr/lib{,32,64}/gdk-pixbuf-[0-9]*/[0-9]*/{,**/}*.so	mr,	# x11-libs/gdk-pixbuf
+/usr/share/themes/{,**}					r,
+/usr/share/gtk-[0-9]*/*					r,
+/usr/share/glib-[0-9]*/schemas/gschemas.compiled	r,	# dev-libs/glib
+/usr/share/applications/{,mimeinfo.cache}		r,
+/usr/share/**/icon-theme.cache				r,
+/var/cache/**/icon-theme.cache				r,
+
+# USERS ------------------------------------------------
+owner @{ROOT_HOME_D}/.gtk-bookmarks			rw,
+owner @{ROOT_HOME_D}/.config/gtk-[0-9]*/{,**}		rw,
+owner @{ROOT_HOME_D}/.local/share/themes/{,**}		r,

@@ -27,8 +27,8 @@ profile gnupg.gpg-agent /usr/bin/gpg-agent {
   /var/lib/gentoo/gkeys/keyrings/gentoo/release/**	rw,
   
   # USERS ----------------------------------------------
-  owner @{HOME_CACHE_D}/gpg-agent-info			rw,
-  owner @{HOME_D}/.gnupg/private-keys-*/{,**}		w,
+  owner @{USER_HOME_CACHE_D}/gpg-agent-info		rw,
+  owner @{USER_HOME_D}/.gnupg/private-keys-*/{,**}	w,
 }
 
 profile gnupg.gpg /usr/bin/gpg{,2,-static} {
@@ -59,9 +59,9 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} {
   owner link subset /var/lib/gentoo/gkeys/keyrings/gentoo/release/{,**/}* -> /var/lib/gentoo/gkeys/keyrings/gentoo/release/{,**/}*,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.gnupg/{,**}				rw,
-  owner @{HOME_D}/.gnupg/{,**/}*			k,
-  owner link subset @{HOME_D}/.gnupg/{,**/}*		-> @{HOME_D}/.gnupg/{,**/}*,
+  owner @{USER_HOME_D}/.gnupg/{,**}			rw,
+  owner @{USER_HOME_D}/.gnupg/{,**/}*			k,
+  owner link subset @{USER_HOME_D}/.gnupg/{,**/}*	-> @{USER_HOME_D}/.gnupg/{,**/}*,
   
   # TEMP -----------------------------------------------
   owner /var/tmp/portage/webrsync-@{TMP6}/portage-*	r,	# DELEGATION! portage.emerge-webrsync
@@ -85,7 +85,7 @@ profile gnupg.gpgconf /usr/bin/gpgconf {
   /run/user/@{UID}/gnupg/{,**}				w,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.gnupg/{,**}				rw,
+  owner @{USER_HOME_D}/.gnupg/{,**}			rw,
 }
 
 profile gnupg.gpgsm /usr/bin/gpgsm {
@@ -123,5 +123,5 @@ profile gnupg.dirmngr /usr/bin/dirmngr {
   owner /run/user/@{UID}/gnupg/S.dirmngr		rw,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.gnupg/{,**}				rw,
+  owner @{USER_HOME_D}/.gnupg/{,**}			rw,
 }

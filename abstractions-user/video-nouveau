@@ -1,0 +1,18 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# PSEUDO -----------------------------------------------
+/dev/dri/						r,
+#@{SYS_D}/devices/pci@{PCI2}/**/*			r,	# FIX ME! Сделать через @{PCI2} и @{PCI4} + жесткие ограничения на ресурсы.
+
+# READS/WRITES -----------------------------------------
+/etc/udev/udev.conf					r,
+/usr/lib{,32,64}/gallium-pipe/pipe_*.so			m,	# media-libs/mesa +opencl
+/run/udev/data/+pci:*					r,

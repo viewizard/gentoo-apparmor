@@ -14,27 +14,27 @@
 # соответствующих процессов.
 
 # Элементы авторизации X-сервера.
-audit deny @{HOME_D}/.ICEauthority			w,
-audit deny @{HOME_D}/.serverauth.*			w,
-audit deny @{HOME_D}/.Xauthority			w,
+audit deny @{USER_OR_ROOT_HOME_D}/.ICEauthority		w,
+audit deny @{USER_OR_ROOT_HOME_D}/.serverauth.*		w,
+audit deny @{USER_OR_ROOT_HOME_D}/.Xauthority		w,
 
 # Важные для работы DE директории (запрещаем удалять директории).
-audit deny @{HOME_D}/.cache/				w,
-audit deny @{HOME_D}/.config/				w,
-audit deny @{HOME_D}/.cups/				w,	# net-print/cups
-audit deny @{HOME_D}/.dbus/				w,	# sys-apps/dbus
-audit deny @{HOME_D}/.fontconfig/			w,	# media-libs/fontconfig
-audit deny @{HOME_D}/.gvfs/				w,	# gnome-base/gvfs
-audit deny @{HOME_D}/.local/				w,
-audit deny @{HOME_D}/.nv/				w,	# x11-drivers/nvidia-drivers
-audit deny @{HOME_D}/.thumbnails/			w,
+audit deny @{USER_OR_ROOT_HOME_D}/.cache/		w,
+audit deny @{USER_OR_ROOT_HOME_D}/.config/		w,
+audit deny @{USER_OR_ROOT_HOME_D}/.cups/		w,	# net-print/cups
+audit deny @{USER_OR_ROOT_HOME_D}/.dbus/		w,	# sys-apps/dbus
+audit deny @{USER_OR_ROOT_HOME_D}/.fontconfig/		w,	# media-libs/fontconfig
+audit deny @{USER_OR_ROOT_HOME_D}/.gvfs/		w,	# gnome-base/gvfs
+audit deny @{USER_OR_ROOT_HOME_D}/.local/		w,
+audit deny @{USER_OR_ROOT_HOME_D}/.nv/			w,	# x11-drivers/nvidia-drivers
+audit deny @{USER_OR_ROOT_HOME_D}/.thumbnails/		w,
 
 # XDG директории (запрещаем удалять директории).
-audit deny @{HOME_D}/@{XDG_DESKTOP_DIR}/		w,
-audit deny @{HOME_D}/@{XDG_DOWNLOAD_DIR}/		w,
-audit deny @{HOME_D}/@{XDG_TEMPLATES_DIR}/		w,
-audit deny @{HOME_D}/@{XDG_PUBLICSHARE_DIR}/		w,
-audit deny @{HOME_D}/@{XDG_DOCUMENTS_DIR}/		w,
-audit deny @{HOME_D}/@{XDG_MUSIC_DIR}/			w,
-audit deny @{HOME_D}/@{XDG_PICTURES_DIR}/		w,
-audit deny @{HOME_D}/@{XDG_VIDEOS_DIR}/			w,
+audit deny @{USER_OR_ROOT_HOME_D}/@{XDG_DESKTOP_DIR}/	w,
+audit deny @{USER_OR_ROOT_HOME_D}/@{XDG_DOWNLOAD_DIR}/	w,
+audit deny @{USER_OR_ROOT_HOME_D}/@{XDG_TEMPLATES_DIR}/	w,
+audit deny @{USER_OR_ROOT_HOME_D}/@{XDG_PUBLICSHARE_DIR}/ w,
+audit deny @{USER_OR_ROOT_HOME_D}/@{XDG_DOCUMENTS_DIR}/	w,
+audit deny @{USER_OR_ROOT_HOME_D}/@{XDG_MUSIC_DIR}/	w,
+audit deny @{USER_OR_ROOT_HOME_D}/@{XDG_PICTURES_DIR}/	w,
+audit deny @{USER_OR_ROOT_HOME_D}/@{XDG_VIDEOS_DIR}/	w,

@@ -86,22 +86,22 @@
 
 profile smplayer /usr/bin/smplayer {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/qt>
-  #include <abstractions/X>
-  #include <abstractions/video>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/qt>
+  #include <abstractions-user/X>
+  #include <abstractions-user/video>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/session-bind>
   #include <abstractions/dbus/mpris2-server>
-  #include <abstractions/fs/access-by-users-preset-rk>
-  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions-user/fs/access-by-users-preset-rk>
+  #include <abstractions-user/fs/access-by-users-preset-rwk>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/unix/gvfsd-smb>
   #include <abstractions/nameservice>
-  #include <abstractions/xdg-open>
+  #include <abstractions-user/xdg-open>
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(kill,term) peer="mpv",			# media-video/mpv
@@ -132,10 +132,10 @@ profile smplayer /usr/bin/smplayer {
   /usr/share/smplayer/{,**}				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/smplayer/{,**}		rw,
-  owner @{HOME_D}/.config/smplayer/{,**/}*		k,
-  owner @{HOME_D}/mplayer.log				rw,	# media-video/mplayer
-  owner @{HOME_D}/Pictures/smplayer_screenshots/{,*}	rw,
+  owner @{USER_HOME_D}/.config/smplayer/{,**}		rw,
+  owner @{USER_HOME_D}/.config/smplayer/{,**/}*		k,
+  owner @{USER_HOME_D}/mplayer.log			rw,	# media-video/mplayer
+  owner @{USER_HOME_D}/Pictures/smplayer_screenshots/{,*} rw,
   
   # TEMP -----------------------------------------------
   owner /tmp/qtsingleapp-smplay-@{TMP4}-{@{UID_HEX},@{UID_ROOT_HEX}} rw,

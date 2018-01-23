@@ -12,8 +12,8 @@
 
 profile xdg-user-dirs-gtk.xdg-user-dirs-gtk-update /usr/bin/xdg-user-dirs-gtk-update {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/gtk>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/gtk>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -23,5 +23,5 @@ profile xdg-user-dirs-gtk.xdg-user-dirs-gtk-update /usr/bin/xdg-user-dirs-gtk-up
   /usr/bin/xdg-user-dirs-gtk-update			mr,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/user-dirs.locale		r,
+  owner @{USER_HOME_D}/.config/user-dirs.locale		r,
 }

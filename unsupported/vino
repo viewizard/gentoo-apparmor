@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -12,12 +12,12 @@
 
 profile vino-server /usr/libexec/vino-server flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/fonts>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/X>
-  #include <abstractions/video>
-  #include <abstractions/gtk>
-  #include <abstractions/dconf>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/X>
+  #include <abstractions-user/video>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/dconf>
   #include <abstractions/nameservice>
   
   # PSEUDO ---------------------------------------------
@@ -30,11 +30,11 @@ profile vino-server /usr/libexec/vino-server flags=(complain) {
 
 profile vino-preferences /usr/bin/vino-preferences flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
-  #include <abstractions/dconf>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/X>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/dconf>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

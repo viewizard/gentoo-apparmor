@@ -12,14 +12,14 @@
 
 profile pulseaudio /usr/bin/pulseaudio {
   #include <abstractions/base>
-  #include <abstractions/audio>
+  #include <abstractions-user/audio>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/consolekit>
   #include <abstractions/dbus/session-bind>
   #include <abstractions/nameservice>
-  #include <abstractions/X-authentication-strict>
-  #include <abstractions/X-connection-strict>
+  #include <abstractions-user/X-authentication-strict>
+  #include <abstractions-user/X-connection-strict>
   
   # PTRACE ---------------------------------------------
   ptrace (trace) peer=@{profile_name},
@@ -60,8 +60,8 @@ profile pulseaudio /usr/bin/pulseaudio {
   owner /run/user/@{UID}/pulse/cli			rw,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/pulse/{,**}			rw,
-  owner @{HOME_D}/.config/pulse/{,**/}*			k,
+  owner @{USER_HOME_D}/.config/pulse/{,**}		rw,
+  owner @{USER_HOME_D}/.config/pulse/{,**/}*		k,
   
   # TEMP -----------------------------------------------
   audit owner /tmp/pulse-*/				rw,	# FIX ME! audit 26.11.2017
@@ -83,8 +83,8 @@ profile pulseaudio.start-pulseaudio-x11 /usr/bin/start-pulseaudio-x11 {
 
 profile pulseaudio.pactl /usr/bin/pactl {
   #include <abstractions/base>
-  #include <abstractions/audio>
-  #include <abstractions/X>					# RBAC! <abstractions/X_sudo> если запуск с sudo.
+  #include <abstractions-user/audio>
+  #include <abstractions-user/X>
   #include <abstractions/dbus/session-strict>
   
   # PSEUDO ---------------------------------------------

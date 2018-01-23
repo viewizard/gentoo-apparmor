@@ -11,21 +11,21 @@
 #include <local/tunables.d/>
 
 profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
-  #include <abstractions/audio>
+  #include <abstractions-user/audio>
   #include <abstractions/base>
-  #include <abstractions/fonts>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/qt>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/qt>
   #include <abstractions/nameservice>
-  #include <abstractions/video>
+  #include <abstractions-user/video>
   #include <abstractions/ssl-certs>
-  #include <abstractions/X>
+  #include <abstractions-user/X>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/networkmanager>
-  #include <abstractions/xdg-open>
-  #include <abstractions/fs/access-by-pattern-internet>		# Доступ к файлам для установки аватарки.
+  #include <abstractions-user/xdg-open>
+  #include <abstractions-user/fs/access-by-pattern-internet>	# Доступ к файлам для установки аватарки.
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -54,7 +54,7 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   /usr/lib{,32,64}/qt[0-9]*/libexec/QtWebEngineProcess	ix,
   /opt/teamspeak3-client/ts3client			ix,
   /opt/teamspeak3-client/QtWebEngineProcess		ix,
-  /opt/teamspeak3-client/package_inst			ix,	# Установка плагинов @{HOME_D}/.ts3client/plugins/*.so
+  /opt/teamspeak3-client/package_inst			ix,	# Установка плагинов @{USER_HOME_D}/.ts3client/plugins/*.so
 #  /opt/teamspeak3-client/error_report			ix,
   deny /opt/teamspeak3-client/update			x,	# Не разрешать обновления, используем portage.
   
@@ -64,10 +64,10 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   /opt/teamspeak3-client/{,**/}*.so{,.[0-9]*}		m,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.ts3client/{,**}			rw,
-  owner @{HOME_D}/.ts3client/{,**/}*			k,
-  owner @{HOME_D}/.ts3client/plugins/*.so		m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
-  owner @{HOME_D}/.pki/nssdb/*				rwk,
+  owner @{USER_HOME_D}/.ts3client/{,**}			rw,
+  owner @{USER_HOME_D}/.ts3client/{,**/}*		k,
+  owner @{USER_HOME_D}/.ts3client/plugins/*.so		m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  owner @{USER_HOME_D}/.pki/nssdb/*			rwk,
   
   # TEMP -----------------------------------------------
   /tmp/							r,

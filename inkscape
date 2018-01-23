@@ -89,15 +89,15 @@
 
 profile inkscape /usr/bin/inkscape {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/cups-client>
-  #include <abstractions/gtk>
-  #include <abstractions/video>
-  #include <abstractions/enchant>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/cups-client>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/video>
+  #include <abstractions-user/enchant>
   #include <abstractions/python>
-  #include <abstractions/X>
-  #include <abstractions/xdg-open>
+  #include <abstractions-user/X>
+  #include <abstractions-user/xdg-open>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
@@ -105,7 +105,7 @@ profile inkscape /usr/bin/inkscape {
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/session-bind>
   #include <abstractions/unix/gvfsd-smb>
-  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions-user/fs/access-by-users-preset-rwk>
   #include <abstractions/fs/deny-by-pattern-internet>
   
   # PSEUDO ---------------------------------------------
@@ -120,8 +120,8 @@ profile inkscape /usr/bin/inkscape {
   /usr/share/inkscape/{,**}				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_CACHE_D}/inkscape/{,**}			rw,
-  owner @{HOME_D}/.config/inkscape/{,**}		rw,
+  owner @{USER_HOME_CACHE_D}/inkscape/{,**}		rw,
+  owner @{USER_HOME_D}/.config/inkscape/{,**}		rw,
   
   # TEMP -----------------------------------------------
   audit owner /tmp/ink_ext_??????.svg??????		rw,	# FIX ME! 26.11.2017

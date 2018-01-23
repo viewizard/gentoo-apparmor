@@ -12,13 +12,13 @@
 
 profile transmission /usr/bin/transmission-gtk {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/audio>
-  #include <abstractions/gtk>
-  #include <abstractions/video>
-  #include <abstractions/X>
-  #include <abstractions/dconf>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/audio>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
+  #include <abstractions-user/dconf>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
@@ -29,8 +29,8 @@ profile transmission /usr/bin/transmission-gtk {
   #include <abstractions/dbus/session-bind>
   #include <abstractions/unix/gvfsd-network>
   #include <abstractions/unix/gvfsd-trash>
-  #include <abstractions/fs/access-by-pattern-internet>
-  #include <abstractions/profile_transitions/users-mime-related>
+  #include <abstractions-user/fs/access-by-pattern-internet>
+  #include <abstractions-user/profile_transitions/allow-mime-related>
   
   # DBUS -----------------------------------------------
   dbus send
@@ -66,8 +66,8 @@ profile transmission /usr/bin/transmission-gtk {
   /etc/ssl/openssl.cnf					r,	# dev-libs/openssl
   
   # USERS ----------------------------------------------
-  owner @{HOME_CACHE_D}/transmission/{,**}		rw,
-  owner @{HOME_D}/.config/transmission/{,**}		rw,
-  owner @{HOME_D}/.local/share/Trash/{info,files}/**	rw,
-  owner @{HOME_D}/.local/share/gvfs-metadata/home{,-@{TMP8}.log} r,	# gnome-base/gvfs
+  owner @{USER_HOME_CACHE_D}/transmission/{,**}		rw,
+  owner @{USER_HOME_D}/.config/transmission/{,**}	rw,
+  owner @{USER_HOME_D}/.local/share/Trash/{info,files}/** rw,
+  owner @{USER_HOME_D}/.local/share/gvfs-metadata/home{,-@{TMP8}.log} r,	# gnome-base/gvfs
 }

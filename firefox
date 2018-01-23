@@ -31,27 +31,27 @@ profile firefox.start_script /usr/bin/firefox {
 
 profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/enchant>
-  #include <abstractions/audio>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/enchant>
+  #include <abstractions-user/audio>
   #include <abstractions/camera>
-  #include <abstractions/cups-client>
-  #include <abstractions/gtk>
+  #include <abstractions-user/cups-client>
+  #include <abstractions-user/gtk>
   #include <abstractions/nameservice>
   #include <abstractions/p11-kit>
-  #include <abstractions/video>
-  #include <abstractions/dconf>
-  #include <abstractions/X>
-  #include <abstractions/fs/access-by-pattern-internet>
-  #include <abstractions/fs/access-strict>
+  #include <abstractions-user/video>
+  #include <abstractions-user/dconf>
+  #include <abstractions-user/X>
+  #include <abstractions-user/fs/access-by-pattern-internet>
+  #include <abstractions-user/fs/access-strict>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/notifications>
   #include <abstractions/unix/gvfsd-trash>
   #include <abstractions/unix/gvfsd-network>
-  #include <abstractions/profile_transitions/users-mime-related>
+  #include <abstractions-user/profile_transitions/allow-mime-related>
   #include <local/profile_blocks/firefox.d>
   
   # SIGNAL ---------------------------------------------
@@ -106,7 +106,7 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   /usr/bin/which					Px,	# sys-apps/which
   /usr/lib{,32,64}/firefox/firefox			Px,	# Перезапуск, после установки обновлений.
   /usr/lib{,32,64}/firefox/plugin-container		Px,
-  owner @{HOME_D}/.mozilla/firefox/@{TMP8}.default/extensions/{,**/}* Px,	# Пользовательские расширения.
+  owner @{USER_HOME_D}/.mozilla/firefox/@{TMP8}.default/extensions/{,**/}* Px,	# Пользовательские расширения.
   /usr/lib{,32,64}/firefox/browser/extensions/{,**/}*	Px,	# Системные расширения.
   
   # READS/WRITES ---------------------------------------
@@ -119,15 +119,15 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   /etc/udev/udev.conf					r,	# sys-fs/eudev
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.macromedia/**			rw,
-  owner @{HOME_D}/.local/share/gvfs-metadata/home	r,
-  owner @{HOME_D}/.{firefox,mozilla}/{,**}		rw,
-  owner @{HOME_D}/.{firefox,mozilla}/**/*.{db,parentlock,sqlite}* k,
-  owner @{HOME_D}/.{firefox,mozilla}/{,**/}plugins/**/	r,
-  owner @{HOME_D}/.{firefox,mozilla}/{,**/}plugins/{,**/}* mr,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
-  owner @{HOME_CACHE_D}/mozilla/{,firefox/}		rw,
-  owner @{HOME_CACHE_D}/mozilla/firefox/**		rw,
-  owner @{HOME_CACHE_D}/mozilla/firefox/**/*.sqlite	k,
+  owner @{USER_HOME_D}/.macromedia/**			rw,
+  owner @{USER_HOME_D}/.local/share/gvfs-metadata/home	r,
+  owner @{USER_HOME_D}/.{firefox,mozilla}/{,**}		rw,
+  owner @{USER_HOME_D}/.{firefox,mozilla}/**/*.{db,parentlock,sqlite}* k,
+  owner @{USER_HOME_D}/.{firefox,mozilla}/{,**/}plugins/**/ r,
+  owner @{USER_HOME_D}/.{firefox,mozilla}/{,**/}plugins/{,**/}* mr,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  owner @{USER_HOME_CACHE_D}/mozilla/{,firefox/}	rw,
+  owner @{USER_HOME_CACHE_D}/mozilla/firefox/**		rw,
+  owner @{USER_HOME_CACHE_D}/mozilla/firefox/**/*.sqlite k,
   
   # TEMP -----------------------------------------------
   /tmp/							r,
@@ -146,7 +146,7 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   deny unix peer=(label="nvidia-drivers.nvidia-modprobe"),	# nvidia-drivers.nvidia-modprobe
 }
 
-profile firefox.user_extensions @{HOME_D}/.mozilla/firefox/@{TMP8}.default/extensions/** {
+profile firefox.user_extensions @{USER_HOME_D}/.mozilla/firefox/@{TMP8}.default/extensions/** {
   #include <abstractions/base>
   
   
@@ -160,12 +160,12 @@ profile firefox.system_extensions /usr/lib{,32,64}/firefox/browser/extensions/**
 
 profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/X>
-  #include <abstractions/audio>
-  #include <abstractions/video>
-  #include <abstractions/gtk>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/X>
+  #include <abstractions-user/audio>
+  #include <abstractions-user/video>
+  #include <abstractions-user/gtk>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/notifications>
@@ -198,10 +198,10 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   /etc/ssl/openssl.cnf					r,	# dev-libs/openssl
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.adobe/Flash_Player/{,**}		r,
-  owner @{HOME_D}/.macromedia/Flash_Player/{,**}	rw,
-  owner @{HOME_D}/.mozilla/firefox/{,**}		r,
-  owner @{HOME_D}/.config/freshwrapper-data/{,**}	rw,
+  owner @{USER_HOME_D}/.adobe/Flash_Player/{,**}	r,
+  owner @{USER_HOME_D}/.macromedia/Flash_Player/{,**}	rw,
+  owner @{USER_HOME_D}/.mozilla/firefox/{,**}		r,
+  owner @{USER_HOME_D}/.config/freshwrapper-data/{,**}	rw,
   
   # TEMP -----------------------------------------------
   /tmp/							r,

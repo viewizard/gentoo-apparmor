@@ -19,12 +19,12 @@
 
 profile remmina /usr/bin/remmina {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/audio>
-  #include <abstractions/gtk>
-  #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/audio>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
@@ -33,9 +33,9 @@ profile remmina /usr/bin/remmina {
   #include <abstractions/dbus/session-bind>
   #include <abstractions/unix/gvfsd-trash>
   #include <abstractions/unix/gvfsd-network>
-  #include <abstractions/dconf>
+  #include <abstractions-user/dconf>
   #include <abstractions/nameservice>
-  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions-user/fs/access-by-users-preset-rwk>
   #include <abstractions/fs/deny-by-pattern-internet>
   
   # DBUS -----------------------------------------------
@@ -69,10 +69,10 @@ profile remmina /usr/bin/remmina {
   /usr/share/remmina/{,**}				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.remmina/{,*}				rw,
-  owner @{HOME_D}/.config/autostart/remmina-applet.desktop r,
-  owner @{HOME_D}/.config/freerdp/{,**}			rw,
-  owner @{HOME_D}/.config/remmina/{,**}			rw,
-  owner @{HOME_D}/.local/share/remmina/{,**}		rw,
-  owner @{HOME_CACHE_D}/remmina/{,**}			rw,
+  owner @{USER_HOME_D}/.remmina/{,*}			rw,
+  owner @{USER_HOME_D}/.config/autostart/remmina-applet.desktop r,
+  owner @{USER_HOME_D}/.config/freerdp/{,**}		rw,
+  owner @{USER_HOME_D}/.config/remmina/{,**}		rw,
+  owner @{USER_HOME_D}/.local/share/remmina/{,**}	rw,
+  owner @{USER_HOME_CACHE_D}/remmina/{,**}		rw,
 }

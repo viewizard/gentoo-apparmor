@@ -1,0 +1,23 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# Важно!
+# Все вложенные абстракции для видео драйверов должны быть
+# самодостаточны, чтобы можно было управлять выключением.
+
+#include <abstractions-root/video-nvidia>
+#include <abstractions-root/video-nouveau>
+
+# READS/WRITES -----------------------------------------
+/etc/vdpau_wrapper.cfg					r,	# x11-libs/libvdpau
+
+# USERS ------------------------------------------------
+owner @{ROOT_HOME_D}/.glvnd@{TMP6}			mrw,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+								# media-libs/mesa (GL Vendor-Neutral Dispatch library)

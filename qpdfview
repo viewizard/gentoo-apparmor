@@ -23,17 +23,17 @@
 
 profile qpdfview /usr/bin/qpdfview {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/qt>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/qt>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/session-bind>
-  #include <abstractions/cups-client>
-  #include <abstractions/video>
-  #include <abstractions/X>
-  #include <abstractions/xdg-open>
-  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions-user/cups-client>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
+  #include <abstractions-user/xdg-open>
+  #include <abstractions-user/fs/access-by-users-preset-rwk>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/nameservice>
   
@@ -75,10 +75,10 @@ profile qpdfview /usr/bin/qpdfview {
   /usr/share/misc/magic.mgc				r,	# sys-apps/file
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.local/share/qpdfview/{,**}		rw,
-  owner @{HOME_D}/.local/share/qpdfview/{,**/}*		k,
-  owner @{HOME_D}/.config/qpdfview/			rw,
-  owner @{HOME_D}/.config/qpdfview/*			rwk,
+  owner @{USER_HOME_D}/.local/share/qpdfview/{,**}	rw,
+  owner @{USER_HOME_D}/.local/share/qpdfview/{,**/}*	k,
+  owner @{USER_HOME_D}/.config/qpdfview/		rw,
+  owner @{USER_HOME_D}/.config/qpdfview/*		rwk,
   
   # TEMP -----------------------------------------------
   audit owner /tmp/qt_temp.*.@{local_ext}		rw,	# FIX ME! audit 25.11.2017

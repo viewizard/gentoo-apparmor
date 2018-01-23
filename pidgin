@@ -12,10 +12,10 @@
 
 profile pidgin /usr/bin/pidgin {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/audio>
-  #include <abstractions/enchant>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/audio>
+  #include <abstractions-user/enchant>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
@@ -23,13 +23,13 @@ profile pidgin /usr/bin/pidgin {
   #include <abstractions/dbus/networkmanager>
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/session-bind>
-  #include <abstractions/gtk>
-  #include <abstractions/video>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/video>
   #include <abstractions/nameservice>
-  #include <abstractions/X>
+  #include <abstractions-user/X>
   #include <abstractions/ssl-certs>
-  #include <abstractions/xdg-open>
-  #include <abstractions/fs/access-by-pattern-internet>
+  #include <abstractions-user/xdg-open>
+  #include <abstractions-user/fs/access-by-pattern-internet>
   
   # CAPABILITIES ---------------------------------------
   deny capability sys_ptrace,
@@ -71,9 +71,9 @@ profile pidgin /usr/bin/pidgin {
   /usr/share/purple/ca-certs/{,**}			r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.purple/{,**}				rw,
-  owner @{HOME_D}/.purple/{,**/}*			k,
-  audit deny @{HOME_D}/.purple/plugins/**		m,	# Не разрешаем использовать плагины пользователя,
+  owner @{USER_HOME_D}/.purple/{,**}			rw,
+  owner @{USER_HOME_D}/.purple/{,**/}*			k,
+  audit deny @{USER_HOME_D}/.purple/plugins/**		m,	# Не разрешаем использовать плагины пользователя,
   								# в любом случае их не пропустит IMA/EVM.
   
   # TEMP -----------------------------------------------

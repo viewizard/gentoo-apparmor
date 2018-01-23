@@ -12,19 +12,19 @@
 
 profile gnome-nettool /usr/bin/gnome-nettool {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/audio>
-  #include <abstractions/gtk>
-  #include <abstractions/video>
-  #include <abstractions/X>
-  #include <abstractions/dconf>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/audio>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
+  #include <abstractions-user/dconf>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
-  #include <abstractions/profile_transitions/users-strict-web>
+  #include <abstractions-user/profile_transitions/allow-strict-web>
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(int,kill) peer="nmap",			# net-analyzer/nmap

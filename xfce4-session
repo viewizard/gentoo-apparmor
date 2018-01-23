@@ -12,11 +12,11 @@
 
 profile xfce4-session /usr/bin/xfce4-session {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/gtk>
-  #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
@@ -24,7 +24,7 @@ profile xfce4-session /usr/bin/xfce4-session {
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/consolekit>
   #include <abstractions/dbus/session-bind>
-  #include <abstractions/profile_transitions/users-all>
+  #include <abstractions-user/profile_transitions/allow-list>
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(term),
@@ -89,14 +89,14 @@ profile xfce4-session /usr/bin/xfce4-session {
   /etc/xdg/autostart/{,*}				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.ICEauthority				w,	# x11-apps/iceauth
-  owner @{HOME_D}/.xfce4-session.verbose-log*		rw,
-  owner @{HOME_D}/.config/				r,
-  owner @{HOME_D}/.config/autostart/{,*}		r,
-  owner @{HOME_D}/.dbus/session-bus/{,*}		rw,	# sys-apps/dbus
-  owner @{HOME_CACHE_D}/sessions/{,*}			rw,
-  owner @{HOME_CACHE_D}/sessions/thumbs*/{,*.png}	rw,
-  owner @{HOME_CACHE_D}/gpg-agent-info			rw,
+  owner @{USER_HOME_D}/.ICEauthority			w,	# x11-apps/iceauth
+  owner @{USER_HOME_D}/.xfce4-session.verbose-log*	rw,
+  owner @{USER_HOME_D}/.config/				r,
+  owner @{USER_HOME_D}/.config/autostart/{,*}		r,
+  owner @{USER_HOME_D}/.dbus/session-bus/{,*}		rw,	# sys-apps/dbus
+  owner @{USER_HOME_CACHE_D}/sessions/{,*}		rw,
+  owner @{USER_HOME_CACHE_D}/sessions/thumbs*/{,*.png}	rw,
+  owner @{USER_HOME_CACHE_D}/gpg-agent-info		rw,
   
   # TEMP -----------------------------------------------
   owner /tmp/.ICE-unix/@{pids}				w,
@@ -117,7 +117,7 @@ profile xfce4-session /usr/bin/xfce4-session {
     /usr/bin/conky					Px,	# app-admin/conky (запуск с задержкой, корректировка пакета через env portage)
     
     # USERS --------------------------------------------
-    owner @{HOME_D}/.xfce4-session.verbose-log		w,
+    owner @{USER_HOME_D}/.xfce4-session.verbose-log	w,
   }
   
   profile env /bin/env {
@@ -137,7 +137,7 @@ profile xfce4-session /usr/bin/xfce4-session {
     /usr/bin/cairo-clock				Px,	# x11-misc/cairo-clock
     
     # USERS --------------------------------------------
-    owner @{HOME_D}/.xfce4-session.verbose-log		w,
+    owner @{USER_HOME_D}/.xfce4-session.verbose-log	w,
   }
   
   profile rm /bin/rm {
@@ -150,17 +150,17 @@ profile xfce4-session /usr/bin/xfce4-session {
     /bin/rm						mr,
     
     # USERS --------------------------------------------
-    owner @{HOME_CACHE_D}/sessions/*			w,
+    owner @{USER_HOME_CACHE_D}/sessions/*		w,
   }
 }
 
 profile xfce4-session.xfce4-session-logout /usr/bin/xfce4-session-logout {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/video>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
+  #include <abstractions-user/gtk>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
@@ -187,11 +187,11 @@ profile xfce4-session.xfce4-session-logout /usr/bin/xfce4-session-logout {
 
 profile xfce4-session.xfce4-session-settings /usr/bin/xfce4-session-settings {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/gtk>
-  #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
@@ -227,9 +227,9 @@ profile xfce4-session.xfce4-session-settings /usr/bin/xfce4-session-settings {
   /etc/xdg/autostart/{,*}				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/				r,
-  owner @{HOME_D}/.config/autostart/			r,
-  owner @{HOME_D}/.config/autostart/*			rw,
+  owner @{USER_HOME_D}/.config/				r,
+  owner @{USER_HOME_D}/.config/autostart/		r,
+  owner @{USER_HOME_D}/.config/autostart/*		rw,
 }
 
 profile xfce4-session.xflock4 /usr/bin/xflock4 {
@@ -246,7 +246,7 @@ profile xfce4-session.xflock4 /usr/bin/xflock4 {
 
 profile xfce4-session.startxfce4 /usr/bin/startxfce4 {
   #include <abstractions/base>
-  #include <abstractions/X>
+  #include <abstractions-user/X>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -339,7 +339,7 @@ profile xfce4-session.xfce4-session-fix /etc/xdg/xfce4/xfce4-session-fix {
     /bin/cp						mr,
     
     # USERS --------------------------------------------
-    owner @{HOME_D}/.config/xfce4/desktop/{,*}		rw,
+    owner @{USER_HOME_D}/.config/xfce4/desktop/{,*}	rw,
     
     # TEMP ---------------------------------------------
     owner /tmp/xfdesktop-@{USER}/desktop/{,*}		rw,
@@ -368,7 +368,7 @@ profile xfce4-session.xfce4-session-fix /etc/xdg/xfce4/xfce4-session-fix {
     /usr/bin/diff					mr,
     
     # USERS --------------------------------------------
-    owner @{HOME_D}/.config/xfce4/desktop/{,*}		r,
+    owner @{USER_HOME_D}/.config/xfce4/desktop/{,*}	r,
     
     # TEMP ---------------------------------------------
     owner /tmp/xfdesktop-@{USER}/desktop/{,*}		r,

@@ -21,12 +21,16 @@ profile xauth /usr/bin/xauth {
   /usr/bin/xauth					mr,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.Xauthority{,-@{TMP}}			rw,
-  owner link subset @{HOME_D}/.Xauthority{,-@{TMP}}	-> @{HOME_D}/.Xauthority{,-@{TMP}},
-  owner @{HOME_D}/.serverauth.*				rw,	# * - 1-8 символов @{pid} + 0(нет) или 2 символа {[a-z],-}
-  owner link subset @{HOME_D}/.serverauth.*		-> @{HOME_D}/.serverauth.*,	# * - 1-8 символов @{pid} + 0(нет) или 2 символа {[a-z],-}
-  owner @{HOME_D}/.xauth*				rw,	# * - 6-8 символов {[a-zA-Z0-9_.},-}
-  owner link subset @{HOME_D}/.xauth*			-> @{HOME_D}/.xauth*,	# * - 6-8 символов {[a-zA-Z0-9_.},-}
+  owner @{USER_HOME_D}/.Xauthority{,-@{TMP}}		rw,
+  owner link subset @{USER_HOME_D}/.Xauthority{,-@{TMP}} -> @{USER_HOME_D}/.Xauthority{,-@{TMP}},
+  owner @{USER_HOME_D}/.serverauth.*			rw,	# * - 1-8 символов @{pid} + 0(нет) или 2 символа {[a-z],-}
+  owner link subset @{USER_HOME_D}/.serverauth.*	-> @{USER_HOME_D}/.serverauth.*,	# * - 1-8 символов @{pid} + 0(нет) или 2 символа {[a-z],-}
+  owner @{USER_HOME_D}/.xauth*				rw,	# * - 6-8 символов {[a-zA-Z0-9_.},-}
+  owner link subset @{USER_HOME_D}/.xauth*		-> @{USER_HOME_D}/.xauth*,	# * - 6-8 символов {[a-zA-Z0-9_.},-}
+  owner @{ROOT_HOME_D}/.xauth*				rw,	# * - 6-8 символов {[a-zA-Z0-9_.},-}
+  								# # RBAC! Должен быть отдельный профиль для root.
+  owner link subset @{ROOT_HOME_D}/.xauth*		-> @{ROOT_HOME_D}/.xauth*,	# * - 6-8 символов {[a-zA-Z0-9_.},-}
+  								# # RBAC! Должен быть отдельный профиль для root.
   
   # TEMP -----------------------------------------------
   owner /tmp/@{TMP_SH}					rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.

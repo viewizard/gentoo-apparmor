@@ -12,12 +12,12 @@
 
 profile nm-applet /usr/bin/nm-applet {
   #include <abstractions/base>
-  #include <abstractions/fonts>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/gtk>
-  #include <abstractions/X>
-  #include <abstractions/video>
-  #include <abstractions/dconf>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/X>
+  #include <abstractions-user/video>
+  #include <abstractions-user/dconf>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
@@ -26,7 +26,7 @@ profile nm-applet /usr/bin/nm-applet {
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/gnome-keyring>
   #include <abstractions/dbus/session-bind>
-  #include <abstractions/profile_transitions/users-strict-web>
+  #include <abstractions-user/profile_transitions/allow-strict-web>
   
   # DBUS -------------------------------------------------
   dbus send
@@ -84,11 +84,11 @@ profile nm-applet /usr/bin/nm-applet {
 
 profile nm-applet.nm-connection-editor /usr/bin/nm-connection-editor {
   #include <abstractions/base>
-  #include <abstractions/fonts>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/gtk>
-  #include <abstractions/X>
-  #include <abstractions/dconf>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/X>
+  #include <abstractions-user/dconf>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>

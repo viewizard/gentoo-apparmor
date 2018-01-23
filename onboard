@@ -12,12 +12,12 @@
 
 profile onboard /usr/bin/onboard {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
   #include <abstractions/python>
-  #include <abstractions/gtk>
-  #include <abstractions/X>
-  #include <abstractions/dconf>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/X>
+  #include <abstractions-user/dconf>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
@@ -63,21 +63,21 @@ profile onboard /usr/bin/onboard {
   @{PYTHON_PACKAGES_D}/cairo/**.pyc{,.*}		w,	# dev-python/pycairo
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.local/share/onboard/{,**}		rw,
+  owner @{USER_HOME_D}/.local/share/onboard/{,**}	rw,
   
   # NOISY ----------------------------------------------
-  deny @{HOME_D}/					r,
+  deny @{USER_HOME_D}/					r,
 }
 
 profile onboard_settings /usr/bin/onboard-settings {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
   #include <abstractions/python>
   #include <abstractions/python-exec>		# DELEGATION! onboard, нужен только при запуске через python-exec
-  #include <abstractions/gtk>
-  #include <abstractions/X>
-  #include <abstractions/dconf>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/X>
+  #include <abstractions-user/dconf>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
@@ -117,8 +117,8 @@ profile onboard_settings /usr/bin/onboard-settings {
   audit /run/udev/data/*				r,	# FIX ME! audit 11.12.2017
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.local/share/onboard/{,**}		rw,
+  owner @{USER_HOME_D}/.local/share/onboard/{,**}	rw,
   
   # NOISY ----------------------------------------------
-  deny @{HOME_D}/					r,
+  deny @{USER_HOME_D}/					r,
 }

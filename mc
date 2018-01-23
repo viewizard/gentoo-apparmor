@@ -14,8 +14,8 @@ profile mc /usr/bin/mc {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ncurses>
-  #include <abstractions/fs/access-by-pattern-filemanager>
-  #include <abstractions/X>
+  #include <abstractions-user/fs/access-by-pattern-filemanager>
+  #include <abstractions-user/X>
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(cont) peer="shell_users",
@@ -63,9 +63,11 @@ profile mc_root {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ncurses>
-  #include <abstractions/fs/access-by-pattern-filemanager>
-  #include <abstractions/fs/access-by-pattern-systemusers>
-  #include <abstractions/X_sudo>				# RBAC! Вызывается через sudo в X-сессии пользователя.
+  #include <abstractions-root/fs/access-by-pattern-filemanager>
+  #include <abstractions-root/fs/access-by-pattern-systemusers>
+  #include <abstractions-root/X>
+  #include <abstractions-sudo/X-connection-strict>		# RBAC! Нужно для запуска под root-ом через sudo
+  								# с подключением к X-сессии пользователя.
   
   # CAPABILITIES ---------------------------------------
   capability dac_read_search,					# RBAC! Вызывается через sudo в X-сессии пользователя.

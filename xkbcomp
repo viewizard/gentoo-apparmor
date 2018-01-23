@@ -12,7 +12,7 @@
 
 profile xkbcomp /usr/bin/xkbcomp {
   #include <abstractions/base>
-  include <abstractions/X-connection-strict>
+  include <abstractions-user/X-connection-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -33,6 +33,6 @@ profile xkbcomp /usr/bin/xkbcomp {
   deny /dev/input/event[0-9]*				rw,	# xorg-server.Xorg
   deny /run/acpid.socket				rw,	# xorg-server.Xorg
   deny /var/log/Xorg.@{X_DISPLAY}.log			w,	# xorg-server.Xorg
-  deny @{HOME_D}/.local/share/xorg/{,**}		rw,	# xorg-server.Xorg
-  deny @{HOME_D}/.xfce4-session.verbose-log		w,	# xfce4-session
+  deny @{USER_HOME_D}/.local/share/xorg/{,**}		rw,	# xorg-server.Xorg
+  deny @{USER_HOME_D}/.xfce4-session.verbose-log	w,	# xfce4-session
 }

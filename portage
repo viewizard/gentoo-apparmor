@@ -236,7 +236,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   profile shell @{shell} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
-    #include <abstractions/X-connection-strict>
+    #include <abstractions-root/X-connection-strict>
     #include <abstractions/dbus/session-strict>
     #include <abstractions/dbus/gconf>
     #include <local/profile_blocks/portage.emerge.shell.d/>	# В т.ч. локальные правила монтирования и размонтирования /boot.
@@ -340,7 +340,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     audit deny /usr/local/**				w,	# Исключаем работу с /usr/local/.
     
     # USERS --------------------------------------------
-    owner @{HOME_D}/.wget-hsts				rw,
+    owner @{ROOT_HOME_D}/.wget-hsts			rw,
     
     # TEMP ---------------------------------------------
     /tmp/						r,
@@ -352,10 +352,10 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   
   profile sandbox /usr/bin/sandbox {
     #include <abstractions/base>
-    #include <abstractions/freedesktop.org>
-    #include <abstractions/fonts>
+    #include <abstractions-root/freedesktop.org>
+    #include <abstractions-root/fonts>
     #include <abstractions/nameservice>
-    #include <abstractions/X-connection-strict>
+    #include <abstractions-root/X-connection-strict>
     #include <abstractions/dbus/session-strict>
     #include <local/profile_blocks/portage.emerge.sandbox.d/>
     

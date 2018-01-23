@@ -12,7 +12,7 @@
 
 profile xinit /usr/bin/xinit {
   #include <abstractions/base>
-  #include <abstractions/X>
+  #include <abstractions-user/X>
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
@@ -212,7 +212,7 @@ profile xinit.startx /usr/bin/startx {
     /bin/rm						mr,
     
     # USERS --------------------------------------------
-    owner @{HOME_D}/.serverauth.*			w,	# * - 1-8 символов @{pid} + 0(нет) или 2 символа {[a-z],-}
+    owner @{USER_HOME_D}/.serverauth.*			w,	# * - 1-8 символов @{pid} + 0(нет) или 2 символа {[a-z],-}
   }
   
   profile expr /bin/expr {

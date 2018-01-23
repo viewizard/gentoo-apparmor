@@ -1,0 +1,24 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <abstractions-root/profile_transitions/allow-mime-related>
+
+# plus, all other programs with UI/GUI
+
+/usr/bin/meld					Px -> meld_root,	# dev-util/meld
+/usr/bin/qgit					Px -> qgit_root,	# dev-vcs/qgit
+@{PYTHON_EXEC_WRAPPER}				Px -> python_exec_root,	# dev-lang/python-exec
+
+audit /usr/bin/gparted-pkexec			Px,	# sys-block/gparted		# FIX ME! audit 22.01.2018
+audit /usr/bin/gsmartcontrol-root		Px,	# sys-apps/gsmartcontrol	# FIX ME! audit 22.01.2018
+audit /usr/bin/thunar-settings			Px,	# xfce-base/thunar		# FIX ME! audit 22.01.2018
+audit /usr/bin/exo-preferred-applications	Px,	# xfce-base/exo			# FIX ME! audit 22.01.2018
+/usr/bin/thunar-volman				Px,	# xfce-extra/thunar-volman
+/usr/bin/thunar-volman-settings			Px,	# xfce-extra/thunar-volman

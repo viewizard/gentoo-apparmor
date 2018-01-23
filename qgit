@@ -19,16 +19,16 @@
 
 profile qgit /usr/bin/qgit {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
-  #include <abstractions/qt>
-  #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions-user/qt>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
   #include <abstractions/nameservice>
-  #include <abstractions/xdg-open>
-  #include <abstractions/fs/access-by-users-preset-rwkl>
+  #include <abstractions-user/xdg-open>
+  #include <abstractions-user/fs/access-by-users-preset-rwkl>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/fs/deny-private-strict>
   
@@ -51,8 +51,8 @@ profile qgit /usr/bin/qgit {
   /usr/bin/juffed					Px,	# app-editors/juffed (выбирается пользователем через настройки)
   
   # READS/WRITES ---------------------------------------
-  owner @{HOME_D}/.config/qgit/{,**}			rw,
-  owner @{HOME_D}/.config/qgit/{,**/}*			k,
+  owner @{USER_HOME_D}/.config/qgit/{,**}		rw,
+  owner @{USER_HOME_D}/.config/qgit/{,**/}*		k,
   
   # TEMP -----------------------------------------------
   owner /tmp/qgit4.@{TMP6}				rw,
@@ -61,7 +61,7 @@ profile qgit /usr/bin/qgit {
   
   profile cat /bin/cat {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-users-preset-rk>
+    #include <abstractions-user/fs/access-by-users-preset-rk>
     #include <abstractions/fs/deny-by-pattern-internet>
     #include <abstractions/fs/deny-private-strict>
     
@@ -76,18 +76,18 @@ profile qgit /usr/bin/qgit {
 
 profile qgit_root {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
+  #include <abstractions-root/freedesktop.org>
+  #include <abstractions-root/fonts>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
-  #include <abstractions/gtk>
-  #include <abstractions/qt>
-  #include <abstractions/video>
-  #include <abstractions/X_sudo>
+  #include <abstractions-root/qt>
+  #include <abstractions-root/X>
+  #include <abstractions-sudo/X-connection-strict>		# RBAC! Нужно для запуска под root-ом через sudo
+  								# с подключением к X-сессии пользователя.
   #include <abstractions/nameservice>
-  #include <abstractions/xdg-open_root>
-  #include <abstractions/fs/access-by-users-preset-rwkl>
-  #include <abstractions/fs/access-by-pattern-systemusers>
+  #include <abstractions-root/xdg-open>
+  #include <abstractions-root/fs/access-by-users-preset-rwkl>
+  #include <abstractions-root/fs/access-by-pattern-systemusers>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/fs/deny-private-strict>
   
@@ -116,8 +116,8 @@ profile qgit_root {
   /usr/bin/juffed					Px -> juffed_root,	# app-editors/juffed (выбирается пользователем через настройки)
   
   # READS/WRITES ---------------------------------------
-  owner @{HOME_D}/.config/qgit/{,**}			rw,
-  owner @{HOME_D}/.config/qgit/{,**/}*			k,
+  owner @{ROOT_HOME_D}/.config/qgit/{,**}		rw,
+  owner @{ROOT_HOME_D}/.config/qgit/{,**/}*		k,
   
   # TEMP -----------------------------------------------
   /tmp/							r,
@@ -127,8 +127,8 @@ profile qgit_root {
   
   profile cat /bin/cat {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-users-preset-rk>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-users-preset-rk>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     #include <abstractions/fs/deny-by-pattern-internet>
     #include <abstractions/fs/deny-private-strict>
     

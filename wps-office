@@ -61,16 +61,16 @@
 
 profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/qt>
-  #include <abstractions/video>
-  #include <abstractions/cups-client>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/qt>
+  #include <abstractions-user/video>
+  #include <abstractions-user/cups-client>
+  #include <abstractions-user/X>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
-  #include <abstractions/xdg-open>
-  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions-user/xdg-open>
+  #include <abstractions-user/fs/access-by-users-preset-rwk>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/nameservice>
   
@@ -105,12 +105,12 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   /opt/kingsoft/wps-office/office6/{,**/}*		mk,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/{K,k}ingsoft/{,**}		rw,
-  owner @{HOME_D}/.config/{K,k}ingsoft/{,**/}*		k,
-  owner @{HOME_D}/.kingsoft/office6/{,**}		rw,
-  owner @{HOME_D}/.kingsoft/office6/{,**/}*		k,
-  owner @{HOME_D}/.local/share/data/Kingsoft/{,**}	rw,
-  owner @{HOME_D}/.local/share/data/Kingsoft/{,**/}*	k,
+  owner @{USER_HOME_D}/.config/{K,k}ingsoft/{,**}	rw,
+  owner @{USER_HOME_D}/.config/{K,k}ingsoft/{,**/}*	k,
+  owner @{USER_HOME_D}/.kingsoft/office6/{,**}		rw,
+  owner @{USER_HOME_D}/.kingsoft/office6/{,**/}*	k,
+  owner @{USER_HOME_D}/.local/share/data/Kingsoft/{,**}	rw,
+  owner @{USER_HOME_D}/.local/share/data/Kingsoft/{,**/}* k,
   
   # TEMP -----------------------------------------------
   audit owner /tmp/qt_temp.*				rwk,	# FIX ME! Использовать @{TMP} переменные.
@@ -143,8 +143,8 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
     # DENY INHERIT -------------------------------------
     deny unix (send, receive) peer=(label="wps-office"),	# wps-office
     deny /opt/kingsoft/wps-office/office6/**		r,	# wps-office
-    deny @{HOME_D}/.kingsoft/office6/templates/wps/**	w,	# wps-office
-    deny @{HOME_D}/**					rw,	# wps-office
+    deny @{USER_HOME_D}/.kingsoft/office6/templates/wps/** w,	# wps-office
+    deny @{USER_HOME_D}/**				rw,	# wps-office
     deny /media/**					rw,	# wps-office
   }
 }

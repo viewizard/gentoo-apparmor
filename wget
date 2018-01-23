@@ -36,7 +36,7 @@ profile wget /usr/bin/wget {
   /usr/portage/distfiles/**				rw,	# sys-apps/portage	# DELEGATION! portage
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.wget-hsts				rw,
+  owner @{USER_HOME_D}/.wget-hsts			rw,
   
   # READS/WRITES ---------------------------------------
   deny /.wget-hsts					rwk,	# Мусорит в корень, использовать --hsts-file=file.
@@ -58,8 +58,7 @@ profile wget_root {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ssl-certs>
-  #include <abstractions/fs/access-by-pattern-filemanager>
-  #include <abstractions/fs/access-by-pattern-systemusers>
+  #include <abstractions-root/fs/access-by-pattern-systemusers>
   
   # CAPABILITIES ---------------------------------------
   capability mknod,
@@ -82,5 +81,5 @@ profile wget_root {
   								# Процессы запущенные из cron работают некорректно с wget.
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.wget-hsts				rwk,
+  owner @{ROOT_HOME_D}/.wget-hsts			rwk,
 }

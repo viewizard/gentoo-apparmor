@@ -17,7 +17,6 @@
 # профиль используется службами без аутентификации
 profile shell_service @{shell} {
   #include <abstractions/base>
-  #include <abstractions/shell>
   #include <abstractions/consoles>
   #include <abstractions/nameservice>
   
@@ -39,7 +38,7 @@ profile shell_service @{shell} {
 # профиль терминала по умолчанию
 profile shell_users {
   #include <abstractions/base>
-  #include <abstractions/shell>
+  #include <abstractions-user/shell>
   #include <abstractions/consoles>
   #include <abstractions/nameservice>
   
@@ -83,7 +82,7 @@ profile shell_users {
   
   profile grep /bin/grep {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-users-preset-rwk>
+    #include <abstractions-user/fs/access-by-users-preset-rwk>
     #include <abstractions/fs/deny-by-pattern-internet>
     
     # PSEUDO -------------------------------------------
@@ -96,7 +95,7 @@ profile shell_users {
   
   profile ln /bin/ln {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-users-preset-rwk>
+    #include <abstractions-user/fs/access-by-users-preset-rwk>
     #include <abstractions/fs/deny-by-pattern-internet>
     
     # PSEUDO -------------------------------------------
@@ -109,7 +108,7 @@ profile shell_users {
   
   profile rm /bin/rm {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-users-preset-rwk>
+    #include <abstractions-user/fs/access-by-users-preset-rwk>
     #include <abstractions/fs/deny-by-pattern-internet>
     
     # PSEUDO -------------------------------------------
@@ -123,7 +122,7 @@ profile shell_users {
   profile ls /bin/ls {
     #include <abstractions/base>
     #include <abstractions/nameservice>
-    #include <abstractions/fs/access-by-users-preset-rwk>
+    #include <abstractions-user/fs/access-by-users-preset-rwk>
     #include <abstractions/fs/deny-by-pattern-internet>
     
     # PSEUDO -------------------------------------------
@@ -138,7 +137,7 @@ profile shell_users {
 # профиль специального пользователя root
 profile shell_root {
   #include <abstractions/base>
-  #include <abstractions/shell>
+  #include <abstractions-root/shell>
   #include <abstractions/consoles>
   #include <abstractions/nameservice>
   #include <local/profile_blocks/shell_root.d/>
@@ -282,6 +281,8 @@ profile shell_root {
   audit deny /usr/bin/startx*				x,	# RBAC! Запрещаем запуск Xorg-server под root. У нас
   								# нет полноценной ветки профилей для запуска всех
   								# дочерних процессов.
+  								# Важно! Абстракции обычных профилей могут не учитывать
+  								# запуск программ от root-a.
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
@@ -291,8 +292,7 @@ profile shell_root {
   
   profile ls /bin/ls {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -304,8 +304,7 @@ profile shell_root {
   
   profile ln /bin/ln {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -317,8 +316,7 @@ profile shell_root {
   
   profile rm /bin/rm {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -330,8 +328,7 @@ profile shell_root {
   
   profile cut /bin/cut {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -343,8 +340,7 @@ profile shell_root {
   
   profile grep /bin/grep {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # CAPABILITIES -------------------------------------
     capability mknod,
@@ -359,8 +355,7 @@ profile shell_root {
   
   profile env /bin/env {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -372,8 +367,7 @@ profile shell_root {
   
   profile sed /bin/sed {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -428,8 +422,7 @@ profile shell_root {
   
   profile cp /bin/cp {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # CAPABILITIES -------------------------------------
     capability fowner,
@@ -446,8 +439,7 @@ profile shell_root {
   
   profile mv /bin/mv {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -459,8 +451,7 @@ profile shell_root {
   
   profile chown /bin/chown {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # CAPABILITIES -------------------------------------
     capability chown,
@@ -475,8 +466,7 @@ profile shell_root {
   
   profile chmod /bin/chmod {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # CAPABILITIES -------------------------------------
     capability fowner,
@@ -494,8 +484,7 @@ profile shell_root {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/ncurses>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -512,8 +501,7 @@ profile shell_root {
   
   profile cat /bin/cat {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -525,8 +513,7 @@ profile shell_root {
   
   profile dd /bin/dd {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -538,8 +525,7 @@ profile shell_root {
   
   profile tar /bin/tar {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # CAPABILITIES -------------------------------------
     capability mknod,
@@ -561,8 +547,7 @@ profile shell_root {
   
   profile head /bin/head {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -574,8 +559,7 @@ profile shell_root {
   
   profile tail /bin/tail {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -587,8 +571,7 @@ profile shell_root {
   
   profile mkdir /bin/mkdir {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -600,8 +583,7 @@ profile shell_root {
   
   profile touch /bin/touch {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -613,8 +595,7 @@ profile shell_root {
   
   profile rsync /usr/bin/rsync {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -626,8 +607,7 @@ profile shell_root {
   
   profile file /usr/bin/file {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -639,8 +619,7 @@ profile shell_root {
   
   profile find /usr/bin/find {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -654,8 +633,7 @@ profile shell_root {
   
   profile gawk /usr/bin/gawk {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -667,8 +645,7 @@ profile shell_root {
   
   profile patch /usr/bin/patch {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # CAPABILITIES ---------------------------------------
     capability chown,
@@ -685,8 +662,7 @@ profile shell_root {
   
   profile diff /usr/bin/diff {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -698,8 +674,7 @@ profile shell_root {
   
   profile xargs /usr/bin/xargs {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-filemanager>
-    #include <abstractions/fs/access-by-pattern-systemusers>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -714,10 +689,9 @@ profile shell_root {
 # профиль специального пользователя root (переключение через sudo)
 profile shell_sudo {
   #include <abstractions/base>
-  #include <abstractions/shell>
   #include <abstractions/consoles>
   #include <abstractions/nameservice>
-  #include <abstractions/profile_transitions/sudo>
+  #include <abstractions-sudo/profile_transitions/allow-list>
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(hup, int, kill, term, cont),		# Реакция на нажатия комбинаций кнопок.

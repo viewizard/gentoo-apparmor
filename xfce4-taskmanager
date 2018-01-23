@@ -12,18 +12,18 @@
 
 profile xfce4-taskmanager /usr/bin/xfce4-taskmanager {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/gtk>
-  #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/session-bind>
-  #include <abstractions/profile_transitions/users-strict-web>
+  #include <abstractions-user/profile_transitions/allow-strict-web>
   
   # CAPABILITIES ---------------------------------------
   capability sys_ptrace,
@@ -59,5 +59,5 @@ profile xfce4-taskmanager /usr/bin/xfce4-taskmanager {
   /usr/bin/exo-open					Px,	# xfce-base/exo
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/xfce4/xfce4-taskmanager.rc{,.@{TMP6}} rw,
+  owner @{USER_HOME_D}/.config/xfce4/xfce4-taskmanager.rc{,.@{TMP6}} rw,
 }

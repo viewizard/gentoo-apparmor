@@ -1,0 +1,29 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# Since we could use QT with gtkstyle, we need GTK abstractions.
+#include <abstractions-root/gtk>
+#include <abstractions/dbus/at-spi>
+#include <abstractions/dbus/gvfs>
+#include <abstractions/dbus/gconf>				# Для QT_QPA_PLATFORMTHEME=gtk2.
+
+# READS/WRITES -----------------------------------------
+/usr/share/icons/{,**}					r,
+/usr/share/qt{4,5}/**					r,
+/usr/lib{,32,64}/qt4/lib*.so{,.[0-9]*}			mr,
+/usr/lib{,32,64}/qt{4,5}/plugins/{,**/}*.so		mr,
+
+# USERS ------------------------------------------------
+owner @{ROOT_HOME_D}/.ICEauthority			r,
+owner @{ROOT_HOME_D}/.config/Trolltech.conf		rwk,
+owner @{ROOT_HOME_D}/.config/QtProject.conf{,.lock,.@{TMP6}} rwk,
+owner @{ROOT_HOME_D}/.config/qt5ct/qt5ct.conf		rwk,	# x11-misc/qt5ct
+owner @{ROOT_HOME_D}/.config/.@{TMP6}			rwk,	# Временные файлы, Qt5
+owner @{ROOT_HOME_CACHE_D}/qt_compose_cache_little_endian_* rw,	# * - 32 символа (цифры, маленькие буквы)

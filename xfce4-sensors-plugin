@@ -12,10 +12,10 @@
 
 profile xfce4-sensors-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-sensors-plugin {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/X>
+  #include <abstractions-user/gtk>
   #include <abstractions/sensors>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
@@ -33,16 +33,16 @@ profile xfce4-sensors-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-sensors-
   /usr/bin/xfce4-sensors				Px,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/xfce4/panel/{,*.rc*}		rw,
+  owner @{USER_HOME_D}/.config/xfce4/panel/{,*.rc*}	rw,
 }
 
 profile xfce4-sensors-plugin.xfce4-sensors /usr/bin/xfce4-sensors {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/gtk>
-  #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>

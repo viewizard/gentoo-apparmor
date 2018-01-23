@@ -42,7 +42,7 @@ profile gconf.gconfd-2 /usr/libexec/gconfd-2 {
   /etc/gconf/gconf.xml.{defaults,mandatory,system}/.testing.writeability w,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/gconf/{,**}			rw,
+  owner @{USER_HOME_D}/.config/gconf/{,**}		rw,
 }
 
 profile gconf.gsettings-data-convert /usr/bin/gsettings-data-convert {
@@ -61,8 +61,8 @@ profile gconf.gsettings-data-convert /usr/bin/gsettings-data-convert {
   /usr/share/GConf/{,**}				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/gconf/{,**}			r,
-  owner @{HOME_D}/.local/share/gsettings-data-convert*	rw,
+  owner @{USER_HOME_D}/.config/gconf/{,**}		r,
+  owner @{USER_HOME_D}/.local/share/gsettings-data-convert* rw,
 }
 
 profile gconf.gconftool-2 /usr/bin/gconftool-2 {

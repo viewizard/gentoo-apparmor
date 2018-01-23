@@ -12,9 +12,12 @@
 
 profile thunar-volman /usr/bin/thunar-volman {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/gtk>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-root/freedesktop.org>			# RBAC! Должен быть отдельный профиль для root.
+  #include <abstractions-user/fonts>
+  #include <abstractions-root/fonts>				# RBAC! Должен быть отдельный профиль для root.
+  #include <abstractions-user/gtk>
+  #include <abstractions-root/gtk>				# RBAC! Должен быть отдельный профиль для root.
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
@@ -22,10 +25,10 @@ profile thunar-volman /usr/bin/thunar-volman {
   #include <abstractions/dbus/xfconf>
   #include <abstractions/dbus/notifications>
   #include <abstractions/nameservice>
-  #include <abstractions/X_sudo>				# RBAC! Нужно только для выполнения под root-ом
-								# thunar-a, например, если запускаем через sudo.
-  								# Временно делаем одним профилем, чтобы уменьшить
-  								# кол-во переходов из профиля thunar.
+  #include <abstractions-user/X>
+  #include <abstractions-root/X>				# RBAC! Должен быть отдельный профиль для root.
+  #include <abstractions-sudo/X-connection-strict>		# RBAC! Нужно для запуска под root-ом через sudo
+  								# с подключением к X-сессии пользователя.
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -48,21 +51,27 @@ profile thunar-volman /usr/bin/thunar-volman {
   /etc/fstab						r,
   /etc/udev/udev.conf					r,	# sys-fs/eudev
   /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
-  /run/udev/data/{[a-z]*[0-9]*:[0-9]*,+usb:@{USB4}}	r,
+  /run/udev/data/{[a-z]*[0-9]*:[0-9]*,+usb:@{USB4},+input:input@{input}} r,
   /run/mount/utab					r,
 }
 
 profile thunar-volman.thunar-volman-settings /usr/bin/thunar-volman-settings {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-root/freedesktop.org>			# RBAC! Должен быть отдельный профиль для root.
+  #include <abstractions-user/fonts>
+  #include <abstractions-root/fonts>				# RBAC! Должен быть отдельный профиль для root.
+  #include <abstractions-user/gtk>
+  #include <abstractions-root/gtk>				# RBAC! Должен быть отдельный профиль для root.
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/xfconf>
+  #include <abstractions-user/X>
+  #include <abstractions-root/X>				# RBAC! Должен быть отдельный профиль для root.
+  #include <abstractions-sudo/X-connection-strict>		# RBAC! Нужно для запуска под root-ом через sudo
+  								# с подключением к X-сессии пользователя.
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -74,5 +83,6 @@ profile thunar-volman.thunar-volman-settings /usr/bin/thunar-volman-settings {
   /usr/bin/exo-open					Px,	# xfce-base/exo
   
   # USERS ----------------------------------------------
-  @{HOME_D}/.config/xfce4/help.rc			r,
+  @{USER_HOME_D}/.config/xfce4/help.rc			r,
+  @{ROOT_HOME_D}/.config/xfce4/help.rc			r,	# RBAC! Должен быть отдельный профиль для root.
 }

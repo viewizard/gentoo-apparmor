@@ -12,12 +12,11 @@
 
 profile thunar /usr/bin/{Thunar,thunar} {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/audio>
-  #include <abstractions/gtk>
-  #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
@@ -32,8 +31,8 @@ profile thunar /usr/bin/{Thunar,thunar} {
   #include <abstractions/unix/gvfsd-smb-browse>
   #include <abstractions/unix/gvfsd-smb>
   #include <abstractions/unix/gvfsd-smb-virtual>
-  #include <abstractions/fs/access-by-pattern-filemanager>
-  #include <abstractions/profile_transitions/users-all>
+  #include <abstractions-user/fs/access-by-pattern-filemanager>
+  #include <abstractions-user/profile_transitions/allow-list>
   #include <local/profile_blocks/thunar.d/>
   
   # DBUS -----------------------------------------------
@@ -99,10 +98,10 @@ profile thunar /usr/bin/{Thunar,thunar} {
   /run/mount/utab					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/Thunar/{,**}			rw,
-  owner @{HOME_D}/.config/Thunar/{,**/}*		k,
-  owner @{HOME_D}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
-  owner @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
+  owner @{USER_HOME_D}/.config/Thunar/{,**}		rw,
+  owner @{USER_HOME_D}/.config/Thunar/{,**/}*		k,
+  owner @{USER_HOME_D}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
+  owner @{USER_HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -167,12 +166,12 @@ profile thunar /usr/bin/{Thunar,thunar} {
 
 profile thunar_root {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/audio>
-  #include <abstractions/gtk>
-  #include <abstractions/video>
-  #include <abstractions/X_sudo>
+  #include <abstractions-root/freedesktop.org>
+  #include <abstractions-root/fonts>
+  #include <abstractions-root/gtk>
+  #include <abstractions-root/X>
+  #include <abstractions-sudo/X-connection-strict>		# RBAC! Нужно для запуска под root-ом через sudo
+  								# с подключением к X-сессии пользователя.
   #include <abstractions/nameservice>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
@@ -182,14 +181,14 @@ profile thunar_root {
   #include <abstractions/dbus/thumbnails>
   #include <abstractions/dbus/notifications>
   #include <abstractions/dbus/session-bind>
-  #include <abstractions/fs/access-by-pattern-filemanager>
-  #include <abstractions/fs/access-by-pattern-systemusers>
+  #include <abstractions-root/fs/access-by-pattern-filemanager>
+  #include <abstractions-root/fs/access-by-pattern-systemusers>
   #include <abstractions/unix/gvfsd-trash>
   #include <abstractions/unix/gvfsd-network>
   #include <abstractions/unix/gvfsd-smb-browse>
   #include <abstractions/unix/gvfsd-smb>
   #include <abstractions/unix/gvfsd-smb-virtual>
-  #include <abstractions/profile_transitions/root-all>
+  #include <abstractions-root/profile_transitions/allow-list>
   
   # CAPABILITIES ---------------------------------------
   capability sys_resource,
@@ -262,10 +261,10 @@ profile thunar_root {
   /run/mount/utab					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/Thunar/{,**}			rw,
-  owner @{HOME_D}/.config/Thunar/{,**/}*		k,
-  owner @{HOME_D}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
-  owner @{HOME_D}/.local/share/gvfs-metadata/{,*}	rw,
+  owner @{ROOT_HOME_D}/.config/Thunar/{,**}		rw,
+  owner @{ROOT_HOME_D}/.config/Thunar/{,**/}*		k,
+  owner @{ROOT_HOME_D}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
+  owner @{ROOT_HOME_D}/.local/share/gvfs-metadata/{,*}	rw,
   
   profile shell @{shell} {
     #include <abstractions/base>
@@ -328,15 +327,15 @@ profile thunar_root {
 
 profile thunar.thunar-sendto-email /usr/lib{,32,64}/Thunar/thunar-sendto-email {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/gtk>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/X>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
-  #include <abstractions/fs/access-by-pattern-internet>
-  #include <abstractions/X>
+  #include <abstractions-user/fs/access-by-pattern-internet>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -353,7 +352,7 @@ profile thunar.thunar-sendto-email /usr/lib{,32,64}/Thunar/thunar-sendto-email {
   
   profile zip /usr/bin/zip {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-pattern-internet>
+    #include <abstractions-user/fs/access-by-pattern-internet>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,

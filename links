@@ -12,9 +12,9 @@
 
 profile links /usr/bin/links {
   #include <abstractions/base>
-  #include <abstractions/X>
+  #include <abstractions-user/X>
   #include <abstractions/nameservice>
-  #include <abstractions/fs/access-by-pattern-internet>
+  #include <abstractions-user/fs/access-by-pattern-internet>
   
   # NETWORK --------------------------------------------
   network inet dgram,
@@ -31,5 +31,5 @@ profile links /usr/bin/links {
   /usr/bin/links					mr,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.links/{,**}				rw,
+  owner @{USER_HOME_D}/.links/{,**}			rw,
 }

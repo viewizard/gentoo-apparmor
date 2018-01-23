@@ -19,10 +19,10 @@
 
 profile xfdesktop /usr/bin/xfdesktop {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/X>
+  #include <abstractions-user/gtk>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
@@ -31,7 +31,7 @@ profile xfdesktop /usr/bin/xfdesktop {
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/thumbnails>
   #include <abstractions/dbus/session-bind>
-  #include <abstractions/profile_transitions/users-all>
+  #include <abstractions-user/profile_transitions/allow-list>
   
   # DBUS -----------------------------------------------
   dbus send
@@ -87,17 +87,17 @@ profile xfdesktop /usr/bin/xfdesktop {
   /run/mount/utab					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/					r,
-  owner @{HOME_D}/[^.]**				r,
-  owner @{HOME_D}/**.@{local_ext}			r,
-  owner @{HOME_D}/[^.]**/				r,
-  owner @{HOME_D}/.config/xfce4/desktop/{,**}		rw,
-  owner @{HOME_D}/.config/Thunar/{,**}			rw,	# xfce-base/thunar
-  owner @{HOME_D}/.config/menus/**.menu			r,
-  owner @{HOME_D}/.config/menus/applications-merged/	r,
-  owner @{HOME_D}/.local/share/desktop-directories/{,*.directory} r,
-  owner @{HOME_D}/.local/share/gvfs-metadata/{,*}	r,	# gnome-base/gvfs
-  owner @{HOME_D}/.xfce4-session.verbose-log		rw,
+  owner @{USER_HOME_D}/					r,
+  owner @{USER_HOME_D}/[^.]**				r,
+  owner @{USER_HOME_D}/**.@{local_ext}			r,
+  owner @{USER_HOME_D}/[^.]**/				r,
+  owner @{USER_HOME_D}/.config/xfce4/desktop/{,**}	rw,
+  owner @{USER_HOME_D}/.config/Thunar/{,**}		rw,	# xfce-base/thunar
+  owner @{USER_HOME_D}/.config/menus/**.menu		r,
+  owner @{USER_HOME_D}/.config/menus/applications-merged/ r,
+  owner @{USER_HOME_D}/.local/share/desktop-directories/{,*.directory} r,
+  owner @{USER_HOME_D}/.local/share/gvfs-metadata/{,*}	r,	# gnome-base/gvfs
+  owner @{USER_HOME_D}/.xfce4-session.verbose-log	rw,
   
   # TEMP -----------------------------------------------
   audit owner /tmp/gdkpixbuf-xpm-tmp.*			rw,	# FIX ME! audit 25.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
@@ -120,10 +120,10 @@ profile xfdesktop /usr/bin/xfdesktop {
 
 profile xfdesktop.xfdesktop-settings /usr/bin/xfdesktop-settings {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/X>
+  #include <abstractions-user/gtk>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
@@ -146,8 +146,8 @@ profile xfdesktop.xfdesktop-settings /usr/bin/xfdesktop-settings {
   /opt/**.@{local_ext}					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/					r,
-  owner @{HOME_D}/**.@{local_ext}			r,
-  owner @{HOME_D}/**/					r,
-  owner @{HOME_D}/.local/share/gvfs-metadata/{home,root}{,-@{TMP8}.log} r,	# gnome-base/gvfs
+  owner @{USER_HOME_D}/					r,
+  owner @{USER_HOME_D}/**.@{local_ext}			r,
+  owner @{USER_HOME_D}/**/				r,
+  owner @{USER_HOME_D}/.local/share/gvfs-metadata/{home,root}{,-@{TMP8}.log} r,	# gnome-base/gvfs
 }

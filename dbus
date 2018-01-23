@@ -84,7 +84,10 @@ profile dbus.dbus-daemon /usr/bin/dbus-daemon {
 profile dbus.dbus-launch /usr/bin/dbus-launch {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-  #include <abstractions/X_sudo>				# RBAC! Должен быть отдельный профиль для root.
+  #include <abstractions-user/X>
+  #include <abstractions-root/X>				# RBAC! Должен быть отдельный профиль для root.
+  #include <abstractions-sudo/X-connection-strict>		# RBAC! Нужно для запуска под root-ом через sudo
+  								# с подключением к X-сессии пользователя.
   #include <abstractions/dbus/session-strict>
   
   # SIGNAL ---------------------------------------------
@@ -102,7 +105,8 @@ profile dbus.dbus-launch /usr/bin/dbus-launch {
   /etc/X11/Sessions/Xfce4				Px,	# xfce-base/xfce4-session
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.dbus/{,**}				rw,
+  owner @{USER_HOME_D}/.dbus/{,**}			rw,
+  owner @{ROOT_HOME_D}/.dbus/{,**}			rw,	# RBAC! Должен быть отдельный профиль для root.
   
   profile shell @{shell} {
     #include <abstractions/base>

@@ -12,9 +12,9 @@
 
 profile conky /usr/bin/conky {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/X>
   #include <abstractions/sensors>
   #include <abstractions/ncurses>
   
@@ -40,7 +40,7 @@ profile conky /usr/bin/conky {
   /etc/conky/{,*}					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.conkyrc				r,
+  owner @{USER_HOME_D}/.conkyrc				r,
 }
 
 # IMPROVE! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются

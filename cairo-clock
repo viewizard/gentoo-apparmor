@@ -12,12 +12,12 @@
 
 profile cairo-clock /usr/bin/cairo-clock {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/gtk>
-  #include <abstractions/video>
-  #include <abstractions/audio>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/video>
+  #include <abstractions-user/audio>
+  #include <abstractions-user/X>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
@@ -34,5 +34,5 @@ profile cairo-clock /usr/bin/cairo-clock {
   /usr/share/cairo-clock/{,**}				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.cairo-clockrc			rw,
+  owner @{USER_HOME_D}/.cairo-clockrc			rw,
 }

@@ -19,11 +19,11 @@
 
 profile xfce4-panel /usr/bin/xfce4-panel {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/gtk>
-  #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
@@ -31,7 +31,7 @@ profile xfce4-panel /usr/bin/xfce4-panel {
   #include <abstractions/dbus/xfconf>
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/session-bind>
-  #include <abstractions/profile_transitions/users-all>
+  #include <abstractions-user/profile_transitions/allow-list>
   #include <local/profile_blocks/xfce4-panel.d/>
   
   # DBUS -----------------------------------------------
@@ -77,23 +77,23 @@ profile xfce4-panel /usr/bin/xfce4-panel {
   /opt/**.png						r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/xfce4/help.rc*		rw,
-  owner @{HOME_D}/.config/xfce4/panel/{,*.rc*}		rw,
-  owner @{HOME_D}/.config/xfce4/panel/launcher-**.desktop r,
-  owner @{HOME_D}/.config/menus/**.menu			rw,
-  owner @{HOME_D}/.config/menus/applications-merged/	r,
-  owner @{HOME_D}/.config/xfce4/panel/launcher-*/{,**}	rw,
-  owner @{HOME_D}/.config/xfce4/helpers.rc		r,
-  owner @{HOME_D}/.local/share/desktop-directories/*.directory r,
-  owner @{HOME_D}/.local/share/gvfs-metadata/{,*}	r,	# gnome-base/gvfs
-  owner @{HOME_D}/.xfce4-session.verbose-log		w,
+  owner @{USER_HOME_D}/.config/xfce4/help.rc*		rw,
+  owner @{USER_HOME_D}/.config/xfce4/panel/{,*.rc*}	rw,
+  owner @{USER_HOME_D}/.config/xfce4/panel/launcher-**.desktop r,
+  owner @{USER_HOME_D}/.config/menus/**.menu		rw,
+  owner @{USER_HOME_D}/.config/menus/applications-merged/ r,
+  owner @{USER_HOME_D}/.config/xfce4/panel/launcher-*/{,**} rw,
+  owner @{USER_HOME_D}/.config/xfce4/helpers.rc		r,
+  owner @{USER_HOME_D}/.local/share/desktop-directories/*.directory r,
+  owner @{USER_HOME_D}/.local/share/gvfs-metadata/{,*}	r,	# gnome-base/gvfs
+  owner @{USER_HOME_D}/.xfce4-session.verbose-log	w,
 }
 
 profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/X>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
@@ -101,13 +101,13 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   #include <abstractions/dbus/xfconf>
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/upower>
-  #include <abstractions/gtk>
-  #include <abstractions/audio>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/audio>
   #include <abstractions/nameservice>
-  #include <abstractions/fs/access-by-users-preset-rwk>		# xfce-extra/xfce4-screenshooter
+  #include <abstractions-user/fs/access-by-users-preset-rwk>	# xfce-extra/xfce4-screenshooter
   #include <abstractions/fs/deny-by-pattern-internet>		# xfce-extra/xfce4-screenshooter
   #include <abstractions/fs/deny-private-strict>		# xfce-extra/xfce4-screenshooter
-  #include <abstractions/profile_transitions/users-all>
+  #include <abstractions-user/profile_transitions/allow-list>
   #include <local/profile_blocks/xfce4-panel.d/>
   
   # DBUS -----------------------------------------------
@@ -163,18 +163,18 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   /usr/share/xfce4-notes-plugin/{,**}			r,	# xfce-extra/xfce4-notes-plugin
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.face					r,
-  owner @{HOME_D}/@{XDG_DESKTOP_DIR}/*.desktop		rw,
-  owner @{HOME_D}/.config/menus/**.menu			rw,
-  owner @{HOME_D}/.config/menus/applications-merged/	r,
-  owner @{HOME_D}/.config/xfce4/panel/{,**}		rw,
-  owner @{HOME_D}/.config/xfce4/xfce4-notes.gtkrc*	rw,	# xfce-extra/xfce4-notes-plugin
-  owner @{HOME_D}/.config/xfce4/help.rc			r,
-  owner @{HOME_CACHE_D}/xfce4/				rw,
-  owner @{HOME_CACHE_D}/xfce4/weather/{,*}		rw,	# xfce-extra/xfce4-weather-plugin
-  owner @{HOME_D}/.local/share/applications/**.desktop	rw,
-  owner @{HOME_D}/.local/share/desktop-directories/{,*.directory} r,
-  owner @{HOME_D}/.local/share/notes/{,**}		rw,
+  owner @{USER_HOME_D}/.face				r,
+  owner @{USER_HOME_D}/@{XDG_DESKTOP_DIR}/*.desktop	rw,
+  owner @{USER_HOME_D}/.config/menus/**.menu		rw,
+  owner @{USER_HOME_D}/.config/menus/applications-merged/ r,
+  owner @{USER_HOME_D}/.config/xfce4/panel/{,**}	rw,
+  owner @{USER_HOME_D}/.config/xfce4/xfce4-notes.gtkrc*	rw,	# xfce-extra/xfce4-notes-plugin
+  owner @{USER_HOME_D}/.config/xfce4/help.rc		r,
+  owner @{USER_HOME_CACHE_D}/xfce4/			rw,
+  owner @{USER_HOME_CACHE_D}/xfce4/weather/{,*}		rw,	# xfce-extra/xfce4-weather-plugin
+  owner @{USER_HOME_D}/.local/share/applications/**.desktop rw,
+  owner @{USER_HOME_D}/.local/share/desktop-directories/{,*.directory} r,
+  owner @{USER_HOME_D}/.local/share/notes/{,**}		rw,
   
   # TEMP -----------------------------------------------
   owner /tmp/@{TMP_XFCE4_SCR}				rw,	# xfce-extra/xfce4-screenshooter
@@ -183,11 +183,11 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
 
 profile xfce4-panel.wrapper-2.0 /usr/lib{,32,64}/xfce4/panel/wrapper-2.0 {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
-  #include <abstractions/audio>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/X>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/audio>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
@@ -198,7 +198,7 @@ profile xfce4-panel.wrapper-2.0 /usr/lib{,32,64}/xfce4/panel/wrapper-2.0 {
   #include <abstractions/dbus/upower>
   #include <abstractions/dbus/notifications>
   #include <abstractions/dbus/mpris2-client>			# xfce-extra/xfce4-pulseaudio-plugin
-  #include <abstractions/profile_transitions/users-all>
+  #include <abstractions-user/profile_transitions/allow-list>
   #include <local/profile_blocks/xfce4-panel.d/>
   
   # DBUS -----------------------------------------------
@@ -234,9 +234,9 @@ profile xfce4-panel.wrapper-2.0 /usr/lib{,32,64}/xfce4/panel/wrapper-2.0 {
   /usr/share/xfce4/xkb/flags/*.svg			r,	# xfce-extra/xfce4-xkb-plugin
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/xfce4/help.rc			r,
-  owner @{HOME_D}/.config/xfce4/panel/{,**}		rw,
-  owner @{HOME_CACHE_D}/xfce4/notifyd/{,**}		rw,	# xfce-extra/xfce4-notifyd
-  owner @{HOME_CACHE_D}/xfce4/clipman/{,*}		rw,	# xfce-extra/xfce4-clipman-plugin
-  owner @{HOME_D}/.local/share/gvfs-metadata/root{,-@{TMP8}.log} r,	# xfce-extra/xfce4-notifyd, gnome-base/gvfs
+  owner @{USER_HOME_D}/.config/xfce4/help.rc		r,
+  owner @{USER_HOME_D}/.config/xfce4/panel/{,**}	rw,
+  owner @{USER_HOME_CACHE_D}/xfce4/notifyd/{,**}	rw,	# xfce-extra/xfce4-notifyd
+  owner @{USER_HOME_CACHE_D}/xfce4/clipman/{,*}		rw,	# xfce-extra/xfce4-clipman-plugin
+  owner @{USER_HOME_D}/.local/share/gvfs-metadata/root{,-@{TMP8}.log} r,	# xfce-extra/xfce4-notifyd, gnome-base/gvfs
 }

@@ -19,11 +19,11 @@
 
 profile qt5ct /usr/bin/qt5ct {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/qt>
-  #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/qt>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/nameservice>
@@ -38,6 +38,6 @@ profile qt5ct /usr/bin/qt5ct {
   /usr/bin/qt5ct					mr,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/qt5ct/{,**}			rw,
-  owner @{HOME_D}/.config/qt5ct/{,**/}*			k,
+  owner @{USER_HOME_D}/.config/qt5ct/{,**}		rw,
+  owner @{USER_HOME_D}/.config/qt5ct/{,**/}*		k,
 }

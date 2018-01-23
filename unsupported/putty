@@ -16,10 +16,10 @@
 
 profile putty /usr/bin/putty flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/X>
+  #include <abstractions-user/gtk>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/nameservice>
   
@@ -38,6 +38,6 @@ profile putty /usr/bin/putty flags=(complain) {
   /usr/bin/putty					mr,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.putty/{,**}				rw,
-  owner @{HOME_D}/.putty/{,**/}*			k,
+  owner @{USER_HOME_D}/.putty/{,**}			rw,
+  owner @{USER_HOME_D}/.putty/{,**/}*			k,
 }

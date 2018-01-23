@@ -163,8 +163,8 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /usr/src/@{kernel}/tools/gcc/**.so			m,	# sys-kernel/gentoo-sources
     
     # USERS --------------------------------------------
-    owner @{HOME_D}/.rnd				w,	# dev-libs/openssl
-    owner @{HOME_D}/.subversion/{,*}			r,	# dev-vcs/subversion
+    owner @{ROOT_HOME_D}/.rnd				w,	# dev-libs/openssl
+    owner @{ROOT_HOME_D}/.subversion/{,*}		r,	# dev-vcs/subversion
     
     # TEMP ---------------------------------------------
     owner /tmp/@{TMP_SH}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.

@@ -12,7 +12,7 @@
 
 profile grive /usr/bin/grive {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
+  #include <abstractions-user/freedesktop.org>
   #include <abstractions/ssl-certs>
   #include <abstractions/nameservice>
   
@@ -24,8 +24,8 @@ profile grive /usr/bin/grive {
   /usr/bin/grive					mr,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/GoogleDrive/				r,
-  owner @{HOME_D}/GoogleDrive/**			rw,
-  owner @{HOME_D}/.local/share/Trash/files/		r,
-  owner @{HOME_D}/.local/share/Trash/files/**		rw,
+  owner @{USER_HOME_D}/GoogleDrive/			r,
+  owner @{USER_HOME_D}/GoogleDrive/**			rw,
+  owner @{USER_HOME_D}/.local/share/Trash/files/	r,
+  owner @{USER_HOME_D}/.local/share/Trash/files/**	rw,
 }

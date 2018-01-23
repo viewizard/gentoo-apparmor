@@ -16,18 +16,18 @@
 
 profile juffed /usr/bin/juffed {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/qt>
-  #include <abstractions/video>
-  #include <abstractions/cups-client>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/qt>
+  #include <abstractions-user/video>
+  #include <abstractions-user/cups-client>
+  #include <abstractions-user/X>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/nameservice>
-  #include <abstractions/xdg-open>
-  #include <abstractions/fs/access-strict>
-  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions-user/xdg-open>
+  #include <abstractions-user/fs/access-strict>
+  #include <abstractions-user/fs/access-by-users-preset-rwk>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/fs/deny-private-strict>
   
@@ -44,31 +44,29 @@ profile juffed /usr/bin/juffed {
   /usr/share/juffed/**					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/juff/{,**}			rw,
-  owner @{HOME_D}/.config/juff/{,**/}*			k,
+  owner @{USER_HOME_D}/.config/juff/{,**}		rw,
+  owner @{USER_HOME_D}/.config/juff/{,**/}*		k,
   
   # TEMP -----------------------------------------------
   owner /tmp/qtsingleapp-juffed-@{TMP4}-@{UID_HEX}	rw,
   owner /tmp/qtsingleapp-juffed-@{TMP4}-@{UID_HEX}-lockfile rwk,
-  
-  # NOISY ----------------------------------------------
-  deny @{USER_HOMEDIRS_D}/				r,
 }
 
 profile juffed_root {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/qt>
-  #include <abstractions/video>
-  #include <abstractions/cups-client>
-  #include <abstractions/X_sudo>
+  #include <abstractions-root/freedesktop.org>
+  #include <abstractions-root/fonts>
+  #include <abstractions-root/qt>
+  #include <abstractions-root/cups-client>
+  #include <abstractions-root/X>
+  #include <abstractions-sudo/X-connection-strict>		# RBAC! Нужно для запуска под root-ом через sudo
+  								# с подключением к X-сессии пользователя.
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/nameservice>
-  #include <abstractions/xdg-open_root>
-  #include <abstractions/fs/access-by-users-preset-rwk>
-  #include <abstractions/fs/access-by-pattern-systemusers>
+  #include <abstractions-root/xdg-open>
+  #include <abstractions-root/fs/access-by-users-preset-rwk>
+  #include <abstractions-root/fs/access-by-pattern-systemusers>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/fs/deny-private-strict>
   
@@ -89,13 +87,10 @@ profile juffed_root {
   /usr/share/juffed/**					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/juff/{,**}			rw,
-  owner @{HOME_D}/.config/juff/{,**/}*			k,
+  owner @{ROOT_HOME_D}/.config/juff/{,**}		rw,
+  owner @{ROOT_HOME_D}/.config/juff/{,**/}*		k,
   
   # TEMP -----------------------------------------------
   owner /tmp/qtsingleapp-juffed-@{TMP4}-@{UID_ROOT_HEX}	rw,
   owner /tmp/qtsingleapp-juffed-@{TMP4}-@{UID_ROOT_HEX}-lockfile rwk,
-  
-  # NOISY ----------------------------------------------
-  deny @{USER_HOMEDIRS_D}/				r,
 }

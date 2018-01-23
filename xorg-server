@@ -12,7 +12,8 @@
 
 profile xorg-server.Xorg /usr/bin/Xorg {
   #include <abstractions/base>
-  #include <abstractions/fonts>
+  #include <abstractions-user/fonts>
+  #include <abstractions-root/fonts>				# RBAC! Должен быть отдельный профиль для root.
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
@@ -90,8 +91,8 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   /var/lib/xkb/server-@{X_DISPLAY}.xkm			rw,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.serverauth.*				r,	# * - 1-8 символов @{pid} + 0(нет) или 2 символа {[a-z],-}
-  owner @{HOME_D}/.local/share/xorg/{,**}		rw,	# Нужно для запуска под пользователем (без suid), хранит там логи сервера.
+  owner @{USER_HOME_D}/.serverauth.*			r,	# * - 1-8 символов @{pid} + 0(нет) или 2 символа {[a-z],-}
+  owner @{USER_HOME_D}/.local/share/xorg/{,**}		rw,	# Нужно для запуска под пользователем (без suid), хранит там логи сервера.
   
   # TEMP -----------------------------------------------
   owner /tmp/.tX@{X_DISPLAY}-lock			w,
@@ -102,7 +103,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   
   profile shell @{shell} {
     #include <abstractions/base>
-    #include <abstractions/X-connection-strict>
+    #include <abstractions-user/X-connection-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -114,7 +115,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
     /usr/bin/xkbcomp					Px,	# x11-apps/xkbcomp
     
     # USERS --------------------------------------------
-    owner @{HOME_D}/.local/share/xorg/{,**}		rw,	# Нужно для запуска под пользователем (без suid), хранит там логи сервера.
+    owner @{USER_HOME_D}/.local/share/xorg/{,**}	rw,	# Нужно для запуска под пользователем (без suid), хранит там логи сервера.
     
     # READS/WRITES -------------------------------------
     /run/acpid.socket					rw,	# sys-power/acpid

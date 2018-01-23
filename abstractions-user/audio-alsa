@@ -1,0 +1,22 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# PSEUDO -----------------------------------------------
+/dev/adsp*						rw,
+/dev/audio*						rw,
+/dev/dsp*						rw,
+/dev/mixer*						rw,
+/dev/snd/*						rw,
+@{PROC_D}/asound/**					rw,
+
+# READS/WRITES -----------------------------------------
+/etc/asound.conf					r,
+/etc/machine-id						r,
+/usr/share/alsa/**					r,

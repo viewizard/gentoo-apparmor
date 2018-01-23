@@ -21,11 +21,11 @@
 
 profile mate-screensaver /usr/bin/mate-screensaver {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
-  #include <abstractions/dconf>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/X>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/dconf>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -46,7 +46,7 @@ profile mate-screensaver /usr/bin/mate-screensaver {
   /usr/share/{,mate/}desktop-directories/{,*.directory}	r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.local/share/desktop-directories/{,*.directory} r,
+  owner @{USER_HOME_D}/.local/share/desktop-directories/{,*.directory} r,
 }
 
 profile mate-screensaver.sh /usr/bin/mate-screensaver.sh {
@@ -76,11 +76,11 @@ profile mate-screensaver.sh /usr/bin/mate-screensaver.sh {
 
 profile mate-screensaver-preferences /usr/bin/mate-screensaver-preferences {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
-  #include <abstractions/dconf>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/X>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/dconf>
   
   # PSEUDO ---------------------------------------------
   @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
@@ -98,13 +98,13 @@ profile mate-screensaver-preferences /usr/bin/mate-screensaver-preferences {
   /usr/share/{,mate/}desktop-directories/{,*.directory}	r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.local/share/desktop-directories/{,*.directory} r,
+  owner @{USER_HOME_D}/.local/share/desktop-directories/{,*.directory} r,
 }
 
 profile mate-screensaver.popsquares /usr/libexec/mate-screensaver/popsquares {
   #include <abstractions/base>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
+  #include <abstractions-user/X>
+  #include <abstractions-user/gtk>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/mate-screensaver/popsquares		mr,
@@ -112,9 +112,9 @@ profile mate-screensaver.popsquares /usr/libexec/mate-screensaver/popsquares {
 
 profile mate-screensaver.floaters /usr/libexec/mate-screensaver/floaters {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/X>
+  #include <abstractions-user/gtk>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/mate-screensaver/floaters		mr,
@@ -126,9 +126,9 @@ profile mate-screensaver.floaters /usr/libexec/mate-screensaver/floaters {
 
 profile mate-screensaver.slideshow /usr/libexec/mate-screensaver/slideshow {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/X>
+  #include <abstractions-user/gtk>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/mate-screensaver/slideshow		mr,
@@ -142,8 +142,8 @@ profile mate-screensaver.slideshow /usr/libexec/mate-screensaver/slideshow {
 
 profile mate-screensaver-gl-helper /usr/libexec/mate-screensaver-gl-helper {
   #include <abstractions/base>
-  #include <abstractions/X>
-  #include <abstractions/video>
+  #include <abstractions-user/X>
+  #include <abstractions-user/video>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/mate-screensaver-gl-helper		mr,
@@ -151,11 +151,11 @@ profile mate-screensaver-gl-helper /usr/libexec/mate-screensaver-gl-helper {
 
 profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
-  #include <abstractions/dconf>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/X>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/dconf>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
   
@@ -173,7 +173,7 @@ profile mate-screensaver-dialog /usr/libexec/mate-screensaver-dialog {
   /run/utmp						rk,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.face					r,
+  owner @{USER_HOME_D}/.face				r,
   
   profile shell @{shell} {
     #include <abstractions/base>

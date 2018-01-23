@@ -1,0 +1,31 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2018 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# доступ к файлам в @{USER_HOME_D}, gvfs и /media с пользовательской
+# предустановкой для abstractions/fs/access-by-user-preset-w
+
+/							r,
+@{USER_HOMEDIRS_D}/					r,
+owner @{USER_HOME_D}/					r,
+owner @{USER_HOME_D}/@{USERS_DIR_w}/			r,
+owner @{USER_HOME_D}/@{USERS_FILE_w}			rw,
+owner @{USER_HOME_D}/@{USERS_DIR_w}/@{USERS_FILE_w}	rw,
+owner /run/user/@{UID}/gvfs/				r,	# gnome-base/gvfs
+owner /run/user/@{UID}/gvfs/*/@{USERS_DIR_w}/		r,	# gnome-base/gvfs
+owner /run/user/@{UID}/gvfs/*/@{USERS_FILE_w}		rw,	# gnome-base/gvfs
+owner /run/user/@{UID}/gvfs/*/@{USERS_DIR_w}/@{USERS_FILE_w} rw,	# gnome-base/gvfs
+/media/{,*/}						r,
+/media/*/@{USERS_DIR_w}/				r,
+/media/*/@{USERS_FILE_w}				rw,
+/media/*/@{USERS_DIR_w}/@{USERS_FILE_w}			rw,
+/run/media/@{USER}/{,*/}				r,	# sys-fs/udisks, /run/media/$USER/VolumeName/
+/run/media/@{USER}/*/@{USERS_DIR_w}/			r,	# sys-fs/udisks, /run/media/$USER/VolumeName/
+/run/media/@{USER}/*/@{USERS_FILE_w}			rw,	# sys-fs/udisks, /run/media/$USER/VolumeName/
+/run/media/@{USER}/*/@{USERS_DIR_w}/@{USERS_FILE_w}	rw,	# sys-fs/udisks, /run/media/$USER/VolumeName/

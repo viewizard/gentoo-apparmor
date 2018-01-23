@@ -12,18 +12,18 @@
 
 profile exo.exo-open /usr/bin/exo-open flags=(attach_disconnected) {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/video>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
+  #include <abstractions-user/gtk>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
-  #include <abstractions/fs/access-strict>
-  #include <abstractions/profile_transitions/users-mime-related>
+  #include <abstractions-user/fs/access-strict>
+  #include <abstractions-user/profile_transitions/allow-mime-related>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -43,16 +43,16 @@ profile exo.exo-open /usr/bin/exo-open flags=(attach_disconnected) {
 
 profile exo.exo-helper /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
-  #include <abstractions/gtk>
-  #include <abstractions/fonts>
-  #include <abstractions/profile_transitions/users-mime-related>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/profile_transitions/allow-mime-related>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -70,18 +70,18 @@ profile exo.exo-helper /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 {
   /etc/xdg/xfce4/helpers.rc				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/xfce4/helpers.rc*		rw,
-  owner @{HOME_D}/.config/mimeapps.list*		rw,
-  owner @{HOME_D}/.local/share/				r,
-  owner @{HOME_D}/.local/share/xfce4/			r,
-  owner @{HOME_D}/.local/share/xfce4/helpers/{,*}	r,
-  owner @{HOME_D}/.local/share/applications/{,**}	r,
+  owner @{USER_HOME_D}/.config/xfce4/helpers.rc*	rw,
+  owner @{USER_HOME_D}/.config/mimeapps.list*		rw,
+  owner @{USER_HOME_D}/.local/share/			r,
+  owner @{USER_HOME_D}/.local/share/xfce4/		r,
+  owner @{USER_HOME_D}/.local/share/xfce4/helpers/{,*}	r,
+  owner @{USER_HOME_D}/.local/share/applications/{,**}	r,
 }
 
 profile exo.exo-compose-mail /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 {
   #include <abstractions/base>
   #include <abstractions/perl>
-  #include <abstractions/profile_transitions/users-mime-related>
+  #include <abstractions-user/profile_transitions/allow-mime-related>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -93,7 +93,7 @@ profile exo.exo-compose-mail /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 {
 
 profile exo.exo-preferred-applications /usr/bin/exo-preferred-applications {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
+  #include <abstractions-user/freedesktop.org>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -107,10 +107,10 @@ profile exo.exo-preferred-applications /usr/bin/exo-preferred-applications {
 
 profile exo.exo-desktop-item-edit /usr/bin/exo-desktop-item-edit {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/X>
+  #include <abstractions-user/gtk>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
@@ -131,9 +131,9 @@ profile exo.exo-desktop-item-edit /usr/bin/exo-desktop-item-edit {
   /usr/local/bin/{,*}					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/xfce4/panel/**		rw,
-  owner @{HOME_D}/[^.]*/*.desktop			rw,
-  owner @{HOME_D}/Desktop/*.desktop{,.*}		rw,
+  owner @{USER_HOME_D}/.config/xfce4/panel/**		rw,
+  owner @{USER_HOME_D}/[^.]*/*.desktop			rw,
+  owner @{USER_HOME_D}/Desktop/*.desktop{,.*}		rw,
   
   # NOISY ----------------------------------------------
   deny /usr/@{CHOST}/**					r,
@@ -142,19 +142,17 @@ profile exo.exo-desktop-item-edit /usr/bin/exo-desktop-item-edit {
 
 profile exo_open_root flags=(attach_disconnected) {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/video>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
+  #include <abstractions-root/freedesktop.org>
+  #include <abstractions-root/fonts>
+  #include <abstractions-root/X>
+  #include <abstractions-root/gtk>
   #include <abstractions/nameservice>
-  #include <abstractions/xdg-open_root>
+  #include <abstractions-root/xdg-open>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
-  #include <abstractions/fs/access-strict>
-  #include <abstractions/profile_transitions/root-mime-related>
+  #include <abstractions-root/profile_transitions/allow-list>
   
   # CAPABILITIES ---------------------------------------
   capability fowner,
@@ -176,12 +174,11 @@ profile exo_open_root flags=(attach_disconnected) {
 
 profile exo_helper_root {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/video>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
-  #include <abstractions/fonts>
-  #include <abstractions/profile_transitions/root-mime-related>
+  #include <abstractions-root/freedesktop.org>
+  #include <abstractions-root/X>
+  #include <abstractions-root/gtk>
+  #include <abstractions-root/fonts>
+  #include <abstractions-root/profile_transitions/allow-list>
   
   # PSEUDO ---------------------------------------------
   owner @{PROC_D}/@{pid}/fd/				r,
@@ -198,18 +195,18 @@ profile exo_helper_root {
   /etc/xdg/xfce4/helpers.rc				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/xfce4/helpers.rc*		rw,
-  owner @{HOME_D}/.config/mimeapps.list*		rw,
-  owner @{HOME_D}/.local/share/				r,
-  owner @{HOME_D}/.local/share/xfce4/			r,
-  owner @{HOME_D}/.local/share/xfce4/helpers/{,*}	r,
-  owner @{HOME_D}/.local/share/applications/{,**}	r,
+  owner @{ROOT_HOME_D}/.config/xfce4/helpers.rc*	rw,
+  owner @{ROOT_HOME_D}/.config/mimeapps.list*		rw,
+  owner @{ROOT_HOME_D}/.local/share/			r,
+  owner @{ROOT_HOME_D}/.local/share/xfce4/		r,
+  owner @{ROOT_HOME_D}/.local/share/xfce4/helpers/{,*}	r,
+  owner @{ROOT_HOME_D}/.local/share/applications/{,**}	r,
 }
 
 profile exo_compose_mail_root {
   #include <abstractions/base>
   #include <abstractions/perl>
-  #include <abstractions/profile_transitions/root-mime-related>
+  #include <abstractions-root/profile_transitions/allow-list>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

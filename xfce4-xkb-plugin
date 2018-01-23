@@ -12,10 +12,10 @@
 
 profile xfce4-xkb-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-xkb-plugin {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/X>
-  #include <abstractions/gtk>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/X>
+  #include <abstractions-user/gtk>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
@@ -34,5 +34,5 @@ profile xfce4-xkb-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-xkb-plugin {
   /usr/share/xfce4/xkb/flags/*.svg			r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/xfce4/panel/{,*.rc*}		rw,
+  owner @{USER_HOME_D}/.config/xfce4/panel/{,*.rc*}	rw,
 }

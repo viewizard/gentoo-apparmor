@@ -44,6 +44,7 @@ profile dconf.dconf-service /usr/libexec/dconf-service {
   owner /run/user/@{UID}/dconf/{,user}			rw,
   
   # USERS ----------------------------------------------
-  owner @{HOME_CACHE_D}/dconf/{,user}			rw,
-  owner @{HOME_D}/.config/dconf/{,user{,.@{TMP6}}}	rw,
+  owner @{USER_HOME_D}/.config/dconf/{,user{,.@{TMP6}}}	rw,
+  owner @{ROOT_HOME_D}/.config/dconf/{,user{,.@{TMP6}}}	rw,	# # RBAC! Должен быть отдельный профиль для root.
+  owner @{ROOT_HOME_CACHE_D}/dconf/{,user}		rw,	# # RBAC! Должен быть отдельный профиль для root.
 }

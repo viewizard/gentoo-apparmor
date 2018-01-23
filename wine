@@ -28,17 +28,17 @@ profile wine.wine-wrapper /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]* {
   deny network netlink,						# local.home.evelauncher
   deny unix,							# local.home.evelauncher
   deny /dev/shm/.org.chromium.Chromium.*		rw,	# local.home.evelauncher
-  deny @{HOME_D}/evelauncher/**				r,	# local.home.evelauncher
-  deny @{HOME_D}/.local/share/CCP/**			rw,	# local.home.evelauncher
-  deny @{HOME_CACHE_D}/CCP/**				rw,	# local.home.evelauncher
+  deny @{USER_HOME_D}/evelauncher/**			r,	# local.home.evelauncher
+  deny @{USER_HOME_D}/.local/share/CCP/**		rw,	# local.home.evelauncher
+  deny @{USER_HOME_CACHE_D}/CCP/**			rw,	# local.home.evelauncher
 }
 
 profile wine /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine flags=(attach_disconnected) {
-  #include <abstractions/X>
-  #include <abstractions/audio>
+  #include <abstractions-user/X>
+  #include <abstractions-user/audio>
   #include <abstractions/base>
-  #include <abstractions/fonts>
-  #include <abstractions/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/freedesktop.org>
   #include <abstractions/nameservice>
   #include <abstractions/p11-kit>
   #include <abstractions/fs/deny-private-strict>
@@ -99,28 +99,27 @@ profile wine.ntlm_auth /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*
   deny network inet,						# local.home.evelauncher
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   deny /dev/shm/.org.chromium.Chromium.*		rw,	# local.home.evelauncher
-  deny @{HOME_D}/evelauncher/**				r,	# local.home.evelauncher
-  deny @{HOME_D}/.local/share/CCP/**			rw,	# local.home.evelauncher
-  deny @{HOME_CACHE_D}/CCP/**				rw,	# local.home.evelauncher
+  deny @{USER_HOME_D}/evelauncher/**			r,	# local.home.evelauncher
+  deny @{USER_HOME_D}/.local/share/CCP/**		rw,	# local.home.evelauncher
+  deny @{USER_HOME_CACHE_D}/CCP/**			rw,	# local.home.evelauncher
 }
 
 # IMPROVE! В идеале, иметь профиль на каждую программу, см.
 # http://wiki.apparmor.net/index.php/AppArmorWine
 # Можно реализовать только в случае использования binfmt_misc.
 profile wine.wine-preloader /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine-preloader flags=(attach_disconnected) {
-  #include <abstractions/X>
-  #include <abstractions/audio>
+  #include <abstractions-user/audio>
   #include <abstractions/base>
-  #include <abstractions/fonts>
-  #include <abstractions/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/freedesktop.org>
   #include <abstractions/nameservice>
   #include <abstractions/ncurses>
   #include <abstractions/p11-kit>
   #include <abstractions/fs/deny-private-strict>
-  #include <abstractions/X>
+  #include <abstractions-user/X>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/udisks>
-  #include <abstractions/video>
+  #include <abstractions-user/video>
   #include <local/profile_blocks/wine.d/>
   
   # PTRACE ---------------------------------------------
@@ -188,8 +187,8 @@ profile wine.wine-preloader /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[
   /usr/share/icons/**					r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_CACHE_D}/winetricks/			r,
-  owner @{HOME_CACHE_D}/winetricks/**			rw,
+  owner @{USER_HOME_CACHE_D}/winetricks/		r,
+  owner @{USER_HOME_CACHE_D}/winetricks/**		rw,
   
   # TEMP -----------------------------------------------
   owner /tmp/.wine-@{UID}/server-*-*/{,lock}		r,
@@ -210,7 +209,7 @@ profile wine.wine-preloader /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[
 profile wine.wineserver /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wineserver flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
-  #include <abstractions/X-connection-strict>
+  #include <abstractions-user/X-connection-strict>
   #include <abstractions/fs/deny-private-strict>
   #include <local/profile_blocks/wine.d/>
   
@@ -250,9 +249,9 @@ profile wine.wineserver /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]
   /usr/share/wine{,-{any,d3d9,staging,vanilla}-[0-9]*}/{,**/}* k,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.local/share/icons/hicolor/**		w,
-  owner @{HOME_CACHE_D}/winetricks/			r,
-  owner @{HOME_CACHE_D}/winetricks/**			rw,
+  owner @{USER_HOME_D}/.local/share/icons/hicolor/**	w,
+  owner @{USER_HOME_CACHE_D}/winetricks/		r,
+  owner @{USER_HOME_CACHE_D}/winetricks/**		rw,
   
   # TEMP -----------------------------------------------
   owner /tmp/.wine-@{UID}/				rw,
@@ -264,7 +263,7 @@ profile wine.wineserver /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]
   deny /						r,
   deny /media/*/					r,
   deny /mnt/*/						r,
-  deny @{HOME_D}/					r,
+  deny @{USER_HOME_D}/					r,
   deny /dev/@{BLOCK_REAL}				r,
   
   # DENY INHERIT ---------------------------------------

@@ -26,14 +26,15 @@ profile gparted.gparted-pkexec /usr/bin/gparted-pkexec flags=(complain) {
 
 profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/gtk>
-  #include <abstractions/video>
-  #include <abstractions/X_sudo>
+  #include <abstractions-root/freedesktop.org>
+  #include <abstractions-root/fonts>
+  #include <abstractions-root/gtk>
+  #include <abstractions-root/X>
+  #include <abstractions-sudo/X-connection-strict>		# RBAC! Нужно для запуска под root-ом через sudo
+  								# с подключением к X-сессии пользователя.
   #include <abstractions/nameservice>
   #include <abstractions/dbus/session-strict>
-  #include <abstractions/profile_transitions/root-deny-web>	# Все правильно, т.к. polkit переключит на root пользователя.
+  #include <abstractions-root/profile_transitions/deny-web>	# Все правильно, т.к. polkit переключит на root пользователя.
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
@@ -46,6 +47,7 @@ profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   /dev/@{BLOCK_ALL}					rwk,
+  @{SYS_D}/block/					r,
   @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}**/host*/target**/{vendor,model} r,
   @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,**} r,
   @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/{,**}	r,

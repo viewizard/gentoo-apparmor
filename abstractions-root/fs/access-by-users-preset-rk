@@ -1,0 +1,28 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# доступ к файлам в @{ROOT_HOME_D}, /mnt и /media с пользовательской
+# предустановкой для abstractions/fs/access-by-user-preset-rk
+
+#include <abstractions-root/fs/access-by-pattern-xdg-open>
+
+/							r,
+owner @{ROOT_HOME_D}/					r,
+owner @{ROOT_HOME_D}/@{USERS_DIR_rk}/			r,
+owner @{ROOT_HOME_D}/@{USERS_FILE_rk}			rk,
+owner @{ROOT_HOME_D}/@{USERS_DIR_rk}/@{USERS_FILE_rk}	rk,
+/media/{,*/}						r,
+/media/*/@{USERS_DIR_rk}/				r,
+/media/*/@{USERS_FILE_rk}				rk,
+/media/*/@{USERS_DIR_rk}/@{USERS_FILE_rk}		rk,
+/mnt/{,*/}						r,
+/mnt/*/@{USERS_DIR_rk}/					r,
+/mnt/*/@{USERS_FILE_rk}					rk,
+/mnt/*/@{USERS_DIR_rk}/@{USERS_FILE_rk}			rk,

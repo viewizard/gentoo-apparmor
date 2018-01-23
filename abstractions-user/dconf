@@ -1,0 +1,17 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <abstractions/dbus/dconf>
+
+# READS/WRITES -----------------------------------------
+owner /run/user/@{UID}/dconf/{,user}			rw,
+
+# USERS ------------------------------------------------
+owner @{USER_HOME_D}/.config/dconf/user			r,

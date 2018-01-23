@@ -13,40 +13,40 @@
 
 # privacy violations (don't audit files under $HOME otherwise get a
 # lot of false positives when reading contents of directories)
-deny @{HOME_D}/.*history				mrwkl,
-deny @{HOME_D}/.fetchmail*				mrwkl,
-deny @{HOME_D}/.viminfo*				mrwkl,
-deny @{HOME_D}/.*~					mrwkl,
-deny @{HOME_D}/.*.swp					mrwkl,
-deny @{HOME_D}/.*~1~					mrwkl,
-deny @{HOME_D}/.*.bak					mrwkl,
+deny @{USER_OR_ROOT_HOME_D}/.*history			mrwkl,
+deny @{USER_OR_ROOT_HOME_D}/.fetchmail*			mrwkl,
+deny @{USER_OR_ROOT_HOME_D}/.viminfo*			mrwkl,
+deny @{USER_OR_ROOT_HOME_D}/.*~				mrwkl,
+deny @{USER_OR_ROOT_HOME_D}/.*.swp			mrwkl,
+deny @{USER_OR_ROOT_HOME_D}/.*~1~			mrwkl,
+deny @{USER_OR_ROOT_HOME_D}/.*.bak			mrwkl,
 
 # special attention to keepassxc passwords file
 audit deny /**.kdbx					mrwkl,
 
 # special attention to (potentially) executable files
-audit deny @{HOME_D}/.local/bin/**			wl,
-audit deny @{HOME_D}/.local/sbin/**			wl,
-audit deny @{HOME_D}/.config/autostart/**		wl,
-audit deny @{HOME_D}/.pki/nssdb/*.so{,.[0-9]*}		wl,
+audit deny @{USER_OR_ROOT_HOME_D}/.local/bin/**		wl,
+audit deny @{USER_OR_ROOT_HOME_D}/.local/sbin/**	wl,
+audit deny @{USER_OR_ROOT_HOME_D}/.config/autostart/**	wl,
+audit deny @{USER_OR_ROOT_HOME_D}/.pki/nssdb/*.so{,.[0-9]*} wl,
 
 # don't allow reading/updating of run control files
-deny @{HOME_D}/.*rc					mrk,
-audit deny @{HOME_D}/.*rc				wl,
+deny @{USER_OR_ROOT_HOME_D}/.*rc			mrk,
+audit deny @{USER_OR_ROOT_HOME_D}/.*rc			wl,
 
 # bash
-deny @{HOME_D}/.bash*					mrk,
-audit deny @{HOME_D}/.bash*				wl,
-deny @{HOME_D}/.inputrc					mrk,
-audit deny @{HOME_D}/.inputrc				wl,
+deny @{USER_OR_ROOT_HOME_D}/.bash*			mrk,
+audit deny @{USER_OR_ROOT_HOME_D}/.bash*		wl,
+deny @{USER_OR_ROOT_HOME_D}/.inputrc			mrk,
+audit deny @{USER_OR_ROOT_HOME_D}/.inputrc		wl,
 
 # sh/dash/csh/tcsh/pdksh/zsh
-deny @{HOME_D}/.{,z}profile*				mrk,
-audit deny @{HOME_D}/.{,z}profile*			wl,
-deny @{HOME_D}/.{,z}log{in,out}				mrk,
-audit deny @{HOME_D}/.{,z}log{in,out}			wl,
-deny @{HOME_D}/.{c,z}shrc				mrk,
-audit deny @{HOME_D}/.{c,z}shrc				wl,
+deny @{USER_OR_ROOT_HOME_D}/.{,z}profile*		mrk,
+audit deny @{USER_OR_ROOT_HOME_D}/.{,z}profile*		wl,
+deny @{USER_OR_ROOT_HOME_D}/.{,z}log{in,out}		mrk,
+audit deny @{USER_OR_ROOT_HOME_D}/.{,z}log{in,out}	wl,
+deny @{USER_OR_ROOT_HOME_D}/.{c,z}shrc			mrk,
+audit deny @{USER_OR_ROOT_HOME_D}/.{c,z}shrc		wl,
 
-deny @{HOME_D}/.zshenv					mrk,
-audit deny @{HOME_D}/.zshenv				wl,
+deny @{USER_OR_ROOT_HOME_D}/.zshenv			mrk,
+audit deny @{USER_OR_ROOT_HOME_D}/.zshenv		wl,

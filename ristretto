@@ -45,24 +45,24 @@
 
 profile ristretto /usr/bin/ristretto {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/gtk>
-  #include <abstractions/video>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
+  #include <abstractions/nameservice>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/xfconf>
   #include <abstractions/dbus/thumbnails>
-  #include <abstractions/X>
-  #include <abstractions/nameservice>
-  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions-user/fs/access-by-users-preset-rwk>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/fs/deny-private-strict>
   #include <abstractions/unix/gvfsd-smb>
   #include <abstractions/unix/gvfsd-smb-virtual>
-  #include <abstractions/profile_transitions/users-strict-web>
+  #include <abstractions-user/profile_transitions/allow-strict-web>
   
   # DBUS -----------------------------------------------
   dbus send
@@ -100,9 +100,9 @@ profile ristretto /usr/bin/ristretto {
   /usr/share/misc/magic.mgc				r,	# sys-apps/file
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/xfce4/help.rc			rw,
-  owner @{HOME_D}/.config/xfce4/help.rc.*.tmp		rw,
-  owner @{HOME_D}/.config/ristretto/			rw,
-  owner @{HOME_D}/.config/ristretto/*			rwk,
-  owner @{HOME_D}/.local/share/ristretto/{,**}		rw,
+  owner @{USER_HOME_D}/.config/xfce4/help.rc		rw,
+  owner @{USER_HOME_D}/.config/xfce4/help.rc.*.tmp	rw,
+  owner @{USER_HOME_D}/.config/ristretto/		rw,
+  owner @{USER_HOME_D}/.config/ristretto/*		rwk,
+  owner @{USER_HOME_D}/.local/share/ristretto/{,**}	rw,
 }

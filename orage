@@ -21,11 +21,11 @@
 
 profile orage /usr/bin/orage {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/video>
-  #include <abstractions/gtk>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/video>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/X>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
@@ -33,8 +33,8 @@ profile orage /usr/bin/orage {
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/session-bind>
   #include <abstractions/dbus/notifications>
-  #include <abstractions/fs/access-by-users-preset-rwk>
-  #include <abstractions/profile_transitions/users-strict-web>
+  #include <abstractions-user/fs/access-by-users-preset-rwk>
+  #include <abstractions-user/profile_transitions/allow-strict-web>
   
   # DBUS -----------------------------------------------
   dbus (send)
@@ -64,14 +64,14 @@ profile orage /usr/bin/orage {
   /usr/share/orage/{,**}				r,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/orage/{,**}			rw,
-  owner @{HOME_D}/.local/share/orage/{,**}		rw,
-  owner @{HOME_D}/.local/share/orage/{,**/}*		k,
+  owner @{USER_HOME_D}/.config/orage/{,**}		rw,
+  owner @{USER_HOME_D}/.local/share/orage/{,**}		rw,
+  owner @{USER_HOME_D}/.local/share/orage/{,**/}*	k,
   
   profile sox /usr/bin/sox {					# /usr/bin/play -> sox (media-sound/sox)
     #include <abstractions/base>
-    #include <abstractions/audio>
-    #include <abstractions/X-connection-strict>
+    #include <abstractions-user/audio>
+    #include <abstractions-user/X-connection-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -88,11 +88,11 @@ profile orage /usr/bin/orage {
 
 profile orage.globaltime /usr/bin/globaltime {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/video>
-  #include <abstractions/gtk>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/video>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/X>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
@@ -106,5 +106,5 @@ profile orage.globaltime /usr/bin/globaltime {
   /usr/bin/globaltime					mr,
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/globaltime/{,**}		rw,
+  owner @{USER_HOME_D}/.config/globaltime/{,**}		rw,
 }

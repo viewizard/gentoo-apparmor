@@ -1,0 +1,34 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# доступ к файлам в @{USER_HOME_D}, gvfs и /media с пользовательской
+# предустановкой для abstractions/fs/access-by-user-preset-rwk
+
+#include <abstractions-user/fs/access-by-pattern-xdg-open>
+#include <abstractions/fs/deny-remove-home-sensitive>
+
+/							r,
+@{USER_HOMEDIRS_D}/					r,
+owner @{USER_HOME_D}/					r,
+owner @{USER_HOME_D}/@{USERS_DIR_rwk}/			r,
+owner @{USER_HOME_D}/@{USERS_FILE_rwk}			rwk,
+owner @{USER_HOME_D}/@{USERS_DIR_rwk}/@{USERS_FILE_rwk}	rwk,
+owner /run/user/@{UID}/gvfs/				r,	# gnome-base/gvfs
+owner /run/user/@{UID}/gvfs/*/@{USERS_DIR_rwk}/		r,	# gnome-base/gvfs
+owner /run/user/@{UID}/gvfs/*/@{USERS_FILE_rwk}		rwk,	# gnome-base/gvfs
+owner /run/user/@{UID}/gvfs/*/@{USERS_DIR_rwk}/@{USERS_FILE_rwk} rwk,	# gnome-base/gvfs
+/media/{,*/}						r,
+/media/*/@{USERS_DIR_rwk}/				r,
+/media/*/@{USERS_FILE_rwk}				rwk,
+/media/*/@{USERS_DIR_rwk}/@{USERS_FILE_rwk}		rwk,
+/run/media/@{USER}/{,*/}				r,	# sys-fs/udisks, /run/media/$USER/VolumeName/
+/run/media/@{USER}/*/@{USERS_DIR_rwk}/			r,	# sys-fs/udisks, /run/media/$USER/VolumeName/
+/run/media/@{USER}/*/@{USERS_FILE_rwk}			rwk,	# sys-fs/udisks, /run/media/$USER/VolumeName/
+/run/media/@{USER}/*/@{USERS_DIR_rwk}/@{USERS_FILE_rwk}	rwk,	# sys-fs/udisks, /run/media/$USER/VolumeName/

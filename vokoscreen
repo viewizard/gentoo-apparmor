@@ -23,22 +23,22 @@
 
 profile vokoscreen /usr/bin/vokoscreen {
   #include <abstractions/base>
-  #include <abstractions/freedesktop.org>
-  #include <abstractions/fonts>
-  #include <abstractions/audio>
-  #include <abstractions/qt>
-  #include <abstractions/video>
-  #include <abstractions/X>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/audio>
+  #include <abstractions-user/qt>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
   #include <abstractions/nameservice>
-  #include <abstractions/xdg-open>
+  #include <abstractions-user/xdg-open>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/session-bind>
   #include <abstractions/dbus/networkmanager>
-  #include <abstractions/fs/access-by-users-preset-rwk>
+  #include <abstractions-user/fs/access-by-users-preset-rwk>
   #include <abstractions/fs/deny-by-pattern-internet>
-  #include <abstractions/profile_transitions/users-mime-related>
+  #include <abstractions-user/profile_transitions/allow-mime-related>
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(term) peer="vokoscreen//ffmpeg",
@@ -68,19 +68,19 @@ profile vokoscreen /usr/bin/vokoscreen {
   /etc/os-release					r,	# sys-apps/baselayout
   
   # USERS ----------------------------------------------
-  owner @{HOME_D}/.config/vokoscreen/{,**}		rw,
-  owner @{HOME_D}/.config/vokoscreen/{,**/}*		k,
-  owner @{HOME_D}/{,[^.]**/}				r,	# Разрешаем выбирать любую папку.
-  owner @{HOME_D}/{,[^.]**/}.vokoscreen-recording/	w,	# Создание временной папки.
+  owner @{USER_HOME_D}/.config/vokoscreen/{,**}		rw,
+  owner @{USER_HOME_D}/.config/vokoscreen/{,**/}*	k,
+  owner @{USER_HOME_D}/{,[^.]**/}			r,	# Разрешаем выбирать любую папку.
+  owner @{USER_HOME_D}/{,[^.]**/}.vokoscreen-recording/	w,	# Создание временной папки.
   
   # TEMP -----------------------------------------------
   owner /tmp/mergeFile.txt				rw,
   
   profile ffmpeg /usr/bin/ffmpeg {
     #include <abstractions/base>
-    #include <abstractions/fs/access-by-users-preset-rwk>
+    #include <abstractions-user/fs/access-by-users-preset-rwk>
     #include <abstractions/fs/deny-by-pattern-internet>
-    #include <abstractions/X-connection-strict>
+    #include <abstractions-user/X-connection-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -90,7 +90,7 @@ profile vokoscreen /usr/bin/vokoscreen {
     /usr/bin/ffmpeg					mr,
     
     # USERS --------------------------------------------
-    owner @{HOME_D}/.config/vokoscreen/ffmpeg-*.log	w,
+    owner @{USER_HOME_D}/.config/vokoscreen/ffmpeg-*.log w,
     
     # TEMP ---------------------------------------------
     owner /tmp/mergeFile.txt				r,

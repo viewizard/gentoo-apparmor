@@ -31,7 +31,7 @@ profile consolekit.ck-launch-session /usr/bin/ck-launch-session {
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/consolekit>
   #include <abstractions/nameservice>
-  #include <abstractions/X-connection-strict>
+  #include <abstractions-user/X-connection-strict>
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -205,7 +205,7 @@ profile consolekit.ck-collect-session-info /usr/lib{,32,64}/ConsoleKit/ck-collec
 
 profile consolekit.ck-get-x11-display-device /usr/lib{,32,64}/ConsoleKit/ck-get-x11-display-device {
   #include <abstractions/base>
-  #include <abstractions/X-connection-strict>
+  #include <abstractions-user/X-connection-strict>
   
   # PTRACE ---------------------------------------------
   ptrace (trace) peer="xorg-server.Xorg",			# x11-base/xorg-server
@@ -235,7 +235,7 @@ profile consolekit.ck-remove-directory /usr/lib{,32,64}/ConsoleKit/ck-remove-dir
 
 profile consolekit.ck-get-x11-server-pid /usr/lib{,32,64}/ConsoleKit/ck-get-x11-server-pid {
   #include <abstractions/base>
-  #include <abstractions/X-connection-strict>
+  #include <abstractions-user/X-connection-strict>
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/ConsoleKit/ck-get-x11-server-pid	m,
