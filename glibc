@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile glibc.ldd /usr/bin/ldd flags=(attach_disconnected) {
+profile glibc.ldd@{p_root} /usr/bin/ldd@{t_root} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -25,11 +25,16 @@ profile glibc.ldd /usr/bin/ldd flags=(attach_disconnected) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/ldd						mr,
-  /bin/{,**/}*						cxmr -> test_run,
-  /sbin/{,**/}*						cxmr -> test_run,
-  /lib{,32,64,exec}/{,**/}*				cxmr -> test_run,
-  /opt/{,**/}*						cxmr -> test_run,
-  /usr/{,**/}*						cxmr -> test_run,
+  /bin/{,**/}*						mr,
+  /bin/{,**/}*@{t_root}					cx -> test_run,
+  /sbin/{,**/}*						mr,
+  /sbin/{,**/}*@{t_root}				cx -> test_run,
+  /lib{,32,64,exec}/{,**/}*				mr,
+  /lib{,32,64,exec}/{,**/}*@{t_root}			cx -> test_run,
+  /opt/{,**/}*						mr,
+  /opt/{,**/}*@{t_root}					cx -> test_run,
+  /usr/{,**/}*						mr,
+  /usr/{,**/}*@{t_root}					cx -> test_run,
   
   # READS/WRITES ---------------------------------------
   /etc/ld.so.cache					r,
@@ -55,7 +60,7 @@ profile glibc.ldd /usr/bin/ldd flags=(attach_disconnected) {
   }
 }
 
-profile glibc.locale /usr/bin/locale flags=(attach_disconnected) {
+profile glibc.locale@{p_all} /usr/bin/locale@{t_all} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -65,19 +70,19 @@ profile glibc.locale /usr/bin/locale flags=(attach_disconnected) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/locale					mr,
-  /bin/gzip						Cx,	# app-arch/gzip
+  /bin/gzip@{t_all}					Cx,	# app-arch/gzip
   
   # READS/WRITES ---------------------------------------
   /usr/share/i18n/charmaps/{,*.gz}			r,
   
   # DENY INHERIT ---------------------------------------
-  deny unix type=stream peer=(label="skypeforlinux"),		# net-im/skypeforlinux
-  deny unix type=seqpacket peer=(label="skypeforlinux"),	# net-im/skypeforlinux
+  deny unix type=stream peer=(label="skypeforlinux@{p_user}"),		# net-im/skypeforlinux
+  deny unix type=seqpacket peer=(label="skypeforlinux@{p_user}"),	# net-im/skypeforlinux
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   deny /opt/skypeforlinux/{,**}				rw,	# net-im/skypeforlinux
   deny /dev/shm/.org.chromium.Chromium.@{TMP6}		rw,	# net-im/skypeforlinux
   
-  profile gzip /bin/gzip {
+  profile gzip /bin/gzip@{t_all} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -92,7 +97,7 @@ profile glibc.locale /usr/bin/locale flags=(attach_disconnected) {
   }
 }
 
-profile glibc.ldconfig /sbin/ldconfig flags=(attach_disconnected) {
+profile glibc.ldconfig@{p_all} /sbin/ldconfig@{t_all} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -124,7 +129,7 @@ profile glibc.ldconfig /sbin/ldconfig flags=(attach_disconnected) {
   deny /usr/share/pyfa/imgs.zip				r,	# games-util/pyfa
 }
 
-profile glibc.getent /usr/bin/getent {
+profile glibc.getent@{p_root} /usr/bin/getent@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   

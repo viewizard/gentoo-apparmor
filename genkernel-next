@@ -14,7 +14,7 @@
 
 #include <local/tunables.d/>
 
-profile genkernel-next.genkernel /usr/bin/genkernel {
+profile genkernel-next.genkernel@{p_root} /usr/bin/genkernel@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -37,70 +37,55 @@ profile genkernel-next.genkernel /usr/bin/genkernel {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/genkernel					r,
-  @{shell}						Cxmr,
-  /bin/uname						Px,	# sys-apps/coreutils
-  /bin/sed						ix,	# sys-apps/sed		# FS ACCESS!
-  /bin/mv						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/cp						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/grep						ixr,	# sys-apps/grep		# FS ACCESS!	# r - записываем в initramfs.
-  /bin/egrep						Cx,	# sys-apps/grep
-  /bin/fgrep						Cx,	# sys-apps/grep
-  /bin/cat						ixr,	# sys-apps/coreutils	# FS ACCESS!	# r - записываем в initramfs.
-  /bin/cut						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/mkdir						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/ln						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/wc						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/yes						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/rm						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/tr						Px,	# sys-apps/coreutils
-  /bin/sort						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/tar						ix,	# app-arch/tar		# FS ACCESS!
-  /bin/bzip2						ix,	# app-arch/bzip2	# FS ACCESS!
-  /bin/cpio						ix,	# app-arch/cpio		# FS ACCESS!
-  /bin/readlink						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/mknod						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/chmod						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/date						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/dirname						Px,	# sys-apps/coreutils
-  /bin/basename						Px,	# sys-apps/coreutils
-  /bin/udevadm						Pxr,	# sys-fs/eudev		# r - записываем в initramfs.
-  /bin/echo						Px,	# sys-apps/coreutils
-  /bin/mount						Cx,	# sys-apps/util-linux
-  /bin/umount						Cx,	# sys-apps/util-linux
-  /bin/keyctl						r,	# sys-apps/keyutils
-  /bin/head						r,	# sys-apps/coreutils
-  /sbin/udevd						r,	# sys-fs/eudev
-  /sbin/pdata_tools					r,	# sys-block/thin-provisioning-tools
-  /sbin/dmsetup						r,	# sys-fs/lvm2
-  /sbin/cryptsetup					r,	# sys-fs/cryptsetup
-  /sbin/mdadm						r,	# sys-fs/mdadm
-  /sbin/mdmon						r,	# sys-fs/mdadm
-  /sbin/mdassemble					r,	# sys-fs/mdadm
-  /sbin/blkid						r,	# sys-apps/util-linux
-  /sbin/lvm						r,	# sys-fs/lvm2
-  /sbin/ldconfig					Pxr,	# sys-libs/glibc	# r - записываем в initramfs.
-  /sbin/apparmor_parser					r,	# sys-apps/apparmor
-  /usr/bin/gawk						ix,	# sys-apps/gawk		# FS ACCESS!
-  /usr/bin/md5sum					ix,	# sys-apps/coreutils	# FS ACCESS!
-  /usr/bin/file						ix,	# sys-apps/findutils	# FS ACCESS!
-  /usr/bin/find						ix,	# sys-apps/findutils	# FS ACCESS!
-  /usr/bin/pkg-config					Px,	# dev-util/pkgconfig
-  /usr/bin/realpath					ix,	# sys-apps/coreutils	# FS ACCESS!
-  /usr/bin/lddtree					ixr,	# app-misc/pax-utils	# FIX ME! Вынести в отдельный профиль. r - т.к. скрипт.
-  /usr/bin/scanelf					ix,	# app-misc/pax-utils	# FS ACCESS!
-  /usr/bin/uniq						ix,	# sys-apps/coreutils	# FIX ME! Вынести в отдельный профиль.
-  /usr/bin/q						Px,	# app-portage/portage-utils
-  /usr/bin/id						Px,	# sys-apps/coreutils
-  /usr/bin/xargs					ix,	# sys-apps/findutils	# FS ACCESS!
-  /usr/bin/xz						ix,	# app-arch/xz-utils	# FS ACCESS!
-  /usr/bin/gmake					Px,	# sys-devel/make
-  /usr/bin/gpg{,2,-static}				r,	# app-crypt/gnupg
-  /usr/bin/test						r,	# sys-apps/coreutils
-  /usr/bin/hostid					ix,	# sys-apps/coreutils	# FIX ME! Вынести в отдельный профиль.
-  /usr/bin/gawk						r,	# sys-apps/gawk
-  /usr/bin/find						r,	# sys-apps/findutils
-  /usr/@{CHOST}/binutils-bin/[0-9]*/strings		ix,	# sys-devel/binutils	# FIX ME! Вынести в отдельный профиль.
-  /usr/@{CHOST}/binutils-bin/[0-9]*/strip		ix,	# sys-devel/binutils	# FIX ME! Вынести в отдельный профиль.
+  @{shell}						mr,
+  @{shell}@{t_root}					Cx,
+  /bin/uname@{t_root}					Px,	# sys-apps/coreutils
+  /bin/sed@{t_root}					ix,	# sys-apps/sed		# FS ACCESS!
+  /bin/mv@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/cp@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/grep@{t_root}					ix,	# sys-apps/grep		# FS ACCESS!
+  /bin/egrep@{t_root}					Cx,	# sys-apps/grep
+  /bin/fgrep@{t_root}					Cx,	# sys-apps/grep
+  /bin/cat@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/cut@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/mkdir@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/ln@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/wc@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/yes@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/rm@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/tr@{t_root}					Px,	# sys-apps/coreutils
+  /bin/sort@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/tar@{t_root}					ix,	# app-arch/tar		# FS ACCESS!
+  /bin/bzip2@{t_root}					ix,	# app-arch/bzip2	# FS ACCESS!
+  /bin/cpio@{t_root}					ix,	# app-arch/cpio		# FS ACCESS!
+  /bin/readlink@{t_root}				ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/mknod@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/chmod@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/date@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/dirname@{t_root}					Px,	# sys-apps/coreutils
+  /bin/basename@{t_root}				Px,	# sys-apps/coreutils
+  /bin/udevadm@{t_root}					Px,	# sys-fs/eudev
+  /bin/echo@{t_root}					Px,	# sys-apps/coreutils
+  /bin/mount@{t_root}					Cx,	# sys-apps/util-linux
+  /bin/umount@{t_root}					Cx,	# sys-apps/util-linux
+  /sbin/ldconfig@{t_root}				Px,	# sys-libs/glibc
+  /usr/bin/gawk@{t_root}				ix,	# sys-apps/gawk		# FS ACCESS!
+  /usr/bin/md5sum@{t_root}				ix,	# sys-apps/coreutils	# FS ACCESS!
+  /usr/bin/file@{t_root}				ix,	# sys-apps/findutils	# FS ACCESS!
+  /usr/bin/find@{t_root}				ix,	# sys-apps/findutils	# FS ACCESS!
+  /usr/bin/pkg-config@{t_root}				Px,	# dev-util/pkgconfig
+  /usr/bin/realpath@{t_root}				ix,	# sys-apps/coreutils	# FS ACCESS!
+  /usr/bin/lddtree@{t_root}				ix,	# app-misc/pax-utils	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/scanelf@{t_root}				ix,	# app-misc/pax-utils	# FS ACCESS!
+  /usr/bin/uniq@{t_root}				ix,	# sys-apps/coreutils	# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/q@{t_root}					Px,	# app-portage/portage-utils
+  /usr/bin/id@{t_root}					Px,	# sys-apps/coreutils
+  /usr/bin/xargs@{t_root}				ix,	# sys-apps/findutils	# FS ACCESS!
+  /usr/bin/xz@{t_root}					ix,	# app-arch/xz-utils	# FS ACCESS!
+  /usr/bin/gmake@{t_root}				Px,	# sys-devel/make
+  /usr/bin/hostid@{t_root}				ix,	# sys-apps/coreutils	# FIX ME! Вынести в отдельный профиль.
+  /usr/@{CHOST}/binutils-bin/[0-9]*/strings@{t_root}	ix,	# sys-devel/binutils	# FIX ME! Вынести в отдельный профиль.
+  /usr/@{CHOST}/binutils-bin/[0-9]*/strip@{t_root}	ix,	# sys-devel/binutils	# FIX ME! Вынести в отдельный профиль.
   
   # READS/WRITES ---------------------------------------
   /etc/genkernel.conf					r,
@@ -120,13 +105,34 @@ profile genkernel-next.genkernel /usr/bin/genkernel {
   /usr/share/misc/magic.mgc				r,	# sys-apps/file
   /usr/portage/distfiles/busybox-[0-9]*.tar.bz2		r,
   /boot/initramfs-genkernel-*-@{kernel_ver}		w,
+  /bin/grep						r,	# sys-apps/grep
+  /bin/cat						r,	# sys-apps/coreutils
+  /bin/udevadm						r,	# sys-fs/eudev
+  /bin/keyctl						r,	# sys-apps/keyutils
+  /bin/head						r,	# sys-apps/coreutils
+  /sbin/udevd						r,	# sys-fs/eudev
+  /sbin/pdata_tools					r,	# sys-block/thin-provisioning-tools
+  /sbin/dmsetup						r,	# sys-fs/lvm2
+  /sbin/cryptsetup					r,	# sys-fs/cryptsetup
+  /sbin/mdadm						r,	# sys-fs/mdadm
+  /sbin/mdmon						r,	# sys-fs/mdadm
+  /sbin/mdassemble					r,	# sys-fs/mdadm
+  /sbin/blkid						r,	# sys-apps/util-linux
+  /sbin/lvm						r,	# sys-fs/lvm2
+  /sbin/ldconfig					r,	# sys-libs/glibc
+  /sbin/apparmor_parser					r,	# sys-apps/apparmor
+  /usr/bin/lddtree					r,	# app-misc/pax-utils
+  /usr/bin/gpg{,2,-static}				r,	# app-crypt/gnupg
+  /usr/bin/test						r,	# sys-apps/coreutils
+  /usr/bin/gawk						r,	# sys-apps/gawk
+  /usr/bin/find						r,	# sys-apps/findutils
   /var/cache/genkernel/{,**}				rw,
   /var/log/genkernel.log				rw,
   
   # TEMP -----------------------------------------------
   /var/tmp/portage/genkernel/{,**}			rw,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -136,7 +142,7 @@ profile genkernel-next.genkernel /usr/bin/genkernel {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/bzip2						ix,	# FS ACCESS!
+    /bin/bzip2@{t_root}					ix,	# FS ACCESS!
     
     # READS/WRITES -------------------------------------
     /var/cache/genkernel/busybox-[0-9]*.tar.bz2		rw,
@@ -145,16 +151,16 @@ profile genkernel-next.genkernel /usr/bin/genkernel {
     /var/tmp/portage/genkernel/{,**}			rw,
   }
   
-  profile egrep /bin/egrep {
+  profile egrep /bin/egrep@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/egrep						r,
     @{shell}						mr,
-    /bin/grep						ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
+    /bin/grep@{t_root}					ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
   }
   
-  profile fgrep /bin/fgrep {
+  profile fgrep /bin/fgrep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -165,17 +171,17 @@ profile genkernel-next.genkernel /usr/bin/genkernel {
     # EXECUTABLES --------------------------------------
     /bin/fgrep						r,
     @{shell}						mr,
-    /bin/grep						ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
+    /bin/grep@{t_root}					ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
   }
   
-  profile mount /bin/mount {
+  profile mount /bin/mount@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/mount						mr,
   }
   
-  profile umount /bin/umount {
+  profile umount /bin/umount@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------

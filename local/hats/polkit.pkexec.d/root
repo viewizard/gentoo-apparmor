@@ -19,12 +19,12 @@
   capability setgid,
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(rtmin+1) peer="polkit.pkexec",
+  signal (send) set=(rtmin+1) peer="polkit.pkexec@{p_root}",
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   @{PROC_D}/sys/kernel/ngroups_max			r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/sbin/gparted					Px,	# sys-block/gparted
+  /usr/sbin/gparted@{t_root}				Px,	# sys-block/gparted
 }

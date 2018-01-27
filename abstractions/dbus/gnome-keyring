@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -13,15 +13,15 @@ dbus (send, receive)
 	path="/org/freedesktop/secrets{,/**}"
 	interface="org.freedesktop.DBus.Properties"
 	member={GetAll,PropertiesChanged}
-	peer=(name="{:[0-9]*.[0-9]*,org.freedesktop.secrets}",label="gnome-keyring.gnome-keyring-daemon"),
+	peer=(name="{:[0-9]*.[0-9]*,org.freedesktop.secrets}",label="gnome-keyring.gnome-keyring-daemon@{p_any}"),
 dbus (send, receive)
 	bus=session
 	path="/org/freedesktop/secrets{,/**}"
 	interface="org.freedesktop.Secret.*"
-	peer=(name="{:[0-9]*.[0-9]*,org.freedesktop.secrets}",label="gnome-keyring.gnome-keyring-daemon"),
+	peer=(name="{:[0-9]*.[0-9]*,org.freedesktop.secrets}",label="gnome-keyring.gnome-keyring-daemon@{p_any}"),
 dbus send
 	bus=session
 	path="/org/freedesktop/secrets"
 	interface="org.gnome.keyring.InternalUnsupportedGuiltRiddenInterface"
 	member=ChangeWithPrompt
-	peer=(name="org.freedesktop.secrets",label="gnome-keyring.gnome-keyring-daemon"),
+	peer=(name="org.freedesktop.secrets",label="gnome-keyring.gnome-keyring-daemon@{p_any}"),

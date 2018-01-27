@@ -98,9 +98,9 @@ profile qgit_root {
   ptrace (trace) peer=@{profile_name},
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term, kill) peer="meld_root",		# dev-util/meld
-  signal (send) set=(term, kill) peer="git_root",		# dev-vcs/git
-  signal (send) set=(term, kill) peer="juffed_root",		# app-editors/juffed
+  signal (send) set=(term, kill) peer="meld",			# dev-util/meld
+  signal (send) set=(term, kill) peer="git",			# dev-vcs/git
+  signal (send) set=(term, kill) peer="juffed",			# app-editors/juffed
   
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
@@ -111,9 +111,9 @@ profile qgit_root {
   # EXECUTABLES ----------------------------------------
   /usr/bin/qgit						mr,
   /bin/cat						Cx,	# sys-apps/coreutils
-  /usr/bin/git						Px -> git_root,		# dev-vcs/git
-  /usr/bin/meld						Px -> meld_root,	# dev-util/meld (выбирается пользователем через настройки)
-  /usr/bin/juffed					Px -> juffed_root,	# app-editors/juffed (выбирается пользователем через настройки)
+  /usr/bin/git						Px,	# dev-vcs/git
+  /usr/bin/meld						Px,	# dev-util/meld (выбирается пользователем через настройки)
+  /usr/bin/juffed					Px,	# app-editors/juffed (выбирается пользователем через настройки)
   
   # READS/WRITES ---------------------------------------
   owner @{ROOT_HOME_D}/.config/qgit/{,**}		rw,

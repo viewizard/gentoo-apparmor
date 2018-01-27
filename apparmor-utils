@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile apparmor-utils.aa-status @{PYTHON_EXEC}/aa-status flags=(attach_disconnected) {
+profile apparmor-utils.aa-status@{p_root} @{PYTHON_EXEC}/aa-status@{t_root} flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/python>
   
@@ -33,14 +33,15 @@ profile apparmor-utils.aa-status @{PYTHON_EXEC}/aa-status flags=(attach_disconne
   @{PYTHON_PACKAGES_D}/apparmor/**.pyc{,.*}		w,
   
   # TEMP -----------------------------------------------
-  audit owner /tmp/????????				rw,	# FIX ME! audit 26.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  audit owner /tmp/????????				rw,	# FIX ME! audit 26.11.2017
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   owner /tmp/apparmor-bugreport-*.txt			rw,
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
+profile apparmor-utils.aa-unconfined@{p_root} @{PYTHON_EXEC}/aa-unconfined@{t_root} {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/ncurses>
@@ -62,8 +63,8 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,
-  @{shell}						Cx,
-  /bin/netstat						Px,	# sys-apps/net-tools
+  @{shell}@{t_root}					Cx,
+  /bin/netstat@{t_root}					Px,	# sys-apps/net-tools
   
   # READS/WRITES ---------------------------------------
   /etc/apparmor/logprof.conf				r,
@@ -73,12 +74,15 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
   @{PYTHON_PACKAGES_D}/LibAppArmor/**.pyc{,.*}		w,
   
   # TEMP -----------------------------------------------
-  audit owner /tmp/{,tmp}??????				rw,	# FIX ME! audit 26.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-  audit owner /tmp/????????				rw,	# FIX ME! audit 26.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  audit owner /tmp/{,tmp}??????				rw,	# FIX ME! audit 26.11.2017
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  audit owner /tmp/????????				rw,	# FIX ME! audit 26.11.2017
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   owner /tmp/apparmor-bugreport-*.txt			rw,
-  audit owner /var/tmp/????????				rw,	# FIX ME! audit 26.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  audit owner /var/tmp/????????				rw,	# FIX ME! audit 26.11.2017
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -96,11 +100,11 @@ profile apparmor-utils.aa-unconfined @{PYTHON_EXEC}/aa-unconfined {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/netstat					Px,	# sys-apps/net-tools
+    /bin/netstat@{t_root}				Px,	# sys-apps/net-tools
   }
 }
 
-profile apparmor-utils.aa-complain @{PYTHON_EXEC}/aa-complain {
+profile apparmor-utils.aa-complain@{p_root} @{PYTHON_EXEC}/aa-complain@{t_root} {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/ncurses>
@@ -111,7 +115,7 @@ profile apparmor-utils.aa-complain @{PYTHON_EXEC}/aa-complain {
   
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,
-  /sbin/apparmor_parser					Px,	# sys-apps/apparmor
+  /sbin/apparmor_parser@{t_root}			Px,	# sys-apps/apparmor
   
   # READS/WRITES ---------------------------------------
   /etc/inputrc						r,
@@ -123,10 +127,11 @@ profile apparmor-utils.aa-complain @{PYTHON_EXEC}/aa-complain {
   @{PYTHON_PACKAGES_D}/LibAppArmor/**.pyc{,.*}		w,
   
   # TEMP -----------------------------------------------
-  audit owner /tmp/{,tmp}??????				rw,	# FIX ME! audit 26.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  audit owner /tmp/{,tmp}??????				rw,	# FIX ME! audit 26.11.2017
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
 }
 
-profile apparmor-utils.aa-enforce @{PYTHON_EXEC}/aa-enforce {
+profile apparmor-utils.aa-enforce@{p_root} @{PYTHON_EXEC}/aa-enforce@{t_root} {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/ncurses>
@@ -137,7 +142,7 @@ profile apparmor-utils.aa-enforce @{PYTHON_EXEC}/aa-enforce {
   
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,
-  /sbin/apparmor_parser					Px,	# sys-apps/apparmor
+  /sbin/apparmor_parser@{t_root}			Px,	# sys-apps/apparmor
   
   # READS/WRITES ---------------------------------------
   /etc/inputrc						r,
@@ -149,10 +154,11 @@ profile apparmor-utils.aa-enforce @{PYTHON_EXEC}/aa-enforce {
   @{PYTHON_PACKAGES_D}/LibAppArmor/**.pyc{,.*}		w,
   
   # TEMP -----------------------------------------------
-  audit owner /tmp/{,tmp}??????				rw,	# FIX ME! audit 26.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  audit owner /tmp/{,tmp}??????				rw,	# FIX ME! audit 26.11.2017
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
 }
 
-profile apparmor-utils.aa-disable @{PYTHON_EXEC}/aa-disable {
+profile apparmor-utils.aa-disable@{p_root} @{PYTHON_EXEC}/aa-disable@{t_root} {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/ncurses>
@@ -163,7 +169,7 @@ profile apparmor-utils.aa-disable @{PYTHON_EXEC}/aa-disable {
   
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,
-  /sbin/apparmor_parser					Px,	# sys-apps/apparmor
+  /sbin/apparmor_parser@{t_root}			Px,	# sys-apps/apparmor
   
   # READS/WRITES ---------------------------------------
   /etc/inputrc						r,
@@ -175,10 +181,11 @@ profile apparmor-utils.aa-disable @{PYTHON_EXEC}/aa-disable {
   @{PYTHON_PACKAGES_D}/LibAppArmor/**.pyc{,.*}		w,
   
   # TEMP -----------------------------------------------
-  audit owner /tmp/{,tmp}??????				rw,	# FIX ME! audit 26.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  audit owner /tmp/{,tmp}??????				rw,	# FIX ME! audit 26.11.2017
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
 }
 
-profile apparmor-utils.aa-logprof @{PYTHON_EXEC}/aa-logprof {
+profile apparmor-utils.aa-logprof@{p_root} @{PYTHON_EXEC}/aa-logprof@{t_root} {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/ncurses>
@@ -197,10 +204,11 @@ profile apparmor-utils.aa-logprof @{PYTHON_EXEC}/aa-logprof {
   /etc/apparmor.d/{,**}					r,
   
   # TEMP -----------------------------------------------
-  audit owner /tmp/????????				rw,	# FIX ME! audit 26.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  audit owner /tmp/????????				rw,	# FIX ME! audit 26.11.2017
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
 }
 
-profile apparmor-utils.aa-decode /usr/sbin/aa-decode {
+profile apparmor-utils.aa-decode@{p_root} /usr/sbin/aa-decode@{t_root} {
   #include <abstractions/base>
   #include <abstractions/perl>
   
@@ -212,13 +220,13 @@ profile apparmor-utils.aa-decode /usr/sbin/aa-decode {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/aa-decode					r,
   @{shell}						mr,
-  /bin/egrep						Cx,	# sys-apps/grep
-  /bin/cat						Cx,	# sys-apps/coreutils
+  /bin/egrep@{t_root}					Cx,	# sys-apps/grep
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
   
   # TEMP -----------------------------------------------
   /tmp/@{TMP_SH}					rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile egrep /bin/egrep {
+  profile egrep /bin/egrep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -229,10 +237,10 @@ profile apparmor-utils.aa-decode /usr/sbin/aa-decode {
     # EXECUTABLES --------------------------------------
     /bin/egrep						r,
     @{shell}						mr,
-    /bin/grep						ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
+    /bin/grep@{t_root}					ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------

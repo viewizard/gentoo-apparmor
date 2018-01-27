@@ -14,26 +14,18 @@
 @{USERS_DIR_rk}="[^.]**"
 @{USERS_FILE_rk}="[^.]*"
 
-profile gcr.gcr-viewer /usr/bin/gcr-viewer {
+profile gcr.gcr-viewer@{p_user} /usr/bin/gcr-viewer@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
-  #include <abstractions-root/freedesktop.org>			# RBAC! Должен быть отдельный профиль для root.
   #include <abstractions-user/fonts>
-  #include <abstractions-root/fonts>				# RBAC! Должен быть отдельный профиль для root.
   #include <abstractions-user/gtk>
-  #include <abstractions-root/gtk>				# RBAC! Должен быть отдельный профиль для root.
   #include <abstractions-user/video>
-  #include <abstractions-root/video>				# RBAC! Должен быть отдельный профиль для root.
   #include <abstractions-user/X>
-  #include <abstractions-root/X>				# RBAC! Должен быть отдельный профиль для root.
-  #include <abstractions-sudo/X-connection-strict>		# RBAC! Нужно для запуска под root-ом через sudo
-  								# с подключением к X-сессии пользователя.
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
   #include <abstractions-user/fs/access-by-users-preset-rk>
-  #include <abstractions-root/fs/access-by-users-preset-rk>	# RBAC! Должен быть отдельный профиль для root.
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/fs/deny-private-strict>
   #include <abstractions/nameservice>
@@ -57,7 +49,7 @@ profile gcr.gcr-viewer /usr/bin/gcr-viewer {
   /usr/share/mime/mime.cache				m,
 }
 
-profile gcr.gcr-prompter /usr/libexec/gcr-prompter {
+profile gcr.gcr-prompter@{p_user} /usr/libexec/gcr-prompter@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -83,4 +75,41 @@ profile gcr.gcr-prompter /usr/libexec/gcr-prompter {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gcr-prompter				mr,
+}
+
+profile gcr.gcr-viewer@{p_root} /usr/bin/gcr-viewer@{t_root} {
+  #include <abstractions/base>
+  #include <abstractions-root/freedesktop.org>
+  #include <abstractions-root/fonts>
+  #include <abstractions-root/gtk>
+  #include <abstractions-root/video>
+  #include <abstractions-root/X>
+  #include <abstractions-sudo/X-connection-strict>		# RBAC! Нужно для запуска под root-ом через sudo
+  								# с подключением к X-сессии пользователя.
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/accessibility-strict>
+  #include <abstractions/dbus/at-spi>
+  #include <abstractions/dbus/gvfs>
+  #include <abstractions-root/fs/access-by-users-preset-rk>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
+  #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  owner @{PROC_D}/@{pid}/fd/				r,
+  owner @{PROC_D}/@{pid}/mounts				r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/gcr-viewer					mr,
+  
+  # READS/WRITES ---------------------------------------
+  /usr/lib{,32,64}/pkcs11/*.so				m,
+  /usr/share/locale/*/LC_MESSAGES/*.mo			m,
+  /usr/share/p11-kit/modules/{,*.module}		r,
+  /usr/share/p11-kit/modules/*.module			m,
+  /usr/share/fonts/**/*.ttf				m,
+  /usr/share/icons/**/icon-theme.cache			m,
+  /usr/share/mime/mime.cache				m,
 }

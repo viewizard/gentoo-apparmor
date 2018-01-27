@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile pam_mount.pmvarrun /usr/sbin/pmvarrun {
+profile pam_mount.pmvarrun@{p_all} /usr/sbin/pmvarrun@{t_all} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
@@ -23,7 +23,7 @@ profile pam_mount.pmvarrun /usr/sbin/pmvarrun {
   # UNIX -----------------------------------------------
   unix (send, receive)
   			type=stream
-  			peer=(label="sudo"),			# sudo
+  			peer=(label="sudo@{p_user}"),		# sudo
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

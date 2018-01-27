@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile dosfstools.fsck.fat /usr/sbin/fsck.fat {
+profile dosfstools.fsck.fat@{p_root} /usr/sbin/fsck.fat@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -22,7 +22,7 @@ profile dosfstools.fsck.fat /usr/sbin/fsck.fat {
   /usr/sbin/fsck.fat					mr,
 }
 
-profile dosfstools.mkfs.fat /usr/sbin/mkfs.fat {
+profile dosfstools.mkfs.fat@{p_root} /usr/sbin/mkfs.fat@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------

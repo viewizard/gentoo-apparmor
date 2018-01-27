@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
+profile teamspeak-client-bin.teamspeak@{p_user} /usr/bin/teamspeak3@{t_user} {
   #include <abstractions-user/audio>
   #include <abstractions/base>
   #include <abstractions-user/fonts>
@@ -51,12 +51,12 @@ profile teamspeak-client-bin.teamspeak /usr/bin/teamspeak3 {
   # EXECUTABLES ----------------------------------------
   /usr/bin/teamspeak3					r,
   @{shell}						mr,
-  /usr/lib{,32,64}/qt[0-9]*/libexec/QtWebEngineProcess	ix,
-  /opt/teamspeak3-client/ts3client			ix,
-  /opt/teamspeak3-client/QtWebEngineProcess		ix,
-  /opt/teamspeak3-client/package_inst			ix,	# Установка плагинов @{USER_HOME_D}/.ts3client/plugins/*.so
-#  /opt/teamspeak3-client/error_report			ix,
-  deny /opt/teamspeak3-client/update			x,	# Не разрешать обновления, используем portage.
+  /usr/lib{,32,64}/qt[0-9]*/libexec/QtWebEngineProcess@{t_user} ix,
+  /opt/teamspeak3-client/ts3client@{t_user}		ix,
+  /opt/teamspeak3-client/QtWebEngineProcess@{t_user}	ix,
+  /opt/teamspeak3-client/package_inst@{t_user}		ix,	# Установка плагинов @{USER_HOME_D}/.ts3client/plugins/*.so
+#  /opt/teamspeak3-client/error_report@{t_user}		ix,
+  deny /opt/teamspeak3-client/update@{t_user}		x,	# Не разрешать обновления, используем portage.
   
   # READS/WRITES ---------------------------------------
   /opt/teamspeak3-client/{,**}				r,

@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile libnotify.libnotify-notify-send /usr/bin/libnotify-notify-send {
+profile libnotify.libnotify-notify-send@{p_user} /usr/bin/libnotify-notify-send@{t_user} {
   #include <abstractions/base>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/notifications>
@@ -25,7 +25,7 @@ profile libnotify.libnotify-notify-send /usr/bin/libnotify-notify-send {
 
 # Профиль дополнительного скрипта для отсылки уведомлений всем активным пользователям DE.
 # Определяет пользователей по процессу сессии, в данном случае - "xfce4-session".
-profile libnotify.libnotify-notify-send-users /usr/bin/libnotify-notify-send-users {
+profile libnotify.libnotify-notify-send-users@{p_root} /usr/bin/libnotify-notify-send-users@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -36,12 +36,12 @@ profile libnotify.libnotify-notify-send-users /usr/bin/libnotify-notify-send-use
   # EXECUTABLES ----------------------------------------
   /usr/bin/libnotify-notify-send-users			r,
   @{shell}						mr,
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/su						Px,	# sys-apps/shadow
-  /bin/tr						Px,	# sys-apps/coreutils
-  /usr/bin/pgrep					Px,	# sys-process/procps
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/su@{t_root}					Px,	# sys-apps/shadow
+  /bin/tr@{t_root}					Px,	# sys-apps/coreutils
+  /usr/bin/pgrep@{t_root}				Px,	# sys-process/procps
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -50,7 +50,7 @@ profile libnotify.libnotify-notify-send-users /usr/bin/libnotify-notify-send-use
     capability dac_read_search,
     
     # PTRACE -------------------------------------------
-    ptrace (trace) peer="xfce4-session",			# xfce-base/xfce4-session
+    ptrace (trace) peer="xfce4-session@{p_any}",		# xfce-base/xfce4-session
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,

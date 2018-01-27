@@ -83,7 +83,7 @@
 # Профили с доступом к gvfsd-trash анонимному сокету
 #@{GVFSD_TRASH_ANON_SOCKET}=""
 
-profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monitor {
+profile gvfs.gvfs-udisks2-volume-monitor@{p_all} /usr/libexec/gvfs-udisks2-volume-monitor@{t_all} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/system-strict>
@@ -102,13 +102,13 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
   	bus=system
   	path="/org/freedesktop/UDisks2/**"
   	interface="org.freedesktop.UDisks2.*"
-  	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd"),	# sys-fs/udisks
+  	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd@{p_any}"),	# sys-fs/udisks
   dbus send
   	bus=system
   	path="/org/freedesktop/UDisks2"
   	interface="org.freedesktop.DBus.ObjectManager"
   	member=GetManagedObjects
-  	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd"),	# sys-fs/udisks
+  	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd@{p_any}"),	# sys-fs/udisks
   dbus send
   	bus=session
   	path="/org/gtk/vfs/**"
@@ -143,7 +143,7 @@ profile gvfs.gvfs-udisks2-volume-monitor /usr/libexec/gvfs-udisks2-volume-monito
   owner @{USER_HOME_D}/.local/share/mime/treemagic	r,
 }
 
-profile gvfs.gvfsd /usr/libexec/gvfsd {
+profile gvfs.gvfsd@{p_all} /usr/libexec/gvfsd@{t_all} {
   #include <abstractions/base>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/session-bind>
@@ -166,7 +166,7 @@ profile gvfs.gvfsd /usr/libexec/gvfsd {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd					mr,
-  /usr/libexec/gvfsd-*					Px,
+  /usr/libexec/gvfsd-*@{t_all}				Px,
   
   # READS/WRITES ---------------------------------------
   /usr/share/gvfs/{,**}					r,
@@ -176,14 +176,14 @@ profile gvfs.gvfsd /usr/libexec/gvfsd {
   owner /root/.gvfs/					rw,
 }
 
-profile gvfs.gvfsd-archive /usr/libexec/gvfsd-archive {
+profile gvfs.gvfsd-archive@{p_all} /usr/libexec/gvfsd-archive@{t_all} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-archive				mr,
 }
 
-profile gvfs.gvfsd-burn /usr/libexec/gvfsd-burn {
+profile gvfs.gvfsd-burn@{p_all} /usr/libexec/gvfsd-burn@{t_all} {
   #include <abstractions/base>
   
   # UNIX -----------------------------------------------
@@ -195,28 +195,28 @@ profile gvfs.gvfsd-burn /usr/libexec/gvfsd-burn {
   /usr/libexec/gvfsd-burn				mr,
 }
 
-profile gvfs.gvfsd-computer /usr/libexec/gvfsd-computer {
+profile gvfs.gvfsd-computer@{p_all} /usr/libexec/gvfsd-computer@{t_all} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-computer				mr,
 }
 
-profile gvfs.gvfsd-dav /usr/libexec/gvfsd-dav {
+profile gvfs.gvfsd-dav@{p_all} /usr/libexec/gvfsd-dav@{t_all} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-dav				mr,
 }
 
-profile gvfs.gvfsd-ftp /usr/libexec/gvfsd-ftp {
+profile gvfs.gvfsd-ftp@{p_all} /usr/libexec/gvfsd-ftp@{t_all} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-ftp				mr,
 }
 
-profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
+profile gvfs.gvfsd-fuse@{p_all} /usr/libexec/gvfsd-fuse@{t_all} {
   #include <abstractions/base>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/unix/gvfsd-smb>
@@ -251,7 +251,7 @@ profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-fuse				mr,
-  /usr/bin/fusermount					Px,	# sys-fs/fuse
+  /usr/bin/fusermount@{t_all}				Px,	# sys-fs/fuse
   
   # READS/WRITES ---------------------------------------
   /run/user/@{UID}/gvfs/				r,
@@ -260,7 +260,7 @@ profile gvfs.gvfsd-fuse /usr/libexec/gvfsd-fuse {
   owner /root/.gvfs/					r,
 }
 
-profile gvfs.gvfsd-http /usr/libexec/gvfsd-http {
+profile gvfs.gvfsd-http@{p_all} /usr/libexec/gvfsd-http@{t_all} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/system-strict>
@@ -315,14 +315,14 @@ profile gvfs.gvfsd-http /usr/libexec/gvfsd-http {
   owner @{USER_HOME_D}/.local/share/mime/mime.cache	r,
 }
 
-profile gvfs.gvfsd-localtest /usr/libexec/gvfsd-localtest {
+profile gvfs.gvfsd-localtest@{p_all} /usr/libexec/gvfsd-localtest@{t_all} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-localtest				mr,
 }
 
-profile gvfs.gvfsd-metadata /usr/libexec/gvfsd-metadata {
+profile gvfs.gvfsd-metadata@{p_all} /usr/libexec/gvfsd-metadata@{t_all} {
   #include <abstractions/base>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/session-bind>
@@ -347,7 +347,7 @@ profile gvfs.gvfsd-metadata /usr/libexec/gvfsd-metadata {
   owner @{USER_HOME_D}/.local/share/gvfs-metadata/{,*}	rw,
 }
 
-profile gvfs.gvfsd-network /usr/libexec/gvfsd-network {
+profile gvfs.gvfsd-network@{p_all} /usr/libexec/gvfsd-network@{t_all} {
   #include <abstractions/base>
   #include <abstractions-user/dconf>
   #include <abstractions/dbus/session-strict>
@@ -382,21 +382,21 @@ profile gvfs.gvfsd-network /usr/libexec/gvfsd-network {
   /usr/share/glib-[0-9]*/schemas/{,gschemas.compiled}	r,
 }
 
-profile gvfs.gvfsd-recent /usr/libexec/gvfsd-recent {
+profile gvfs.gvfsd-recent@{p_all} /usr/libexec/gvfsd-recent@{t_all} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-recent				mr,
 }
 
-profile gvfs.gvfsd-sftp /usr/libexec/gvfsd-sftp {
+profile gvfs.gvfsd-sftp@{p_all} /usr/libexec/gvfsd-sftp@{t_all} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-sftp				mr,
 }
 
-profile gvfs.gvfsd-smb /usr/libexec/gvfsd-smb {
+profile gvfs.gvfsd-smb@{p_all} /usr/libexec/gvfsd-smb@{t_all} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/dconf>
@@ -447,7 +447,7 @@ profile gvfs.gvfsd-smb /usr/libexec/gvfsd-smb {
   /var/cache/samba/{,**}				r,
 }
 
-profile gvfs.gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse {
+profile gvfs.gvfsd-smb-browse@{p_all} /usr/libexec/gvfsd-smb-browse@{t_all} {
   #include <abstractions/base>
   #include <abstractions-user/dconf>
   #include <abstractions/dbus/session-strict>
@@ -492,7 +492,7 @@ profile gvfs.gvfsd-smb-browse /usr/libexec/gvfsd-smb-browse {
   /var/cache/samba/{,**}				rw,
 }
 
-profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
+profile gvfs.gvfsd-trash@{p_all} /usr/libexec/gvfsd-trash@{t_all} {
   #include <abstractions/base>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/session-bind>
@@ -539,7 +539,7 @@ profile gvfs.gvfsd-trash /usr/libexec/gvfsd-trash {
   owner @{USER_HOME_D}/.local/share/Trash/{,**}		rw,
 }
 
-profile gvfs.gvfs-open /usr/bin/gvfs-open {
+profile gvfs.gvfs-open@{p_all} /usr/bin/gvfs-open@{t_all} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------

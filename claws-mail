@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile claws-mail /usr/bin/claws-mail {
+profile claws-mail@{p_user} /usr/bin/claws-mail@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -31,7 +31,7 @@ profile claws-mail /usr/bin/claws-mail {
   #include <abstractions-user/xdg-open>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term) peer="gnupg.gpg",
+  signal (send) set=(term) peer="gnupg.gpg@{p_user}",
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -46,9 +46,9 @@ profile claws-mail /usr/bin/claws-mail {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/claws-mail					mr,
-  /usr/bin/gpgconf					Px,	# app-crypt/gnupg
-  /usr/bin/gpg{,2}					Px,	# app-crypt/gnupg
-  /usr/bin/gpgsm					Px,	# app-crypt/gnupg
+  /usr/bin/gpgconf@{t_user}				Px,	# app-crypt/gnupg
+  /usr/bin/gpg{,2}@{t_user}				Px,	# app-crypt/gnupg
+  /usr/bin/gpgsm@{t_user}				Px,	# app-crypt/gnupg
   
   # READS/WRITES ---------------------------------------
   /usr/lib{,32,64}/claws-mail/plugins/*.so		m,
@@ -67,7 +67,7 @@ profile claws-mail /usr/bin/claws-mail {
   
   # NOISY ----------------------------------------------
   deny /						r,
-  deny /etc/pulse/client.conf				r,	# media-sound/pulseaudio	# (?) Не очень понятно почему, но при выключении
-  deny /dev/shm/					r,	# media-sound/pulseaudio	# (?) лезет к данным пульсаудио. Хотя не использует
-  deny /run/user/@{UID}/pulse/native			rw,	# media-sound/pulseaudio	# (?) звук.
+  deny /etc/pulse/client.conf				r,	# (?) Не очень понятно почему, но при выключении
+  deny /dev/shm/					r,	# (?) лезет к данным пульсаудио. Хотя не использует
+  deny /run/user/@{UID}/pulse/native			rw,	# (?) звук.
 }

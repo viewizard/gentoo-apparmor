@@ -14,7 +14,7 @@
 # Важно! Перезагрузка профиля выполняется командой:
 # apparmor_parser -r /etc/apparmor.d/2_local
 
-profile glsa.cron.daily /etc/cron.daily/glsa {
+profile glsa.cron.daily@{p_root} /etc/cron.daily/glsa@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -27,14 +27,14 @@ profile glsa.cron.daily /etc/cron.daily/glsa {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/glsa					r,
   @{shell}						mr,
-  /bin/mktemp						Cx,	# sys-apps/coreutils
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/basename						Px,	# sys-apps/coreutils
-  /usr/bin/libnotify-notify-send-users			Px,	# x11-libs/libnotify
-  /usr/bin/mail						Px,	# mail-client/mailx
-  /usr/bin/logger					Px,	# sys-apps/util-linux
-  @{PYTHON_EXEC_WRAPPER}				Cx -> glsa_check,	# dev-lang/python-exec
+  /bin/mktemp@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/basename@{t_root}				Px,	# sys-apps/coreutils
+  /usr/bin/libnotify-notify-send-users@{t_root}		Px,	# x11-libs/libnotify
+  /usr/bin/mail@{t_root}				Px,	# mail-client/mailx
+  /usr/bin/logger@{t_root}				Px,	# sys-apps/util-linux
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx -> glsa_check,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /etc/portage/cron_glsa.conf				r,
@@ -42,7 +42,7 @@ profile glsa.cron.daily /etc/cron.daily/glsa {
   # TEMP -----------------------------------------------
   owner /tmp/glsa.cron.@{TMP6}				rw,
   
-  profile mktemp /bin/mktemp {
+  profile mktemp /bin/mktemp@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -52,7 +52,7 @@ profile glsa.cron.daily /etc/cron.daily/glsa {
     owner /tmp/glsa.cron.@{TMP6}			rw,
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -62,7 +62,7 @@ profile glsa.cron.daily /etc/cron.daily/glsa {
     owner /tmp/glsa.cron.@{TMP6}			rw,
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -72,7 +72,7 @@ profile glsa.cron.daily /etc/cron.daily/glsa {
     owner /tmp/glsa.cron.@{TMP6}			rw,
   }
   
-  profile glsa_check {
+  profile glsa_check@{t_root} {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     

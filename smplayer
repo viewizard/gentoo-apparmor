@@ -84,7 +84,7 @@
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="[^.]*.@{local_ext_playlist}"
 
-profile smplayer /usr/bin/smplayer {
+profile smplayer@{p_user} /usr/bin/smplayer@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -104,11 +104,11 @@ profile smplayer /usr/bin/smplayer {
   #include <abstractions-user/xdg-open>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(kill,term) peer="mpv",			# media-video/mpv
-  signal (send) set=(kill,term) peer="mplayer",			# media-video/mplayer
+  signal (send) set=(kill,term) peer="mpv@{p_user}",		# media-video/mpv
+  signal (send) set=(kill,term) peer="mplayer@{p_user}",	# media-video/mplayer
   
   # DBUS -----------------------------------------------
-  deny dbus peer=(label="networkmanager.NetworkManager"),	# Запрещаем работу с сетью.
+  deny dbus peer=(label="networkmanager.NetworkManager@{p_user}"),	# Запрещаем работу с сетью.
 
   # NETWORK --------------------------------------------
   deny network netlink raw,					# Запрещаем работу с сетью.
@@ -122,10 +122,10 @@ profile smplayer /usr/bin/smplayer {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/smplayer					mr,
-  /usr/bin/mplayer					Px,	# media-video/mplayer
-  /usr/bin/pacmd					Px,	# media-sound/pulseaudio
-  /usr/bin/mpv						Px,	# media-video/mpv
-  audit /usr/bin/aplay					Px,	# media-sound/alsa-utils	# FIX ME! audit 5.12.2017
+  /usr/bin/mplayer@{t_user}				Px,	# media-video/mplayer
+  /usr/bin/pacmd@{t_user}				Px,	# media-sound/pulseaudio
+  /usr/bin/mpv@{t_user}					Px,	# media-video/mpv
+  audit /usr/bin/aplay@{t_user}				Px,	# media-sound/alsa-utils	# FIX ME! audit 5.12.2017
   
   # READS/WRITES ---------------------------------------
   /usr/bin/						r,

@@ -125,7 +125,7 @@
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="{[^.],.~}*.@{local_ext}{,#}"
 
-profile libreoffice /usr/{bin,lib{,32,64}/libreoffice/program}/soffice {
+profile libreoffice@{p_user} /usr/{bin,lib{,32,64}/libreoffice/program}/soffice@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -135,15 +135,15 @@ profile libreoffice /usr/{bin,lib{,32,64}/libreoffice/program}/soffice {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/dirname						Px,	# sys-apps/coreutils
-  /bin/basename						Px,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/uname						Px,	# sys-apps/coreutils
-  /bin/ls						Cx,	# sys-apps/coreutils
-  /bin/sed						Cx,	# sys-apps/sed
-  /usr/lib{,32,64}/libreoffice/program/oosplash		Px,
+  /bin/dirname@{t_user}					Px,	# sys-apps/coreutils
+  /bin/basename@{t_user}				Px,	# sys-apps/coreutils
+  /bin/grep@{t_user}					Cx,	# sys-apps/grep
+  /bin/uname@{t_user}					Px,	# sys-apps/coreutils
+  /bin/ls@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/sed@{t_user}					Cx,	# sys-apps/sed
+  /usr/lib{,32,64}/libreoffice/program/oosplash@{t_user} Px,
   
-  profile ls /bin/ls {
+  profile ls /bin/ls@{t_user} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
@@ -155,7 +155,7 @@ profile libreoffice /usr/{bin,lib{,32,64}/libreoffice/program}/soffice {
     /bin/ls						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -166,7 +166,7 @@ profile libreoffice /usr/{bin,lib{,32,64}/libreoffice/program}/soffice {
     /bin/grep						mr,
   }
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -178,7 +178,7 @@ profile libreoffice /usr/{bin,lib{,32,64}/libreoffice/program}/soffice {
   }
 }
 
-profile libreoffice.oosplash /usr/lib{,32,64}/libreoffice/program/oosplash {
+profile libreoffice.oosplash@{p_user} /usr/lib{,32,64}/libreoffice/program/oosplash@{t_user} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions-user/X-connection-strict>
@@ -190,14 +190,14 @@ profile libreoffice.oosplash /usr/lib{,32,64}/libreoffice/program/oosplash {
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/libreoffice/program/oosplash		m,
-  /usr/lib{,32,64}/libreoffice/program/javaldx		Px,
-  /usr/lib{,32,64}/libreoffice/program/soffice.bin	Px,
+  /usr/lib{,32,64}/libreoffice/program/javaldx@{t_user}	Px,
+  /usr/lib{,32,64}/libreoffice/program/soffice.bin@{t_user} Px,
   
   # TEMP -----------------------------------------------
   owner /tmp/OSL_PIPE_@{UID}_SingleOfficeIPC_*		rw,	# * - 31(?) символ
 }
 
-profile libreoffice.javaldx /usr/lib{,32,64}/libreoffice/program/javaldx {
+profile libreoffice.javaldx@{p_user} /usr/lib{,32,64}/libreoffice/program/javaldx@{t_user} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -207,15 +207,15 @@ profile libreoffice.javaldx /usr/lib{,32,64}/libreoffice/program/javaldx {
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/libreoffice/program/javaldx		m,
-  /opt/{oracle-jdk,icedtea}-bin-[0-9]*/bin/java		Px,
-  /opt/{oracle-jdk,icedtea}-bin-[0-9]*/jre/bin/java	Px,
+  /opt/{oracle-jdk,icedtea}-bin-[0-9]*/bin/java@{t_user} Px,
+  /opt/{oracle-jdk,icedtea}-bin-[0-9]*/jre/bin/java@{t_user} Px,
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.config/libreoffice/{,**}	rw,
   owner @{USER_HOME_D}/.config/libreoffice/{,**/}*	k,
 }
 
-profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
+profile libreoffice.bin@{p_user} /usr/lib{,32,64}/libreoffice/program/soffice.bin@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -254,12 +254,12 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/libreoffice/program/soffice.bin	m,
-  @{shell}						Cx,
-  /usr/bin/gpgconf					Px,	# app-crypt/gnupg
-  /usr/bin/gpg{,2}					Px,	# app-crypt/gnupg
-  /usr/bin/gpgsm					Px,	# app-crypt/gnupg
-  /opt/{oracle-jdk,icedtea}-bin-[0-9]*/bin/java		Px,
-  /opt/{oracle-jdk,icedtea}-bin-[0-9]*/jre/bin/java	Px,
+  @{shell}@{t_user}					Cx,
+  /usr/bin/gpgconf@{t_user}				Px,	# app-crypt/gnupg
+  /usr/bin/gpg{,2}@{t_user}				Px,	# app-crypt/gnupg
+  /usr/bin/gpgsm@{t_user}				Px,	# app-crypt/gnupg
+  /opt/{oracle-jdk,icedtea}-bin-[0-9]*/bin/java@{t_user} Px,
+  /opt/{oracle-jdk,icedtea}-bin-[0-9]*/jre/bin/java@{t_user} Px,
   
   # READS/WRITES ---------------------------------------
   /etc/OpenCL/vendors/{,*}				r,	# x11-drivers/nvidia-drivers (проверять, возможно и другие)
@@ -292,7 +292,7 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
   deny /usr/lib{,32,64}/libreoffice/share/uno_packages/cache/* w,
   deny @{USER_HOME_D}/.mozilla/firefox/profiles.ini	r,	# www-client/firefox
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/xdg-open>
     #include <abstractions-user/cups-client>
@@ -304,7 +304,7 @@ profile libreoffice.bin /usr/lib{,32,64}/libreoffice/program/soffice.bin {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,	# sys-apps/coreutils
+    /bin/uname@{t_user}					Px,	# sys-apps/coreutils
     
     # DENY INHERIT -------------------------------------
     deny @{USER_HOME_D}/.config/libreoffice/**		rw,	# libreoffice.bin

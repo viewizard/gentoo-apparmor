@@ -12,7 +12,7 @@
 
 # IMPROVE! Скрипт запуска для управления доступом к интернету.
 # Когда будет реализована работа с портами - убрать.
-profile chromium.start_script /usr/bin/chromium{,-browser} {
+profile chromium.start_script@{p_user} /usr/bin/chromium{,-browser}@{t_user} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -24,12 +24,12 @@ profile chromium.start_script /usr/bin/chromium{,-browser} {
   # EXECUTABLES ----------------------------------------
   /usr/bin/chromium{,-browser}				r,
   @{shell}						mr,
-  /usr/bin/id						Px,	# sys-apps/coreutils
-  /usr/bin/newgrp					Px,	# sys-apps/shadow
-  /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh Px,
+  /usr/bin/id@{t_user}					Px,	# sys-apps/coreutils
+  /usr/bin/newgrp@{t_user}				Px,	# sys-apps/shadow
+  /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh@{t_user} Px,
 }
 
-profile chromium.chromium-launcher.sh /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh {
+profile chromium.chromium-launcher.sh@{p_user} /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -40,13 +40,13 @@ profile chromium.chromium-launcher.sh /usr/lib{,32,64}/chromium-browser/chromium
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh r,
   @{shell}						mr,
-  /bin/readlink						Cx,	# sys-apps/coreutils
-  /usr/lib{,32,64}/chromium-browser/chrome		Px,
+  /bin/readlink@{t_user}				Cx,	# sys-apps/coreutils
+  /usr/lib{,32,64}/chromium-browser/chrome@{t_user}	Px,
   
   # READS/WRITES ---------------------------------------
   /etc/chromium/{,**}					r,
   
-  profile readlink /bin/readlink {
+  profile readlink /bin/readlink@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -58,7 +58,7 @@ profile chromium.chromium-launcher.sh /usr/lib{,32,64}/chromium-browser/chromium
   }
 }
 
-profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_disconnected) {
+profile chromium.chrome@{p_user} /usr/lib{,32,64}/chromium-browser/chrome@{t_user} flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -90,10 +90,10 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   # UNIX ------------------------------------------
   unix (send, receive)
   	type=seqpacket
-  	peer=(label="chromium.chrome//chrome-sandbox"),
+  	peer=(label="chromium.chrome@{p_user}//chrome-sandbox"),
   unix (send, receive)
   	type=stream
-  	peer=(label="chromium.chrome//chrome-sandbox"),
+  	peer=(label="chromium.chrome@{p_user}//chrome-sandbox"),
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -145,15 +145,15 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   deny @{PROC_D}/@{pids}/oom_{,score_}adj		w,
   
   # EXECUTABLES ----------------------------------------
-  /bin/ps						Px,	# sys-process/procps
-  /usr/bin/xdg-settings					Px,	# x11-misc/xdg-utils
-  /usr/bin/lsb_release					Px,	# sys-apps/lsb-release
-  /usr/bin/gvfs-open					Px,	# gnome-base/gvfs
+  /bin/ps@{t_user}					Px,	# sys-process/procps
+  /usr/bin/xdg-settings@{t_user}			Px,	# x11-misc/xdg-utils
+  /usr/bin/lsb_release@{t_user}				Px,	# sys-apps/lsb-release
+  /usr/bin/gvfs-open@{t_user}				Px,	# gnome-base/gvfs
   # Allow transitions to ourself and our sandbox
-  /usr/bin/chromium{,-browser}				Px,
-  /usr/lib{,32,64}/chromium-browser/chrome		ixmr,
-  /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh Px,
-  /usr/lib{,32,64}/chromium-browser/chrome-sandbox	cx,
+  /usr/bin/chromium{,-browser}@{t_user}			Px,
+  /usr/lib{,32,64}/chromium-browser/chrome@{t_user}	ixmr,
+  /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh@{t_user} Px,
+  /usr/lib{,32,64}/chromium-browser/chrome-sandbox@{t_user} cx,
   
   # READS/WRITES ---------------------------------------
   /etc/chromium/{,**}					r,
@@ -193,7 +193,7 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
   deny /usr/lib{,32,64}/chromium-browser/**		w,
   deny @{USER_HOME_D}/.mozilla/{,**}			r,	# www-client/firefox
   
-  profile chrome-sandbox /usr/lib{,32,64}/chromium-browser/chrome-sandbox {
+  profile chrome-sandbox /usr/lib{,32,64}/chromium-browser/chrome-sandbox@{t_user} {
     # Be fanatical since it is setuid root and don't use an abstraction
     /lib/libgcc_s.so{,.[0-9]*}				mr,
     /lib{,32,64}/libm-*.so{,.[0-9]*}			mr,
@@ -233,10 +233,10 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
     		peer=(label=@{profile_name}),
     unix (send, receive)
     		type=stream
-    		peer=(label="chromium.chrome"),
+    		peer=(label="chromium.chrome@{p_user}"),
     unix (send, receive)
     		type=seqpacket
-    		peer=(label="chromium.chrome"),
+    		peer=(label="chromium.chrome@{p_user}"),
     
     # PSEUDO -------------------------------------------
     /dev/null						rw,
@@ -252,6 +252,6 @@ profile chromium.chrome /usr/lib{,32,64}/chromium-browser/chrome flags=(attach_d
     
     # EXECUTABLES --------------------------------------
     /usr/lib{,32,64}/chromium-browser/chrome-sandbox	mr,
-    /usr/lib{,32,64}/chromium-browser/chrome		Px,
+    /usr/lib{,32,64}/chromium-browser/chrome@{t_user}	Px,
   }
 }

@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile exo.exo-open /usr/bin/exo-open flags=(attach_disconnected) {
+profile exo.exo-open@{p_user} /usr/bin/exo-open@{t_user} flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -31,7 +31,7 @@ profile exo.exo-open /usr/bin/exo-open flags=(attach_disconnected) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/exo-open					mr,
-  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1		Px,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1@{t_user}	Px,
   
   # READS/WRITES ---------------------------------------
   /etc/machine-id					r,
@@ -41,7 +41,7 @@ profile exo.exo-open /usr/bin/exo-open flags=(attach_disconnected) {
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile exo.exo-helper /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 {
+profile exo.exo-helper@{p_user} /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/video>
@@ -60,7 +60,7 @@ profile exo.exo-helper /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 {
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1		mr,
-  /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1	Px,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1@{t_user} Px,
   
   # READS/WRITES ---------------------------------------
   /usr/share/						r,
@@ -78,7 +78,7 @@ profile exo.exo-helper /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1 {
   owner @{USER_HOME_D}/.local/share/applications/{,**}	r,
 }
 
-profile exo.exo-compose-mail /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 {
+profile exo.exo-compose-mail@{p_user} /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1@{t_user} {
   #include <abstractions/base>
   #include <abstractions/perl>
   #include <abstractions-user/profile_transitions/allow-mime-related>
@@ -91,7 +91,7 @@ profile exo.exo-compose-mail /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1 {
   /bin/env						mr,
 }
 
-profile exo.exo-preferred-applications /usr/bin/exo-preferred-applications {
+profile exo.exo-preferred-applications@{p_user} /usr/bin/exo-preferred-applications@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   
@@ -102,10 +102,10 @@ profile exo.exo-preferred-applications /usr/bin/exo-preferred-applications {
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
   /usr/bin/exo-preferred-applications			r,
-  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1		Px,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1@{t_user}	Px,
 }
 
-profile exo.exo-desktop-item-edit /usr/bin/exo-desktop-item-edit {
+profile exo.exo-desktop-item-edit@{p_user} /usr/bin/exo-desktop-item-edit@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -140,7 +140,7 @@ profile exo.exo-desktop-item-edit /usr/bin/exo-desktop-item-edit {
   deny /usr/libexec/**					r,
 }
 
-profile exo_open_root flags=(attach_disconnected) {
+profile exo.exo-open@{p_root} /usr/bin/exo-open@{t_root} flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions-root/freedesktop.org>
   #include <abstractions-root/fonts>
@@ -162,7 +162,7 @@ profile exo_open_root flags=(attach_disconnected) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/exo-open					mr,
-  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1		Px -> exo_helper_root,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1@{t_root}	Px,
   
   # READS/WRITES ---------------------------------------
   /etc/machine-id					r,
@@ -172,7 +172,7 @@ profile exo_open_root flags=(attach_disconnected) {
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile exo_helper_root {
+profile exo.exo-helper@{p_root} /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1@{t_root} {
   #include <abstractions/base>
   #include <abstractions-root/freedesktop.org>
   #include <abstractions-root/X>
@@ -185,7 +185,7 @@ profile exo_helper_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1		mr,
-  /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1	Px -> exo_compose_mail_root,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1@{t_root} Px,
   
   # READS/WRITES ---------------------------------------
   /usr/share/						r,
@@ -203,7 +203,7 @@ profile exo_helper_root {
   owner @{ROOT_HOME_D}/.local/share/applications/{,**}	r,
 }
 
-profile exo_compose_mail_root {
+profile exo.exo-compose-mail@{p_root} /usr/lib{,32,64}/xfce4/exo-1/exo-compose-mail-1@{t_root} {
   #include <abstractions/base>
   #include <abstractions/perl>
   #include <abstractions-root/profile_transitions/allow-list>

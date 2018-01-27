@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -12,14 +12,14 @@ dbus send
 	bus=session
 	path="/org/gnome/GConf/Server"
 	interface="org.gnome.GConf.Server"
-	peer=(name="org.gnome.GConf",label="gconf.gconfd-2"),
+	peer=(name="org.gnome.GConf",label="gconf.gconfd-2@{p_any}"),
 dbus receive
 	bus=session
 	path="/org/gnome/GConf/Server"
 	interface="org.gnome.GConf.Server"
-	peer=(name=":[0-9]*.[0-9]*",label="gconf.gconfd-2"),
+	peer=(name=":[0-9]*.[0-9]*",label="gconf.gconfd-2@{p_any}"),
 dbus send
 	bus=session
 	path="/org/gnome/GConf/Database/[0-9]*"
 	interface="org.gnome.GConf.Database"
-	peer=(name="org.gnome.GConf",label="gconf.gconfd-2"),
+	peer=(name="org.gnome.GConf",label="gconf.gconfd-2@{p_any}"),

@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile gsmartcontrol /usr/bin/gsmartcontrol {
+profile gsmartcontrol@{p_root} /usr/bin/gsmartcontrol@{t_root} {
   #include <abstractions/base>
   #include <abstractions-root/freedesktop.org>
   #include <abstractions-root/fonts>
@@ -35,8 +35,8 @@ profile gsmartcontrol /usr/bin/gsmartcontrol {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gsmartcontrol				mr,
-  /usr/bin/exo-open					Px,	# xfce-base/exo
-  /usr/sbin/smartctl					Px,
+  /usr/bin/exo-open@{t_root}				Px,	# xfce-base/exo
+  /usr/sbin/smartctl@{t_root}				Px,
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
@@ -46,7 +46,7 @@ profile gsmartcontrol /usr/bin/gsmartcontrol {
   owner @{ROOT_HOME_D}/.config/gsmartcontrol/{,gsmartcontrol.conf} rw,
 }
 
-profile gsmartcontrol.gsmartcontrol-root /usr/bin/gsmartcontrol-root {
+profile gsmartcontrol.gsmartcontrol-root@{p_user} /usr/bin/gsmartcontrol-root@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -54,10 +54,10 @@ profile gsmartcontrol.gsmartcontrol-root /usr/bin/gsmartcontrol-root {
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
+  @{shell}@{t_user}					Cx,
   /bin/env						mr,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -68,8 +68,8 @@ profile gsmartcontrol.gsmartcontrol-root /usr/bin/gsmartcontrol-root {
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /usr/bin/gsmartcontrol-root				r,
-    /usr/bin/which					Px,	# sys-apps/which
-    /usr/bin/sudo					Px,	# app-admin/sudo
-    /usr/bin/gksu					Px,	# app-admin/sudo
+    /usr/bin/which@{t_user}				Px,	# sys-apps/which
+    /usr/bin/sudo@{t_user}				Px,	# app-admin/sudo
+    /usr/bin/gksu@{t_user}				Px,	# app-admin/sudo
   }
 }

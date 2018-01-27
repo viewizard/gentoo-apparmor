@@ -14,7 +14,7 @@
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="[^.]*"
 
-profile ghex /usr/bin/ghex {
+profile ghex@{p_user} /usr/bin/ghex@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -42,7 +42,7 @@ profile ghex /usr/bin/ghex {
   /usr/bin/ghex						mr,
 }
 
-profile ghex_root flags=(complain) {
+profile ghex@{p_root} /usr/bin/ghex@{t_root} {
   #include <abstractions/base>
   #include <abstractions-root/freedesktop.org>
   #include <abstractions-root/fonts>

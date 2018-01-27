@@ -266,7 +266,7 @@ profile util-linux.cal /usr/bin/cal {
   deny @{PROC_D}/@{pids}/net/dev			r,	# app-admin/conky, conky_shell
 }
 
-profile util-linux.getopt /usr/bin/getopt flags=(attach_disconnected) {
+profile util-linux.getopt@{p_all} /usr/bin/getopt@{t_all} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------

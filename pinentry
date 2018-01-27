@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile pinentry /usr/bin/pinentry-{curses,gnome3,gtk-2,tty,qt5} {
+profile pinentry@{p_user} /usr/bin/pinentry-{curses,gnome3,gtk-2,tty,qt5}@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -22,8 +22,8 @@ profile pinentry /usr/bin/pinentry-{curses,gnome3,gtk-2,tty,qt5} {
   #include <abstractions/ncurses>
   
   # CAPABILITIES ---------------------------------------
-  capability dac_override,
-  capability dac_read_search,
+#  capability dac_override,					# FIX ME! 24.01.2018 для t_user должно быть не нужно.
+#  capability dac_read_search,					# FIX ME! 24.01.2018 для t_user должно быть не нужно.
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,

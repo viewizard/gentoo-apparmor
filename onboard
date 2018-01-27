@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile onboard /usr/bin/onboard {
+profile onboard@{p_user} /usr/bin/onboard@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -30,7 +30,7 @@ profile onboard /usr/bin/onboard {
   	path="/org/freedesktop/DBus"
   	interface="org.freedesktop.DBus.Introspectable"
   	member=Introspect
-  	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon"),
+  	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon@{p_any}"),
   dbus (send, receive)
   	bus=session
   	path="/org/onboard/Onboard/Keyboard"
@@ -51,9 +51,9 @@ profile onboard /usr/bin/onboard {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/onboard					mr,
-  /usr/bin/tput						Px,	# sys-libs/ncurses
-  @{PYTHON_EXEC_WRAPPER}				Px -> onboard_settings,	# dev-lang/python-exec	# Запускает не как /usr/bin/...,
-  													# а через python-exec.
+  /usr/bin/tput@{t_user}						Px,	# sys-libs/ncurses
+  @{PYTHON_EXEC_WRAPPER}@{t_user}			Px -> onboard_settings,	# dev-lang/python-exec
+  								# Запускает не как /usr/bin/..., а через python-exec.
   
   # READS/WRITES ---------------------------------------
   /usr/bin/						r,
@@ -69,7 +69,7 @@ profile onboard /usr/bin/onboard {
   deny @{USER_HOME_D}/					r,
 }
 
-profile onboard_settings /usr/bin/onboard-settings {
+profile onboard_settings@{p_user} /usr/bin/onboard-settings@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -89,7 +89,7 @@ profile onboard_settings /usr/bin/onboard-settings {
   	path="/org/freedesktop/DBus"
   	interface="org.freedesktop.DBus.Introspectable"
   	member=Introspect
-  	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon"),
+  	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon@{p_any}"),
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -106,7 +106,7 @@ profile onboard_settings /usr/bin/onboard-settings {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/onboard-settings				mr,
-  /usr/bin/tput						Px,	# sys-libs/ncurses
+  /usr/bin/tput@{t_user}				Px,	# sys-libs/ncurses
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,	# sys-fs/eudev

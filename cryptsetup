@@ -14,7 +14,7 @@
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="[^.]*"
 
-profile cryptsetup /sbin/cryptsetup {
+profile cryptsetup@{p_root} /sbin/cryptsetup@{t_root} {
   #include <abstractions/base>
   #include <abstractions-root/fs/access-by-users-preset-rwk>
   #include <abstractions/fs/deny-by-pattern-internet>
@@ -57,7 +57,7 @@ profile cryptsetup /sbin/cryptsetup {
   deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d
 }
 
-profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile cryptsetup.init.d@{p_root} /etc/init.d/dmcrypt@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -71,30 +71,30 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# at
   @{SYS_D}/fs/cgroup/unified/dmcrypt/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/egrep						Cx,	# sys-apps/grep
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/dd						Cx,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/stty						Px,	# sys-apps/coreutils
-  /bin/mount						Cx,	# sys-apps/util-linux
-  /bin/umount						Cx,	# sys-apps/util-linux
-  /sbin/mkswap						Px,	# sys-apps/util-linux
-  /sbin/cryptsetup					Px,
-  /usr/bin/gpg{,2,-static}				Px,	# app-crypt/gnupg
+  @{shell}@{t_root}					Cx,
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/egrep@{t_root}					Cx,	# sys-apps/grep
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/dd@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/stty@{t_root}					Px,	# sys-apps/coreutils
+  /bin/mount@{t_root}					Cx,	# sys-apps/util-linux
+  /bin/umount@{t_root}					Cx,	# sys-apps/util-linux
+  /sbin/mkswap@{t_root}					Px,	# sys-apps/util-linux
+  /sbin/cryptsetup@{t_root}				Px,
+  /usr/bin/gpg{,2,-static}@{t_root}			Px,	# app-crypt/gnupg
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/dmcrypt				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -116,7 +116,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# at
     deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -132,7 +132,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# at
     /etc/conf.d/dmcrypt					r,
   }
   
-  profile egrep /bin/egrep {
+  profile egrep /bin/egrep@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
@@ -148,13 +148,13 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# at
     # EXECUTABLES --------------------------------------
     /bin/egrep						r,
     @{shell}						mr,
-    /bin/grep						ix,	# Все правильно, для egrep используем с ix.
+    /bin/grep@{t_root}					ix,	# Все правильно, для egrep используем с ix.
     
     # READS/WRITES -------------------------------------
     /etc/conf.d/dmcrypt					r,	# (?) /bin/grep
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -167,7 +167,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# at
     /bin/cat						mr,
   }
   
-  profile dd /bin/dd {
+  profile dd /bin/dd@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -180,7 +180,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# at
     deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -202,7 +202,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# at
     deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d
   }
   
-  profile mount /bin/mount {
+  profile mount /bin/mount@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -226,7 +226,7 @@ profile cryptsetup.init.d /etc/init.d/dmcrypt flags=(attach_disconnected) {	# at
     deny /etc/conf.d/dmcrypt				r,	# cryptsetup.init.d
   }
   
-  profile umount /bin/umount {
+  profile umount /bin/umount@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

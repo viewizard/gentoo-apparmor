@@ -14,7 +14,7 @@
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="[^.]*"
 
-profile juffed /usr/bin/juffed {
+profile juffed@{p_user} /usr/bin/juffed@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -52,7 +52,7 @@ profile juffed /usr/bin/juffed {
   owner /tmp/qtsingleapp-juffed-@{TMP4}-@{UID_HEX}-lockfile rwk,
 }
 
-profile juffed_root {
+profile juffed@{p_root} /usr/bin/juffed@{t_root} {
   #include <abstractions/base>
   #include <abstractions-root/freedesktop.org>
   #include <abstractions-root/fonts>

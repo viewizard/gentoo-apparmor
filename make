@@ -16,7 +16,7 @@
 
 #include <local/tunables.d/>
 
-profile make /usr/bin/{,g}make flags=(complain) {
+profile make@{p_root} /usr/bin/{,g}make@{t_root} flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -25,7 +25,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
   capability sys_admin,
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term) peer="make//shell",
+  signal (send) set=(term) peer="make@{p_root}//shell",
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -33,28 +33,30 @@ profile make /usr/bin/{,g}make flags=(complain) {
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/{,g}make					ixmr,	# Все правильно, запуск и mmap.
-  @{shell}						Cx,
-  /bin/uname						Px,	# sys-apps/coreutils
-  /bin/rm						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/ln						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/cp						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/mv						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/echo						Px,	# sys-apps/coreutils
-  /bin/expr						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/grep						ix,	# sys-apps/grep		# FS ACCESS!
-  /bin/chmod						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/mkdir						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/sed						ix,	# sys-apps/sed		# FS ACCESS!
-  /bin/cat						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /bin/touch						ix,	# sys-apps/coreutils	# FS ACCESS!
-  /usr/bin/gcc						ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
-  /usr/bin/cmp						ix,	# sys-apps/diffutils	# FS ACCESS!
-  /usr/bin/find						ix,	# sys-apps/findutils	# FS ACCESS!
-  /usr/bin/getconf					ix,	# sys-libs/glibc	# FS ACCESS!
-  /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-gcc		ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
-  /usr/@{CHOST}/binutils-bin/[0-9]*/strip		ix,	# sys-devel/binutils	# FIX ME! Вынести в отдельный профиль.
-  /var/tmp/portage/genkernel/*/busybox-*/scripts/{,**/}* ix,	# sys-kernel/genkernel-next
+  /usr/bin/{,g}make					mr,
+  /usr/bin/{,g}make@{t_root}				ix,	# Все правильно, запуск и mmap.
+  @{shell}@{t_root}					Cx,
+  /bin/uname@{t_root}					Px,	# sys-apps/coreutils
+  /bin/rm@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/ln@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/cp@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/mv@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/echo@{t_root}					Px,	# sys-apps/coreutils
+  /bin/expr@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/grep@{t_root}					ix,	# sys-apps/grep		# FS ACCESS!
+  /bin/chmod@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/mkdir@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/sed@{t_root}					ix,	# sys-apps/sed		# FS ACCESS!
+  /bin/cat@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /bin/touch@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+  /usr/bin/gcc@{t_root}					ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/cmp@{t_root}					ix,	# sys-apps/diffutils	# FS ACCESS!
+  /usr/bin/find@{t_root}				ix,	# sys-apps/findutils	# FS ACCESS!
+  /usr/bin/getconf@{t_root}				ix,	# sys-libs/glibc	# FS ACCESS!
+  /usr/src/@{kernel}/{,**/}*@{t_root}			ix,	# sys-kernel/gentoo-sources
+  /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-gcc@{t_root}	ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
+  /usr/@{CHOST}/binutils-bin/[0-9]*/strip@{t_root}	ix,	# sys-devel/binutils	# FIX ME! Вынести в отдельный профиль.
+  /var/tmp/portage/genkernel/*/busybox-*/scripts/{,**/}*@{t_root} ix,	# sys-kernel/genkernel-next
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -64,7 +66,6 @@ profile make /usr/bin/{,g}make flags=(complain) {
   /usr/share/gcc-data/@{CHOST}/[0-9]*/locale/**.mo	r,	# sys-devel/gcc
   /usr/share/binutils-data/@{CHOST}/[0-9]*/locale/**.mo	r,	# sys-devel/binutils
   /usr/src/@{kernel}/{,**}				rw,	# sys-kernel/gentoo-sources	# r - т.к. могут быть скрипты.
-  /usr/src/@{kernel}/{,**/}*				ix,	# sys-kernel/gentoo-sources
   owner /var/log/genkernel.log				w,	# sys-kernel/genkernel-next
   
   # USERS ----------------------------------------------
@@ -73,7 +74,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
   # TEMP -----------------------------------------------
   /var/tmp/portage/genkernel/*/busybox-*/{,**}		rw,	# sys-kernel/genkernel-next
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell}@{t_root} flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/perl>
@@ -90,64 +91,71 @@ profile make /usr/bin/{,g}make flags=(complain) {
     owner @{PROC_D}/@{pid}/fd/				r,
     
     # EXECUTABLES --------------------------------------
-    @{shell}						ixmr,	# Все правильно, запуск и mmap.
-    /bin/uname						Px,	# sys-apps/coreutils
-    /bin/sed						ix,	# sys-apps/sed		# FS ACCESS!
-    /bin/rm						ix,	# sys-apps/coreutils	# FS ACCESS!
-    /bin/wc						ix,	# sys-apps/coreutils	# FS ACCESS!
-    /bin/mv						ix,	# sys-apps/coreutils	# FS ACCESS!
-    /bin/dd						ix,	# sys-apps/coreutils	# FS ACCESS!
-    /bin/tr						Px,	# sys-apps/coreutils
-    /bin/ln						ix,	# sys-apps/coreutils	# FS ACCESS!
-    /bin/cp						ix,	# sys-apps/coreutils	# FS ACCESS!
-    /bin/pwd						ix,	# sys-apps/coreutils	# FS ACCESS!
-    /bin/seq						ix,	# sys-apps/coreutils	# FIX ME! Вынести в отдельный профиль.
-    /bin/cat						ix,	# sys-apps/coreutils	# FS ACCESS!
-    /bin/cut						ix,	# sys-apps/coreutils	# FS ACCESS!
-    /bin/gzip						ix,	# app-arch/gzip		# FS ACCESS!
-    /bin/date						ix,	# sys-apps/coreutils	# FS ACCESS!
-    /bin/dirname					Px,	# sys-apps/coreutils
-    /bin/basename					Px,	# sys-apps/coreutils
-    /bin/echo						Px,	# sys-apps/coreutils
-    /bin/tail						ix,	# sys-apps/coreutils	# FS ACCESS!
-    /bin/sort						ix,	# sys-apps/coreutils	# FS ACCESS!
-    /bin/grep						ix,	# sys-apps/grep		# FS ACCESS!
-    /bin/expr						ix,	# sys-apps/coreutils	# FS ACCESS!
-    /bin/sleep						Px,	# sys-apps/coreutils
-    /bin/mkdir						ix,	# sys-apps/coreutils	# FS ACCESS!
-    /bin/kmod						ix,	# sys-apps/kmod		# Все правильно, ix. Чтобы установить модули ядра, ставим IMA hash в IMA policy для make//shell профиля.
-    /bin/mktemp						ix,	# sys-apps/coreutils	# FS ACCESS!
-    /bin/hostname					Px,	# sys-apps/net-tools
-    /bin/touch						ix,	# sys-apps/coreutils	# FS ACCESS!
-    /bin/head						ix,	# sys-apps/coreutils	# FS ACCESS!
-    /bin/tar						ix,	# app-arch/tar		# FS ACCESS!
-    /bin/bzip2						ix,	# app-arch/bzip2	# FS ACCESS!
-    /usr/bin/diff					ix,	# sys-apps/diffutils	# FS ACCESS!
-    /usr/bin/pod2html					ix,	# dev-lang/perl		# FIX ME! Вынести в отдельный профиль.
-    /usr/bin/od						ix,	# sys-apps/coreutils	# FS ACCESS!
-    /usr/bin/uniq					ix,	# sys-apps/coreutils	# FS ACCESS!
-    /usr/bin/which					Px,	# sys-apps/which
-    /usr/bin/whoami					Px,	# sys-apps/coreutils
-    /usr/bin/bc						ix,	# sys-devel/bc		# FS ACCESS!
-    /usr/bin/cmp					ix,	# sys-apps/diffutils	# FS ACCESS!
-    /usr/bin/git					ix,	# dev-vcs/git		# Не используем Px и Px -> git_root.
+    /usr/bin/gmake					r,
+    @{shell}						mr,
+    @{shell}@{t_root}					ix,	# Все правильно, запуск и mmap.
+    /bin/uname@{t_root}					Px,	# sys-apps/coreutils
+    /bin/sed@{t_root}					ix,	# sys-apps/sed		# FS ACCESS!
+    /bin/rm@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/wc@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/mv@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/dd@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/tr@{t_root}					Px,	# sys-apps/coreutils
+    /bin/ln@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/cp@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/pwd@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/seq@{t_root}					ix,	# sys-apps/coreutils	# FIX ME! Вынести в отдельный профиль.
+    /bin/cat@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/cut@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/gzip@{t_root}					ix,	# app-arch/gzip		# FS ACCESS!
+    /bin/date@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/dirname@{t_root}				Px,	# sys-apps/coreutils
+    /bin/basename@{t_root}				Px,	# sys-apps/coreutils
+    /bin/echo@{t_root}					Px,	# sys-apps/coreutils
+    /bin/tail@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/sort@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/grep@{t_root}					ix,	# sys-apps/grep		# FS ACCESS!
+    /bin/expr@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/sleep@{t_root}					Px,	# sys-apps/coreutils
+    /bin/mkdir@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/kmod@{t_root}					ix,	# sys-apps/kmod
+  								# Все правильно, ix. Чтобы установить модули ядра,
+  								# ставим IMA hash в IMA policy для make//shell профиля.
+    /bin/mktemp@{t_root}				ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/hostname@{t_root}				Px,	# sys-apps/net-tools
+    /bin/touch@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/head@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/tar@{t_root}					ix,	# app-arch/tar		# FS ACCESS!
+    /bin/bzip2@{t_root}					ix,	# app-arch/bzip2	# FS ACCESS!
+    /usr/bin/diff@{t_root}				ix,	# sys-apps/diffutils	# FS ACCESS!
+    /usr/bin/pod2html@{t_root}				ix,	# dev-lang/perl		# FIX ME! Вынести в отдельный профиль.
+    /usr/bin/od@{t_root}				ix,	# sys-apps/coreutils	# FS ACCESS!
+    /usr/bin/uniq@{t_root}				ix,	# sys-apps/coreutils	# FS ACCESS!
+    /usr/bin/which@{t_root}				Px,	# sys-apps/which
+    /usr/bin/whoami@{t_root}				Px,	# sys-apps/coreutils
+    /usr/bin/bc@{t_root}				ix,	# sys-devel/bc		# FS ACCESS!
+    /usr/bin/cmp@{t_root}				ix,	# sys-apps/diffutils	# FS ACCESS!
+    /usr/bin/git@{t_root}				ix,	# dev-vcs/git		# Не используем Px.
   											# FIX ME! Вынести в отдельный профиль.
-    /usr/bin/svn					ix,	# dev-vcs/subversion	# FIX ME! Вынести в отдельный профиль.
-    /usr/bin/gawk					ix,	# sys-apps/gawk		# FS ACCESS!
-    /usr/bin/find					ix,	# sys-apps/findutils	# FS ACCESS!
-    /usr/bin/pkg-config					Px,	# dev-util/pkgconfig
-    /usr/bin/stat					ix,	# sys-apps/coreutils
-    /usr/bin/xargs					ix,	# sys-apps/findutils	# FS ACCESS!
-    /usr/bin/gmake					Pxr,	# sys-devel/make	# Все правильно, r.
-    /usr/bin/gcc					ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
-    /usr/bin/g++					ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
-    /usr/bin/openssl					ix,	# dev-libs/openssl	# FIX ME! Вынести в отдельный профиль.
-    /usr/libexec/gcc/@{CHOST}/[0-9]*/*			ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
-    /usr/@{CHOST}/gcc-bin/[0-9]*/*			ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
-    /usr/@{CHOST}/binutils-bin/[0-9]*/*			ix,	# sys-devel/binutils	# FIX ME! Вынести в отдельный профиль.
-    /usr/src/@{kernel}/{,**}				r,	# sys-kernel/gentoo-sources	# FIX ME! Вынести в отдельный профиль. r - т.к. могут быть скрипты.
-    /usr/src/@{kernel}/{,**/}*				ix,	# sys-kernel/gentoo-sources	# FIX ME! Вынести в отдельный профиль.
-    /var/tmp/portage/genkernel/*/busybox-*/{,**/}*	ix,	# sys-kernel/genkernel-next
+    /usr/bin/svn@{t_root}				ix,	# dev-vcs/subversion	# FIX ME! Вынести в отдельный профиль.
+    /usr/bin/gawk@{t_root}				ix,	# sys-apps/gawk		# FS ACCESS!
+    /usr/bin/find@{t_root}				ix,	# sys-apps/findutils	# FS ACCESS!
+    /usr/bin/pkg-config@{t_root}			Px,	# dev-util/pkgconfig
+    /usr/bin/stat@{t_root}				ix,	# sys-apps/coreutils
+    /usr/bin/xargs@{t_root}				ix,	# sys-apps/findutils	# FS ACCESS!
+    /usr/bin/gmake@{t_root}				Px,	# sys-devel/make
+    /usr/bin/gcc@{t_root}				ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
+    /usr/bin/g++@{t_root}				ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
+    /usr/bin/openssl@{t_root}				ix,	# dev-libs/openssl	# FIX ME! Вынести в отдельный профиль.
+    /usr/libexec/gcc/@{CHOST}/[0-9]*/*@{t_root}		ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
+    /usr/@{CHOST}/gcc-bin/[0-9]*/*@{t_root}		ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
+    /usr/@{CHOST}/binutils-bin/[0-9]*/*@{t_root}	ix,	# sys-devel/binutils
+								# FIX ME! Вынести в отдельный профиль.
+    /usr/src/@{kernel}/{,**}@{t_root}			r,	# sys-kernel/gentoo-sources
+								# FIX ME! Вынести в отдельный профиль. r - т.к. могут быть скрипты.
+    /usr/src/@{kernel}/{,**/}*@{t_root}			ix,	# sys-kernel/gentoo-sources
+								# FIX ME! Вынести в отдельный профиль.
+    /var/tmp/portage/genkernel/*/busybox-*/{,**/}*@{t_root} ix,	# sys-kernel/genkernel-next
     
     # READS/WRITES -------------------------------------
     /etc/ld.so.conf					r,

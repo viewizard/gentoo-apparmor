@@ -14,7 +14,7 @@
 
 #include <local/tunables.d/>
 
-profile grub.grub-mkconfig /usr/sbin/grub-mkconfig {
+profile grub.grub-mkconfig@{p_root} /usr/sbin/grub-mkconfig@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -25,15 +25,15 @@ profile grub.grub-mkconfig /usr/sbin/grub-mkconfig {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/grub-mkconfig				r,
   @{shell}						mr,
-  /bin/basename						Px,	# sys-apps/coreutils
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/mv						Cx,	# sys-apps/coreutils
-  /usr/bin/which					Px,	# sys-apps/which
-  /usr/bin/gettext					Px,	# sys-devel/gettext
-  /usr/bin/grub-script-check				Px,
-  /usr/sbin/grub-probe					Px,
-  /etc/grub.d/*						Px,
+  /bin/basename@{t_root}				Px,	# sys-apps/coreutils
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mv@{t_root}					Cx,	# sys-apps/coreutils
+  /usr/bin/which@{t_root}				Px,	# sys-apps/which
+  /usr/bin/gettext@{t_root}				Px,	# sys-devel/gettext
+  /usr/bin/grub-script-check@{t_root}			Px,
+  /usr/sbin/grub-probe@{t_root}				Px,
+  /etc/grub.d/*@{t_root}				Px,
   
   # READS/WRITES ---------------------------------------
   /boot/grub/grub.cfg.new				w,
@@ -44,7 +44,7 @@ profile grub.grub-mkconfig /usr/sbin/grub-mkconfig {
   # TEMP -----------------------------------------------
   owner /tmp/@{TMP_SH}					rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -58,7 +58,7 @@ profile grub.grub-mkconfig /usr/sbin/grub-mkconfig {
     /boot/grub/grub.cfg.new				rw,
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -75,7 +75,7 @@ profile grub.grub-mkconfig /usr/sbin/grub-mkconfig {
     owner /tmp/@{TMP_SH}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
-  profile mv /bin/mv {
+  profile mv /bin/mv@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -90,7 +90,7 @@ profile grub.grub-mkconfig /usr/sbin/grub-mkconfig {
   }
 }
 
-profile grub.grub-script-check /usr/bin/grub-script-check {
+profile grub.grub-script-check@{p_root} /usr/bin/grub-script-check@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -104,7 +104,7 @@ profile grub.grub-script-check /usr/bin/grub-script-check {
   /boot/grub/grub.cfg.new				rw,
 }
 
-profile grub.grub-mkrelpath /usr/bin/grub-mkrelpath {
+profile grub.grub-mkrelpath@{p_root} /usr/bin/grub-mkrelpath@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -116,7 +116,7 @@ profile grub.grub-mkrelpath /usr/bin/grub-mkrelpath {
   /usr/bin/grub-mkrelpath				mr,
 }
 
-profile grub.grub.d /etc/grub.d/* {
+profile grub.grub.d@{p_root} /etc/grub.d/*@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -127,22 +127,22 @@ profile grub.grub.d /etc/grub.d/* {
   # EXECUTABLES ----------------------------------------
   /etc/grub.d/*						r,
   @{shell}						mr,
-  /bin/tr						Px,	# sys-apps/coreutils
-  /bin/cut						Cx,	# sys-apps/coreutils
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/sed						Cx,	# sys-apps/sed
-  /bin/tail						Cx,	# sys-apps/coreutils
-  /bin/sort						Cx,	# sys-apps/coreutils
-  /bin/head						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/fgrep						Cx,	# sys-apps/grep
-  /bin/uname						Px,	# sys-apps/coreutils
-  /bin/basename						Px,	# sys-apps/coreutils
-  /bin/dirname						Px,	# sys-apps/coreutils
-  /usr/bin/which					Px,	# sys-apps/which
-  /usr/bin/gettext					Px,	# sys-devel/gettext
-  /usr/bin/grub-mkrelpath				Px,
-  /usr/sbin/grub-probe					Px,
+  /bin/tr@{t_root}					Px,	# sys-apps/coreutils
+  /bin/cut@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/sed@{t_root}					Cx,	# sys-apps/sed
+  /bin/tail@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/sort@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/head@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/fgrep@{t_root}					Cx,	# sys-apps/grep
+  /bin/uname@{t_root}					Px,	# sys-apps/coreutils
+  /bin/basename@{t_root}				Px,	# sys-apps/coreutils
+  /bin/dirname@{t_root}					Px,	# sys-apps/coreutils
+  /usr/bin/which@{t_root}				Px,	# sys-apps/which
+  /usr/bin/gettext@{t_root}				Px,	# sys-devel/gettext
+  /usr/bin/grub-mkrelpath@{t_root}			Px,
+  /usr/sbin/grub-probe@{t_root}				Px,
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -153,7 +153,7 @@ profile grub.grub.d /etc/grub.d/* {
   # TEMP -----------------------------------------------
   owner /tmp/@{TMP_SH}					rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile cut /bin/cut {
+  profile cut /bin/cut@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -167,7 +167,7 @@ profile grub.grub.d /etc/grub.d/* {
     /boot/grub/grub.cfg.new				w,
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -182,7 +182,7 @@ profile grub.grub.d /etc/grub.d/* {
     owner /tmp/@{TMP_SH}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -197,7 +197,7 @@ profile grub.grub.d /etc/grub.d/* {
     owner /tmp/@{TMP_SH}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
-  profile tail /bin/tail {
+  profile tail /bin/tail@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -214,7 +214,7 @@ profile grub.grub.d /etc/grub.d/* {
     /boot/grub/grub.cfg.new				w,
   }
   
-  profile sort /bin/sort {
+  profile sort /bin/sort@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -228,7 +228,7 @@ profile grub.grub.d /etc/grub.d/* {
     /bin/sort						mr,
   }
   
-  profile head /bin/head {
+  profile head /bin/head@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -239,7 +239,7 @@ profile grub.grub.d /etc/grub.d/* {
     /bin/head						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -253,7 +253,7 @@ profile grub.grub.d /etc/grub.d/* {
     /boot/grub/grub.cfg.new				w,
   }
   
-  profile fgrep /bin/fgrep {
+  profile fgrep /bin/fgrep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -266,11 +266,11 @@ profile grub.grub.d /etc/grub.d/* {
     # EXECUTABLES --------------------------------------
     /bin/fgrep						r,
     @{shell}						mr,
-    /bin/grep						ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
+    /bin/grep@{t_root}					ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
   }
 }
 
-profile grub.grub-probe /usr/sbin/grub-probe {
+profile grub.grub-probe@{p_root} /usr/sbin/grub-probe@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -292,11 +292,11 @@ profile grub.grub-probe /usr/sbin/grub-probe {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/grub-probe					mr,
-  /bin/udevadm						Px,	# sys-fs/eudev
-  /sbin/lvm						Px,	# sys-fs/lvm2
+  /bin/udevadm@{t_root}					Px,	# sys-fs/eudev
+  /sbin/lvm@{t_root}					Px,	# sys-fs/lvm2
 }
 
-profile grub.grub-install /usr/sbin/grub-install {
+profile grub.grub-install@{p_root} /usr/sbin/grub-install@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES -------------------------------------
@@ -315,16 +315,16 @@ profile grub.grub-install /usr/sbin/grub-install {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/grub-install				mr,
-  @{shell}						Cx,
-  /bin/kmod						Px,	# sys-apps/kmod
-  /bin/udevadm						Px,	# sys-fs/eudev
-  /sbin/lvm						Px,	# sys-fs/lvm2
+  @{shell}@{t_root}					Cx,
+  /bin/kmod@{t_root}					Px,	# sys-apps/kmod
+  /bin/udevadm@{t_root}					Px,	# sys-fs/eudev
+  /sbin/lvm@{t_root}					Px,	# sys-fs/lvm2
   
   # READS/WRITES ---------------------------------------
   /boot/grub/{,**}					rw,
   /usr/share/grub/{,**}					r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

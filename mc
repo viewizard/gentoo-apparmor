@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile mc /usr/bin/mc {
+profile mc@{p_user} /usr/bin/mc@{t_user} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ncurses>
@@ -19,7 +19,7 @@ profile mc /usr/bin/mc {
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(cont) peer="shell_users",
-  signal (send) set=(cont) peer="mc.cons.saver",
+  signal (send) set=(cont) peer="mc.cons.saver@{p_user}",
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -30,8 +30,8 @@ profile mc /usr/bin/mc {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mc						mr,
-  /usr/libexec/mc/cons.saver				Px,
-  @{shell}						Px -> shell_users,
+  /usr/libexec/mc/cons.saver@{t_user}			Px,
+  @{shell}@{t_user}					Px -> shell_users,
   
   # READS/WRITES ---------------------------------------
   /etc/mc/{,**}						r,
@@ -42,13 +42,8 @@ profile mc /usr/bin/mc {
   owner /tmp/mc-@{USER}/{,**}				w,
 }
 
-profile mc.cons.saver /usr/libexec/mc/cons.saver {
+profile mc.cons.saver@{p_user} /usr/libexec/mc/cons.saver@{t_user} {
   #include <abstractions/base>
-  
-  # CAPABILITIES ---------------------------------------
-  capability setuid,
-  capability dac_read_search,					# RBAC! Вызывается через sudo в X-сессии пользователя.
-  capability dac_override,					# RBAC! Вызывается через sudo в X-сессии пользователя.
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -59,7 +54,7 @@ profile mc.cons.saver /usr/libexec/mc/cons.saver {
   /usr/libexec/mc/cons.saver				mr,
 }
 
-profile mc_root {
+profile mc@{p_root} /usr/bin/mc@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ncurses>
@@ -75,7 +70,7 @@ profile mc_root {
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(cont) peer="shell_root",
-  signal (send) set=(cont) peer="mc.cons.saver",
+  signal (send) set=(cont) peer="mc.cons.saver@{p_root}",
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -86,8 +81,8 @@ profile mc_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mc						mr,
-  /usr/libexec/mc/cons.saver				Px,
-  @{shell}						Px -> shell_root,
+  /usr/libexec/mc/cons.saver@{t_root}			Px,
+  @{shell}@{t_root}					Px -> shell_root,
   
   # READS/WRITES ---------------------------------------
   /etc/mc/{,**}						r,
@@ -96,4 +91,21 @@ profile mc_root {
   
   # TEMP -----------------------------------------------
   owner /tmp/mc-root/{,**}				w,
+}
+
+profile mc.cons.saver@{p_root} /usr/libexec/mc/cons.saver@{t_root} {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability setuid,
+  capability dac_read_search,					# RBAC! Вызывается через sudo в X-сессии пользователя.
+  capability dac_override,					# RBAC! Вызывается через sudo в X-сессии пользователя.
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/vcsa[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/mc/cons.saver				mr,
 }

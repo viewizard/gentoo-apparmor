@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile man-db.mandb /usr/bin/mandb {
+profile man-db.mandb@{p_root} /usr/bin/mandb@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -29,8 +29,8 @@ profile man-db.mandb /usr/bin/mandb {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mandb					mr,
-  /bin/bzip2						Cx,	# app-arch/bzip2
-  /usr/libexec/man-db/manconv				Px,
+  /bin/bzip2@{t_root}					Cx,	# app-arch/bzip2
+  /usr/libexec/man-db/manconv@{t_root}			Px,
   
   # READS/WRITES ---------------------------------------
   /etc/man_db.conf					r,
@@ -39,7 +39,7 @@ profile man-db.mandb /usr/bin/mandb {
   /var/cache/man/**					rw,
   /var/cache/man/{,**/}*				k,
   
-  profile bzip2 /bin/bzip2 {
+  profile bzip2 /bin/bzip2@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -53,7 +53,7 @@ profile man-db.mandb /usr/bin/mandb {
   }
 }
 
-profile man-db.man /usr/bin/man {
+profile man-db.man@{p_root} /usr/bin/man@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -68,15 +68,15 @@ profile man-db.man /usr/bin/man {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/man						mr,
-  /bin/bzip2						Cx,	# app-arch/bzip2
-  /bin/gzip						Cx,	# app-arch/gzip
-  /usr/bin/less						Cx,	# sys-apps/less
-  /usr/bin/preconv					Cx,	# sys-apps/groff
-  /usr/bin/neqn						Cx,	# sys-apps/groff
-  /usr/bin/nroff					Px,	# sys-apps/groff
-  /usr/bin/tbl						Cx,	# sys-apps/groff
-  /usr/bin/manpager					Px,	# app-text/manpager
-  /usr/libexec/man-db/manconv				Px,
+  /bin/bzip2@{t_root}					Cx,	# app-arch/bzip2
+  /bin/gzip@{t_root}					Cx,	# app-arch/gzip
+  /usr/bin/less@{t_root}				Cx,	# sys-apps/less
+  /usr/bin/preconv@{t_root}				Cx,	# sys-apps/groff
+  /usr/bin/neqn@{t_root}				Cx,	# sys-apps/groff
+  /usr/bin/nroff@{t_root}				Px,	# sys-apps/groff
+  /usr/bin/tbl@{t_root}					Cx,	# sys-apps/groff
+  /usr/bin/manpager@{t_root}				Px,	# app-text/manpager
+  /usr/libexec/man-db/manconv@{t_root}			Px,
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -88,7 +88,7 @@ profile man-db.man /usr/bin/man {
   /var/cache/man/**					rw,
   /var/cache/man/{,**/}*				k,
   
-  profile bzip2 /bin/bzip2 {
+  profile bzip2 /bin/bzip2@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -102,7 +102,7 @@ profile man-db.man /usr/bin/man {
     /usr/share/man/{,**}				rw,
   }
   
-  profile gzip /bin/gzip {
+  profile gzip /bin/gzip@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -118,7 +118,7 @@ profile man-db.man /usr/bin/man {
     /var/cache/man/**					rw,
   }
   
-  profile less /usr/bin/less {
+  profile less /usr/bin/less@{t_root} {
     #include <abstractions/base>
     #include <abstractions/ncurses>
     
@@ -134,7 +134,7 @@ profile man-db.man /usr/bin/man {
     deny /var/cache/man/**				rw,
   }
   
-  profile preconv /usr/bin/preconv {
+  profile preconv /usr/bin/preconv@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -149,7 +149,7 @@ profile man-db.man /usr/bin/man {
     deny /var/cache/man/**				rw,
   }
   
-  profile neqn /usr/bin/neqn {
+  profile neqn /usr/bin/neqn@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -157,7 +157,7 @@ profile man-db.man /usr/bin/man {
     @{shell}						mr,
   }
   
-  profile tbl /usr/bin/tbl {
+  profile tbl /usr/bin/tbl@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -173,7 +173,7 @@ profile man-db.man /usr/bin/man {
   }
 }
 
-profile man-db.manconv /usr/libexec/man-db/manconv {
+profile man-db.manconv@{p_root} /usr/libexec/man-db/manconv@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -187,7 +187,7 @@ profile man-db.manconv /usr/libexec/man-db/manconv {
   deny /var/cache/man/**				rw,	# man-db.mandb
 }
 
-profile man-db.cron.daily /etc/cron.daily/man-db {
+profile man-db.cron.daily@{p_root} /etc/cron.daily/man-db@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -198,12 +198,12 @@ profile man-db.cron.daily /etc/cron.daily/man-db {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/man-db				r,
   @{shell}						mr,
-  /bin/chown						Cx,	# sys-apps/coreutils
-  /bin/chmod						Cx,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /usr/bin/nice						Cx,	# sys-apps/coreutils
+  /bin/chown@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/chmod@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /usr/bin/nice@{t_root}				Cx,	# sys-apps/coreutils
   
-  profile chown /bin/chown {
+  profile chown /bin/chown@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -213,7 +213,7 @@ profile man-db.cron.daily /etc/cron.daily/man-db {
     /var/cache/man/					w,
   }
   
-  profile chmod /bin/chmod {
+  profile chmod /bin/chmod@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -223,7 +223,7 @@ profile man-db.cron.daily /etc/cron.daily/man-db {
     /var/cache/man/					w,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -233,7 +233,7 @@ profile man-db.cron.daily /etc/cron.daily/man-db {
     /var/cache/man/					w,
   }
   
-  profile nice /usr/bin/nice {
+  profile nice /usr/bin/nice@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

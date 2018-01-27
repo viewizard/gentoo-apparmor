@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile gnupg.gpg-agent /usr/bin/gpg-agent {
+profile gnupg.gpg-agent@{p_user} /usr/bin/gpg-agent@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -20,7 +20,7 @@ profile gnupg.gpg-agent /usr/bin/gpg-agent {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/gpg-agent					mr,
-  /usr/bin/pinentry-*					Px,	# app-crypt/pinentry
+  /usr/bin/pinentry-*@{t_user}				Px,	# app-crypt/pinentry
   
   # READS/WRITES ---------------------------------------
   owner /run/user/@{UID}/gnupg/{,**}			rw,
@@ -31,7 +31,7 @@ profile gnupg.gpg-agent /usr/bin/gpg-agent {
   owner @{USER_HOME_D}/.gnupg/private-keys-*/{,**}	w,
 }
 
-profile gnupg.gpg /usr/bin/gpg{,2,-static} {
+profile gnupg.gpg@{p_user} /usr/bin/gpg{,2}@{t_user} {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -46,31 +46,21 @@ profile gnupg.gpg /usr/bin/gpg{,2,-static} {
   @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/gpg{,2,-static}				mr,
-  /usr/bin/gpg-agent					Px,
-  /usr/bin/dirmngr					Px,
+  /usr/bin/gpg{,2}					mr,
+  /usr/bin/gpg-agent@{t_user}				Px,
+  /usr/bin/dirmngr@{t_user}				Px,
   
   # READS/WRITES ---------------------------------------
   /etc/inputrc						r,
-  /run/openrc/dm-crypt-remdev.*/*			r,
   /run/user/@{UID}/gnupg/{,*}				rw,
-  /var/lib/gentoo/gkeys/keyrings/gentoo/release/	r,
-  /var/lib/gentoo/gkeys/keyrings/gentoo/release/**	rw,
-  owner link subset /var/lib/gentoo/gkeys/keyrings/gentoo/release/{,**/}* -> /var/lib/gentoo/gkeys/keyrings/gentoo/release/{,**/}*,
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.gnupg/{,**}			rw,
   owner @{USER_HOME_D}/.gnupg/{,**/}*			k,
   owner link subset @{USER_HOME_D}/.gnupg/{,**/}*	-> @{USER_HOME_D}/.gnupg/{,**/}*,
-  
-  # TEMP -----------------------------------------------
-  owner /var/tmp/portage/webrsync-@{TMP6}/portage-*	r,	# DELEGATION! portage.emerge-webrsync
-  
-  # NOISY ----------------------------------------------
-  deny /.gnupg/{,**}					r,	# В некоторых случаях, если HOME пользователя не определен, лезет в корень.
 }
 
-profile gnupg.gpgconf /usr/bin/gpgconf {
+profile gnupg.gpgconf@{p_user} /usr/bin/gpgconf@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -88,7 +78,7 @@ profile gnupg.gpgconf /usr/bin/gpgconf {
   owner @{USER_HOME_D}/.gnupg/{,**}			rw,
 }
 
-profile gnupg.gpgsm /usr/bin/gpgsm {
+profile gnupg.gpgsm@{p_user} /usr/bin/gpgsm@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -99,7 +89,7 @@ profile gnupg.gpgsm /usr/bin/gpgsm {
   /usr/bin/gpgsm					mr,
 }
 
-profile gnupg.dirmngr /usr/bin/dirmngr {
+profile gnupg.dirmngr@{p_user} /usr/bin/dirmngr@{t_user} {
   #include <abstractions/base>
   
   # NETWORK --------------------------------------------
@@ -124,4 +114,40 @@ profile gnupg.dirmngr /usr/bin/dirmngr {
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.gnupg/{,**}			rw,
+}
+
+profile gnupg.gpg@{p_root} /usr/bin/gpg{,2}@{t_root} {
+  #include <abstractions/base>
+  #include <abstractions/ncurses>
+  
+  # NETWORK --------------------------------------------
+  network inet stream,						# Импорт идентификатора ключа.
+  network inet6 stream,						# Импорт идентификатора ключа.
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  owner @{PROC_D}/@{pid}/fd/				r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/gpg{,2}					mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/inputrc						r,
+  /run/openrc/dm-crypt-remdev.*/*			r,
+  /var/lib/gentoo/gkeys/keyrings/gentoo/release/	r,
+  /var/lib/gentoo/gkeys/keyrings/gentoo/release/**	rw,
+  owner link subset /var/lib/gentoo/gkeys/keyrings/gentoo/release/{,**/}* -> /var/lib/gentoo/gkeys/keyrings/gentoo/release/{,**/}*,
+  
+  # USERS ----------------------------------------------
+  owner @{ROOT_HOME_D}/.gnupg/{,**}			rw,
+  owner @{ROOT_HOME_D}/.gnupg/{,**/}*			k,
+  owner link subset @{ROOT_HOME_D}/.gnupg/{,**/}*	-> @{ROOT_HOME_D}/.gnupg/{,**/}*,
+  
+  # TEMP -----------------------------------------------
+  owner /var/tmp/portage/webrsync-@{TMP6}/portage-*	r,	# DELEGATION! portage.emerge-webrsync
+  
+  # NOISY ----------------------------------------------
+  deny /.gnupg/{,**}					r,	# В некоторых случаях, если HOME пользователя не определен, лезет в корень.
 }

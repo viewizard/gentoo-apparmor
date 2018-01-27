@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile lm_sensors.sensors /usr/bin/sensors {
+profile lm_sensors.sensors@{p_all} /usr/bin/sensors@{t_all} {
   #include <abstractions/base>
   #include <abstractions/sensors>
   
@@ -30,7 +30,7 @@ profile lm_sensors.sensors /usr/bin/sensors {
   deny @{PROC_D}/@{pids}/net/dev			r,	# app-admin/conky, conky_shell
 }
 
-profile lm_sensors.init.d /etc/init.d/lm_sensors flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile lm_sensors.init.d@{p_root} /etc/init.d/lm_sensors@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -41,22 +41,22 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors flags=(attach_disconnected) {	#
   @{SYS_D}/fs/cgroup/unified/lm_sensors/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/sensors					Px,
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  /usr/bin/sensors@{t_root}				Px,
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/lm_sensors				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -72,7 +72,7 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors flags=(attach_disconnected) {	#
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -85,7 +85,7 @@ profile lm_sensors.init.d /etc/init.d/lm_sensors flags=(attach_disconnected) {	#
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

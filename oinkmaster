@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile oinkmaster /usr/bin/oinkmaster.pl {
+profile oinkmaster@{p_root} /usr/bin/oinkmaster.pl@{t_root} {
   #include <abstractions/base>
   #include <abstractions/perl>
   #include <abstractions/nameservice>
@@ -25,9 +25,9 @@ profile oinkmaster /usr/bin/oinkmaster.pl {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/oinkmaster.pl				mr,
-  /bin/gzip						Cx,	# app-arch/gzip
-  /bin/tar						Cx,	# app-arch/tar
-  /usr/bin/wget						Px,	# net-misc/wget
+  /bin/gzip@{t_root}					Cx,	# app-arch/gzip
+  /bin/tar@{t_root}					Cx,	# app-arch/tar
+  /usr/bin/wget@{t_root}				Px,	# net-misc/wget
   
   # READS/WRITES ---------------------------------------
   /etc/oinkmaster.conf					r,
@@ -38,7 +38,7 @@ profile oinkmaster /usr/bin/oinkmaster.pl {
   owner /tmp/oinkmaster.cron.@{TMP6}{,/,/**}		rw,
   owner /tmp/oinkmaster.@{TMP10}/{,**}			rw,
   
-  profile gzip /bin/gzip {
+  profile gzip /bin/gzip@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -49,7 +49,7 @@ profile oinkmaster /usr/bin/oinkmaster.pl {
     owner /tmp/oinkmaster.@{TMP10}/{,**}		rw,
   }
   
-  profile tar /bin/tar {
+  profile tar /bin/tar@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
@@ -63,7 +63,7 @@ profile oinkmaster /usr/bin/oinkmaster.pl {
 }
 
 # Профиль модифицированного скрипта для запуска обновления oinkmaster-а по cron-у.
-profile oinkmaster.cron.daily /etc/cron.daily/oinkmaster {
+profile oinkmaster.cron.daily@{p_root} /etc/cron.daily/oinkmaster@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -78,20 +78,20 @@ profile oinkmaster.cron.daily /etc/cron.daily/oinkmaster {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/oinkmaster				r,
   @{shell}						mr,
-  /bin/mktemp						Cx,	# sys-apps/coreutils
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/basename						Px,	# sys-apps/coreutils
-  /usr/bin/libnotify-notify-send-users			Px,	# x11-libs/libnotify
-  /usr/bin/mail						Px,	# mail-client/mailx
-  /usr/bin/logger					Px,	# sys-apps/util-linux
-  /usr/bin/oinkmaster.pl				Px,
-  /etc/init.d/suricata					Px,	# net-analyzer/suricata
+  /bin/mktemp@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/basename@{t_root}				Px,	# sys-apps/coreutils
+  /usr/bin/libnotify-notify-send-users@{t_root}		Px,	# x11-libs/libnotify
+  /usr/bin/mail@{t_root}				Px,	# mail-client/mailx
+  /usr/bin/logger@{t_root}				Px,	# sys-apps/util-linux
+  /usr/bin/oinkmaster.pl@{t_root}			Px,
+  /etc/init.d/suricata@{t_root}				Px,	# net-analyzer/suricata
   
   # TEMP -----------------------------------------------
   owner /tmp/oinkmaster.cron.@{TMP6}			rw,
   
-  profile mktemp /bin/mktemp {
+  profile mktemp /bin/mktemp@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -101,7 +101,7 @@ profile oinkmaster.cron.daily /etc/cron.daily/oinkmaster {
     owner /tmp/oinkmaster.cron.@{TMP6}			rw,
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -111,7 +111,7 @@ profile oinkmaster.cron.daily /etc/cron.daily/oinkmaster {
     owner /tmp/oinkmaster.cron.@{TMP6}			rw,
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------

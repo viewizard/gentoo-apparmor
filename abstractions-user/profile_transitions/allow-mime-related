@@ -13,8 +13,8 @@
 
 # sg/newgrp for work with network connection via iptables uid/gid-owner
 # IMPROVE! После возможности блокировки адресов и портов - убрать.
-/usr/bin/newgrp						Px,	# sys-apps/shadow
-/usr/bin/id						Px,	# sys-apps/coreutils
+/usr/bin/newgrp@{t_user}				Px,	# sys-apps/shadow
+/usr/bin/id@{t_user}					Px,	# sys-apps/coreutils
 
 ############################################################
 # Since all programs will be able to launch this binaries we
@@ -22,21 +22,21 @@
 # here, we need more strict rules with fixed programs list.
 ############################################################
 
-/usr/bin/ghex						Px,	# app-editors/ghex
-/usr/bin/juffed						Px,	# app-editors/juffed
-/usr/bin/mousepad					Px,	# app-editors/mousepad
-/usr/bin/engrampa					Px,	# app-arch/engrampa
-/usr/bin/thunar						Px,	# xfce-base/thunar
+/usr/bin/ghex@{t_user}					Px,	# app-editors/ghex
+/usr/bin/juffed@{t_user}				Px,	# app-editors/juffed
+/usr/bin/mousepad@{t_user}				Px,	# app-editors/mousepad
+/usr/bin/engrampa@{t_user}				Px,	# app-arch/engrampa
+/usr/bin/thunar@{t_user}				Px,	# xfce-base/thunar
 
-/usr/bin/transmission-gtk				Px,	# net-p2p/transmission
-/usr/lib{,32,64}/libreoffice/program/soffice		Px,	# app-office/libreoffice
-/usr/bin/{et,wpp,wps}					Px,	# app-office/wps-office
-/usr/bin/ristretto					Px,	# media-gfx/ristretto
-/usr/bin/gimp*						Px,	# media-gfx/gimp
-/usr/bin/inkscape					Px,	# media-gfx/inkscape
-/usr/bin/qpdfview					Px,	# app-text/qpdfview
-/usr/bin/audacious					Px,	# media-sound/audacious
-/usr/bin/mpv						Px,	# media-video/mpv
-/usr/bin/smplayer					Px,	# media-video/smplayer
-/usr/bin/vlc						Px,	# media-video/vlc
-/usr/bin/xfce4-terminal					Px,	# x11-terms/xfce4-terminal
+/usr/bin/transmission-gtk@{t_user}			Px,	# net-p2p/transmission
+/usr/lib{,32,64}/libreoffice/program/soffice@{t_user}	Px,	# app-office/libreoffice
+/usr/bin/{et,wpp,wps}@{t_user}				Px,	# app-office/wps-office
+/usr/bin/ristretto@{t_user}				Px,	# media-gfx/ristretto
+/usr/bin/gimp*@{t_user}					Px,	# media-gfx/gimp
+/usr/bin/inkscape@{t_user}				Px,	# media-gfx/inkscape
+/usr/bin/qpdfview@{t_user}				Px,	# app-text/qpdfview
+/usr/bin/audacious@{t_user}				Px,	# media-sound/audacious
+/usr/bin/mpv@{t_user}					Px,	# media-video/mpv
+/usr/bin/smplayer@{t_user}				Px,	# media-video/smplayer
+/usr/bin/vlc@{t_user}					Px,	# media-video/vlc
+/usr/bin/xfce4-terminal@{t_user}			Px,	# x11-terms/xfce4-terminal

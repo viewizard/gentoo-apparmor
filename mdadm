@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile mdadm /sbin/mdadm {
+profile mdadm@{p_root} /sbin/mdadm@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -45,7 +45,7 @@ profile mdadm /sbin/mdadm {
   owner /run/mdadm/*					rwk,
 }
 
-profile mdadm.checkarray /usr/sbin/checkarray {
+profile mdadm.checkarray@{p_root} /usr/sbin/checkarray@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -58,31 +58,31 @@ profile mdadm.checkarray /usr/sbin/checkarray {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/checkarray					r,
   @{shell}						mr,
-  /bin/ls						Cx,	# sys-apps/coreutils
-  /bin/egrep						Cx,	# sys-apps/grep
-  /usr/bin/getopt					Px,	# sys-apps/util-linux
+  /bin/ls@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/egrep@{t_root}					Cx,	# sys-apps/grep
+  /usr/bin/getopt@{t_root}				Px,	# sys-apps/util-linux
   
   # READS/WRITES ---------------------------------------
   /etc/default/mdadm					r,
   
-  profile ls /bin/ls {
+  profile ls /bin/ls@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/ls						mr,
   }
   
-  profile egrep /bin/egrep {
+  profile egrep /bin/egrep@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/egrep						r,
     @{shell}						mr,
-    /bin/grep						ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
+    /bin/grep@{t_root}					ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
   }
 }
 
-profile mdadm.init.d /etc/init.d/mdadm flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile mdadm.init.d@{p_root} /etc/init.d/mdadm@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -93,24 +93,24 @@ profile mdadm.init.d /etc/init.d/mdadm flags=(attach_disconnected) {	# attach_di
   @{SYS_D}/fs/cgroup/unified/mdadm/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /sbin/mdadm						Px,
+  @{shell}@{t_root}					Cx,
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /sbin/mdadm@{t_root}					Px,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/mdadm				r,
   /run/mdadm.pid					rwk,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -128,7 +128,7 @@ profile mdadm.init.d /etc/init.d/mdadm flags=(attach_disconnected) {	# attach_di
     /run/mdadm.pid					w,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -144,7 +144,7 @@ profile mdadm.init.d /etc/init.d/mdadm flags=(attach_disconnected) {	# attach_di
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -157,7 +157,7 @@ profile mdadm.init.d /etc/init.d/mdadm flags=(attach_disconnected) {	# attach_di
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -174,7 +174,7 @@ profile mdadm.init.d /etc/init.d/mdadm flags=(attach_disconnected) {	# attach_di
   }
 }
 
-profile mdadm.cron.weekly /etc/cron.weekly/mdadm {
+profile mdadm.cron.weekly@{p_root} /etc/cron.weekly/mdadm@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -183,10 +183,10 @@ profile mdadm.cron.weekly /etc/cron.weekly/mdadm {
   # EXECUTABLES ----------------------------------------
   /etc/cron.weekly/mdadm				r,
   @{shell}						mr,
-  /bin/date						Cx,	# sys-apps/coreutils
-  /usr/sbin/checkarray					Px,
+  /bin/date@{t_root}					Cx,	# sys-apps/coreutils
+  /usr/sbin/checkarray@{t_root}				Px,
   
-  profile date /bin/date {
+  profile date /bin/date@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------

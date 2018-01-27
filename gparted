@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile gparted.gparted-pkexec /usr/bin/gparted-pkexec flags=(complain) {
+profile gparted.gparted-pkexec@{p_user} /usr/bin/gparted-pkexec@{t_user} flags=(complain) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -21,10 +21,10 @@ profile gparted.gparted-pkexec /usr/bin/gparted-pkexec flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /usr/bin/gparted-pkexec				r,
   @{shell}						mr,
-  /usr/bin/pkexec					Px,	# sys-auth/polkit
+  /usr/bin/pkexec@{t_root}				Px,	# sys-auth/polkit
 }
 
-profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
+profile gparted.gpartedbin@{p_root} /usr/sbin/gpartedbin@{t_root} flags=(complain) {
   #include <abstractions/base>
   #include <abstractions-root/freedesktop.org>
   #include <abstractions-root/fonts>
@@ -61,25 +61,25 @@ profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/gpartedbin					mr,
-  /bin/umount						Cx,	# sys-apps/util-linux
-  /bin/udevadm						Px,	# sys-fs/eudev
-  /sbin/hdparm						ix,	# sys-apps/hdparm	# FIX ME! Вынести в отдельный профиль.
-  /sbin/blkid						Px,	# sys-apps/util-linux
-  /sbin/mdadm						Px,	# sys-fs/mdadm
-  /sbin/e2image						ix,	# sys-fs/e2fsprogs	# FIX ME! Вынести в отдельный профиль.
-  /sbin/lvm						Px,	# sys-fs/lvm2
-  /sbin/tune2fs						ix,	# sys-fs/e2fsprogs	# FIX ME! Вынести в отдельный профиль.
-  /sbin/dumpe2fs					ix,	# sys-fs/e2fsprogs	# FIX ME! Вынести в отдельный профиль.
-  /sbin/dmsetup						Px,	# sys-fs/lvm2
-  /sbin/mke2fs						Px,	# sys-fs/e2fsprogs
-  /sbin/swaplabel					ix,	# sys-apps/util-linux	# FIX ME! Вынести в отдельный профиль.
-  /sbin/mkswap						Px,	# sys-apps/util-linux
-  /usr/bin/mtools					ix,	# sys-fs/mtools		# FIX ME! Вынести в отдельный профиль.
-  /usr/sbin/mkfs.fat					Px,	# sys-fs/dosfstools
-  /usr/sbin/fsck.fat					Px,	# sys-fs/dosfstools
-  /usr/sbin/mkntfs					ix,	# sys-fs/ntfs3g		# FIX ME! Вынести в отдельный профиль.
-  /usr/sbin/ntfsresize					ix,	# sys-fs/ntfs3g		# FIX ME! Вынести в отдельный профиль.
-  /usr/sbin/ntfslabel					ix,	# sys-fs/ntfs3g		# FIX ME! Вынести в отдельный профиль.
+  /bin/umount@{t_root}					Cx,	# sys-apps/util-linux
+  /bin/udevadm@{t_root}					Px,	# sys-fs/eudev
+  /sbin/hdparm@{t_root}					ix,	# sys-apps/hdparm	# FIX ME! Вынести в отдельный профиль.
+  /sbin/blkid@{t_root}					Px,	# sys-apps/util-linux
+  /sbin/mdadm@{t_root}					Px,	# sys-fs/mdadm
+  /sbin/e2image@{t_root}				ix,	# sys-fs/e2fsprogs	# FIX ME! Вынести в отдельный профиль.
+  /sbin/lvm@{t_root}					Px,	# sys-fs/lvm2
+  /sbin/tune2fs@{t_root}				ix,	# sys-fs/e2fsprogs	# FIX ME! Вынести в отдельный профиль.
+  /sbin/dumpe2fs@{t_root}				ix,	# sys-fs/e2fsprogs	# FIX ME! Вынести в отдельный профиль.
+  /sbin/dmsetup@{t_root}				Px,	# sys-fs/lvm2
+  /sbin/mke2fs@{t_root}					Px,	# sys-fs/e2fsprogs
+  /sbin/swaplabel@{t_root}				ix,	# sys-apps/util-linux	# FIX ME! Вынести в отдельный профиль.
+  /sbin/mkswap@{t_root}					Px,	# sys-apps/util-linux
+  /usr/bin/mtools@{t_root}				ix,	# sys-fs/mtools		# FIX ME! Вынести в отдельный профиль.
+  /usr/sbin/mkfs.fat@{t_root}				Px,	# sys-fs/dosfstools
+  /usr/sbin/fsck.fat@{t_root}				Px,	# sys-fs/dosfstools
+  /usr/sbin/mkntfs@{t_root}				ix,	# sys-fs/ntfs3g		# FIX ME! Вынести в отдельный профиль.
+  /usr/sbin/ntfsresize@{t_root}				ix,	# sys-fs/ntfs3g		# FIX ME! Вынести в отдельный профиль.
+  /usr/sbin/ntfslabel@{t_root}				ix,	# sys-fs/ntfs3g		# FIX ME! Вынести в отдельный профиль.
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
@@ -87,7 +87,7 @@ profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
   /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
   /run/blkid/blkid.tab					r,
   
-  profile umount /bin/umount flags=(complain) {
+  profile umount /bin/umount@{t_root} flags=(complain) {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -95,7 +95,7 @@ profile gparted.gpartedbin /usr/sbin/gpartedbin flags=(complain) {
   }
 }
 
-profile gparted.gparted /usr/sbin/gparted flags=(complain) {
+profile gparted.gparted@{p_root} /usr/sbin/gparted@{t_root} flags=(complain) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -106,19 +106,19 @@ profile gparted.gparted /usr/sbin/gparted flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/gparted					r,
   @{shell}						mr,
-  /bin/ps						Px,	# sys-process/procps
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/egrep						Cx,	# sys-apps/grep
-  /bin/touch						Cx,	# sys-apps/coreutils
-  /bin/sed						Cx,	# sys-apps/sed
-  /usr/bin/id						Px,	# sys-apps/coreutils
-  /usr/sbin/gpartedbin					Px,
+  /bin/ps@{t_root}					Px,	# sys-process/procps
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/egrep@{t_root}					Cx,	# sys-apps/grep
+  /bin/touch@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/sed@{t_root}					Cx,	# sys-apps/sed
+  /usr/bin/id@{t_root}					Px,	# sys-apps/coreutils
+  /usr/sbin/gpartedbin@{t_root}				Px,
   
   # READS/WRITES ---------------------------------------
   /run/udev/rules.d/					r,
   
-  profile rm /bin/rm flags=(complain) {
+  profile rm /bin/rm@{t_root} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -132,7 +132,7 @@ profile gparted.gparted /usr/sbin/gparted flags=(complain) {
     /run/udev/rules.d/*					w,
   }
   
-  profile grep /bin/grep flags=(complain) {
+  profile grep /bin/grep@{t_root} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -143,7 +143,7 @@ profile gparted.gparted /usr/sbin/gparted flags=(complain) {
     /bin/grep						mr,
   }
   
-  profile egrep /bin/egrep flags=(complain) {
+  profile egrep /bin/egrep@{t_root} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -154,10 +154,10 @@ profile gparted.gparted /usr/sbin/gparted flags=(complain) {
     # EXECUTABLES --------------------------------------
     /bin/egrep						r,
     @{shell}						mr,
-    /bin/grep						ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
+    /bin/grep@{t_root}					ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
   }
   
-  profile touch /bin/touch flags=(complain) {
+  profile touch /bin/touch@{t_root} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -171,7 +171,7 @@ profile gparted.gparted /usr/sbin/gparted flags=(complain) {
     /run/udev/rules.d/*					w,
   }
   
-  profile sed /bin/sed flags=(complain) {
+  profile sed /bin/sed@{t_root} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------

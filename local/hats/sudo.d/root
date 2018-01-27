@@ -32,13 +32,13 @@
   owner @{PROC_D}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Px -> shell_sudo,
-  /usr/bin/thunar					Px -> thunar_root,	# xfce-base/thunar
-  /usr/bin/dbus-daemon					Px,	# sys-apps/dbus
-  /usr/bin/gksu_askpass.sh				Px,	# app-admin/sudo
-  /usr/bin/gsmartcontrol				Px,	# sys-apps/gsmartcontrol
-  /usr/sbin/firewall					Px,	# net-firewall/iptables
-  audit /media/sdb2/VM_SERVERS/launch_scripts/*		Px,	# app-emulation/qemu (скрипты запуска, без пакета безполезны)
+  @{shell}@{t_root}					Px -> shell_sudo,
+  /usr/bin/thunar@{t_root}				Px -> thunar_root,	# xfce-base/thunar
+  /usr/bin/dbus-daemon@{t_root}				Px,	# sys-apps/dbus
+  /usr/bin/gksu_askpass.sh@{t_root}			Px,	# app-admin/sudo
+  /usr/bin/gsmartcontrol@{t_root}			Px,	# sys-apps/gsmartcontrol
+  /usr/sbin/firewall@{t_root}				Px,	# net-firewall/iptables
+  audit /media/sdb2/VM_SERVERS/launch_scripts/*@{t_root} Px,	# app-emulation/qemu (скрипты запуска, без пакета безполезны)
   
   # READS/WRITES ---------------------------------------
   /etc/environment					r,	# sys-libs/pam

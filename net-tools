@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile net-tools.iptunnel /sbin/iptunnel {
+profile net-tools.iptunnel@{p_root} /sbin/iptunnel@{t_root} {
   #include <abstractions/base>
   
   # NETWORK --------------------------------------------
@@ -24,7 +24,7 @@ profile net-tools.iptunnel /sbin/iptunnel {
   /sbin/iptunnel					mr,
 }
 
-profile net-tools.ifconfig /bin/ifconfig {
+profile net-tools.ifconfig@{p_root} /bin/ifconfig@{t_root} {
   #include <abstractions/base>
   
   # NETWORK --------------------------------------------
@@ -43,7 +43,7 @@ profile net-tools.ifconfig /bin/ifconfig {
   deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
 }
 
-profile net-tools.netstat /bin/netstat {
+profile net-tools.netstat@{p_all} /bin/netstat@{t_all} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -78,7 +78,7 @@ profile net-tools.netstat /bin/netstat {
   deny /tmp/chkrootkit.cron.@{TMP6}			w,	# app-forensics/chkrootkit, chkrootkit.cron.daily
 }
 
-profile net-tools.hostname /bin/hostname {
+profile net-tools.hostname@{p_all} /bin/hostname@{t_all} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   

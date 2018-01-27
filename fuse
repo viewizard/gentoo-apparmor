@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile fuse.fusermount /usr/bin/fusermount {
+profile fuse.fusermount@{p_user} /usr/bin/fusermount@{t_user} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -23,14 +23,11 @@ profile fuse.fusermount /usr/bin/fusermount {
   unix (send, receive)
   			type=stream
 			addr=none
-  			peer=(addr=none,label="gvfs.gvfsd-fuse"),
+  			peer=(addr=none,label="gvfs.gvfsd-fuse@{p_user}"),
   
   # MOUNT ----------------------------------------------
-  mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /root/.gvfs/,
-  mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /root/.gvfs/,
   mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /run/user/@{UID}/gvfs/,
   mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /run/user/@{UID}/gvfs/,
-  umount /root/.gvfs/,
   umount /run/user/@{UID}/gvfs/,
   
   # PSEUDO ---------------------------------------------
@@ -43,7 +40,38 @@ profile fuse.fusermount /usr/bin/fusermount {
   # READS/WRITES ---------------------------------------
   /etc/fuse.conf					r,
   /run/user/@{UID}/gvfs/				r,
+}
+
+profile fuse.fusermount@{p_root} /usr/bin/fusermount@{t_root} {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # CAPABILITIES ---------------------------------------
+  capability sys_admin,
+  capability dac_override,
+  capability dac_read_search,
+  
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  			type=stream
+			addr=none
+  			peer=(addr=none,label="gvfs.gvfsd-fuse@{p_root}"),
+  
+  # MOUNT ----------------------------------------------
+  mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> @{ROOT_HOME_D}/.gvfs/,
+  mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> @{ROOT_HOME_D}/.gvfs/,
+  umount /root/.gvfs/,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/fuse						rw,
+  owner @{PROC_D}/@{pid}/mounts				r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/fusermount					mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/fuse.conf					r,
   
   # USERS ----------------------------------------------
-  owner /root/.gvfs/					r,
+  owner @{ROOT_HOME_D}/.gvfs/				r,
 }

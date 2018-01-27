@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile manpager /usr/bin/manpager {
+profile manpager@{p_root} /usr/bin/manpager@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -19,12 +19,12 @@ profile manpager /usr/bin/manpager {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/manpager					mr,
-  /usr/bin/less						Cx,	# sys-apps/less
+  /usr/bin/less@{t_root}				Cx,	# sys-apps/less
   
   # READS/WRITES ---------------------------------------
   /var/cache/man/**					rw,
   
-  profile less /usr/bin/less {
+  profile less /usr/bin/less@{t_root} {
     #include <abstractions/base>
     #include <abstractions/ncurses>
     

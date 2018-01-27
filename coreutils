@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile coreutils.df /bin/df {
+profile coreutils.df@{p_all} /bin/df@{t_all} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -26,7 +26,7 @@ profile coreutils.df /bin/df {
   /bin/df						mr,
 }
 
-profile coreutils.stat /usr/bin/stat {
+profile coreutils.stat@{p_all} /usr/bin/stat@{t_all} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -43,7 +43,7 @@ profile coreutils.stat /usr/bin/stat {
   /usr/bin/stat						mr,
 }
 
-profile coreutils.date /bin/date {
+profile coreutils.date@{p_all} /bin/date@{t_all} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -54,7 +54,7 @@ profile coreutils.date /bin/date {
   /bin/date						mr,
 }
 
-profile coreutils.uname /bin/uname flags=(attach_disconnected) {
+profile coreutils.uname@{p_all} /bin/uname@{t_all} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -74,7 +74,7 @@ profile coreutils.uname /bin/uname flags=(attach_disconnected) {
   deny /tmp/Code::Blocks-@{USER}			w,	# dev-util/codeblocks
 }
 
-profile coreutils.tty /bin/tty {
+profile coreutils.tty@{p_all} /bin/tty@{t_all} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -85,7 +85,7 @@ profile coreutils.tty /bin/tty {
   /bin/tty						mr,
 }
 
-profile coreutils.tr /bin/tr flags=(attach_disconnected) {
+profile coreutils.tr@{p_all} /bin/tr@{t_all} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -102,7 +102,7 @@ profile coreutils.tr /bin/tr flags=(attach_disconnected) {
   deny /tmp/chkrootkit.cron.@{TMP6}			w,	# app-forensics/chkrootkit, chkrootkit.cron.daily
 }
 
-profile coreutils.sleep /bin/sleep {
+profile coreutils.sleep@{p_all} /bin/sleep@{t_all} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -118,7 +118,7 @@ profile coreutils.sleep /bin/sleep {
   deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
 }
 
-profile coreutils.whoami /usr/bin/whoami {
+profile coreutils.whoami@{p_all} /usr/bin/whoami@{t_all} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -130,7 +130,7 @@ profile coreutils.whoami /usr/bin/whoami {
   /usr/bin/whoami					mr,
 }
 
-profile coreutils.id /usr/bin/id {
+profile coreutils.id@{p_all} /usr/bin/id@{t_all} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -149,7 +149,7 @@ profile coreutils.id /usr/bin/id {
   deny /var/log/emerge-fetch.log			a,	# sys-apps/portage, portage.emerge
 }
 
-profile coreutils.pinky /usr/bin/pinky {
+profile coreutils.pinky@{p_root} /usr/bin/pinky@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -164,7 +164,7 @@ profile coreutils.pinky /usr/bin/pinky {
   /run/utmp						rk,
 }
 
-profile coreutils.stty /bin/stty {
+profile coreutils.stty@{p_root} /bin/stty@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -180,7 +180,7 @@ profile coreutils.stty /bin/stty {
   deny /etc/conf.d/dmcrypt				r,	# sys-fs/cryptsetup, cryptsetup.init.d
 }
 
-profile coreutils.basename /bin/basename {
+profile coreutils.basename@{p_all} /bin/basename@{t_all} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -191,7 +191,7 @@ profile coreutils.basename /bin/basename {
   /bin/basename						mr,
 }
 
-profile coreutils.dirname /bin/dirname {
+profile coreutils.dirname@{p_all} /bin/dirname@{t_all} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -202,7 +202,7 @@ profile coreutils.dirname /bin/dirname {
   /bin/dirname						mr,
 }
 
-profile coreutils.echo /bin/echo {
+profile coreutils.echo@{p_all} /bin/echo@{t_all} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -221,7 +221,7 @@ profile coreutils.echo /bin/echo {
   deny /var/log/genkernel.log				w,	# sys-kernel/genkernel-next
 }
 
-profile coreutils.sync /bin/sync {
+profile coreutils.sync@{p_root} /bin/sync@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -233,7 +233,7 @@ profile coreutils.sync /bin/sync {
   /bin/sync						mr,
 }
 
-profile coreutils.true /bin/true {
+profile coreutils.true@{p_all} /bin/true@{t_all} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -244,7 +244,7 @@ profile coreutils.true /bin/true {
   /bin/true						mr,
 }
 
-profile coreutils.uniq /usr/bin/uniq {
+profile coreutils.uniq@{p_all} /usr/bin/uniq@{t_all} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -260,7 +260,7 @@ profile coreutils.uniq /usr/bin/uniq {
   deny /tmp/dailyhomebackup.cron.@{TMP6}		w,	# backup_daily.sh.cron.daily
 }
 
-profile coreutils.dircolors /usr/bin/dircolors {
+profile coreutils.dircolors@{p_all} /usr/bin/dircolors@{t_all} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -274,7 +274,7 @@ profile coreutils.dircolors /usr/bin/dircolors {
   /etc/DIR_COLORS					r,
 }
 
-profile coreutils.chroot /bin/chroot {
+profile coreutils.chroot@{p_root} /bin/chroot@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -289,7 +289,7 @@ profile coreutils.chroot /bin/chroot {
   @{CHROOT_D}/@{shell}					Px -> shell_chroot,
 }
 
-profile coreutils.pwd /bin/pwd {
+profile coreutils.pwd@{p_root} /bin/pwd@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------

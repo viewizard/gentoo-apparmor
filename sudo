@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile sudo /usr/bin/sudo {
+profile sudo@{p_user} /usr/bin/sudo@{t_user} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
@@ -30,7 +30,7 @@ profile sudo /usr/bin/sudo {
   # UNIX -----------------------------------------------
   unix (send, receive)
   		type=stream
-  		peer=(label="pam_mount.pmvarrun"),		# sys-auth/pam_mount
+  		peer=(label="pam_mount.pmvarrun@{p_user}"),	# sys-auth/pam_mount
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -51,9 +51,9 @@ profile sudo /usr/bin/sudo {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/sudo						mr,
-  @{shell}						Cx,
-  /usr/bin/gksu_askpass.sh				Px,
-  /usr/sbin/sendmail					Px,	# mail-mta/nullmailer
+  @{shell}@{t_user}					Cx,
+  /usr/bin/gksu_askpass.sh@{t_user}			Px,
+  /usr/sbin/sendmail@{t_user}				Px,	# mail-mta/nullmailer
   
   # READS/WRITES ---------------------------------------
   /etc/sudoers						r,
@@ -67,7 +67,7 @@ profile sudo /usr/bin/sudo {
   /run/sudo/ts/						rw,
   /run/sudo/ts/*					rwk,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_user} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -82,7 +82,7 @@ profile sudo /usr/bin/sudo {
   }
 }
 
-profile sudo.askpass /usr/bin/gksu_askpass.sh {
+profile sudo.askpass@{p_user} /usr/bin/gksu_askpass.sh@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -93,10 +93,10 @@ profile sudo.askpass /usr/bin/gksu_askpass.sh {
   # EXECUTABLES ----------------------------------------
   /usr/bin/gksu_askpass.sh				r,
   @{shell}						mr,
-  /usr/bin/zenity					Px,	# gnome-extra/zenity
+  /usr/bin/zenity@{t_user}				Px,	# gnome-extra/zenity
 }
 
-profile sudo.gksudo /usr/bin/{gksu,gksudo} {
+profile sudo.gksudo@{p_user} /usr/bin/{gksu,gksudo}@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -107,10 +107,10 @@ profile sudo.gksudo /usr/bin/{gksu,gksudo} {
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
   /usr/bin/{gksu,gksudo}				mr,
-  /usr/bin/sudo						Px,
+  /usr/bin/sudo@{t_user}					Px,
 }
 
-profile sudo.visudo /usr/sbin/visudo {
+profile sudo.visudo@{p_root} /usr/sbin/visudo@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -124,14 +124,14 @@ profile sudo.visudo /usr/sbin/visudo {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/visudo					mr,
-  /bin/nano						Cx,	# app-editors/nano
+  /bin/nano@{t_root}					Cx,	# app-editors/nano
   
   # READS/WRITES ---------------------------------------
   /etc/sudoers{,.tmp}					rwk,
   /etc/sudoers.d/{,*}					rwk,
   /usr/libexec/sudo/libsudo_util.so{,.[0-9]*}		mr,
   
-  profile nano /bin/nano {
+  profile nano /bin/nano@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/ncurses>

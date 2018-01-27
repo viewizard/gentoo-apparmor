@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile ima-evm-utils.evmctl /usr/bin/evmctl {
+profile ima-evm-utils.evmctl@{p_root} /usr/bin/evmctl@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -25,12 +25,12 @@ profile ima-evm-utils.evmctl /usr/bin/evmctl {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/evmctl					mr,
-  @{shell}						Cx,
+  @{shell}@{t_root}					Cx,
   
   # READS/WRITES ---------------------------------------
   /{,**}						r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -44,6 +44,6 @@ profile ima-evm-utils.evmctl /usr/bin/evmctl {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /sbin/blkid						Px,	# sys-apps/util-linux
+    /sbin/blkid@{t_root}				Px,	# sys-apps/util-linux
   }
 }

@@ -14,7 +14,7 @@
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="[^.]*"
 
-profile codeblocks /usr/bin/codeblocks {
+profile codeblocks@{p_user} /usr/bin/codeblocks@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -32,7 +32,7 @@ profile codeblocks /usr/bin/codeblocks {
   #include <local/profile_blocks/codeblocks.d/>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term) peer="codeblocks**",
+  signal (send) set=(term) peer="codeblocks**",			# FIX ME! прописать все с @{t_user}
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -40,14 +40,14 @@ profile codeblocks /usr/bin/codeblocks {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/codeblocks					mr,
-  @{shell}						Px -> codeblocks_shell,
-  /usr/bin/gcc						Cx -> build,	# sys-devel/gcc
-  /usr/bin/g++						Cx -> build,	# sys-devel/gcc
-  /usr/bin/llvm-ar					Cx -> build,	# sys-devel/llvm
-  audit /usr/bin/{,@{CHOST}-}clang-*			Cx -> build,	# sys-devel/clang	# FIX ME! audit 5.12.2017
-  deny /usr/bin/gfortran				x,	# sys-devel/gcc +fortran	# Не используем fortran.
-  /usr/lib{,32,64}/llvm/[0-9]*/bin/llvm-ar		Cx -> build,	# sys-devel/llvm
-  /usr/@{CHOST}/binutils-bin/[0-9]*/ar			Cx -> build,	# sys-devel/binutils
+  @{shell}@{t_user}					Px -> codeblocks_shell,
+  /usr/bin/gcc@{t_user}					Cx -> build,	# sys-devel/gcc
+  /usr/bin/g++@{t_user}					Cx -> build,	# sys-devel/gcc
+  /usr/bin/llvm-ar@{t_user}				Cx -> build,	# sys-devel/llvm
+  audit /usr/bin/{,@{CHOST}-}clang-*@{t_user}		Cx -> build,	# sys-devel/clang	# FIX ME! audit 5.12.2017
+  deny /usr/bin/gfortran@{t_user}			x,	# sys-devel/gcc +fortran	# Не используем fortran.
+  /usr/lib{,32,64}/llvm/[0-9]*/bin/llvm-ar@{t_user}	Cx -> build,	# sys-devel/llvm
+  /usr/@{CHOST}/binutils-bin/[0-9]*/ar@{t_user}		Cx -> build,	# sys-devel/binutils
   
   # READS/WRITES ---------------------------------------
   /etc/mime.types					r,
@@ -78,9 +78,9 @@ profile codeblocks /usr/bin/codeblocks {
     audit /usr/bin/{,@{CHOST}-}clang-*			mr,	# sys-devel/clang	# FIX ME! audit 5.12.2017
     /usr/lib{,32,64}/llvm/[0-9]*/bin/llvm-ar		mr,	# sys-devel/llvm
     /usr/@{CHOST}/binutils-bin/[0-9]*/ar		mr,	# sys-devel/binutils
-    /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-gcc		ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
-    /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-g++		ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
-    /usr/libexec/gcc/@{CHOST}/[0-9]*/cc1plus		ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
+    /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-gcc@{t_user}	ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
+    /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-g++@{t_user}	ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
+    /usr/libexec/gcc/@{CHOST}/[0-9]*/cc1plus@{t_user}	ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
     
     # READS/WRITES -------------------------------------
     /etc/lsb-release					r,
@@ -107,13 +107,13 @@ profile codeblocks_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /usr/bin/gcc-config					Px,	# sys-devel/gcc-config
-  /usr/bin/g++						Cx,	# sys-devel/gcc
+  /usr/bin/gcc-config@{t_user}				Px,	# sys-devel/gcc-config
+  /usr/bin/g++@{t_user}					Cx,	# sys-devel/gcc
   
   # TEMP -----------------------------------------------
   owner /tmp/Code::Blocks-@{USER}			w,
   
-  profile g++ /usr/bin/g++ {
+  profile g++ /usr/bin/g++@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwk>
     #include <abstractions/fs/deny-by-pattern-internet>

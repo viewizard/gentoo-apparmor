@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,12 +10,12 @@
 
 #include <local/tunables.d/>
 
-profile logcheck /usr/sbin/logcheck {
+profile logcheck@{p_logcheck} /usr/sbin/logcheck@{t_logcheck} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term) peer="logcheck//lockfile-create",
+  signal (send) set=(term) peer="logcheck@{p_logcheck}//lockfile-create",
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -23,28 +23,28 @@ profile logcheck /usr/sbin/logcheck {
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
   /usr/sbin/logcheck					r,
-  /bin/date						Cx,	# sys-apps/coreutils
-  /bin/hostname						Px,	# sys-apps/net-tools
-  /bin/basename						Px,	# sys-apps/coreutils
-  /bin/expr						Cx,	# sys-apps/coreutils
-  /bin/mktemp						Cx,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/run-parts					Cx,	# sys-apps/debianutils
-  /bin/mv						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/egrep						Cx,	# sys-apps/grep
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/tr						Px,	# sys-apps/coreutils
-  /bin/sed						Cx,	# sys-apps/sed
-  /bin/ls						Cx,	# sys-apps/coreutils
-  /bin/sort						Cx,	# sys-apps/coreutils
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/cp						Cx,	# sys-apps/coreutils
-  /bin/wc						Cx,	# sys-apps/coreutils
-  /usr/bin/id						Px,	# sys-apps/coreutils
-  /usr/bin/lockfile-create				Cx,
-  /usr/bin/mime-construct				Cx,	# dev-perl/mime-construct
-  /usr/sbin/logtail2					Px,
+  /bin/date@{t_logcheck}				Cx,	# sys-apps/coreutils
+  /bin/hostname@{t_logcheck}				Px,	# sys-apps/net-tools
+  /bin/basename@{t_logcheck}				Px,	# sys-apps/coreutils
+  /bin/expr@{t_logcheck}				Cx,	# sys-apps/coreutils
+  /bin/mktemp@{t_logcheck}				Cx,	# sys-apps/coreutils
+  /bin/mkdir@{t_logcheck}				Cx,	# sys-apps/coreutils
+  /bin/run-parts@{t_logcheck}				Cx,	# sys-apps/debianutils
+  /bin/mv@{t_logcheck}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_logcheck}				Cx,	# sys-apps/grep
+  /bin/egrep@{t_logcheck}				Cx,	# sys-apps/grep
+  /bin/cat@{t_logcheck}					Cx,	# sys-apps/coreutils
+  /bin/tr@{t_logcheck}					Px,	# sys-apps/coreutils
+  /bin/sed@{t_logcheck}					Cx,	# sys-apps/sed
+  /bin/ls@{t_logcheck}					Cx,	# sys-apps/coreutils
+  /bin/sort@{t_logcheck}				Cx,	# sys-apps/coreutils
+  /bin/rm@{t_logcheck}					Cx,	# sys-apps/coreutils
+  /bin/cp@{t_logcheck}					Cx,	# sys-apps/coreutils
+  /bin/wc@{t_logcheck}					Cx,	# sys-apps/coreutils
+  /usr/bin/id@{t_logcheck}				Px,	# sys-apps/coreutils
+  /usr/bin/lockfile-create@{t_logcheck}			Cx,
+  /usr/bin/mime-construct@{t_logcheck}			Cx,	# dev-perl/mime-construct
+  /usr/sbin/logtail2@{t_logcheck}			Px,
   
   # READS/WRITES ---------------------------------------
   /etc/logcheck/{,**}					r,
@@ -52,21 +52,21 @@ profile logcheck /usr/sbin/logcheck {
   # TEMP -----------------------------------------------
   owner /tmp/logcheck.@{TMP6}/{,**}			rw,
   
-  profile date /bin/date {
+  profile date /bin/date@{t_logcheck} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/date						mr,
   }
   
-  profile expr /bin/expr {
+  profile expr /bin/expr@{t_logcheck} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/expr						mr,
   }
   
-  profile mktemp /bin/mktemp {
+  profile mktemp /bin/mktemp@{t_logcheck} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -76,7 +76,7 @@ profile logcheck /usr/sbin/logcheck {
     owner /tmp/logcheck.@{TMP6}/			w,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_logcheck} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -86,7 +86,7 @@ profile logcheck /usr/sbin/logcheck {
     owner /tmp/logcheck.@{TMP6}/**/			w,
   }
   
-  profile run-parts /bin/run-parts {
+  profile run-parts /bin/run-parts@{t_logcheck} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -96,7 +96,7 @@ profile logcheck /usr/sbin/logcheck {
     /etc/logcheck/{,**/}				r,
   }
   
-  profile mv /bin/mv {
+  profile mv /bin/mv@{t_logcheck} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -106,14 +106,14 @@ profile logcheck /usr/sbin/logcheck {
     owner /tmp/logcheck.@{TMP6}/{,**}			rw,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_logcheck} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
   }
   
-  profile egrep /bin/egrep {
+  profile egrep /bin/egrep@{t_logcheck} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -122,7 +122,7 @@ profile logcheck /usr/sbin/logcheck {
     # EXECUTABLES --------------------------------------
     /bin/egrep						r,
     @{shell}						mr,
-    /bin/grep						ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
+    /bin/grep@{t_logcheck}				ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
     
     # READS/WRITES -------------------------------------
     /etc/logcheck/{,**}					r,
@@ -131,7 +131,7 @@ profile logcheck /usr/sbin/logcheck {
     owner /tmp/logcheck.@{TMP6}/{,**}			r,
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_logcheck} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -141,14 +141,14 @@ profile logcheck /usr/sbin/logcheck {
     owner /tmp/logcheck.@{TMP6}/{,**}			rw,
   }
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_logcheck} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/sed						mr,
   }
   
-  profile ls /bin/ls {
+  profile ls /bin/ls@{t_logcheck} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -158,7 +158,7 @@ profile logcheck /usr/sbin/logcheck {
     owner /tmp/logcheck.@{TMP6}/{,**}			r,
   }
   
-  profile sort /bin/sort {
+  profile sort /bin/sort@{t_logcheck} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -168,7 +168,7 @@ profile logcheck /usr/sbin/logcheck {
     owner /tmp/logcheck.@{TMP6}/{,**}			r,
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_logcheck} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -178,7 +178,7 @@ profile logcheck /usr/sbin/logcheck {
     owner /tmp/logcheck.@{TMP6}/{,**}			rw,
   }
   
-  profile cp /bin/cp {
+  profile cp /bin/cp@{t_logcheck} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -188,14 +188,14 @@ profile logcheck /usr/sbin/logcheck {
     owner /tmp/logcheck.@{TMP6}/{,**}			rw,
   }
   
-  profile wc /bin/wc {
+  profile wc /bin/wc@{t_logcheck} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/wc						mr,
   }
   
-  profile lockfile-create /usr/bin/lockfile-create {
+  profile lockfile-create /usr/bin/lockfile-create@{t_logcheck} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -207,7 +207,7 @@ profile logcheck /usr/sbin/logcheck {
     link subset /run/lock/logcheck/logcheck.lock	-> /run/lock/logcheck/*,
   }
   
-  profile mime-construct /usr/bin/mime-construct {
+  profile mime-construct /usr/bin/mime-construct@{t_logcheck} {
     #include <abstractions/base>
     #include <abstractions/perl>
     
@@ -220,7 +220,7 @@ profile logcheck /usr/sbin/logcheck {
   }
 }
 
-profile logcheck.logtail2 /usr/sbin/logtail2 {
+profile logcheck.logtail2@{p_logcheck} /usr/sbin/logtail2@{t_logcheck} {
   #include <abstractions/base>
   #include <abstractions/perl>
   
@@ -240,7 +240,7 @@ profile logcheck.logtail2 /usr/sbin/logtail2 {
   owner /tmp/logcheck.@{TMP6}/{,**}			rw,
 }
 
-profile logcheck.cron.hourly /etc/cron.hourly/logcheck.cron {
+profile logcheck.cron.hourly@{p_root} /etc/cron.hourly/logcheck.cron@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -253,12 +253,12 @@ profile logcheck.cron.hourly /etc/cron.hourly/logcheck.cron {
   # EXECUTABLES ----------------------------------------
   /etc/cron.hourly/logcheck.cron			r,
   @{shell}						mr,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/chown						Cx,	# sys-apps/coreutils
-  /bin/su						Px,	# sys-apps/shadow
-  /usr/sbin/logcheck					Px,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/chown@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/su@{t_root}					Px,	# sys-apps/shadow
+#  /usr/sbin/logcheck					Px,	# FIX ME! 24.01.2018 Проверить, скрипт не вызывает его.
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -268,7 +268,7 @@ profile logcheck.cron.hourly /etc/cron.hourly/logcheck.cron {
     /run/lock/logcheck/					w,
   }
   
-  profile chown /bin/chown {
+  profile chown /bin/chown@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
@@ -292,5 +292,5 @@ profile shell_logcheck {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /usr/sbin/logcheck					Px,
+  /usr/sbin/logcheck@{t_logcheck}			Px,
 }

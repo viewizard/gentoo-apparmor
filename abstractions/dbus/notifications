@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -13,21 +13,21 @@ dbus send
 	path="/org/freedesktop/DBus"
 	interface=org.freedesktop.DBus
 	member=ListNames
-	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon"),
+	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon@{p_any}"),
 
 dbus send
 	bus=session
 	path="/org/freedesktop/Notifications"
 	interface="org.freedesktop.DBus.Introspectable"
-	peer=(name="org.freedesktop.Notifications",label="xfce4-notifyd"),	# xfce-extra/xfce4-notifyd
+	peer=(name="org.freedesktop.Notifications",label="xfce4-notifyd@{p_user}"),	# xfce-extra/xfce4-notifyd
 
 dbus send
 	bus=session
 	path="/org/freedesktop/Notifications"
 	interface="org.freedesktop.Notifications"
-	peer=(name="org.freedesktop.Notifications",label="xfce4-notifyd"),	# xfce-extra/xfce4-notifyd
+	peer=(name="org.freedesktop.Notifications",label="xfce4-notifyd@{p_user}"),	# xfce-extra/xfce4-notifyd
 dbus (send, receive)
 	bus=session
 	path="/org/freedesktop/Notifications"
 	interface="org.freedesktop.Notifications"
-	peer=(name=":[0-9]*.[0-9]*",label="xfce4-notifyd"),			# xfce-extra/xfce4-notifyd
+	peer=(name=":[0-9]*.[0-9]*",label="xfce4-notifyd@{p_user}"),			# xfce-extra/xfce4-notifyd

@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile conky /usr/bin/conky {
+profile conky@{p_user} /usr/bin/conky@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -33,8 +33,8 @@ profile conky /usr/bin/conky {
   @{PROC_D}/@{pid}/net/dev				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Px -> conky_shell,
   /usr/bin/conky					mr,
+  @{shell}@{t_user}					Px -> conky_shell,
   
   # READS/WRITES ---------------------------------------
   /etc/conky/{,*}					r,
@@ -62,21 +62,21 @@ profile conky_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/tail						Cx,	# sys-apps/coreutils
-  /bin/head						Cx,	# sys-apps/coreutils
-  /bin/date						Cx,	# sys-apps/coreutils
-  /bin/sed						Cx,	# sys-apps/sed
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/cut						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/wc						Cx,	# sys-apps/coreutils
-  /usr/bin/cal						Px,	# sys-apps/util-linux
-  /usr/bin/sensors					Px,	# sys-apps/lm_sensors
+  /bin/tail@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/head@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/date@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/sed@{t_user}					Cx,	# sys-apps/sed
+  /bin/cat@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/cut@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_user}					Cx,	# sys-apps/grep
+  /bin/wc@{t_user}					Cx,	# sys-apps/coreutils
+  /usr/bin/cal@{t_user}					Px,	# sys-apps/util-linux
+  /usr/bin/sensors@{t_user}				Px,	# sys-apps/lm_sensors
   
   # READS/WRITES ---------------------------------------
   /usr/portage/metadata/timestamp			r,	# sys-apps/portage
   
-  profile tail /bin/tail {
+  profile tail /bin/tail@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -94,7 +94,7 @@ profile conky_shell {
     deny @{PROC_D}/@{pids}/net/dev			r,	# conky_shell
   }
   
-  profile head /bin/head {
+  profile head /bin/head@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -112,7 +112,7 @@ profile conky_shell {
     deny @{PROC_D}/@{pids}/net/dev			r,	# conky_shell
   }
   
-  profile date /bin/date {
+  profile date /bin/date@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -130,7 +130,7 @@ profile conky_shell {
     deny @{PROC_D}/@{pids}/net/dev			r,	# conky_shell
   }
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -148,7 +148,7 @@ profile conky_shell {
     deny @{PROC_D}/@{pids}/net/dev			r,	# conky_shell
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -170,7 +170,7 @@ profile conky_shell {
     deny @{PROC_D}/@{pids}/net/dev			r,	# conky_shell
   }
   
-  profile cut /bin/cut {
+  profile cut /bin/cut@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -188,7 +188,7 @@ profile conky_shell {
     deny @{PROC_D}/@{pids}/net/dev			r,	# conky_shell
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -206,7 +206,7 @@ profile conky_shell {
     deny @{PROC_D}/@{pids}/net/dev			r,	# conky_shell
   }
   
-  profile wc /bin/wc {
+  profile wc /bin/wc@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------

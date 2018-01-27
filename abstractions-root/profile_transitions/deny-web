@@ -12,9 +12,11 @@
 # Пока нет отдельной ветки root, запрещаем вообще запуск браузеров
 # и почтовых клиентов под root-ом.
 
-audit deny /usr/bin/chromium-browser			x,	# www-client/chromium
-audit deny /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh x,	# www-client/chromium	# Используется, если установлен приложением по умолчанию.
-audit deny /usr/bin/firefox				x,	# www-client/firefox
-audit deny /usr/lib{,32,64}/firefox/firefox		x,	# www-client/firefox	# Используется, если установлен приложением по умолчанию.
-audit deny /usr/bin/links				x,	# www-client/links
-audit deny /usr/bin/claws-mail				x,	# mail-client/claws-mail
+audit deny /usr/bin/chromium-browser@{t_root}		x,	# www-client/chromium
+audit deny /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh@{t_root} x,	# www-client/chromium
+								# Используется, если установлен приложением по умолчанию.
+audit deny /usr/bin/firefox@{t_root}			x,	# www-client/firefox
+audit deny /usr/lib{,32,64}/firefox/firefox@{t_root}	x,	# www-client/firefox
+								# Используется, если установлен приложением по умолчанию.
+audit deny /usr/bin/links@{t_root}			x,	# www-client/links
+audit deny /usr/bin/claws-mail@{t_root}			x,	# mail-client/claws-mail

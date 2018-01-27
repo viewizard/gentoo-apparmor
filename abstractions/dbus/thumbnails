@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -12,9 +12,9 @@ dbus send
 	bus=session
 	path="/org/freedesktop/thumbnails/*"
 	interface="org.freedesktop.thumbnails.*"
-	peer=(name="org.freedesktop.thumbnails.*",label="tumbler"),	# xfce-extra/tumbler
+	peer=(name="org.freedesktop.thumbnails.*",label="tumbler@{p_user}"),	# xfce-extra/tumbler
 dbus receive
 	bus=session
 	path="/org/freedesktop/thumbnails/*"
 	interface="org.freedesktop.thumbnails.*"
-	peer=(name=":[0-9]*.[0-9]*",label="tumbler"),			# xfce-extra/tumbler
+	peer=(name=":[0-9]*.[0-9]*",label="tumbler@{p_user}"),			# xfce-extra/tumbler

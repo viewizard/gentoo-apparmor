@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile e2fsprogs.e2fsck /sbin/e2fsck {
+profile e2fsprogs.e2fsck@{p_root} /sbin/e2fsck@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -34,7 +34,7 @@ profile e2fsprogs.e2fsck /sbin/e2fsck {
   /run/blkid/blkid.tab					r,
 }
 
-profile e2fsprogs.mke2fs /sbin/mke2fs {
+profile e2fsprogs.mke2fs@{p_root} /sbin/mke2fs@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -60,7 +60,7 @@ profile e2fsprogs.mke2fs /sbin/mke2fs {
   link subset /run/blkid/blkid.tab.old			-> /run/blkid/blkid.tab,
 }
 
-profile e2fsprogs.tune2fs /sbin/tune2fs {
+profile e2fsprogs.tune2fs@{p_root} /sbin/tune2fs@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -78,7 +78,7 @@ profile e2fsprogs.tune2fs /sbin/tune2fs {
   /run/blkid/blkid.tab					r,
 }
 
-profile e2fsprogs.resize2fs /sbin/resize2fs {
+profile e2fsprogs.resize2fs@{p_root} /sbin/resize2fs@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -92,7 +92,7 @@ profile e2fsprogs.resize2fs /sbin/resize2fs {
   /sbin/resize2fs					mr,
 }
 
-profile e2fsprogs.dumpe2fs /sbin/dumpe2fs {
+profile e2fsprogs.dumpe2fs@{p_root} /sbin/dumpe2fs@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   

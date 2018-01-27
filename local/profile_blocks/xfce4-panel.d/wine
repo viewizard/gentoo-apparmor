@@ -11,9 +11,9 @@
 # Запуск с установкой нужного WINEPREFIX.
 
 # EXECUTABLES ------------------------------------------
-/bin/env						Cx,
+/bin/env@{t_user}					Cx,
 
-profile env /bin/env {
+profile env /bin/env@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -22,6 +22,6 @@ profile env /bin/env {
   
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,
-  /usr/bin/wine						Px,	# app-emulation/wine
-  /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]*	Px,	# app-emulation/wine-*
+  /usr/bin/wine@{t_user}				Px,	# app-emulation/wine
+  /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]*@{t_user} Px,	# app-emulation/wine-*
 }

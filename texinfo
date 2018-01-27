@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile texinfo.install-info /usr/bin/install-info {
+profile texinfo.install-info@{p_root} /usr/bin/install-info@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -30,7 +30,7 @@ profile texinfo.install-info /usr/bin/install-info {
   /usr/share/gcc-data/@{CHOST}/[0-9]*/info/dir		w,	# sys-devel/gcc
 }
 
-profile texinfo.info /usr/bin/info {
+profile texinfo.info@{p_root} /usr/bin/info@{t_root} {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -40,7 +40,7 @@ profile texinfo.info /usr/bin/info {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/info						mr,
-  @{shell}						Px -> texinfo_info_shell,
+  @{shell}@{t_root}					Px -> texinfo_info_shell,
   
   # READS/WRITES -------------------------------------
   /usr/share/info/dir					r,
@@ -62,12 +62,12 @@ profile texinfo_info_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/bzip2						Cx,	# app-arch/bzip2
+  /bin/bzip2@{t_root}					Cx,	# app-arch/bzip2
   
   # READS/WRITES ---------------------------------------
   /usr/share/info/**.bz2				r,
   
-  profile bzip2 /bin/bzip2 {
+  profile bzip2 /bin/bzip2@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------

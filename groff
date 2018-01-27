@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile groff /usr/bin/groff flags=(attach_disconnected) {
+profile groff@{p_root} /usr/bin/groff@{t_root} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -18,8 +18,8 @@ profile groff /usr/bin/groff flags=(attach_disconnected) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/groff					mr,
-  /usr/bin/grotty					Px,
-  /usr/bin/troff					Px,
+  /usr/bin/grotty@{t_root}				Px,
+  /usr/bin/troff@{t_root}				Px,
 
   # READS/WRITES ---------------------------------------
   /usr/share/groff/{,**}				r,
@@ -28,7 +28,7 @@ profile groff /usr/bin/groff flags=(attach_disconnected) {
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile groff.grotty /usr/bin/grotty flags=(attach_disconnected) {
+profile groff.grotty@{p_root} /usr/bin/grotty@{t_root} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -44,7 +44,7 @@ profile groff.grotty /usr/bin/grotty flags=(attach_disconnected) {
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile groff.troff /usr/bin/troff flags=(attach_disconnected) {
+profile groff.troff@{p_root} /usr/bin/troff@{t_root} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -60,7 +60,7 @@ profile groff.troff /usr/bin/troff flags=(attach_disconnected) {
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile groff.nroff /usr/bin/nroff {
+profile groff.nroff@{p_root} /usr/bin/nroff@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------

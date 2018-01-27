@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile kbd.fgconsole /usr/bin/fgconsole {
+profile kbd.fgconsole@{p_root} /usr/bin/fgconsole@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -25,7 +25,7 @@ profile kbd.fgconsole /usr/bin/fgconsole {
   /usr/bin/fgconsole					mr,
 }
 
-profile kbd.deallocvt /usr/bin/deallocvt {
+profile kbd.deallocvt@{p_user} /usr/bin/deallocvt@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -36,7 +36,7 @@ profile kbd.deallocvt /usr/bin/deallocvt {
   /usr/bin/deallocvt					mr,
 }
 
-profile kbd.chvt /usr/bin/chvt {				# Корректировать с xorg-server.xdm.init.d.
+profile kbd.chvt@{p_root} /usr/bin/chvt@{t_root} {		# Корректировать с xorg-server.xdm.init.d.
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -47,7 +47,7 @@ profile kbd.chvt /usr/bin/chvt {				# Корректировать с xorg-serve
   /usr/bin/chvt						mr,
 }
 
-profile kbd.kbd_mode /usr/bin/kbd_mode {
+profile kbd.kbd_mode@{p_root} /usr/bin/kbd_mode@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -62,7 +62,7 @@ profile kbd.kbd_mode /usr/bin/kbd_mode {
   /usr/bin/kbd_mode					mr,
 }
 
-profile kbd.loadkeys /usr/bin/loadkeys {
+profile kbd.loadkeys@{p_root} /usr/bin/loadkeys@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -75,13 +75,13 @@ profile kbd.loadkeys /usr/bin/loadkeys {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/loadkeys					mr,
-  @{shell}						Cx,
+  @{shell}@{t_root}					Cx,
   
   # READS/WRITES ---------------------------------------
   /							r,
   /usr/share/keymaps/{,**}				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
@@ -95,14 +95,14 @@ profile kbd.loadkeys /usr/bin/loadkeys {
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/gzip						ix,	# app-arch/gzip		# Оставляем вызов через ix.
+    /bin/gzip@{t_root}					ix,	# app-arch/gzip		# Оставляем вызов через ix.
     
     # READS/WRITES -------------------------------------
     /usr/share/keymaps/{,**/,**.gz}			r,
   }
 }
 
-profile kbd.dumpkeys /usr/bin/dumpkeys {
+profile kbd.dumpkeys@{p_root} /usr/bin/dumpkeys@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -120,7 +120,7 @@ profile kbd.dumpkeys /usr/bin/dumpkeys {
   /lib{,32,64}/rc/console/keymap			w,	# sys-apps/openrc
 }
 
-profile kbd.setfont /usr/bin/setfont {
+profile kbd.setfont@{p_root} /usr/bin/setfont@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -133,14 +133,14 @@ profile kbd.setfont /usr/bin/setfont {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/setfont					mr,
-  @{shell}						Cx,
+  @{shell}@{t_root}					Cx,
   
   # READS/WRITES ---------------------------------------
   /							r,
   /usr/share/consolefonts/{,**}				r,
   /lib{,32,64}/rc/console/font				rw,	# sys-apps/openrc
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
@@ -154,7 +154,7 @@ profile kbd.setfont /usr/bin/setfont {
     /dev/pts/[0-9]*					rw,
     
     # EXECUTABLES --------------------------------------
-    /bin/gzip						ix,	# app-arch/gzip		# Оставляем вызов через ix.
+    /bin/gzip@{t_root}					ix,	# app-arch/gzip		# Оставляем вызов через ix.
     
     # READS/WRITES -------------------------------------
     /usr/share/consolefonts/{,**/,**.gz}		r,

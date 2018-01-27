@@ -15,24 +15,24 @@ dbus receive
 	bus=session
 	path="/org/mpris/MediaPlayer2"
 	interface="org.freedesktop.DBus.Properties"
-	peer=(name=":[0-9]*.[0-9]*",label="@{MPRIS2_CLIENTS}"),
+	peer=(name=":[0-9]*.[0-9]*",label="@{MPRIS2_CLIENTS}@{p_user}"),
 dbus receive
 	bus=session
 	path="/org/mpris/MediaPlayer2"
 	interface="org.mpris.MediaPlayer2.Playlists"
-	peer=(name=":[0-9]*.[0-9]*",label="@{MPRIS2_CLIENTS}"),
+	peer=(name=":[0-9]*.[0-9]*",label="@{MPRIS2_CLIENTS}@{p_user}"),
 dbus send
 	bus=session
 	path="/org/mpris/MediaPlayer2"
 	interface="org.freedesktop.DBus.Properties"
-	peer=(name="org.freedesktop.DBus",label="@{MPRIS2_CLIENTS}"),
+	peer=(name="org.freedesktop.DBus",label="@{MPRIS2_CLIENTS}@{p_user}"),
 dbus send
 	bus=session
 	path="/org/mpris/MediaPlayer2"
 	interface="org.mpris.MediaPlayer2.Player"
-	peer=(name="org.freedesktop.DBus",label="@{MPRIS2_CLIENTS}"),
+	peer=(name="org.freedesktop.DBus",label="@{MPRIS2_CLIENTS}@{p_user}"),
 dbus receive
 	bus=session
 	path="/org/mpris/MediaPlayer2"
 	interface="org.mpris.MediaPlayer2.Player"
-	peer=(name=":[0-9]*.[0-9]*",label="@{MPRIS2_CLIENTS}"),
+	peer=(name=":[0-9]*.[0-9]*",label="@{MPRIS2_CLIENTS}@{p_user}"),

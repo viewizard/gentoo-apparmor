@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile glib.gsettings /usr/bin/gsettings {
+profile glib.gsettings@{p_root} /usr/bin/gsettings@{t_root} {
   #include <abstractions/base>
   #include <abstractions-root/freedesktop.org>
   #include <abstractions-root/gtk>
@@ -24,7 +24,7 @@ profile glib.gsettings /usr/bin/gsettings {
   /usr/bin/gsettings					mr,
 }
 
-profile glib.glib-compile-schemas /usr/bin/glib-compile-schemas {
+profile glib.glib-compile-schemas@{p_root} /usr/bin/glib-compile-schemas@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------

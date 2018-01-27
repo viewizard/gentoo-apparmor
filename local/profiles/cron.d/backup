@@ -14,7 +14,7 @@
 # Важно! Перезагрузка профиля выполняется командой:
 # apparmor_parser -r /etc/apparmor.d/2_local
 
-profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
+profile backup_daily.sh.cron.daily@{p_root} /etc/cron.daily/backup_daily.sh@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -27,25 +27,25 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/backup_daily.sh			r,
   @{shell}						mr,
-  /bin/chmod						Cx,	# sys-apps/coreutils
-  /bin/date						Cx,	# sys-apps/coreutils
-  /bin/tar						Cx,	# app-arch/tar
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/mktemp						Cx,	# sys-apps/coreutils
-  /bin/sort						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/mount						Cx,	# sys-apps/util-linux
-  /bin/umount						Cx,	# sys-apps/util-linux
-  /bin/basename						Px,	# sys-apps/coreutils
-  audit /sbin/cryptsetup				Px,	# sys-fs/cryptsetup	# FIX ME! 10.11.2017 audit
-  /sbin/lvm						Px,	# sys-fs/lvm2
-  /usr/bin/libnotify-notify-send-users			Px,	# x11-libs/libnotify
-  /usr/bin/gawk						Cx,	# sys-apps/gawk
-  /usr/bin/find						Cx,	# sys-apps/findutils
-  /usr/bin/stat						Cx,	# sys-apps/coreutils
-  /usr/bin/mail						Px,	# mail-client/mailx
-  /usr/bin/logger					Px,	# sys-apps/util-linux
+  /bin/chmod@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/date@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/tar@{t_root}					Cx,	# app-arch/tar
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mktemp@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/sort@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/mount@{t_root}					Cx,	# sys-apps/util-linux
+  /bin/umount@{t_root}					Cx,	# sys-apps/util-linux
+  /bin/basename@{t_root}				Px,	# sys-apps/coreutils
+  audit /sbin/cryptsetup@{t_root}			Px,	# sys-fs/cryptsetup	# FIX ME! 10.11.2017 audit
+  /sbin/lvm@{t_root}					Px,	# sys-fs/lvm2
+  /usr/bin/libnotify-notify-send-users@{t_root}		Px,	# x11-libs/libnotify
+  /usr/bin/gawk@{t_root}				Cx,	# sys-apps/gawk
+  /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils
+  /usr/bin/stat@{t_root}				Cx,	# sys-apps/coreutils
+  /usr/bin/mail@{t_root}				Px,	# mail-client/mailx
+  /usr/bin/logger@{t_root}				Px,	# sys-apps/util-linux
   
   # READS/WRITES ---------------------------------------
   /etc/backup_daily.conf				r,
@@ -54,7 +54,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
   /tmp/dailyhomebackup.cron.@{TMP6}			rw,
   /tmp/dailyhomebackup.cron.@{TMP6}/			r,
   
-  profile chmod /bin/chmod {
+  profile chmod /bin/chmod@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -67,7 +67,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
   }
   
-  profile date /bin/date {
+  profile date /bin/date@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -77,7 +77,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
   }
   
-  profile tar /bin/tar {
+  profile tar /bin/tar@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
@@ -101,7 +101,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -112,7 +112,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     /tmp/dailyhomebackup.cron.@{TMP6}{,/}		rw,
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -125,7 +125,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
   }
   
-  profile mktemp /bin/mktemp {
+  profile mktemp /bin/mktemp@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -135,7 +135,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     /tmp/dailyhomebackup.cron.@{TMP6}{,/}		rw,
   }
   
-  profile sort /bin/sort {
+  profile sort /bin/sort@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -145,7 +145,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -155,7 +155,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     /tmp/dailyhomebackup.cron.@{TMP6}			w,
   }
   
-  profile mount /bin/mount {
+  profile mount /bin/mount@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -178,7 +178,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
   }
   
-  profile umount /bin/umount {
+  profile umount /bin/umount@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -197,7 +197,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
   }
   
-  profile gawk /usr/bin/gawk {
+  profile gawk /usr/bin/gawk@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -207,7 +207,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     /tmp/dailyhomebackup.cron.@{TMP6}			w,
   }
   
-  profile find /usr/bin/find {
+  profile find /usr/bin/find@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -221,7 +221,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
     deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
   }
   
-  profile stat /usr/bin/stat {
+  profile stat /usr/bin/stat@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -232,7 +232,7 @@ profile backup_daily.sh.cron.daily /etc/cron.daily/backup_daily.sh {
   }
 }
 
-profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
+profile backup_weekly.sh.cron.weekly@{p_root} /etc/cron.weekly/backup_weekly.sh@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -242,24 +242,24 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
   # EXECUTABLES ----------------------------------------
   /etc/cron.weekly/backup_weekly.sh			r,
   @{shell}						mr,
-  /bin/chmod						Cx,	# sys-apps/coreutils
-  /bin/date						Cx,	# sys-apps/coreutils
-  /bin/tar						Cx,	# app-arch/tar
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/mktemp						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/sort						Cx,	# sys-apps/coreutils
-  /bin/mount						Cx,	# sys-apps/util-linux
-  /bin/umount						Cx,	# sys-apps/util-linux
-  /bin/basename						Px,	# sys-apps/coreutils
-  /sbin/lvm						Px,	# sys-fs/lvm2
-  /usr/bin/libnotify-notify-send-users			Px,	# x11-libs/libnotify
-  /usr/bin/gawk						Cx,	# sys-apps/gawk
-  /usr/bin/find						Cx,	# sys-apps/findutils
-  /usr/bin/stat						Cx,	# sys-apps/coreutils
-  /usr/bin/mail						Px,	# mail-client/mailx
-  /usr/bin/logger					Px,	# sys-apps/util-linux
+  /bin/chmod@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/date@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/tar@{t_root}					Cx,	# app-arch/tar
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mktemp@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/sort@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mount@{t_root}					Cx,	# sys-apps/util-linux
+  /bin/umount@{t_root}					Cx,	# sys-apps/util-linux
+  /bin/basename@{t_root}				Px,	# sys-apps/coreutils
+  /sbin/lvm@{t_root}					Px,	# sys-fs/lvm2
+  /usr/bin/libnotify-notify-send-users@{t_root}		Px,	# x11-libs/libnotify
+  /usr/bin/gawk@{t_root}				Cx,	# sys-apps/gawk
+  /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils
+  /usr/bin/stat@{t_root}				Cx,	# sys-apps/coreutils
+  /usr/bin/mail@{t_root}				Px,	# mail-client/mailx
+  /usr/bin/logger@{t_root}				Px,	# sys-apps/util-linux
   
   # READS/WRITES ---------------------------------------
   /etc/backup_weekly.conf				r,
@@ -268,7 +268,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
   /tmp/rootbackup.cron.@{TMP6}				rw,
   /tmp/rootbackup.cron.@{TMP6}/				r,
   
-  profile chmod /bin/chmod {
+  profile chmod /bin/chmod@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -282,7 +282,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     deny /tmp/rootbackup.cron.@{TMP6}			w,
   }
   
-  profile date /bin/date {
+  profile date /bin/date@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -292,7 +292,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     deny /tmp/rootbackup.cron.@{TMP6}			w,
   }
   
-  profile tar /bin/tar {
+  profile tar /bin/tar@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
@@ -317,7 +317,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     deny /tmp/rootbackup.cron.@{TMP6}			w,
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -329,7 +329,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     /tmp/rootbackup.cron.@{TMP6}{,/}			rw,
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -342,7 +342,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     deny /tmp/rootbackup.cron.@{TMP6}			w,
   }
   
-  profile mktemp /bin/mktemp {
+  profile mktemp /bin/mktemp@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -352,7 +352,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     /tmp/rootbackup.cron.@{TMP6}{,/}			rw,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -362,7 +362,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     /tmp/rootbackup.cron.@{TMP6}			w,
   }
   
-  profile sort /bin/sort {
+  profile sort /bin/sort@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -372,7 +372,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     /tmp/rootbackup.cron.@{TMP6}			w,
   }
   
-  profile mount /bin/mount {
+  profile mount /bin/mount@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -395,7 +395,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     deny /tmp/rootbackup.cron.@{TMP6}			w,
   }
   
-  profile umount /bin/umount {
+  profile umount /bin/umount@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -414,7 +414,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     deny /tmp/rootbackup.cron.@{TMP6}			w,
   }
   
-  profile gawk /usr/bin/gawk {
+  profile gawk /usr/bin/gawk@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -424,7 +424,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     /tmp/rootbackup.cron.@{TMP6}			w,
   }
   
-  profile find /usr/bin/find {
+  profile find /usr/bin/find@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -438,7 +438,7 @@ profile backup_weekly.sh.cron.weekly /etc/cron.weekly/backup_weekly.sh {
     deny /tmp/rootbackup.cron.@{TMP6}			w,
   }
   
-  profile stat /usr/bin/stat {
+  profile stat /usr/bin/stat@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------

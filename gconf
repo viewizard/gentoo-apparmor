@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile gconf.gconfd-2 /usr/libexec/gconfd-2 {
+profile gconf.gconfd-2@{p_all} /usr/libexec/gconfd-2@{t_all} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/system-strict>
@@ -45,7 +45,7 @@ profile gconf.gconfd-2 /usr/libexec/gconfd-2 {
   owner @{USER_HOME_D}/.config/gconf/{,**}		rw,
 }
 
-profile gconf.gsettings-data-convert /usr/bin/gsettings-data-convert {
+profile gconf.gsettings-data-convert@{p_user} /usr/bin/gsettings-data-convert@{t_user} {
   #include <abstractions/base>
   #include <abstractions/dbus/session-strict>
   

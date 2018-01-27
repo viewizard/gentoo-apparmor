@@ -19,7 +19,7 @@
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="[^.]*.@{local_ext}{,.*}"
 
-profile orage /usr/bin/orage {
+profile orage@{p_user} /usr/bin/orage@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -55,9 +55,9 @@ profile orage /usr/bin/orage {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/orage					mr,
-  /usr/bin/globaltime					Px,
-  /usr/bin/sox						Cx,	# media-sound/sox
-  /usr/bin/exo-open					Px,	# xfce-base/exo
+  /usr/bin/globaltime@{t_user}				Px,
+  /usr/bin/sox@{t_user}					Cx,	# media-sound/sox
+  /usr/bin/exo-open@{t_user}				Px,	# xfce-base/exo
   
   # READS/WRITES ---------------------------------------
   /etc/timezone						r,
@@ -68,7 +68,7 @@ profile orage /usr/bin/orage {
   owner @{USER_HOME_D}/.local/share/orage/{,**}		rw,
   owner @{USER_HOME_D}/.local/share/orage/{,**/}*	k,
   
-  profile sox /usr/bin/sox {					# /usr/bin/play -> sox (media-sound/sox)
+  profile sox /usr/bin/sox@{t_user} {				# /usr/bin/play -> sox (media-sound/sox)
     #include <abstractions/base>
     #include <abstractions-user/audio>
     #include <abstractions-user/X-connection-strict>
@@ -86,7 +86,7 @@ profile orage /usr/bin/orage {
   }
 }
 
-profile orage.globaltime /usr/bin/globaltime {
+profile orage.globaltime@{p_user} /usr/bin/globaltime@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>

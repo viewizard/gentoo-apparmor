@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile eselect /usr/bin/eselect {
+profile eselect@{p_root} /usr/bin/eselect@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -21,35 +21,35 @@ profile eselect /usr/bin/eselect {
   # EXECUTABLES ----------------------------------------
   /usr/bin/eselect					r,
   @{shell}						mr,
-  /bin/readlink						Cx,	# sys-apps/coreutils
-  /bin/ln						Cx,	# sys-apps/coreutils
-  /bin/mv						Cx,	# sys-apps/coreutils
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/sed						Cx,	# sys-apps/sed
-  /bin/sort						Cx,	# sys-apps/coreutils
-  /bin/head						Cx,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/mktemp						Cx,	# sys-apps/coreutils
-  /bin/cut						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/chgrp						Cx,	# sys-apps/coreutils
-  /bin/chmod						Cx,	# sys-apps/coreutils
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/tr						Cx,	# sys-apps/coreutils
-  /bin/ls						Cx,	# sys-apps/coreutils
-  /bin/uname						Px,	# sys-apps/coreutils
-  /usr/bin/file						Cx,	# sys-apps/file
-  /usr/bin/scanelf					Cx,	# app-misc/pax-utils
-  /usr/bin/tput						Px,	# sys-libs/ncurses
-  /usr/bin/binutils-config				Px,	# sys-devel/binutils-config
-  /usr/bin/locale					Px,	# sys-libs/glibc	# eselect locale
-  /etc/init.d/*						Pxr,	# sys-apps/openrc	# eselect rc (r - для вывода списка).
-  /lib{,32,64}/rc/bin/service_stopp{ing,ed}		Px,	# sys-apps/openrc
-  /lib{,32,64}/rc/bin/service_start{ing,ed}		Px,	# sys-apps/openrc
-  /lib{,32,64}/rc/bin/service_inactive			Px,	# sys-apps/openrc
-  /lib{,32,64}/rc/bin/service_crashed			Px,	# sys-apps/openrc
-  /lib{,32,64}/rc/bin/service_hotplugged		Px,	# sys-apps/openrc
-  @{PYTHON_EXEC_WRAPPER}				Cx -> portage,	# dev-lang/python-exec
+  /bin/readlink@{t_root}				Cx,	# sys-apps/coreutils
+  /bin/ln@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mv@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/sed@{t_root}					Cx,	# sys-apps/sed
+  /bin/sort@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/head@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mktemp@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/cut@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/chgrp@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/chmod@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/tr@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/ls@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/uname@{t_root}					Px,	# sys-apps/coreutils
+  /usr/bin/file@{t_root}				Cx,	# sys-apps/file
+  /usr/bin/scanelf@{t_root}				Cx,	# app-misc/pax-utils
+  /usr/bin/tput@{t_root}				Px,	# sys-libs/ncurses
+  /usr/bin/binutils-config@{t_root}			Px,	# sys-devel/binutils-config
+  /usr/bin/locale@{t_root}				Px,	# sys-libs/glibc	# eselect locale
+  /etc/init.d/*@{t_root}				Px,	# sys-apps/openrc	# eselect rc
+  /lib{,32,64}/rc/bin/service_stopp{ing,ed}@{t_root}	Px,	# sys-apps/openrc
+  /lib{,32,64}/rc/bin/service_start{ing,ed}@{t_root}	Px,	# sys-apps/openrc
+  /lib{,32,64}/rc/bin/service_inactive@{t_root}		Px,	# sys-apps/openrc
+  /lib{,32,64}/rc/bin/service_crashed@{t_root}		Px,	# sys-apps/openrc
+  /lib{,32,64}/rc/bin/service_hotplugged@{t_root}	Px,	# sys-apps/openrc
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx -> portage,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -62,6 +62,7 @@ profile eselect /usr/bin/eselect {
   /etc/env.d/99editor					rw,	# eselect visual
   /etc/env.d/99pager					rw,	# eselect pager
   /etc/env.d/cblas/lib{,32,64}/{,*}			rw,	# eselect cblas
+  /etc/init.d/*						r,	# eselect rc (для вывода списка).
   /etc/fonts/conf.avail/				r,	# eselect fontconfig
   /etc/python-exec/python-exec.conf			r,	# eselect python
   /etc/python-exec/python-exec.conf.new			w,	# eselect python
@@ -76,7 +77,7 @@ profile eselect /usr/bin/eselect {
   /var/lib/wxwidgets/{,**}				rw,	# eselect wxwidgets
   /var/lib/gentoo/news/news-gentoo.*			rw,	# eselect news
   
-  profile readlink /bin/readlink {
+  profile readlink /bin/readlink@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -87,7 +88,7 @@ profile eselect /usr/bin/eselect {
     /bin/readlink					mr,
   }
   
-  profile ln /bin/ln {
+  profile ln /bin/ln@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -124,7 +125,7 @@ profile eselect /usr/bin/eselect {
     /usr/bin/function_grep.pl				w,	# eselect wine
   }
   
-  profile mv /bin/mv {
+  profile mv /bin/mv@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -142,7 +143,7 @@ profile eselect /usr/bin/eselect {
     /usr/bin/pinentry{,.new}				rw,	# eselect pinentry
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -200,7 +201,7 @@ profile eselect /usr/bin/eselect {
     /usr/share/applications/wine.desktop		w,	# eselect wine
   }
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -218,7 +219,7 @@ profile eselect /usr/bin/eselect {
     /usr/local/portage/profiles/profiles.desc		r,	# eselect profile
   }
   
-  profile sort /bin/sort {
+  profile sort /bin/sort@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -232,7 +233,7 @@ profile eselect /usr/bin/eselect {
     /bin/sort						mr,
   }
   
-  profile head /bin/head {
+  profile head /bin/head@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -243,7 +244,7 @@ profile eselect /usr/bin/eselect {
     /bin/head						mr,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -254,21 +255,21 @@ profile eselect /usr/bin/eselect {
     /bin/mkdir						mr,
   }
   
-  profile mktemp /bin/mktemp {
+  profile mktemp /bin/mktemp@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/mktemp						mr,
   }
   
-  profile cut /bin/cut {
+  profile cut /bin/cut@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/cut						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -279,7 +280,7 @@ profile eselect /usr/bin/eselect {
     /bin/grep						mr,
   }
   
-  profile chgrp /bin/chgrp {
+  profile chgrp /bin/chgrp@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
@@ -294,7 +295,7 @@ profile eselect /usr/bin/eselect {
     /var/lib/gentoo/news/news-gentoo.{,un}read		w,	# eselect news
   }
   
-  profile chmod /bin/chmod {
+  profile chmod /bin/chmod@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -308,7 +309,7 @@ profile eselect /usr/bin/eselect {
     /var/lib/gentoo/news/news-gentoo.{,un}read		w,	# eselect news
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -322,7 +323,7 @@ profile eselect /usr/bin/eselect {
     /usr/share/qt4/graphicssystems/*			r,	# eselect qtgraphicssystem
   }
   
-  profile tr /bin/tr {
+  profile tr /bin/tr@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -333,7 +334,7 @@ profile eselect /usr/bin/eselect {
     /bin/tr						mr,
   }
   
-  profile ls /bin/ls {
+  profile ls /bin/ls@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -347,14 +348,14 @@ profile eselect /usr/bin/eselect {
     /usr/share/qt4/graphicssystems/			r,	# eselect qtgraphicssystem
   }
   
-  profile file /usr/bin/file {
+  profile file /usr/bin/file@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/file					mr,
   }
   
-  profile scanelf /usr/bin/scanelf {
+  profile scanelf /usr/bin/scanelf@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -373,7 +374,7 @@ profile eselect /usr/bin/eselect {
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/portageq				Px,	# sys-apps/portage
-    @{PYTHON_EXEC}/env-update				Px,	# sys-apps/portage
+    @{PYTHON_EXEC}/portageq@{t_root}			Px,	# sys-apps/portage
+    @{PYTHON_EXEC}/env-update@{t_root}			Px,	# sys-apps/portage
   }
 }
