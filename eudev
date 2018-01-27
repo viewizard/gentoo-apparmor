@@ -95,6 +95,7 @@ profile eudev.udevd /sbin/udevd {
   @{SYS_D}/devices/virtual/**				r,
   @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/queue/scheduler w,
   @{SYS_D}/devices/**/input/input@{input}/{,capabilities/}* r,
+  @{SYS_D}/devices/**/input/input@{input}/id/bustype	r,
   @{SYS_D}/devices/pnp[0-9]*/*/rtc/rtc[0-9]*/hctosys	r,
   @{SYS_D}/module/block/parameters/events_dfl_poll_msecs rw,
   @{SYS_D}/module/*/initstate				r,
