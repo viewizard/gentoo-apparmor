@@ -16,7 +16,7 @@
 # "любой" профиль
 # для ptrace, signal, unix и dbus peer/label-ов, т.к. не можем
 # использовать @{p_all} в этом случае, нужен именно перечень
-@{p_any}=:{all,user,root,logcheck}
+@{p_any}=:{all,user,root,logcheck,polkitd}
 
 # все пользователи (в т.ч. системные)
 @{p_all}=:all
@@ -26,9 +26,28 @@
 @{p_user}=:user
 @{t_user}=:[1-9][0-9][0-9][0-9]
 
+# sshd 22
+# man 13
+# cron 16
+# messagebus 101
+# ntp 123
+# dnsmasq 104
+# nullmail 88
+# suricata 108
+# tor 109
+# dnscrypt 107
+
+# системный пользователь portage
+@{p_portage}=:portage
+@{t_portage}=:102
+
 # системный пользователь logcheck
 @{p_logcheck}=:logcheck
 @{t_logcheck}=:106
+
+# системный пользователь polkitd
+@{p_polkitd}=:polkitd
+@{t_polkitd}=:102
 
 # специальный пользователь root
 @{p_root}=:root

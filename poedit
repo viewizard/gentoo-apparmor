@@ -23,7 +23,7 @@
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="[^.]*.@{local_ext}"
 
-profile poedit /usr/bin/poedit {
+profile poedit@{p_user} /usr/bin/poedit@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -46,10 +46,10 @@ profile poedit /usr/bin/poedit {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/poedit					mr,
-  @{shell}						Cx,
-  /usr/bin/msgmerge					Cx,	# sys-devel/gettext
-  /usr/bin/msgfmt					Cx,	# sys-devel/gettext
-  /usr/bin/msgcat					Cx,	# sys-devel/gettext
+  @{shell}@{t_user}					Cx,
+  /usr/bin/msgmerge@{t_user}				Cx,	# sys-devel/gettext
+  /usr/bin/msgfmt@{t_user}				Cx,	# sys-devel/gettext
+  /usr/bin/msgcat@{t_user}				Cx,	# sys-devel/gettext
   
   # READS/WRITES ---------------------------------------
   /usr/share/poedit/{,**}				r,
@@ -64,7 +64,7 @@ profile poedit /usr/bin/poedit {
   # TEMP -----------------------------------------------
   owner /tmp/poedit@{TMP6}/{,**}			rw,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -74,14 +74,14 @@ profile poedit /usr/bin/poedit {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,	# sys-apps/coreutils
-    /usr/bin/lsb_release				Px,	# sys-apps/lsb-release
+    /bin/uname@{t_user}					Px,	# sys-apps/coreutils
+    /usr/bin/lsb_release@{t_user}			Px,	# sys-apps/lsb-release
     
     # DENY INHERIT -------------------------------------
     deny /run/user/@{UID}/poedit.lock			w,
   }
   
-  profile msgmerge /usr/bin/msgmerge {
+  profile msgmerge /usr/bin/msgmerge@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwk>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -102,7 +102,7 @@ profile poedit /usr/bin/poedit {
     deny @{USER_HOME_D}/.local/share/poedit/{,**}	rw,
   }
   
-  profile msgfmt /usr/bin/msgfmt {
+  profile msgfmt /usr/bin/msgfmt@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwk>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -122,7 +122,7 @@ profile poedit /usr/bin/poedit {
     deny @{USER_HOME_D}/.local/share/poedit/{,**}	rw,
   }
   
-  profile msgcat /usr/bin/msgcat {
+  profile msgcat /usr/bin/msgcat@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwk>
     #include <abstractions/fs/deny-by-pattern-internet>

@@ -20,7 +20,7 @@
 
 #include <local/tunables.d/>
 
-profile portage.emerge @{PYTHON_EXEC}/emerge {
+profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -38,9 +38,9 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   capability setfcap,
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term,kill) peer="portage.emerge//shell",
-  signal (send) set=(term,kill) peer="portage.emerge//sandbox",
-  signal (send) set=(term,kill) peer="portage.emerge//rsync",
+  signal (send) set=(term,kill) peer="portage.emerge@{p_root}//shell",
+  signal (send) set=(term,kill) peer="portage.emerge@{p_root}//sandbox",
+  signal (send) set=(term,kill) peer="portage.emerge@{p_root}//rsync",
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -64,23 +64,23 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						cx,
-  /bin/stty						Px,	# sys-apps/coreutils
-  /bin/mount						Cx,	# sys-apps/util-linux
-  /bin/tar						Cx,	# app-arch/tar
-  /sbin/ldconfig					Px,	# sys-libs/glibc
-  /usr/bin/sandbox					cx,	# sys-apps/sandbox
-  /usr/bin/find						Cx,	# sys-apps/findutils
-  /usr/bin/id						Px,	# sys-apps/coreutils
-  /usr/bin/install-info					Px,	# sys-apps/texinfo
-  /usr/bin/scanelf					Cx,	# app-misc/pax-utils
-  /usr/bin/wget						Px,	# net-misc/wget
-  /usr/bin/desktop-file-validate			Cx,	# dev-util/desktop-file-utils
-  /usr/bin/rsync					Cx,	# net-misc/rsync
-  /usr/bin/gcc-config					Px,	# sys-devel/gcc-config
-  /usr/bin/free						Cx,	# sys-process/procps
-  /usr/bin/@{PYTHON}{,m}				ixr,	# r - нужно для детектирования версии программами.
-  /usr/@{CHOST}/binutils-bin/[0-9]*/ld			Cx,	# sys-devel/binutils
-  /etc/portage/repo.postsync.d/*			Px,	# Выполняем скрипты, если у них есть профили.
+  /bin/stty@{t_root}					Px,	# sys-apps/coreutils
+  /bin/mount@{t_root}					Cx,	# sys-apps/util-linux
+  /bin/tar@{t_root}					Cx,	# app-arch/tar
+  /sbin/ldconfig@{t_root}				Px,	# sys-libs/glibc
+  /usr/bin/sandbox@{t_root}				cx,	# sys-apps/sandbox
+  /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils
+  /usr/bin/id@{t_root}					Px,	# sys-apps/coreutils
+  /usr/bin/install-info@{t_root}			Px,	# sys-apps/texinfo
+  /usr/bin/scanelf@{t_root}				Cx,	# app-misc/pax-utils
+  /usr/bin/wget@{t_root}				Px,	# net-misc/wget
+  /usr/bin/desktop-file-validate@{t_root}		Cx,	# dev-util/desktop-file-utils
+  /usr/bin/rsync@{t_root}				Cx,	# net-misc/rsync
+  /usr/bin/gcc-config@{t_root}				Px,	# sys-devel/gcc-config
+  /usr/bin/free@{t_root}				Cx,	# sys-process/procps
+  /usr/bin/@{PYTHON}{,m}@{t_root}			ixr,	# r - нужно для детектирования версии программами.
+  /usr/@{CHOST}/binutils-bin/[0-9]*/ld@{t_root}		Cx,	# sys-devel/binutils
+  /etc/portage/repo.postsync.d/*@{t_root}		Px,	# Выполняем скрипты, если у них есть профили.
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -108,7 +108,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   /tmp/*						rwk,	# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
   								# IMPROVE! (?) Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile mount /bin/mount {
+  profile mount /bin/mount@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -129,7 +129,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /run/mount/utab					rw,
   }
   
-  profile tar /bin/tar flags=(complain) {			# FIX ME! complain 06.10.2017
+  profile tar /bin/tar flags=(complain)@{t_root} {		# FIX ME! complain 06.10.2017
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -140,7 +140,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /bin/tar						mr,
   }
   
-  profile find /usr/bin/find flags=(complain) {			# FIX ME! complain 06.10.2017
+  profile find /usr/bin/find@{t_root} flags=(complain) {	# FIX ME! complain 06.10.2017
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -160,7 +160,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /usr/local/portage/{,**}				r,
   }
   
-  profile scanelf /usr/bin/scanelf flags=(complain) {		# FIX ME! complain 06.10.2017
+  profile scanelf /usr/bin/scanelf@{t_root} flags=(complain) {	# FIX ME! complain 06.10.2017
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -174,7 +174,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /usr/bin/scanelf					mr,
   }
   
-  profile desktop-file-validate /usr/bin/desktop-file-validate flags=(complain) {	# FIX ME! complain 06.10.2017
+  profile desktop-file-validate /usr/bin/desktop-file-validate@{t_root} flags=(complain) {	# FIX ME! complain 06.10.2017
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -188,7 +188,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /var/tmp/portage/*/*/**.desktop			r,
   }
   
-  profile rsync /usr/bin/rsync flags=(complain) {		# FIX ME! complain 06.10.2017
+  profile rsync /usr/bin/rsync@{t_root} flags=(complain) {	# FIX ME! complain 06.10.2017
     #include <abstractions/base>
     
     # NETWORK ------------------------------------------
@@ -210,7 +210,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     owner /tmp/.tmp@{TMP8}.@{TMP6}			rw,
   }
   
-  profile free /usr/bin/free flags=(complain) {			# FIX ME! complain 06.10.2017
+  profile free /usr/bin/free@{t_root} flags=(complain) {	# FIX ME! complain 06.10.2017
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -222,7 +222,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /usr/bin/free					mr,
   }
   
-  profile ld /usr/@{CHOST}/binutils-bin/[0-9]*/ld flags=(complain) {	# FIX ME! complain 06.10.2017
+  profile ld /usr/@{CHOST}/binutils-bin/[0-9]*/ld@{t_root} flags=(complain) {	# FIX ME! complain 06.10.2017
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -233,7 +233,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /usr/@{CHOST}/binutils-bin/[0-9]*/ld		mr,
   }
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions-root/X-connection-strict>
@@ -256,8 +256,8 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     capability kill,
     
     # SIGNAL ---------------------------------------------
-    signal (send) set=(term) peer="dconf.dconf-service",	# gnome-base/dconf
-    signal (send) set=(hup) peer="gconf.gconfd-2",		# gnome-base/gconf
+    signal (send) set=(term) peer="dconf.dconf-service@{p_any}",	# gnome-base/dconf
+    signal (send) set=(hup) peer="gconf.gconfd-2@{p_any}",		# gnome-base/gconf
     
     # PTRACE -------------------------------------------
     ptrace (trace) peer="sysvinit.init",			# sys-apps/sysvinit
@@ -279,21 +279,21 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /etc/portage/bin/{,**/}*				ix,
-    /bin/{,**/}*					ix,
-    /sbin/{,**/}*					ix,
-    /sbin/udevadm					Px,	# sys-fs/eudev
-    /opt/{,**/}*					ix,
-    /usr/bin/{,**/}*					ix,
-    /usr/sbin/useradd					Px,	# sys-apps/shadow
-    /usr/sbin/groupadd					Px,	# sys-apps/shadow
-    /usr/sbin/lspci					Px,	# sys-apps/pciutils
-    /usr/sbin/{,**/}*					ix,
-    /usr/lib{,32,64,exec}/{,**/}*			ix,
-    /usr/@{CHOST}/{,**/}*				ix,
-    /lib{,32,64}/rc/sh/gendepends.sh			Px,	# sys-apps/openrc
-    /lib{,32,64}/rc/sh/migrate-to-run.sh		ix,	# sys-apps/openrc
-    /lib{,32,64}/rc/bin/*				ix,	# sys-apps/openrc
+    /etc/portage/bin/{,**/}*@{t_root}			ix,
+    /bin/{,**/}*@{t_root}				ix,
+    /sbin/{,**/}*@{t_root}				ix,
+    /sbin/udevadm@{t_root}				Px,	# sys-fs/eudev
+    /opt/{,**/}*@{t_root}				ix,
+    /usr/bin/{,**/}*@{t_root}				ix,
+    /usr/sbin/useradd@{t_root}				Px,	# sys-apps/shadow
+    /usr/sbin/groupadd@{t_root}				Px,	# sys-apps/shadow
+    /usr/sbin/lspci@{t_root}				Px,	# sys-apps/pciutils
+    /usr/sbin/{,**/}*@{t_root}				ix,
+    /usr/lib{,32,64,exec}/{,**/}*@{t_root}		ix,
+    /usr/@{CHOST}/{,**/}*@{t_root}			ix,
+    /lib{,32,64}/rc/sh/gendepends.sh@{t_root}		Px,	# sys-apps/openrc
+    /lib{,32,64}/rc/sh/migrate-to-run.sh@{t_root}	ix,	# sys-apps/openrc
+    /lib{,32,64}/rc/bin/*@{t_root}			ix,	# sys-apps/openrc
     
     # READS/WRITES -------------------------------------
     /							r,
@@ -350,7 +350,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     /var/tmp/						r,
   }
   
-  profile sandbox /usr/bin/sandbox {
+  profile sandbox /usr/bin/sandbox@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/freedesktop.org>
     #include <abstractions-root/fonts>
@@ -374,7 +374,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     capability sys_ptrace,
     
     # SIGNAL ---------------------------------------------
-    signal (send) set=(cont) peer="portage.emerge",
+    signal (send) set=(cont) peer="portage.emerge@{p_root}",
     
     # PTRACE -------------------------------------------
     ptrace (trace) peer=@{profile_name},
@@ -409,15 +409,15 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
     
     # EXECUTABLES ----------------------------------------
     @{shell}						mr,
-    /bin/{,**/}*					ix,
-    /sbin/{,**/}*					ix,
-    /opt/{,**/}*					ix,
-    /lib{,32,64}/{,**/}*				ix,
-    /usr/bin/{,**/}*					ix,
-    /usr/sbin/{,**/}*					ix,
-    /usr/lib{,32,64,exec}/{,**/}*			ix,
-    /usr/share/{,**/}*					ix,
-    /usr/@{CHOST}/{,**/}*				ix,
+    /bin/{,**/}*@{t_portage}				ix,
+    /sbin/{,**/}*@{t_portage}				ix,
+    /opt/{,**/}*@{t_portage}				ix,
+    /lib{,32,64}/{,**/}*@{t_portage}			ix,
+    /usr/bin/{,**/}*@{t_portage}			ix,
+    /usr/sbin/{,**/}*@{t_portage}			ix,
+    /usr/lib{,32,64,exec}/{,**/}*@{t_portage}		ix,
+    /usr/share/{,**/}*@{t_portage}			ix,
+    /usr/@{CHOST}/{,**/}*@{t_portage}			ix,
     
     # READS/WRITES -------------------------------------
     /							r,
@@ -456,7 +456,7 @@ profile portage.emerge @{PYTHON_EXEC}/emerge {
   }
 }
 
-profile portage.env-update @{PYTHON_EXEC}/env-update {
+profile portage.env-update@{p_root} @{PYTHON_EXEC}/env-update@{t_root} {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -471,7 +471,7 @@ profile portage.env-update @{PYTHON_EXEC}/env-update {
   owner @{PROC_D}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
+  @{shell}@{t_root}					Cx,
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -493,7 +493,7 @@ profile portage.env-update @{PYTHON_EXEC}/env-update {
   owner /tmp/tmp{@{TMP6},@{TMP8}}			rwk,	# TMP6 - python2, TMP8 - python3
   								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -508,7 +508,7 @@ profile portage.env-update @{PYTHON_EXEC}/env-update {
   }
 }
 
-profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf {
+profile portage.dispatch-conf@{p_root} @{PYTHON_EXEC}/dispatch-conf@{t_root} {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -523,9 +523,9 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf {
   owner @{PROC_D}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Px -> portage_dispatch_conf_shell,
-  audit /usr/bin/diff					Cx,	# sys-apps/diffutils	# FIX ME! audit 15.07.2017
-  /usr/bin/find						Cx,	# sys-apps/findutils
+  @{shell}@{t_root}					Px -> portage_dispatch_conf_shell,
+  audit /usr/bin/diff@{t_root}				Cx,	# sys-apps/diffutils	# FIX ME! audit 15.07.2017
+  /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils
   
   # READS/WRITES ---------------------------------------
   /etc/{,**}						rw,
@@ -536,7 +536,7 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf {
   # TEMP -----------------------------------------------
   audit owner /tmp/dispatch-conf.*/			rw,	# FIX ME! audit 26.11.2017
   
-  profile diff /usr/bin/diff {
+  profile diff /usr/bin/diff@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -547,7 +547,7 @@ profile portage.dispatch-conf @{PYTHON_EXEC}/dispatch-conf {
     /usr/bin/diff					mr,
   }
   
-  profile find /usr/bin/find {
+  profile find /usr/bin/find@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -584,14 +584,14 @@ profile portage_dispatch_conf_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/uname						Px,	# sys-apps/coreutils
-  audit /usr/bin/find					Cx,	# sys-apps/findutils	# FIX ME! audit 15.07.2017
-  audit /usr/bin/diff					Cx,	# sys-apps/diffutils	# FIX ME! audit 15.07.2017
+  /bin/uname@{t_root}					Px,	# sys-apps/coreutils
+  audit /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils	# FIX ME! audit 15.07.2017
+  audit /usr/bin/diff@{t_root}				Cx,	# sys-apps/diffutils	# FIX ME! audit 15.07.2017
   
   # READS/WRITES ---------------------------------------
   /etc/{,**}						r,
   
-  profile diff /usr/bin/diff {
+  profile diff /usr/bin/diff@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -602,7 +602,7 @@ profile portage_dispatch_conf_shell {
     /usr/bin/diff					mr,
   }
   
-  profile find /usr/bin/find {
+  profile find /usr/bin/find@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -614,7 +614,7 @@ profile portage_dispatch_conf_shell {
   }
 }
 
-profile portage.portageq @{PYTHON_EXEC}/portageq {
+profile portage.portageq@{p_root} @{PYTHON_EXEC}/portageq@{t_root} {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -629,7 +629,7 @@ profile portage.portageq @{PYTHON_EXEC}/portageq {
   @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
+  @{shell}@{t_root}					Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
@@ -645,7 +645,7 @@ profile portage.portageq @{PYTHON_EXEC}/portageq {
   								# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
   owner /tmp/Code::Blocks-@{USER}			w,	# DELEGATION! codeblocks
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -655,7 +655,7 @@ profile portage.portageq @{PYTHON_EXEC}/portageq {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,	# sys-apps/coreutils
+    /bin/uname@{t_root}					Px,	# sys-apps/coreutils
     
     # TEMP ---------------------------------------------
     /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily
@@ -664,7 +664,7 @@ profile portage.portageq @{PYTHON_EXEC}/portageq {
   }
 }
 
-profile portage.etc-update /usr/sbin/etc-update {
+profile portage.etc-update@{p_root} /usr/sbin/etc-update@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -678,28 +678,28 @@ profile portage.etc-update /usr/sbin/etc-update {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/etc-update					r,
   @{shell}						mr,
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/cut						Cx,	# sys-apps/coreutils
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/chmod						Cx,	# sys-apps/coreutils
-  /bin/chown						Cx,	# sys-apps/coreutils
-  /bin/sed						Cx,	# sys-apps/sed
-  /bin/sort						Cx,	# sys-apps/coreutils
-  /bin/head						Cx,	# sys-apps/coreutils
-  /bin/wc						Cx,	# sys-apps/coreutils
-  /bin/mv						Cx,	# sys-apps/coreutils
-  audit /bin/readlink					Cx,	# sys-apps/coreutils	# FIX ME! audit 15.07.2017
-  /usr/bin/diff						Cx,	# sys-apps/diffutils
-  /usr/bin/find						Cx,	# sys-apps/findutils
-  @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,	# dev-lang/python-exec
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/cut@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/chmod@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/chown@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/sed@{t_root}					Cx,	# sys-apps/sed
+  /bin/sort@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/head@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/wc@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mv@{t_root}					Cx,	# sys-apps/coreutils
+  audit /bin/readlink@{t_root}				Cx,	# sys-apps/coreutils	# FIX ME! audit 15.07.2017
+  /usr/bin/diff@{t_root}				Cx,	# sys-apps/diffutils
+  /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx -> portageq,	# dev-lang/python-exec
   
   # TEMP -----------------------------------------------
   owner /tmp/@{TMP_SH}					rw,
   owner /var/tmp/etc-update-@{pids}/{,**}		rw,
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -716,7 +716,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     owner /tmp/@{TMP_SH}				r,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -727,7 +727,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     /bin/grep						mr,
   }
   
-  profile cut /bin/cut {
+  profile cut /bin/cut@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -738,7 +738,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     /bin/cut						mr,
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -755,7 +755,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     owner /var/tmp/etc-update-@{pids}/{,**}		rw,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -769,7 +769,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     owner /var/tmp/etc-update-@{pids}/{,**/}		w,
   }
   
-  profile chmod /bin/chmod {
+  profile chmod /bin/chmod@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -783,7 +783,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     owner /var/tmp/etc-update-@{pids}/			w,
   }
   
-   profile chown /bin/chown {
+   profile chown /bin/chown@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
@@ -798,7 +798,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     owner /var/tmp/etc-update-@{pids}/			w,
   }
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -815,7 +815,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     owner /var/tmp/etc-update-@{pids}/{,**}		rw,
   }
   
-  profile sort /bin/sort {
+  profile sort /bin/sort@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -826,7 +826,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     /bin/sort						mr,
   }
   
-  profile head /bin/head {
+  profile head /bin/head@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -840,7 +840,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     owner /var/tmp/etc-update-@{pids}/**		r,
   }
   
-  profile wc /bin/wc {
+  profile wc /bin/wc@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -854,7 +854,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     owner /var/tmp/etc-update-@{pids}/**		r,
   }
   
-  profile mv /bin/mv {
+  profile mv /bin/mv@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -868,7 +868,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     /etc/**						rw,
   }
   
-  profile readlink /bin/readlink {
+  profile readlink /bin/readlink@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -879,7 +879,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     /bin/readlink					mr,
   }
   
-  profile diff /usr/bin/diff {
+  profile diff /usr/bin/diff@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -896,7 +896,7 @@ profile portage.etc-update /usr/sbin/etc-update {
     owner /var/tmp/etc-update-@{pids}/**		r,
   }
   
-  profile find /usr/bin/find {
+  profile find /usr/bin/find@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -921,11 +921,11 @@ profile portage.etc-update /usr/sbin/etc-update {
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/portageq				Px,
+    @{PYTHON_EXEC}/portageq@{t_root}			Px,
   }
 }
 
-profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
+profile portage.emerge-webrsync@{p_root} /usr/bin/emerge-webrsync@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -936,29 +936,29 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
   # EXECUTABLES ----------------------------------------
   /usr/bin/emerge-webrsync				r,
   @{shell}						mr,
-  /bin/date						Cx,	# sys-apps/coreutils
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/cut						Cx,	# sys-apps/coreutils
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/mktemp						Cx,	# sys-apps/coreutils
-  /bin/tar						Cx,	# app-arch/tar
-  /bin/chown						Cx,	# sys-apps/coreutils
-  /bin/stty						Px,	# sys-apps/coreutils
-  /usr/bin/md5sum					Cx,	# sys-apps/coreutils
-  /usr/bin/xz						Cx,	# app-arch/xz-utils
-  /usr/bin/stat						Cx,	# sys-apps/coreutils
-  /usr/bin/rsync					Cx,	# net-misc/rsync
-  /usr/bin/fmt						Cx,	# sys-apps/coreutils
-  /usr/bin/gpg{,2}					Px,	# app-crypt/gnupg
-  /usr/bin/renice					Px,	# sys-apps/util-linux
-  /usr/bin/wget						Px,	# net-misc/wget
-  @{PYTHON_EXEC_WRAPPER}				Cx -> portage,	# dev-lang/python-exec
+  /bin/date@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/cut@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mktemp@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/tar@{t_root}					Cx,	# app-arch/tar
+  /bin/chown@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/stty@{t_root}					Px,	# sys-apps/coreutils
+  /usr/bin/md5sum@{t_root}				Cx,	# sys-apps/coreutils
+  /usr/bin/xz@{t_root}					Cx,	# app-arch/xz-utils
+  /usr/bin/stat@{t_root}				Cx,	# sys-apps/coreutils
+  /usr/bin/rsync@{t_root}				Cx,	# net-misc/rsync
+  /usr/bin/fmt@{t_root}					Cx,	# sys-apps/coreutils
+  /usr/bin/gpg{,2}@{t_root}				Px,	# app-crypt/gnupg
+  /usr/bin/renice@{t_root}				Px,	# sys-apps/util-linux
+  /usr/bin/wget@{t_root}				Px,	# net-misc/wget
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx -> portage,	# dev-lang/python-exec
   
   # TEMP -----------------------------------------------
   owner /tmp/@{TMP_SH}					rw,
   owner /var/tmp/portage/webrsync-@{TMP6}/portage-*.md5sum r,
   
-  profile date /bin/date {
+  profile date /bin/date@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -969,7 +969,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     /bin/date						mr,
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -986,7 +986,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     /var/tmp/portage/webrsync-@{TMP6}/{,**}		rw,	# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
   }
   
-  profile cut /bin/cut {
+  profile cut /bin/cut@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1000,7 +1000,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     /usr/portage/metadata/timestamp.x			r,
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1014,7 +1014,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     owner /tmp/@{TMP_SH}				r,
   }
   
-  profile mktemp /bin/mktemp {
+  profile mktemp /bin/mktemp@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1031,7 +1031,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     owner /var/tmp/portage/webrsync-@{TMP6}/		w,
   }
   
-  profile tar /bin/tar {
+  profile tar /bin/tar@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
@@ -1052,7 +1052,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     /var/tmp/portage/webrsync-@{TMP6}/**		w,	# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
   }
   
-  profile chown /bin/chown {
+  profile chown /bin/chown@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
@@ -1070,7 +1070,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     /var/tmp/portage/webrsync-@{TMP6}/**		rw,	# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
   }
   
-  profile xz /usr/bin/xz {
+  profile xz /usr/bin/xz@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1084,7 +1084,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     owner /var/tmp/portage/webrsync-@{TMP6}/**		r,
   }
   
-  profile md5sum /usr/bin/md5sum {
+  profile md5sum /usr/bin/md5sum@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1098,7 +1098,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     owner /var/tmp/portage/webrsync-@{TMP6}/**		r,
   }
   
-  profile stat /usr/bin/stat {
+  profile stat /usr/bin/stat@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
@@ -1110,7 +1110,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     /usr/bin/stat					mr,
   }
   
-  profile rsync /usr/bin/rsync {
+  profile rsync /usr/bin/rsync@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1128,7 +1128,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
     owner /var/tmp/portage/webrsync-@{TMP6}/**		r,
   }
   
-  profile fmt /usr/bin/fmt {
+  profile fmt /usr/bin/fmt@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1149,7 +1149,7 @@ profile portage.emerge-webrsync /usr/bin/emerge-webrsync {
   }
 }
 
-profile portage.emaint @{PYTHON_EXEC}/emaint {
+profile portage.emaint@{p_root} @{PYTHON_EXEC}/emaint@{t_root} {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -1166,8 +1166,8 @@ profile portage.emaint @{PYTHON_EXEC}/emaint {
   owner @{PROC_D}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /usr/bin/find						Cx,	# sys-apps/findutils
+  @{shell}@{t_root}					Cx,
+  /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
@@ -1187,7 +1187,7 @@ profile portage.emaint @{PYTHON_EXEC}/emaint {
   owner /tmp/tmp{@{TMP6},@{TMP8}}			rwk,	# TMP6 - python2, TMP8 - python3
   								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1197,11 +1197,11 @@ profile portage.emaint @{PYTHON_EXEC}/emaint {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,	# sys-apps/coreutils
-    /usr/bin/emerge-webrsync				Px,
+    /bin/uname@{t_root}					Px,	# sys-apps/coreutils
+    /usr/bin/emerge-webrsync@{t_root}			Px,
   }
   
-  profile find /usr/bin/find {
+  profile find /usr/bin/find@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1220,7 +1220,7 @@ profile portage.emaint @{PYTHON_EXEC}/emaint {
   }
 }
 
-profile portage.cgroup-release-agent /{usr/lib{,32,64}/portage/@{PYTHON},var/tmp/portage/._portage_reinstall_.{@{TMP6},@{TMP8}}/bin}/cgroup-release-agent {
+profile portage.cgroup-release-agent@{p_root} /{usr/lib{,32,64}/portage/@{PYTHON},var/tmp/portage/._portage_reinstall_.{@{TMP6},@{TMP8}}/bin}/cgroup-release-agent@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -1234,9 +1234,9 @@ profile portage.cgroup-release-agent /{usr/lib{,32,64}/portage/@{PYTHON},var/tmp
   /usr/lib{,32,64}/portage/@{PYTHON}/cgroup-release-agent r,
   /var/tmp/portage/._portage_reinstall_.{@{TMP6},@{TMP8}}/bin/cgroup-release-agent r,
   @{shell}						mr,
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1250,7 +1250,7 @@ profile portage.cgroup-release-agent /{usr/lib{,32,64}/portage/@{PYTHON},var/tmp
   }
 }
 
-profile portage.ebuild.sh /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh {
+profile portage.ebuild.sh@{p_root} /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   

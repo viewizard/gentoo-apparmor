@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile pulseaudio /usr/bin/pulseaudio {
+profile pulseaudio@{p_user} /usr/bin/pulseaudio@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/audio>
   #include <abstractions/dbus/system-strict>
@@ -25,7 +25,7 @@ profile pulseaudio /usr/bin/pulseaudio {
   ptrace (trace) peer=@{profile_name},
   
   # SIGNAL ---------------------------------------------
-  signal (receive) set=(usr2) peer="pulseaudio.pacmd",
+  signal (receive) set=(usr2) peer="pulseaudio.pacmd@{p_user}",
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -68,7 +68,7 @@ profile pulseaudio /usr/bin/pulseaudio {
   audit owner /tmp/pulse-*/*				rwk,	# FIX ME! audit 26.11.2017
 }
 
-profile pulseaudio.start-pulseaudio-x11 /usr/bin/start-pulseaudio-x11 {
+profile pulseaudio.start-pulseaudio-x11@{p_user} /usr/bin/start-pulseaudio-x11@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -78,10 +78,10 @@ profile pulseaudio.start-pulseaudio-x11 /usr/bin/start-pulseaudio-x11 {
   # EXECUTABLES ----------------------------------------
   /usr/bin/start-pulseaudio-x11				r,
   @{shell}						mr,
-  /usr/bin/pactl					Px,
+  /usr/bin/pactl@{t_user}				Px,
 }
 
-profile pulseaudio.pactl /usr/bin/pactl {
+profile pulseaudio.pactl@{p_user} /usr/bin/pactl@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/audio>
   #include <abstractions-user/X>
@@ -96,14 +96,14 @@ profile pulseaudio.pactl /usr/bin/pactl {
   /usr/bin/pactl					mr,
 }
 
-profile pulseaudio.pacmd /usr/bin/pacmd {
+profile pulseaudio.pacmd@{p_user} /usr/bin/pacmd@{t_user} {
   #include <abstractions/base>
   
   # PTRACE ---------------------------------------------
   ptrace (trace) peer="pulseaudio",
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(usr2) peer="pulseaudio",
+  signal (send) set=(usr2) peer="pulseaudio@{p_any}",
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

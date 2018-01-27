@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile portage-utils.q /usr/bin/q {
+profile portage-utils.q@{p_root} /usr/bin/q@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -33,7 +33,7 @@ profile portage-utils.q /usr/bin/q {
   owner /tmp/portage.cron.@{TMP6}			w,	# DELEGATION! 00_update_portage.cron.daily
 }
 
-profile portage-utils.q-reinit /etc/portage/repo.postsync.d/q-reinit flags=(complain) {	# FIX ME! complain 14.10.2017
+profile portage-utils.q-reinit@{p_root} /etc/portage/repo.postsync.d/q-reinit@{t_root} flags=(complain) {	# FIX ME! complain 14.10.2017
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -44,7 +44,7 @@ profile portage-utils.q-reinit /etc/portage/repo.postsync.d/q-reinit flags=(comp
   # EXECUTABLES ----------------------------------------
   /etc/portage/repo.postsync.d/q-reinit			r,
   @{shell}						mr,
-  /usr/bin/q						Px,
+  /usr/bin/q@{t_root}					Px,
   
   # TEMP -----------------------------------------------
   owner /tmp/portage.cron.@{TMP6}			w,	# DELEGATION! 00_update_portage.cron.daily

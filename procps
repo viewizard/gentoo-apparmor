@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile procps.ps /bin/ps {
+profile procps.ps@{p_all} /bin/ps@{t_all} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -49,7 +49,7 @@ profile procps.ps /bin/ps {
   deny /tmp/chkrootkit.cron.@{TMP6}			w,	# app-forensics/chkrootkit, chkrootkit.cron.daily
 }
 
-profile procps.pidof /usr/bin/pidof {
+profile procps.pidof@{p_root} /usr/bin/pidof@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -70,7 +70,7 @@ profile procps.pidof /usr/bin/pidof {
   /usr/bin/pidof					mr,
 }
 
-profile procps.pgrep /usr/bin/pgrep {
+profile procps.pgrep@{p_root} /usr/bin/pgrep@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -95,7 +95,7 @@ profile procps.pgrep /usr/bin/pgrep {
   /usr/bin/pgrep					mr,
 }
 
-profile procps.sysctl /usr/sbin/sysctl {
+profile procps.sysctl@{p_root} /usr/sbin/sysctl@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
