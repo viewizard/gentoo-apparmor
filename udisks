@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile udisks.udisksd@{p_user} /usr/libexec/udisks2/udisksd@{t_user} {
+profile udisks.udisksd@{p_all} /usr/libexec/udisks2/udisksd@{t_all} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/system-strict>
@@ -94,7 +94,7 @@ profile udisks.udisksd@{p_user} /usr/libexec/udisks2/udisksd@{t_user} {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/udisks2/udisksd				mr,
-  /usr/bin/eject@{t_user}				Px,	# sys-apps/util-linux
+  /usr/bin/eject@{t_all}				Px,	# sys-apps/util-linux
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,

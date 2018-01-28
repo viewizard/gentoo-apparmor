@@ -34,7 +34,7 @@ profile polkit-gnome@{p_user} /usr/libexec/polkit-gnome-authentication-agent-1@{
   	bus=system
   	path="/org/gnome/PolicyKit[0-9]*/AuthenticationAgent"
   	interface="org.freedesktop.PolicyKit[0-9]*.AuthenticationAgent"
-  	peer=(name=":[0-9]*.[0-9]*",label="polkit.polkitd@{t_polkitd}"),	# sys-auth/polkit
+  	peer=(name=":[0-9]*.[0-9]*",label="polkit.polkitd@{p_polkitd}"),	# sys-auth/polkit
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

@@ -100,10 +100,10 @@ profile pulseaudio.pacmd@{p_user} /usr/bin/pacmd@{t_user} {
   #include <abstractions/base>
   
   # PTRACE ---------------------------------------------
-  ptrace (trace) peer="pulseaudio",
+  ptrace (trace) peer="pulseaudio@{p_user}",
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(usr2) peer="pulseaudio@{p_any}",
+  signal (send) set=(usr2) peer="pulseaudio@{p_user}",
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

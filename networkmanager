@@ -59,7 +59,7 @@ profile networkmanager.NetworkManager@{p_root} /usr/sbin/NetworkManager@{t_root}
   	path="/org/freedesktop/DBus"
   	interface="org.freedesktop.DBus"
   	member={GetConnectionUnixUser,GetConnectionUnixProcessID}
-  	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon@{t_any}"),
+  	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon@{p_any}"),
   dbus send
   	bus=system
   	path="/org/freedesktop/NetworkManager{,/**}"

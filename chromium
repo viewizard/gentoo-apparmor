@@ -104,9 +104,9 @@ profile chromium.chrome@{p_user} /usr/lib{,32,64}/chromium-browser/chrome@{t_use
   
   # PTRACE ---------------------------------------------
   ptrace (trace) peer=@{profile_name},
-  ptrace (trace) peer="chromium.start_script",
-  deny ptrace (trace) peer="xdg-utils.xdg-settings",		# x11-misc/xdg-utils
-  deny ptrace (trace) peer="lsb-release",			# sys-apps/lsb-release
+  ptrace (trace) peer="chromium.start_script@{p_user}",
+  deny ptrace (trace) peer="xdg-utils.xdg-settings@{p_user}",	# x11-misc/xdg-utils
+  deny ptrace (trace) peer="lsb-release@{p_user}",		# sys-apps/lsb-release
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
@@ -223,7 +223,7 @@ profile chromium.chrome@{p_user} /usr/lib{,32,64}/chromium-browser/chrome@{t_use
     # SIGNAL -------------------------------------------
     signal peer=@{profile_name},
     signal (receive, send) set=("exists"),
-    signal (receive) peer="chromium.chrome",
+    signal (receive) peer="chromium.chrome@{p_user}",
     
     # UNIX ---------------------------------------------
     unix (create, shutdown)

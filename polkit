@@ -118,7 +118,7 @@ profile polkit.pkexec@{p_all} /usr/bin/pkexec@{t_all} {
   ptrace (trace),
   
   # SIGNAL ---------------------------------------------
-  signal (receive) set=(rtmin+1) peer="polkit.pkexec@{t_all}//root",
+  signal (receive) set=(rtmin+1) peer="polkit.pkexec@{p_all}//root",
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,

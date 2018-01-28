@@ -45,7 +45,7 @@ profile xorg-server.Xorg@{p_user} /usr/bin/Xorg@{t_user} {
   network netlink raw,
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(usr1) peer=xinit,
+  signal (send) set=(usr1) peer="xinit@{p_user}",
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
