@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile thunar /usr/bin/{Thunar,thunar} {
+profile thunar@{p_user} /usr/bin/{Thunar,thunar}@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -40,7 +40,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   	bus=session
   	path="/org/xfce/FileManager"
   	interface="org.xfce.Trash"
-  	peer=(name="org.freedesktop.DBus"),
+  	peer=(name="org.freedesktop.DBus@{p_any}"),
   dbus receive
   	bus=session
   	path="/org/xfce/FileManager"
@@ -76,13 +76,13 @@ profile thunar /usr/bin/{Thunar,thunar} {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar					mr,
-  @{shell}						Cx,
-  /bin/mount						Cx,	# sys-apps/util-linux
-  /bin/umount						Cx,	# sys-apps/util-linux
-  /usr/bin/update-desktop-database			Px,	# dev-util/desktop-file-utils
-  /usr/lib{,32,64}/Thunar/thunar-sendto-email		Px,
-  /usr/libexec/thunar-archive-plugin/engrampa.tap	Px,	# app-arch/engrampa
-  /usr/local/bin/*					Px,
+  @{shell}@{t_user}					Cx,
+  /bin/mount@{t_user}					Cx,	# sys-apps/util-linux
+  /bin/umount@{t_user}					Cx,	# sys-apps/util-linux
+  /usr/bin/update-desktop-database@{t_user}		Px,	# dev-util/desktop-file-utils
+  /usr/lib{,32,64}/Thunar/thunar-sendto-email@{t_user}	Px,
+  /usr/libexec/thunar-archive-plugin/engrampa.tap@{t_user} Px,	# app-arch/engrampa
+  /usr/local/bin/*@{t_user}				Px,
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,	# sys-fs/eudev
@@ -103,7 +103,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   owner @{USER_HOME_D}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
   owner @{USER_HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_user} {
     #include <abstractions/base>
     #include <local/profile_blocks/thunar-custom-actions.d/>
     
@@ -116,7 +116,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
     @{shell}						mr,
   }
   
-  profile mount /bin/mount {
+  profile mount /bin/mount@{t_user} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -144,7 +144,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
     link subset /run/blkid/blkid.tab.old		-> /run/blkid/blkid.tab,
   }
   
-  profile umount /bin/umount {
+  profile umount /bin/umount@{t_user} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -164,7 +164,7 @@ profile thunar /usr/bin/{Thunar,thunar} {
   }
 }
 
-profile thunar_root {
+profile thunar@{p_root} /usr/bin/{Thunar,thunar}@{t_root} {
   #include <abstractions/base>
   #include <abstractions-root/freedesktop.org>
   #include <abstractions-root/fonts>
@@ -201,7 +201,7 @@ profile thunar_root {
   	bus=session
   	path="/org/xfce/FileManager"
   	interface="org.xfce.Trash"
-  	peer=(name="org.freedesktop.DBus"),
+  	peer=(name="org.freedesktop.DBus@{p_any}"),
   dbus receive
   	bus=session
   	path="/org/xfce/FileManager"
@@ -237,15 +237,15 @@ profile thunar_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar					mr,
-  @{shell}						Cx,
-  /bin/mount						Cx,	# sys-apps/util-linux
-  /bin/umount						Cx,	# sys-apps/util-linux
-  /usr/bin/update-desktop-database			Px,	# dev-util/desktop-file-utils
-  /usr/lib{,32,64}/Thunar/thunar-sendto-email		Px,	# RBAC! Для root ветки отдельный профиль,
+  @{shell}@{t_root}					Cx,
+  /bin/mount@{t_root}					Cx,	# sys-apps/util-linux
+  /bin/umount@{t_root}					Cx,	# sys-apps/util-linux
+  /usr/bin/update-desktop-database@{t_root}		Px,	# dev-util/desktop-file-utils
+#  /usr/lib{,32,64}/Thunar/thunar-sendto-email@{t_root}	Px,	# RBAC! Для root ветки отдельный профиль,
   								# вызывающий нужный профиль exo-helper-1.
-  /usr/libexec/thunar-archive-plugin/engrampa.tap	Px,	# app-arch/engrampa
-  /usr/local/bin/*					Px,
-  /usr/local/sbin/*					Px,
+  /usr/libexec/thunar-archive-plugin/engrampa.tap@{t_root} Px,	# app-arch/engrampa
+  /usr/local/bin/*@{t_root}				Px,
+  /usr/local/sbin/*@{t_root}				Px,
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,	# sys-fs/eudev
@@ -266,7 +266,7 @@ profile thunar_root {
   owner @{ROOT_HOME_D}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml rw,
   owner @{ROOT_HOME_D}/.local/share/gvfs-metadata/{,*}	rw,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <local/profile_blocks/thunar_root-custom-actions.d/>
     
@@ -279,7 +279,7 @@ profile thunar_root {
     @{shell}						mr,
   }
   
-  profile mount /bin/mount {
+  profile mount /bin/mount@{t_root} {
     #include <abstractions/base>
     #include <local/profile_blocks/thunar.mount.d/>		# Локальные правила монтирования и размонтирования.
     
@@ -306,7 +306,7 @@ profile thunar_root {
     link subset /run/blkid/blkid.tab.old		-> /run/blkid/blkid.tab,
   }
   
-  profile umount /bin/umount {
+  profile umount /bin/umount@{t_root} {
     #include <abstractions/base>
     #include <local/profile_blocks/thunar.mount.d/>		# Локальные правила монтирования и размонтирования.
     
@@ -325,7 +325,7 @@ profile thunar_root {
   }
 }
 
-profile thunar.thunar-sendto-email /usr/lib{,32,64}/Thunar/thunar-sendto-email {
+profile thunar.thunar-sendto-email@{p_user} /usr/lib{,32,64}/Thunar/thunar-sendto-email@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -344,13 +344,13 @@ profile thunar.thunar-sendto-email /usr/lib{,32,64}/Thunar/thunar-sendto-email {
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/Thunar/thunar-sendto-email		mr,
-  /usr/bin/zip						Cx,	# app-arch/zip
-  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1		Px,
+  /usr/bin/zip@{t_user}					Cx,	# app-arch/zip
+  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1@{t_user}	Px,
   
   # TEMP -----------------------------------------------
   owner /tmp/thunar-sendto-email.@{TMP6}/{,*}		rw,
   
-  profile zip /usr/bin/zip {
+  profile zip /usr/bin/zip@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-pattern-internet>
     
@@ -366,7 +366,7 @@ profile thunar.thunar-sendto-email /usr/lib{,32,64}/Thunar/thunar-sendto-email {
   }
 }
 
-profile thunar.thunar-settings /usr/bin/thunar-settings {
+profile thunar.thunar-settings@{p_user} /usr/bin/thunar-settings@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -377,10 +377,10 @@ profile thunar.thunar-settings /usr/bin/thunar-settings {
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar-settings				r,
   @{shell}						mr,
-  /usr/bin/dbus-send					Px,	# sys-apps/dbus
+  /usr/bin/dbus-send@{t_user}				Px,	# sys-apps/dbus
 }
 
-profile thunar.ThunarBulkRename /usr/lib{,32,64}/Thunar/ThunarBulkRename {
+profile thunar.ThunarBulkRename@{p_user} /usr/lib{,32,64}/Thunar/ThunarBulkRename@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -390,5 +390,5 @@ profile thunar.ThunarBulkRename /usr/lib{,32,64}/Thunar/ThunarBulkRename {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /usr/bin/thunar					Px,
+  /usr/bin/thunar@{t_user}				Px,
 }

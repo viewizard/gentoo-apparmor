@@ -19,7 +19,7 @@
 # wireshark_dbus-session_20171123203836_aWwJR4.pcapng
 @{TMP_WIRESHARK}=wireshark_@{TMP}*_20[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]_@{TMP6}.pcapng
 
-profile wireshark /usr/bin/wireshark{,-gtk} {
+profile wireshark@{p_user} /usr/bin/wireshark{,-gtk}@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -42,7 +42,7 @@ profile wireshark /usr/bin/wireshark{,-gtk} {
   #include <abstractions-user/xdg-open>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(int,term) peer="wireshark.dumpcap",
+  signal (send) set=(int,term) peer="wireshark.dumpcap@{p_user}",
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -54,9 +54,9 @@ profile wireshark /usr/bin/wireshark{,-gtk} {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/wireshark{,-gtk}				mr,
-  /usr/bin/dumpcap					Px,
-  /usr/lib{,32,64}/wireshark/extcap/udpdump		Px,
-  /usr/lib{,32,64}/wireshark/extcap/randpktdump		Px,
+  /usr/bin/dumpcap@{t_user}				Px,
+  /usr/lib{,32,64}/wireshark/extcap/udpdump@{t_user}	Px,
+  /usr/lib{,32,64}/wireshark/extcap/randpktdump@{t_user} Px,
   
   # READS/WRITES ---------------------------------------
   /etc/libnl/classid					r,	# dev-libs/libnl
@@ -70,7 +70,7 @@ profile wireshark /usr/bin/wireshark{,-gtk} {
   owner /tmp/@{TMP_WIRESHARK}				rw,
 }
 
-profile wireshark.dumpcap /usr/bin/dumpcap {
+profile wireshark.dumpcap@{p_user} /usr/bin/dumpcap@{t_user} {
   #include <abstractions/base>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
@@ -115,7 +115,7 @@ profile wireshark.dumpcap /usr/bin/dumpcap {
   owner /tmp/@{TMP_WIRESHARK}				rw,
 }
 
-profile wireshark.udpdump /usr/lib{,32,64}/wireshark/extcap/udpdump {
+profile wireshark.udpdump@{p_user} /usr/lib{,32,64}/wireshark/extcap/udpdump@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -127,7 +127,7 @@ profile wireshark.udpdump /usr/lib{,32,64}/wireshark/extcap/udpdump {
   
 }
 
-profile wireshark.randpktdump /usr/lib{,32,64}/wireshark/extcap/randpktdump {
+profile wireshark.randpktdump@{p_user} /usr/lib{,32,64}/wireshark/extcap/randpktdump@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------

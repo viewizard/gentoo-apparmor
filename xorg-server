@@ -10,10 +10,9 @@
 
 #include <local/tunables.d/>
 
-profile xorg-server.Xorg /usr/bin/Xorg {
+profile xorg-server.Xorg@{p_user} /usr/bin/Xorg@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/fonts>
-  #include <abstractions-root/fonts>				# RBAC! Должен быть отдельный профиль для root.
   
   # CAPABILITIES ---------------------------------------
   capability sys_admin,
@@ -73,9 +72,9 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/Xorg						mr,
-  @{shell}						Cx,
-  /bin/kmod						Px,	# sys-apps/kmod
-  /opt/bin/nvidia-modprobe				Px,	# x11-drivers/nvidia-drivers
+  @{shell}@{t_user}					Cx,
+  /bin/kmod@{t_user}					Px,	# sys-apps/kmod
+  /opt/bin/nvidia-modprobe@{t_user}			Px,	# x11-drivers/nvidia-drivers
   
   # READS/WRITES ---------------------------------------
   /etc/drirc						r,	# media-libs/mesa
@@ -101,7 +100,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   owner /tmp/.X11-unix/X@{X_DISPLAY}			w,
   /tmp/server-@{X_DISPLAY}.xkm				rw,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/X-connection-strict>
     
@@ -112,7 +111,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /usr/bin/xkbcomp					Px,	# x11-apps/xkbcomp
+    /usr/bin/xkbcomp@{t_user}				Px,	# x11-apps/xkbcomp
     
     # USERS --------------------------------------------
     owner @{USER_HOME_D}/.local/share/xorg/{,**}	rw,	# Нужно для запуска под пользователем (без suid), хранит там логи сервера.
@@ -123,7 +122,7 @@ profile xorg-server.Xorg /usr/bin/Xorg {
   }
 }
 
-profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile xorg-server.xdm-setup.init.d@{p_root} /etc/init.d/xdm-setup@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -135,23 +134,23 @@ profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup flags=(attach_disconn
   
   # EXECUTABLES ----------------------------------------
   @{shell}						Cx,
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/tr						Px,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /etc/X11/startDM.sh					Px,
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/tr@{t_root}					Px,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /etc/X11/startDM.sh@{t_root}				Px,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/xdm-setup				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -167,7 +166,7 @@ profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup flags=(attach_disconn
     /bin/mkdir						mr,
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -179,7 +178,7 @@ profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup flags=(attach_disconn
     /bin/cat						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -192,7 +191,7 @@ profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup flags=(attach_disconn
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -209,7 +208,7 @@ profile xorg-server.xdm-setup.init.d /etc/init.d/xdm-setup flags=(attach_disconn
   }
 }
 
-profile xorg-server.xdm.init.d /etc/init.d/xdm flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile xorg-server.xdm.init.d@{p_root} /etc/init.d/xdm@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -221,27 +220,27 @@ profile xorg-server.xdm.init.d /etc/init.d/xdm flags=(attach_disconnected) {	# a
   @{SYS_D}/fs/cgroup/unified/xdm/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/tr						Px,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /usr/bin/fgconsole					Px,	# sys-apps/kbd
-  /usr/bin/chvt						Px,	# sys-apps/kbd
-  /etc/init.d/xdm-setup					Px,
-  /etc/X11/startDM.sh					Px,
+  @{shell}@{t_root}					Cx,
+  /bin/tr@{t_root}					Px,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /usr/bin/fgconsole@{t_root}				Px,	# sys-apps/kbd
+  /usr/bin/chvt@{t_root}				Px,	# sys-apps/kbd
+  /etc/init.d/xdm-setup@{t_root}			Px,
+  /etc/X11/startDM.sh@{t_root}				Px,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/xdm				r,
   /run/sddm.pid						rw,	# x11-misc/sddm
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -257,7 +256,7 @@ profile xorg-server.xdm.init.d /etc/init.d/xdm flags=(attach_disconnected) {	# a
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -273,7 +272,7 @@ profile xorg-server.xdm.init.d /etc/init.d/xdm flags=(attach_disconnected) {	# a
     /etc/inittab					r,	# sys-apps/sysvinit
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

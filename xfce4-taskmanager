@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile xfce4-taskmanager /usr/bin/xfce4-taskmanager {
+profile xfce4-taskmanager@{p_user} /usr/bin/xfce4-taskmanager@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -55,8 +55,8 @@ profile xfce4-taskmanager /usr/bin/xfce4-taskmanager {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-taskmanager				mr,
-  /usr/bin/xfce4-appfinder				Px,	# xfce-base/xfce4-appfinder
-  /usr/bin/exo-open					Px,	# xfce-base/exo
+  /usr/bin/xfce4-appfinder@{t_user}			Px,	# xfce-base/xfce4-appfinder
+  /usr/bin/exo-open@{t_user}				Px,	# xfce-base/exo
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.config/xfce4/xfce4-taskmanager.rc{,.@{TMP6}} rw,

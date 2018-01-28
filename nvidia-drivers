@@ -91,7 +91,7 @@ profile nvidia_drivers_Xorg {
 # если в настройках хромиума указано использование аппаратного ускорителя
 # (данный функционал все равно не работает с блобом от нвидия, только с 
 # видео модулями ядра поддерживаемые встроенной в хромиум версией mesa).
-profile nvidia-drivers.nvidia-modprobe@{p_root} /{usr,opt}/bin/nvidia-modprobe@{t_root} flags=(attach_disconnected) {
+profile nvidia-drivers.nvidia-modprobe@{p_all} /{usr,opt}/bin/nvidia-modprobe@{t_all} flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions-user/video-nvidia>
   
@@ -111,7 +111,7 @@ profile nvidia-drivers.nvidia-modprobe@{p_root} /{usr,opt}/bin/nvidia-modprobe@{
   
   # EXECUTABLES ----------------------------------------
   /{usr,opt}/bin/nvidia-modprobe			mr,
-  /bin/kmod@{t_root}					Px,	# sys-apps/kmod
+  /bin/kmod@{p_all}					Px,	# sys-apps/kmod
   
   # DENY INHERIT ---------------------------------------
   deny network,							# local.home.evelauncher

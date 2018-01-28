@@ -59,7 +59,7 @@
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="{[^.],.~}*.@{local_ext}"
 
-profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
+profile wps-office@{p_user} /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps}@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -95,9 +95,10 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/{et,wpp,wps}					r,
-  @{shell}						Cxmr,	# Все правильно, запуск и mmap.
-  /bin/dirname						Px,	# sys-apps/coreutils
-  /opt/kingsoft/wps-office/office6/{et,wpp,wps}		px,
+  @{shell}						mr,
+  @{shell}@{t_user}					Cx,	# Все правильно, запуск и mmap.
+  /bin/dirname@{t_user}					Px,	# sys-apps/coreutils
+  /opt/kingsoft/wps-office/office6/{et,wpp,wps}@{t_user} px,
   
   # READS/WRITES ---------------------------------------
   /etc/os-release					r,
@@ -126,9 +127,9 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
   deny /etc/xdg/kingsoft.conf				w,
   
   # DENY INHERIT ---------------------------------------
-  deny unix (send, receive) peer=(label="wps-office//shell"),	# wps-office//shell
+  deny unix (send, receive) peer=(label="wps-office@{p_user}//shell"),	# wps-office//shell
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -138,7 +139,7 @@ profile wps-office /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp,wps} {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,	# sys-apps/coreutils
+    /bin/uname@{t_user}					Px,	# sys-apps/coreutils
     
     # DENY INHERIT -------------------------------------
     deny unix (send, receive) peer=(label="wps-office"),	# wps-office

@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile wine.wine-wrapper /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]* {
+profile wine.wine-wrapper@{p_user} /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]*@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -33,7 +33,7 @@ profile wine.wine-wrapper /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]* {
   deny @{USER_HOME_CACHE_D}/CCP/**			rw,	# local.home.evelauncher
 }
 
-profile wine /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine flags=(attach_disconnected) {
+profile wine@{p_user} /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine@{t_user} flags=(attach_disconnected) {
   #include <abstractions-user/X>
   #include <abstractions-user/audio>
   #include <abstractions/base>
@@ -74,11 +74,11 @@ profile wine /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine
   deny /						r,
   
   # DENY INHERIT ---------------------------------------
-  deny unix (send, receive) peer=(label="local.home.evelauncher"),	# local.home.evelauncher
+  deny unix (send, receive) peer=(label="local.home.evelauncher@{p_user}"),	# local.home.evelauncher
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile wine.ntlm_auth /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/ntlm_auth flags=(attach_disconnected) {
+profile wine.ntlm_auth@{p_user} /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/ntlm_auth@{t_user} flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/fs/deny-private-strict>
   
@@ -107,7 +107,7 @@ profile wine.ntlm_auth /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*
 # IMPROVE! В идеале, иметь профиль на каждую программу, см.
 # http://wiki.apparmor.net/index.php/AppArmorWine
 # Можно реализовать только в случае использования binfmt_misc.
-profile wine.wine-preloader /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine-preloader flags=(attach_disconnected) {
+profile wine.wine-preloader@{p_user} /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine-preloader@{t_user} flags=(attach_disconnected) {
   #include <abstractions-user/audio>
   #include <abstractions/base>
   #include <abstractions-user/fonts>
@@ -126,12 +126,12 @@ profile wine.wine-preloader /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[
   ptrace (trace) peer=@{profile_name},
   
   # SIGNAL ---------------------------------------------
-  signal (receive) set=(usr1, quit) peer="wine.wineserver",
+  signal (receive) set=(usr1, quit) peer="wine.wineserver@{p_user}",
   
   # UNIX -----------------------------------------------
   unix (send, receive)
   	type=stream
-  	peer=(label="wine.wineserver"),
+  	peer=(label="wine.wineserver@{p_user}"),
   
   # DBUS -----------------------------------------------
   dbus receive
@@ -139,7 +139,7 @@ profile wine.wine-preloader /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[
   	path="/org/freedesktop/NetworkManager{,/**}"
   	interface="org.freedesktop.DBus.Properties"
   	member=PropertiesChanged
-  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),	# net-misc/networkmanager
+  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager@{p_root}"),	# net-misc/networkmanager
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -170,12 +170,13 @@ profile wine.wine-preloader /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[
   audit @{PROC_D}/@{pid}/task/@{pid}/stat		r,	# FIX ME! @{pid}/@{pids} audit 18.10.2017
   
   # EXECUTABLES ----------------------------------------
-  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine-preloader Pxmr,	# Все правильно, права на запуск и на mmap.
-  								# Если будут отдельные профили для программ - изменить.
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine-preloader mr,
   /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine mr,
-  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/ntlm_auth Px,
-  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wineserver Px,
-  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/xdg-open Px,
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine-preloader@{t_user} Px,	# Все правильно, права на запуск и на mmap.
+  								# Если будут отдельные профили для программ - изменить.
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/ntlm_auth@{t_user} Px,
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wineserver@{t_user} Px,
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/xdg-open@{t_user} Px,
   
   # READS/WRITES ---------------------------------------
   /etc/mime.types					r,
@@ -202,11 +203,11 @@ profile wine.wine-preloader /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[
   deny /usr/local/lib{,32,64}/				r,
   
   # DENY INHERIT ---------------------------------------
-  deny unix (send, receive) peer=(label="local.home.evelauncher"),	# local.home.evelauncher
+  deny unix (send, receive) peer=(label="local.home.evelauncher@{p_user}"),	# local.home.evelauncher
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile wine.wineserver /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wineserver flags=(attach_disconnected) {
+profile wine.wineserver@{p_user} /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wineserver@{t_user} flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions-user/X-connection-strict>
@@ -217,15 +218,15 @@ profile wine.wineserver /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]
   capability sys_ptrace,
   
   # PTRACE ---------------------------------------------
-  ptrace (trace) peer="wine.wine-preloader",
+  ptrace (trace) peer="wine.wine-preloader@{p_user}",
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(usr1, quit) peer="wine.wine-preloader",
+  signal (send) set=(usr1, quit) peer="wine.wine-preloader@{p_user}",
   
   # UNIX -----------------------------------------------
   unix (send, receive)
   	type=stream
-  	peer=(label="wine.wine-preloader"),
+  	peer=(label="wine.wine-preloader@{p_user}"),
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -267,11 +268,11 @@ profile wine.wineserver /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]
   deny /dev/@{BLOCK_REAL}				r,
   
   # DENY INHERIT ---------------------------------------
-  deny unix (send, receive) peer=(label="local.home.evelauncher"),	# local.home.evelauncher
+  deny unix (send, receive) peer=(label="local.home.evelauncher@{p_user}"),	# local.home.evelauncher
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile wine.notepad /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/notepad {
+profile wine.notepad@{p_user} /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/notepad@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -282,12 +283,12 @@ profile wine.notepad /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}
   # EXECUTABLES ----------------------------------------
   /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/notepad r,
   @{shell}						mr,
-  /bin/basename						Px,	# sys-apps/coreutils
-  /bin/dirname						Px,	# sys-apps/coreutils
-  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine Px,
+  /bin/basename@{t_user}				Px,	# sys-apps/coreutils
+  /bin/dirname@{t_user}					Px,	# sys-apps/coreutils
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine@{t_user} Px,
 }
 
-profile wine.winecfg-wrapper /usr/bin/winecfg-{any,d3d9,staging,vanilla}-[0-9]* {
+profile wine.winecfg-wrapper@{p_user} /usr/bin/winecfg-{any,d3d9,staging,vanilla}-[0-9]*@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -298,10 +299,10 @@ profile wine.winecfg-wrapper /usr/bin/winecfg-{any,d3d9,staging,vanilla}-[0-9]* 
   # EXECUTABLES ----------------------------------------
   /usr/bin/winecfg-{any,d3d9,staging,vanilla}-[0-9]*	r,
   @{shell}						mr,
-  /usr/lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/bin/winecfg Px,
+  /usr/lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/bin/winecfg@{t_user} Px,
 }
 
-profile wine.winecfg /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/winecfg {
+profile wine.winecfg@{p_user} /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/winecfg@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -312,7 +313,7 @@ profile wine.winecfg /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}
   # EXECUTABLES ----------------------------------------
   /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/winecfg r,
   @{shell}						mr,
-  /bin/basename						Px,	# sys-apps/coreutils
-  /bin/dirname						Px,	# sys-apps/coreutils
-  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine Px,
+  /bin/basename@{t_user}				Px,	# sys-apps/coreutils
+  /bin/dirname@{t_user}					Px,	# sys-apps/coreutils
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine@{t_user} Px,
 }

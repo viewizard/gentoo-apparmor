@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile tor /usr/bin/tor {
+profile tor@{p_root} /usr/bin/tor@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -21,7 +21,7 @@ profile tor /usr/bin/tor {
   capability net_bind_service,
   
   # SIGNAL ---------------------------------------------
-  signal (receive) set=(int) peer="tor.init.d",
+  signal (receive) set=(int) peer="tor.init.d@{p_root}",
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -48,7 +48,7 @@ profile tor /usr/bin/tor {
   /run/tor/{,tor.pid}					rw,
 }
 
-profile tor.init.d /etc/init.d/tor flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile tor.init.d@{p_root} /etc/init.d/tor@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -61,7 +61,7 @@ profile tor.init.d /etc/init.d/tor flags=(attach_disconnected) {	# attach_discon
   capability sys_resource,
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(int) peer="tor",
+  signal (send) set=(int) peer="tor@{p_root}",
   
   # PSEUDO ---------------------------------------------
   @{SYS_D}/fs/cgroup/openrc/tor/tasks			w,
@@ -69,24 +69,24 @@ profile tor.init.d /etc/init.d/tor flags=(attach_disconnected) {	# attach_discon
   @{SYS_D}/fs/cgroup/unified/tor/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/tor						Px,
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  /usr/bin/tor@{t_root}					Px,
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/tor				r,
   /run/tor/						w,
   /run/tor/tor.pid					rwk,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -102,7 +102,7 @@ profile tor.init.d /etc/init.d/tor flags=(attach_disconnected) {	# attach_discon
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -115,7 +115,7 @@ profile tor.init.d /etc/init.d/tor flags=(attach_disconnected) {	# attach_discon
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

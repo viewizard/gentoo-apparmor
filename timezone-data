@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile timezone-data.tzselect /usr/bin/tzselect {
+profile timezone-data.tzselect@{p_all} /usr/bin/tzselect@{t_all} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -21,21 +21,22 @@ profile timezone-data.tzselect /usr/bin/tzselect {
   # EXECUTABLES ----------------------------------------
   /usr/bin/tzselect					r,
   @{shell}						mr,
-  /bin/expr						Cx,	# sys-apps/coreutils
-  /bin/tr						Px,	# sys-apps/coreutils
-  /bin/sort						Cx,	# sys-apps/coreutils
-  /bin/date						Cx,	# sys-apps/coreutils
-  /bin/mktemp						Cx,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/echo						Cx,	# sys-apps/coreutils
-  /usr/bin/gawk						Cx,	# sys-apps/gawk
-  /usr/bin/iconv					Cx,	# sys-libs/glibc
+  /bin/expr@{t_all}					Cx,	# sys-apps/coreutils
+  /bin/tr@{t_all}					Px,	# sys-apps/coreutils
+  /bin/sort@{t_all}					Cx,	# sys-apps/coreutils
+  /bin/date@{t_all}					Cx,	# sys-apps/coreutils
+  /bin/mktemp@{t_all}					Cx,	# sys-apps/coreutils
+  /bin/mkdir@{t_all}					Cx,	# sys-apps/coreutils
+  /bin/rm@{t_all}					Cx,	# sys-apps/coreutils
+  /bin/echo@{t_all}					Cx,	# sys-apps/coreutils
+  /usr/bin/gawk@{t_all}					Cx,	# sys-apps/gawk
+  /usr/bin/iconv@{t_all}				Cx,	# sys-libs/glibc
   
   # TEMP -----------------------------------------------
-  audit /tmp/tmp.*/*					rw,	# FIX ME! audit 26.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  audit /tmp/tmp.*/*					rw,	# FIX ME! audit 26.11.2017
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile expr /bin/expr {
+  profile expr /bin/expr@{t_all} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -46,7 +47,7 @@ profile timezone-data.tzselect /usr/bin/tzselect {
     /bin/expr						mr,
   }
   
-  profile sort /bin/sort {
+  profile sort /bin/sort@{t_all} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -57,7 +58,7 @@ profile timezone-data.tzselect /usr/bin/tzselect {
     /bin/sort						mr,
   }
   
-  profile date /bin/date {
+  profile date /bin/date@{t_all} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -68,7 +69,7 @@ profile timezone-data.tzselect /usr/bin/tzselect {
     /bin/date						mr,
   }
   
-  profile mktemp /bin/mktemp {
+  profile mktemp /bin/mktemp@{t_all} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -79,27 +80,29 @@ profile timezone-data.tzselect /usr/bin/tzselect {
     /bin/mktemp						mr,
     
     # TEMP ---------------------------------------------
-    audit /tmp/tmp.*/					w,	# FIX ME! audit 26.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+    audit /tmp/tmp.*/					w,	# FIX ME! audit 26.11.2017
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_all} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_all} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/rm						mr,
     
     # TEMP ---------------------------------------------
-    audit /tmp/tmp.*/{,*}				rw,	# FIX ME! audit 26.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+    audit /tmp/tmp.*/{,*}				rw,	# FIX ME! audit 26.11.2017
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
-  profile echo /bin/echo {
+  profile echo /bin/echo@{t_all} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -110,7 +113,7 @@ profile timezone-data.tzselect /usr/bin/tzselect {
     /bin/echo						mr,
   }
   
-  profile gawk /usr/bin/gawk {
+  profile gawk /usr/bin/gawk@{t_all} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -127,7 +130,7 @@ profile timezone-data.tzselect /usr/bin/tzselect {
     audit deny /tmp/tmp.*/*				rw,	# timezone-data.tzselect	# FIX ME! audit 26.11.2017
   }
   
-  profile iconv /usr/bin/iconv flags=(attach_disconnected) {
+  profile iconv /usr/bin/iconv@{t_all} flags=(attach_disconnected) {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

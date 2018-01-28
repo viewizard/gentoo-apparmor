@@ -10,14 +10,11 @@
 
 #include <local/tunables.d/>
 
-profile thunar-volman /usr/bin/thunar-volman {
+profile thunar-volman@{p_user} /usr/bin/thunar-volman@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
-  #include <abstractions-root/freedesktop.org>			# RBAC! Должен быть отдельный профиль для root.
   #include <abstractions-user/fonts>
-  #include <abstractions-root/fonts>				# RBAC! Должен быть отдельный профиль для root.
   #include <abstractions-user/gtk>
-  #include <abstractions-root/gtk>				# RBAC! Должен быть отдельный профиль для root.
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
@@ -26,9 +23,6 @@ profile thunar-volman /usr/bin/thunar-volman {
   #include <abstractions/dbus/notifications>
   #include <abstractions/nameservice>
   #include <abstractions-user/X>
-  #include <abstractions-root/X>				# RBAC! Должен быть отдельный профиль для root.
-  #include <abstractions-sudo/X-connection-strict>		# RBAC! Нужно для запуска под root-ом через sudo
-  								# с подключением к X-сессии пользователя.
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -44,8 +38,8 @@ profile thunar-volman /usr/bin/thunar-volman {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar-volman				mr,
-  /usr/bin/thunar-volman-settings			Px,
-  /usr/bin/thunar					Px,	# xfce-base/thunar
+  /usr/bin/thunar-volman-settings@{t_user}		Px,
+  /usr/bin/thunar@{t_user}				Px,	# xfce-base/thunar
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
@@ -55,23 +49,17 @@ profile thunar-volman /usr/bin/thunar-volman {
   /run/mount/utab					r,
 }
 
-profile thunar-volman.thunar-volman-settings /usr/bin/thunar-volman-settings {
+profile thunar-volman.thunar-volman-settings@{p_user} /usr/bin/thunar-volman-settings@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
-  #include <abstractions-root/freedesktop.org>			# RBAC! Должен быть отдельный профиль для root.
   #include <abstractions-user/fonts>
-  #include <abstractions-root/fonts>				# RBAC! Должен быть отдельный профиль для root.
   #include <abstractions-user/gtk>
-  #include <abstractions-root/gtk>				# RBAC! Должен быть отдельный профиль для root.
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/xfconf>
   #include <abstractions-user/X>
-  #include <abstractions-root/X>				# RBAC! Должен быть отдельный профиль для root.
-  #include <abstractions-sudo/X-connection-strict>		# RBAC! Нужно для запуска под root-ом через sudo
-  								# с подключением к X-сессии пользователя.
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -80,9 +68,76 @@ profile thunar-volman.thunar-volman-settings /usr/bin/thunar-volman-settings {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/thunar-volman-settings			mr,
-  /usr/bin/exo-open					Px,	# xfce-base/exo
+  /usr/bin/exo-open@{t_user}				Px,	# xfce-base/exo
   
   # USERS ----------------------------------------------
   @{USER_HOME_D}/.config/xfce4/help.rc			r,
-  @{ROOT_HOME_D}/.config/xfce4/help.rc			r,	# RBAC! Должен быть отдельный профиль для root.
+}
+
+profile thunar-volman@{p_root} /usr/bin/thunar-volman@{t_root} {
+  #include <abstractions/base>
+  #include <abstractions-root/freedesktop.org>
+  #include <abstractions-root/fonts>
+  #include <abstractions-root/gtk>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/accessibility-strict>
+  #include <abstractions/dbus/at-spi>
+  #include <abstractions/dbus/gvfs>
+  #include <abstractions/dbus/xfconf>
+  #include <abstractions/dbus/notifications>
+  #include <abstractions/nameservice>
+  #include <abstractions-root/X>
+  #include <abstractions-sudo/X-connection-strict>		# RBAC! Нужно для запуска под root-ом через sudo
+  								# с подключением к X-сессии пользователя.
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/usb@{USB1}/{,**/}uevent rw,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/ata@{ATA1}/**/block/@{BLOCK_REAL}/{,*/}uevent r,
+  @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{,name,uevent} r,
+  owner @{PROC_D}/@{pid}/fd/				r,
+  owner @{PROC_D}/@{pid}/mountinfo			r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/thunar-volman				mr,
+  /usr/bin/thunar-volman-settings@{t_root}		Px,
+  /usr/bin/thunar@{t_root}				Px,	# xfce-base/thunar
+  
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
+  /etc/udev/udev.conf					r,	# sys-fs/eudev
+  /usr/share/gvfs/remote-volume-monitors/{,*.monitor}	r,	# gnome-base/gvfs
+  /run/udev/data/{[a-z]*[0-9]*:[0-9]*,+usb:@{USB4},+input:input@{input}} r,
+  /run/mount/utab					r,
+}
+
+profile thunar-volman.thunar-volman-settings@{p_root} /usr/bin/thunar-volman-settings@{t_root} {
+  #include <abstractions/base>
+  #include <abstractions-root/freedesktop.org>
+  #include <abstractions-root/fonts>
+  #include <abstractions-root/gtk>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/accessibility-strict>
+  #include <abstractions/dbus/at-spi>
+  #include <abstractions/dbus/gvfs>
+  #include <abstractions/dbus/xfconf>
+  #include <abstractions-root/X>
+  #include <abstractions-sudo/X-connection-strict>		# RBAC! Нужно для запуска под root-ом через sudo
+  								# с подключением к X-сессии пользователя.
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  owner @{PROC_D}/@{pid}/fd/					r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/thunar-volman-settings			mr,
+  /usr/bin/exo-open					Px,	# xfce-base/exo
+  
+  # USERS ----------------------------------------------
+  @{ROOT_HOME_D}/.config/xfce4/help.rc			r,
 }

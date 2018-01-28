@@ -17,7 +17,7 @@
 @{USERS_DIR_rwkl}="[^.]**"
 @{USERS_FILE_rwkl}="[^.]**"
 
-profile qgit /usr/bin/qgit {
+profile qgit@{p_user} /usr/bin/qgit@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -33,9 +33,9 @@ profile qgit /usr/bin/qgit {
   #include <abstractions/fs/deny-private-strict>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term, kill) peer="meld",			# dev-util/meld
-  signal (send) set=(term, kill) peer="git",			# dev-vcs/git
-  signal (send) set=(term, kill) peer="juffed",			# app-editors/juffed
+  signal (send) set=(term, kill) peer="meld@{p_user}",		# dev-util/meld
+  signal (send) set=(term, kill) peer="git@{p_user}",		# dev-vcs/git
+  signal (send) set=(term, kill) peer="juffed@{p_user}",	# app-editors/juffed
   
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
@@ -45,10 +45,10 @@ profile qgit /usr/bin/qgit {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/qgit						mr,
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /usr/bin/git						Px,	# dev-vcs/git
-  /usr/bin/meld						Px,	# dev-util/meld (выбирается пользователем через настройки)
-  /usr/bin/juffed					Px,	# app-editors/juffed (выбирается пользователем через настройки)
+  /bin/cat@{t_user}					Cx,	# sys-apps/coreutils
+  /usr/bin/git@{t_user}					Px,	# dev-vcs/git
+  /usr/bin/meld@{t_user}				Px,	# dev-util/meld (выбирается пользователем через настройки)
+  /usr/bin/juffed@{t_user}				Px,	# app-editors/juffed (выбирается пользователем через настройки)
   
   # READS/WRITES ---------------------------------------
   owner @{USER_HOME_D}/.config/qgit/{,**}		rw,
@@ -59,7 +59,7 @@ profile qgit /usr/bin/qgit {
   owner /tmp/??????_*					rw,	# * - файл из svn для передачи в meld (сравнение файлов).
   								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rk>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -74,7 +74,7 @@ profile qgit /usr/bin/qgit {
   }
 }
 
-profile qgit_root {
+profile qgit@{p_root} /usr/bin/qgit@{t_root} {
   #include <abstractions/base>
   #include <abstractions-root/freedesktop.org>
   #include <abstractions-root/fonts>
@@ -98,9 +98,9 @@ profile qgit_root {
   ptrace (trace) peer=@{profile_name},
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term, kill) peer="meld",			# dev-util/meld
-  signal (send) set=(term, kill) peer="git",			# dev-vcs/git
-  signal (send) set=(term, kill) peer="juffed",			# app-editors/juffed
+  signal (send) set=(term, kill) peer="meld@{p_root}",		# dev-util/meld
+  signal (send) set=(term, kill) peer="git@{p_root}",		# dev-vcs/git
+  signal (send) set=(term, kill) peer="juffed@{p_root}",	# app-editors/juffed
   
   # PSEUDO ---------------------------------------------
   /dev/tty						r,
@@ -110,10 +110,10 @@ profile qgit_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/qgit						mr,
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /usr/bin/git						Px,	# dev-vcs/git
-  /usr/bin/meld						Px,	# dev-util/meld (выбирается пользователем через настройки)
-  /usr/bin/juffed					Px,	# app-editors/juffed (выбирается пользователем через настройки)
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /usr/bin/git@{t_root}					Px,	# dev-vcs/git
+  /usr/bin/meld@{t_root}				Px,	# dev-util/meld (выбирается пользователем через настройки)
+  /usr/bin/juffed@{t_root}				Px,	# app-editors/juffed (выбирается пользователем через настройки)
   
   # READS/WRITES ---------------------------------------
   owner @{ROOT_HOME_D}/.config/qgit/{,**}		rw,
@@ -125,7 +125,7 @@ profile qgit_root {
   owner /tmp/@{TMP6}_*					rw,	# * - файл из git для передачи в meld (сравнение файлов).
   								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-users-preset-rk>
     #include <abstractions-root/fs/access-by-pattern-systemusers>

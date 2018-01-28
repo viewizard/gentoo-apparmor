@@ -13,21 +13,21 @@ dbus send
 	path="/org/a11y/bus"
 	interface="org.a11y.Bus"
 	member=GetAddress
-	peer=(name="org.a11y.Bus",label="at-spi2-core.at-spi-bus-launcher"),
+	peer=(name="org.a11y.Bus",label="at-spi2-core.at-spi-bus-launcher@{p_any}"),
 
 dbus receive
 	bus=accessibility
 	path="/org/a11y/atspi/accessible/root"
 	interface="org.freedesktop.DBus.Properties"
-	peer=(name=":[0-9]*.[0-9]*",label="at-spi2-core.at-spi2-registryd"),
+	peer=(name=":[0-9]*.[0-9]*",label="at-spi2-core.at-spi2-registryd@{p_any}"),
 
 dbus send
 	bus=accessibility
 	path="/org/a11y/atspi/**"
 	interface="org.a11y.atspi.*"
-	peer=(name="org.a11y.atspi.Registry",label="at-spi2-core.at-spi2-registryd"),
+	peer=(name="org.a11y.atspi.Registry",label="at-spi2-core.at-spi2-registryd@{p_any}"),
 dbus receive
 	bus=accessibility
 	path="/org/a11y/atspi/**"
 	interface="org.a11y.atspi.*"
-	peer=(name=":[0-9]*.[0-9]*",label="at-spi2-core.at-spi2-registryd"),
+	peer=(name=":[0-9]*.[0-9]*",label="at-spi2-core.at-spi2-registryd@{p_any}"),

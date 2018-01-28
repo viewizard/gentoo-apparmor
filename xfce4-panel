@@ -17,7 +17,7 @@
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="[^.]*.@{local_ext}"  # xfce-extra/xfce4-screenshooter
 
-profile xfce4-panel /usr/bin/xfce4-panel {
+profile xfce4-panel@{p_user} /usr/bin/xfce4-panel@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -39,12 +39,12 @@ profile xfce4-panel /usr/bin/xfce4-panel {
   	bus=session
   	path="/org/xfce/Panel/Wrapper/[0-9]*"
   	interface="org.xfce.Panel.Wrapper"
-  	peer=(name="org.freedesktop.DBus",label="xfce4-panel*"),
+  	peer=(name="org.freedesktop.DBus",label="xfce4-panel*"),	# FIX ME! сделать с указанием @{p_user}
   dbus receive
   	bus=session
   	path="/org/xfce/Panel/Wrapper/[0-9]*"
   	interface="org.xfce.Panel.Wrapper"
-  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-panel*"),
+  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-panel*"),		# FIX ME! сделать с указанием @{p_user}
   dbus (send, receive)
   	bus=session
   	path="/org/xfce/Panel"
@@ -57,14 +57,15 @@ profile xfce4-panel /usr/bin/xfce4-panel {
   @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/xfce4-panel					Pxmr,	# Все парвильно, запуск и mmap.
-  /usr/lib{,32,64}/xfce4/panel/wrapper-[1-2].0		Px,
-  /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-*-plugin	Px,
-  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1		Px,	# xfce-base/exo
-  /usr/bin/exo-desktop-item-edit			Px,	# xfce-base/exo
-  /usr/bin/xfce4-session-logout				Px,	# xfce-base/xfce4-session
-  /usr/bin/xfce4-session-settings			Px,	# xfce-base/xfce4-session
-  /usr/bin/passwd.sh					Px,	# sys-apps/shadow
+  /usr/bin/xfce4-panel					mr,
+  /usr/bin/xfce4-panel@{t_user}				Px,	# Все парвильно, запуск и mmap.
+  /usr/lib{,32,64}/xfce4/panel/wrapper-[1-2].0@{t_user}	Px,
+  /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-*-plugin@{t_user} Px,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1@{t_user}	Px,	# xfce-base/exo
+  /usr/bin/exo-desktop-item-edit@{t_user}		Px,	# xfce-base/exo
+  /usr/bin/xfce4-session-logout@{t_user}		Px,	# xfce-base/xfce4-session
+  /usr/bin/xfce4-session-settings@{t_user}		Px,	# xfce-base/xfce4-session
+  /usr/bin/passwd.sh@{t_user}				Px,	# sys-apps/shadow
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/menus/**.menu				r,
@@ -89,7 +90,7 @@ profile xfce4-panel /usr/bin/xfce4-panel {
   owner @{USER_HOME_D}/.xfce4-session.verbose-log	w,
 }
 
-profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
+profile xfce4-panel.wrapper-1.0@{p_user} /usr/lib{,32,64}/xfce4/panel/wrapper-1.0@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -115,22 +116,22 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   	bus=session
   	path="/org/xfce/Panel/Wrapper/[0-9]*"
   	interface="org.xfce.Panel.Wrapper"
-  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-panel*"),
+  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-panel*"),	# FIX ME! сделать с указанием @{p_user}
   dbus send
   	bus=session
   	path="/org/xfce/FileManager"
   	interface="org.xfce.Trash"
-  	peer=(name="org.xfce.FileManager",label="thunar"),	# xfce-base/thunar
+  	peer=(name="org.xfce.FileManager",label="thunar@{p_user}"),	# xfce-base/thunar
   dbus receive
   	bus=session
   	path="/org/xfce/FileManager"
   	interface="org.xfce.Trash"
-  	peer=(name=":[0-9]*.[0-9]*",label="thunar"),		# xfce-base/thunar
+  	peer=(name=":[0-9]*.[0-9]*",label="thunar@{p_user}"),		# xfce-base/thunar
   dbus send
   	bus=session
   	path="/org/xfce/SessionManager"
   	interface="org.xfce.Session.Manager"
-  	peer=(name="org.xfce.SessionManager",label="xfce4-session"),	# # xfce-base/xfce4-session
+  	peer=(name="org.xfce.SessionManager",label="xfce4-session@{p_user}"),	# # xfce-base/xfce4-session
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -149,10 +150,10 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/panel/wrapper-1.0		m,
-  /usr/bin/xflock4					Px,	# xfce-base/xfce4-session
-  /usr/bin/alock					Px,	# x11-misc/alock
-  /usr/bin/passwd.sh					Px,	# sys-apps/shadow
-  /usr/bin/xfce4-notes-settings				Px,	# xfce-extra/xfce4-notes-plugin
+  /usr/bin/xflock4@{t_user}				Px,	# xfce-base/xfce4-session
+  /usr/bin/alock@{t_user}				Px,	# x11-misc/alock
+  /usr/bin/passwd.sh@{t_user}				Px,	# sys-apps/shadow
+  /usr/bin/xfce4-notes-settings@{t_user}		Px,	# xfce-extra/xfce4-notes-plugin
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/menus/**.menu				r,
@@ -181,7 +182,7 @@ profile xfce4-panel.wrapper-1.0 /usr/lib{,32,64}/xfce4/panel/wrapper-1.0 {
   audit owner /tmp/gdkpixbuf-xpm-tmp.*			rw,	# xfce-extra/xfce4-whiskermenu-plugin	# FIX ME! audit 25.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
 }
 
-profile xfce4-panel.wrapper-2.0 /usr/lib{,32,64}/xfce4/panel/wrapper-2.0 {
+profile xfce4-panel.wrapper-2.0@{p_user} /usr/lib{,32,64}/xfce4/panel/wrapper-2.0@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -206,18 +207,18 @@ profile xfce4-panel.wrapper-2.0 /usr/lib{,32,64}/xfce4/panel/wrapper-2.0 {
   	bus=session
   	path="/org/xfce/Panel/Wrapper/[0-9]*"
   	interface="org.xfce.Panel.Wrapper"
-  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-panel*"),
+  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-panel*"),	# FIX ME! сделать с указанием @{p_user}
   dbus send
   	bus=session
   	path="/org/freedesktop/PowerManagement/Inhibit"
   	interface="org.freedesktop.DBus.Properties"
 	member=GetAll
-  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-power-manager"),	# xfce-extra/xfce4-power-manager
+  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-power-manager@{p_user}"),	# xfce-extra/xfce4-power-manager
   dbus send
   	bus=session
   	path="/org/freedesktop/PowerManagement/Inhibit"
   	interface="org.freedesktop.PowerManagement.Inhibit"
-  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-power-manager"),	# xfce-extra/xfce4-power-manager
+  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-power-manager@{p_user}"),	# xfce-extra/xfce4-power-manager
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -227,7 +228,7 @@ profile xfce4-panel.wrapper-2.0 /usr/lib{,32,64}/xfce4/panel/wrapper-2.0 {
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/panel/wrapper-2.0		m,
-  /usr/sbin/xfpm-power-backlight-helper			Px,	# xfce-extra/xfce4-power-manager
+  /usr/sbin/xfpm-power-backlight-helper@{t_user}	Px,	# xfce-extra/xfce4-power-manager
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/xfce4/panel/{,**}				r,

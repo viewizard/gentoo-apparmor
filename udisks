@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile udisks.udisksd /usr/libexec/udisks2/udisksd {
+profile udisks.udisksd@{p_user} /usr/libexec/udisks2/udisksd@{t_user} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/system-strict>
@@ -28,7 +28,7 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {
   	path="/org/freedesktop/DBus"
   	interface="org.freedesktop.DBus"
   	member=GetConnectionUnixUser
-  	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon"),
+  	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon@{p_any}"),
   dbus send
   	bus=system
   	path="/org/freedesktop/UDisks2/**"
@@ -94,7 +94,7 @@ profile udisks.udisksd /usr/libexec/udisks2/udisksd {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/udisks2/udisksd				mr,
-  /usr/bin/eject					Px,	# sys-apps/util-linux
+  /usr/bin/eject@{t_user}				Px,	# sys-apps/util-linux
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,

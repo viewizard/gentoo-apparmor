@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
+profile xdg-utils.xdg-open@{p_user} /usr/bin/xdg-open@{t_user} flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/dbus/session-strict>
   #include <abstractions-user/freedesktop.org>
@@ -25,17 +25,17 @@ profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-open					r,
   @{shell}						mr,
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/egrep						Cx,	# sys-apps/grep
-  /usr/bin/exo-open					Px,	# xfce-base/exo
-  /usr/bin/dbus-send					Px,	# sys-apps/dbus
+  /bin/grep@{t_user}					Cx,	# sys-apps/grep
+  /bin/egrep@{t_user}					Cx,	# sys-apps/grep
+  /usr/bin/exo-open@{t_user}				Px,	# xfce-base/exo
+  /usr/bin/dbus-send@{t_user}				Px,	# sys-apps/dbus
   
   # DENY INHERIT ---------------------------------------
-  deny unix peer=(label="wps-office"),				# app-office/wps-office, wps-office
-  deny unix peer=(label="qpdfview"),				# app-text/qpdfview, qpdfview
-  deny unix peer=(label="local.home.evelauncher"),		# local.home.evelauncher
-  deny unix peer=(label="teamspeak-client-bin.teamspeak"),	# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
-  deny unix peer=(label="keepassxc"),				# app-admin/keepassxc, keepassxc
+  deny unix peer=(label="wps-office@{p_user}"),			# app-office/wps-office, wps-office
+  deny unix peer=(label="qpdfview@{p_user}"),			# app-text/qpdfview, qpdfview
+  deny unix peer=(label="local.home.evelauncher@{p_user}"),	# local.home.evelauncher
+  deny unix peer=(label="teamspeak-client-bin.teamspeak@{p_user}"),	# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
+  deny unix peer=(label="keepassxc@{p_user}"),			# app-admin/keepassxc, keepassxc
   deny network netlink raw,					# local.home.evelauncher
   deny network inet dgram,					# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
   deny network inet6 dgram,					# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
@@ -55,24 +55,24 @@ profile xdg-utils.xdg-open /usr/bin/xdg-open flags=(attach_disconnected) {
   deny @{USER_HOME_CACHE_D}/Tox/qTox/qtox.log		w,	# net-im/qtox
   deny @{USER_HOME_CACHE_D}/CCP/**			rw,	# local.home.evelauncher
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_user} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
   }
   
-  profile egrep /bin/egrep {
+  profile egrep /bin/egrep@{t_user} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/egrep						r,
     @{shell}						mr,
-    /bin/grep						ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
+    /bin/grep@{t_user}					ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
   }
 }
 
-profile xdg-utils.xdg-email /usr/bin/xdg-email {
+profile xdg-utils.xdg-email@{p_user} /usr/bin/xdg-email@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -83,11 +83,11 @@ profile xdg-utils.xdg-email /usr/bin/xdg-email {
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-email					r,
   @{shell}						mr,
-  /bin/sed						Cx,	# sys-apps/sed
-  /usr/bin/which					Px,	# sys-apps/which
-  /usr/bin/exo-open					Px,	# xfce-base/exo
+  /bin/sed@{t_user}					Cx,	# sys-apps/sed
+  /usr/bin/which@{t_user}				Px,	# sys-apps/which
+  /usr/bin/exo-open@{t_user}				Px,	# xfce-base/exo
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -99,7 +99,7 @@ profile xdg-utils.xdg-email /usr/bin/xdg-email {
   }
 }
 
-profile xdg-utils.xdg-screensaver /usr/bin/xdg-screensaver {
+profile xdg-utils.xdg-screensaver@{p_user} /usr/bin/xdg-screensaver@{t_user} {
   #include <abstractions/base>
   #include <abstractions/dbus/session-strict>
   #include <abstractions-user/X>
@@ -112,18 +112,18 @@ profile xdg-utils.xdg-screensaver /usr/bin/xdg-screensaver {
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-screensaver				r,
   @{shell}						mr,
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/mv						Cx,	# sys-apps/coreutils
-  /bin/sed						Cx,	# sys-apps/sed
-  /bin/hostname						Px,	# sys-apps/net-tools
-  /bin/uname						Px,	# sys-apps/coreutils
-  /usr/bin/which					Px,	# sys-apps/which
-  /usr/bin/dbus-send					Px,	# sys-apps/dbus
-  /usr/bin/xset						ix,	# x11-apps/xset		# FIX ME! Вынести в отдельный профиль.
-  /usr/bin/xautolock					Px,	# x11-misc/xautolock
-  /usr/bin/xprop					Px,	# x11-apps/xprop
+  /bin/grep@{t_user}					Cx,	# sys-apps/grep
+  /bin/mv@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/sed@{t_user}					Cx,	# sys-apps/sed
+  /bin/hostname@{t_user}				Px,	# sys-apps/net-tools
+  /bin/uname@{t_user}					Px,	# sys-apps/coreutils
+  /usr/bin/which@{t_user}				Px,	# sys-apps/which
+  /usr/bin/dbus-send@{t_user}				Px,	# sys-apps/dbus
+  /usr/bin/xset@{t_user}				ix,	# x11-apps/xset		# FIX ME! Вынести в отдельный профиль.
+  /usr/bin/xautolock@{t_user}				Px,	# x11-misc/xautolock
+  /usr/bin/xprop@{t_user}				Px,	# x11-apps/xprop
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -134,7 +134,7 @@ profile xdg-utils.xdg-screensaver /usr/bin/xdg-screensaver {
     /bin/grep						mr,
   }
   
-  profile mv /bin/mv {
+  profile mv /bin/mv@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -145,7 +145,7 @@ profile xdg-utils.xdg-screensaver /usr/bin/xdg-screensaver {
     /bin/mv						mr,
   }
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -162,7 +162,7 @@ profile xdg-utils.xdg-screensaver /usr/bin/xdg-screensaver {
 # в kernel.log дамп на AA_BUG: security/apparmor/file.c:136 aa_audit_file
 # если в настройках хромиума попытаться установить хромиум браузером
 # по умолчанию (в любом случае, в XFCE4 такой метод не работает).
-profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
+profile xdg-utils.xdg-settings@{p_user} /usr/bin/xdg-settings@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -177,22 +177,22 @@ profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
   /usr/bin/xdg-settings					mr,
   # Checking default browser
   @{shell}						mr,
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/readlink						Cx,	# sys-apps/coreutils
-  /bin/sed						Cx,	# sys-apps/sed
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/mv						Cx,	# sys-apps/coreutils
-  /bin/touch						Cx,	# sys-apps/coreutils
-  /bin/cut						Cx,	# sys-apps/coreutils
-  /bin/dirname						Px,	# sys-apps/coreutils
-  /bin/uname						Px,	# sys-apps/coreutils
-  /usr/bin/which					Px,	# sys-apps/which
-  /usr/bin/basename					Px,	# sys-apps/coreutils
-  /usr/bin/gconftool-2					Px,	# gnome-base/gconf	# Detect proxy settings for gnome2/gnome3.
-  /usr/bin/gawk						Cx,	# sys-apps/gawk
-  /usr/bin/xdg-mime					Px,
-  /usr/bin/xprop					Px,	# x11-apps/xprop
-  /usr/bin/dbus-send					Px,	# sys-apps/dbus
+  /bin/grep@{t_user}					Cx,	# sys-apps/grep
+  /bin/readlink@{t_user}				Cx,	# sys-apps/coreutils
+  /bin/sed@{t_user}					Cx,	# sys-apps/sed
+  /bin/mkdir@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/mv@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/touch@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/cut@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/dirname@{t_user}					Px,	# sys-apps/coreutils
+  /bin/uname@{t_user}					Px,	# sys-apps/coreutils
+  /usr/bin/which@{t_user}				Px,	# sys-apps/which
+  /usr/bin/basename@{t_user}				Px,	# sys-apps/coreutils
+  /usr/bin/gconftool-2@{t_user}				Px,	# gnome-base/gconf	# Detect proxy settings for gnome2/gnome3.
+  /usr/bin/gawk@{t_user}				Cx,	# sys-apps/gawk
+  /usr/bin/xdg-mime@{t_user}				Px,
+  /usr/bin/xprop@{t_user}				Px,	# x11-apps/xprop
+  /usr/bin/dbus-send@{t_user}				Px,	# sys-apps/dbus
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/xfce4/helpers.rc				r,
@@ -201,9 +201,9 @@ profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
   owner @{USER_HOME_D}/.local/share/applications/mimeapps.list* rw,
   
   # NOISY ----------------------------------------------
-  deny @{shell}						x,	# checking default browser
+  deny @{shell}@{t_user}				x,	# checking default browser
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -218,42 +218,42 @@ profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
     owner @{USER_HOME_D}/.config/xfce4/helpers.rc	r,
   }
   
-  profile readlink /bin/readlink {
+  profile readlink /bin/readlink@{t_user} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/readlink					mr,
   }
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_user} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/sed						mr,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_user} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
   }
   
-  profile mv /bin/mv {
+  profile mv /bin/mv@{t_user} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/mv						mr,
   }
   
-  profile touch /bin/touch {
+  profile touch /bin/touch@{t_user} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/touch						mr,
   }
   
-  profile cut /bin/cut {
+  profile cut /bin/cut@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -264,7 +264,7 @@ profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
     /bin/cut						mr,
   }
   
-  profile gawk /usr/bin/gawk {
+  profile gawk /usr/bin/gawk@{t_user} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -272,7 +272,7 @@ profile xdg-utils.xdg-settings /usr/bin/xdg-settings {
   }
 }
 
-profile xdg-utils.xdg-mime /usr/bin/xdg-mime flags=(attach_disconnected) {
+profile xdg-utils.xdg-mime@{p_user} /usr/bin/xdg-mime@{t_user} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -282,15 +282,15 @@ profile xdg-utils.xdg-mime /usr/bin/xdg-mime flags=(attach_disconnected) {
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-mime					r,
   @{shell}						mr,
-  /bin/tr						Cx,	# sys-apps/coreutils
-  /bin/cut						Cx,	# sys-apps/coreutils
-  /bin/sed						Cx,	# sys-apps/sed
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/head						Cx,	# sys-apps/coreutils
-  /bin/uname						Px,	# sys-apps/coreutils
-  /usr/bin/gawk						Cx,	# sys-apps/gawk
-  /usr/bin/xprop					Px,	# x11-apps/xprop
-  /usr/bin/dbus-send					Px,	# sys-apps/dbus
+  /bin/tr@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/cut@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/sed@{t_user}					Cx,	# sys-apps/sed
+  /bin/grep@{t_user}					Cx,	# sys-apps/grep
+  /bin/head@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/uname@{t_user}					Px,	# sys-apps/coreutils
+  /usr/bin/gawk@{t_user}				Cx,	# sys-apps/gawk
+  /usr/bin/xprop@{t_user}				Px,	# x11-apps/xprop
+  /usr/bin/dbus-send@{t_user}				Px,	# sys-apps/dbus
   
   # READS/WRITES ---------------------------------------
   /usr/share/applications/{,**/}			r,
@@ -301,7 +301,7 @@ profile xdg-utils.xdg-mime /usr/bin/xdg-mime flags=(attach_disconnected) {
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   
-  profile tr /bin/tr flags=(attach_disconnected) {
+  profile tr /bin/tr@{t_user} flags=(attach_disconnected) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -314,7 +314,7 @@ profile xdg-utils.xdg-mime /usr/bin/xdg-mime flags=(attach_disconnected) {
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile cut /bin/cut flags=(attach_disconnected) {
+  profile cut /bin/cut@{t_user} flags=(attach_disconnected) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -328,7 +328,7 @@ profile xdg-utils.xdg-mime /usr/bin/xdg-mime flags=(attach_disconnected) {
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile sed /bin/sed flags=(attach_disconnected) {
+  profile sed /bin/sed@{t_user} flags=(attach_disconnected) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -341,7 +341,7 @@ profile xdg-utils.xdg-mime /usr/bin/xdg-mime flags=(attach_disconnected) {
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile grep /bin/grep flags=(attach_disconnected) {
+  profile grep /bin/grep@{t_user} flags=(attach_disconnected) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -362,7 +362,7 @@ profile xdg-utils.xdg-mime /usr/bin/xdg-mime flags=(attach_disconnected) {
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile head /bin/head flags=(attach_disconnected) {
+  profile head /bin/head@{t_user} flags=(attach_disconnected) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -376,7 +376,7 @@ profile xdg-utils.xdg-mime /usr/bin/xdg-mime flags=(attach_disconnected) {
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile gawk /usr/bin/gawk flags=(attach_disconnected) {
+  profile gawk /usr/bin/gawk@{t_user} flags=(attach_disconnected) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -394,7 +394,7 @@ profile xdg-utils.xdg-mime /usr/bin/xdg-mime flags=(attach_disconnected) {
   }
 }
 
-profile xdg_open_root {
+profile xdg-utils.xdg-open@{p_root} /usr/bin/xdg-open@{t_root} flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/dbus/session-strict>
   #include <abstractions-root/freedesktop.org>
@@ -410,30 +410,30 @@ profile xdg_open_root {
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-open					r,
   @{shell}						mr,
-  /bin/uname						Px,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/egrep						Cx,	# sys-apps/grep
-  /usr/bin/exo-open					Px,	# xfce-base/exo
-  /usr/bin/dbus-send					Px,	# sys-apps/dbus
+  /bin/uname@{t_root}					Px,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/egrep@{t_root}					Cx,	# sys-apps/grep
+  /usr/bin/exo-open@{t_root}				Px,	# xfce-base/exo
+  /usr/bin/dbus-send@{t_root}				Px,	# sys-apps/dbus
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
   }
   
-  profile egrep /bin/egrep {
+  profile egrep /bin/egrep@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/egrep						r,
     @{shell}						mr,
-    /bin/grep						ix,	# Все правильно, для egrep используем с ix.
+    /bin/grep@{t_root}					ix,	# Все правильно, для egrep используем с ix.
   }
 }
 
-profile xdg_email_root {
+profile xdg-utils.xdg-email@{p_root} /usr/bin/xdg-email@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -444,11 +444,11 @@ profile xdg_email_root {
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-email					r,
   @{shell}						mr,
-  /bin/sed						Cx,	# sys-apps/sed
-  /usr/bin/which					Px,	# sys-apps/which
-  /usr/bin/exo-open					Px,	# xfce-base/exo
+  /bin/sed@{t_root}					Cx,	# sys-apps/sed
+  /usr/bin/which@{t_root}				Px,	# sys-apps/which
+  /usr/bin/exo-open@{t_root}				Px,	# xfce-base/exo
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------

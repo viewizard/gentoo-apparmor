@@ -14,7 +14,7 @@
 @{USERS_DIR_w}="[^.]**"
 @{USERS_FILE_w}="{[^.]*,.goutputstream-@{TMP6}}"
 
-profile xfce4-terminal /usr/bin/xfce4-terminal {
+profile xfce4-terminal@{p_user} /usr/bin/xfce4-terminal@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -61,13 +61,13 @@ profile xfce4-terminal /usr/bin/xfce4-terminal {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-terminal				mr,
-  @{shell}						Px -> shell_users,	# Должен быть пользовательский профиль.
-  /bin/rc-status					Px,	# sys-apps/openrc
-  /bin/su						Px,	# sys-apps/shadow
-  /usr/bin/sudo						Px,	# app-admin/sudo
-  /usr/bin/htop						Px,	# sys-process/htop
-  /usr/bin/passwd.sh					Px,	# sys-apps/shadow
-  /usr/bin/exo-open					Px,	# xfce-base/exo
+  @{shell}@{t_user}					Px -> shell_users,	# Должен быть пользовательский профиль.
+  /bin/rc-status@{t_user}				Px,	# sys-apps/openrc
+  /bin/su@{t_user}					Px,	# sys-apps/shadow
+  /usr/bin/sudo@{t_user}				Px,	# app-admin/sudo
+  /usr/bin/htop@{t_user}				Px,	# sys-process/htop
+  /usr/bin/passwd.sh@{t_user}				Px,	# sys-apps/shadow
+  /usr/bin/exo-open@{t_user}				Px,	# xfce-base/exo
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/						r,

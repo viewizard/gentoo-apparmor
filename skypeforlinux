@@ -24,7 +24,7 @@
 # .otf
 @{local_ext_font}+=[oO][tT][fF]
 
-profile skypeforlinux.launcher /opt/bin/skypeforlinux {
+profile skypeforlinux.launcher@{p_user} /opt/bin/skypeforlinux@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   
@@ -35,15 +35,15 @@ profile skypeforlinux.launcher /opt/bin/skypeforlinux {
   # EXECUTABLES ----------------------------------------
   /opt/bin/skypeforlinux				r,
   @{shell}						mr,
-  /bin/readlink						Cx,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/dirname						Px,	# sys-apps/coreutils
-  /usr/bin/nohup					cx,	# sys-apps/coreutils	# Используем переменные окружения.
+  /bin/readlink@{t_user}				Cx,	# sys-apps/coreutils
+  /bin/mkdir@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/dirname@{t_user}					Px,	# sys-apps/coreutils
+  /usr/bin/nohup@{t_user}				cx,	# sys-apps/coreutils	# Используем переменные окружения.
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.config/skypeforlinux/logs/skype-startup.log w,
   
-  profile readlink /bin/readlink {
+  profile readlink /bin/readlink@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -53,7 +53,7 @@ profile skypeforlinux.launcher /opt/bin/skypeforlinux {
     /bin/readlink					mr,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -66,7 +66,7 @@ profile skypeforlinux.launcher /opt/bin/skypeforlinux {
     owner @{USER_HOME_D}/.config/skypeforlinux/{,**/}	rw,
   }
   
-  profile nohup /usr/bin/nohup {
+  profile nohup /usr/bin/nohup@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -74,14 +74,14 @@ profile skypeforlinux.launcher /opt/bin/skypeforlinux {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/nohup					mr,
-    /opt/skypeforlinux/skypeforlinux			px,	# Используем переменные окружения.
+    /opt/skypeforlinux/skypeforlinux@{t_user}		px,	# Используем переменные окружения.
     
     # USERS --------------------------------------------
     owner @{USER_HOME_D}/.config/skypeforlinux/logs/skype-startup.log w,
   }
 }
 
-profile skypeforlinux /opt/skypeforlinux/skypeforlinux {
+profile skypeforlinux@{p_user} /opt/skypeforlinux/skypeforlinux@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/fonts>
   #include <abstractions-user/freedesktop.org>
@@ -107,11 +107,11 @@ profile skypeforlinux /opt/skypeforlinux/skypeforlinux {
   
   # UNIX -----------------------------------------------
   deny unix type=stream
-  	peer=(label="nvidia-drivers.nvidia-modprobe"),		# x11-drivers/nvidia-drivers
+  	peer=(label="nvidia-drivers.nvidia-modprobe@{p_user}"),	# x11-drivers/nvidia-drivers
   deny unix type=stream
-  	peer=(label="glibc.locale"),				# sys-libs/glibc
+  	peer=(label="glibc.locale@{p_user}"),			# sys-libs/glibc
   deny unix type=seqpacket
-  	peer=(label="glibc.locale"),				# sys-libs/glibc
+  	peer=(label="glibc.locale@{p_user}"),			# sys-libs/glibc
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -156,8 +156,9 @@ profile skypeforlinux /opt/skypeforlinux/skypeforlinux {
   deny @{PROC_D}/@{pids}/oom_score_adj			rw,
   
   # EXECUTABLES ----------------------------------------
-  /opt/skypeforlinux/skypeforlinux			ixmr,	# Все правильно, запуск и mmap.
-  /usr/bin/locale					Px,	# sys-libs/glibc
+  /opt/skypeforlinux/skypeforlinux			mr,
+  /opt/skypeforlinux/skypeforlinux@{t_user}		ix,	# Все правильно, запуск и mmap.
+  /usr/bin/locale@{t_user}				Px,	# sys-libs/glibc
   
   # READS/WRITES ---------------------------------------
   /etc/os-release					r,	# sys-apps/baselayout
