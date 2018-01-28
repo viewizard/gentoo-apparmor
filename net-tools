@@ -38,9 +38,6 @@ profile net-tools.ifconfig@{p_root} /bin/ifconfig@{t_root} {
   
   # EXECUTABLES ----------------------------------------
   /bin/ifconfig						mr,
-  
-  # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
 }
 
 profile net-tools.netstat@{p_all} /bin/netstat@{t_all} {
@@ -72,10 +69,6 @@ profile net-tools.netstat@{p_all} /bin/netstat@{t_all} {
   
   # READS/WRITES ---------------------------------------
   /etc/networks						r,
-  
-  # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
-  deny /tmp/chkrootkit.cron.@{TMP6}			w,	# app-forensics/chkrootkit, chkrootkit.cron.daily
 }
 
 profile net-tools.hostname@{p_all} /bin/hostname@{t_all} {

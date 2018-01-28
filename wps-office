@@ -142,7 +142,7 @@ profile wps-office@{p_user} /{usr,opt}/{bin,kingsoft/wps-office/office6}/{et,wpp
     /bin/uname@{t_user}					Px,	# sys-apps/coreutils
     
     # DENY INHERIT -------------------------------------
-    deny unix (send, receive) peer=(label="wps-office"),	# wps-office
+    deny unix (send, receive) peer=(label="wps-office@{p_user}"),	# wps-office
     deny /opt/kingsoft/wps-office/office6/**		r,	# wps-office
     deny @{USER_HOME_D}/.kingsoft/office6/templates/wps/** w,	# wps-office
     deny @{USER_HOME_D}/**				rw,	# wps-office

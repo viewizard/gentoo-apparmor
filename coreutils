@@ -68,8 +68,6 @@ profile coreutils.uname@{p_all} /bin/uname@{t_all} flags=(attach_disconnected) {
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   deny /run/user/@{UID}/poedit.lock			w,	# app-i18n/poedit
-  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
-  deny /tmp/chkrootkit.cron.@{TMP6}			w,	# app-forensics/chkrootkit, chkrootkit.cron.daily
   deny /var/log/genkernel.log				w,	# sys-kernel/genkernel-next
   deny /tmp/Code::Blocks-@{USER}			w,	# dev-util/codeblocks
 }
@@ -98,8 +96,6 @@ profile coreutils.tr@{p_all} /bin/tr@{t_all} flags=(attach_disconnected) {
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   deny /tmp/@{TMP_SH}					r,	# app-portage/gentoolkit, gentoolkit.revdep-rebuild.sh
-  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
-  deny /tmp/chkrootkit.cron.@{TMP6}			w,	# app-forensics/chkrootkit, chkrootkit.cron.daily
 }
 
 profile coreutils.sleep@{p_all} /bin/sleep@{t_all} {
@@ -113,9 +109,6 @@ profile coreutils.sleep@{p_all} /bin/sleep@{t_all} {
   
   # EXECUTABLES ----------------------------------------
   /bin/sleep						mr,
-  
-  # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
 }
 
 profile coreutils.whoami@{p_all} /usr/bin/whoami@{t_all} {
@@ -143,8 +136,6 @@ profile coreutils.id@{p_all} /usr/bin/id@{t_all} {
   /usr/bin/id						mr,
   
   # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
-  deny /tmp/chkrootkit.cron.@{TMP6}			w,	# app-forensics/chkrootkit, chkrootkit.cron.daily
   deny /var/tmp/portage/**/temp/build.log		w,	# sys-apps/portage, portage.emerge
   deny /var/log/emerge-fetch.log			a,	# sys-apps/portage, portage.emerge
 }
@@ -216,8 +207,6 @@ profile coreutils.echo@{p_all} /bin/echo@{t_all} {
   /bin/echo						mr,
   
   # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
-  deny /tmp/chkrootkit.cron.@{TMP6}			w,	# app-forensics/chkrootkit, chkrootkit.cron.daily
   deny /var/log/genkernel.log				w,	# sys-kernel/genkernel-next
 }
 
@@ -255,7 +244,6 @@ profile coreutils.uniq@{p_all} /usr/bin/uniq@{t_all} {
   /usr/bin/uniq						mr,
   
   # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
   deny /tmp/rootbackup.cron.@{TMP6}			w,	# backup_weekly.sh.cron.weekly
   deny /tmp/dailyhomebackup.cron.@{TMP6}		w,	# backup_daily.sh.cron.daily
 }

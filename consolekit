@@ -121,7 +121,7 @@ profile consolekit.console-kit-daemon@{p_root} /usr/sbin/console-kit-daemon@{t_r
 	path="/org/freedesktop/DBus/Bus"
 	interface="org.freedesktop.DBus"
 	member={GetConnectionUnixUser,GetConnectionUnixProcessID}
-	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon@{p_root}"),	# sys-apps/dbus
+	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon@{p_any}"),	# sys-apps/dbus
   dbus send
 	bus=system
 	path="/org/freedesktop/ConsoleKit/Manager"
@@ -142,7 +142,7 @@ profile consolekit.console-kit-daemon@{p_root} /usr/sbin/console-kit-daemon@{t_r
 	path="/org/freedesktop/ConsoleKit/Manager"
 	interface="org.freedesktop.ConsoleKit.Manager"
 	member=GetSessionForUnixProcess
-	peer=(name=":[0-9]*.[0-9]*",label="{polkit.polkitd,polkit-gnome}@{p_root}"),	# sys-auth/polkit, gnome-extra/polkit-gnome
+	peer=(name=":[0-9]*.[0-9]*",label="{polkit.polkitd,polkit-gnome}@{p_any}"),	# sys-auth/polkit, gnome-extra/polkit-gnome
   dbus receive
 	bus=system
 	path="/org/freedesktop/ConsoleKit/Session[0-9]*"
@@ -186,8 +186,8 @@ profile consolekit.ck-collect-session-info@{p_root} /usr/lib{,32,64}/ConsoleKit/
   capability dac_read_search,
   
   # PTRACE ---------------------------------------------
-  ptrace (trace) peer="consolekit.ck-launch-session@{p_root}",
-  ptrace (trace) peer="xorg-server.Xorg@{p_root}",		# x11-base/xorg-server
+  ptrace (trace) peer="consolekit.ck-launch-session@{p_user}",
+  ptrace (trace) peer="xorg-server.Xorg@{p_user}",		# x11-base/xorg-server
   ptrace (trace) peer="shadow.login@{p_root}//*",		# sys-apps/shadow
   
   # PSEUDO ---------------------------------------------
@@ -208,7 +208,7 @@ profile consolekit.ck-get-x11-display-device@{p_root} /usr/lib{,32,64}/ConsoleKi
   #include <abstractions-user/X-connection-strict>
   
   # PTRACE ---------------------------------------------
-  ptrace (trace) peer="xorg-server.Xorg",			# x11-base/xorg-server
+  ptrace (trace) peer="xorg-server.Xorg@{p_user}",		# x11-base/xorg-server
   
   # PSEUDO ---------------------------------------------
   @{PROC_D}/tty/drivers					r,

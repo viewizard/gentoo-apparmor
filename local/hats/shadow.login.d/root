@@ -33,7 +33,8 @@
   
   # EXECUTABLES ----------------------------------------
   @{shell}@{t_root}					Px -> shell_root,
-  /usr/bin/gnome-keyring-daemon@{t_root}		Px,	# gnome-base/gnome-keyring (в случае запуска через pam модуль)
+  audit deny /usr/bin/gnome-keyring-daemon@{t_root}	Px,	# gnome-base/gnome-keyring (в случае запуска через pam модуль)
+  								# RBAC! Для root нет профиля (+ не учтено в абстракциях и dbus).
   
   # READS/WRITES ---------------------------------------
   /etc/environment					r,

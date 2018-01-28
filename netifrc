@@ -49,9 +49,7 @@ profile netifrc.init.d@{p_root} /etc/init.d/net.*@{t_root} flags=(attach_disconn
   /sbin/dhcpcd@{t_root}					Px,	# net-misc/dhcpcd
   /sbin/brctl@{t_root}					Px,	# net-misc/bridge-utils
   /sbin/iptunnel@{t_root}				Px,	# sys-apps/net-tools
-  /sbin/iwconfig@{t_root}				Px,	# net-wireless/wireless-tools
   /usr/bin/gawk@{t_root}				Cx,	# sys-apps/gawk
-  /usr/sbin/ifplugd@{t_root}				Px,	# sys-apps/ifplugd
   /lib{,32,64}/rc/sbin/mark_service_inactive@{t_root}	Px,	# sys-apps/openrc
   
   # READS/WRITES ---------------------------------------
@@ -61,7 +59,6 @@ profile netifrc.init.d@{p_root} /etc/init.d/net.*@{t_root} flags=(attach_disconn
   /etc/init.d/net.*					r,
   /etc/iproute2/{,*}					r,	# sys-apps/iproute2
   audit /run/dhcpcd-*.pid				rwk,	# net-misc/dhcpcd	# FIX ME! 7.12.2017
-  audit /run/ifplugd.*.pid				rwk,	# sys-apps/ifplugd	# FIX ME! 7.12.2017
   
   profile shell @{shell}@{t_root} {
     #include <abstractions/base>

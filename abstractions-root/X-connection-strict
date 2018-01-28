@@ -11,11 +11,11 @@
 # UNIX -------------------------------------------------
 unix (connect, receive, send)
 	type=stream
-	peer=(addr="@/tmp/.X11-unix/X@{X_DISPLAY}",label="xorg-server.Xorg"),
+	peer=(addr="@/tmp/.X11-unix/X@{X_DISPLAY}",label="xorg-server.Xorg@{p_root}"),
 unix (send receive)
 	type=stream
 	addr="none"
-	peer=(addr="none",label="xorg-server.Xorg"),
+	peer=(addr="none",label="xorg-server.Xorg@{p_root}"),
 unix (send receive)
 	type=stream
 	addr=none
@@ -27,7 +27,7 @@ unix (send receive)
 unix (send)
 	type=dgram
 	addr="none"
-	peer=(label="xorg-server.Xorg"),
+	peer=(label="xorg-server.Xorg@{p_root}"),
 
 # USERS ------------------------------------------------
 owner @{ROOT_HOME_D}/.Xauthority			r,

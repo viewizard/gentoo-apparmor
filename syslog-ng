@@ -69,9 +69,6 @@ profile syslog-ng@{p_root} /usr/sbin/syslog-ng@{t_root} {
   /run/syslog-ng.pid					rwk,
   /run/syslog-ng.ctl					rw,
   /run/syslog-ng/additional-log-sockets.conf		r,
-  
-  # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
 }
 
 profile syslog-ng.init.d@{p_root} /etc/init.d/syslog-ng@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"

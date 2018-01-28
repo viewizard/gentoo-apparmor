@@ -260,7 +260,7 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
     signal (send) set=(hup) peer="gconf.gconfd-2@{p_any}",		# gnome-base/gconf
     
     # PTRACE -------------------------------------------
-    ptrace (trace) peer="sysvinit.init",			# sys-apps/sysvinit
+    ptrace (trace) peer="sysvinit.init@{p_root}",		# sys-apps/sysvinit
     
     # NETWORK ------------------------------------------
     network inet dgram,

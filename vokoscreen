@@ -41,7 +41,7 @@ profile vokoscreen@{p_user} /usr/bin/vokoscreen@{t_user} {
   #include <abstractions-user/profile_transitions/allow-mime-related>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term) peer="vokoscreen//ffmpeg",
+  signal (send) set=(term) peer="vokoscreen@{p_user}//ffmpeg",
   
   # NETWORK --------------------------------------------
   network netlink raw,

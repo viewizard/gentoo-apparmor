@@ -201,7 +201,6 @@ profile openrc.gendepends.sh@{p_root} /lib{,32,64}/rc/sh/gendepends.sh@{t_root} 
   
   # READS/WRITES ---------------------------------------
   /etc/rc.conf						r,
-  /etc/zfs/zfs-functions				r,	# sys-fs/zfs
   /etc/exports.d/{,*}					r,	# net-fs/nfs-utils
   /etc/{conf,init}.d/{,*}				r,
   /usr/libexec/rc.apparmor.functions			r,	# sys-apps/apparmor
@@ -671,7 +670,7 @@ profile openrc.mark_service_inactive@{p_root} /lib{,32,64}/rc/sbin/mark_service_
   #include <abstractions/base>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(hup) peer="*.init.d",
+  signal (send) set=(hup) peer="*.init.d@{p_root}",
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -3415,7 +3414,7 @@ profile openrc.agetty.init.d@{p_root} /etc/init.d/agetty@{t_root} flags=(attach_
     #include <abstractions/nameservice>
     
     # SIGNAL -------------------------------------------
-    signal (send) set=(term) peer="util-linux.agetty",
+    signal (send) set=(term) peer="util-linux.agetty@{p_root}",
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,

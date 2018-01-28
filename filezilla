@@ -28,7 +28,7 @@ profile filezilla@{p_user} /usr/bin/filezilla@{t_user} {
   #include <abstractions-user/xdg-open>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term) peer="filezilla.fzsftp",
+  signal (send) set=(term) peer="filezilla.fzsftp@{p_user}",
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

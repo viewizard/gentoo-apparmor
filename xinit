@@ -226,7 +226,7 @@ profile xinit.startx@{p_user} /usr/bin/startx@{t_user} {
   }
 }
 
-profile xinit.startDM.sh@{p_user} /etc/X11/startDM.sh@{t_user} {
+profile xinit.startDM.sh@{p_root} /etc/X11/startDM.sh@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -240,5 +240,4 @@ profile xinit.startDM.sh@{p_user} /etc/X11/startDM.sh@{t_user} {
   /etc/profile						r,	# sys-apps/baselayout
   /etc/profile.d/{,*}					r,	# x11-libs/vte (проверять, могут быть другие пакеты)
   /etc/bash/bashrc					r,	# app-shells/bash
-  /run/sddm.pid						rw,	# x11-misc/sddm
 }

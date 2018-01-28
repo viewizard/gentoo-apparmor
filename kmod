@@ -43,5 +43,4 @@ profile kmod@{p_all} /{bin/kmod,sbin/modprobe,sbin/modeinfo}@{t_all} flags=(atta
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   deny /var/log/Xorg.@{X_DISPLAY}.log			w,	# x11-base/xorg-server, xorg-server.Xorg
-  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
 }

@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile util-linux.mkswap /sbin/mkswap {
+profile util-linux.mkswap@{p_root} /sbin/mkswap@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -29,7 +29,7 @@ profile util-linux.mkswap /sbin/mkswap {
   /sbin/mkswap						mr,
 }
 
-profile util-linux.swapon /sbin/swap{on,off} {
+profile util-linux.swapon@{p_root} /sbin/swap{on,off}@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -51,7 +51,7 @@ profile util-linux.swapon /sbin/swap{on,off} {
   /etc/fstab						r,
 }
 
-profile util-linux.lsblk /bin/lsblk {
+profile util-linux.lsblk@{p_root} /bin/lsblk@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -76,7 +76,7 @@ profile util-linux.lsblk /bin/lsblk {
   owner /tmp/rootbackup.cron.@{TMP6}			w,	# DELEGATION! backup_weekly.sh.cron.weekly
 }
 
-profile util-linux.agetty /sbin/agetty {
+profile util-linux.agetty@{p_root} /sbin/agetty@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -104,7 +104,7 @@ profile util-linux.agetty /sbin/agetty {
   /var/log/wtmp						wk,
 }
 
-profile util-linux.fsck /sbin/fsck {
+profile util-linux.fsck@{p_root} /sbin/fsck@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -129,7 +129,7 @@ profile util-linux.fsck /sbin/fsck {
   link subset /run/blkid/blkid.tab.old			-> /run/blkid/blkid.tab,
 }
 
-profile util-linux.hwclock /sbin/hwclock {
+profile util-linux.hwclock@{p_root} /sbin/hwclock@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -143,7 +143,7 @@ profile util-linux.hwclock /sbin/hwclock {
   /sbin/hwclock						mr,
 }
 
-profile util-linux.logger /usr/bin/logger {
+profile util-linux.logger@{p_root} /usr/bin/logger@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -156,7 +156,7 @@ profile util-linux.logger /usr/bin/logger {
   /usr/bin/logger					mr,
 }
 
-profile util-linux.fdisk /sbin/{,c}fdisk {
+profile util-linux.fdisk@{p_root} /sbin/{,c}fdisk@{t_root} {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -192,7 +192,7 @@ profile util-linux.eject@{p_all} /usr/bin/eject@{t_all} {
   /run/mount/utab					r,
 }
 
-profile util-linux.blkid /sbin/blkid {
+profile util-linux.blkid@{p_root} /sbin/blkid@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -218,7 +218,7 @@ profile util-linux.blkid /sbin/blkid {
   link subset /run/blkid/blkid.tab.old			-> /run/blkid/blkid.tab,
 }
 
-profile util-linux.switch_root /sbin/switch_root {
+profile util-linux.switch_root@{p_root} /sbin/switch_root@{t_root} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
@@ -226,7 +226,7 @@ profile util-linux.switch_root /sbin/switch_root {
   /sbin/init						Px,	# sys-apps/sysvinit
 }
 
-profile util-linux.blockdev /sbin/blockdev {
+profile util-linux.blockdev@{p_root} /sbin/blockdev@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -236,7 +236,7 @@ profile util-linux.blockdev /sbin/blockdev {
   /sbin/blockdev					mr,
 }
 
-profile util-linux.mcookie /usr/bin/mcookie {
+profile util-linux.mcookie@{p_user} /usr/bin/mcookie@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -247,7 +247,7 @@ profile util-linux.mcookie /usr/bin/mcookie {
   /usr/bin/mcookie					mr,
 }
 
-profile util-linux.cal /usr/bin/cal {
+profile util-linux.cal@{p_user} /usr/bin/cal@{t_user} {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -280,7 +280,7 @@ profile util-linux.getopt@{p_all} /usr/bin/getopt@{t_all} flags=(attach_disconne
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile util-linux.dmesg /bin/dmesg {
+profile util-linux.dmesg@{p_root} /bin/dmesg@{t_root} {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -301,7 +301,7 @@ profile util-linux.dmesg /bin/dmesg {
   /var/log/dmesg					w,	# openrc.bootmisc.init.d
 }
 
-profile util-linux.renice /usr/bin/renice {
+profile util-linux.renice@{p_root} /usr/bin/renice@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -315,7 +315,7 @@ profile util-linux.renice /usr/bin/renice {
   /usr/bin/renice					mr,
 }
 
-profile util-linux.wipefs /sbin/wipefs {
+profile util-linux.wipefs@{p_root} /sbin/wipefs@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -327,7 +327,7 @@ profile util-linux.wipefs /sbin/wipefs {
   /sbin/wipefs						mr,
 }
 
-profile util-linux.sfdisk /sbin/sfdisk {
+profile util-linux.sfdisk@{p_root} /sbin/sfdisk@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
