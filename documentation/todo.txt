@@ -1,4 +1,5 @@
 http://wiki.apparmor.net/index.php/Documentation
+https://gitlab.com/apparmor/apparmor/wikis/Documentation
 out of tree patches (kernel) git://kernel.ubuntu.com/jj/apparmor-backports
 out of tree patches (user-space) git://git.launchpad.net/~jjohansen/apparmor
 
@@ -14,11 +15,6 @@ https://bugs.launchpad.net/apparmor/+bug/1741584
 @{local_ext_playlist}+=[aA][uU][dD][pP][lL]	# .audpl
 
 
--Conditional include
-#include if exists, как только добавят в apparmor_parser поддержку, переделать профили (!)
-https://gitlab.com/apparmor/apparmor/merge_requests/51
-
-
 - смотреть, когда в ядро вернут default профиль (confined boot), был до 4.13, потом убрали.
 Обещают, что будет работать через команду загрузки ядра.
 Убрали т.к. не мог использоваться в убунте (нужно было рекомпилировать ядро) + не работал нормально,
@@ -28,6 +24,7 @@ https://bugs.launchpad.net/apparmor/+bug/1725335
 
 - xattr labels
 http://wiki.apparmor.net/index.php/TechnicalDoc#File_object_mediation
+https://gitlab.com/apparmor/apparmor/wikis/TechnicalDoc#file-object-mediation
 Задание и работа с метками в расширенных атрибутах файлов (аналогично SELinux и SMACK).
 Временные файлы (/tmp/*) маркировать при создании и потом читать только если маркер соответствует, минимизировать тем самым доступ приложений к чужим файлам с одинаковым именем.
 /dev/shm/*		mrw, - очень важно давать только на нужный процесс, особенно учитывае mmap
@@ -63,6 +60,7 @@ requires capability setuid
 1) Например, через tunables управлять видео, звуком, аутентификацией (kerberos,...) и т.п., открывая только нужное.
 2) Устанавливать блоки кода для систем инициализации (openrc, systemd). Пока не понятно, можно ли будет работать с профилями, или только правила профилей (содержанием профилей).
 http://wiki.apparmor.net/index.php/AppArmor_Core_Policy_Reference#extended_conditionals
+https://gitlab.com/apparmor/apparmor/wikis/AppArmor_Core_Policy_Reference#extended-conditionals-not-currently-supported
 
 
 - Stacking (уже доступен с 3.5 версии изменений ядра, 2.11 утилиты) Работает по принципу пересечения профилей (логическое "И" для правил профилей). Непонятно как это будет работать, если у нас все так же ограничение всего на 12 переходов на другие профили.
@@ -75,17 +73,23 @@ is equivalent to
     /bin/** px -> @{profile_name}//&two,
 http://wiki.apparmor.net/index.php/AppArmorStacking
 http://wiki.apparmor.net/index.php/StackingConfiningUsers
+https://gitlab.com/apparmor/apparmor/wikis/AppArmorStacking
+https://gitlab.com/apparmor/apparmor/wikis/StackingConfiningUsers
 
 
 - Delegation (будет примерно в 4-5 версии изменений ядра), т.к. убунтовские патчи убирают 100% делегейшен на открытые ресурсы в дочерний процесс, надо прописывать это отдельно (указывать какие ресурсы открытые в основном процессе может использовать дочерний). Не совсем понятно, когда это будет доступно хотя бы в утилите, но описание уже есть:
 1) указываем ресурс для любого профиля который в последствии может быть вызван
 	http://wiki.apparmor.net/index.php/AppArmor_Core_Policy_Reference#Delegation
+	https://gitlab.com/apparmor/apparmor/wikis/AppArmor_Core_Policy_Reference#delegation
 2) при вызове на исполнение, объединение профилей
 <path> <qualifier>'x' [[' ->' <profile name>] ['+' <profile name>]] ','
 <path> 'x' '->' <profile list> ',' (not yet supported)
 http://wiki.apparmor.net/index.php/AppArmorDelegation#How_Delegation_is_Expressed
 http://wiki.apparmor.net/index.php/AppArmor_Core_Policy_Reference#Execute_rules
 http://wiki.apparmor.net/index.php/AppArmorProfileSpec
+https://gitlab.com/apparmor/apparmor/wikis/AppArmorDelegation#how-delegation-is-expressed
+https://gitlab.com/apparmor/apparmor/wikis/AppArmor_Core_Policy_Reference#execute-rules
+https://gitlab.com/apparmor/apparmor/wikis/AppArmorProfileSpec
 3) Все профили с маркеровкой FS ACCESS! переработать (вынести во внешние профили с делегейшеном убрав ix, в самих профилях, возможно, убрать какие-то элементы, например, доступ к какой-то части фс), профили с DELEGATION! переработать, давая из переключающего на Px профиля нужные делегейшены. Важно - непонятно как отслеживать откуда был вызов (где добавлять блоки), использовать только именованные или дочерние профили (?), или делать все вызовы через audit.
 
 
@@ -96,6 +100,9 @@ http://wiki.apparmor.net/index.php/AppArmorProfileSpec
 ** In AppArmor 4 it is possible to have the view be a namespace that is different from the current namespace.
 http://wiki.apparmor.net/index.php/AppArmorNamespaces
 http://wiki.apparmor.net/index.php/AppArmorStacking#Using_Stacking_in_combination_with_Policy_Namespaces
+https://gitlab.com/apparmor/apparmor/wikis/AppArmorNamespaces
+https://gitlab.com/apparmor/apparmor/wikis/AppArmorPolicyView
+https://gitlab.com/apparmor/apparmor/wikis/AppArmorPolicyScope
 ** the current namespace is always the namespace of the profile in the stack having its permissions evaluated
 - Позже сделать для неймспейсов ограничения в base абстракции, чтобы сингалы, и прочее не передавались туда-сюда просто так.
 
@@ -107,11 +114,13 @@ http://wiki.apparmor.net/index.php/AppArmorStacking#Using_Stacking_in_combinatio
 - Using AppArmor to confine and secure X Windows applications (4.0 AppArmor kernel, 2.?? AppArmor user space)
 Нужен будет пропатченный иксовый сервер - git://git.launchpad.net/~jjohansen/xorg-server
 http://wiki.apparmor.net/index.php/AppArmorXace
+https://gitlab.com/apparmor/apparmor/wikis/AppArmorXace
 В апстриме уже есть поддержка SELinux, вероятно, будет добавлена поддержка и AppArmor.
 
 
 - Using AppArmor to confine and secure DConf/GSettings for Desktop applications (вообще непонятно когда будет)
 http://wiki.apparmor.net/index.php/AppArmorGSettings
+https://gitlab.com/apparmor/apparmor/wikis/AppArmorGSettings
 
 
 - Базовый deny на неподдерживаемые файлы.
@@ -167,3 +176,4 @@ https://bugs.launchpad.net/apparmor/+bug/1713579
 
 - MLS (будет работать только с RBAC, т.к. нужен мепинг пользователей через pam_apparmor)
 http://wiki.apparmor.net/index.php/AppArmorMLS
+https://gitlab.com/apparmor/apparmor/wikis/AppArmorMLS
