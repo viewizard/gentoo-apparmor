@@ -145,13 +145,13 @@ profile chromium.chrome@{p_user} /usr/lib{,32,64}/chromium-browser/chrome@{t_use
   deny @{PROC_D}/@{pids}/oom_{,score_}adj		w,
   
   # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/chromium-browser/chrome		mr,
+  /usr/lib{,32,64}/chromium-browser/chrome@{t_user}	ix,
   /bin/ps@{t_user}					Px,	# sys-process/procps
   /usr/bin/xdg-settings@{t_user}			Px,	# x11-misc/xdg-utils
   /usr/bin/lsb_release@{t_user}				Px,	# sys-apps/lsb-release
   /usr/bin/gvfs-open@{t_user}				Px,	# gnome-base/gvfs
-  # Allow transitions to ourself and our sandbox
   /usr/bin/chromium{,-browser}@{t_user}			Px,
-  /usr/lib{,32,64}/chromium-browser/chrome@{t_user}	ixmr,
   /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh@{t_user} Px,
   /usr/lib{,32,64}/chromium-browser/chrome-sandbox@{t_user} cx,
   

@@ -32,7 +32,7 @@ profile 00_update_portage.cron.daily@{p_root} /etc/cron.daily/00_update_portage@
   /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
   /bin/basename@{t_root}				Px,	# sys-apps/coreutils
   /bin/cp@{t_root}					Cx,	# sys-apps/coreutils
-  /usr/bin/eix@{t_root}					Pxr,	# app-portage/eix (r - т.к. проверяем наличие файла)
+  /usr/bin/eix@{t_root}					Px,	# app-portage/eix
   /usr/bin/libnotify-notify-send-users@{t_root}		Px,	# x11-libs/libnotify
   /usr/bin/mail@{t_root}				Px,	# mail-client/mailx
   /usr/bin/logger@{t_root}				Px,	# sys-apps/util-linux
@@ -40,6 +40,7 @@ profile 00_update_portage.cron.daily@{p_root} /etc/cron.daily/00_update_portage@
   
   # READS/WRITES ---------------------------------------
   /etc/portage/cron_update.conf				r,
+  /usr/bin/eix						r,	# r - т.к. проверяем наличие файла.
   
   # TEMP -----------------------------------------------
   owner /tmp/portage.cron.@{TMP6}			rw,

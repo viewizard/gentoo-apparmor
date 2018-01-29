@@ -19,7 +19,7 @@ profile nullmailer.sendmail@{p_root} /usr/sbin/sendmail@{t_root} flags=(attach_d
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/sendmail					mr,
-  /usr/bin/nullmailer-inject@{p_root}			Px,
+  /usr/bin/nullmailer-inject@{t_root}			Px,
   
   # TEMP -----------------------------------------------
   owner /tmp/mail.RsXXXX@{TMP6}				r,	# mailx
@@ -41,7 +41,7 @@ profile nullmailer.nullmailer-inject@{p_root} /usr/bin/nullmailer-inject@{t_root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/nullmailer-inject				mr,
-  /usr/sbin/nullmailer-queue@{p_root}			Px,
+  /usr/sbin/nullmailer-queue@{t_root}			Px,
   
   # READS/WRITES ---------------------------------------
   /etc/nullmailer/{,*}					r,
@@ -101,7 +101,7 @@ profile nullmailer.nullmailer-send@{p_root} /usr/sbin/nullmailer-send@{t_root} {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/nullmailer-send				mr,
-  /usr/libexec/nullmailer/smtp				Px,
+  /usr/libexec/nullmailer/smtp@{t_root}			Px,
   
   # READS/WRITES ---------------------------------------
   /etc/nullmailer/**					r,
