@@ -129,7 +129,7 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
     /run/mount/utab					rw,
   }
   
-  profile tar /bin/tar flags=(complain)@{t_root} {		# FIX ME! complain 06.10.2017
+  profile tar /bin/tar@{t_root} flags=(complain) {		# FIX ME! complain 06.10.2017
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -237,7 +237,6 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions-root/X-connection-strict>
-    #include <abstractions/dbus/session-strict>
     #include <abstractions/dbus/gconf>
     #include <local/profile_blocks/portage.emerge.shell.d/>	# В т.ч. локальные правила монтирования и размонтирования /boot.
     
@@ -261,6 +260,19 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
     
     # PTRACE -------------------------------------------
     ptrace (trace) peer="sysvinit.init@{p_root}",		# sys-apps/sysvinit
+    
+    # UNIX ---------------------------------------------
+    unix (send, receive, connect)
+    	type=stream
+    	peer=(addr="@/tmp/dbus-@{TMP10}",label="dbus.dbus-daemon@{p_any}"),
+    
+    # DBUS ---------------------------------------------
+    dbus send
+    	bus=session
+    	path="/org/freedesktop/DBus"
+    	interface="org.freedesktop.DBus"
+    	member={Hello,AddMatch,RemoveMatch,GetNameOwner,NameHasOwner,StartServiceByName}
+    	peer=(name="org.freedesktop.DBus"),
     
     # NETWORK ------------------------------------------
     network inet dgram,
@@ -356,7 +368,6 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
     #include <abstractions-root/fonts>
     #include <abstractions/nameservice>
     #include <abstractions-root/X-connection-strict>
-    #include <abstractions/dbus/session-strict>
     #include <local/profile_blocks/portage.emerge.sandbox.d/>
     
     # CAPABILITIES -------------------------------------
@@ -381,6 +392,17 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
     
     # UNIX ---------------------------------------------
     unix (bind) type=stream,					# создание тестового сокета (анонимного или обычного)
+    unix (send, receive, connect)
+    	type=stream
+    	peer=(addr="@/tmp/dbus-@{TMP10}",label="dbus.dbus-daemon@{p_any}"),
+    
+    # DBUS ---------------------------------------------
+    dbus send
+    	bus=session
+    	path="/org/freedesktop/DBus"
+    	interface="org.freedesktop.DBus"
+    	member={Hello,AddMatch,RemoveMatch,GetNameOwner,NameHasOwner,StartServiceByName}
+    	peer=(name="org.freedesktop.DBus"),
     
     # NETWORK ------------------------------------------
     network packet raw,

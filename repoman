@@ -78,10 +78,10 @@ profile repoman@{p_root} @{PYTHON_EXEC}/repoman@{t_root} {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,	# sys-apps/coreutils
-    /bin/rm						ix,	# sys-apps/coreutils
+    /bin/uname@{t_root}					Px,	# sys-apps/coreutils
+    /bin/rm@{t_root}					ix,	# sys-apps/coreutils
   								# Оставляем через ix, чтобы не создавать дополнительный профиль.
-    /sbin/ldconfig					Px,	# sys-libs/glibc
+    /sbin/ldconfig@{t_root}				Px,	# sys-libs/glibc
     
     # READS/WRITES -------------------------------------
     /usr/portage/distfiles/*				w,	# sys-apps/portage

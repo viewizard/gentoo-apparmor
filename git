@@ -52,7 +52,9 @@ profile git@{p_user} /usr/{bin,libexec/git-core}/git@{t_user} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/ncurses>
-    #include <abstractions-root/fs/access-by-users-preset-rwkl>
+    #include <abstractions-user/fs/access-by-users-preset-rwkl>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
@@ -153,6 +155,9 @@ profile git@{p_root} /usr/{bin,libexec/git-core}/git@{t_root} {
     #include <abstractions/nameservice>
     #include <abstractions/ncurses>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    #include <abstractions/fs/deny-private-strict>
     
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
