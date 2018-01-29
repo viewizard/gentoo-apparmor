@@ -35,6 +35,7 @@ profile git@{p_user} /usr/{bin,libexec/git-core}/git@{t_user} {
   # EXECUTABLES ----------------------------------------
   /usr/{bin,libexec/git-core}/git			mr,
   /usr/{bin,libexec/git-core}/git@{t_user}		Px,
+  /bin/nano@{t_user}					Cx,	# app-editors/nano
   /usr/bin/less@{t_user}				Cx,	# sys-apps/less
   /usr/libexec/git-core/git-remote-http{,s}@{t_user}	Cx,
   
@@ -46,6 +47,25 @@ profile git@{p_user} /usr/{bin,libexec/git-core}/git@{t_user} {
   
   # TEMP -----------------------------------------------
   owner /tmp/qgit4.@{TMP6}				rw,	# dev-vcs/qgit
+  
+  profile nano /bin/nano@{t_user} {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/ncurses>
+    #include <abstractions-root/fs/access-by-users-preset-rwkl>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/nano						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/nanorc						r,
+    /usr/share/nano/{,**}				r,
+    /usr/share/misc/magic.mgc				r,
+  }
   
   profile less /usr/bin/less@{t_user} {
     #include <abstractions/base>
@@ -113,6 +133,7 @@ profile git@{p_root} /usr/{bin,libexec/git-core}/git@{t_root} {
   # EXECUTABLES ----------------------------------------
   /usr/{bin,libexec/git-core}/git			mr,
   /usr/{bin,libexec/git-core}/git@{t_root}		Px,
+  /bin/nano@{t_root}					Cx,	# app-editors/nano
   /usr/bin/less@{t_root}				Cx,	# sys-apps/less
   /usr/libexec/git-core/git-remote-http{,s}@{t_root}	Cx,
   
@@ -126,6 +147,25 @@ profile git@{p_root} /usr/{bin,libexec/git-core}/git@{t_root} {
   
   # TEMP -----------------------------------------------
   owner /tmp/qgit4.@{TMP6}				rw,	# dev-vcs/qgit
+  
+  profile nano /bin/nano@{t_root} {
+    #include <abstractions/base>
+    #include <abstractions/nameservice>
+    #include <abstractions/ncurses>
+    #include <abstractions-root/fs/access-by-users-preset-rwkl>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/nano						mr,
+    
+    # READS/WRITES -------------------------------------
+    /etc/nanorc						r,
+    /usr/share/nano/{,**}				r,
+    /usr/share/misc/magic.mgc				r,
+  }
   
   profile less /usr/bin/less@{t_root} {
     #include <abstractions/base>
