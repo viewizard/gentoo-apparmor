@@ -116,6 +116,7 @@ profile coreutils.sleep /bin/sleep {
   
   # DENY INHERIT ---------------------------------------
   deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
+  deny /var/log/genkernel.log				w,	# sys-kernel/genkernel-next
 }
 
 profile coreutils.whoami /usr/bin/whoami {
@@ -298,4 +299,7 @@ profile coreutils.pwd /bin/pwd {
   
   # EXECUTABLES ----------------------------------------
   /bin/pwd						mr,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /var/log/genkernel.log				w,	# sys-kernel/genkernel-next
 }

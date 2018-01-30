@@ -76,7 +76,6 @@ profile make /usr/bin/{,g}make flags=(complain) {
   profile shell @{shell} flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
-    #include <abstractions/perl>
     
     # CAPABILITIES ---------------------------------------
     capability mknod,
@@ -100,7 +99,7 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /bin/tr						Px,	# sys-apps/coreutils
     /bin/ln						ix,	# sys-apps/coreutils	# FS ACCESS!
     /bin/cp						ix,	# sys-apps/coreutils	# FS ACCESS!
-    /bin/pwd						ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/pwd						Px,	# sys-apps/coreutils
     /bin/seq						ix,	# sys-apps/coreutils	# FIX ME! Вынести в отдельный профиль.
     /bin/cat						ix,	# sys-apps/coreutils	# FS ACCESS!
     /bin/cut						ix,	# sys-apps/coreutils	# FS ACCESS!
@@ -123,7 +122,9 @@ profile make /usr/bin/{,g}make flags=(complain) {
     /bin/tar						ix,	# app-arch/tar		# FS ACCESS!
     /bin/bzip2						ix,	# app-arch/bzip2	# FS ACCESS!
     /usr/bin/diff					ix,	# sys-apps/diffutils	# FS ACCESS!
-    /usr/bin/pod2html					ix,	# dev-lang/perl		# FIX ME! Вынести в отдельный профиль.
+    /usr/bin/pod2html					Px,	# dev-lang/perl
+    /usr/bin/pod2text-[0-9]*-perl-[0-9]*		Px,	# dev-lang/perl
+    /usr/bin/pod2man-[0-9]*-perl-[0-9]*			Px,	# dev-lang/perl
     /usr/bin/od						ix,	# sys-apps/coreutils	# FS ACCESS!
     /usr/bin/uniq					ix,	# sys-apps/coreutils	# FS ACCESS!
     /usr/bin/which					Px,	# sys-apps/which
