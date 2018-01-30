@@ -26,14 +26,14 @@ profile pam-script@{p_root} /etc/security/pam-script/pam_script*@{t_root} {
   # EXECUTABLES ----------------------------------------
   /etc/security/pam-script/pam_script*			r,
   @{shell}						mr,
-  @{shell}@{t_root}					Cx,	# Все правильно, запуск и mmap.
-  /bin/dirname@{t_root}					Px,	# sys-apps/coreutils
-  /bin/basename@{t_root}				Px,	# sys-apps/coreutils
+  @{shell}@{t_all}					Cx,	# Все правильно, запуск и mmap.
+  /bin/dirname@{t_all}					Px,	# sys-apps/coreutils
+  /bin/basename@{t_all}					Px,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/security/pam-script/pam-script.d/{,**} r,
   
-  profile shell @{shell}@{t_root} {
+  profile shell @{shell}@{t_all} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     

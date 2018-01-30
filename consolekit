@@ -187,7 +187,7 @@ profile consolekit.ck-collect-session-info@{p_root} /usr/lib{,32,64}/ConsoleKit/
   
   # PTRACE ---------------------------------------------
   ptrace (trace) peer="consolekit.ck-launch-session@{p_user}",
-  ptrace (trace) peer="xorg-server.Xorg@{p_user}",		# x11-base/xorg-server
+  ptrace (trace) peer="xorg-server.Xorg@{p_root}",		# XORG! x11-base/xorg-server USE=suid
   ptrace (trace) peer="shadow.login@{p_root}//*",		# sys-apps/shadow
   
   # PSEUDO ---------------------------------------------
@@ -199,7 +199,7 @@ profile consolekit.ck-collect-session-info@{p_root} /usr/lib{,32,64}/ConsoleKit/
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/ConsoleKit/ck-collect-session-info	m,
-  /usr/lib{,32,64}/ConsoleKit/ck-get-x11-server-pid@{t_root} Px,
+  /usr/lib{,32,64}/ConsoleKit/ck-get-x11-server-pid@{t_all} Px,
   /usr/lib{,32,64}/ConsoleKit/ck-get-x11-display-device@{t_root} Px,
 }
 
@@ -208,7 +208,7 @@ profile consolekit.ck-get-x11-display-device@{p_root} /usr/lib{,32,64}/ConsoleKi
   #include <abstractions-user/X-connection-strict>
   
   # PTRACE ---------------------------------------------
-  ptrace (trace) peer="xorg-server.Xorg@{p_user}",		# x11-base/xorg-server
+  ptrace (trace) peer="xorg-server.Xorg@{p_root}",		# XORG! x11-base/xorg-server USE=suid
   
   # PSEUDO ---------------------------------------------
   @{PROC_D}/tty/drivers					r,
@@ -233,7 +233,7 @@ profile consolekit.ck-remove-directory@{p_root} /usr/lib{,32,64}/ConsoleKit/ck-r
   /run/user/@{UID}/{,**}				rw,
 }
 
-profile consolekit.ck-get-x11-server-pid@{p_root} /usr/lib{,32,64}/ConsoleKit/ck-get-x11-server-pid@{t_root} {
+profile consolekit.ck-get-x11-server-pid@{p_all} /usr/lib{,32,64}/ConsoleKit/ck-get-x11-server-pid@{t_all} {
   #include <abstractions/base>
   #include <abstractions-user/X-connection-strict>
   

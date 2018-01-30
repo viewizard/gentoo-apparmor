@@ -152,8 +152,6 @@ profile make@{p_root} /usr/bin/{,g}make@{t_root} flags=(complain) {
     /usr/@{CHOST}/gcc-bin/[0-9]*/*@{t_root}		ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.
     /usr/@{CHOST}/binutils-bin/[0-9]*/*@{t_root}	ix,	# sys-devel/binutils
 								# FIX ME! Вынести в отдельный профиль.
-    /usr/src/@{kernel}/{,**}@{t_root}			r,	# sys-kernel/gentoo-sources
-								# FIX ME! Вынести в отдельный профиль. r - т.к. могут быть скрипты.
     /usr/src/@{kernel}/{,**/}*@{t_root}			ix,	# sys-kernel/gentoo-sources
 								# FIX ME! Вынести в отдельный профиль.
     /var/tmp/portage/genkernel/*/busybox-*/{,**/}*@{t_root} ix,	# sys-kernel/genkernel-next
@@ -170,6 +168,7 @@ profile make@{p_root} /usr/bin/{,g}make@{t_root} flags=(complain) {
     /usr/src/IMA/certs/*.x509				r,
     /usr/src/@{kernel}/{,**}				rw,	# sys-kernel/gentoo-sources
     /usr/src/@{kernel}/tools/gcc/**.so			m,	# sys-kernel/gentoo-sources
+    /usr/src/@{kernel}/scripts/gcc-plugins/*.so		m,	# sys-kernel/gentoo-sources
     
     # USERS --------------------------------------------
     owner @{ROOT_HOME_D}/.rnd				w,	# dev-libs/openssl

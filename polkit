@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile polkit.polkitd@{p_polkitd} /usr/lib{,32,64}/polkit-1/polkitd@{t_polkitd} {
+profile polkit.polkitd@{p_root} /usr/lib{,32,64}/polkit-1/polkitd@{t_root} {
   #include <abstractions/base>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/consolekit>
@@ -70,7 +70,7 @@ profile polkit.polkitd@{p_polkitd} /usr/lib{,32,64}/polkit-1/polkitd@{t_polkitd}
   /var/lib/polkit-1/.cache/{,**}			w,
 }
 
-profile polkit.polkit-agent-helper@{p_user} /usr/lib{,32,64}/polkit-1/polkit-agent-helper-1@{t_user} {
+profile polkit.polkit-agent-helper@{p_root} /usr/lib{,32,64}/polkit-1/polkit-agent-helper-1@{t_root} {
   #include <abstractions/base>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/polkit>
@@ -118,7 +118,7 @@ profile polkit.pkexec@{p_all} /usr/bin/pkexec@{t_all} {
   ptrace (trace),
   
   # SIGNAL ---------------------------------------------
-  signal (receive) set=(rtmin+1) peer="polkit.pkexec@{p_all}//root",
+  signal (receive) set=(rtmin+1) peer="polkit.pkexec@{p_all}//root",	# Все правильно, @{p_all}.
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,

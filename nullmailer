@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile nullmailer.sendmail@{p_root} /usr/sbin/sendmail@{t_root} flags=(attach_disconnected) {
+profile nullmailer.sendmail@{p_root} /usr/sbin/sendmail{@{t_root},@{t_logcheck}} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -19,7 +19,7 @@ profile nullmailer.sendmail@{p_root} /usr/sbin/sendmail@{t_root} flags=(attach_d
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/sendmail					mr,
-  /usr/bin/nullmailer-inject@{t_root}			Px,
+  /usr/bin/nullmailer-inject{@{t_root},@{t_logcheck}}	Px,
   
   # TEMP -----------------------------------------------
   owner /tmp/mail.RsXXXX@{TMP6}				r,	# mailx
@@ -28,7 +28,7 @@ profile nullmailer.sendmail@{p_root} /usr/sbin/sendmail@{t_root} flags=(attach_d
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile nullmailer.nullmailer-inject@{p_root} /usr/bin/nullmailer-inject@{t_root} flags=(attach_disconnected) {
+profile nullmailer.nullmailer-inject@{p_root} /usr/bin/nullmailer-inject{@{t_root},@{t_logcheck}} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -41,7 +41,7 @@ profile nullmailer.nullmailer-inject@{p_root} /usr/bin/nullmailer-inject@{t_root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/nullmailer-inject				mr,
-  /usr/sbin/nullmailer-queue@{t_root}			Px,
+  /usr/sbin/nullmailer-queue@{t_nullmail}		Px,
   
   # READS/WRITES ---------------------------------------
   /etc/nullmailer/{,*}					r,
@@ -53,7 +53,7 @@ profile nullmailer.nullmailer-inject@{p_root} /usr/bin/nullmailer-inject@{t_root
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile nullmailer.nullmailer-queue@{p_root} /usr/sbin/nullmailer-queue@{t_root} flags=(attach_disconnected) {
+profile nullmailer.nullmailer-queue@{p_nullmail} /usr/sbin/nullmailer-queue@{t_nullmail} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -73,7 +73,7 @@ profile nullmailer.nullmailer-queue@{p_root} /usr/sbin/nullmailer-queue@{t_root}
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile nullmailer.smtp@{p_root} /usr/libexec/nullmailer/smtp@{t_root} flags=(attach_disconnected) {
+profile nullmailer.smtp@{p_nullmail} /usr/libexec/nullmailer/smtp@{t_nullmail} flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ssl-certs>
@@ -96,12 +96,12 @@ profile nullmailer.smtp@{p_root} /usr/libexec/nullmailer/smtp@{t_root} flags=(at
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile nullmailer.nullmailer-send@{p_root} /usr/sbin/nullmailer-send@{t_root} {
+profile nullmailer.nullmailer-send@{p_nullmail} /usr/sbin/nullmailer-send@{t_nullmail} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/nullmailer-send				mr,
-  /usr/libexec/nullmailer/smtp@{t_root}			Px,
+  /usr/libexec/nullmailer/smtp@{t_nullmail}		Px,
   
   # READS/WRITES ---------------------------------------
   /etc/nullmailer/**					r,
@@ -132,7 +132,7 @@ profile nullmailer.init.d@{p_root} /etc/init.d/nullmailer@{t_root} flags=(attach
   @{PROC_D}/sys/kernel/ngroups_max			r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/sbin/nullmailer-send@{t_root}			Px,
+  /usr/sbin/nullmailer-send@{t_nullmail}		Px,
   @{shell}@{t_root}					Cx,
   /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
   /bin/grep@{t_root}					Cx,	# sys-apps/grep

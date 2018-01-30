@@ -106,7 +106,7 @@ profile chromium.chrome@{p_user} /usr/lib{,32,64}/chromium-browser/chrome@{t_use
   ptrace (trace) peer=@{profile_name},
   ptrace (trace) peer="chromium.start_script@{p_user}",
   deny ptrace (trace) peer="xdg-utils.xdg-settings@{p_user}",	# x11-misc/xdg-utils
-  deny ptrace (trace) peer="lsb-release@{p_user}",		# sys-apps/lsb-release
+  deny ptrace (trace) peer="lsb-release@{p_all}",		# sys-apps/lsb-release	# Все правильно, @{p_all}.
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
@@ -153,7 +153,7 @@ profile chromium.chrome@{p_user} /usr/lib{,32,64}/chromium-browser/chrome@{t_use
   /usr/bin/gvfs-open@{t_user}				Px,	# gnome-base/gvfs
   /usr/bin/chromium{,-browser}@{t_user}			Px,
   /usr/lib{,32,64}/chromium-browser/chromium-launcher.sh@{t_user} Px,
-  /usr/lib{,32,64}/chromium-browser/chrome-sandbox@{t_user} cx,
+  /usr/lib{,32,64}/chromium-browser/chrome-sandbox@{t_root} cx,	# Если собрано с suid, переключается на root.
   
   # READS/WRITES ---------------------------------------
   /etc/chromium/{,**}					r,
@@ -193,7 +193,7 @@ profile chromium.chrome@{p_user} /usr/lib{,32,64}/chromium-browser/chrome@{t_use
   deny /usr/lib{,32,64}/chromium-browser/**		w,
   deny @{USER_HOME_D}/.mozilla/{,**}			r,	# www-client/firefox
   
-  profile chrome-sandbox /usr/lib{,32,64}/chromium-browser/chrome-sandbox@{t_user} {
+  profile chrome-sandbox /usr/lib{,32,64}/chromium-browser/chrome-sandbox@{t_root} {
     # Be fanatical since it is setuid root and don't use an abstraction
     /lib/libgcc_s.so{,.[0-9]*}				mr,
     /lib{,32,64}/libm-*.so{,.[0-9]*}			mr,

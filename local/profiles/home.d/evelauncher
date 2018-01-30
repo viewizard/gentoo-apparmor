@@ -84,7 +84,7 @@ profile local.home.evelauncher@{p_user} /home/@{USER}/evelauncher/evelauncher@{t
   deny @{PROC_D}/@{pids}/cmdline			r,
   
   # EXECUTABLES ----------------------------------------
-  owner @{USER_HOME_D}/evelauncher/evelauncher		mr,# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  owner @{USER_HOME_D}/evelauncher/evelauncher		mr,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   /usr/bin/wine@{t_user}				Px,	# app-emulation/wine
   /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]*@{t_user} Px,	# app-emulation/wine-*
   owner @{USER_HOME_D}/{.eve,evelauncher}/updater@{t_user} px,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.

@@ -68,7 +68,7 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
   /bin/mount@{t_root}					Cx,	# sys-apps/util-linux
   /bin/tar@{t_root}					Cx,	# app-arch/tar
   /sbin/ldconfig@{t_root}				Px,	# sys-libs/glibc
-  /usr/bin/sandbox@{t_root}				cx,	# sys-apps/sandbox
+  /usr/bin/sandbox{@{t_root},@{t_portage}}		cx,	# sys-apps/sandbox
   /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils
   /usr/bin/id@{t_root}					Px,	# sys-apps/coreutils
   /usr/bin/install-info@{t_root}			Px,	# sys-apps/texinfo
@@ -93,6 +93,7 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
   /sbin/{,**}						rw,
   /usr/{,**}						rw,
   /usr/{,**/}*						l,	# l - все правильно, разрешаем на /**.
+  /usr/bin/@{PYTHON}{,m}				m,	# dev-lang/python
   /usr/lib{,32,64}/@{PYTHON}/{,**/}*.{pyc,so}		m,
   /usr/lib{,32,64}/@{PYTHON}/lib-dynload/*.so		m,
   /usr/portage/distfiles/**				rw,
@@ -362,7 +363,7 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
     /var/tmp/						r,
   }
   
-  profile sandbox /usr/bin/sandbox@{t_root} {
+  profile sandbox /usr/bin/sandbox{@{t_root},@{t_portage}} {
     #include <abstractions/base>
     #include <abstractions-root/freedesktop.org>
     #include <abstractions-root/fonts>
@@ -431,17 +432,26 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
     
     # EXECUTABLES ----------------------------------------
     @{shell}						mr,
-    /bin/{,**/}*@{t_portage}				ix,
-    /sbin/{,**/}*@{t_portage}				ix,
-    /opt/{,**/}*@{t_portage}				ix,
-    /lib{,32,64}/{,**/}*@{t_portage}			ix,
-    /usr/bin/{,**/}*@{t_portage}			ix,
-    /usr/sbin/{,**/}*@{t_portage}			ix,
-    /usr/lib{,32,64,exec}/{,**/}*@{t_portage}		ix,
-    /usr/share/{,**/}*@{t_portage}			ix,
-    /usr/@{CHOST}/{,**/}*@{t_portage}			ix,
+    /bin/{,**/}*{@{t_root},@{t_portage}}		ix,
+    /sbin/{,**/}*{@{t_root},@{t_portage}}		ix,
+    /opt/{,**/}*{@{t_root},@{t_portage}}		ix,
+    /lib{,32,64}/{,**/}*{@{t_root},@{t_portage}}	ix,
+    /usr/bin/{,**/}*{@{t_root},@{t_portage}}		ix,
+    /usr/sbin/{,**/}*{@{t_root},@{t_portage}}		ix,
+    /usr/lib{,32,64,exec}/{,**/}*{@{t_root},@{t_portage}} ix,
+    /usr/share/{,**/}*{@{t_root},@{t_portage}}		ix,
+    /usr/@{CHOST}/{,**/}*{@{t_root},@{t_portage}}	ix,
     
     # READS/WRITES -------------------------------------
+    /bin/{,**/}*					m,
+    /sbin/{,**/}*					m,
+    /opt/{,**/}*					m,
+    /lib{,32,64}/{,**/}*				m,
+    /usr/bin/{,**/}*					m,
+    /usr/sbin/{,**/}*					m,
+    /usr/lib{,32,64,exec}/{,**/}*			m,
+    /usr/share/{,**/}*					m,
+    /usr/@{CHOST}/{,**/}*				m,
     /							r,
     /bin/{,**}						r,
     /sbin/{,**}						r,

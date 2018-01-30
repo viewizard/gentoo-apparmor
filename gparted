@@ -13,6 +13,9 @@
 profile gparted.gparted-pkexec@{p_user} /usr/bin/gparted-pkexec@{t_user} flags=(complain) {
   #include <abstractions/base>
   
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term) peer="polkit.pkexec@{p_all}",	# Все правильно, @{p_all}.
+  
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   /dev/tty[0-9]*					rw,

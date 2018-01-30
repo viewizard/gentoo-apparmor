@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile pam_mount.pmvarrun@{p_all} /usr/sbin/pmvarrun@{t_all} {
+profile pam_mount.pmvarrun@{p_root} /usr/sbin/pmvarrun@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
@@ -23,7 +23,7 @@ profile pam_mount.pmvarrun@{p_all} /usr/sbin/pmvarrun@{t_all} {
   # UNIX -----------------------------------------------
   unix (send, receive)
   			type=stream
-  			peer=(label="sudo@{p_user}"),		# sudo
+  			peer=(label="sudo@{p_root}"),		# sudo
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

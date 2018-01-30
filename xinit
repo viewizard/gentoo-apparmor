@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile xinit@{p_user} /usr/bin/xinit@{t_user} {
+profile xinit@{p_user} /usr/bin/xinit@{t_user} {		# XORG! x11-base/xorg-server USE=suid
   #include <abstractions/base>
   #include <abstractions-user/X>
   #include <abstractions/nameservice>
@@ -20,9 +20,9 @@ profile xinit@{p_user} /usr/bin/xinit@{t_user} {
   capability setuid,
   
   # SIGNAL ---------------------------------------------
-  signal (receive) set=(usr1) peer="xorg-server.Xorg@{p_user}",	# x11-base/xorg-server
+  signal (receive) set=(usr1) peer="xorg-server.Xorg@{p_root}",	# XORG! x11-base/xorg-server USE=suid
   signal (send) set=(hup),
-  signal (send) set=(term) peer="xorg-server.Xorg@{p_user}",	# x11-base/xorg-server
+  signal (send) set=(term) peer="xorg-server.Xorg@{p_root}",	# XORG! x11-base/xorg-server USE=suid
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -38,7 +38,7 @@ profile xinit@{p_user} /usr/bin/xinit@{t_user} {
   /usr/bin/xinit					mr,
   @{shell}@{t_user}					Px -> xinit_shell,
   /etc/X11/xinit/xserverrc@{t_user}			Px,
-  /usr/bin/Xorg@{t_user}				Px,	# x11-base/xorg-server (запуска под пользователем, без suid)
+  /usr/bin/Xorg@{t_user}				Px,	# XORG! x11-base/xorg-server (запуска под пользователем, без suid)
 }
 
 # IMPROVE! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
@@ -71,7 +71,7 @@ profile xinit_shell {
   /etc/X11/xinit/xinitrc.d/{,*}				r,
   /etc/xdg/xfce4/xinitrc				r,	# xfce-base/xfce4-session
   
-  profile cat /bin/cat@{t_user} {					# Используется при запуске через startxfce4.
+  profile cat /bin/cat@{t_user} {				# Используется при запуске через startxfce4.
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -151,7 +151,7 @@ profile xinit.xserverrc@{p_user} /etc/X11/xinit/xserverrc@{t_user} {
   # EXECUTABLES ----------------------------------------
   /etc/X11/xinit/xserverrc				r,
   @{shell}						mr,
-  /usr/bin/Xorg@{t_user}				Px,	# x11-base/xorg-server
+  /usr/bin/Xorg@{t_root}				Px,	# XORG! x11-base/xorg-server USE=suid
 }
 
 profile xinit.startx@{p_user} /usr/bin/startx@{t_user} {

@@ -19,7 +19,7 @@
   capability setgid,
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(rtmin+1) peer="polkit.pkexec@{p_root}",
+  signal (send) set=(rtmin+1) peer="polkit.pkexec@{p_all}",	# Все правильно, @{p_all}.
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

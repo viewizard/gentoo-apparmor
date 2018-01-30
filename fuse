@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile fuse.fusermount@{p_user} /usr/bin/fusermount@{t_user} {
+profile fuse.fusermount@{p_user} /usr/bin/fusermount@{t_user} {		# FIX ME! он вообще вызывается из gvfs.gvfsd-fuse?
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -55,22 +55,26 @@ profile fuse.fusermount@{p_root} /usr/bin/fusermount@{t_root} {
   unix (send, receive)
   			type=stream
 			addr=none
-  			peer=(addr=none,label="gvfs.gvfsd-fuse@{p_root}"),
+  			peer=(addr=none,label="gvfs.gvfsd-fuse@{p_any}"),
   
   # MOUNT ----------------------------------------------
+  mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /run/user/@{UID}/gvfs/,
+  mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /run/user/@{UID}/gvfs/,
   mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> @{ROOT_HOME_D}/.gvfs/,
   mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> @{ROOT_HOME_D}/.gvfs/,
+  umount /run/user/@{UID}/gvfs/,
   umount /root/.gvfs/,
   
   # PSEUDO ---------------------------------------------
   /dev/fuse						rw,
-  owner @{PROC_D}/@{pid}/mounts				r,
+  @{PROC_D}/@{pid}/mounts				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/fusermount					mr,
   
   # READS/WRITES ---------------------------------------
   /etc/fuse.conf					r,
+  /run/user/@{UID}/gvfs/				r,
   
   # USERS ----------------------------------------------
   owner @{ROOT_HOME_D}/.gvfs/				r,

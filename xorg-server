@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile xorg-server.Xorg@{p_user} /usr/bin/Xorg@{t_user} {
+profile xorg-server.Xorg@{p_root} /usr/bin/Xorg@{t_root} {	# XORG! x11-base/xorg-server USE=suid
   #include <abstractions/base>
   #include <abstractions-user/fonts>
   
@@ -73,8 +73,8 @@ profile xorg-server.Xorg@{p_user} /usr/bin/Xorg@{t_user} {
   # EXECUTABLES ----------------------------------------
   /usr/bin/Xorg						mr,
   @{shell}@{t_user}					Cx,
-  /bin/kmod@{t_user}					Px,	# sys-apps/kmod
-  /opt/bin/nvidia-modprobe@{t_user}			Px,	# x11-drivers/nvidia-drivers
+  /bin/kmod@{t_root}					Px,	# sys-apps/kmod
+  /opt/bin/nvidia-modprobe@{t_root}			Px,	# x11-drivers/nvidia-drivers
   
   # READS/WRITES ---------------------------------------
   /etc/drirc						r,	# media-libs/mesa
@@ -114,11 +114,11 @@ profile xorg-server.Xorg@{p_user} /usr/bin/Xorg@{t_user} {
     /usr/bin/xkbcomp@{t_user}				Px,	# x11-apps/xkbcomp
     
     # USERS --------------------------------------------
-    owner @{USER_HOME_D}/.local/share/xorg/{,**}	rw,	# Нужно для запуска под пользователем (без suid), хранит там логи сервера.
+    owner @{USER_HOME_D}/.local/share/xorg/{,**}	rw,	# XORG! x11-base/xorg-server (запуска под пользователем, без suid)
     
     # READS/WRITES -------------------------------------
     /run/acpid.socket					rw,	# sys-power/acpid
-    /var/log/Xorg.@{X_DISPLAY}.log			w,
+    /var/log/Xorg.@{X_DISPLAY}.log			w,	# XORG! x11-base/xorg-server USE=suid
   }
 }
 
