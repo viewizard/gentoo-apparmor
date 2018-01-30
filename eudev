@@ -137,8 +137,8 @@ profile eudev.udevd@{p_root} /sbin/udevd@{t_root} {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/sed						Px -> eudev_udevd_sed,	# sys-apps/sed
-    /sbin/mdadm						Px,	# sys-fs/mdadm
+    /bin/sed@{t_root}					Px -> eudev_udevd_sed,	# sys-apps/sed
+    /sbin/mdadm@{t_root}				Px,	# sys-fs/mdadm
   }
 }
 

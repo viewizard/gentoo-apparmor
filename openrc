@@ -1737,7 +1737,7 @@ profile openrc.localmount.init.d@{p_root} /etc/init.d/localmount@{t_root} flags=
     
     # EXECUTABLES --------------------------------------
     /usr/bin/timeout					mr,
-    /bin/fuser						Px,	# sys-process/psmisc
+    /bin/fuser@{t_root}					Px,	# sys-process/psmisc
   }
 }
 
@@ -2796,7 +2796,7 @@ profile openrc.mount-ro.init.d@{p_root} /etc/init.d/mount-ro@{t_root} flags=(att
     
     # EXECUTABLES --------------------------------------
     /usr/bin/timeout					mr,
-    /bin/fuser						Px,	# sys-process/psmisc
+    /bin/fuser@{t_root}					Px,	# sys-process/psmisc
   }
 }
 
@@ -3424,7 +3424,7 @@ profile openrc.agetty.init.d@{p_root} /etc/init.d/agetty@{t_root} flags=(attach_
   
     # EXECUTABLES --------------------------------------
     /sbin/supervise-daemon				mr,
-    /sbin/agetty					Px,	# sys-apps/util-linux
+    /sbin/agetty@{t_root}				Px,	# sys-apps/util-linux
   
     # READS/WRITES -------------------------------------
     /run/agetty.*.pid					rw,

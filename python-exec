@@ -15,9 +15,9 @@ profile python-exec@{p_user} @{PYTHON_EXEC_WRAPPER}@{t_user} {
   #include <abstractions/python-exec>
   
   # EXECUTABLES ----------------------------------------
-  @{PYTHON_EXEC}/alacarte				Px,	# x11-misc/alacarte
-  @{PYTHON_EXEC}/porthole				Px,	# app-portage/porthole
-  @{PYTHON_EXEC}/pyfa					Px,	# games-util/pyfa
+  @{PYTHON_EXEC}/alacarte@{t_user}			Px,	# x11-misc/alacarte
+  @{PYTHON_EXEC}/porthole@{t_user}			Px,	# app-portage/porthole
+  @{PYTHON_EXEC}/pyfa@{t_user}				Px,	# games-util/pyfa
 }
 
 profile python-exec@{p_root} @{PYTHON_EXEC_WRAPPER}@{t_root} {
@@ -25,5 +25,5 @@ profile python-exec@{p_root} @{PYTHON_EXEC_WRAPPER}@{t_root} {
   #include <abstractions/python-exec>
   
   # EXECUTABLES ----------------------------------------
-  @{PYTHON_EXEC}/*					Px,
+  @{PYTHON_EXEC}/*@{t_root}				Px,
 }

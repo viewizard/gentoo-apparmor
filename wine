@@ -21,7 +21,7 @@ profile wine.wine-wrapper@{p_user} /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9
   # EXECUTABLES ----------------------------------------
   /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]*	r,
   @{shell}						mr,
-  /usr/lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/bin/wine Px,
+  /usr/lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/bin/wine@{t_user} Px,
   
   # DENY INHERIT ---------------------------------------
   deny network inet,						# local.home.evelauncher
@@ -62,9 +62,9 @@ profile wine@{p_user} /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/
   
   # EXECUTABLES ----------------------------------------
   /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine mr,
-  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/ntlm_auth Px,
-  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine-preloader Px,
-  /usr{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}/bin/wineserver Px,
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/ntlm_auth@{t_user} Px,
+  /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}bin/wine-preloader@{t_user} Px,
+  /usr{,lib{,32,64}/wine-{any,d3d9,staging,vanilla}-[0-9]*/}/bin/wineserver@{t_user} Px,
   
   # READS/WRITES ---------------------------------------
   /usr/share/wine{,-{any,d3d9,staging,vanilla}-[0-9]*}/{,**} r,

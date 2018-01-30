@@ -63,7 +63,7 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
   @{PROC_D}/sys/kernel/osrelease			r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						cx,
+  @{shell}@{t_root}					cx,
   /bin/stty@{t_root}					Px,	# sys-apps/coreutils
   /bin/mount@{t_root}					Cx,	# sys-apps/util-linux
   /bin/tar@{t_root}					Cx,	# app-arch/tar
@@ -525,8 +525,8 @@ profile portage.env-update@{p_root} @{PYTHON_EXEC}/env-update@{t_root} {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,	# sys-apps/coreutils
-    /sbin/ldconfig					Px,	# sys-libs/glibc
+    /bin/uname@{t_root}					Px,	# sys-apps/coreutils
+    /sbin/ldconfig@{t_root}				Px,	# sys-libs/glibc
   }
 }
 

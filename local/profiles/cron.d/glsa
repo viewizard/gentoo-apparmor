@@ -77,7 +77,7 @@ profile glsa.cron.daily@{p_root} /etc/cron.daily/glsa@{t_root} {
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/glsa-check				Px,	# app-portage/gentoolkit
+    @{PYTHON_EXEC}/glsa-check@{t_root}			Px,	# app-portage/gentoolkit
     
     # TEMP ---------------------------------------------
     owner /tmp/glsa.cron.@{TMP6}			w,

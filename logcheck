@@ -213,7 +213,7 @@ profile logcheck@{p_logcheck} /usr/sbin/logcheck@{t_logcheck} {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/mime-construct				mr,
-    /usr/sbin/sendmail					Px,	# mail-mta/nullmailer
+    /usr/sbin/sendmail@{t_logcheck}			Px,	# mail-mta/nullmailer
     
     # TEMP ---------------------------------------------
     owner /tmp/logcheck.@{TMP6}/{,**}			r,
@@ -256,7 +256,7 @@ profile logcheck.cron.hourly@{p_root} /etc/cron.hourly/logcheck.cron@{t_root} {
   /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
   /bin/chown@{t_root}					Cx,	# sys-apps/coreutils
   /bin/su@{t_root}					Px,	# sys-apps/shadow
-#  /usr/sbin/logcheck					Px,	# FIX ME! 24.01.2018 Проверить, скрипт не вызывает его.
+#  /usr/sbin/logcheck@{t_root}				Px,	# FIX ME! 24.01.2018 Проверить, скрипт не вызывает его.
   
   profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>

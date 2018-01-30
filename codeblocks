@@ -124,11 +124,11 @@ profile codeblocks_shell {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/g++					mr,
-    /usr/@{CHOST}/binutils-bin/[0-9]*/as		ix,	# sys-devel/binutils	# Разрешаем ix для данного случая.
-    /usr/@{CHOST}/binutils-bin/[0-9]*/ld		ix,	# sys-devel/binutils	# Разрешаем ix для данного случая.
-    /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-g++		ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
-    /usr/libexec/gcc/@{CHOST}/*/cc1plus			ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
-    /usr/libexec/gcc/@{CHOST}/*/collect2		ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
+    /usr/@{CHOST}/binutils-bin/[0-9]*/as@{t_user}	ix,	# sys-devel/binutils	# Разрешаем ix для данного случая.
+    /usr/@{CHOST}/binutils-bin/[0-9]*/ld@{t_user}	ix,	# sys-devel/binutils	# Разрешаем ix для данного случая.
+    /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-g++@{t_user}	ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
+    /usr/libexec/gcc/@{CHOST}/*/cc1plus@{t_user}		ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
+    /usr/libexec/gcc/@{CHOST}/*/collect2@{t_user}	ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
     
     # READS/WRITES -------------------------------------
     /usr/include/**					r,

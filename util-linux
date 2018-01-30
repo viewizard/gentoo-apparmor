@@ -95,7 +95,7 @@ profile util-linux.agetty@{p_root} /sbin/agetty@{t_root} {
   
   # EXECUTABLES ----------------------------------------
   /sbin/agetty						mr,
-  /bin/login						Px,	# sys-apps/shadow
+  /bin/login@{t_root}					Px,	# sys-apps/shadow
   
   # READS/WRITES ---------------------------------------
   /etc/issue						r,	# sys-apps/baselayout
@@ -120,8 +120,8 @@ profile util-linux.fsck@{p_root} /sbin/fsck@{t_root} {
   
   # EXECUTABLES ----------------------------------------
   /sbin/fsck						mr,
-  /sbin/e2fsck						Px,	# sys-fs/e2fsprogs
-  /usr/sbin/fsck.fat					Px,	# sys-fs/dosfstools
+  /sbin/e2fsck@{t_root}					Px,	# sys-fs/e2fsprogs
+  /usr/sbin/fsck.fat@{t_root}				Px,	# sys-fs/dosfstools
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
@@ -223,7 +223,7 @@ profile util-linux.switch_root@{p_root} /sbin/switch_root@{t_root} {
   
   # EXECUTABLES ----------------------------------------
   /sbin/switch_root					mr,
-  /sbin/init						Px,	# sys-apps/sysvinit
+  /sbin/init@{t_root}					Px,	# sys-apps/sysvinit
 }
 
 profile util-linux.blockdev@{p_root} /sbin/blockdev@{t_root} {

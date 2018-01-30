@@ -323,7 +323,7 @@ profile consolekit.ck-system-suspend@{p_root} /usr/lib{,32,64}/ConsoleKit/script
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/ConsoleKit/scripts/ck-system-suspend	r,
   @{shell}						mr,
-  /usr/sbin/pm-suspend					Px,	# sys-power/pm-utils
+  /usr/sbin/pm-suspend@{t_root}				Px,	# sys-power/pm-utils
 }
 
 profile consolekit.pam-foreground-compat.ck@{p_root} /usr/lib{,32,64}/ConsoleKit/run-session.d/pam-foreground-compat.ck@{t_root} {
