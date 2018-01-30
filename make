@@ -77,7 +77,6 @@ profile make@{p_root} /usr/bin/{,g}make@{t_root} flags=(complain) {
   profile shell @{shell}@{t_root} flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
-    #include <abstractions/perl>
     
     # CAPABILITIES ---------------------------------------
     capability mknod,
@@ -103,7 +102,7 @@ profile make@{p_root} /usr/bin/{,g}make@{t_root} flags=(complain) {
     /bin/tr@{t_root}					Px,	# sys-apps/coreutils
     /bin/ln@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
     /bin/cp@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
-    /bin/pwd@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/pwd@{t_root}					Px,	# sys-apps/coreutils
     /bin/seq@{t_root}					ix,	# sys-apps/coreutils	# FIX ME! Вынести в отдельный профиль.
     /bin/cat@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
     /bin/cut@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
@@ -128,7 +127,9 @@ profile make@{p_root} /usr/bin/{,g}make@{t_root} flags=(complain) {
     /bin/tar@{t_root}					ix,	# app-arch/tar		# FS ACCESS!
     /bin/bzip2@{t_root}					ix,	# app-arch/bzip2	# FS ACCESS!
     /usr/bin/diff@{t_root}				ix,	# sys-apps/diffutils	# FS ACCESS!
-    /usr/bin/pod2html@{t_root}				ix,	# dev-lang/perl		# FIX ME! Вынести в отдельный профиль.
+    /usr/bin/pod2html@{t_root}				Px,	# dev-lang/perl
+    /usr/bin/pod2text-[0-9]*-perl-[0-9]*@{t_root}	Px,	# dev-lang/perl
+    /usr/bin/pod2man-[0-9]*-perl-[0-9]*@{t_root}	Px,	# dev-lang/perl
     /usr/bin/od@{t_root}				ix,	# sys-apps/coreutils	# FS ACCESS!
     /usr/bin/uniq@{t_root}				ix,	# sys-apps/coreutils	# FS ACCESS!
     /usr/bin/which@{t_root}				Px,	# sys-apps/which

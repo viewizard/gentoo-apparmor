@@ -109,6 +109,9 @@ profile coreutils.sleep@{p_all} /bin/sleep@{t_all} {
   
   # EXECUTABLES ----------------------------------------
   /bin/sleep						mr,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /var/log/genkernel.log				w,	# sys-kernel/genkernel-next
 }
 
 profile coreutils.whoami@{p_all} /usr/bin/whoami@{t_all} {
@@ -286,4 +289,7 @@ profile coreutils.pwd@{p_root} /bin/pwd@{t_root} {
   
   # EXECUTABLES ----------------------------------------
   /bin/pwd						mr,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /var/log/genkernel.log				w,	# sys-kernel/genkernel-next
 }
