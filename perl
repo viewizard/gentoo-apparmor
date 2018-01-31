@@ -27,7 +27,7 @@ profile perl.pod2html@{p_root} /usr/bin/pod2html@{t_root} {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pod2html					r,
-  /bin/pwd@{p_root}					Px,	# sys-apps/coreutils
+  /bin/pwd@{t_root}					Px,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /var/tmp/portage/genkernel/**/pod2htmd.tmp		rw,	# DELEGATION! make, genkernel (собираем busybox)

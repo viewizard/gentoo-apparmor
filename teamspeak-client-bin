@@ -68,12 +68,13 @@ profile teamspeak-client-bin.teamspeak@{p_user} /usr/bin/teamspeak3@{t_user} {
   owner @{USER_HOME_D}/.ts3client/{,**/}*		k,
   owner @{USER_HOME_D}/.ts3client/plugins/*.so		m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   owner @{USER_HOME_D}/.pki/nssdb/*			rwk,
+  owner "@{USER_HOME_D}/.local/share/TeamSpeak 3/{,**}"	rw,
   
   # TEMP -----------------------------------------------
   /tmp/							r,
   owner /tmp/TS3Client@{TMP4}				rw,
-  audit owner /tmp/*.ts3_plugin				rw,	# FIX ME! audit 25.11.2017
-  audit owner /tmp/ts3import/{,**}			rw,	# FIX ME! audit 25.11.2017
+  owner /tmp/*.ts3_plugin				rw,
+  owner /tmp/ts3import/{,**}				rw,
   audit owner /tmp/qt_temp.??????			rw,	# FIX ME! audit 25.11.2017
   owner /tmp/avatar					rw,
   /var/tmp/						r,
