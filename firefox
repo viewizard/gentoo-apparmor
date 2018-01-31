@@ -143,7 +143,8 @@ profile firefox@{p_user} /usr/lib{,32,64}/firefox/firefox{,-bin}@{t_user} {
   owner /var/tmp/@{TMP_SQLITE}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   # DENY INHERIT ---------------------------------------
-  deny unix peer=(label="nvidia-drivers.nvidia-modprobe@{p_user}"),	# nvidia-drivers.nvidia-modprobe
+  deny unix peer=(label="nvidia-drivers.nvidia-modprobe@{p_root}"),	# nvidia-drivers.nvidia-modprobe
+  									# XORG! ? x11-base/xorg-server USE=suid
 }
 
 profile firefox.user_extensions@{p_user} @{USER_HOME_D}/.mozilla/firefox/@{TMP8}.default/extensions/**@{t_user} {
