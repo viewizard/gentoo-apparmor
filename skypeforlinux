@@ -169,6 +169,7 @@ profile skypeforlinux@{p_user} /opt/skypeforlinux/skypeforlinux@{t_user} {
   /usr/share/mime/mime.cache				m,
   /usr/share/locale/{,**/}*.mo				m,
   /usr/share/fonts/{,**/}*.@{local_ext_font}		m,
+  owner /run/user/@{UID}/skype-@{pid}/{,**}		rw,
   audit /usr/share/icons/*/icon-theme.cache		m,	# FIX ME! audit 28.11.2017 был нужен бета версии.
   deny /etc/issue					r,	# Непонятно, зачем он это хочет.
   deny /etc/conf.d/hostname				r,	# Непонятно, зачем он это хочет.

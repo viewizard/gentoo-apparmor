@@ -58,7 +58,7 @@ profile xfce4-settings@{p_user} /usr/bin/xfce4{,-accessibility,-appearance,-disp
   /usr/bin/dconf-editor@{t_user}			Px,	# gnome-base/dconf-editor
   /usr/bin/gconf-editor@{t_user}			Px,	# gnome-extra/gconf-editor
   /usr/bin/qt5ct@{t_user}				Px,	# x11-misc/qt5ct
-  @{PYTHON_EXEC_WRAPPER}@{t_user}			Cx -> alacarte,	# dev-lang/python-exec
+  @{PYTHON_EXEC_WRAPPER}@{t_user}			Cx,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/						r,
@@ -78,7 +78,7 @@ profile xfce4-settings@{p_user} /usr/bin/xfce4{,-accessibility,-appearance,-disp
   owner @{USER_HOME_D}/.config/mimeapps.list*		rw,
   owner @{USER_HOME_D}/.config/xfce4/help.rc*		rw,
   
-  profile alacarte@{t_user} {
+  profile alacarte @{PYTHON_EXEC_WRAPPER}@{t_user} {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     

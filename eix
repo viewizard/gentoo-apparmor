@@ -26,7 +26,7 @@ profile eix@{p_root} /usr/bin/eix@{t_root} {
   # EXECUTABLES ----------------------------------------
   /usr/bin/eix						mr,
   /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh@{t_root}	Px,	# sys-apps/portage
-  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx -> portageq,	# dev-lang/python-exec
+  @{PYTHON_EXEC_WRAPPER}@{t_portage}			Cx,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /etc/eixrc/{,**}					r,
@@ -44,12 +44,12 @@ profile eix@{p_root} /usr/bin/eix@{t_root} {
   owner /tmp/ebuild-cache.@{TMP8}			rw,
   owner /tmp/portage.cron.@{TMP6}			w,	# DELEGATION! 00_update_portage.cron.daily
   
-  profile portageq {
+  profile portage @{PYTHON_EXEC_WRAPPER}@{t_portage} {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/portageq@{t_root}			Px,	# sys-apps/portage
+    @{PYTHON_EXEC}/portageq@{t_portage}			Px,	# sys-apps/portage
     
     # TEMP ---------------------------------------------
     /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily
@@ -109,7 +109,7 @@ profile eix.eix-sync@{p_root} /usr/bin/eix-sync@{t_root} {
   /usr/bin/gettext@{t_root}				Px,	# sys-devel/gettext
   /usr/bin/envsubst@{t_root}				Px,	# sys-devel/gettext
   /usr/bin/eix@{t_root}					Px,
-  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx -> portage,	# dev-lang/python-exec
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /usr/portage/metadata/timestamp.chk			r,
@@ -150,7 +150,7 @@ profile eix.eix-sync@{p_root} /usr/bin/eix-sync@{t_root} {
     /usr/share/push/push.sh				r,	# app-shells/push
   }
   
-  profile portage {
+  profile portage @{PYTHON_EXEC_WRAPPER}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     

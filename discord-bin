@@ -36,11 +36,11 @@ profile discord-bin.Discord@{p_user} /opt/discord/share/discord/Discord@{t_user}
   deny ptrace (trace),
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term) peer="lsb-release@{p_user}",		# sys-apps/lsb-release
+  signal (send) set=(term) peer="lsb-release@{p_all}",		# sys-apps/lsb-release	# Все правильно, @{p_all}.
   
   # UNIX -----------------------------------------------
   unix (send, receive) peer=(label="discord-bin.Discord@{p_user}//shell"),
-  deny unix (send, receive) peer=(label="lsb-release@{p_user}"),	# sys-apps/lsb-release
+  deny unix (send, receive) peer=(label="lsb-release@{p_all}"),	# sys-apps/lsb-release	# Все правильно, @{p_all}.
   
   # NETWORK --------------------------------------------
   network netlink raw,

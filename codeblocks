@@ -41,13 +41,13 @@ profile codeblocks@{p_user} /usr/bin/codeblocks@{t_user} {
   # EXECUTABLES ----------------------------------------
   /usr/bin/codeblocks					mr,
   @{shell}@{t_user}					Px -> codeblocks_shell,
-  /usr/bin/gcc@{t_user}					Cx -> build,	# sys-devel/gcc
-  /usr/bin/g++@{t_user}					Cx -> build,	# sys-devel/gcc
-  /usr/bin/llvm-ar@{t_user}				Cx -> build,	# sys-devel/llvm
-  audit /usr/bin/{,@{CHOST}-}clang-*@{t_user}		Cx -> build,	# sys-devel/clang	# FIX ME! audit 5.12.2017
+  /usr/bin/gcc@{t_user}					Px -> codeblocks_user_build,	# sys-devel/gcc
+  /usr/bin/g++@{t_user}					Px -> codeblocks_user_build,	# sys-devel/gcc
+  /usr/bin/llvm-ar@{t_user}				Px -> codeblocks_user_build,	# sys-devel/llvm
+  audit /usr/bin/{,@{CHOST}-}clang-*@{t_user}		Px -> codeblocks_user_build,	# sys-devel/clang	# FIX ME! audit 5.12.2017
   deny /usr/bin/gfortran@{t_user}			x,	# sys-devel/gcc +fortran	# Не используем fortran.
-  /usr/lib{,32,64}/llvm/[0-9]*/bin/llvm-ar@{t_user}	Cx -> build,	# sys-devel/llvm
-  /usr/@{CHOST}/binutils-bin/[0-9]*/ar@{t_user}		Cx -> build,	# sys-devel/binutils
+  /usr/lib{,32,64}/llvm/[0-9]*/bin/llvm-ar@{t_user}	Px -> codeblocks_user_build,	# sys-devel/llvm
+  /usr/@{CHOST}/binutils-bin/[0-9]*/ar@{t_user}		Px -> codeblocks_user_build,	# sys-devel/binutils
   
   # READS/WRITES ---------------------------------------
   /etc/mime.types					r,
@@ -63,36 +63,39 @@ profile codeblocks@{p_user} /usr/bin/codeblocks@{t_user} {
   owner /tmp/wxbf@{TMP6}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   owner /tmp/CODEBLOCKS@{USER}.socket			rw,
   owner /tmp/Code::Blocks-@{USER}			rwk,
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.12.0) не можем
+# использовать именованный профиль с переходом "Cx/cx ->", т.к.
+# нельзя использовать переменную в имени родительского профиля.
+profile codeblocks_user_build {
+  #include <abstractions/base>
   
-  profile build {
-    #include <abstractions/base>
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					rw,
-    /dev/pts/[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /usr/bin/gcc					mr,	# sys-devel/gcc
-    /usr/bin/g++					mr,	# sys-devel/gcc
-    /usr/bin/llvm-ar					mr,	# sys-devel/llvm
-    audit /usr/bin/{,@{CHOST}-}clang-*			mr,	# sys-devel/clang	# FIX ME! audit 5.12.2017
-    /usr/lib{,32,64}/llvm/[0-9]*/bin/llvm-ar		mr,	# sys-devel/llvm
-    /usr/@{CHOST}/binutils-bin/[0-9]*/ar		mr,	# sys-devel/binutils
-    /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-gcc@{t_user}	ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
-    /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-g++@{t_user}	ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
-    /usr/libexec/gcc/@{CHOST}/[0-9]*/cc1plus@{t_user}	ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
-    
-    # READS/WRITES -------------------------------------
-    /etc/lsb-release					r,
-    /etc/env.d/gcc/@{CHOST}-[0-9]*			r,	# sys-devel/gcc
-    /etc/env.d/gcc/config-@{CHOST}			r,	# sys-devel/gcc
-    /usr/include/**					r,
-    /usr/share/gcc-data/@{CHOST}/[0-9]*/locale/**.mo	r,	# sys-devel/gcc
-    /usr/share/binutils-data/@{CHOST}/[0-9]*/locale/**.mo r,	# sys-devel/binutils
-    
-    # TEMP ---------------------------------------------
-    owner /tmp/Code::Blocks-@{USER}			rw,
-  }
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/gcc						mr,	# sys-devel/gcc
+  /usr/bin/g++						mr,	# sys-devel/gcc
+  /usr/bin/llvm-ar					mr,	# sys-devel/llvm
+  audit /usr/bin/{,@{CHOST}-}clang-*			mr,	# sys-devel/clang	# FIX ME! audit 5.12.2017
+  /usr/lib{,32,64}/llvm/[0-9]*/bin/llvm-ar		mr,	# sys-devel/llvm
+  /usr/@{CHOST}/binutils-bin/[0-9]*/ar			mr,	# sys-devel/binutils
+  /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-gcc@{t_user}	ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
+  /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-g++@{t_user}	ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
+  /usr/libexec/gcc/@{CHOST}/[0-9]*/cc1plus@{t_user}	ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
+  
+  # READS/WRITES ---------------------------------------
+  /etc/lsb-release					r,
+  /etc/env.d/gcc/@{CHOST}-[0-9]*			r,	# sys-devel/gcc
+  /etc/env.d/gcc/config-@{CHOST}			r,	# sys-devel/gcc
+  /usr/include/**					r,
+  /usr/share/gcc-data/@{CHOST}/[0-9]*/locale/**.mo	r,	# sys-devel/gcc
+  /usr/share/binutils-data/@{CHOST}/[0-9]*/locale/**.mo r,	# sys-devel/binutils
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/Code::Blocks-@{USER}			rw,
 }
 
 # IMPROVE! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
@@ -107,7 +110,7 @@ profile codeblocks_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /usr/bin/gcc-config@{t_user}				Px,	# sys-devel/gcc-config
+  audit /usr/bin/gcc-config@{t_user}			Px,	# sys-devel/gcc-config	# FIX ME! audit 03.02.2018
   /usr/bin/g++@{t_user}					Cx,	# sys-devel/gcc
   
   # TEMP -----------------------------------------------
@@ -127,7 +130,7 @@ profile codeblocks_shell {
     /usr/@{CHOST}/binutils-bin/[0-9]*/as@{t_user}	ix,	# sys-devel/binutils	# Разрешаем ix для данного случая.
     /usr/@{CHOST}/binutils-bin/[0-9]*/ld@{t_user}	ix,	# sys-devel/binutils	# Разрешаем ix для данного случая.
     /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-g++@{t_user}	ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
-    /usr/libexec/gcc/@{CHOST}/*/cc1plus@{t_user}		ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
+    /usr/libexec/gcc/@{CHOST}/*/cc1plus@{t_user}	ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
     /usr/libexec/gcc/@{CHOST}/*/collect2@{t_user}	ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
     
     # READS/WRITES -------------------------------------

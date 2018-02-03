@@ -41,7 +41,7 @@ profile binutils-config@{p_root} /usr/bin/binutils-config@{t_root} {
   /usr/bin/tput@{t_root}				Px,	# sys-libs/ncurses
   /usr/bin/scanelf@{t_root}				Cx,	# app-misc/pax-utils
   /usr/bin/cmp@{t_root}					Cx,	# sys-apps/diffutils
-  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx -> portageq,	# dev-lang/python-exec
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /etc/env.d/**						r,
@@ -184,7 +184,7 @@ profile binutils-config@{p_root} /usr/bin/binutils-config@{t_root} {
     /etc/env.d/binutils/config-@{CHOST}{,.tmp}		r,
   }
   
-  profile portageq {
+  profile portage @{PYTHON_EXEC_WRAPPER}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     

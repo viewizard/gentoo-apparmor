@@ -36,7 +36,7 @@ profile 00_update_portage.cron.daily@{p_root} /etc/cron.daily/00_update_portage@
   /usr/bin/libnotify-notify-send-users@{t_root}		Px,	# x11-libs/libnotify
   /usr/bin/mail@{t_root}				Px,	# mail-client/mailx
   /usr/bin/logger@{t_root}				Px,	# sys-apps/util-linux
-  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx -> emerge,	# dev-lang/python-exec	# Выполняем синхронизацию.
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx,	# dev-lang/python-exec	# Выполняем синхронизацию.
   
   # READS/WRITES ---------------------------------------
   /etc/portage/cron_update.conf				r,
@@ -94,7 +94,7 @@ profile 00_update_portage.cron.daily@{p_root} /etc/cron.daily/00_update_portage@
     owner /tmp/portage.cron.@{TMP6}			w,
   }
   
-  profile emerge {
+  profile portage @{PYTHON_EXEC_WRAPPER}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     

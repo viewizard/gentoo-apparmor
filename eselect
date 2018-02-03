@@ -49,7 +49,7 @@ profile eselect@{p_root} /usr/bin/eselect@{t_root} {
   /lib{,32,64}/rc/bin/service_inactive@{t_root}		Px,	# sys-apps/openrc
   /lib{,32,64}/rc/bin/service_crashed@{t_root}		Px,	# sys-apps/openrc
   /lib{,32,64}/rc/bin/service_hotplugged@{t_root}	Px,	# sys-apps/openrc
-  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx -> portage,	# dev-lang/python-exec
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -62,7 +62,7 @@ profile eselect@{p_root} /usr/bin/eselect@{t_root} {
   /etc/env.d/99editor					rw,	# eselect visual
   /etc/env.d/99pager					rw,	# eselect pager
   /etc/env.d/cblas/lib{,32,64}/{,*}			rw,	# eselect cblas
-  /etc/init.d/*						r,	# eselect rc (для вывода списка).
+  /etc/init.d/{,*}						r,	# eselect rc (для вывода списка).
   /etc/fonts/conf.avail/				r,	# eselect fontconfig
   /etc/python-exec/python-exec.conf			r,	# eselect python
   /etc/python-exec/python-exec.conf.new			w,	# eselect python
@@ -298,6 +298,9 @@ profile eselect@{p_root} /usr/bin/eselect@{t_root} {
   profile chmod /bin/chmod@{t_root} {
     #include <abstractions/base>
     
+    # CAPABILITIES -------------------------------------
+    capability fsetid,
+    
     # PSEUDO -------------------------------------------
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
@@ -369,7 +372,7 @@ profile eselect@{p_root} /usr/bin/eselect@{t_root} {
     /usr/bin/scanelf					mr,
   }
   
-  profile portage {
+  profile portage @{PYTHON_EXEC_WRAPPER}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     

@@ -23,9 +23,8 @@ profile perl-cleaner@{p_root} /usr/sbin/perl-cleaner@{t_root} {
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /usr/sbin/perl-cleaner				mr,
+  /usr/sbin/perl-cleaner				r,
   @{shell}						mr,
-  @{shell}@{t_root}					px -> perl_cleaner_shell,	# Все правильно, запуск и mmap.
   /bin/grep@{t_root}					Cx,	# sys-apps/grep
   /bin/tr@{t_root}					Px,	# sys-apps/coreutils
   /bin/sort@{t_root}					Cx,	# sys-apps/coreutils
@@ -41,7 +40,7 @@ profile perl-cleaner@{p_root} /usr/sbin/perl-cleaner@{t_root} {
   /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils
   /usr/bin/realpath@{t_root}				Cx,	# sys-apps/coreutils
   /usr/bin/h2ph@{t_root}				Px,	# dev-lang/perl
-  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx -> portage,	# dev-lang/python-exec
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /var/db/pkg/{,**}					r,
@@ -172,61 +171,12 @@ profile perl-cleaner@{p_root} /usr/sbin/perl-cleaner@{t_root} {
     /usr/bin/realpath					mr,
   }
   
-  profile portage {
+  profile portage @{PYTHON_EXEC_WRAPPER}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
     @{PYTHON_EXEC}/emerge@{t_root}			Px,	# sys-apps/portage
     @{PYTHON_EXEC}/portageq@{t_root}			Px,	# sys-apps/portage
-  }
-}
-
-profile perl_cleaner_shell {
-  #include <abstractions/base>
-  
-  # PSEUDO -------------------------------------------
-  /dev/tty						rw,
-  /dev/tty[0-9]*					rw,
-  /dev/pts/[0-9]*					rw,
-  
-  # EXECUTABLES --------------------------------------
-  @{shell}						mr,
-  /bin/grep@{t_root}					Cx,	# sys-apps/grep
-  /usr/bin/gawk@{t_root}				Cx,	# sys-apps/gawk
-  /usr/bin/@{CHOST}-gcc@{t_root}			Cx,	# sys-devel/gcc
-  /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-gcc@{t_root}	Cx -> gcc,	# sys-devel/gcc
-  /usr/libexec/gcc/@{CHOST}/[0-9]*/cc1@{t_root}		Cx,	# sys-devel/gcc
-  
-  # READS/WRITES -------------------------------------
-  /etc/env.d/gcc/{,**}					r,	# sys-devel/gcc
-  /usr/include/{,**}					r,
-  
-  profile grep /bin/grep@{t_root} {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /bin/grep						mr,
-  }
-  
-  profile gawk /usr/bin/gawk@{t_root} {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /usr/bin/gawk					mr,
-  }
-  
-  profile gcc /usr/bin/@{CHOST}-gcc@{t_root} {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /usr/bin/@{CHOST}-gcc				mr,
-  }
-  
-  profile cc1 /usr/libexec/gcc/@{CHOST}/[0-9]*/cc1@{t_root} {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /usr/libexec/gcc/@{CHOST}/[0-9]*/cc1		mr,
   }
 }

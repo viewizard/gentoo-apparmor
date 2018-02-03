@@ -646,7 +646,7 @@ profile portage_dispatch_conf_shell {
   }
 }
 
-profile portage.portageq@{p_root} @{PYTHON_EXEC}/portageq@{t_root} {
+profile portage.portageq@{p_root} @{PYTHON_EXEC}/portageq{@{t_root},@{t_portage}} {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -661,7 +661,7 @@ profile portage.portageq@{p_root} @{PYTHON_EXEC}/portageq@{t_root} {
   @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
   
   # EXECUTABLES ----------------------------------------
-  @{shell}@{t_root}					Cx,
+  @{shell}{@{t_root},@{t_portage}}			Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
@@ -677,7 +677,7 @@ profile portage.portageq@{p_root} @{PYTHON_EXEC}/portageq@{t_root} {
   								# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
   owner /tmp/Code::Blocks-@{USER}			w,	# DELEGATION! codeblocks
   
-  profile shell @{shell}@{t_root} {
+  profile shell @{shell}{@{t_root},@{t_portage}} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -687,7 +687,7 @@ profile portage.portageq@{p_root} @{PYTHON_EXEC}/portageq@{t_root} {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname@{t_root}					Px,	# sys-apps/coreutils
+    /bin/uname{@{t_root},@{t_portage}}			Px,	# sys-apps/coreutils
     
     # TEMP ---------------------------------------------
     /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily
@@ -725,7 +725,7 @@ profile portage.etc-update@{p_root} /usr/sbin/etc-update@{t_root} {
   audit /bin/readlink@{t_root}				Cx,	# sys-apps/coreutils	# FIX ME! audit 15.07.2017
   /usr/bin/diff@{t_root}				Cx,	# sys-apps/diffutils
   /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils
-  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx -> portageq,	# dev-lang/python-exec
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx,	# dev-lang/python-exec
   
   # TEMP -----------------------------------------------
   owner /tmp/@{TMP_SH}					rw,
@@ -815,7 +815,7 @@ profile portage.etc-update@{p_root} /usr/sbin/etc-update@{t_root} {
     owner /var/tmp/etc-update-@{pids}/			w,
   }
   
-   profile chown /bin/chown@{t_root} {
+  profile chown /bin/chown@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
@@ -948,7 +948,7 @@ profile portage.etc-update@{p_root} /usr/sbin/etc-update@{t_root} {
     /usr/share/gnupg/					r,	# app-crypt/gnupg
   }
   
-  profile portageq {
+  profile portage @{PYTHON_EXEC_WRAPPER}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
@@ -984,7 +984,7 @@ profile portage.emerge-webrsync@{p_root} /usr/bin/emerge-webrsync@{t_root} {
   /usr/bin/gpg{,2}@{t_root}				Px,	# app-crypt/gnupg
   /usr/bin/renice@{t_root}				Px,	# sys-apps/util-linux
   /usr/bin/wget@{t_root}				Px,	# net-misc/wget
-  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx -> portage,	# dev-lang/python-exec
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx,	# dev-lang/python-exec
   
   # TEMP -----------------------------------------------
   owner /tmp/@{TMP_SH}					rw,
@@ -1171,7 +1171,7 @@ profile portage.emerge-webrsync@{p_root} /usr/bin/emerge-webrsync@{t_root} {
     /usr/bin/fmt					mr,
   }
   
-  profile portage {
+  profile portage @{PYTHON_EXEC_WRAPPER}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     

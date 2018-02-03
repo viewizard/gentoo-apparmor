@@ -33,7 +33,7 @@ profile local.sbin.aa_portage@{p_root} /usr/local/sbin/aa_portage.sh@{t_root} {
   /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
   /bin/ln@{t_root}					Cx,	# sys-apps/coreutils
   /sbin/apparmor_parser@{t_root}			Px,	# sys-apps/apparmor
-  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx -> equery,	# dev-lang/python-exec
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /etc/apparmor.d/{,**}					r,
@@ -90,7 +90,7 @@ profile local.sbin.aa_portage@{p_root} /usr/local/sbin/aa_portage.sh@{t_root} {
     /etc/apparmor.d/disable/*				w,
   }
   
-  profile equery {
+  profile equery @{PYTHON_EXEC_WRAPPER}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/python>
     #include <abstractions/python-exec>

@@ -26,15 +26,15 @@ profile glibc.ldd@{p_root} /usr/bin/ldd@{t_root} flags=(attach_disconnected) {
   # EXECUTABLES ----------------------------------------
   /usr/bin/ldd						mr,
   /bin/{,**/}*						mr,
-  /bin/{,**/}*@{t_root}					cx -> test_run,
+  /bin/{,**/}*@{t_root}					px -> glibc_ldd_root_test_run,
   /sbin/{,**/}*						mr,
-  /sbin/{,**/}*@{t_root}				cx -> test_run,
+  /sbin/{,**/}*@{t_root}				px -> glibc_ldd_root_test_run,
   /lib{,32,64,exec}/{,**/}*				mr,
-  /lib{,32,64,exec}/{,**/}*@{t_root}			cx -> test_run,
+  /lib{,32,64,exec}/{,**/}*@{t_root}			px -> glibc_ldd_root_test_run,
   /opt/{,**/}*						mr,
-  /opt/{,**/}*@{t_root}					cx -> test_run,
+  /opt/{,**/}*@{t_root}					px -> glibc_ldd_root_test_run,
   /usr/{,**/}*						mr,
-  /usr/{,**/}*@{t_root}					cx -> test_run,
+  /usr/{,**/}*@{t_root}					px -> glibc_ldd_root_test_run,
   
   # READS/WRITES ---------------------------------------
   /etc/ld.so.cache					r,
@@ -42,22 +42,25 @@ profile glibc.ldd@{p_root} /usr/bin/ldd@{t_root} flags=(attach_disconnected) {
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					r,	# flags=(attach_disconnected)
   deny /var/cache/revdep-rebuild/*errors*		rw,	# app-portage/gentoolkit, gentoolkit.revdep-rebuild.sh
+}
+
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.12.0) не можем
+# использовать именованный профиль с переходом "Cx/cx ->", т.к.
+# нельзя использовать переменную в имени родительского профиля.
+profile glibc_ldd_root_test_run {
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
   
-  profile test_run {
-    # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					rw,
-    /dev/pts/[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /bin/{,**/}*					mr,
-    /sbin/{,**/}*					mr,
-    /lib{,32,64,exec}/{,**/}*				mr,
-    /opt/{,**/}*					mr,
-    /usr/{,**/}*					mr,
-    
-    # READS/WRITES -------------------------------------
-    /etc/ld.so.cache					r,
-  }
+  # EXECUTABLES ----------------------------------------
+  /bin/{,**/}*						mr,
+  /sbin/{,**/}*						mr,
+  /lib{,32,64,exec}/{,**/}*				mr,
+  /opt/{,**/}*						mr,
+  /usr/{,**/}*						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/ld.so.cache					r,
 }
 
 profile glibc.locale@{p_all} /usr/bin/locale@{t_all} flags=(attach_disconnected) {

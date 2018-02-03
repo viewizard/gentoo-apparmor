@@ -34,7 +34,7 @@ profile glsa.cron.daily@{p_root} /etc/cron.daily/glsa@{t_root} {
   /usr/bin/libnotify-notify-send-users@{t_root}		Px,	# x11-libs/libnotify
   /usr/bin/mail@{t_root}				Px,	# mail-client/mailx
   /usr/bin/logger@{t_root}				Px,	# sys-apps/util-linux
-  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx -> glsa_check,	# dev-lang/python-exec
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /etc/portage/cron_glsa.conf				r,
@@ -72,7 +72,7 @@ profile glsa.cron.daily@{p_root} /etc/cron.daily/glsa@{t_root} {
     owner /tmp/glsa.cron.@{TMP6}			rw,
   }
   
-  profile glsa_check@{t_root} {
+  profile glsa_check @{PYTHON_EXEC_WRAPPER}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     

@@ -53,7 +53,7 @@ profile gcc-config@{p_all} /usr/bin/gcc-config@{t_all} flags=(complain) {	# FIX 
   /lib{,32,64}/rc/bin/ewarn@{t_all}			Px,	# sys-apps/openrc
   /lib{,32,64}/rc/bin/eend@{t_all}			Px,	# sys-apps/openrc
   /lib{,32,64}/rc/bin/eerror@{t_all}			Px,	# sys-apps/openrc
-  @{PYTHON_EXEC_WRAPPER}@{t_all}			Cx -> portageq,		# dev-lang/python-exec
+  audit @{PYTHON_EXEC_WRAPPER}@{t_all}			Cx,	# dev-lang/python-exec	# FIX ME! audit 03.02.2018
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -337,7 +337,7 @@ profile gcc-config@{p_all} /usr/bin/gcc-config@{t_all} flags=(complain) {	# FIX 
     owner /tmp/tac@{TMP6}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
-  profile portageq {
+  profile portage @{PYTHON_EXEC_WRAPPER}@{t_all} {
     #include <abstractions/base>
     #include <abstractions/python>
     #include <abstractions/python-exec>

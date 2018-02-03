@@ -61,9 +61,10 @@ profile wget@{p_root} /usr/bin/wget@{t_root} {
   /usr/bin/wget						mr,
   
   # READS/WRITES ---------------------------------------
+  /etc/wgetrc						r,
+  /usr/portage/distfiles/**				rw,	# sys-apps/portage	# DELEGATION! portage
   deny /.wget-hsts					rwk,	# Мусорит в корень, использовать --hsts-file=file.
   								# Процессы запущенные из cron работают некорректно с wget.
-  /usr/portage/distfiles/**				rw,	# sys-apps/portage	# DELEGATION! portage
   
   # USERS ----------------------------------------------
   owner @{ROOT_HOME_D}/.wget-hsts			rwk,

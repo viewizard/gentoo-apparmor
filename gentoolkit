@@ -216,7 +216,7 @@ profile gentoolkit.revdep-rebuild@{p_root} @{PYTHON_EXEC}/revdep-rebuild@{t_root
   
   # EXECUTABLES ----------------------------------------
   @{shell}@{t_root}					Cx,
-  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx -> portage,	# dev-lang/python-exec
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx,	# dev-lang/python-exec
   /usr/bin/scanelf@{t_root}				Cx,	# app-misc/pax-utils
   
   # READS/WRITES ---------------------------------------
@@ -251,7 +251,7 @@ profile gentoolkit.revdep-rebuild@{p_root} @{PYTHON_EXEC}/revdep-rebuild@{t_root
     /bin/uname@{t_root}					Px,	# sys-apps/coreutils
   }
   
-  profile portage {
+  profile portage @{PYTHON_EXEC_WRAPPER}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
