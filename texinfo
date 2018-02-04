@@ -34,6 +34,10 @@ profile texinfo.info@{p_root} /usr/bin/info@{t_root} {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
+  # CAPABILITIES ---------------------------------------
+  capability dac_read_search,
+  capability dac_override,
+  
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
@@ -41,6 +45,7 @@ profile texinfo.info@{p_root} /usr/bin/info@{t_root} {
   # EXECUTABLES ----------------------------------------
   /usr/bin/info						mr,
   @{shell}@{t_root}					Px -> texinfo_info_shell,
+  /usr/bin/man@{t_man}					Px,
   
   # READS/WRITES -------------------------------------
   /usr/share/info/dir					r,

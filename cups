@@ -95,7 +95,7 @@ profile cups.cupsd@{p_root} /usr/sbin/cupsd@{t_root} {
   }
 }
 
-profile cups.daemon@{p_root} /usr/libexec/cups/daemon/*@{t_root} {
+profile cups.daemon@{p_root} /usr/libexec/cups/daemon/*{@{t_root},@{t_lp}} {
   #include <abstractions/base>
   #include <abstractions/unix/cupsd-virtual>
   
@@ -105,22 +105,22 @@ profile cups.daemon@{p_root} /usr/libexec/cups/daemon/*@{t_root} {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/cups/daemon/*				mr,
-  /usr/bin/smbspool@{t_root}				Px,
-  /usr/libexec/cups/daemon/*@{t_root}			Px,
-  /usr/libexec/cups/cgi-bin/*@{t_root}			Px,
-  /usr/libexec/cups/backend/*@{t_root}			Px,
-  /usr/libexec/cups/driver/*@{t_root}			Px,
-  /usr/libexec/cups/filter/*@{t_root}			Px,
+  /usr/bin/smbspool@{t_lp}				Px,
+  /usr/libexec/cups/daemon/*{@{t_root},@{t_lp}}		Px,
+  /usr/libexec/cups/cgi-bin/*{@{t_root},@{t_lp}}	Px,
+  /usr/libexec/cups/backend/*{@{t_root},@{t_lp}}	Px,
+  /usr/libexec/cups/driver/*{@{t_root},@{t_lp}}		Px,
+  /usr/libexec/cups/filter/*{@{t_root},@{t_lp}}		Px,
   
   # READS/WRITES ---------------------------------------
   /usr/share/cups/{,**}					r,
   /usr/share/ppd/{,**}					r,
+  /usr/libexec/cups/{backend,driver}/			r,
   /var/spool/cups/{,**}					wr,
   /var/cache/cups/{,**}					wr,
-  /usr/libexec/cups/{backend,driver}/			r,
 }
 
-profile cups.driver@{p_root} /usr/libexec/cups/driver/*@{t_root} {
+profile cups.driver@{p_root} /usr/libexec/cups/driver/*{@{t_root},@{t_lp}} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
@@ -133,7 +133,7 @@ profile cups.driver@{p_root} /usr/libexec/cups/driver/*@{t_root} {
   /var/spool/cups/{,**}					wr,
 }
 
-profile cups.cgi-bin@{p_root} /usr/libexec/cups/cgi-bin/*@{t_root} {
+profile cups.cgi-bin@{p_root} /usr/libexec/cups/cgi-bin/*{@{t_root},@{t_lp}} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -156,14 +156,14 @@ profile cups.cgi-bin@{p_root} /usr/libexec/cups/cgi-bin/*@{t_root} {
   owner /tmp/@{TMP13}					rw,
 }
 
-profile cups.filter@{p_root} /usr/libexec/cups/filter/*@{t_root} {
+profile cups.filter@{p_root} /usr/libexec/cups/filter/*{@{t_root},@{t_lp}} {
   #include <abstractions/base>
   #include <abstractions/unix/cupsd-virtual>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/cups/filter/*				mr,
-  /usr/libexec/cups/filter/*@{t_root}			Px,
-  /usr/bin/pdftops@{t_root}				Px,	# app-text/poppler
+  /usr/libexec/cups/filter/*{@{t_root},@{t_lp}}		Px,
+  /usr/bin/pdftops{@{t_root},@{t_lp}}			Px,	# app-text/poppler
   
   # READS/WRITES ---------------------------------------
   /etc/cups/ppd/*.ppd					r,
@@ -172,15 +172,16 @@ profile cups.filter@{p_root} /usr/libexec/cups/filter/*@{t_root} {
   /var/spool/cups/*					r,
   
   # TEMP -----------------------------------------------
-  audit owner /tmp/??????*				rw,	# FIX ME! audit 25.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /tmp/@{TMP13}					rw,
 }
 
-profile cups.backend@{p_root} /usr/libexec/cups/backend/*@{t_root} {
+profile cups.backend@{p_root} /usr/libexec/cups/backend/*{@{t_root},@{t_lp}} {
   #include <abstractions/base>
   #include <abstractions/unix/cupsd-virtual>
   
   # CAPABILITIES ---------------------------------------
   capability wake_alarm,
+  capability setuid,
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -204,10 +205,11 @@ profile cups.backend@{p_root} /usr/libexec/cups/backend/*@{t_root} {
   /etc/cups/ppd/*.ppd					r,
   /etc/udev/udev.conf					r,
   /usr/share/cups/{,**}					r,
+  /run/udev/data/{[a-z]*[0-9]*:[0-9]*,+usb:@{USB4}}	r,
   /var/cache/cups/*.snmp				r,
 }
 
-profile cups.smbspool@{p_root} /usr/bin/smbspool@{t_root} {
+profile cups.smbspool@{p_lp} /usr/bin/smbspool@{t_lp} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
@@ -239,9 +241,9 @@ profile cups.init.d@{p_root} /etc/init.d/cupsd@{t_root} flags=(attach_disconnect
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/cupsd				r,
-  /var/cache/cups/					w,
   /run/cups/						w,
   /run/cups/certs/					w,
+  /var/cache/cups/					w,
   
   profile shell @{shell}@{t_root} {
     #include <abstractions/base>

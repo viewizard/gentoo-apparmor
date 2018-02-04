@@ -309,6 +309,15 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
     /lib{,32,64}/rc/bin/*@{t_root}			ix,	# sys-apps/openrc
     
     # READS/WRITES -------------------------------------
+    /etc/portage/bin/{,**/}*				m,
+    /bin/{,**/}*					m,
+    /sbin/{,**/}*					m,
+    /opt/{,**/}*					m,
+    /usr/bin/{,**/}*					m,
+    /usr/sbin/{,**/}*					m,
+    /usr/lib{,32,64,exec}/{,**/}*			m,
+    /usr/@{CHOST}/{,**/}*				m,
+    /lib{,32,64}/rc/bin/*				m,	# sys-apps/openrc
     /							r,
     /boot/						r,
     /boot/**						rw,
@@ -1282,7 +1291,7 @@ profile portage.cgroup-release-agent@{p_root} /{usr/lib{,32,64}/portage/@{PYTHON
   }
 }
 
-profile portage.ebuild.sh@{p_root} /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh@{t_root} {
+profile portage.ebuild.sh@{p_root} /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh{@{t_root},@{t_portage}} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   

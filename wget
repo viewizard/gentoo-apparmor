@@ -38,7 +38,7 @@ profile wget@{p_user} /usr/bin/wget@{t_user} {
   owner @{USER_HOME_D}/.wget-hsts			rw,
 }
 
-profile wget@{p_root} /usr/bin/wget@{t_root} {
+profile wget@{p_root} /usr/bin/wget{@{t_root},@{t_portage}} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ssl-certs>

@@ -29,8 +29,8 @@ profile man-db.mandb@{p_man} /usr/bin/mandb@{t_man} {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mandb					mr,
-  /bin/bzip2@{t_root}					Cx,	# app-arch/bzip2
-  /usr/libexec/man-db/manconv@{t_man}			Px,
+  /bin/bzip2@{t_man}					Cx,	# app-arch/bzip2
+  /usr/libexec/man-db/manconv@{t_root}			Px,
   
   # READS/WRITES ---------------------------------------
   /etc/man_db.conf					r,
@@ -53,7 +53,7 @@ profile man-db.mandb@{p_man} /usr/bin/mandb@{t_man} {
   }
 }
 
-profile man-db.man@{p_root} /usr/bin/man@{t_root} {
+profile man-db.man@{p_man} /usr/bin/man@{t_man} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -68,15 +68,15 @@ profile man-db.man@{p_root} /usr/bin/man@{t_root} {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/man						mr,
-  /bin/bzip2@{t_root}					Cx,	# app-arch/bzip2
+  /bin/bzip2@{t_man}					Cx,	# app-arch/bzip2
   /bin/gzip@{t_root}					Cx,	# app-arch/gzip
-  /usr/bin/less@{t_root}				Cx,	# sys-apps/less
+  /usr/bin/less@{t_man}					Cx,	# sys-apps/less
   /usr/bin/preconv@{t_root}				Cx,	# sys-apps/groff
-  /usr/bin/neqn@{t_root}				Cx,	# sys-apps/groff
+  /usr/bin/neqn@{t_man}					Cx,	# sys-apps/groff
   /usr/bin/nroff@{t_root}				Px,	# sys-apps/groff
   /usr/bin/tbl@{t_root}					Cx,	# sys-apps/groff
   /usr/bin/manpager@{t_root}				Px,	# app-text/manpager
-  /usr/libexec/man-db/manconv@{t_man}			Px,
+  /usr/libexec/man-db/manconv@{t_root}			Px,
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -88,7 +88,7 @@ profile man-db.man@{p_root} /usr/bin/man@{t_root} {
   /var/cache/man/**					rw,
   /var/cache/man/{,**/}*				k,
   
-  profile bzip2 /bin/bzip2@{t_root} {
+  profile bzip2 /bin/bzip2@{t_man} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -118,7 +118,7 @@ profile man-db.man@{p_root} /usr/bin/man@{t_root} {
     /var/cache/man/**					rw,
   }
   
-  profile less /usr/bin/less@{t_root} {
+  profile less /usr/bin/less@{t_man} {
     #include <abstractions/base>
     #include <abstractions/ncurses>
     
@@ -149,7 +149,7 @@ profile man-db.man@{p_root} /usr/bin/man@{t_root} {
     deny /var/cache/man/**				rw,
   }
   
-  profile neqn /usr/bin/neqn@{t_root} {
+  profile neqn /usr/bin/neqn@{t_man} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -173,7 +173,7 @@ profile man-db.man@{p_root} /usr/bin/man@{t_root} {
   }
 }
 
-profile man-db.manconv@{p_man} /usr/libexec/man-db/manconv@{t_man} {
+profile man-db.manconv@{p_root} /usr/libexec/man-db/manconv@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------

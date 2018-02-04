@@ -108,7 +108,7 @@ profile smplayer@{p_user} /usr/bin/smplayer@{t_user} {
   signal (send) set=(kill,term) peer="mplayer@{p_user}",	# media-video/mplayer
   
   # DBUS -----------------------------------------------
-  deny dbus peer=(label="networkmanager.NetworkManager@{p_user}"),	# Запрещаем работу с сетью.
+  deny dbus peer=(label="networkmanager.NetworkManager@{p_root}"),	# Запрещаем работу с сетью.
 
   # NETWORK --------------------------------------------
   deny network netlink raw,					# Запрещаем работу с сетью.
