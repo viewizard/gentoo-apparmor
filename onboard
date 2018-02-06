@@ -30,7 +30,7 @@ profile onboard@{p_user} /usr/bin/onboard@{t_user} {
   	path="/org/freedesktop/DBus"
   	interface="org.freedesktop.DBus.Introspectable"
   	member=Introspect
-  	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon@{p_any}"),
+  	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon@{p_all}"),
   dbus (send, receive)
   	bus=session
   	path="/org/onboard/Onboard/Keyboard"
@@ -89,7 +89,7 @@ profile onboard_settings@{p_user} /usr/bin/onboard-settings@{t_user} {
   	path="/org/freedesktop/DBus"
   	interface="org.freedesktop.DBus.Introspectable"
   	member=Introspect
-  	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon@{p_any}"),
+  	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon@{p_all}"),
   
   # NETWORK --------------------------------------------
   network netlink raw,

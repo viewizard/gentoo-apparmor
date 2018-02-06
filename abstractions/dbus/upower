@@ -12,20 +12,20 @@ dbus send
 	bus=system
 	path="/org/freedesktop/UPower{,/**}"
 	interface="org.freedesktop.DBus.Properties"
-	peer=(name="{:[0-9]*.[0-9]*,org.freedesktop.UPower}",label="upower.upowerd@{p_any}"),
+	peer=(name="{:[0-9]*.[0-9]*,org.freedesktop.UPower}",label="upower.upowerd@{p_all}"),
 dbus receive
 	bus=system
 	path="/org/freedesktop/UPower{,/**}"
 	interface="org.freedesktop.DBus.Properties"
-	peer=(name="org.freedesktop.UPower",label="upower.upowerd@{p_any}"),
+	peer=(name="org.freedesktop.UPower",label="upower.upowerd@{p_all}"),
 
 dbus send
 	bus=system
 	path="/org/freedesktop/UPower{,/**}"
 	interface="org.freedesktop.UPower{,.*}"
-	peer=(name=":[0-9]*.[0-9]*",label="upower.upowerd@{p_any}"),
+	peer=(name=":[0-9]*.[0-9]*",label="upower.upowerd@{p_all}"),
 dbus (send, receive)
 	bus=system
 	path="/org/freedesktop/UPower{,/**}"
 	interface="org.freedesktop.UPower{,.*}"
-	peer=(name="org.freedesktop.UPower",label="upower.upowerd@{p_any}"),
+	peer=(name="org.freedesktop.UPower",label="upower.upowerd@{p_all}"),

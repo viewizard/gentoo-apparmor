@@ -13,10 +13,10 @@ dbus send
 	path="/org/freedesktop/PolicyKit[0-9]*/Authority"
 	interface="org.freedesktop.DBus.Properties"
 	member=GetAll
-	peer=(name=":[0-9]*.[0-9]*",label="polkit.polkitd@{p_any}"),
+	peer=(name=":[0-9]*.[0-9]*",label="polkit.polkitd@{p_root}"),
 
 dbus (send, receive)
 	bus=system
 	path="/org/freedesktop/PolicyKit[0-9]*/Authority"
 	interface="org.freedesktop.PolicyKit[0-9]*.Authority"
-	peer=(name=":[0-9]*.[0-9]*",label="polkit.polkitd@{p_any}"),
+	peer=(name=":[0-9]*.[0-9]*",label="polkit.polkitd@{p_root}"),

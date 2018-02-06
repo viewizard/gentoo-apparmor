@@ -121,7 +121,7 @@ profile consolekit.console-kit-daemon@{p_root} /usr/sbin/console-kit-daemon@{t_r
 	path="/org/freedesktop/DBus/Bus"
 	interface="org.freedesktop.DBus"
 	member={GetConnectionUnixUser,GetConnectionUnixProcessID}
-	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon@{p_any}"),	# sys-apps/dbus
+	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon@{p_all}"),
   dbus send
 	bus=system
 	path="/org/freedesktop/ConsoleKit/Manager"
@@ -142,7 +142,13 @@ profile consolekit.console-kit-daemon@{p_root} /usr/sbin/console-kit-daemon@{t_r
 	path="/org/freedesktop/ConsoleKit/Manager"
 	interface="org.freedesktop.ConsoleKit.Manager"
 	member=GetSessionForUnixProcess
-	peer=(name=":[0-9]*.[0-9]*",label="{polkit.polkitd,polkit-gnome}@{p_any}"),	# sys-auth/polkit, gnome-extra/polkit-gnome
+	peer=(name=":[0-9]*.[0-9]*",label="polkit.polkitd@{p_root}"),	# sys-auth/polkit
+  dbus receive
+	bus=system
+	path="/org/freedesktop/ConsoleKit/Manager"
+	interface="org.freedesktop.ConsoleKit.Manager"
+	member=GetSessionForUnixProcess
+	peer=(name=":[0-9]*.[0-9]*",label="polkit-gnome@{p_user}"),	# sgnome-extra/polkit-gnome
   dbus receive
 	bus=system
 	path="/org/freedesktop/ConsoleKit/Session[0-9]*"

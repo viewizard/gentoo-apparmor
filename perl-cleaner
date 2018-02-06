@@ -102,7 +102,8 @@ profile perl-cleaner@{p_root} /usr/sbin/perl-cleaner@{t_root} {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/xargs					mr,
-    /bin/rmdir@{t_root}					ix,	# sys-apps/coreutils	# Оставляем вызов через ix.
+    audit /bin/rmdir@{t_root}				ix,	# sys-apps/coreutils	# Оставляем вызов через ix.
+    audit /bin/rmdir					mr,	# sys-apps/coreutils	# FIX ME! audit 04.02.2018
     
     # READS/WRITES -------------------------------------
     /usr/lib{,32,64}/perl[0-9]*/{,**/}			w,

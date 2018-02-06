@@ -256,8 +256,8 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
     capability kill,
     
     # SIGNAL ---------------------------------------------
-    signal (send) set=(term) peer="dconf.dconf-service@{p_any}",	# gnome-base/dconf
-    signal (send) set=(hup) peer="gconf.gconfd-2@{p_any}",		# gnome-base/gconf
+    signal (send) set=(term) peer="dconf.dconf-service@{p_root}",	# gnome-base/dconf
+    signal (send) set=(hup) peer="gconf.gconfd-2@{p_root}",		# gnome-base/gconf
     
     # PTRACE -------------------------------------------
     ptrace (trace) peer="sysvinit.init@{p_root}",		# sys-apps/sysvinit
@@ -265,7 +265,7 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
     # UNIX ---------------------------------------------
     unix (send, receive, connect)
     	type=stream
-    	peer=(addr="@/tmp/dbus-@{TMP10}",label="dbus.dbus-daemon@{p_any}"),
+    	peer=(addr="@/tmp/dbus-@{TMP10}",label="dbus.dbus-daemon@{p_all}"),
     
     # DBUS ---------------------------------------------
     dbus send
@@ -404,7 +404,7 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
     unix (bind) type=stream,					# создание тестового сокета (анонимного или обычного)
     unix (send, receive, connect)
     	type=stream
-    	peer=(addr="@/tmp/dbus-@{TMP10}",label="dbus.dbus-daemon@{p_any}"),
+    	peer=(addr="@/tmp/dbus-@{TMP10}",label="dbus.dbus-daemon@{p_all}"),
     
     # DBUS ---------------------------------------------
     dbus send
@@ -1291,7 +1291,7 @@ profile portage.cgroup-release-agent@{p_root} /{usr/lib{,32,64}/portage/@{PYTHON
   }
 }
 
-profile portage.ebuild.sh@{p_root} /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh{@{t_root},@{t_portage}} {
+profile portage.ebuild.sh@{p_root} /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh{@{t_root},@{t_portage},@{t_user}} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   

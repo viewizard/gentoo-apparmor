@@ -11,74 +11,74 @@
 #include <local/tunables.d/>
 
 # Профили с доступом к gvfsd-fuse анонимному сокету
-@{GVFSD_FUSE_ANON_SOCKET}="fuse.fusermount@{p_any}"		# sys-fs/fuse
+@{GVFSD_FUSE_ANON_SOCKET}="fuse.fusermount@{p_root}"		# sys-fs/fuse
 
 # Профили с доступом к gvfsd-http сокету
-@{GVFSD_HTTP_SOCKET}="gimp.plug-ins@{p_any}"			# media-gfx/gimp
+@{GVFSD_HTTP_SOCKET}="gimp.plug-ins@{p_user}"			# media-gfx/gimp
 
 # Профили с доступом к gvfsd-http анонимному сокету
-@{GVFSD_HTTP_ANON_SOCKET}="gimp.plug-ins@{p_any}"		# media-gfx/gimp
+@{GVFSD_HTTP_ANON_SOCKET}="gimp.plug-ins@{p_user}"		# media-gfx/gimp
 
 # Профили с доступом к gvfsd-network сокету
-@{GVFSD_NETWORK_SOCKET}="thunar@{p_any}"			# xfce-base/thunar
-@{GVFSD_NETWORK_SOCKET}+="uget.uget-gtk@{p_any}"		# www-client/uget
-@{GVFSD_NETWORK_SOCKET}+="engrampa@{p_any}"			# app-arch/engrampa
-@{GVFSD_NETWORK_SOCKET}+="meld@{p_any}"				# dev-util/meld
-@{GVFSD_NETWORK_SOCKET}+="alacarte@{p_any}"			# x11-misc/alacarte
-@{GVFSD_NETWORK_SOCKET}+="transmission@{p_any}"			# net-p2p/transmission
-@{GVFSD_NETWORK_SOCKET}+="mousepad@{p_any}"			# app-editors/mousepad
-@{GVFSD_NETWORK_SOCKET}+="remmina@{p_any}"			# net-misc/remmina
-@{GVFSD_NETWORK_SOCKET}+="wireshark@{p_any}"			# net-analyzer/wireshark
-@{GVFSD_NETWORK_SOCKET}+="libreoffice.bin@{p_any}"		# app-office/libreoffice
-@{GVFSD_NETWORK_SOCKET}+="chromium.chrome@{p_any}"		# www-client/chromium
-@{GVFSD_NETWORK_SOCKET}+="nm-applet.nm-connection-editor@{p_any}"	# gnome-extra/nm-applet
-@{GVFSD_NETWORK_SOCKET}+="nvidia-drivers.nvidia-settings@{p_any}"	# x11-drivers/nvidia-drivers
-@{GVFSD_NETWORK_SOCKET}+="firefox@{p_any}"			# www-client/firefox
-@{GVFSD_NETWORK_SOCKET}+="audacious@{p_any}"			# media-sound/audacious
-@{GVFSD_NETWORK_SOCKET}+="xfce4-terminal@{p_any}"		# x11-terms/xfce4-terminal
+@{GVFSD_NETWORK_SOCKET}="thunar{@{p_root},@{p_user}}"		# xfce-base/thunar
+@{GVFSD_NETWORK_SOCKET}+="uget.uget-gtk@{p_user}"		# www-client/uget
+@{GVFSD_NETWORK_SOCKET}+="engrampa{@{p_root},@{p_user}}"	# app-arch/engrampa
+@{GVFSD_NETWORK_SOCKET}+="meld{@{p_root},@{p_user}}"		# dev-util/meld
+@{GVFSD_NETWORK_SOCKET}+="alacarte@{p_user}"			# x11-misc/alacarte
+@{GVFSD_NETWORK_SOCKET}+="transmission@{p_user}"		# net-p2p/transmission
+@{GVFSD_NETWORK_SOCKET}+="mousepad{@{p_root},@{p_user}}"	# app-editors/mousepad
+@{GVFSD_NETWORK_SOCKET}+="remmina@{p_user}"			# net-misc/remmina
+@{GVFSD_NETWORK_SOCKET}+="wireshark@{p_user}"			# net-analyzer/wireshark
+@{GVFSD_NETWORK_SOCKET}+="libreoffice.bin@{p_user}"		# app-office/libreoffice
+@{GVFSD_NETWORK_SOCKET}+="chromium.chrome@{p_user}"		# www-client/chromium
+@{GVFSD_NETWORK_SOCKET}+="nm-applet.nm-connection-editor@{p_user}"	# gnome-extra/nm-applet
+@{GVFSD_NETWORK_SOCKET}+="nvidia-drivers.nvidia-settings@{p_user}"	# x11-drivers/nvidia-drivers
+@{GVFSD_NETWORK_SOCKET}+="firefox@{p_user}"			# www-client/firefox
+@{GVFSD_NETWORK_SOCKET}+="audacious@{p_user}"			# media-sound/audacious
+@{GVFSD_NETWORK_SOCKET}+="xfce4-terminal@{p_user}"		# x11-terms/xfce4-terminal
 
 # Профили с доступом к gvfsd-smb сокету
-@{GVFSD_SMB_SOCKET}="gvfs.gvfsd-fuse@{p_any}"
-@{GVFSD_SMB_SOCKET}+="libreoffice.bin@{p_any}"			# app-office/libreoffice
-@{GVFSD_SMB_SOCKET}+="ristretto@{p_any}"			# media-gfx/ristretto
-@{GVFSD_SMB_SOCKET}+="tumbler@{p_any}"				# xfce-extra/tumbler
-@{GVFSD_SMB_SOCKET}+="thunar@{p_any}"				# xfce-base/thunar
-@{GVFSD_SMB_SOCKET}+="smplayer@{p_any}"				# media-video/smplayer
-@{GVFSD_SMB_SOCKET}+="vlc@{p_any}"				# media-video/vlc
-@{GVFSD_SMB_SOCKET}+="gimp@{p_any}"				# media-gfx/gimp
-@{GVFSD_SMB_SOCKET}+="inkscape@{p_any}"				# media-gfx/inkscape
+@{GVFSD_SMB_SOCKET}="gvfs.gvfsd-fuse{@{p_root},@{p_user}}"
+@{GVFSD_SMB_SOCKET}+="libreoffice.bin@{p_user}"			# app-office/libreoffice
+@{GVFSD_SMB_SOCKET}+="ristretto@{p_user}"			# media-gfx/ristretto
+@{GVFSD_SMB_SOCKET}+="tumbler{@{p_root},@{p_user}}"		# xfce-extra/tumbler
+@{GVFSD_SMB_SOCKET}+="thunar{@{p_root},@{p_user}}"		# xfce-base/thunar
+@{GVFSD_SMB_SOCKET}+="smplayer@{p_user}"			# media-video/smplayer
+@{GVFSD_SMB_SOCKET}+="vlc@{p_user}"				# media-video/vlc
+@{GVFSD_SMB_SOCKET}+="gimp@{p_user}"				# media-gfx/gimp
+@{GVFSD_SMB_SOCKET}+="inkscape@{p_user}"			# media-gfx/inkscape
 
 # Профили с доступом к gvfsd-smb анонимному сокету
-@{GVFSD_SMB_ANON_SOCKET}="libreoffice.bin@{p_any}"		# app-office/libreoffice
-@{GVFSD_SMB_ANON_SOCKET}+="ristretto@{p_any}"			# media-gfx/ristretto
-@{GVFSD_SMB_ANON_SOCKET}+="tumbler@{p_any}"			# xfce-extra/tumbler
-@{GVFSD_SMB_ANON_SOCKET}+="thunar@{p_any}"			# xfce-base/thunar
+@{GVFSD_SMB_ANON_SOCKET}="libreoffice.bin@{p_user}"		# app-office/libreoffice
+@{GVFSD_SMB_ANON_SOCKET}+="ristretto@{p_user}"			# media-gfx/ristretto
+@{GVFSD_SMB_ANON_SOCKET}+="tumbler{@{p_root},@{p_user}}"	# xfce-extra/tumbler
+@{GVFSD_SMB_ANON_SOCKET}+="thunar{@{p_root},@{p_user}}"		# xfce-base/thunar
 
 # Профили с доступом к gvfsd-smb-browse сокету
-@{GVFSD_SMB_BROWSER_SOCKET}="gvfs.gvfsd-network@{p_any}"
-@{GVFSD_SMB_BROWSER_SOCKET}+="thunar@{p_any}"			# xfce-base/thunar
-@{GVFSD_SMB_BROWSER_SOCKET}+="libreoffice.bin@{p_any}"		# app-office/libreoffice
-@{GVFSD_SMB_BROWSER_SOCKET}+="xfce4-terminal@{p_any}"		# x11-terms/xfce4-terminal
-@{GVFSD_SMB_BROWSER_SOCKET}+="meld@{p_any}"			# dev-util/meld
+@{GVFSD_SMB_BROWSER_SOCKET}="gvfs.gvfsd-network@{p_all}"
+@{GVFSD_SMB_BROWSER_SOCKET}+="thunar{@{p_root},@{p_user}}"	# xfce-base/thunar
+@{GVFSD_SMB_BROWSER_SOCKET}+="libreoffice.bin@{p_user}"		# app-office/libreoffice
+@{GVFSD_SMB_BROWSER_SOCKET}+="xfce4-terminal@{p_user}"		# x11-terms/xfce4-terminal
+@{GVFSD_SMB_BROWSER_SOCKET}+="meld{@{p_root},@{p_user}}"	# dev-util/meld
 
 # Профили с доступом к gvfsd-trash сокету
-@{GVFSD_TRASH_SOCKET}="tumbler@{p_any}"				# xfce-extra/tumbler
-@{GVFSD_TRASH_SOCKET}+="thunar@{p_any}"				# xfce-base/thunar
-@{GVFSD_TRASH_SOCKET}+="uget.uget-gtk@{p_any}"			# www-client/uget
-@{GVFSD_TRASH_SOCKET}+="engrampa@{p_any}"			# app-arch/engrampa
-@{GVFSD_TRASH_SOCKET}+="meld@{p_any}"				# dev-util/meld
-@{GVFSD_TRASH_SOCKET}+="alacarte@{p_any}"			# x11-misc/alacarte
-@{GVFSD_TRASH_SOCKET}+="transmission@{p_any}"			# net-p2p/transmission
-@{GVFSD_TRASH_SOCKET}+="mousepad@{p_any}"			# app-editors/mousepad
-@{GVFSD_TRASH_SOCKET}+="remmina@{p_any}"			# net-misc/remmina
-@{GVFSD_TRASH_SOCKET}+="wireshark@{p_any}"			# net-analyzer/wireshark
-@{GVFSD_TRASH_SOCKET}+="libreoffice.bin@{p_any}"		# app-office/libreoffice
-@{GVFSD_TRASH_SOCKET}+="chromium.chrome@{p_any}"		# www-client/chromium
-@{GVFSD_TRASH_SOCKET}+="nm-applet.nm-connection-editor@{p_any}"	# gnome-extra/nm-applet
-@{GVFSD_TRASH_SOCKET}+="nvidia-drivers.nvidia-settings@{p_any}"	# x11-drivers/nvidia-drivers
-@{GVFSD_TRASH_SOCKET}+="firefox@{p_any}"			# www-client/firefox
-@{GVFSD_TRASH_SOCKET}+="audacious@{p_any}"			# media-sound/audacious
-@{GVFSD_TRASH_SOCKET}+="xfce4-terminal@{p_any}"			# x11-terms/xfce4-terminal
+@{GVFSD_TRASH_SOCKET}="tumbler{@{p_root},@{p_user}}"		# xfce-extra/tumbler
+@{GVFSD_TRASH_SOCKET}+="thunar{@{p_root},@{p_user}}"		# xfce-base/thunar
+@{GVFSD_TRASH_SOCKET}+="uget.uget-gtk@{p_user}"			# www-client/uget
+@{GVFSD_TRASH_SOCKET}+="engrampa{@{p_root},@{p_user}}"		# app-arch/engrampa
+@{GVFSD_TRASH_SOCKET}+="meld{@{p_root},@{p_user}}"		# dev-util/meld
+@{GVFSD_TRASH_SOCKET}+="alacarte@{p_user}"			# x11-misc/alacarte
+@{GVFSD_TRASH_SOCKET}+="transmission@{p_user}"			# net-p2p/transmission
+@{GVFSD_TRASH_SOCKET}+="mousepad{@{p_root},@{p_user}}"		# app-editors/mousepad
+@{GVFSD_TRASH_SOCKET}+="remmina@{p_user}"			# net-misc/remmina
+@{GVFSD_TRASH_SOCKET}+="wireshark@{p_user}"			# net-analyzer/wireshark
+@{GVFSD_TRASH_SOCKET}+="libreoffice.bin@{p_user}"		# app-office/libreoffice
+@{GVFSD_TRASH_SOCKET}+="chromium.chrome@{p_user}"		# www-client/chromium
+@{GVFSD_TRASH_SOCKET}+="nm-applet.nm-connection-editor@{p_user}"	# gnome-extra/nm-applet
+@{GVFSD_TRASH_SOCKET}+="nvidia-drivers.nvidia-settings@{p_user}"	# x11-drivers/nvidia-drivers
+@{GVFSD_TRASH_SOCKET}+="firefox@{p_user}"			# www-client/firefox
+@{GVFSD_TRASH_SOCKET}+="audacious@{p_user}"			# media-sound/audacious
+@{GVFSD_TRASH_SOCKET}+="xfce4-terminal@{p_user}"		# x11-terms/xfce4-terminal
 
 # Профили с доступом к gvfsd-trash анонимному сокету
 #@{GVFSD_TRASH_ANON_SOCKET}=""
@@ -102,13 +102,13 @@ profile gvfs.gvfs-udisks2-volume-monitor@{p_all} /usr/libexec/gvfs-udisks2-volum
   	bus=system
   	path="/org/freedesktop/UDisks2/**"
   	interface="org.freedesktop.UDisks2.*"
-  	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd@{p_any}"),	# sys-fs/udisks
+  	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd@{p_all}"),	# sys-fs/udisks
   dbus send
   	bus=system
   	path="/org/freedesktop/UDisks2"
   	interface="org.freedesktop.DBus.ObjectManager"
   	member=GetManagedObjects
-  	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd@{p_any}"),	# sys-fs/udisks
+  	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd@{p_all}"),	# sys-fs/udisks
   dbus send
   	bus=session
   	path="/org/gtk/vfs/**"
@@ -216,7 +216,45 @@ profile gvfs.gvfsd-ftp@{p_all} /usr/libexec/gvfsd-ftp@{t_all} {
   /usr/libexec/gvfsd-ftp				mr,
 }
 
-profile gvfs.gvfsd-fuse@{p_all} /usr/libexec/gvfsd-fuse@{t_all} {
+profile gvfs.gvfsd-fuse@{p_user} /usr/libexec/gvfsd-fuse@{t_user} {
+  #include <abstractions/base>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/unix/gvfsd-smb>
+  #include <abstractions/unix/gvfsd-smb-virtual>
+  
+  # CAPABILITIES ---------------------------------------
+  capability sys_admin,
+  
+  # DBUS -----------------------------------------------
+  dbus (send, receive)
+  	bus=session
+  	path="/org/gtk/vfs/**"
+  	interface="org.gtk.vfs.*"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  
+  # UNIX -----------------------------------------------
+  unix (send, receive)
+  			type=stream
+			addr=none
+  			peer=(addr=none,label="@{GVFSD_FUSE_ANON_SOCKET}"),
+  
+  # MOUNT ----------------------------------------------
+  mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /run/user/@{UID}/gvfs/,
+  mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /run/user/@{UID}/gvfs/,
+  umount /run/user/@{UID}/gvfs/,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/fuse						rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gvfsd-fuse				mr,
+  /usr/bin/fusermount@{t_root}				Px,	# sys-fs/fuse
+  
+  # READS/WRITES ---------------------------------------
+  /run/user/@{UID}/gvfs/				r,
+}
+
+profile gvfs.gvfsd-fuse@{p_root} /usr/libexec/gvfsd-fuse@{t_root} {
   #include <abstractions/base>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/unix/gvfsd-smb>
@@ -241,20 +279,14 @@ profile gvfs.gvfsd-fuse@{p_all} /usr/libexec/gvfsd-fuse@{t_all} {
   # MOUNT ----------------------------------------------
   mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /root/.gvfs/,
   mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /root/.gvfs/,
-  mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /run/user/@{UID}/gvfs/,
-  mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /run/user/@{UID}/gvfs/,
   umount /root/.gvfs/,
-  umount /run/user/@{UID}/gvfs/,
   
   # PSEUDO ---------------------------------------------
   /dev/fuse						rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-fuse				mr,
-  /usr/bin/fusermount@{t_all}				Px,	# sys-fs/fuse
-  
-  # READS/WRITES ---------------------------------------
-  /run/user/@{UID}/gvfs/				r,
+  /usr/bin/fusermount@{t_root}				Px,	# sys-fs/fuse
   
   # USERS ----------------------------------------------
   owner /root/.gvfs/					r,

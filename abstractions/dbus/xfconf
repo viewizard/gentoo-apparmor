@@ -12,9 +12,9 @@ dbus send
 	bus=session
 	path="/org/xfce/Xfconf"
 	interface="org.xfce.Xfconf"
-	peer=(name="org.xfce.Xfconf",label="xfconf@{p_any}"),
+	peer=(name="org.xfce.Xfconf",label="xfconf{@{p_root},@{p_user}}"),
 dbus receive
 	bus=session
 	path="/org/xfce/Xfconf"
 	interface="org.xfce.Xfconf"
-	peer=(name=":[0-9]*.[0-9]*",label="xfconf@{p_any}"),
+	peer=(name=":[0-9]*.[0-9]*",label="xfconf{@{p_root},@{p_user}}"),

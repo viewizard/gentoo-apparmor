@@ -60,17 +60,17 @@ profile dbus.dbus-daemon@{p_all} /usr/bin/dbus-daemon@{t_all} {
   /usr/bin/dbus-daemon					mr,
   /usr/bin/gnome-keyring-daemon@{t_user}		Px,	# gnome-base/gnome-keyring
   /usr/bin/thunar@{t_all}				Px,	# xfce-base/thunar
-  /usr/lib{,32,64}/xfce4/xfconf/xfconfd@{t_all}		Px,	# xfce-base/xfconf
-  /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd@{t_all}	Px,	# xfce-extra/xfce4-notifyd
-  /usr/lib{,32,64}/tumbler-1/tumblerd@{t_all}		Px,	# xfce-extra/tumbler	# FIX ME! потом отдельно user/root.
+  /usr/lib{,32,64}/xfce4/xfconf/xfconfd{@{t_root},@{t_user}} Px,	# xfce-base/xfconf
+  /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd{@{t_root},@{t_user}} Px,	# xfce-extra/xfce4-notifyd
+  /usr/lib{,32,64}/tumbler-1/tumblerd{@{t_root},@{t_user}} Px,	# xfce-extra/tumbler	# FIX ME! потом отдельно user/root.
   /usr/libexec/at-spi-bus-launcher@{t_user}		Px,	# app-accessibility/at-spi2-core
   /usr/libexec/at-spi2-registryd@{t_user}		Px,	# app-accessibility/at-spi2-core
   /usr/libexec/gvfsd@{t_all}				Px,	# gnome-base/gvfs
   /usr/libexec/gvfsd-metadata@{t_all}			Px,	# gnome-base/gvfs
   /usr/libexec/gvfs-udisks2-volume-monitor@{t_all}	Px,	# gnome-base/gvfs
-  /usr/libexec/dconf-service@{t_all}			Px,	# gnome-base/dconf
+  /usr/libexec/dconf-service{@{t_root},@{t_user}}	Px,	# gnome-base/dconf
   /usr/libexec/dbus-daemon-launch-helper@{t_all}	Px,
-  /usr/libexec/gconfd-2@{t_all}				Px,	# gnome-base/gconf
+  /usr/libexec/gconfd-2{@{t_root},@{t_user}}		Px,	# gnome-base/gconf
   /usr/libexec/gcr-prompter@{t_all}			Px,	# app-crypt/gcr
   
   # READS/WRITES ---------------------------------------
@@ -81,7 +81,7 @@ profile dbus.dbus-daemon@{p_all} /usr/bin/dbus-daemon@{t_all} {
   /run/ConsoleKit/inhibit/inhibit.@{TMP6}.pipe		w,	# sys-auth/consolekit
 }
 
-profile dbus.dbus-launch@{t_all} /usr/bin/dbus-launch@{t_all} {
+profile dbus.dbus-launch@{p_all} /usr/bin/dbus-launch@{t_all} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions-user/X>
@@ -91,7 +91,7 @@ profile dbus.dbus-launch@{t_all} /usr/bin/dbus-launch@{t_all} {
   #include <abstractions/dbus/session-strict>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term) peer="dbus.dbus-daemon@{p_any}",
+  signal (send) set=(term) peer="dbus.dbus-daemon@{p_all}",
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -140,7 +140,7 @@ profile dbus.dbus-send@{p_all} /usr/bin/dbus-send@{t_all} {
   	bus=session
   	path="/org/xfce/FileManager"
   	interface="org.xfce.FileManager"
-  	peer=(name="org.xfce.FileManager",label="thunar@{p_any}"),	# xfce-base/thunar (запуск настроек thunar через менеджер настроек).
+  	peer=(name="org.xfce.FileManager",label="thunar{@{p_root},@{p_user}}"),	# xfce-base/thunar (запуск настроек thunar через менеджер настроек).
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -176,7 +176,7 @@ profile dbus.dbus-daemon-launch-helper@{p_all} /usr/libexec/dbus-daemon-launch-h
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/dbus-daemon-launch-helper		mr,
-  /usr/sbin/console-kit-daemon@{t_all}			Px,	# sys-auth/consolekit
+  /usr/sbin/console-kit-daemon@{t_root}			Px,	# sys-auth/consolekit
   /usr/sbin/ModemManager@{t_all}			Px,	# net-misc/modemmanager
   /usr/sbin/wpa_supplicant@{t_root}			Px,	# net-wireless/wpa_supplicant
   /usr/lib{,32,64}/polkit-1/polkitd@{t_root}		Px,	# sys-auth/polkit

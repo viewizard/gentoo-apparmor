@@ -10,38 +10,6 @@
 
 #include <local/tunables.d/>
 
-profile fuse.fusermount@{p_user} /usr/bin/fusermount@{t_user} {		# FIX ME! он вообще вызывается из gvfs.gvfsd-fuse?
-  #include <abstractions/base>
-  #include <abstractions/nameservice>
-  
-  # CAPABILITIES ---------------------------------------
-  capability sys_admin,
-  capability dac_override,
-  capability dac_read_search,
-  
-  # UNIX -----------------------------------------------
-  unix (send, receive)
-  			type=stream
-			addr=none
-  			peer=(addr=none,label="gvfs.gvfsd-fuse@{p_user}"),
-  
-  # MOUNT ----------------------------------------------
-  mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /run/user/@{UID}/gvfs/,
-  mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /run/user/@{UID}/gvfs/,
-  umount /run/user/@{UID}/gvfs/,
-  
-  # PSEUDO ---------------------------------------------
-  /dev/fuse						rw,
-  @{PROC_D}/@{pid}/mounts				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
-  
-  # EXECUTABLES ----------------------------------------
-  /usr/bin/fusermount					mr,
-  
-  # READS/WRITES ---------------------------------------
-  /etc/fuse.conf					r,
-  /run/user/@{UID}/gvfs/				r,
-}
-
 profile fuse.fusermount@{p_root} /usr/bin/fusermount@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
@@ -55,7 +23,7 @@ profile fuse.fusermount@{p_root} /usr/bin/fusermount@{t_root} {
   unix (send, receive)
   			type=stream
 			addr=none
-  			peer=(addr=none,label="gvfs.gvfsd-fuse@{p_any}"),
+  			peer=(addr=none,label="gvfs.gvfsd-fuse{@{p_root},@{p_user}}"),
   
   # MOUNT ----------------------------------------------
   mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /run/user/@{UID}/gvfs/,

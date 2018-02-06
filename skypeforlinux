@@ -110,9 +110,9 @@ profile skypeforlinux@{p_user} /opt/skypeforlinux/skypeforlinux@{t_user} {
   	peer=(label="nvidia-drivers.nvidia-modprobe@{p_root}"),	# x11-drivers/nvidia-drivers
   								# XORG! ? x11-base/xorg-server USE=suid
   deny unix type=stream
-  	peer=(label="glibc.locale@{p_all}"),			# sys-libs/glibc	# Все правильно, @{p_all}.
+  	peer=(label="glibc.locale@{p_all}"),			# sys-libs/glibc
   deny unix type=seqpacket
-  	peer=(label="glibc.locale@{p_all}"),			# sys-libs/glibc	# Все правильно, @{p_all}.
+  	peer=(label="glibc.locale@{p_all}"),			# sys-libs/glibc
   
   # NETWORK --------------------------------------------
   network netlink raw,

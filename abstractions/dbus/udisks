@@ -13,17 +13,17 @@ dbus send
 	path="/org/freedesktop/UDisks2"
 	interface="org.freedesktop.DBus.ObjectManager"
 	member=GetManagedObjects
-	peer=(name="org.freedesktop.UDisks2",label="udisks.udisksd@{p_any}"),
+	peer=(name="org.freedesktop.UDisks2",label="udisks.udisksd@{p_all}"),
 dbus receive
 	bus=system
 	path="/org/freedesktop/UDisks2"
 	interface="org.freedesktop.DBus.ObjectManager"
 	member={InterfacesAdded,InterfacesRemoved}
-	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd@{p_any}"),
+	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd@{p_all}"),
 
 dbus receive
 	bus=system
 	path="/org/freedesktop/UDisks2/**"
 	interface="org.freedesktop.DBus.Properties"
 	member=PropertiesChanged
-	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd@{p_any}"),
+	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd@{p_all}"),

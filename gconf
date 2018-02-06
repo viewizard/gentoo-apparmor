@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile gconf.gconfd-2@{p_all} /usr/libexec/gconfd-2@{t_all} {
+profile gconf.gconfd-2@{p_user} /usr/libexec/gconfd-2@{t_user} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/system-strict>
@@ -43,6 +43,41 @@ profile gconf.gconfd-2@{p_all} /usr/libexec/gconfd-2@{t_all} {
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.config/gconf/{,**}		rw,
+}
+
+profile gconf.gconfd-2@{p_root} /usr/libexec/gconfd-2@{t_root} {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/dbus/system-strict>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/session-bind>
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/org/gnome/GConf/Server"
+  	interface="org.gnome.GConf.Server"
+  	peer=(name="org.freedesktop.DBus"),
+  dbus receive
+  	bus=session
+  	path="/org/gnome/GConf/Server"
+  	interface="org.gnome.GConf.Server"
+  	peer=(name=":[0-9]*[0-9]*"),
+  dbus receive
+  	bus=session
+  	path="/org/gnome/GConf/Database/[0-9]*"
+  	interface="org.gnome.GConf.Database"
+  	peer=(name=":[0-9]*[0-9]*"),
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gconfd-2					mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/gconf/{,**}					r,
+  /etc/gconf/gconf.xml.{defaults,mandatory,system}/.testing.writeability w,
+  
+  # USERS ----------------------------------------------
+  owner @{ROOT_HOME_D}/.config/gconf/{,**}		rw,
 }
 
 profile gconf.gsettings-data-convert@{p_user} /usr/bin/gsettings-data-convert@{t_user} {

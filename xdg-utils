@@ -119,7 +119,8 @@ profile xdg-utils.xdg-screensaver@{p_user} /usr/bin/xdg-screensaver@{t_user} {
   /bin/uname@{t_user}					Px,	# sys-apps/coreutils
   /usr/bin/which@{t_user}				Px,	# sys-apps/which
   /usr/bin/dbus-send@{t_user}				Px,	# sys-apps/dbus
-  /usr/bin/xset@{t_user}				ix,	# x11-apps/xset		# FIX ME! Вынести в отдельный профиль.
+  audit /usr/bin/xset@{t_user}				ix,	# x11-apps/xset		# FIX ME! Вынести в отдельный профиль.
+  audit /usr/bin/xset					mr,	# x11-apps/xset		# FIX ME! audit 04.02.2018
   /usr/bin/xautolock@{t_user}				Px,	# x11-misc/xautolock
   /usr/bin/xprop@{t_user}				Px,	# x11-apps/xprop
   
@@ -429,7 +430,7 @@ profile xdg-utils.xdg-open@{p_root} /usr/bin/xdg-open@{t_root} flags=(attach_dis
     # EXECUTABLES --------------------------------------
     /bin/egrep						r,
     @{shell}						mr,
-    /bin/grep@{t_root}					ix,	# Все правильно, для egrep используем с ix.
+    /bin/grep@{t_root}					ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
   }
 }
 
