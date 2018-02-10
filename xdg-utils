@@ -187,8 +187,8 @@ profile xdg-utils.xdg-settings@{p_user} /usr/bin/xdg-settings@{t_user} {
   /bin/cut@{t_user}					Cx,	# sys-apps/coreutils
   /bin/dirname@{t_user}					Px,	# sys-apps/coreutils
   /bin/uname@{t_user}					Px,	# sys-apps/coreutils
+  /bin/basename@{t_user}				Px,	# sys-apps/coreutils
   /usr/bin/which@{t_user}				Px,	# sys-apps/which
-  /usr/bin/basename@{t_user}				Px,	# sys-apps/coreutils
   /usr/bin/gconftool-2@{t_user}				Px,	# gnome-base/gconf	# Detect proxy settings for gnome2/gnome3.
   /usr/bin/gawk@{t_user}				Cx,	# sys-apps/gawk
   /usr/bin/xdg-mime@{t_user}				Px,
@@ -283,7 +283,7 @@ profile xdg-utils.xdg-mime@{p_user} /usr/bin/xdg-mime@{t_user} flags=(attach_dis
   # EXECUTABLES ----------------------------------------
   /usr/bin/xdg-mime					r,
   @{shell}						mr,
-  /bin/tr@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/tr@{t_user}					Px,	# sys-apps/coreutils
   /bin/cut@{t_user}					Cx,	# sys-apps/coreutils
   /bin/sed@{t_user}					Cx,	# sys-apps/sed
   /bin/grep@{t_user}					Cx,	# sys-apps/grep
@@ -301,19 +301,6 @@ profile xdg-utils.xdg-mime@{p_user} /usr/bin/xdg-mime@{t_user} flags=(attach_dis
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
-  
-  profile tr /bin/tr@{t_user} flags=(attach_disconnected) {
-    #include <abstractions/base>
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /bin/tr						mr,
-    
-    # DENY INHERIT -------------------------------------
-    deny /apparmor/.null				rw,	# flags=(attach_disconnected)
-  }
   
   profile cut /bin/cut@{t_user} flags=(attach_disconnected) {
     #include <abstractions/base>

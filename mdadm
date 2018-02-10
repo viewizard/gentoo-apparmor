@@ -183,13 +183,6 @@ profile mdadm.cron.weekly@{p_root} /etc/cron.weekly/mdadm@{t_root} {
   # EXECUTABLES ----------------------------------------
   /etc/cron.weekly/mdadm				r,
   @{shell}						mr,
-  /bin/date@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/date@{t_root}					Px,	# sys-apps/coreutils
   /usr/sbin/checkarray@{t_root}				Px,
-  
-  profile date /bin/date@{t_root} {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /bin/date						mr,
-  }
 }

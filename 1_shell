@@ -65,7 +65,7 @@ profile shell_users {
   /usr/bin/which@{t_user}				Px,	# sys-apps/which
   /usr/bin/git@{t_user}					Px,	# dev-vcs/git
   								# FIX ME! (?) вынести в <local/shell/shell_users.d/>
-  /usr/bin/sudo@{t_user}				Px,	# app-admin/sudo
+  /usr/bin/sudo@{t_root}				Px,	# app-admin/sudo
   /usr/bin/whoami@{t_user}				Px,	# sys-apps/coreutils
   /usr/bin/gpg{,2}@{t_user}				Px,	# app-crypt/gnupg	# Если надо вручную импортировать ключ.
   /usr/bin/id@{t_user}					Px,	# sys-apps/coreutils
@@ -817,12 +817,12 @@ profile shell_chroot {
   
   # EXECUTABLES ----------------------------------------
   @{CHROOT_D}/@{shell}					mr,
-  @{CHROOT_D}/bin/{,**/}*@{t_all}			ix,
-  @{CHROOT_D}/etc/{,**/}*@{t_all}			ix,
-  @{CHROOT_D}/opt/{,**/}*@{t_all}			ix,
-  @{CHROOT_D}/sbin/{,**/}*@{t_all}			ix,
-  @{CHROOT_D}/usr/{,**/}*@{t_all}			ix,
-  @{CHROOT_D}/var/tmp/portage/*/*/{,**/}*@{t_all}	ix,
+  @{CHROOT_D}/bin/{,**/}*				ix,	# Не указываем маркер пользователя "@{t_...}" (может быть любой).
+  @{CHROOT_D}/etc/{,**/}*				ix,	# Не указываем маркер пользователя "@{t_...}" (может быть любой).
+  @{CHROOT_D}/opt/{,**/}*				ix,	# Не указываем маркер пользователя "@{t_...}" (может быть любой).
+  @{CHROOT_D}/sbin/{,**/}*				ix,	# Не указываем маркер пользователя "@{t_...}" (может быть любой).
+  @{CHROOT_D}/usr/{,**/}*				ix,	# Не указываем маркер пользователя "@{t_...}" (может быть любой).
+  @{CHROOT_D}/var/tmp/portage/*/*/{,**/}*		ix,	# Не указываем маркер пользователя "@{t_...}" (может быть любой).
   @{CHROOT_D}/bin/{,**/}*				m,
   @{CHROOT_D}/etc/{,**/}*				m,
   @{CHROOT_D}/opt/{,**/}*				m,

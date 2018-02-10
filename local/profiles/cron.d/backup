@@ -28,7 +28,7 @@ profile backup_daily.sh.cron.daily@{p_root} /etc/cron.daily/backup_daily.sh@{t_r
   /etc/cron.daily/backup_daily.sh			r,
   @{shell}						mr,
   /bin/chmod@{t_root}					Cx,	# sys-apps/coreutils
-  /bin/date@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/date@{t_root}					Px,	# sys-apps/coreutils
   /bin/tar@{t_root}					Cx,	# app-arch/tar
   /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
   /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
@@ -43,7 +43,7 @@ profile backup_daily.sh.cron.daily@{p_root} /etc/cron.daily/backup_daily.sh@{t_r
   /usr/bin/libnotify-notify-send-users@{t_root}		Px,	# x11-libs/libnotify
   /usr/bin/gawk@{t_root}				Cx,	# sys-apps/gawk
   /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils
-  /usr/bin/stat@{t_root}				Cx,	# sys-apps/coreutils
+  /usr/bin/stat@{t_root}				Px,	# sys-apps/coreutils
   /usr/bin/mail@{t_root}				Px,	# mail-client/mailx
   /usr/bin/logger@{t_root}				Px,	# sys-apps/util-linux
   
@@ -62,16 +62,6 @@ profile backup_daily.sh.cron.daily@{p_root} /etc/cron.daily/backup_daily.sh@{t_r
     
     # READS/WRITES -------------------------------------
     /mnt/backup/Gentoo_Backup/daily_gentoo_home_*.tar	w,
-    
-    # DENY INHERIT -------------------------------------
-    deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
-  }
-  
-  profile date /bin/date@{t_root} {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /bin/date						mr,
     
     # DENY INHERIT -------------------------------------
     deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
@@ -220,16 +210,6 @@ profile backup_daily.sh.cron.daily@{p_root} /etc/cron.daily/backup_daily.sh@{t_r
     # DENY INHERIT -------------------------------------
     deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
   }
-  
-  profile stat /usr/bin/stat@{t_root} {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /usr/bin/stat					mr,
-    
-    # DENY INHERIT -------------------------------------
-    deny /tmp/dailyhomebackup.cron.@{TMP6}		w,
-  }
 }
 
 profile backup_weekly.sh.cron.weekly@{p_root} /etc/cron.weekly/backup_weekly.sh@{t_root} {
@@ -243,7 +223,7 @@ profile backup_weekly.sh.cron.weekly@{p_root} /etc/cron.weekly/backup_weekly.sh@
   /etc/cron.weekly/backup_weekly.sh			r,
   @{shell}						mr,
   /bin/chmod@{t_root}					Cx,	# sys-apps/coreutils
-  /bin/date@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/date@{t_root}					Px,	# sys-apps/coreutils
   /bin/tar@{t_root}					Cx,	# app-arch/tar
   /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
   /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
@@ -257,7 +237,7 @@ profile backup_weekly.sh.cron.weekly@{p_root} /etc/cron.weekly/backup_weekly.sh@
   /usr/bin/libnotify-notify-send-users@{t_root}		Px,	# x11-libs/libnotify
   /usr/bin/gawk@{t_root}				Cx,	# sys-apps/gawk
   /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils
-  /usr/bin/stat@{t_root}				Cx,	# sys-apps/coreutils
+  /usr/bin/stat@{t_root}				Px,	# sys-apps/coreutils
   /usr/bin/mail@{t_root}				Px,	# mail-client/mailx
   /usr/bin/logger@{t_root}				Px,	# sys-apps/util-linux
   
@@ -277,16 +257,6 @@ profile backup_weekly.sh.cron.weekly@{p_root} /etc/cron.weekly/backup_weekly.sh@
     # READS/WRITES -------------------------------------
     /mnt/backup/Gentoo_Backup/gentoo_root_*.tar		w,
     /mnt/backup/Gentoo_Backup/gentoo_var_*.tar		w,
-    
-    # DENY INHERIT -------------------------------------
-    deny /tmp/rootbackup.cron.@{TMP6}			w,
-  }
-  
-  profile date /bin/date@{t_root} {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /bin/date						mr,
     
     # DENY INHERIT -------------------------------------
     deny /tmp/rootbackup.cron.@{TMP6}			w,
@@ -433,16 +403,6 @@ profile backup_weekly.sh.cron.weekly@{p_root} /etc/cron.weekly/backup_weekly.sh@
     # READS/WRITES -------------------------------------
     /							r,
     /mnt/backup/Gentoo_Backup/				r,
-    
-    # DENY INHERIT -------------------------------------
-    deny /tmp/rootbackup.cron.@{TMP6}			w,
-  }
-  
-  profile stat /usr/bin/stat@{t_root} {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /usr/bin/stat					mr,
     
     # DENY INHERIT -------------------------------------
     deny /tmp/rootbackup.cron.@{TMP6}			w,

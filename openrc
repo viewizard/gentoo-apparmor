@@ -128,7 +128,7 @@ profile openrc.rc-update@{p_root} /sbin/rc-update@{t_root} flags=(complain) {
   /run/openrc/**					rw,
 }
 
-profile openrc.rc-status@{p_root} /bin/rc-status@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="rc-status"
+profile openrc.rc-status@{p_mixed} /bin/rc-status{@{t_root},@{t_user}} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="rc-status"
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -151,7 +151,7 @@ profile openrc.rc-status@{p_root} /bin/rc-status@{t_root} flags=(attach_disconne
   
   # EXECUTABLES ----------------------------------------
   /bin/rc-status					mr,
-  @{shell}@{t_root}					Cx,
+  @{shell}{@{t_root},@{t_user}}				Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/					r,
@@ -162,7 +162,7 @@ profile openrc.rc-status@{p_root} /bin/rc-status@{t_root} flags=(attach_disconne
   /run/openrc/deptree					w,
   /run/{*.,*/,*/*.}pid					r,
   
-  profile shell @{shell}@{t_root} flags=(complain) {
+  profile shell @{shell}{@{t_root},@{t_user}} flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>

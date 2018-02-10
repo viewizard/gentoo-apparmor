@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile lsb-release@{p_all} /usr/bin/lsb_release@{t_all} flags=(attach_disconnected) {
+profile lsb-release@{p_user} /usr/bin/lsb_release@{t_user} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -21,11 +21,11 @@ profile lsb-release@{p_all} /usr/bin/lsb_release@{t_all} flags=(attach_disconnec
   # EXECUTABLES ----------------------------------------
   /usr/bin/lsb_release					r,
   @{shell}						mr,
-  /bin/sed@{t_all}					Cx,	# sys-apps/sed
-  /bin/head@{t_all}					Cx,	# sys-apps/coreutils
-  /bin/tr@{t_all}					Px,	# sys-apps/coreutils
-  /usr/bin/find@{t_all}					Cx,	# sys-apps/findutils
-  /usr/bin/getopt@{t_all}				Px,	# sys-apps/util-linux
+  /bin/sed@{t_user}					Cx,	# sys-apps/sed
+  /bin/head@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/tr@{t_user}					Px,	# sys-apps/coreutils
+  /usr/bin/find@{t_user}				Cx,	# sys-apps/findutils
+  /usr/bin/getopt@{t_user}				Px,	# sys-apps/util-linux
   
   # READS/WRITES ---------------------------------------
   /etc/lsb-release					r,	# sys-apps/lsb-release
@@ -41,7 +41,7 @@ profile lsb-release@{p_all} /usr/bin/lsb_release@{t_all} flags=(attach_disconnec
   deny /run/user/@{UID}/poedit.*			rw,	# app-i18n/poedit, poedit
   deny @{USER_HOME_D}/.config/discord/[0-9]*/modules/**	r,	# net-im/discord-bin, discord-bin.Discord
   
-  profile sed /bin/sed@{t_all} flags=(attach_disconnected) {
+  profile sed /bin/sed@{t_user} flags=(attach_disconnected) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -55,7 +55,7 @@ profile lsb-release@{p_all} /usr/bin/lsb_release@{t_all} flags=(attach_disconnec
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile head /bin/head@{t_all} flags=(attach_disconnected) {
+  profile head /bin/head@{t_user} flags=(attach_disconnected) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -72,7 +72,7 @@ profile lsb-release@{p_all} /usr/bin/lsb_release@{t_all} flags=(attach_disconnec
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile find /usr/bin/find@{t_all} flags=(attach_disconnected) {
+  profile find /usr/bin/find@{t_user} flags=(attach_disconnected) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------

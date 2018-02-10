@@ -35,7 +35,7 @@ profile eselect@{p_root} /usr/bin/eselect@{t_root} {
   /bin/chgrp@{t_root}					Cx,	# sys-apps/coreutils
   /bin/chmod@{t_root}					Cx,	# sys-apps/coreutils
   /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
-  /bin/tr@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/tr@{t_root}					Px,	# sys-apps/coreutils
   /bin/ls@{t_root}					Cx,	# sys-apps/coreutils
   /bin/uname@{t_root}					Px,	# sys-apps/coreutils
   /usr/bin/file@{t_root}				Cx,	# sys-apps/file
@@ -324,17 +324,6 @@ profile eselect@{p_root} /usr/bin/eselect@{t_root} {
     
     # READS/WRITES -------------------------------------
     /usr/share/qt4/graphicssystems/*			r,	# eselect qtgraphicssystem
-  }
-  
-  profile tr /bin/tr@{t_root} {
-    #include <abstractions/base>
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					rw,
-    /dev/pts/[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /bin/tr						mr,
   }
   
   profile ls /bin/ls@{t_root} {

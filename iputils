@@ -10,7 +10,34 @@
 
 #include <local/tunables.d/>
 
-profile iputils.ping@{p_all} /bin/ping@{t_all} {
+profile iputils.ping@{p_user} /bin/ping@{t_user} {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # CAPABILITIES ---------------------------------------
+  capability net_raw,
+  capability setuid,
+  
+  # NETWORK --------------------------------------------
+  network inet raw,
+  network inet6 raw,
+  network inet dgram,
+  network inet6 dgram,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/ping						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/modules.conf					r,
+}
+
+profile iputils.ping@{p_root} /bin/ping@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   

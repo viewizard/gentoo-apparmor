@@ -172,7 +172,7 @@ profile util-linux.fdisk@{p_root} /sbin/{,c}fdisk@{t_root} {
   /sbin/{,c}fdisk					mr,
 }
 
-profile util-linux.eject@{p_all} /usr/bin/eject@{t_all} {
+profile util-linux.eject@{p_root} /usr/bin/eject@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -266,7 +266,7 @@ profile util-linux.cal@{p_user} /usr/bin/cal@{t_user} {
   deny @{PROC_D}/@{pids}/net/dev			r,	# app-admin/conky, conky_shell
 }
 
-profile util-linux.getopt@{p_all} /usr/bin/getopt@{t_all} flags=(attach_disconnected) {
+profile util-linux.getopt@{p_mixed} /usr/bin/getopt{@{t_root},@{t_user}} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------

@@ -28,7 +28,7 @@ profile gnome-nettool@{p_user} /usr/bin/gnome-nettool@{t_user} {
   
   # SIGNAL ---------------------------------------------
   signal (send) set=(int,kill) peer="nmap@{p_user}",		# net-analyzer/nmap
-  signal (send) set=(int,kill) peer="dig@{p_user}",		# net-dns/bind-tools
+  signal (send) set=(int,kill) peer="bind-tools.dig@{p_user}",	# net-dns/bind-tools
   signal (send) set=(int,kill) peer="whois@{p_user}",		# net-misc/whois
   signal (send) set=(int,kill) peer="traceroute@{p_user}",	# net-analyzer/traceroute
   signal (send) set=(int,kill) peer="netkit-fingerd.finger@{p_user}", # net-misc/netkit-fingerd

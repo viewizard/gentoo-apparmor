@@ -27,7 +27,7 @@ profile blacklist.sh.cron.daily@{p_root} /etc/cron.daily/blacklist.sh@{t_root} {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/blacklist.sh				r,
   @{shell}						mr,
-  /bin/date@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/date@{t_root}					Px,	# sys-apps/coreutils
   /bin/mv@{t_root}					Cx,	# sys-apps/coreutils
   /bin/cp@{t_root}					Cx,	# sys-apps/coreutils
   /bin/chmod@{t_root}					Cx,	# sys-apps/coreutils
@@ -35,7 +35,7 @@ profile blacklist.sh.cron.daily@{p_root} /etc/cron.daily/blacklist.sh@{t_root} {
   /bin/sed@{t_root}					Cx,	# sys-apps/sed
   /usr/bin/libnotify-notify-send-users@{t_root}		Px,	# x11-libs/libnotify
   /usr/bin/wget@{t_root}				Px,	# net-misc/wget
-  /usr/bin/stat@{t_root}				Cx,	# sys-apps/coreutils
+  /usr/bin/stat@{t_root}				Px,	# sys-apps/coreutils
   /usr/bin/mail@{t_root}				Px,	# mail-client/mailx
   /usr/bin/logger@{t_root}				Px,	# sys-apps/util-linux
   
@@ -45,13 +45,6 @@ profile blacklist.sh.cron.daily@{p_root} /etc/cron.daily/blacklist.sh@{t_root} {
   
   # TEMP -----------------------------------------------
   owner /tmp/hosts					rw,
-  
-  profile date /bin/date@{t_root} {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /bin/date						mr,
-  }
   
   profile mv /bin/mv@{t_root} {
     #include <abstractions/base>
@@ -102,12 +95,5 @@ profile blacklist.sh.cron.daily@{p_root} /etc/cron.daily/blacklist.sh@{t_root} {
     # READS/WRITES -------------------------------------
     /var/lib/dnscrypt.blacklist				rw,
     /var/lib/sed@{TMP6}					rw,
-  }
-  
-  profile stat /usr/bin/stat@{t_root} {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /usr/bin/stat					mr,
   }
 }

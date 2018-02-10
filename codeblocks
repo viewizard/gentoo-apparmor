@@ -47,6 +47,7 @@ profile codeblocks@{p_user} /usr/bin/codeblocks@{t_user} {
   audit /usr/bin/{,@{CHOST}-}clang-*@{t_user}		Px -> codeblocks_user_build,	# sys-devel/clang	# FIX ME! audit 5.12.2017
   deny /usr/bin/gfortran@{t_user}			x,	# sys-devel/gcc +fortran	# Не используем fortran.
   /usr/lib{,32,64}/llvm/[0-9]*/bin/llvm-ar@{t_user}	Px -> codeblocks_user_build,	# sys-devel/llvm
+  /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-gcc@{t_user}	Px -> codeblocks_user_build,	# sys-devel/gcc
   /usr/@{CHOST}/binutils-bin/[0-9]*/ar@{t_user}		Px -> codeblocks_user_build,	# sys-devel/binutils
   
   # READS/WRITES ---------------------------------------
@@ -81,6 +82,7 @@ profile codeblocks_user_build {
   /usr/bin/llvm-ar					mr,	# sys-devel/llvm
   audit /usr/bin/{,@{CHOST}-}clang-*			mr,	# sys-devel/clang	# FIX ME! audit 5.12.2017
   /usr/lib{,32,64}/llvm/[0-9]*/bin/llvm-ar		mr,	# sys-devel/llvm
+  /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-gcc		mr,	# sys-devel/gcc
   /usr/@{CHOST}/binutils-bin/[0-9]*/ar			mr,	# sys-devel/binutils
   /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-gcc@{t_user}	ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
   /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-g++@{t_user}	ix,	# sys-devel/gcc		# Разрешаем ix для данного случая.
@@ -110,7 +112,6 @@ profile codeblocks_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  audit /usr/bin/gcc-config@{t_user}			Px,	# sys-devel/gcc-config	# FIX ME! audit 03.02.2018
   /usr/bin/g++@{t_user}					Cx,	# sys-devel/gcc
   
   # TEMP -----------------------------------------------

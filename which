@@ -10,7 +10,21 @@
 
 #include <local/tunables.d/>
 
-profile which@{p_all} /usr/bin/which@{t_all} {
+profile which@{p_user} /usr/bin/which@{t_user} {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/which					mr,
+}
+
+profile which@{p_root} /usr/bin/which@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------

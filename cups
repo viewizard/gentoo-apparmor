@@ -26,29 +26,29 @@ profile cups.cupsd@{p_root} /usr/sbin/cupsd@{t_root} {
   capability kill,
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term) peer="cups.daemon@{p_root}",
-  signal (send) set=(term) peer="cups.driver@{p_root}",
-  signal (send) set=(term) peer="cups.filter@{p_root}",
-  signal (send) set=(term) peer="cups.backend@{p_root}",
-  signal (send) set=(term) peer="cups.cgi-bin@{p_root}",
+  signal (send) set=(term) peer="cups.daemon@{p_mixed}",
+  signal (send) set=(term) peer="cups.driver@{p_mixed}",
+  signal (send) set=(term) peer="cups.filter@{p_mixed}",
+  signal (send) set=(term) peer="cups.backend@{p_mixed}",
+  signal (send) set=(term) peer="cups.cgi-bin@{p_mixed}",
   
   # UNIX -----------------------------------------------
   unix (send, receive)
   			type=stream
   			addr=none
-  			peer=(label="cups.daemon@{p_root}"),
+  			peer=(label="cups.daemon@{p_mixed}"),
   unix (send, receive)
   			type=stream
   			addr=none
-  			peer=(label="cups.filter@{p_root}"),
+  			peer=(label="cups.filter@{p_mixed}"),
   unix (send, receive)
   			type=stream
   			addr=none
-  			peer=(label="cups.backend@{p_root}"),
+  			peer=(label="cups.backend@{p_mixed}"),
   unix (send, receive)
   			type=stream
   			addr=none
-  			peer=(label="poppler.pdftops@{p_root}"),
+  			peer=(label="poppler.pdftops@{p_mixed}"),
   
   # NETWORK --------------------------------------------
   network inet stream,
@@ -95,7 +95,7 @@ profile cups.cupsd@{p_root} /usr/sbin/cupsd@{t_root} {
   }
 }
 
-profile cups.daemon@{p_root} /usr/libexec/cups/daemon/*{@{t_root},@{t_lp}} {
+profile cups.daemon@{p_mixed} /usr/libexec/cups/daemon/*{@{t_root},@{t_lp}} {
   #include <abstractions/base>
   #include <abstractions/unix/cupsd-virtual>
   
@@ -120,7 +120,7 @@ profile cups.daemon@{p_root} /usr/libexec/cups/daemon/*{@{t_root},@{t_lp}} {
   /var/cache/cups/{,**}					wr,
 }
 
-profile cups.driver@{p_root} /usr/libexec/cups/driver/*{@{t_root},@{t_lp}} {
+profile cups.driver@{p_mixed} /usr/libexec/cups/driver/*{@{t_root},@{t_lp}} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
@@ -133,7 +133,7 @@ profile cups.driver@{p_root} /usr/libexec/cups/driver/*{@{t_root},@{t_lp}} {
   /var/spool/cups/{,**}					wr,
 }
 
-profile cups.cgi-bin@{p_root} /usr/libexec/cups/cgi-bin/*{@{t_root},@{t_lp}} {
+profile cups.cgi-bin@{p_mixed} /usr/libexec/cups/cgi-bin/*{@{t_root},@{t_lp}} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -156,7 +156,7 @@ profile cups.cgi-bin@{p_root} /usr/libexec/cups/cgi-bin/*{@{t_root},@{t_lp}} {
   owner /tmp/@{TMP13}					rw,
 }
 
-profile cups.filter@{p_root} /usr/libexec/cups/filter/*{@{t_root},@{t_lp}} {
+profile cups.filter@{p_mixed} /usr/libexec/cups/filter/*{@{t_root},@{t_lp}} {
   #include <abstractions/base>
   #include <abstractions/unix/cupsd-virtual>
   
@@ -175,7 +175,7 @@ profile cups.filter@{p_root} /usr/libexec/cups/filter/*{@{t_root},@{t_lp}} {
   owner /tmp/@{TMP13}					rw,
 }
 
-profile cups.backend@{p_root} /usr/libexec/cups/backend/*{@{t_root},@{t_lp}} {
+profile cups.backend@{p_mixed} /usr/libexec/cups/backend/*{@{t_root},@{t_lp}} {
   #include <abstractions/base>
   #include <abstractions/unix/cupsd-virtual>
   

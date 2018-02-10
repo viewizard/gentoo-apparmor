@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile libpaper.paperconf@{p_all} /usr/bin/paperconf@{t_all} {		# Корректировать с абстракцией cups-client.
+profile libpaper.paperconf@{p_mixed} /usr/bin/paperconf{@{t_root},@{t_user}} {		# Корректировать с абстракцией cups-client.
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------

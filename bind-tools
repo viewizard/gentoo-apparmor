@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile bind-tools.dig@{p_all} /usr/bin/dig@{t_all} {
+profile bind-tools.dig@{p_user} /usr/bin/dig@{t_user} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ssl-certs>
@@ -24,6 +24,26 @@ profile bind-tools.dig@{p_all} /usr/bin/dig@{t_all} {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/dig						mr,
+}
+
+profile bind-tools.dig@{p_root} /usr/bin/dig@{t_root} {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/ssl-certs>
+  
+  # NETWORK --------------------------------------------
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  owner @{PROC_D}/@{pid}/task/@{pids}/comm		rw,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dig						mr,

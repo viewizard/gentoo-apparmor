@@ -10,6 +10,13 @@
 
 #include <local/tunables.d/>
 
+## ROOT
+
+# Профили с доступом к gvfsd-fuse анонимному сокету
+@{GVFSD_FUSE_ANON_SOCKET_ROOT}="fuse.fusermount@{p_root}"	# sys-fs/fuse
+
+## USER
+
 # Профили с доступом к gvfsd-fuse анонимному сокету
 @{GVFSD_FUSE_ANON_SOCKET}="fuse.fusermount@{p_root}"		# sys-fs/fuse
 
@@ -20,13 +27,13 @@
 @{GVFSD_HTTP_ANON_SOCKET}="gimp.plug-ins@{p_user}"		# media-gfx/gimp
 
 # Профили с доступом к gvfsd-network сокету
-@{GVFSD_NETWORK_SOCKET}="thunar{@{p_root},@{p_user}}"		# xfce-base/thunar
+@{GVFSD_NETWORK_SOCKET}="thunar@{p_user}"			# xfce-base/thunar
 @{GVFSD_NETWORK_SOCKET}+="uget.uget-gtk@{p_user}"		# www-client/uget
-@{GVFSD_NETWORK_SOCKET}+="engrampa{@{p_root},@{p_user}}"	# app-arch/engrampa
-@{GVFSD_NETWORK_SOCKET}+="meld{@{p_root},@{p_user}}"		# dev-util/meld
+@{GVFSD_NETWORK_SOCKET}+="engrampa@{p_user}"			# app-arch/engrampa
+@{GVFSD_NETWORK_SOCKET}+="meld@{p_user}"			# dev-util/meld
 @{GVFSD_NETWORK_SOCKET}+="alacarte@{p_user}"			# x11-misc/alacarte
 @{GVFSD_NETWORK_SOCKET}+="transmission@{p_user}"		# net-p2p/transmission
-@{GVFSD_NETWORK_SOCKET}+="mousepad{@{p_root},@{p_user}}"	# app-editors/mousepad
+@{GVFSD_NETWORK_SOCKET}+="mousepad@{p_user}"			# app-editors/mousepad
 @{GVFSD_NETWORK_SOCKET}+="remmina@{p_user}"			# net-misc/remmina
 @{GVFSD_NETWORK_SOCKET}+="wireshark@{p_user}"			# net-analyzer/wireshark
 @{GVFSD_NETWORK_SOCKET}+="libreoffice.bin@{p_user}"		# app-office/libreoffice
@@ -38,11 +45,11 @@
 @{GVFSD_NETWORK_SOCKET}+="xfce4-terminal@{p_user}"		# x11-terms/xfce4-terminal
 
 # Профили с доступом к gvfsd-smb сокету
-@{GVFSD_SMB_SOCKET}="gvfs.gvfsd-fuse{@{p_root},@{p_user}}"
+@{GVFSD_SMB_SOCKET}="gvfs.gvfsd-fuse@{p_user}"
 @{GVFSD_SMB_SOCKET}+="libreoffice.bin@{p_user}"			# app-office/libreoffice
 @{GVFSD_SMB_SOCKET}+="ristretto@{p_user}"			# media-gfx/ristretto
-@{GVFSD_SMB_SOCKET}+="tumbler{@{p_root},@{p_user}}"		# xfce-extra/tumbler
-@{GVFSD_SMB_SOCKET}+="thunar{@{p_root},@{p_user}}"		# xfce-base/thunar
+@{GVFSD_SMB_SOCKET}+="tumbler@{p_user}"				# xfce-extra/tumbler
+@{GVFSD_SMB_SOCKET}+="thunar@{p_user}"				# xfce-base/thunar
 @{GVFSD_SMB_SOCKET}+="smplayer@{p_user}"			# media-video/smplayer
 @{GVFSD_SMB_SOCKET}+="vlc@{p_user}"				# media-video/vlc
 @{GVFSD_SMB_SOCKET}+="gimp@{p_user}"				# media-gfx/gimp
@@ -51,25 +58,25 @@
 # Профили с доступом к gvfsd-smb анонимному сокету
 @{GVFSD_SMB_ANON_SOCKET}="libreoffice.bin@{p_user}"		# app-office/libreoffice
 @{GVFSD_SMB_ANON_SOCKET}+="ristretto@{p_user}"			# media-gfx/ristretto
-@{GVFSD_SMB_ANON_SOCKET}+="tumbler{@{p_root},@{p_user}}"	# xfce-extra/tumbler
-@{GVFSD_SMB_ANON_SOCKET}+="thunar{@{p_root},@{p_user}}"		# xfce-base/thunar
+@{GVFSD_SMB_ANON_SOCKET}+="tumbler@{p_user}"			# xfce-extra/tumbler
+@{GVFSD_SMB_ANON_SOCKET}+="thunar@{p_user}"			# xfce-base/thunar
 
 # Профили с доступом к gvfsd-smb-browse сокету
-@{GVFSD_SMB_BROWSER_SOCKET}="gvfs.gvfsd-network@{p_all}"
-@{GVFSD_SMB_BROWSER_SOCKET}+="thunar{@{p_root},@{p_user}}"	# xfce-base/thunar
+@{GVFSD_SMB_BROWSER_SOCKET}="gvfs.gvfsd-network@{p_user}"
+@{GVFSD_SMB_BROWSER_SOCKET}+="thunar@{p_user}"			# xfce-base/thunar
 @{GVFSD_SMB_BROWSER_SOCKET}+="libreoffice.bin@{p_user}"		# app-office/libreoffice
 @{GVFSD_SMB_BROWSER_SOCKET}+="xfce4-terminal@{p_user}"		# x11-terms/xfce4-terminal
-@{GVFSD_SMB_BROWSER_SOCKET}+="meld{@{p_root},@{p_user}}"	# dev-util/meld
+@{GVFSD_SMB_BROWSER_SOCKET}+="meld@{p_user}"			# dev-util/meld
 
 # Профили с доступом к gvfsd-trash сокету
-@{GVFSD_TRASH_SOCKET}="tumbler{@{p_root},@{p_user}}"		# xfce-extra/tumbler
-@{GVFSD_TRASH_SOCKET}+="thunar{@{p_root},@{p_user}}"		# xfce-base/thunar
+@{GVFSD_TRASH_SOCKET}="tumbler@{p_user}"			# xfce-extra/tumbler
+@{GVFSD_TRASH_SOCKET}+="thunar@{p_user}"			# xfce-base/thunar
 @{GVFSD_TRASH_SOCKET}+="uget.uget-gtk@{p_user}"			# www-client/uget
-@{GVFSD_TRASH_SOCKET}+="engrampa{@{p_root},@{p_user}}"		# app-arch/engrampa
-@{GVFSD_TRASH_SOCKET}+="meld{@{p_root},@{p_user}}"		# dev-util/meld
+@{GVFSD_TRASH_SOCKET}+="engrampa@{p_user}"			# app-arch/engrampa
+@{GVFSD_TRASH_SOCKET}+="meld@{p_user}"				# dev-util/meld
 @{GVFSD_TRASH_SOCKET}+="alacarte@{p_user}"			# x11-misc/alacarte
 @{GVFSD_TRASH_SOCKET}+="transmission@{p_user}"			# net-p2p/transmission
-@{GVFSD_TRASH_SOCKET}+="mousepad{@{p_root},@{p_user}}"		# app-editors/mousepad
+@{GVFSD_TRASH_SOCKET}+="mousepad@{p_user}"			# app-editors/mousepad
 @{GVFSD_TRASH_SOCKET}+="remmina@{p_user}"			# net-misc/remmina
 @{GVFSD_TRASH_SOCKET}+="wireshark@{p_user}"			# net-analyzer/wireshark
 @{GVFSD_TRASH_SOCKET}+="libreoffice.bin@{p_user}"		# app-office/libreoffice
@@ -83,7 +90,7 @@
 # Профили с доступом к gvfsd-trash анонимному сокету
 #@{GVFSD_TRASH_ANON_SOCKET}=""
 
-profile gvfs.gvfs-udisks2-volume-monitor@{p_all} /usr/libexec/gvfs-udisks2-volume-monitor@{t_all} {
+profile gvfs.gvfs-udisks2-volume-monitor@{p_user} /usr/libexec/gvfs-udisks2-volume-monitor@{t_user} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/system-strict>
@@ -102,13 +109,13 @@ profile gvfs.gvfs-udisks2-volume-monitor@{p_all} /usr/libexec/gvfs-udisks2-volum
   	bus=system
   	path="/org/freedesktop/UDisks2/**"
   	interface="org.freedesktop.UDisks2.*"
-  	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd@{p_all}"),	# sys-fs/udisks
+  	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd@{p_root}"),	# sys-fs/udisks
   dbus send
   	bus=system
   	path="/org/freedesktop/UDisks2"
   	interface="org.freedesktop.DBus.ObjectManager"
   	member=GetManagedObjects
-  	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd@{p_all}"),	# sys-fs/udisks
+  	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd@{p_root}"),	# sys-fs/udisks
   dbus send
   	bus=session
   	path="/org/gtk/vfs/**"
@@ -143,7 +150,67 @@ profile gvfs.gvfs-udisks2-volume-monitor@{p_all} /usr/libexec/gvfs-udisks2-volum
   owner @{USER_HOME_D}/.local/share/mime/treemagic	r,
 }
 
-profile gvfs.gvfsd@{p_all} /usr/libexec/gvfsd@{t_all} {
+profile gvfs.gvfs-udisks2-volume-monitor@{p_root} /usr/libexec/gvfs-udisks2-volume-monitor@{t_root} {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/dbus/system-strict>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/udisks>
+  #include <abstractions/dbus/session-bind>
+  #include <abstractions/unix/gvfsd-burn>
+  #include <local/profile_blocks/gvfs.gvfs-udisks2-volume-monitor.d/>
+  
+  # CAPABILITIES ---------------------------------------
+  capability dac_override,
+  capability dac_read_search,
+  
+  # DBUS -----------------------------------------------
+  dbus (send, receive)
+  	bus=system
+  	path="/org/freedesktop/UDisks2/**"
+  	interface="org.freedesktop.UDisks2.*"
+  	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd@{p_root}"),	# sys-fs/udisks
+  dbus send
+  	bus=system
+  	path="/org/freedesktop/UDisks2"
+  	interface="org.freedesktop.DBus.ObjectManager"
+  	member=GetManagedObjects
+  	peer=(name=":[0-9]*.[0-9]*",label="udisks.udisksd@{p_root}"),	# sys-fs/udisks
+  dbus send
+  	bus=session
+  	path="/org/gtk/vfs/**"
+  	interface="org.gtk.vfs.*"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  dbus (send, receive)
+  	bus=session
+  	path="/org/gtk/Private/RemoteVolumeMonitor"
+  	interface="org.gtk.Private.RemoteVolumeMonitor"
+  	peer=(name="{:[0-9]*.[0-9]*,org.freedesktop.DBus}"),
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  
+  # PSEUDO ---------------------------------------------
+  @{SYS_D}/devices/virtual/block/@{BLOCK_VIRT}/{,*/}{name,uevent} r,
+  @{SYS_D}/devices/pci@{PCI2}/@{PCI4}/{ata@{ATA1},usb@{USB1}}/**/block/@{BLOCK_REAL}/{,*/}uevent r,
+  owner @{PROC_D}/@{pid}/fd/				r,
+  owner @{PROC_D}/@{pid}/mount{s,info}			r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gvfs-udisks2-volume-monitor		mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/fstab						r,
+  /etc/udev/udev.conf					r,
+  /usr/share/mime/treemagic				r,
+  /run/udev/data/[a-z]*[0-9]*:[0-9]*			r,
+  /run/mount/utab					r,
+  
+  # USERS ----------------------------------------------
+  owner @{ROOT_HOME_D}/.local/share/mime/treemagic	r,
+}
+
+profile gvfs.gvfsd@{p_user} /usr/libexec/gvfsd@{t_user} {
   #include <abstractions/base>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/session-bind>
@@ -162,28 +229,55 @@ profile gvfs.gvfsd@{p_all} /usr/libexec/gvfsd@{t_all} {
   
   # PSEUDO ---------------------------------------------
   @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
-  audit @{PROC_D}/@{pid}/fd/				w,	# FIX ME! audit 08.01.2018	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd					mr,
-  /usr/libexec/gvfsd-*@{t_all}				Px,
+  /usr/libexec/gvfsd-*@{t_user}				Px,
   
   # READS/WRITES ---------------------------------------
   /usr/share/gvfs/{,**}					r,
   /run/user/@{UID}/gvfs/				rw,
-  
-  # USERS ----------------------------------------------
-  owner /root/.gvfs/					rw,
 }
 
-profile gvfs.gvfsd-archive@{p_all} /usr/libexec/gvfsd-archive@{t_all} {
+profile gvfs.gvfsd@{p_root} /usr/libexec/gvfsd@{t_root} {
+  #include <abstractions/base>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/session-bind>
+  
+  # DBUS -----------------------------------------------
+  dbus (send, receive)
+  	bus=session
+  	path="/org/gtk/vfs/**"
+  	interface="org.gtk.vfs.*"
+  	peer=(name="{:[0-9]*.[0-9]*,org.freedesktop.DBus}"),
+  dbus receive
+  	bus=session
+  	path="/org/gtk/gvfs/**"
+  	interface="org.gtk.vfs.*"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  
+  # PSEUDO ---------------------------------------------
+  owner @{PROC_D}/@{pid}/fd/				r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gvfsd					mr,
+  /usr/libexec/gvfsd-*@{t_root}				Px,
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/gvfs/{,**}					r,
+  
+  # USERS ----------------------------------------------
+  owner @{ROOT_HOME_D}/.gvfs/				rw,
+}
+
+profile gvfs.gvfsd-archive@{p_user} /usr/libexec/gvfsd-archive@{t_user} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-archive				mr,
 }
 
-profile gvfs.gvfsd-burn@{p_all} /usr/libexec/gvfsd-burn@{t_all} {
+profile gvfs.gvfsd-burn@{p_user} /usr/libexec/gvfsd-burn@{t_user} {
   #include <abstractions/base>
   
   # UNIX -----------------------------------------------
@@ -195,21 +289,21 @@ profile gvfs.gvfsd-burn@{p_all} /usr/libexec/gvfsd-burn@{t_all} {
   /usr/libexec/gvfsd-burn				mr,
 }
 
-profile gvfs.gvfsd-computer@{p_all} /usr/libexec/gvfsd-computer@{t_all} {
+profile gvfs.gvfsd-computer@{p_user} /usr/libexec/gvfsd-computer@{t_user} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-computer				mr,
 }
 
-profile gvfs.gvfsd-dav@{p_all} /usr/libexec/gvfsd-dav@{t_all} {
+profile gvfs.gvfsd-dav@{p_user} /usr/libexec/gvfsd-dav@{t_user} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-dav				mr,
 }
 
-profile gvfs.gvfsd-ftp@{p_all} /usr/libexec/gvfsd-ftp@{t_all} {
+profile gvfs.gvfsd-ftp@{p_user} /usr/libexec/gvfsd-ftp@{t_user} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
@@ -274,7 +368,7 @@ profile gvfs.gvfsd-fuse@{p_root} /usr/libexec/gvfsd-fuse@{t_root} {
   unix (send, receive)
   			type=stream
 			addr=none
-  			peer=(addr=none,label="@{GVFSD_FUSE_ANON_SOCKET}"),
+  			peer=(addr=none,label="@{GVFSD_FUSE_ANON_SOCKET_ROOT}"),
   
   # MOUNT ----------------------------------------------
   mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /root/.gvfs/,
@@ -292,7 +386,7 @@ profile gvfs.gvfsd-fuse@{p_root} /usr/libexec/gvfsd-fuse@{t_root} {
   owner /root/.gvfs/					r,
 }
 
-profile gvfs.gvfsd-http@{p_all} /usr/libexec/gvfsd-http@{t_all} {
+profile gvfs.gvfsd-http@{p_user} /usr/libexec/gvfsd-http@{t_user} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/system-strict>
@@ -347,14 +441,14 @@ profile gvfs.gvfsd-http@{p_all} /usr/libexec/gvfsd-http@{t_all} {
   owner @{USER_HOME_D}/.local/share/mime/mime.cache	r,
 }
 
-profile gvfs.gvfsd-localtest@{p_all} /usr/libexec/gvfsd-localtest@{t_all} {
+profile gvfs.gvfsd-localtest@{p_user} /usr/libexec/gvfsd-localtest@{t_user} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-localtest				mr,
 }
 
-profile gvfs.gvfsd-metadata@{p_all} /usr/libexec/gvfsd-metadata@{t_all} {
+profile gvfs.gvfsd-metadata@{p_user} /usr/libexec/gvfsd-metadata@{t_user} {
   #include <abstractions/base>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/session-bind>
@@ -379,7 +473,7 @@ profile gvfs.gvfsd-metadata@{p_all} /usr/libexec/gvfsd-metadata@{t_all} {
   owner @{USER_HOME_D}/.local/share/gvfs-metadata/{,*}	rw,
 }
 
-profile gvfs.gvfsd-network@{p_all} /usr/libexec/gvfsd-network@{t_all} {
+profile gvfs.gvfsd-network@{p_user} /usr/libexec/gvfsd-network@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/dconf>
   #include <abstractions/dbus/session-strict>
@@ -414,21 +508,21 @@ profile gvfs.gvfsd-network@{p_all} /usr/libexec/gvfsd-network@{t_all} {
   /usr/share/glib-[0-9]*/schemas/{,gschemas.compiled}	r,
 }
 
-profile gvfs.gvfsd-recent@{p_all} /usr/libexec/gvfsd-recent@{t_all} {
+profile gvfs.gvfsd-recent@{p_user} /usr/libexec/gvfsd-recent@{t_user} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-recent				mr,
 }
 
-profile gvfs.gvfsd-sftp@{p_all} /usr/libexec/gvfsd-sftp@{t_all} {
+profile gvfs.gvfsd-sftp@{p_user} /usr/libexec/gvfsd-sftp@{t_user} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/gvfsd-sftp				mr,
 }
 
-profile gvfs.gvfsd-smb@{p_all} /usr/libexec/gvfsd-smb@{t_all} {
+profile gvfs.gvfsd-smb@{p_user} /usr/libexec/gvfsd-smb@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/dconf>
@@ -479,7 +573,7 @@ profile gvfs.gvfsd-smb@{p_all} /usr/libexec/gvfsd-smb@{t_all} {
   /var/cache/samba/{,**}				r,
 }
 
-profile gvfs.gvfsd-smb-browse@{p_all} /usr/libexec/gvfsd-smb-browse@{t_all} {
+profile gvfs.gvfsd-smb-browse@{p_user} /usr/libexec/gvfsd-smb-browse@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/dconf>
   #include <abstractions/dbus/session-strict>
@@ -524,7 +618,7 @@ profile gvfs.gvfsd-smb-browse@{p_all} /usr/libexec/gvfsd-smb-browse@{t_all} {
   /var/cache/samba/{,**}				rw,
 }
 
-profile gvfs.gvfsd-trash@{p_all} /usr/libexec/gvfsd-trash@{t_all} {
+profile gvfs.gvfsd-trash@{p_user} /usr/libexec/gvfsd-trash@{t_user} {
   #include <abstractions/base>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/session-bind>
@@ -571,7 +665,7 @@ profile gvfs.gvfsd-trash@{p_all} /usr/libexec/gvfsd-trash@{t_all} {
   owner @{USER_HOME_D}/.local/share/Trash/{,**}		rw,
 }
 
-profile gvfs.gvfs-open@{p_all} /usr/bin/gvfs-open@{t_all} {
+profile gvfs.gvfs-open@{p_user} /usr/bin/gvfs-open@{t_user} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------

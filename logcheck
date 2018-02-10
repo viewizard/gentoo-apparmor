@@ -23,7 +23,7 @@ profile logcheck@{p_logcheck} /usr/sbin/logcheck@{t_logcheck} {
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
   /usr/sbin/logcheck					r,
-  /bin/date@{t_logcheck}				Cx,	# sys-apps/coreutils
+  /bin/date@{t_logcheck}				Px,	# sys-apps/coreutils
   /bin/hostname@{t_logcheck}				Px,	# sys-apps/net-tools
   /bin/basename@{t_logcheck}				Px,	# sys-apps/coreutils
   /bin/expr@{t_logcheck}				Cx,	# sys-apps/coreutils
@@ -51,13 +51,6 @@ profile logcheck@{p_logcheck} /usr/sbin/logcheck@{t_logcheck} {
   
   # TEMP -----------------------------------------------
   owner /tmp/logcheck.@{TMP6}/{,**}			rw,
-  
-  profile date /bin/date@{t_logcheck} {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /bin/date						mr,
-  }
   
   profile expr /bin/expr@{t_logcheck} {
     #include <abstractions/base>

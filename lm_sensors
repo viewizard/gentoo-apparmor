@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile lm_sensors.sensors@{p_all} /usr/bin/sensors@{t_all} {
+profile lm_sensors.sensors@{p_user} /usr/bin/sensors@{t_user} {
   #include <abstractions/base>
   #include <abstractions/sensors>
   
@@ -28,6 +28,20 @@ profile lm_sensors.sensors@{p_all} /usr/bin/sensors@{t_all} {
   deny network inet6 dgram,					# app-admin/conky, conky_shell
   deny @{PROC_D}/uptime					r,	# app-admin/conky, conky_shell
   deny @{PROC_D}/@{pids}/net/dev			r,	# app-admin/conky, conky_shell
+}
+
+profile lm_sensors.sensors@{p_root} /usr/bin/sensors@{t_root} {
+  #include <abstractions/base>
+  #include <abstractions/sensors>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/sensors					mr,
 }
 
 profile lm_sensors.init.d@{p_root} /etc/init.d/lm_sensors@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"

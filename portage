@@ -38,8 +38,8 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
   capability setfcap,
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term,kill) peer="portage.emerge@{p_root}//shell",
-  signal (send) set=(term,kill) peer="portage.emerge@{p_root}//sandbox",
+  signal (send) set=(term,kill) peer="portage.emerge{@{p_root},@{p_portage}}//shell",
+  signal (send) set=(term,kill) peer="portage.emerge{@{p_root},@{p_portage}}//sandbox",
   signal (send) set=(term,kill) peer="portage.emerge@{p_root}//rsync",
   
   # NETWORK --------------------------------------------
@@ -63,7 +63,7 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
   @{PROC_D}/sys/kernel/osrelease			r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}@{t_root}					cx,
+  @{shell}{@{t_root},@{t_portage}}			cx,
   /bin/stty@{t_root}					Px,	# sys-apps/coreutils
   /bin/mount@{t_root}					Cx,	# sys-apps/util-linux
   /bin/tar@{t_root}					Cx,	# app-arch/tar
@@ -73,7 +73,7 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
   /usr/bin/id@{t_root}					Px,	# sys-apps/coreutils
   /usr/bin/install-info@{t_root}			Px,	# sys-apps/texinfo
   /usr/bin/scanelf@{t_root}				Cx,	# app-misc/pax-utils
-  /usr/bin/wget@{t_root}				Px,	# net-misc/wget
+  /usr/bin/wget{@{t_root},@{t_portage}}			Px,	# net-misc/wget
   /usr/bin/desktop-file-validate@{t_root}		Cx,	# dev-util/desktop-file-utils
   /usr/bin/rsync@{t_root}				Cx,	# net-misc/rsync
   /usr/bin/gcc-config@{t_root}				Px,	# sys-devel/gcc-config
@@ -234,7 +234,7 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
     /usr/@{CHOST}/binutils-bin/[0-9]*/ld		mr,
   }
   
-  profile shell @{shell}@{t_root} {
+  profile shell @{shell}{@{t_root},@{t_portage}} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions-root/X-connection-strict>
@@ -265,7 +265,7 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
     # UNIX ---------------------------------------------
     unix (send, receive, connect)
     	type=stream
-    	peer=(addr="@/tmp/dbus-@{TMP10}",label="dbus.dbus-daemon@{p_all}"),
+    	peer=(addr="@/tmp/dbus-@{TMP10}",label="dbus.dbus-daemon{@{p_root},@{p_user}}"),
     
     # DBUS ---------------------------------------------
     dbus send
@@ -293,7 +293,7 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /etc/portage/bin/{,**/}*@{t_root}			ix,
-    /bin/{,**/}*@{t_root}				ix,
+    /bin/{,**/}*{@{t_root},@{t_portage}}		ix,
     /sbin/{,**/}*@{t_root}				ix,
     /sbin/udevadm@{t_root}				Px,	# sys-fs/eudev
     /opt/{,**/}*@{t_root}				ix,
@@ -404,7 +404,7 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
     unix (bind) type=stream,					# создание тестового сокета (анонимного или обычного)
     unix (send, receive, connect)
     	type=stream
-    	peer=(addr="@/tmp/dbus-@{TMP10}",label="dbus.dbus-daemon@{p_all}"),
+    	peer=(addr="@/tmp/dbus-@{TMP10}",label="dbus.dbus-daemon{@{p_root},@{p_user}}"),
     
     # DBUS ---------------------------------------------
     dbus send
@@ -655,7 +655,7 @@ profile portage_dispatch_conf_shell {
   }
 }
 
-profile portage.portageq@{p_root} @{PYTHON_EXEC}/portageq{@{t_root},@{t_portage}} {
+profile portage.portageq@{p_mixed} @{PYTHON_EXEC}/portageq{@{t_root},@{t_portage}} {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -977,7 +977,7 @@ profile portage.emerge-webrsync@{p_root} /usr/bin/emerge-webrsync@{t_root} {
   # EXECUTABLES ----------------------------------------
   /usr/bin/emerge-webrsync				r,
   @{shell}						mr,
-  /bin/date@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/date@{t_root}					Px,	# sys-apps/coreutils
   /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
   /bin/cut@{t_root}					Cx,	# sys-apps/coreutils
   /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
@@ -987,7 +987,7 @@ profile portage.emerge-webrsync@{p_root} /usr/bin/emerge-webrsync@{t_root} {
   /bin/stty@{t_root}					Px,	# sys-apps/coreutils
   /usr/bin/md5sum@{t_root}				Cx,	# sys-apps/coreutils
   /usr/bin/xz@{t_root}					Cx,	# app-arch/xz-utils
-  /usr/bin/stat@{t_root}				Cx,	# sys-apps/coreutils
+  /usr/bin/stat@{t_root}				Px,	# sys-apps/coreutils
   /usr/bin/rsync@{t_root}				Cx,	# net-misc/rsync
   /usr/bin/fmt@{t_root}					Cx,	# sys-apps/coreutils
   /usr/bin/gpg{,2}@{t_root}				Px,	# app-crypt/gnupg
@@ -998,17 +998,6 @@ profile portage.emerge-webrsync@{p_root} /usr/bin/emerge-webrsync@{t_root} {
   # TEMP -----------------------------------------------
   owner /tmp/@{TMP_SH}					rw,
   owner /var/tmp/portage/webrsync-@{TMP6}/portage-*.md5sum r,
-  
-  profile date /bin/date@{t_root} {
-    #include <abstractions/base>
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					rw,
-    /dev/pts/[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /bin/date						mr,
-  }
   
   profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
@@ -1137,18 +1126,6 @@ profile portage.emerge-webrsync@{p_root} /usr/bin/emerge-webrsync@{t_root} {
     
     # TEMP ---------------------------------------------
     owner /var/tmp/portage/webrsync-@{TMP6}/**		r,
-  }
-  
-  profile stat /usr/bin/stat@{t_root} {
-    #include <abstractions/base>
-    #include <abstractions/nameservice>
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					rw,
-    /dev/pts/[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /usr/bin/stat					mr,
   }
   
   profile rsync /usr/bin/rsync@{t_root} {
@@ -1291,7 +1268,7 @@ profile portage.cgroup-release-agent@{p_root} /{usr/lib{,32,64}/portage/@{PYTHON
   }
 }
 
-profile portage.ebuild.sh@{p_root} /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh{@{t_root},@{t_portage},@{t_user}} {
+profile portage.ebuild.sh@{p_mixed} /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh{@{t_root},@{t_portage},@{t_user}} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   

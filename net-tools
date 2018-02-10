@@ -40,7 +40,7 @@ profile net-tools.ifconfig@{p_root} /bin/ifconfig@{t_root} {
   /bin/ifconfig						mr,
 }
 
-profile net-tools.netstat@{p_all} /bin/netstat@{t_all} {
+profile net-tools.netstat@{p_mixed} /bin/netstat{@{t_root},@{t_user}} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -71,7 +71,7 @@ profile net-tools.netstat@{p_all} /bin/netstat@{t_all} {
   /etc/networks						r,
 }
 
-profile net-tools.hostname@{p_all} /bin/hostname@{t_all} {
+profile net-tools.hostname@{p_mixed} /bin/hostname{@{t_root},@{t_user},@{t_logcheck}} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   

@@ -64,7 +64,7 @@ profile conky_shell {
   @{shell}						mr,
   /bin/tail@{t_user}					Cx,	# sys-apps/coreutils
   /bin/head@{t_user}					Cx,	# sys-apps/coreutils
-  /bin/date@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/date@{t_user}					Px,	# sys-apps/coreutils
   /bin/sed@{t_user}					Cx,	# sys-apps/sed
   /bin/cat@{t_user}					Cx,	# sys-apps/coreutils
   /bin/cut@{t_user}					Cx,	# sys-apps/coreutils
@@ -104,24 +104,6 @@ profile conky_shell {
     
     # EXECUTABLES --------------------------------------
     /bin/head						mr,
-    
-    # DENY INHERIT -------------------------------------
-    deny network inet dgram,					# conky_shell
-    deny network inet6 dgram,					# conky_shell
-    deny @{PROC_D}/uptime				r,	# conky_shell
-    deny @{PROC_D}/@{pids}/net/dev			r,	# conky_shell
-  }
-  
-  profile date /bin/date@{t_user} {
-    #include <abstractions/base>
-    
-    # PSEUDO -------------------------------------------
-    /dev/tty						rw,
-    /dev/tty[0-9]*					rw,
-    /dev/pts/[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /bin/date						mr,
     
     # DENY INHERIT -------------------------------------
     deny network inet dgram,					# conky_shell

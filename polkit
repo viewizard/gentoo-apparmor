@@ -27,7 +27,7 @@ profile polkit.polkitd@{p_root} /usr/lib{,32,64}/polkit-1/polkitd@{t_root} {
   	path="/org/freedesktop/DBus"
   	interface="org.freedesktop.DBus"
   	member={GetConnectionUnixUser,GetConnectionUnixProcessID}
-  	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon@{p_all}"),
+  	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon{@{p_root},@{p_user}}"),
   dbus receive
   	bus=system
   	path="/org/freedesktop/PolicyKit[0-9]*/Authority"
@@ -101,7 +101,7 @@ profile polkit.pkcheck@{p_root} /usr/bin/pkcheck@{t_root} {
   /usr/bin/pkcheck					mr,
 }
 
-profile polkit.pkexec@{p_all} /usr/bin/pkexec@{t_all} {
+profile polkit.pkexec@{p_root} /usr/bin/pkexec@{t_root} {
   #include <abstractions/base>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/polkit>
@@ -118,7 +118,7 @@ profile polkit.pkexec@{p_all} /usr/bin/pkexec@{t_all} {
   ptrace (trace),
   
   # SIGNAL ---------------------------------------------
-  signal (receive) set=(rtmin+1) peer="polkit.pkexec@{p_all}//root",
+  signal (receive) set=(rtmin+1) peer="polkit.pkexec@{p_root}//root",	# hats "^root"
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,

@@ -121,7 +121,7 @@ profile consolekit.console-kit-daemon@{p_root} /usr/sbin/console-kit-daemon@{t_r
 	path="/org/freedesktop/DBus/Bus"
 	interface="org.freedesktop.DBus"
 	member={GetConnectionUnixUser,GetConnectionUnixProcessID}
-	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon@{p_all}"),
+	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon{@{p_root},@{p_user}}"),
   dbus send
 	bus=system
 	path="/org/freedesktop/ConsoleKit/Manager"
@@ -205,7 +205,7 @@ profile consolekit.ck-collect-session-info@{p_root} /usr/lib{,32,64}/ConsoleKit/
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/ConsoleKit/ck-collect-session-info	m,
-  /usr/lib{,32,64}/ConsoleKit/ck-get-x11-server-pid@{t_all} Px,
+  /usr/lib{,32,64}/ConsoleKit/ck-get-x11-server-pid@{t_user} Px,
   /usr/lib{,32,64}/ConsoleKit/ck-get-x11-display-device@{t_root} Px,
 }
 
@@ -239,7 +239,7 @@ profile consolekit.ck-remove-directory@{p_root} /usr/lib{,32,64}/ConsoleKit/ck-r
   /run/user/@{UID}/{,**}				rw,
 }
 
-profile consolekit.ck-get-x11-server-pid@{p_all} /usr/lib{,32,64}/ConsoleKit/ck-get-x11-server-pid@{t_all} {
+profile consolekit.ck-get-x11-server-pid@{p_user} /usr/lib{,32,64}/ConsoleKit/ck-get-x11-server-pid@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/X-connection-strict>
   

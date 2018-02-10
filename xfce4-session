@@ -72,7 +72,8 @@ profile xfce4-session@{p_user} /usr/bin/xfce4-session@{t_user} {
   /usr/bin/xdg-user-dirs-update@{t_user}		Px,	# x11-misc/xdg-user-dirs
   /usr/bin/start-pulseaudio-x11@{t_user}		Px,	# media-sound/pulseaudio
   /usr/bin/mate-screensaver{,.sh}@{t_user}		Px,	# mate-extra/mate-screensaver
-  /usr/bin/pkexec@{t_user}				Px,	# sys-auth/polkit
+  /usr/bin/pkexec@{t_root}				Px,	# sys-auth/polkit
+  								# reboot/shutdown fallback, если проблемы с consolekit.
   /usr/bin/gnome-keyring-daemon@{t_user}		Px,	# gnome-base/gnome-keyring	# (в случае запуска через автозагрузку)
   /usr/bin/xfdesktop@{t_user}				Px,	# xfce-base/xfdesktop
   /usr/bin/xfwm4@{t_user}				Px,	# xfce-base/xfwm4

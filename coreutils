@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile coreutils.df@{p_all} /bin/df@{t_all} {
+profile coreutils.df@{p_user} /bin/df@{t_user} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -26,7 +26,23 @@ profile coreutils.df@{p_all} /bin/df@{t_all} {
   /bin/df						mr,
 }
 
-profile coreutils.stat@{p_all} /usr/bin/stat@{t_all} {
+profile coreutils.df@{p_root} /bin/df@{t_root} {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability dac_override,
+  capability dac_read_search,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  owner @{PROC_D}/@{pid}/mount{s,info}			r,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/df						mr,
+}
+
+profile coreutils.stat@{p_root} /usr/bin/stat@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -37,24 +53,40 @@ profile coreutils.stat@{p_all} /usr/bin/stat@{t_all} {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  @{PROC_D}/@{pid}/mount{s,info}			r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  owner @{PROC_D}/@{pid}/mount{s,info}			r,
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/stat						mr,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /tmp/dailyhomebackup.cron.@{TMP6}		w,	# backup_daily.sh.cron.daily
+  deny /tmp/rootbackup.cron.@{TMP6}			w,	# backup_weekly.sh.cron.weekly
 }
 
-profile coreutils.date@{p_all} /bin/date@{t_all} {
+profile coreutils.date@{p_mixed} /bin/date{@{t_root},@{t_user},@{t_logcheck}} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
   /bin/date						mr,
+  
+  # READS/WRITES ---------------------------------------
+  owner /var/tmp/portage/genkernel/*/initramfs-base-temp/etc/build_date w,	# DELEGATION! genkernel-next
+  
+  # DENY INHERIT ---------------------------------------
+  deny network inet dgram,					# conky_shell
+  deny network inet6 dgram,					# conky_shell
+  deny @{PROC_D}/uptime					r,	# conky_shell
+  deny @{PROC_D}/@{pids}/net/dev			r,	# conky_shell
+  deny /tmp/dailyhomebackup.cron.@{TMP6}		w,	# backup_daily.sh.cron.daily
+  deny /tmp/rootbackup.cron.@{TMP6}			w,	# backup_weekly.sh.cron.weekly
 }
 
-profile coreutils.uname@{p_all} /bin/uname@{t_all} flags=(attach_disconnected) {
+profile coreutils.uname@{p_mixed} /bin/uname{@{t_root},@{t_user},@{t_portage}} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -72,7 +104,7 @@ profile coreutils.uname@{p_all} /bin/uname@{t_all} flags=(attach_disconnected) {
   deny /tmp/Code::Blocks-@{USER}			w,	# dev-util/codeblocks
 }
 
-profile coreutils.tty@{p_all} /bin/tty@{t_all} {
+profile coreutils.tty@{p_mixed} /bin/tty{@{t_root},@{t_user}} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -83,7 +115,7 @@ profile coreutils.tty@{p_all} /bin/tty@{t_all} {
   /bin/tty						mr,
 }
 
-profile coreutils.tr@{p_all} /bin/tr@{t_all} flags=(attach_disconnected) {
+profile coreutils.tr@{p_mixed} /bin/tr{@{t_root},@{t_user},@{t_logcheck}} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -98,7 +130,7 @@ profile coreutils.tr@{p_all} /bin/tr@{t_all} flags=(attach_disconnected) {
   deny /tmp/@{TMP_SH}					r,	# app-portage/gentoolkit, gentoolkit.revdep-rebuild.sh
 }
 
-profile coreutils.sleep@{p_all} /bin/sleep@{t_all} {
+profile coreutils.sleep@{p_mixed} /bin/sleep{@{t_root},@{t_user}} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -114,7 +146,7 @@ profile coreutils.sleep@{p_all} /bin/sleep@{t_all} {
   deny /var/log/genkernel.log				w,	# sys-kernel/genkernel-next
 }
 
-profile coreutils.whoami@{p_all} /usr/bin/whoami@{t_all} {
+profile coreutils.whoami@{p_mixed} /usr/bin/whoami{@{t_root},@{t_user}} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -126,7 +158,7 @@ profile coreutils.whoami@{p_all} /usr/bin/whoami@{t_all} {
   /usr/bin/whoami					mr,
 }
 
-profile coreutils.id@{p_all} /usr/bin/id@{t_all} {
+profile coreutils.id@{p_mixed} /usr/bin/id{@{t_root},@{t_user},@{t_logcheck}} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -174,7 +206,7 @@ profile coreutils.stty@{p_root} /bin/stty@{t_root} {
   deny /etc/conf.d/dmcrypt				r,	# sys-fs/cryptsetup, cryptsetup.init.d
 }
 
-profile coreutils.basename@{p_all} /bin/basename@{t_all} {
+profile coreutils.basename@{p_mixed} /bin/basename{@{t_root},@{t_user},@{t_logcheck}} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -185,7 +217,7 @@ profile coreutils.basename@{p_all} /bin/basename@{t_all} {
   /bin/basename						mr,
 }
 
-profile coreutils.dirname@{p_all} /bin/dirname@{t_all} {
+profile coreutils.dirname@{p_mixed} /bin/dirname{@{t_root},@{t_user}} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -196,7 +228,7 @@ profile coreutils.dirname@{p_all} /bin/dirname@{t_all} {
   /bin/dirname						mr,
 }
 
-profile coreutils.echo@{p_all} /bin/echo@{t_all} {
+profile coreutils.echo@{p_mixed} /bin/echo{@{t_root},@{t_user}} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -225,7 +257,7 @@ profile coreutils.sync@{p_root} /bin/sync@{t_root} {
   /bin/sync						mr,
 }
 
-profile coreutils.true@{p_all} /bin/true@{t_all} {
+profile coreutils.true@{p_user} /bin/true@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -236,7 +268,7 @@ profile coreutils.true@{p_all} /bin/true@{t_all} {
   /bin/true						mr,
 }
 
-profile coreutils.uniq@{p_all} /usr/bin/uniq@{t_all} {
+profile coreutils.uniq@{p_root} /usr/bin/uniq@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -245,13 +277,9 @@ profile coreutils.uniq@{p_all} /usr/bin/uniq@{t_all} {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/uniq						mr,
-  
-  # DENY INHERIT ---------------------------------------
-  deny /tmp/rootbackup.cron.@{TMP6}			w,	# backup_weekly.sh.cron.weekly
-  deny /tmp/dailyhomebackup.cron.@{TMP6}		w,	# backup_daily.sh.cron.daily
 }
 
-profile coreutils.dircolors@{p_all} /usr/bin/dircolors@{t_all} {
+profile coreutils.dircolors@{p_mixed} /usr/bin/dircolors{@{t_root},@{t_user}} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------

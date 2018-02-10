@@ -107,7 +107,7 @@ profile make@{p_root} /usr/bin/{,g}make@{t_root} flags=(complain) {
     /bin/cat@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
     /bin/cut@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
     /bin/gzip@{t_root}					ix,	# app-arch/gzip		# FS ACCESS!
-    /bin/date@{t_root}					ix,	# sys-apps/coreutils	# FS ACCESS!
+    /bin/date@{t_root}					Px,	# sys-apps/coreutils
     /bin/dirname@{t_root}				Px,	# sys-apps/coreutils
     /bin/basename@{t_root}				Px,	# sys-apps/coreutils
     /bin/echo@{t_root}					Px,	# sys-apps/coreutils
@@ -131,7 +131,7 @@ profile make@{p_root} /usr/bin/{,g}make@{t_root} flags=(complain) {
     /usr/bin/pod2text-[0-9]*-perl-[0-9]*@{t_root}	Px,	# dev-lang/perl
     /usr/bin/pod2man-[0-9]*-perl-[0-9]*@{t_root}	Px,	# dev-lang/perl
     /usr/bin/od@{t_root}				ix,	# sys-apps/coreutils	# FS ACCESS!
-    /usr/bin/uniq@{t_root}				ix,	# sys-apps/coreutils	# FS ACCESS!
+    /usr/bin/uniq@{t_root}				Px,	# sys-apps/coreutils
     /usr/bin/which@{t_root}				Px,	# sys-apps/which
     /usr/bin/whoami@{t_root}				Px,	# sys-apps/coreutils
     /usr/bin/bc@{t_root}				ix,	# sys-devel/bc		# FS ACCESS!
@@ -142,7 +142,7 @@ profile make@{p_root} /usr/bin/{,g}make@{t_root} flags=(complain) {
     /usr/bin/gawk@{t_root}				ix,	# sys-apps/gawk		# FS ACCESS!
     /usr/bin/find@{t_root}				ix,	# sys-apps/findutils	# FS ACCESS!
     /usr/bin/pkg-config@{t_root}			Px,	# dev-util/pkgconfig
-    /usr/bin/stat@{t_root}				ix,	# sys-apps/coreutils
+    /usr/bin/stat@{t_root}				Px,	# sys-apps/coreutils
     /usr/bin/xargs@{t_root}				ix,	# sys-apps/findutils	# FS ACCESS!
     /usr/bin/gmake@{t_root}				Px,	# sys-devel/make
     /usr/bin/gcc@{t_root}				ix,	# sys-devel/gcc		# FIX ME! Вынести в отдельный профиль.

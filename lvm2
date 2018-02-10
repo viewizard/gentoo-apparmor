@@ -169,7 +169,7 @@ profile lvm2.fsadm@{p_root} /sbin/fsadm@{t_root} {
   @{shell}						mr,
   /bin/grep@{t_root}					Cx,	# sys-apps/grep
   /bin/readlink@{t_root}				Cx,	# sys-apps/coreutils
-  /bin/date@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/date@{t_root}					Px,	# sys-apps/coreutils
   /bin/mount@{t_root}					Cx,	# sys-apps/util-linux
   /sbin/blkid@{t_root}					Px,	# sys-apps/util-linux
   /sbin/tune2fs@{t_root}				Px,	# sys-fs/e2fsprogs
@@ -191,13 +191,6 @@ profile lvm2.fsadm@{p_root} /sbin/fsadm@{t_root} {
     
     # EXECUTABLES --------------------------------------
     /bin/readlink					mr,
-  }
-  
-  profile date /bin/date@{t_root} {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /bin/date						mr,
   }
   
   profile mount /bin/mount@{t_root} {

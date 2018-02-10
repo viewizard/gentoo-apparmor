@@ -12,7 +12,7 @@
 # UNIX -------------------------------------------------
 unix (send, receive, connect)
 	type=stream
-	peer=(addr="@/tmp/dbus-@{TMP10}",label="dbus.dbus-daemon@{p_all}"),
+	peer=(addr="@/tmp/dbus-@{TMP10}",label="dbus.dbus-daemon{@{p_root},@{p_user}}"),
 
 # DBUS -------------------------------------------------
 dbus send
@@ -34,7 +34,7 @@ dbus send
 	peer=(label="nettop@{p_root}"),				# nettop
 
 # EXECUTABLES ------------------------------------------
-/usr/bin/dbus-launch@{t_all}				Px,	# Все правильно, запускаем из "-strict", т.к.
+/usr/bin/dbus-launch{@{t_root},@{t_user}}		Px,	# Все правильно, запускаем из "-strict", т.к.
 								# почти везде используем именно "-strict".
 								# Ограничиваем профилем + саму сессию dbus.
 

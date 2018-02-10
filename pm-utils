@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile pm-utils.pm-is-supported@{p_all} /usr/bin/pm-is-supported@{t_all} {
+profile pm-utils.pm-is-supported@{p_mixed} /usr/bin/pm-is-supported{@{t_root},@{t_user}} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -23,20 +23,13 @@ profile pm-utils.pm-is-supported@{p_all} /usr/bin/pm-is-supported@{t_all} {
   # EXECUTABLES ----------------------------------------
   /usr/bin/pm-is-supported				r,
   @{shell}						mr,
-  /bin/tr@{t_all}					Cx,	# sys-apps/coreutils
-  /bin/grep@{t_all}					Cx,	# sys-apps/grep
+  /bin/tr{@{t_root},@{t_user}}				Px,	# sys-apps/coreutils
+  /bin/grep{@{t_root},@{t_user}}			Cx,	# sys-apps/grep
   
   # READS/WRITES ---------------------------------------
   /etc/pm/config.d/{,**}				r,
   
-  profile tr /bin/tr@{t_all} {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /bin/tr						mr,
-  }
-  
-  profile grep /bin/grep@{t_all} {
+  profile grep /bin/grep{@{t_root},@{t_user}} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------

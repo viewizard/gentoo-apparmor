@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile nullmailer.sendmail@{p_root} /usr/sbin/sendmail{@{t_root},@{t_logcheck}} flags=(attach_disconnected) {
+profile nullmailer.sendmail@{p_mixed} /usr/sbin/sendmail{@{t_root},@{t_logcheck}} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -28,7 +28,7 @@ profile nullmailer.sendmail@{p_root} /usr/sbin/sendmail{@{t_root},@{t_logcheck}}
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile nullmailer.nullmailer-inject@{p_root} /usr/bin/nullmailer-inject{@{t_root},@{t_logcheck}} flags=(attach_disconnected) {
+profile nullmailer.nullmailer-inject@{p_mixed} /usr/bin/nullmailer-inject{@{t_root},@{t_logcheck}} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
