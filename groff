@@ -77,3 +77,62 @@ profile groff.nroff@{p_root} /usr/bin/nroff@{t_root} {
   # DENY INHERIT ---------------------------------------
   deny /var/cache/man/**				rw,	# sys-apps/man-db, man-db.man
 }
+
+profile groff.neqn@{p_mixed} /usr/bin/neqn{@{t_root},@{t_man}} {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/neqn						r,
+  @{shell}						mr,
+  /usr/bin/eqn@{t_root}					Px,
+}
+
+profile groff.eqn@{p_root} /usr/bin/eqn@{t_root} {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/eqn						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/groff/{,**}				r,
+}
+
+profile tbl@{p_root} /usr/bin/tbl@{t_root} {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/tbl						mr,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /var/cache/man/**				rw,	# man-db.man
+}
+
+profile preconv@{p_root} /usr/bin/preconv@{t_root} {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/preconv					mr,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /var/cache/man/**				rw,	# man-db.man
+}

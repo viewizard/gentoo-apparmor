@@ -11,10 +11,10 @@
 # BUILD SYSTEM ONLY!
 
 # EXECUTABLES ------------------------------------------
-/usr/src/@{kernel}/scripts/{,**/}*@{t_root}		ix,	# Все правильно, ix. Чтобы подписывать модули ядра,
+/usr/src/@{kernel}/scripts/{,**/}*{@{t_root},@{t_portage}} ix,	# Все правильно, ix. Чтобы подписывать модули ядра,
 								# ставим IMA hash в IMA policy для make//sandbox профиля.
-/usr/src/@{kernel}/tools/{,**/}*@{t_root}		ix,
-/var/tmp/portage/*/*/{,**/}*@{t_root}			ix,
-/usr/src/@{kernel}/scripts/{,**/}*@{t_root}		m,
-/usr/src/@{kernel}/tools/{,**/}*@{t_root}		m,
-/var/tmp/portage/*/*/{,**/}*@{t_root}			m,
+/usr/src/@{kernel}/tools/{,**/}*{@{t_root},@{t_portage}} ix,
+/var/tmp/portage/*/*/{,**/}*{@{t_root},@{t_portage}}	ix,
+/usr/src/@{kernel}/scripts/{,**/}*			m,
+/usr/src/@{kernel}/tools/{,**/}*			m,
+/var/tmp/portage/*/*/{,**/}*				m,

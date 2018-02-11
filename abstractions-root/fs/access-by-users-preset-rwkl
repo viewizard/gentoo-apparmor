@@ -8,7 +8,7 @@
 #
 # ------------------------------------------------------------------
 
-# доступ к файлам в @{ROOT_HOME_D}, /mnt и /media с пользовательской
+# доступ к файлам в @{ROOT_HOME_D}, gvfs, /mnt и /media с пользовательской
 # предустановкой для abstractions/fs/access-by-user-preset-rwkl
 
 #include <abstractions-root/fs/access-by-pattern-xdg-open>
@@ -19,6 +19,10 @@ owner @{ROOT_HOME_D}/					r,
 owner @{ROOT_HOME_D}/@{USERS_DIR_rwkl}/			r,
 owner @{ROOT_HOME_D}/@{USERS_FILE_rwkl}			rwk,
 owner @{ROOT_HOME_D}/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl} rwk,
+owner @{ROOT_HOME_D}/.gvfs/				r,	# gnome-base/gvfs
+owner @{ROOT_HOME_D}/.gvfs/*/@{USERS_DIR_rwkl}/		r,	# gnome-base/gvfs
+owner @{ROOT_HOME_D}/.gvfs/*/@{USERS_FILE_rwkl}		rwk,	# gnome-base/gvfs
+owner @{ROOT_HOME_D}/.gvfs/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl} rwk,	# gnome-base/gvfs
 /media/{,*/}						r,
 /media/*/@{USERS_DIR_rwkl}/				r,
 /media/*/@{USERS_FILE_rwkl}				rwk,
@@ -30,6 +34,8 @@ owner @{ROOT_HOME_D}/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl} rwk,
 
 owner link subset @{ROOT_HOME_D}/@{USERS_FILE_rwkl}	-> @{ROOT_HOME_D}/@{USERS_FILE_rwkl},
 owner link subset @{ROOT_HOME_D}/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl} -> @{ROOT_HOME_D}/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl},
+owner link subset @{ROOT_HOME_D}/.gvfs/*/@{USERS_FILE_rwkl} -> @{ROOT_HOME_D}/.gvfs/*/@{USERS_FILE_rwkl},
+owner link subset @{ROOT_HOME_D}/.gvfs/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl} -> @{ROOT_HOME_D}/.gvfs/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl},
 link subset /media/*/@{USERS_FILE_rwkl}			-> /media/*/@{USERS_FILE_rwkl},
 link subset /media/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl} -> /media/*/@{USERS_DIR_rwkl}/@{USERS_FILE_rwkl},
 link subset /mnt/*/@{USERS_FILE_rwkl}			-> /mnt/*/@{USERS_FILE_rwkl},

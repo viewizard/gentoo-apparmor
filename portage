@@ -292,18 +292,18 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /etc/portage/bin/{,**/}*@{t_root}			ix,
+    /etc/portage/bin/{,**/}*{@{t_root},@{t_portage}}	ix,
     /bin/{,**/}*{@{t_root},@{t_portage}}		ix,
-    /sbin/{,**/}*@{t_root}				ix,
+    /sbin/{,**/}*{@{t_root},@{t_portage}}		ix,
     /sbin/udevadm@{t_root}				Px,	# sys-fs/eudev
-    /opt/{,**/}*@{t_root}				ix,
-    /usr/bin/{,**/}*@{t_root}				ix,
+    /opt/{,**/}*{@{t_root},@{t_portage}}		ix,
+    /usr/bin/{,**/}*{@{t_root},@{t_portage}}		ix,
     /usr/sbin/useradd@{t_root}				Px,	# sys-apps/shadow
     /usr/sbin/groupadd@{t_root}				Px,	# sys-apps/shadow
     /usr/sbin/lspci@{t_root}				Px,	# sys-apps/pciutils
-    /usr/sbin/{,**/}*@{t_root}				ix,
-    /usr/lib{,32,64,exec}/{,**/}*@{t_root}		ix,
-    /usr/@{CHOST}/{,**/}*@{t_root}			ix,
+    /usr/sbin/{,**/}*{@{t_root},@{t_portage}}		ix,
+    /usr/lib{,32,64,exec}/{,**/}*{@{t_root},@{t_portage}} ix,
+    /usr/@{CHOST}/{,**/}*{@{t_root},@{t_portage}}	ix,
     /lib{,32,64}/rc/sh/gendepends.sh@{t_root}		Px,	# sys-apps/openrc
     /lib{,32,64}/rc/sh/migrate-to-run.sh@{t_root}	ix,	# sys-apps/openrc
     /lib{,32,64}/rc/bin/*@{t_root}			ix,	# sys-apps/openrc
