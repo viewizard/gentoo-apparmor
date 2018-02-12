@@ -1,0 +1,19 @@
+Исправление для сборки.
+Сборка с выключенным CONFIG_SECURITY_APPARMOR_HASH.
+
+--- a/security/apparmor/include/crypto.h
++++ b/security/apparmor/include/crypto.h
+@@ -39,11 +39,11 @@
+ 	return 0;
+ }
+ 
+-void aa_snprint_hashstr(char *out, unsigned char *hash, unsigned int hsize)
++static inline void aa_snprint_hashstr(char *out, unsigned char *hash, unsigned int hsize)
+ {
+ }
+ 
+-char *aa_asprint_hashstr(unsigned char *hash, unsigned int hsize, gfp_t gfp)
++static inline char *aa_asprint_hashstr(unsigned char *hash, unsigned int hsize, gfp_t gfp)
+ {
+ 	return NULL;
+ }

@@ -1,0 +1,376 @@
+ima: add apparmor policy matching
+
+https://sourceforge.net/p/linux-ima/mailman/linux-ima-devel/thread/20170829190401.18056-1-mjg59%40google.com/#msg36017307
+
+IMA has support for matching based on security context, but this is
+currently limited to modules that implement the audit_rule_match hook.
+The infrastructure around this seems to depend on having 32 bit security
+IDs to reference the policy associated with tasks or files, which
+doesn't seem to be a concept that Apparmor really has. So, this
+implementation ignores the abstraction and calls through to Apparmor
+directly.
+
+Changes in v2:
+1) Added rcu lock in aa_task_profile_match(), since we need it for non current proccess.
+2) Changed for hname, since we need hierarchical name.
+3) Added work with new proccess bprm structure.
+4) Добавлена работа с маской в "aa_profile=" (символ "*" в конце, чтобы не учитывать остальную часть при сравнении с именем профиля).
+5) Добавлена работа с инверсией в "aa_profile=" если передавать первым символом '!' (разрешать любой профиль, кроме переданного). Работа с маской "*" в инверсии не предусмотрена.
+6) Добавлена опция cmd ядра "ima_apparmor=off" для отключения правил "aa_profile=" (отключает опцию в политиках IMA не требуя изменения файла правил).
+
+
+Signed-off-by: Matthew Garrett <mjg59@google.com>
+Signed-off-by: Mikhail Kurinnoi <viewizard@viewizard.com>
+
+
+diff -uprN -X /usr/src/linux-4.14.11-gentoo-r2/Documentation/dontdiff /usr/src/linux-4.14.11-gentoo-r2.base/include/linux/apparmor.h /usr/src/linux-4.14.11-gentoo-r2/include/linux/apparmor.h
+--- a/include/linux/apparmor.h	1970-01-01 03:00:00.000000000 +0300
++++ b/include/linux/apparmor.h	2018-01-06 12:52:41.157992695 +0300
+@@ -0,0 +1,16 @@
++#ifndef _APPARMOR_H_
++
++struct linux_binprm;
++
++#ifdef CONFIG_SECURITY_APPARMOR
++int aa_task_profile_match(struct linux_binprm *bprm, struct task_struct *tsk,
++			  const char *profile);
++#else
++static int aa_task_profile_match(struct linux_binprm *bprm,
++				 struct task_struct *tsk, const char *profile)
++{
++	return 0;
++}
++#endif
++
++#endif
+diff -uprN -X /usr/src/linux-4.14.11-gentoo-r2/Documentation/dontdiff /usr/src/linux-4.14.11-gentoo-r2.base/security/apparmor/lib.c /usr/src/linux-4.14.11-gentoo-r2/security/apparmor/lib.c
+--- a/security/apparmor/lib.c	2017-11-12 21:46:13.000000000 +0300
++++ b/security/apparmor/lib.c	2018-01-06 12:53:41.340090414 +0300
+@@ -17,9 +17,11 @@
+ #include <linux/slab.h>
+ #include <linux/string.h>
+ #include <linux/vmalloc.h>
++#include <linux/apparmor.h>
+ 
+ #include "include/audit.h"
+ #include "include/apparmor.h"
++#include "include/context.h"
+ #include "include/lib.h"
+ #include "include/perms.h"
+ #include "include/policy.h"
+@@ -385,6 +387,62 @@ void aa_profile_match_label(struct aa_pr
+ 	aa_label_match(profile, label, state, false, request, perms);
+ }
+ 
++/**
++ * aa_task_profile_match - check whether a task is using the specified profile
++ * @bprm - bprm structure to extract creds from.
++ * @tsk - task to verify. Ignored if @bprm is not NULL.
++ * @name - name of the profile to search for.
++ */
++int aa_task_profile_match(struct linux_binprm *bprm, struct task_struct *tsk,
++			   const char *name)
++{
++	struct aa_label *label;
++	struct aa_profile *profile;
++	struct aa_task_ctx *ctx;
++	struct label_it i;
++	const struct cred *cred;
++	size_t name_len = strlen(name);
++
++	if (bprm) {
++		rcu_read_lock();
++		ctx = cred_ctx(bprm->cred);
++		if (!ctx || !ctx->label) { /* probably, apparmor disabled */
++			rcu_read_unlock();
++			return 0;
++		}
++		label = aa_get_newest_label(ctx->label);
++		rcu_read_unlock();
++	} else {
++		cred = __task_cred(tsk);
++		ctx = cred_ctx(cred);
++		if (!ctx || !ctx->label) /* probably, apparmor disabled */
++			return 0;
++		label = aa_get_newest_label(ctx->label);
++	}
++
++	/* special case - allow any, except started with '!' symbol */
++	if (name[0] == '!') {
++		label_for_each(i, label, profile) {
++			/* ignore first symbol '!', start from name+1 */
++			if (strcmp(name+1, profile->base.hname) == 0)
++				return 0;
++		}
++		return 1;
++	}
++
++	label_for_each(i, label, profile) {
++		//printk(KERN_ALERT "IMA_AA_DEBUG: aa_apparmor=%s hname=%s\n", name, profile->base.hname);
++		if ((name_len > 0) && (name[name_len - 1] == '*')) {
++			if (strncmp(name, profile->base.hname, name_len - 1) == 0)
++				return 1;
++		} else {
++			if (strcmp(name, profile->base.hname) == 0)
++				return 1;
++		}
++	}
++
++	return 0;
++}
+ 
+ /* currently unused */
+ int aa_profile_label_perm(struct aa_profile *profile, struct aa_profile *target,
+diff -uprN -X /usr/src/linux-4.14.11-gentoo-r2/Documentation/dontdiff /usr/src/linux-4.14.11-gentoo-r2.base/security/integrity/ima/ima_api.c /usr/src/linux-4.14.11-gentoo-r2/security/integrity/ima/ima_api.c
+--- a/security/integrity/ima/ima_api.c	2018-01-06 12:52:23.122664839 +0300
++++ b/security/integrity/ima/ima_api.c	2018-01-06 12:52:41.163992804 +0300
+@@ -173,13 +173,13 @@ err_out:
+  *
+  */
+ int ima_get_action(struct dentry *dentry, struct inode *inode, int mask,
+-		   enum ima_hooks func, int *pcr)
++		   enum ima_hooks func, int *pcr, struct linux_binprm *bprm)
+ {
+ 	int flags = IMA_MEASURE | IMA_AUDIT | IMA_APPRAISE;
+ 
+ 	flags &= ima_policy_flag;
+ 
+-	return ima_match_policy(dentry, inode, func, mask, flags, pcr);
++	return ima_match_policy(dentry, inode, func, mask, flags, pcr, bprm);
+ }
+ 
+ /*
+diff -uprN -X /usr/src/linux-4.14.11-gentoo-r2/Documentation/dontdiff /usr/src/linux-4.14.11-gentoo-r2.base/security/integrity/ima/ima_appraise.c /usr/src/linux-4.14.11-gentoo-r2/security/integrity/ima/ima_appraise.c
+--- a/security/integrity/ima/ima_appraise.c	2018-01-06 12:52:23.123664857 +0300
++++ b/security/integrity/ima/ima_appraise.c	2018-01-06 12:52:41.162992786 +0300
+@@ -54,7 +54,7 @@ int ima_must_appraise(struct dentry *den
+ 	if (!ima_appraise)
+ 		return 0;
+ 
+-	return ima_match_policy(dentry, inode, func, mask, IMA_APPRAISE, NULL);
++	return ima_match_policy(dentry, inode, func, mask, IMA_APPRAISE, NULL, NULL);
+ }
+ 
+ int ima_must_appraise_hardlink(struct inode *inode, int mask, enum ima_hooks func)
+diff -uprN -X /usr/src/linux-4.14.11-gentoo-r2/Documentation/dontdiff /usr/src/linux-4.14.11-gentoo-r2.base/security/integrity/ima/ima.h /usr/src/linux-4.14.11-gentoo-r2/security/integrity/ima/ima.h
+--- a/security/integrity/ima/ima.h	2018-01-06 12:52:23.124664876 +0300
++++ b/security/integrity/ima/ima.h	2018-01-06 12:52:41.165992841 +0300
+@@ -58,6 +58,9 @@ extern int ima_used_chip;
+ extern int ima_hash_algo;
+ extern int ima_appraise;
+ 
++/* apparmor support */
++extern int ima_apparmor_support;
++
+ /* path rules in policy */
+ extern bool ima_path_rules;
+ 
+@@ -195,7 +198,7 @@ enum ima_hooks {
+ 
+ /* LIM API function definitions */
+ int ima_get_action(struct dentry *dentry, struct inode *inode, int mask,
+-		   enum ima_hooks func, int *pcr);
++		   enum ima_hooks func, int *pcr, struct linux_binprm *bprm);
+ int ima_must_measure(struct inode *inode, int mask, enum ima_hooks func);
+ int ima_collect_measurement(struct integrity_iint_cache *iint,
+ 			    struct file *file, void *buf, loff_t size,
+@@ -216,7 +219,8 @@ const char *ima_d_path(const struct path
+ 
+ /* IMA policy related functions */
+ int ima_match_policy(struct dentry *dentry, struct inode *inode,
+-		     enum ima_hooks func, int mask, int flags, int *pcr);
++		     enum ima_hooks func, int mask, int flags, int *pcr,
++		     struct linux_binprm *bprm);
+ void ima_init_policy(void);
+ void ima_update_policy(void);
+ void ima_update_policy_flag(void);
+diff -uprN -X /usr/src/linux-4.14.11-gentoo-r2/Documentation/dontdiff /usr/src/linux-4.14.11-gentoo-r2.base/security/integrity/ima/ima_main.c /usr/src/linux-4.14.11-gentoo-r2/security/integrity/ima/ima_main.c
+--- a/security/integrity/ima/ima_main.c	2018-01-06 12:52:23.125664894 +0300
++++ b/security/integrity/ima/ima_main.c	2018-01-06 12:52:41.164992823 +0300
+@@ -35,6 +35,9 @@ int ima_appraise = IMA_APPRAISE_ENFORCE;
+ int ima_appraise;
+ #endif
+ 
++/* apparmor support enabled by default */
++int ima_apparmor_support = 1;
++
+ int ima_hash_algo = HASH_ALGO_SHA1;
+ static int hash_setup_done;
+ 
+@@ -70,6 +73,15 @@ out:
+ }
+ __setup("ima_hash=", hash_setup);
+ 
++static int __init ima_apparmor_setup(char *str)
++{
++	if (strncmp(str, "off", 3) == 0)
++		ima_apparmor_support = 0;
++
++	return 1;
++}
++__setup("ima_apparmor=", ima_apparmor_setup);
++
+ /*
+  * ima_rdwr_violation_check
+  *
+@@ -196,7 +208,8 @@ out:
+ }
+ 
+ static int process_measurement(struct file *file, char *buf, loff_t size,
+-			       int mask, enum ima_hooks func, int opened)
++			       int mask, enum ima_hooks func, int opened,
++			       struct linux_binprm *bprm)
+ {
+ 	struct inode *inode = file_inode(file);
+ 	struct integrity_iint_cache *iint = NULL;
+@@ -218,7 +231,7 @@ static int process_measurement(struct fi
+ 	 * bitmask based on the appraise/audit/measurement policy.
+ 	 * Included is the appraise submask.
+ 	 */
+-	action = ima_get_action(file->f_path.dentry, inode, mask, func, &pcr);
++	action = ima_get_action(file->f_path.dentry, inode, mask, func, &pcr, bprm);
+ 	violation_check = ((func == FILE_CHECK || func == MMAP_CHECK) &&
+ 			   (ima_policy_flag & IMA_MEASURE));
+ 
+@@ -350,7 +363,7 @@ int ima_file_mmap(struct file *file, uns
+ {
+ 	if (file && (prot & PROT_EXEC))
+ 		return process_measurement(file, NULL, 0, MAY_EXEC,
+-					   MMAP_CHECK, 0);
++					   MMAP_CHECK, 0, NULL);
+ 	return 0;
+ }
+ 
+@@ -370,7 +383,7 @@ int ima_file_mmap(struct file *file, uns
+ int ima_bprm_check(struct linux_binprm *bprm)
+ {
+ 	return process_measurement(bprm->file, NULL, 0, MAY_EXEC,
+-				   BPRM_CHECK, 0);
++				   BPRM_CHECK, 0, bprm);
+ }
+ 
+ /**
+@@ -387,7 +400,7 @@ int ima_file_check(struct file *file, in
+ {
+ 	return process_measurement(file, NULL, 0,
+ 				   mask & (MAY_READ | MAY_WRITE | MAY_EXEC |
+-					   MAY_APPEND), FILE_CHECK, opened);
++					   MAY_APPEND), FILE_CHECK, opened, NULL);
+ }
+ EXPORT_SYMBOL_GPL(ima_file_check);
+ 
+@@ -480,7 +493,7 @@ int ima_post_read_file(struct file *file
+ 	}
+ 
+ 	func = read_idmap[read_id] ?: FILE_CHECK;
+-	return process_measurement(file, buf, size, MAY_READ, func, 0);
++	return process_measurement(file, buf, size, MAY_READ, func, 0, NULL);
+ }
+ 
+ static int __init init_ima(void)
+diff -uprN -X /usr/src/linux-4.14.11-gentoo-r2/Documentation/dontdiff /usr/src/linux-4.14.11-gentoo-r2.base/security/integrity/ima/ima_policy.c /usr/src/linux-4.14.11-gentoo-r2/security/integrity/ima/ima_policy.c
+--- a/security/integrity/ima/ima_policy.c	2018-01-06 12:52:23.126664912 +0300
++++ b/security/integrity/ima/ima_policy.c	2018-01-06 12:52:41.161992768 +0300
+@@ -20,6 +20,7 @@
+ #include <linux/rculist.h>
+ #include <linux/genhd.h>
+ #include <linux/seq_file.h>
++#include <linux/apparmor.h>
+ 
+ #include "ima.h"
+ 
+@@ -49,9 +50,9 @@ int ima_policy_flag;
+ static int temp_ima_appraise;
+ bool ima_path_rules = false;
+ 
+-#define MAX_LSM_RULES 6
++#define MAX_LSM_RULES 7
+ enum lsm_rule_types { LSM_OBJ_USER, LSM_OBJ_ROLE, LSM_OBJ_TYPE,
+-	LSM_SUBJ_USER, LSM_SUBJ_ROLE, LSM_SUBJ_TYPE
++	LSM_SUBJ_USER, LSM_SUBJ_ROLE, LSM_SUBJ_TYPE, LSM_AA_PROFILE
+ };
+ 
+ enum policy_types { ORIGINAL_TCB = 1, DEFAULT_TCB };
+@@ -251,7 +252,8 @@ static void ima_lsm_update_rules(void)
+  * Returns true on rule match, false on failure.
+  */
+ static bool ima_match_rules(struct ima_rule_entry *rule, struct inode *inode,
+-			    enum ima_hooks func, int mask, const char *pathname)
++			    enum ima_hooks func, int mask, const char *pathname,
++			    struct linux_binprm *bprm)
+ {
+ 	struct task_struct *tsk = current;
+ 	const struct cred *cred = current_cred();
+@@ -367,6 +369,10 @@ retry:
+ 							Audit_equal,
+ 							rule->lsm[i].rule,
+ 							NULL);
++			break;
++		case LSM_AA_PROFILE:
++			rc = aa_task_profile_match(bprm, tsk,
++						   rule->lsm[i].args_p);
+ 		default:
+ 			break;
+ 		}
+@@ -419,7 +425,7 @@ static int get_subaction(struct ima_rule
+  * than writes so ima_match_policy() is classical RCU candidate.
+  */
+ int ima_match_policy(struct dentry *dentry, struct inode *inode, enum ima_hooks func,
+-		     int mask, int flags, int *pcr)
++		     int mask, int flags, int *pcr, struct linux_binprm *bprm)
+ {
+ 	struct ima_rule_entry *entry;
+ 	int action = 0, actmask = flags | (flags << 1);
+@@ -443,7 +449,7 @@ int ima_match_policy(struct dentry *dent
+ 		if (!(entry->action & actmask))
+ 			continue;
+ 
+-		if (!ima_match_rules(entry, inode, func, mask, pathname))
++		if (!ima_match_rules(entry, inode, func, mask, pathname, bprm))
+ 			continue;
+ 
+ 		action |= entry->flags & IMA_ACTION_FLAGS;
+@@ -595,7 +601,7 @@ enum {
+ 	Opt_audit,
+ 	Opt_obj_user, Opt_obj_role, Opt_obj_type,
+ 	Opt_subj_user, Opt_subj_role, Opt_subj_type,
+-	Opt_func, Opt_mask, Opt_fsmagic,
++	Opt_aa_profile, Opt_func, Opt_mask, Opt_fsmagic,
+ 	Opt_fsuuid, Opt_uid_eq, Opt_euid_eq, Opt_fowner_eq,
+ 	Opt_uid_gt, Opt_euid_gt, Opt_fowner_gt,
+ 	Opt_uid_lt, Opt_euid_lt, Opt_fowner_lt,
+@@ -615,6 +621,7 @@ static match_table_t policy_tokens = {
+ 	{Opt_subj_user, "subj_user=%s"},
+ 	{Opt_subj_role, "subj_role=%s"},
+ 	{Opt_subj_type, "subj_type=%s"},
++	{Opt_aa_profile, "aa_profile=%s"},
+ 	{Opt_func, "func=%s"},
+ 	{Opt_mask, "mask=%s"},
+ 	{Opt_fsmagic, "fsmagic=%s"},
+@@ -916,6 +923,15 @@ static int ima_parse_rule(char *rule, st
+ 						   LSM_SUBJ_TYPE,
+ 						   AUDIT_SUBJ_TYPE);
+ 			break;
++		case Opt_aa_profile:
++			if (!ima_apparmor_support)
++				break; /* disable apparmor support */
++			ima_log_string(ab, "aa_profile", args[0].from);
++			entry->lsm[LSM_AA_PROFILE].args_p = match_strdup(args);
++			entry->lsm[LSM_AA_PROFILE].rule = 1;	// выдает варнинг при компиляции, игнорировать, не используем параметр, но он должен быть не нулевой (!)
++			if (!entry->lsm[LSM_AA_PROFILE].args_p)
++				result = -ENOMEM;
++			break;
+ 		case Opt_appraise_type:
+ 			if (entry->action != APPRAISE) {
+ 				result = -EINVAL;
+@@ -1224,6 +1240,10 @@ int ima_policy_show(struct seq_file *m,
+ 				seq_printf(m, pt(Opt_subj_type),
+ 					   (char *)entry->lsm[i].args_p);
+ 				break;
+++			case LSM_AA_PROFILE:
+++				seq_printf(m, pt(Opt_aa_profile),
+++					   (char *)entry->lsm[i].args_p);
+++				break;
+ 			}
+ 		}
+ 	}

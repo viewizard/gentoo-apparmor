@@ -1,0 +1,135 @@
+Работа с default профилем.
+
+ВАЖНО!!! Профиль default можно перезагружать, но нельзя выгружать.
+Данный код убран из апстрима из-за ряда проблем + его планируется
+реализовать с включением через cmd загрузки ядра.
+
+Корректировать aa_setup_default_label(), смотри на 
+/usr/src/linux-4.12.12-gentoo/security/apparmor/policy_ns.c - alloc_ns()
+если добавлены поля инициализации - учесть!
+
+
+diff -uprN -X /usr/src/linux-4.14.11-gentoo-r2/Documentation/dontdiff /usr/src/linux-4.14.11-gentoo-r2.base/security/apparmor/include/apparmor.h /usr/src/linux-4.14.11-gentoo-r2/security/apparmor/include/apparmor.h
+--- a/security/apparmor/include/apparmor.h	2017-12-21 01:49:22.545721000 +0300
++++ b/security/apparmor/include/apparmor.h	2018-01-06 13:42:23.537468482 +0300
+@@ -43,5 +43,6 @@ extern bool aa_g_lock_policy;
+ extern bool aa_g_logsyscall;
+ extern bool aa_g_paranoid_load;
+ extern unsigned int aa_g_path_max;
++extern bool aa_g_unconfined_init;
+ 
+ #endif /* __APPARMOR_H */
+diff -uprN -X /usr/src/linux-4.14.11-gentoo-r2/Documentation/dontdiff /usr/src/linux-4.14.11-gentoo-r2.base/security/apparmor/include/policy.h /usr/src/linux-4.14.11-gentoo-r2/security/apparmor/include/policy.h
+--- a/security/apparmor/include/policy.h	2017-12-21 01:49:22.550721000 +0300
++++ b/security/apparmor/include/policy.h	2018-01-06 13:50:09.752814489 +0300
+@@ -174,6 +174,9 @@ void aa_add_profile(struct aa_policy *co
+ 
+ 
+ void aa_free_proxy_kref(struct kref *kref);
++
++struct aa_label *aa_setup_default_label(void);
++
+ struct aa_profile *aa_alloc_profile(const char *name, struct aa_proxy *proxy,
+ 				    gfp_t gfp);
+ struct aa_profile *aa_new_null_profile(struct aa_profile *parent, bool hat,
+diff -uprN -X /usr/src/linux-4.14.11-gentoo-r2/Documentation/dontdiff /usr/src/linux-4.14.11-gentoo-r2.base/security/apparmor/Kconfig /usr/src/linux-4.14.11-gentoo-r2/security/apparmor/Kconfig
+--- a/security/apparmor/Kconfig	2017-12-21 01:49:22.539720000 +0300
++++ b/security/apparmor/Kconfig	2018-01-06 13:39:49.514782945 +0300
+@@ -30,6 +30,30 @@ config SECURITY_APPARMOR_BOOTPARAM_VALUE
+ 
+ 	  If you are unsure how to answer this question, answer 1.
+ 
++config SECURITY_APPARMOR_UNCONFINED_INIT
++	bool "Set init to unconfined on boot"
++	depends on SECURITY_APPARMOR
++	default y
++	help
++	  This option determines policy behavior during early boot by
++	  placing the init process in the unconfined state, or the
++	  'default' profile.
++
++	  This option determines policy behavior during early boot by
++	  placing the init process in the unconfined state, or the
++	  'default' profile.
++
++	  'Y' means init and its children are not confined, unless the
++	  init process is re-execed after a policy load; loaded policy
++	  will only apply to processes started after the load.
++
++	  'N' means init and its children are confined in a profile
++	  named 'default', which can be replaced later and thus
++	  provide for confinement for processes started early at boot,
++	  though not confined during early boot.
++
++	  If you are unsure how to answer this question, answer Y.
++
+ config SECURITY_APPARMOR_HASH
+ 	bool "Enable introspection of sha1 hashes for loaded profiles"
+ 	depends on SECURITY_APPARMOR
+diff -uprN -X /usr/src/linux-4.14.11-gentoo-r2/Documentation/dontdiff /usr/src/linux-4.14.11-gentoo-r2.base/security/apparmor/lsm.c /usr/src/linux-4.14.11-gentoo-r2/security/apparmor/lsm.c
+--- a/security/apparmor/lsm.c	2018-01-06 13:29:52.149753692 +0300
++++ b/security/apparmor/lsm.c	2018-01-06 13:42:01.346044634 +0300
+@@ -1313,6 +1313,12 @@ module_param_named(paranoid_load, aa_g_p
+ static bool apparmor_enabled = CONFIG_SECURITY_APPARMOR_BOOTPARAM_VALUE;
+ module_param_named(enabled, apparmor_enabled, bool, S_IRUGO);
+ 
++/* Boot time to set use of default or unconfined as initial profile */
++bool aa_g_unconfined_init = IS_ENABLED(CONFIG_SECURITY_APPARMOR_UNCONFINED_INIT);
++#ifdef CONFIG_SECURITY_APPARMOR_UNCONFINED_INIT
++module_param_named(unconfined, aa_g_unconfined_init, aabool, S_IRUGO);
++#endif
++
+ static int __init apparmor_enabled_setup(char *str)
+ {
+ 	unsigned long enabled;
+@@ -1465,7 +1471,15 @@ static int __init set_init_ctx(void)
+ 	if (!ctx)
+ 		return -ENOMEM;
+ 
+-	ctx->label = aa_get_label(ns_unconfined(root_ns));
++	if (!aa_g_unconfined_init) {
++		ctx->label = aa_setup_default_label();
++		if (!ctx->label) {
++			aa_free_task_context(ctx);
++			return -ENOMEM;
++		}
++		/* fs setup of default is done in aa_create_aafs() */
++	} else
++		ctx->label = aa_get_label(ns_unconfined(root_ns));
+ 	cred_ctx(cred) = ctx;
+ 
+ 	return 0;
+diff -uprN -X /usr/src/linux-4.14.11-gentoo-r2/Documentation/dontdiff /usr/src/linux-4.14.11-gentoo-r2.base/security/apparmor/policy.c /usr/src/linux-4.14.11-gentoo-r2/security/apparmor/policy.c
+--- a/security/apparmor/policy.c	2018-01-06 13:26:23.380313000 +0300
++++ b/security/apparmor/policy.c	2018-01-06 13:44:01.840441303 +0300
+@@ -289,6 +289,30 @@ fail:
+ 	return NULL;
+ }
+ 
++/**
++ * aa_setup_default_label - create the initial default label
++ */
++struct aa_label *aa_setup_default_label(void)
++{
++	struct aa_profile *profile = aa_alloc_profile("default", NULL,
++						      GFP_KERNEL);
++	if (!profile)
++		return NULL;
++
++	/* the default profile pretends to be unconfined until it is replaced */
++	profile->label.flags |= FLAG_IX_ON_NAME_ERROR | FLAG_UNCONFINED;
++	profile->mode = APPARMOR_UNCONFINED;
++	profile->file.dfa = aa_get_dfa(nulldfa);
++	profile->policy.dfa = aa_get_dfa(nulldfa);
++
++
++	profile->ns = aa_get_ns(root_ns);
++
++	__add_profile(&root_ns->base.profiles, profile);
++
++	return &profile->label;
++}
++
+ /* TODO: profile accounting - setup in remove */
+ 
+ /**

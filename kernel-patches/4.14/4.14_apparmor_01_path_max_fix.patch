@@ -1,0 +1,20 @@
+Корректируем максимально поддерживаемую длину имени файла, чтобы во время сборки
+portage-м некоторый пакетов (проверка поддержки макс. длины имени файлов),
+не выдавало ошибок в аудит журнале (превышение макс. длины имени файла).
+
+http://wiki.apparmor.net/index.php/FAQ#Failed_name_lookup_-_name_too_long
+
+В обычной работе системы не встречается, нужен только для сервера сборки.
+
+diff -uprN -X /usr/src/linux-4.14.11-gentoo-r2/Documentation/dontdiff /usr/src/linux-4.14.11-gentoo-r2.base/security/apparmor/lsm.c /usr/src/linux-4.14.11-gentoo-r2/security/apparmor/lsm.c
+--- a/security/apparmor/lsm.c	2017-12-24 02:16:53.480407000 +0300
++++ b/security/apparmor/lsm.c	2018-01-06 13:28:32.195427432 +0300
+@@ -1298,7 +1298,7 @@ bool aa_g_logsyscall;
+ module_param_named(logsyscall, aa_g_logsyscall, aabool, S_IRUSR | S_IWUSR);
+ 
+ /* Maximum pathname length before accesses will start getting rejected */
+-unsigned int aa_g_path_max = 2 * PATH_MAX;
++unsigned int aa_g_path_max = 3 * PATH_MAX;
+ module_param_named(path_max, aa_g_path_max, aauint, S_IRUSR);
+ 
+ /* Determines how paranoid loading of policy is and how much verification

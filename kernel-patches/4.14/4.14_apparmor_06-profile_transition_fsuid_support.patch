@@ -1,0 +1,47 @@
+profile_transition fsuid support.
+
+На данный момент есть ограничения:
+1) Нельзя сделать более 12 именованных симлинков (ограничение Apparmor);
+2) неймспейсы работают только в "одну сторону" (зона видимости и
+   перехода пока ограничена только вложенными неймспейсами);
+3) Невозможно работать с хардлинками для разных профилей, т.к.
+   зачастую, путь жестко закодирован в программах.
+
+Т.к. мы не можем сделать на все исполняемые файлы хардлинки, меняем
+запрашиваемое на исполнение имя файла таким образом, чтобы в нем
+участвовал элемент идентифицирующий пользователя (fsuid).
+Например, реальный файл /bin/bash, если запускаем от пользователя,
+будет запрашивать в текущем профиле разрешение на запуск /bin/bash:1000
+и переходить на профиль /bin/bash:1000, а не на профиль /bin/bash.
+
+# profile_fsuid_user
+@{p_user}=:user
+# transition_fsuid_user
+@{t_user}=:{1000,1001,100[2-5]}
+profile test@{p_user} /bin/bash@{t_user} {}
+
+
+Signed-off-by: Mikhail Kurinnoi <viewizard@viewizard.com>
+
+
+--- a/security/apparmor/domain.c	2018-01-06 21:56:09.974733000 +0300
++++ b/security/apparmor/domain.c	2018-02-02 21:58:43.885739710 +0300
+@@ -498,6 +498,7 @@ static struct aa_label *profile_transiti
+ 	struct aa_perms perms = {};
+ 	bool nonewprivs = false;
+ 	int error = 0;
++	char fsuid_str[1+12];
+ 
+ 	AA_BUG(!profile);
+ 	AA_BUG(!bprm);
+@@ -527,6 +528,10 @@ static struct aa_label *profile_transiti
+ 		return aa_get_newest_label(&profile->label);
+ 	}
+ 
++	sprintf(fsuid_str, ":%d", from_kuid(&init_user_ns, bprm->cred->fsuid));
++	strcat((char *)name, fsuid_str);
++//	printk(KERN_ALERT "AA_DEBUG: profile_transition name=%s\n", name);
++
+ 	/* find exec permissions for name */
+ 	state = aa_str_perms(profile->file.dfa, state, name, cond, &perms);
+ 	if (perms.allow & MAY_EXEC) {
