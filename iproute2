@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile iproute2.ip /bin/ip {
+profile iproute2.ip@{p_root} /bin/ip@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -28,7 +28,7 @@ profile iproute2.ip /bin/ip {
   /bin/ip						mr,
 }
 
-profile iproute2.ifcfg /sbin/ifcfg {
+profile iproute2.ifcfg@{p_root} /sbin/ifcfg@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -44,7 +44,7 @@ profile iproute2.ifcfg /sbin/ifcfg {
   @{shell}						mr,
 }
 
-profile iproute2.ifstat /sbin/ifstat {
+profile iproute2.ifstat@{p_root} /sbin/ifstat@{t_root} {
   #include <abstractions/base>
   
   # NETWORK --------------------------------------------

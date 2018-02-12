@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -14,7 +14,7 @@
 # Важно! Перезагрузка профиля выполняется командой:
 # apparmor_parser -r /etc/apparmor.d/2_local
 
-profile blacklist.sh.cron.daily /etc/cron.daily/blacklist.sh {
+profile blacklist.sh.cron.daily@{p_root} /etc/cron.daily/blacklist.sh@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -27,17 +27,17 @@ profile blacklist.sh.cron.daily /etc/cron.daily/blacklist.sh {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/blacklist.sh				r,
   @{shell}						mr,
-  /bin/date						Cx,	# sys-apps/coreutils
-  /bin/mv						Cx,	# sys-apps/coreutils
-  /bin/cp						Cx,	# sys-apps/coreutils
-  /bin/chmod						Cx,	# sys-apps/coreutils
-  /bin/basename						Px,	# sys-apps/coreutils
-  /bin/sed						Cx,	# sys-apps/sed
-  /usr/bin/libnotify-notify-send-users			Px,	# x11-libs/libnotify
-  /usr/bin/wget						Px,	# net-misc/wget
-  /usr/bin/stat						Cx,	# sys-apps/coreutils
-  /usr/bin/mail						Px,	# mail-client/mailx
-  /usr/bin/logger					Px,	# sys-apps/util-linux
+  /bin/date@{t_root}					Px,	# sys-apps/coreutils
+  /bin/mv@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/cp@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/chmod@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/basename@{t_root}				Px,	# sys-apps/coreutils
+  /bin/sed@{t_root}					Cx,	# sys-apps/sed
+  /usr/bin/libnotify-notify-send-users@{t_root}		Px,	# x11-libs/libnotify
+  /usr/bin/wget@{t_root}				Px,	# net-misc/wget
+  /usr/bin/stat@{t_root}				Px,	# sys-apps/coreutils
+  /usr/bin/mail@{t_root}				Px,	# mail-client/mailx
+  /usr/bin/logger@{t_root}				Px,	# sys-apps/util-linux
   
   # READS/WRITES ---------------------------------------
   /var/lib/hosts.blacklist				w,
@@ -46,14 +46,7 @@ profile blacklist.sh.cron.daily /etc/cron.daily/blacklist.sh {
   # TEMP -----------------------------------------------
   owner /tmp/hosts					rw,
   
-  profile date /bin/date {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /bin/date						mr,
-  }
-  
-  profile mv /bin/mv {
+  profile mv /bin/mv@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -69,7 +62,7 @@ profile blacklist.sh.cron.daily /etc/cron.daily/blacklist.sh {
     owner /tmp/hosts					rw,
   }
   
-  profile cp /bin/cp {
+  profile cp /bin/cp@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -83,7 +76,7 @@ profile blacklist.sh.cron.daily /etc/cron.daily/blacklist.sh {
     /var/lib/dnscrypt.blacklist				w,
   }
   
-  profile chmod /bin/chmod {
+  profile chmod /bin/chmod@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -93,7 +86,7 @@ profile blacklist.sh.cron.daily /etc/cron.daily/blacklist.sh {
     /var/lib/hosts.blacklist				w,
   }
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -102,12 +95,5 @@ profile blacklist.sh.cron.daily /etc/cron.daily/blacklist.sh {
     # READS/WRITES -------------------------------------
     /var/lib/dnscrypt.blacklist				rw,
     /var/lib/sed@{TMP6}					rw,
-  }
-  
-  profile stat /usr/bin/stat {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /usr/bin/stat					mr,
   }
 }

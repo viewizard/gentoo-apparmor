@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile filezilla /usr/bin/filezilla {
+profile filezilla@{p_user} /usr/bin/filezilla@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -28,7 +28,7 @@ profile filezilla /usr/bin/filezilla {
   #include <abstractions-user/xdg-open>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term) peer="filezilla.fzsftp",
+  signal (send) set=(term) peer="filezilla.fzsftp@{p_user}",
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -36,8 +36,8 @@ profile filezilla /usr/bin/filezilla {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/filezilla					mr,
-  @{shell}						Cx,
-  /usr/bin/fzsftp					Px,
+  @{shell}@{t_user}					Cx,
+  /usr/bin/fzsftp@{t_user}				Px,
   
   # READS/WRITES ---------------------------------------
   /usr/share/filezilla/{,**}				r,
@@ -49,7 +49,7 @@ profile filezilla /usr/bin/filezilla {
   deny /*/						r,	# если нужно будет работать под root с системными
   								# файлами - сделать профиль filezilla_root
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -58,12 +58,12 @@ profile filezilla /usr/bin/filezilla {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,	# sys-apps/coreutils
-    /usr/bin/lsb_release				Px,	# sys-apps/lsb-release
+    /bin/uname@{t_user}					Px,	# sys-apps/coreutils
+    /usr/bin/lsb_release@{t_user}			Px,	# sys-apps/lsb-release
   }
 }
 
-profile filezilla.fzsftp /usr/bin/fzsftp {
+profile filezilla.fzsftp@{p_user} /usr/bin/fzsftp@{t_user} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions-user/fs/access-by-pattern-filemanager>
@@ -80,13 +80,13 @@ profile filezilla.fzsftp /usr/bin/fzsftp {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/fzsftp					mr,
-  @{shell}						Cx,
+  @{shell}@{t_user}					Cx,
   
   # TEMP -----------------------------------------------
   owner /tmp/ssh-@{TMP12}/agent.@{pids}			rw,	# @{pids} - pid процесса /usr/bin/ssh-agent
   								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -95,8 +95,8 @@ profile filezilla.fzsftp /usr/bin/fzsftp {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/ls						Px -> filezilla_fzsftp_ls,	# sys-apps/coreutils
-    /bin/ps						Px,	# sys-process/procps
+    /bin/ls@{t_user}					Px -> filezilla_fzsftp_ls,	# sys-apps/coreutils
+    /bin/ps@{t_user}					Px,	# sys-process/procps
     
     # NOISY --------------------------------------------
     deny /etc/						r,

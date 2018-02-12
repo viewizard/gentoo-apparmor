@@ -8,7 +8,7 @@
 #
 # ------------------------------------------------------------------
 
-# доступ к файлам в @{ROOT_HOME_D}, /mnt и /media с пользовательской
+# доступ к файлам в @{ROOT_HOME_D}, gvfs, /mnt и /media с пользовательской
 # предустановкой для abstractions/fs/access-by-user-preset-rk
 
 #include <abstractions-root/fs/access-by-pattern-xdg-open>
@@ -18,6 +18,10 @@ owner @{ROOT_HOME_D}/					r,
 owner @{ROOT_HOME_D}/@{USERS_DIR_rk}/			r,
 owner @{ROOT_HOME_D}/@{USERS_FILE_rk}			rk,
 owner @{ROOT_HOME_D}/@{USERS_DIR_rk}/@{USERS_FILE_rk}	rk,
+owner @{ROOT_HOME_D}/.gvfs/				r,	# gnome-base/gvfs
+owner @{ROOT_HOME_D}/.gvfs/*/@{USERS_DIR_rk}/		r,	# gnome-base/gvfs
+owner @{ROOT_HOME_D}/.gvfs/*/@{USERS_FILE_rk}		rk,	# gnome-base/gvfs
+owner @{ROOT_HOME_D}/.gvfs/*/@{USERS_DIR_rk}/@{USERS_FILE_rk} rk,	# gnome-base/gvfs
 /media/{,*/}						r,
 /media/*/@{USERS_DIR_rk}/				r,
 /media/*/@{USERS_FILE_rk}				rk,

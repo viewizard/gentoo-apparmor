@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyboard,-mime,-mouse}-settings{,-editor,-manager} {
+profile xfce4-settings@{p_user} /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyboard,-mime,-mouse}-settings{,-editor,-manager}@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -31,33 +31,34 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyboard,-mime,-mouse}-settings{,-editor,-manager} Pxmr,
-  /usr/bin/xfce4-session-settings			Px,	# xfce-base/xfce4-session
-  /usr/bin/thunar-volman-settings			Px,	# xfce-extra/thunar-volman
-  /usr/bin/xfwm4{,-tweaks,-workspace}-settings		Px,	# xfce-base/xfwm4
-  /usr/bin/exo-preferred-applications			Px,	# xfce-base/exo
-  /usr/bin/xfce4-panel					Px,	# xfce-base/xfce4-panel
-  /usr/bin/xfce4-notifyd-config				Px,	# xfce-extra/xfce4-notifyd
-  /usr/bin/xfce4-power-manager-settings			Px,	# xfce-extra/xfce4-power-manager
-  /usr/bin/thunar-settings				Px,	# xfce-base/thunar
-  /usr/bin/dbus-send					Px,	# sys-apps/dbus
-  /usr/bin/qtchooser					Px,	# dev-qt/qtchooser
-  /usr/bin/gparted-pkexec				Px,	# sys-block/gparted
-  /usr/bin/pavucontrol					Px,	# media-sound/pavucontrol
-  /usr/bin/passwd.sh					Px,	# sys-apps/shadow
-  /usr/bin/xfdesktop-settings				Px,	# xfce-base/xfdesktop
-  /usr/bin/mate-screensaver-preferences			Px,	# mate-extra/mate-screensaver
-  /usr/bin/exo-open					Px,	# xfce-base/exo
-  /usr/bin/vino-preferences				Px,	# net-misc/vino-preferences
-  /usr/bin/onboard-settings				Px,	# app-accessibility/onboard
-  /usr/bin/xfce4-terminal				Px,	# x11-terms/xfce4-terminal
-  /usr/bin/nm-connection-editor				Px,	# gnome-extra/nm-applet
-  /usr/bin/xfce4-sensors				Px,	# xfce-extra/xfce4-sensors-plugin
-  /usr/bin/gsmartcontrol-root				Px,	# sys-apps/gsmartcontrol
-  /usr/bin/dconf-editor					Px,	# gnome-base/dconf-editor
-  /usr/bin/gconf-editor					Px,	# gnome-extra/gconf-editor
-  /usr/bin/qt5ct					Px,	# x11-misc/qt5ct
-  @{PYTHON_EXEC_WRAPPER}				Cx -> alacarte,	# dev-lang/python-exec
+  /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyboard,-mime,-mouse}-settings{,-editor,-manager} mr,
+  /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyboard,-mime,-mouse}-settings{,-editor,-manager}@{t_user} Px,
+  /usr/bin/xfce4-session-settings@{t_user}		Px,	# xfce-base/xfce4-session
+  /usr/bin/thunar-volman-settings@{t_user}		Px,	# xfce-extra/thunar-volman
+  /usr/bin/xfwm4{,-tweaks,-workspace}-settings@{t_user}	Px,	# xfce-base/xfwm4
+  /usr/bin/exo-preferred-applications@{t_user}		Px,	# xfce-base/exo
+  /usr/bin/xfce4-panel@{t_user}				Px,	# xfce-base/xfce4-panel
+  /usr/bin/xfce4-notifyd-config@{t_user}		Px,	# xfce-extra/xfce4-notifyd
+  /usr/bin/xfce4-power-manager-settings@{t_user}	Px,	# xfce-extra/xfce4-power-manager
+  /usr/bin/thunar-settings@{t_user}			Px,	# xfce-base/thunar
+  /usr/bin/dbus-send@{t_user}				Px,	# sys-apps/dbus
+  /usr/bin/qtchooser@{t_user}				Px,	# dev-qt/qtchooser
+  /usr/bin/gparted-pkexec@{t_user}			Px,	# sys-block/gparted
+  /usr/bin/pavucontrol@{t_user}				Px,	# media-sound/pavucontrol
+  /usr/bin/passwd.sh@{t_user}				Px,	# sys-apps/shadow
+  /usr/bin/xfdesktop-settings@{t_user}			Px,	# xfce-base/xfdesktop
+  /usr/bin/mate-screensaver-preferences@{t_user}	Px,	# mate-extra/mate-screensaver
+  /usr/bin/exo-open@{t_user}				Px,	# xfce-base/exo
+  /usr/bin/vino-preferences@{t_user}			Px,	# net-misc/vino-preferences
+  /usr/bin/onboard-settings@{t_user}			Px,	# app-accessibility/onboard
+  /usr/bin/xfce4-terminal@{t_user}			Px,	# x11-terms/xfce4-terminal
+  /usr/bin/nm-connection-editor@{t_user}		Px,	# gnome-extra/nm-applet
+  /usr/bin/xfce4-sensors@{t_user}			Px,	# xfce-extra/xfce4-sensors-plugin
+  /usr/bin/gsmartcontrol-root@{t_user}			Px,	# sys-apps/gsmartcontrol
+  /usr/bin/dconf-editor@{t_user}			Px,	# gnome-base/dconf-editor
+  /usr/bin/gconf-editor@{t_user}			Px,	# gnome-extra/gconf-editor
+  /usr/bin/qt5ct@{t_user}				Px,	# x11-misc/qt5ct
+  @{PYTHON_EXEC_WRAPPER}@{t_user}			Cx,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/						r,
@@ -77,16 +78,16 @@ profile xfce4-settings /usr/bin/xfce4{,-accessibility,-appearance,-display,-keyb
   owner @{USER_HOME_D}/.config/mimeapps.list*		rw,
   owner @{USER_HOME_D}/.config/xfce4/help.rc*		rw,
   
-  profile alacarte {
+  profile alacarte @{PYTHON_EXEC_WRAPPER}@{t_user} {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/alacarte				Px,	# x11-misc/alacarte
+    @{PYTHON_EXEC}/alacarte@{t_user}			Px,	# x11-misc/alacarte
   }
 }
 
-profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd {
+profile xfce4-settings.xfsettingsd@{p_user} /usr/bin/xfsettingsd@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -112,10 +113,10 @@ profile xfce4-settings.xfsettingsd /usr/bin/xfsettingsd {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfsettingsd					mr,
-  /usr/bin/xkbcomp					Px,	# x11-apps/xkbcomp
-  /usr/bin/xflock4					Px,	# xfce-base/xfce4-session
-  /usr/bin/xfce4-display-settings			Px,
-  /usr/bin/xfdesktop					Px,	# xfce-base/xfdesktop
+  /usr/bin/xkbcomp@{t_user}				Px,	# x11-apps/xkbcomp
+  /usr/bin/xflock4@{t_user}				Px,	# xfce-base/xfce4-session
+  /usr/bin/xfce4-display-settings@{t_user}		Px,
+  /usr/bin/xfdesktop@{t_user}				Px,	# xfce-base/xfdesktop
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/autostart/xfsettingsd.desktop		r,	# xfce-base/xfdesktop

@@ -21,7 +21,7 @@
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="[^.]*.@{local_ext}"
 
-profile pyfa @{PYTHON2_EXEC}/pyfa {
+profile pyfa@{p_user} @{PYTHON2_EXEC}/pyfa@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -51,11 +51,11 @@ profile pyfa @{PYTHON2_EXEC}/pyfa {
   owner @{PROC_D}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
   /bin/env						mr,
-  /sbin/ldconfig					Px,	# sys-libs/glibc
-  /usr/bin/fc-list					Px,	# media-libs/fontconfig
-  deny /usr/bin/chromium-browser			x,	# www-client/chromium	# Должен работать только через xdg-open.
+  @{shell}@{t_user}					Cx,
+  /sbin/ldconfig@{t_user}				Px,	# sys-libs/glibc
+  /usr/bin/fc-list@{t_user}				Px,	# media-libs/fontconfig
+  deny /usr/bin/chromium-browser@{t_user}		x,	# www-client/chromium	# Должен работать только через xdg-open.
   
   # READS/WRITES ---------------------------------------
   /etc/							r,
@@ -73,7 +73,7 @@ profile pyfa @{PYTHON2_EXEC}/pyfa {
   # TEMP -----------------------------------------------
   audit owner /tmp/tmp??????				rw,	# FIX ME! audit 25.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -83,7 +83,7 @@ profile pyfa @{PYTHON2_EXEC}/pyfa {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,	# sys-apps/coreutils
+    /bin/uname@{t_user}					Px,	# sys-apps/coreutils
     
     # DENY INHERIT -------------------------------------
     deny /usr/share/pyfa/{,**}				r,

@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------
 #
 #  Copyright (C) 2011-2013 Canonical Ltd.
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -12,7 +12,7 @@
 # UNIX -------------------------------------------------
 unix (send, receive, connect)
 	type=stream
-	peer=(addr="@/tmp/dbus-@{TMP10}",label="dbus.dbus-daemon"),
+	peer=(addr="@/tmp/dbus-@{TMP10}",label="dbus.dbus-daemon{@{p_root},@{p_user}}"),
 
 # DBUS -------------------------------------------------
 dbus send
@@ -28,13 +28,13 @@ dbus send
 # Обязательно указывать peer=(label=) для связи с профилем.
 dbus send
 	bus=session
-	peer=(label="wireshark.dumpcap"),			# wireshark
+	peer=(label="wireshark.dumpcap@{p_user}"),		# wireshark
 dbus send
 	bus=session
-	peer=(label="nettop"),					# nettop
+	peer=(label="nettop@{p_root}"),				# nettop
 
 # EXECUTABLES ------------------------------------------
-/usr/bin/dbus-launch					Px,	# Все правильно, запускаем из "-strict", т.к.
+/usr/bin/dbus-launch{@{t_root},@{t_user}}		Px,	# Все правильно, запускаем из "-strict", т.к.
 								# почти везде используем именно "-strict".
 								# Ограничиваем профилем + саму сессию dbus.
 

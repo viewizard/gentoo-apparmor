@@ -32,8 +32,8 @@
   @{PROC_D}/sys/kernel/ngroups_max			r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Px -> shell_users,
-  /usr/bin/gnome-keyring-daemon				Px,	# gnome-base/gnome-keyring (в случае запуска через pam модуль)
+  @{shell}@{t_user}					Px -> shell_users,
+  /usr/bin/gnome-keyring-daemon@{t_user}		Px,	# gnome-base/gnome-keyring (в случае запуска через pam модуль)
   
   # READS/WRITES ---------------------------------------
   /etc/environment					r,

@@ -14,7 +14,7 @@
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="[^.]*"
 
-profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings {
+profile nvidia-drivers.nvidia-settings@{p_user} /{usr,opt}/bin/nvidia-settings@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -42,7 +42,7 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings {
   
   # EXECUTABLES ----------------------------------------
   /{usr,opt}/bin/nvidia-settings			mr,
-  @{shell}						Cx,
+  @{shell}@{t_user}					Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/conf.d/gpm					r,	# sys-libs/gpm
@@ -56,7 +56,7 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings {
   # TEMP -----------------------------------------------
   owner /tmp/.xconfig.tmp.@{TMP6}			rw,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -66,9 +66,9 @@ profile nvidia-drivers.nvidia-settings /{usr,opt}/bin/nvidia-settings {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/ps						Px,	# sys-process/procps
-    /usr/bin/Xorg					Px -> nvidia_drivers_Xorg,	# x11-base/xorg-server	# Только создание xorg.conf.
-    /usr/bin/pkg-config					Px,	# dev-util/pkgconfig
+    /bin/ps@{t_user}						Px,	# sys-process/procps
+    /usr/bin/Xorg@{t_user}				Px -> nvidia_drivers_Xorg,	# x11-base/xorg-server	# Только создание xorg.conf.
+    /usr/bin/pkg-config@{t_user}			Px,	# dev-util/pkgconfig
   }
 }
 
@@ -91,7 +91,7 @@ profile nvidia_drivers_Xorg {
 # если в настройках хромиума указано использование аппаратного ускорителя
 # (данный функционал все равно не работает с блобом от нвидия, только с 
 # видео модулями ядра поддерживаемые встроенной в хромиум версией mesa).
-profile nvidia-drivers.nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe flags=(attach_disconnected) {
+profile nvidia-drivers.nvidia-modprobe@{p_root} /{usr,opt}/bin/nvidia-modprobe@{t_root} flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions-user/video-nvidia>
   
@@ -111,7 +111,7 @@ profile nvidia-drivers.nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe flags=(att
   
   # EXECUTABLES ----------------------------------------
   /{usr,opt}/bin/nvidia-modprobe			mr,
-  /bin/kmod						Px,	# sys-apps/kmod
+  /bin/kmod@{t_root}					Px,	# sys-apps/kmod
   
   # DENY INHERIT ---------------------------------------
   deny network,							# local.home.evelauncher
@@ -131,7 +131,7 @@ profile nvidia-drivers.nvidia-modprobe /{usr,opt}/bin/nvidia-modprobe flags=(att
   deny /mnt/{,**}					rw,
 }
 
-profile nvidia-drivers.nvidia-smi /opt/bin/nvidia-smi {
+profile nvidia-drivers.nvidia-smi@{p_root} /opt/bin/nvidia-smi@{t_root} {
   #include <abstractions/base>
   #include <abstractions-user/video-nvidia>
   
@@ -151,7 +151,7 @@ profile nvidia-drivers.nvidia-smi /opt/bin/nvidia-smi {
   /opt/bin/nvidia-smi					mr,
 }
 
-profile nvidia-drivers.nvidia-udev.sh /lib{,32,64}/udev/nvidia-udev.sh {
+profile nvidia-drivers.nvidia-udev.sh@{p_root} /lib{,32,64}/udev/nvidia-udev.sh@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -163,19 +163,19 @@ profile nvidia-drivers.nvidia-udev.sh /lib{,32,64}/udev/nvidia-udev.sh {
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/udev/nvidia-udev.sh			r,
   @{shell}						mr,
-  /bin/kmod						Px,	# sys-apps/kmod
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /opt/bin/nvidia-smi					Px,
+  /bin/kmod@{t_root}					Px,	# sys-apps/kmod
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /opt/bin/nvidia-smi@{t_root}				Px,
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------

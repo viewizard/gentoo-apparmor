@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile udev-init-scripts.udev.init.d /etc/init.d/udev flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile udev-init-scripts.udev.init.d@{p_root} /etc/init.d/udev@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -26,24 +26,24 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev flags=(attach_disconnecte
   @{PROC_D}/sys/kernel/hotplug				w,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /bin/udevadm						Px,	# sys-fs/eudev
-  /sbin/udevd						Px,	# sys-fs/eudev
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/udevadm@{t_root}					Px,	# sys-fs/eudev
+  /sbin/udevd@{t_root}					Px,	# sys-fs/eudev
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
   /etc/{conf,init}.d/udev				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -60,7 +60,7 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev flags=(attach_disconnecte
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -73,7 +73,7 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev flags=(attach_disconnecte
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -90,7 +90,7 @@ profile udev-init-scripts.udev.init.d /etc/init.d/udev flags=(attach_disconnecte
   }
 }
 
-profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile udev-init-scripts.udev-trigger.init.d@{p_root} /etc/init.d/udev-trigger@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -101,24 +101,24 @@ profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger flags=(at
   @{SYS_D}/fs/cgroup/unified/udev-trigger/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/udevadm						Px,	# sys-fs/eudev
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /bin/cat						Cx,	# sys-apps/coreutils
+  @{shell}@{t_root}					Cx,
+  /bin/udevadm@{t_root}					Px,	# sys-fs/eudev
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/udev-trigger			r,
   /run/udev/rules.d/*.rules				w,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -137,7 +137,7 @@ profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger flags=(at
     /run/udev/rules.d/					w,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -150,7 +150,7 @@ profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger flags=(at
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -166,7 +166,7 @@ profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger flags=(at
     /bin/rmdir						mr,
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -180,7 +180,7 @@ profile udev-init-scripts.udev-trigger.init.d /etc/init.d/udev-trigger flags=(at
   }
 }
 
-profile udev-init-scripts.udev-settle.init.d /etc/init.d/udev-settle flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile udev-init-scripts.udev-settle.init.d@{p_root} /etc/init.d/udev-settle@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -191,22 +191,22 @@ profile udev-init-scripts.udev-settle.init.d /etc/init.d/udev-settle flags=(atta
   @{SYS_D}/fs/cgroup/unified/udev-settle/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/udevadm						Px,	# sys-fs/eudev
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  @{shell}@{t_root}					Cx,
+  /bin/udevadm@{t_root}					Px,	# sys-fs/eudev
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/udev-settle			r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -222,7 +222,7 @@ profile udev-init-scripts.udev-settle.init.d /etc/init.d/udev-settle flags=(atta
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -235,7 +235,7 @@ profile udev-init-scripts.udev-settle.init.d /etc/init.d/udev-settle flags=(atta
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

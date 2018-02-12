@@ -14,7 +14,8 @@ audit owner /dev/shm/pulse-shm*				rwk,	# FIX ME! audit 24.11.2017
 owner @{PROC_D}/@{pid}/fd/				r,
 
 # EXECUTABLES ------------------------------------------
-/usr/bin/pulseaudio					Px,
+audit /usr/bin/pulseaudio@{t_root}			Px,	# FIX ME! Вообще не должны запускать сервер под root-ом.
+								# Профиля под это у нас нет, посмотреть кто запускает.
 
 # READS/WRITES -----------------------------------------
 /etc/machine-id						r,

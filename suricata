@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile suricata /usr/bin/suricata {
+profile suricata@{p_root} /usr/bin/suricata@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -27,7 +27,7 @@ profile suricata /usr/bin/suricata {
   capability mknod,
   
   # SIGNAL ---------------------------------------------
-  signal (receive) set=(usr2) peer="suricata.init.d",
+  signal (receive) set=(usr2) peer="suricata.init.d@{p_root}",
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -54,7 +54,7 @@ profile suricata /usr/bin/suricata {
   /var/tmp/						r,
 }
 
-profile suricata.init.d /etc/init.d/suricata flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile suricata.init.d@{p_root} /etc/init.d/suricata@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -65,7 +65,7 @@ profile suricata.init.d /etc/init.d/suricata flags=(attach_disconnected) {	# att
   capability dac_read_search,
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(usr2) peer="suricata",
+  signal (send) set=(usr2) peer="suricata@{p_root}",
   
   # PSEUDO ---------------------------------------------
   @{SYS_D}/fs/cgroup/openrc/suricata/tasks		w,
@@ -74,14 +74,14 @@ profile suricata.init.d /etc/init.d/suricata flags=(attach_disconnected) {	# att
   audit @{PROC_D}/@{pid}/cmdline			r,	# FIX ME! @{pid}/@{pids} audit 19.10.2017
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/ps						Px,	# sys-process/procps
-  audit /bin/sleep					Px,	# sys-apps/coreutils	# FIX ME! audit 18.11.2017
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /usr/bin/suricata					Px,
+  @{shell}@{t_root}					Cx,
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/ps@{t_root}					Px,	# sys-process/procps
+  audit /bin/sleep@{t_root}				Px,	# sys-apps/coreutils	# FIX ME! audit 18.11.2017
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /usr/bin/suricata@{t_root}				Px,
   
   # READS/WRITES ---------------------------------------
   /etc/suricata/{,**}					r,
@@ -92,7 +92,7 @@ profile suricata.init.d /etc/init.d/suricata flags=(attach_disconnected) {	# att
   # DENY INHERIT ---------------------------------------
   deny /tmp/oinkmaster.cron.@{TMP6}			w,	# net-analyzer/oinkmaster, oinkmaster.cron.daily
   
-  profile shell @{shell} flags=(attach_disconnected) {
+  profile shell @{shell}@{t_root} flags=(attach_disconnected) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
@@ -101,7 +101,7 @@ profile suricata.init.d /etc/init.d/suricata flags=(attach_disconnected) {	# att
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -115,7 +115,7 @@ profile suricata.init.d /etc/init.d/suricata flags=(attach_disconnected) {	# att
     /run/suricata/suricata.pid				r,
   }
   
-  profile mkdir /bin/mkdir flags=(attach_disconnected) {
+  profile mkdir /bin/mkdir@{t_root} flags=(attach_disconnected) {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -134,7 +134,7 @@ profile suricata.init.d /etc/init.d/suricata flags=(attach_disconnected) {	# att
     deny /apparmor/.null				rw,	# flags=(attach_disconnected), перезапуск из oinkmaster скрипта
   }
   
-  profile grep /bin/grep flags=(attach_disconnected) {
+  profile grep /bin/grep@{t_root} flags=(attach_disconnected) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -150,7 +150,7 @@ profile suricata.init.d /etc/init.d/suricata flags=(attach_disconnected) {	# att
     deny /apparmor/.null				rw,	# flags=(attach_disconnected), перезапуск из oinkmaster скрипта
   }
   
-  profile rmdir /bin/rmdir flags=(attach_disconnected) {
+  profile rmdir /bin/rmdir@{t_root} flags=(attach_disconnected) {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

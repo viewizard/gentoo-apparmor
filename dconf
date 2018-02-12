@@ -10,14 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile dconf /usr/bin/dconf {
-  #include <abstractions/base>
-  
-  # EXECUTABLES ----------------------------------------
-  /usr/bin/dconf					mr,
-}
-
-profile dconf.dconf-service /usr/libexec/dconf-service {
+profile dconf.dconf-service@{p_user} /usr/libexec/dconf-service@{t_user} {
   #include <abstractions/base>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/session-bind>
@@ -45,6 +38,32 @@ profile dconf.dconf-service /usr/libexec/dconf-service {
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.config/dconf/{,user{,.@{TMP6}}}	rw,
-  owner @{ROOT_HOME_D}/.config/dconf/{,user{,.@{TMP6}}}	rw,	# # RBAC! Должен быть отдельный профиль для root.
-  owner @{ROOT_HOME_CACHE_D}/dconf/{,user}		rw,	# # RBAC! Должен быть отдельный профиль для root.
+}
+
+profile dconf.dconf-service@{p_root} /usr/libexec/dconf-service@{t_root} {
+  #include <abstractions/base>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/session-bind>
+  
+  # DBUS -----------------------------------------------
+  dbus receive
+	bus=session
+	path="/ca/desrt/dconf/Writer/user"
+	interface="ca.desrt.dconf.Writer"
+	peer=(name=":[0-9]*.[0-9]*"),
+  dbus send
+	bus=session
+	path="/ca/desrt/dconf/Writer/user"
+	interface="ca.desrt.dconf.Writer"
+	peer=(name="org.freedesktop.DBus"),
+  
+  # PSEUDO ---------------------------------------------
+  @{PROC_D}/cmdline					r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/dconf-service				mr,
+  
+  # USERS ----------------------------------------------
+  owner @{ROOT_HOME_D}/.config/dconf/{,user{,.@{TMP6}}}	rw,
+  owner @{ROOT_HOME_CACHE_D}/dconf/{,user}		rw,
 }

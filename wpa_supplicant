@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile wpa_supplicant.wpa_gui /usr/bin/wpa_gui {
+profile wpa_supplicant.wpa_gui@{p_user} /usr/bin/wpa_gui@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -26,7 +26,7 @@ profile wpa_supplicant.wpa_gui /usr/bin/wpa_gui {
   owner @{USER_HOME_D}/.config/wpa_supplicant/wpa_gui.conf rwk,
 }
 
-profile wpa_supplicant /usr/sbin/wpa_supplicant {
+profile wpa_supplicant@{p_root} /usr/sbin/wpa_supplicant@{t_root} {
   #include <abstractions/base>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/system-bind>
@@ -42,22 +42,22 @@ profile wpa_supplicant /usr/sbin/wpa_supplicant {
   	bus=system
   	path="/fi/w[0-9]*/wpa_supplicant[0-9]**"
   	interface="org.freedesktop.DBus.Properties"
-  	peer=(name="org.freedesktop.DBus",label="networkmanager.NetworkManager"),	# net-misc/networkmanager
+  	peer=(name="org.freedesktop.DBus",label="networkmanager.NetworkManager@{p_root}"),	# net-misc/networkmanager
   dbus receive
   	bus=system
   	path="/fi/w[0-9]*/wpa_supplicant[0-9]**"
   	interface="org.freedesktop.DBus.{Properties,Introspectable}"
-  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),	# net-misc/networkmanager
+  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager@{p_root}"),	# net-misc/networkmanager
   dbus send
   	bus=system
   	path="/fi/w[0-9]*/wpa_supplicant[0-9]**"
   	interface="fi.w1.wpa_supplicant[0-9]*"
-  	peer=(name="org.freedesktop.DBus",label="networkmanager.NetworkManager"),	# net-misc/networkmanager
+  	peer=(name="org.freedesktop.DBus",label="networkmanager.NetworkManager@{p_root}"),	# net-misc/networkmanager
   dbus receive
   	bus=system
   	path="/fi/w[0-9]*/wpa_supplicant[0-9]**"
   	interface="fi.w1.wpa_supplicant[0-9]*"
-  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),	# net-misc/networkmanager
+  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager@{p_root}"),	# net-misc/networkmanager
   
   # NETWORK --------------------------------------------
   network netlink raw,

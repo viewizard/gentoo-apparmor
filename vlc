@@ -85,7 +85,7 @@
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="[^.]*.@{local_ext_playlist}"
 
-profile vlc /usr/bin/vlc {
+profile vlc@{p_user} /usr/bin/vlc@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -127,7 +127,7 @@ profile vlc /usr/bin/vlc {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/vlc						mr,
-  /usr/bin/xdg-screensaver				Px,	# x11-misc/xdg-utils
+  /usr/bin/xdg-screensaver@{t_user}			Px,	# x11-misc/xdg-utils
   
   # READS/WRITES ---------------------------------------
   /usr/lib{,32,64}/vlc/{,**}				r,

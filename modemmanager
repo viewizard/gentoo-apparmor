@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile modemmanager.ModemManager /usr/sbin/ModemManager {
+profile modemmanager.ModemManager@{p_root} /usr/sbin/ModemManager@{t_root} {
   #include <abstractions/base>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/polkit>
@@ -31,7 +31,7 @@ profile modemmanager.ModemManager /usr/sbin/ModemManager {
 	path="/org/freedesktop/ModemManager[0-9]*"
 	interface="org.freedesktop.DBus.Peer"
 	member=Ping
-	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),
+	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager@{p_root}"),
   
   # NETWORK --------------------------------------------
   network netlink raw,

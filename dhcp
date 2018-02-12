@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile dhcp.dhclient /sbin/dhclient {
+profile dhcp.dhclient@{p_root} /sbin/dhclient@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -28,7 +28,7 @@ profile dhcp.dhclient /sbin/dhclient {
   
   # EXECUTABLES ----------------------------------------
   /sbin/dhclient					mr,
-  /usr/libexec/nm-dhcp-helper				Px,	# net-misc/networkmanager
+  /usr/libexec/nm-dhcp-helper@{t_root}			Px,	# net-misc/networkmanager
   								# DELEGATION! networkmanager.NetworkManager
   
   # READS/WRITES ---------------------------------------

@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile vixie-cron.cron /usr/sbin/cron {
+profile vixie-cron.cron@{p_root} /usr/sbin/cron@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
@@ -27,8 +27,8 @@ profile vixie-cron.cron /usr/sbin/cron {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/cron					mr,
-  @{shell}						Cx,
-  /usr/sbin/sendmail					Px,	# mail-mta/nullmailer
+  @{shell}@{t_root}					Cx,
+  /usr/sbin/sendmail@{t_root}				Px,	# mail-mta/nullmailer
   
   # READS/WRITES ---------------------------------------
   /etc/crontab						r,
@@ -37,7 +37,7 @@ profile vixie-cron.cron /usr/sbin/cron {
   /run/cron.pid						rwk,
   /var/spool/cron/{,**}					rw,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -45,8 +45,8 @@ profile vixie-cron.cron /usr/sbin/cron {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/rm						Px -> vixie_cron_cron_shell_rm,	# sys-apps/coreutils
-    /usr/sbin/run-crons					Px,	# sys-process/cronbase
+    /bin/rm@{t_root}					Px -> vixie_cron_cron_shell_rm,	# sys-apps/coreutils
+    /usr/sbin/run-crons@{t_root}			Px,	# sys-process/cronbase
   }
 }
 
@@ -63,7 +63,7 @@ profile vixie_cron_cron_shell_rm {
   /var/spool/cron/lastrun/*				w,
 }
 
-profile vixie-cron.crontab /usr/bin/crontab {
+profile vixie-cron.crontab@{p_root} /usr/bin/crontab@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -75,7 +75,7 @@ profile vixie-cron.crontab /usr/bin/crontab {
   /usr/bin/crontab					mr,
 }
 
-profile vixie-cron.init.d /etc/init.d/vixie-cron flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile vixie-cron.init.d@{p_root} /etc/init.d/vixie-cron@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -86,23 +86,23 @@ profile vixie-cron.init.d /etc/init.d/vixie-cron flags=(attach_disconnected) {	#
   @{SYS_D}/fs/cgroup/unified/vixie-cron/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/sbin/cron					Px,
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  /usr/sbin/cron@{t_root}				Px,
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/vixie-cron				r,
   /run/cron.pid						rwk,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -118,7 +118,7 @@ profile vixie-cron.init.d /etc/init.d/vixie-cron flags=(attach_disconnected) {	#
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -131,7 +131,7 @@ profile vixie-cron.init.d /etc/init.d/vixie-cron flags=(attach_disconnected) {	#
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

@@ -17,7 +17,7 @@
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="[^.]*.@{local_ext}"
 
-profile xfce4-screenshooter /usr/bin/xfce4-screenshooter {
+profile xfce4-screenshooter@{p_user} /usr/bin/xfce4-screenshooter@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -47,7 +47,7 @@ profile xfce4-screenshooter /usr/bin/xfce4-screenshooter {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-screenshooter				mr,
-  /usr/bin/exo-open					Px,	# xfce-base/exo
+  /usr/bin/exo-open@{t_user}				Px,	# xfce-base/exo
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.config/xfce4/xfce4-screenshooter{,.@{pid}.tmp} rw,

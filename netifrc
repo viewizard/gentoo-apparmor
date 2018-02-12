@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile netifrc.init.d /etc/init.d/net.* flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile netifrc.init.d@{p_root} /etc/init.d/net.*@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -34,25 +34,23 @@ profile netifrc.init.d /etc/init.d/net.* flags=(attach_disconnected) {	# attach_
   @{PROC_D}/sys/net/ipv4/route/flush			w,
   
   # EXECUTABLES ----------------------------------------
-  /etc/init.d/*						Px,
-  @{shell}						Cx,
-  /bin/ip						Px,	# sys-apps/iproute2
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/sed						Cx,	# sys-apps/sed
-  /bin/chmod						Cx,	# sys-apps/coreutils
-  /bin/tr						Px,	# sys-apps/coreutils
-  /bin/readlink						Cx,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /bin/rc-status					Px,	# sys-apps/openrc
-  /sbin/dhcpcd						Px,	# net-misc/dhcpcd
-  /sbin/brctl						Px,	# net-misc/bridge-utils
-  /sbin/iptunnel					Px,	# sys-apps/net-tools
-  /sbin/iwconfig					Px,	# net-wireless/wireless-tools
-  /usr/bin/gawk						Cx,	# sys-apps/gawk
-  /usr/sbin/ifplugd					Px,	# sys-apps/ifplugd
-  /lib{,32,64}/rc/sbin/mark_service_inactive		Px,	# sys-apps/openrc
+  /etc/init.d/*@{t_root}				Px,
+  @{shell}@{t_root}					Cx,
+  /bin/ip@{t_root}					Px,	# sys-apps/iproute2
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/sed@{t_root}					Cx,	# sys-apps/sed
+  /bin/chmod@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/tr@{t_root}					Px,	# sys-apps/coreutils
+  /bin/readlink@{t_root}				Cx,	# sys-apps/coreutils
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/rc-status@{t_root}				Px,	# sys-apps/openrc
+  /sbin/dhcpcd@{t_root}					Px,	# net-misc/dhcpcd
+  /sbin/brctl@{t_root}					Px,	# net-misc/bridge-utils
+  /sbin/iptunnel@{t_root}				Px,	# sys-apps/net-tools
+  /usr/bin/gawk@{t_root}				Cx,	# sys-apps/gawk
+  /lib{,32,64}/rc/sbin/mark_service_inactive@{t_root}	Px,	# sys-apps/openrc
   
   # READS/WRITES ---------------------------------------
   /etc/fstab						r,
@@ -61,9 +59,8 @@ profile netifrc.init.d /etc/init.d/net.* flags=(attach_disconnected) {	# attach_
   /etc/init.d/net.*					r,
   /etc/iproute2/{,*}					r,	# sys-apps/iproute2
   audit /run/dhcpcd-*.pid				rwk,	# net-misc/dhcpcd	# FIX ME! 7.12.2017
-  audit /run/ifplugd.*.pid				rwk,	# sys-apps/ifplugd	# FIX ME! 7.12.2017
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
@@ -77,14 +74,14 @@ profile netifrc.init.d /etc/init.d/net.* flags=(attach_disconnected) {	# attach_
     /dev/pts/[0-9]*					rw,
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/cat						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -97,28 +94,28 @@ profile netifrc.init.d /etc/init.d/net.* flags=(attach_disconnected) {	# attach_
     /bin/grep						mr,
   }
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/sed						mr,
   }
   
-  profile chmod /bin/chmod {
+  profile chmod /bin/chmod@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/chmod						mr,
   }
   
-  profile readlink /bin/readlink {
+  profile readlink /bin/readlink@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/readlink					mr,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -134,7 +131,7 @@ profile netifrc.init.d /etc/init.d/net.* flags=(attach_disconnected) {	# attach_
     /bin/mkdir						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -150,7 +147,7 @@ profile netifrc.init.d /etc/init.d/net.* flags=(attach_disconnected) {	# attach_
     /bin/rmdir						mr,
   }
   
-  profile gawk /usr/bin/gawk {
+  profile gawk /usr/bin/gawk@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -158,7 +155,7 @@ profile netifrc.init.d /etc/init.d/net.* flags=(attach_disconnected) {	# attach_
   }
 }
 
-profile netifrc.net.sh /lib{,32,64}/udev/net.sh {
+profile netifrc.net.sh@{p_root} /lib{,32,64}/udev/net.sh@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -170,5 +167,5 @@ profile netifrc.net.sh /lib{,32,64}/udev/net.sh {
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/udev/net.sh				r,
   @{shell}						mr,
-  /etc/init.d/net.*					Px,
+  /etc/init.d/net.*@{t_root}				Px,
 }

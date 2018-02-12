@@ -37,7 +37,7 @@ profile default {
   
   # SIGNAL ---------------------------------------------
   signal (send, receive) peer="default",
-  signal (receive) set=(cont,stop) peer="openrc.kill_all",	# sys-apps/openrc
+  signal (receive) set=(cont,stop) peer="openrc.kill_all@{p_root}",	# sys-apps/openrc
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -46,18 +46,19 @@ profile default {
   @{PROC_D}/sys/kernel/printk				w,
   
   # EXECUTABLES ----------------------------------------
-  /bin/kmod						Px,	# sys-apps/kmod
-  /bin/initramfs_busybox				Cx,	# sys-kernel/genkernel-next (собирается в процессе создания initramfs)
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/udevadm						Px,	# sys-fs/eudev
-  /lib{,32,64}/rc/sh/cgroup-release-agent.sh		Px,	# sys-apps/openrc
-  /usr/lib{,32,64}/portage/@{PYTHON}/cgroup-release-agent Px,	# sys-apps/portage
-  /var/tmp/portage/._portage_reinstall_.{@{TMP6},@{TMP8}}/bin/cgroup-release-agent Px,	# sys-apps/portage	# TMP6 - python2, TMP8 - python3
+  /bin/kmod@{t_root}					Px,	# sys-apps/kmod
+  /bin/initramfs_busybox@{t_root}			Cx,	# sys-kernel/genkernel-next (собирается в процессе создания initramfs)
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/udevadm@{t_root}					Px,	# sys-fs/eudev
+  /lib{,32,64}/rc/sh/cgroup-release-agent.sh@{t_root}	Px,	# sys-apps/openrc
+  /usr/lib{,32,64}/portage/@{PYTHON}/cgroup-release-agent@{t_root} Px,	# sys-apps/portage
+  /var/tmp/portage/._portage_reinstall_.{@{TMP6},@{TMP8}}/bin/cgroup-release-agent@{t_root} Px,	# sys-apps/portage
+  								# TMP6 - python2, TMP8 - python3
   
   # READS/WRITES ---------------------------------------
   /run/udev/control					w,	# sys-fs/eudev
   
-  profile initramfs.grep /bin/grep {
+  profile initramfs.grep /bin/grep@{t_root} {
     
     # PSEUDO -------------------------------------------
     owner @{PROC_D}/@{pid}/mounts			r,
@@ -71,7 +72,7 @@ profile default {
     /lib{,32,64}/lib*.so{,.*}				mr,
   }
   
-  profile initramfs.busybox /bin/initramfs_busybox {
+  profile initramfs.busybox /bin/initramfs_busybox@{t_root} {
     
     # CAPABILITIES -------------------------------------
     capability sys_admin,
@@ -90,8 +91,8 @@ profile default {
     
     # EXECUTABLES --------------------------------------
     /bin/initramfs_busybox				mr,
-    /sbin/init						Px,	# sys-apps/sysvinit
-    /sbin/openrc-init					Px,	# sys-apps/openrc (openrc-init)
+    /sbin/init@{t_root}					Px,	# sys-apps/sysvinit
+    /sbin/openrc-init@{t_root}				Px,	# sys-apps/openrc (openrc-init)
     
     # READS/WRITES -------------------------------------
     /							r,

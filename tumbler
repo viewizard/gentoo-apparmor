@@ -17,7 +17,7 @@
 @{USERS_DIR_rk}="[^.]**"
 @{USERS_FILE_rk}="[^.]*"
 
-profile tumbler /usr/lib{,32,64}/tumbler-1/tumblerd {
+profile tumbler@{p_user} /usr/lib{,32,64}/tumbler-1/tumblerd@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -64,4 +64,57 @@ profile tumbler /usr/lib{,32,64}/tumbler-1/tumblerd {
   
   # NOISY ----------------------------------------------
   deny @{USER_HOME_D}/.purple/**			r,	# net-im/pidgin
+}
+
+profile tumbler@{p_root} /usr/lib{,32,64}/tumbler-1/tumblerd@{t_root} {
+  #include <abstractions/base>
+  #include <abstractions-root/freedesktop.org>
+  #include <abstractions-root/fonts>
+  #include <abstractions-root/video>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/gvfs>
+  #include <abstractions/dbus/session-bind>
+  #include <abstractions-root/fs/access-by-users-preset-rk>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions/fs/deny-private-strict>
+  #include <abstractions/fs/deny-by-pattern-trash>		# Запрещаем создавать превью в корзине.
+  #include <abstractions/unix/gvfsd-trash>
+  #include <abstractions/unix/gvfsd-smb>
+  #include <abstractions/unix/gvfsd-smb-virtual>
+  #include <abstractions/unix/deny-gvfsd-trash-virtual>		# Запрещаем создавать превью в корзине.
+  
+  # CAPABILITIES ---------------------------------------
+  capability dac_read_search,
+  capability dac_override,
+  
+  # DBUS -----------------------------------------------
+  dbus (send, receive)
+  	bus=session
+  	path="/org/freedesktop/thumbnails/*"
+  	interface="org.freedesktop.thumbnails.*"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  dbus receive
+  	bus=session
+  	path="/org/freedesktop/thumbnails/Thumbnailer*"
+  	interface="org.freedesktop.DBus.Properties"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/tumbler-1/tumblerd			mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/xdg/tumbler/tumbler.rc				r,
+  /etc/udev/udev.conf					r,	# sys-fs/eudev
+  /usr/share/thumbnailers/{,**}				r,
+  /usr/lib{,32,64}/tumbler-1/plugins/**			r,
+  /usr/lib{,32,64}/tumbler-1/plugins/{,**/}*.so		m,
+  /usr/local/share/backgrounds/**			r,	# FIX ME! (?) вынести в <local/profile_blocks/tumbler.d/>
+  
+  # USERS ----------------------------------------------
+#  owner @{ROOT_HOME_CACHE_D}/sessions/thumbs*/{,*.png}	r,
+#  owner @{ROOT_HOME_D}/.local/share/gvfs-metadata/*	r,	# gnome-base/gvfs
+#  owner @{ROOT_HOME_D}/.face*				r,
+  
+  # NOISY ----------------------------------------------
+#  deny @{ROOT_HOME_D}/.purple/**			r,	# net-im/pidgin
 }

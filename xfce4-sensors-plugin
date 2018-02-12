@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile xfce4-sensors-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-sensors-plugin {
+profile xfce4-sensors-plugin@{p_user} /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-sensors-plugin@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -30,13 +30,13 @@ profile xfce4-sensors-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-sensors-
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-sensors-plugin m,
-  /usr/bin/xfce4-sensors				Px,
+  /usr/bin/xfce4-sensors@{t_user}			Px,
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.config/xfce4/panel/{,*.rc*}	rw,
 }
 
-profile xfce4-sensors-plugin.xfce4-sensors /usr/bin/xfce4-sensors {
+profile xfce4-sensors-plugin.xfce4-sensors@{p_user} /usr/bin/xfce4-sensors@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>

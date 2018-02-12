@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile alsa-utils.aplay /usr/bin/aplay {
+profile alsa-utils.aplay@{p_user} /usr/bin/aplay@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/audio>
   #include <abstractions/nameservice>
@@ -26,7 +26,7 @@ profile alsa-utils.aplay /usr/bin/aplay {
   audit owner /tmp/pulse-*/{,*}				rw,	# media-sound/pulseaudio	# FIX ME! audit 25.11.2017
 }
 
-profile alsa-utils.alsactl /usr/sbin/alsactl {
+profile alsa-utils.alsactl@{p_root} /usr/sbin/alsactl@{t_root} {
   #include <abstractions/base>
   #include <abstractions-root/audio>
   #include <abstractions/nameservice>

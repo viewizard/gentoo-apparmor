@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -16,7 +16,7 @@
 # Важно! Перезагрузка профиля выполняется командой:
 # apparmor_parser -r /etc/apparmor.d/2_local
 
-profile local.sbin.aa_portage /usr/local/sbin/aa_portage.sh {
+profile local.sbin.aa_portage@{p_root} /usr/local/sbin/aa_portage.sh@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -27,19 +27,19 @@ profile local.sbin.aa_portage /usr/local/sbin/aa_portage.sh {
   # EXECUTABLES ----------------------------------------
   /usr/local/sbin/aa_portage.sh				r,
   @{shell}						mr,
-  /bin/basename						Px,	# sys-apps/coreutils
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/ln						Cx,	# sys-apps/coreutils
-  /sbin/apparmor_parser					Px,	# sys-apps/apparmor
-  @{PYTHON_EXEC_WRAPPER}				Cx -> equery,	# dev-lang/python-exec
+  /bin/basename@{t_root}				Px,	# sys-apps/coreutils
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/ln@{t_root}					Cx,	# sys-apps/coreutils
+  /sbin/apparmor_parser@{t_root}			Px,	# sys-apps/apparmor
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /etc/apparmor.d/{,**}					r,
   /etc/apparmor.d/disable/*				w,
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -50,7 +50,7 @@ profile local.sbin.aa_portage /usr/local/sbin/aa_portage.sh {
     /bin/cat						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -61,7 +61,7 @@ profile local.sbin.aa_portage /usr/local/sbin/aa_portage.sh {
     /bin/grep						mr,
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -76,7 +76,7 @@ profile local.sbin.aa_portage /usr/local/sbin/aa_portage.sh {
     /etc/apparmor.d/cache/*				w,
   }
   
-  profile ln /bin/ln {
+  profile ln /bin/ln@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -90,12 +90,12 @@ profile local.sbin.aa_portage /usr/local/sbin/aa_portage.sh {
     /etc/apparmor.d/disable/*				w,
   }
   
-  profile equery {
+  profile equery @{PYTHON_EXEC_WRAPPER}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/python>
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/equery				Px,	# app-portage/gentoolkit
+    @{PYTHON_EXEC}/equery@{t_root}			Px,	# app-portage/gentoolkit
   }
 }

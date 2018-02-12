@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile uget.uget-gtk /usr/bin/uget-gtk {
+profile uget.uget-gtk@{p_user} /usr/bin/uget-gtk@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -57,7 +57,7 @@ profile uget.uget-gtk /usr/bin/uget-gtk {
   deny @{USER_HOME_D}/					r,
 }
 
-profile uget.uget-cmd /usr/bin/uget-cmd {
+profile uget.uget-cmd@{p_user} /usr/bin/uget-cmd@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fs/access-by-pattern-internet>

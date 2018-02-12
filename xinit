@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile xinit /usr/bin/xinit {
+profile xinit@{p_user} /usr/bin/xinit@{t_user} {		# XORG! x11-base/xorg-server USE=suid
   #include <abstractions/base>
   #include <abstractions-user/X>
   #include <abstractions/nameservice>
@@ -20,9 +20,9 @@ profile xinit /usr/bin/xinit {
   capability setuid,
   
   # SIGNAL ---------------------------------------------
-  signal (receive) set=(usr1) peer="xorg-server.Xorg",		# x11-base/xorg-server
+  signal (receive) set=(usr1) peer="xorg-server.Xorg@{p_root}",	# XORG! x11-base/xorg-server USE=suid
   signal (send) set=(hup),
-  signal (send) set=(term) peer="xorg-server.Xorg",		# x11-base/xorg-server
+  signal (send) set=(term) peer="xorg-server.Xorg@{p_root}",	# XORG! x11-base/xorg-server USE=suid
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -36,9 +36,9 @@ profile xinit /usr/bin/xinit {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xinit					mr,
-  @{shell}						Px -> xinit_shell,
-  /etc/X11/xinit/xserverrc				Px,
-  /usr/bin/Xorg						Px,	# x11-base/xorg-server (запуска под пользователем, без suid)
+  @{shell}@{t_user}					Px -> xinit_shell,
+  /etc/X11/xinit/xserverrc@{t_user}			Px,
+  /usr/bin/Xorg@{t_user}				Px,	# XORG! x11-base/xorg-server (запуска под пользователем, без suid)
 }
 
 # IMPROVE! Сейчас (модуль ядра 3.6, утилита 2.11.0) не поддерживаются
@@ -52,26 +52,26 @@ profile xinit_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/sed						Cx,	# sys-apps/sed
-  /usr/bin/which					Px,	# sys-apps/which
-  /usr/bin/gawk						Cx,	# sys-apps/gawk
-  /usr/bin/xrdb						Px,	# x11-apps/xrdb
-  /usr/bin/dbus-send					Px,	# sys-apps/dbus
-  /usr/bin/nvidia-settings				Px,	# x11-drivers/nvidia-drivers
-  /usr/bin/xfce4-session				Px,	# xfce-base/xfce4-session
-  /usr/bin/ck-launch-session				Px,	# sys-auth/consolekit
-  /usr/bin/xdg-user-dirs-update				Px,	# x11-misc/xdg-user-dirs
-  /etc/xdg/xfce4/xfce4-session-fix			Px,	# xfce-base/xfce4-session
-  /etc/X11/chooser.sh					Px,
+  /bin/cat@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_user}					Cx,	# sys-apps/grep
+  /bin/sed@{t_user}					Cx,	# sys-apps/sed
+  /usr/bin/which@{t_user}				Px,	# sys-apps/which
+  /usr/bin/gawk@{t_user}				Cx,	# sys-apps/gawk
+  /usr/bin/xrdb@{t_user}				Px,	# x11-apps/xrdb
+  /usr/bin/dbus-send@{t_user}				Px,	# sys-apps/dbus
+  /usr/bin/nvidia-settings@{t_user}			Px,	# x11-drivers/nvidia-drivers
+  /usr/bin/xfce4-session@{t_user}			Px,	# xfce-base/xfce4-session
+  /usr/bin/ck-launch-session@{t_user}			Px,	# sys-auth/consolekit
+  /usr/bin/xdg-user-dirs-update@{t_user}		Px,	# x11-misc/xdg-user-dirs
+  /etc/xdg/xfce4/xfce4-session-fix@{t_user}		Px,	# xfce-base/xfce4-session
+  /etc/X11/chooser.sh@{t_user}				Px,
   
   # READS/WRITES ---------------------------------------
   /etc/X11/xinit/xinitrc				r,
   /etc/X11/xinit/xinitrc.d/{,*}				r,
   /etc/xdg/xfce4/xinitrc				r,	# xfce-base/xfce4-session
   
-  profile cat /bin/cat {					# Используется при запуске через startxfce4.
+  profile cat /bin/cat@{t_user} {				# Используется при запуске через startxfce4.
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -84,7 +84,7 @@ profile xinit_shell {
     /etc/xdg/xfce4/Xft.xrdb				r,	# xfce-base/xfce4-session
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -94,7 +94,7 @@ profile xinit_shell {
     /bin/grep						mr,
   }
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -104,7 +104,7 @@ profile xinit_shell {
     /bin/sed						mr,
   }
   
-  profile gawk /usr/bin/gawk {
+  profile gawk /usr/bin/gawk@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -115,7 +115,7 @@ profile xinit_shell {
   }
 }
 
-profile xinit.chooser.sh /etc/X11/chooser.sh {
+profile xinit.chooser.sh@{p_user} /etc/X11/chooser.sh@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -125,12 +125,12 @@ profile xinit.chooser.sh /etc/X11/chooser.sh {
   # EXECUTABLES ----------------------------------------
   /etc/X11/chooser.sh					r,
   @{shell}						mr,
-  /usr/bin/gawk						Cx,	# sys-apps/gawk
+  /usr/bin/gawk@{t_user}				Cx,	# sys-apps/gawk
   
   # READS/WRITES ---------------------------------------
   /etc/X11/Sessions/{,*}				r,
   
-  profile gawk /usr/bin/gawk {
+  profile gawk /usr/bin/gawk@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -141,7 +141,7 @@ profile xinit.chooser.sh /etc/X11/chooser.sh {
   }
 }
 
-profile xinit.xserverrc /etc/X11/xinit/xserverrc {
+profile xinit.xserverrc@{p_user} /etc/X11/xinit/xserverrc@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -151,10 +151,10 @@ profile xinit.xserverrc /etc/X11/xinit/xserverrc {
   # EXECUTABLES ----------------------------------------
   /etc/X11/xinit/xserverrc				r,
   @{shell}						mr,
-  /usr/bin/Xorg						Px,	# x11-base/xorg-server
+  /usr/bin/Xorg@{t_root}				Px,	# XORG! x11-base/xorg-server USE=suid
 }
 
-profile xinit.startx /usr/bin/startx {
+profile xinit.startx@{p_user} /usr/bin/startx@{t_user} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -168,21 +168,21 @@ profile xinit.startx /usr/bin/startx {
   # EXECUTABLES ----------------------------------------
   /usr/bin/startx					r,
   @{shell}						mr,
-  /bin/uname						Px,	# sys-apps/coreutils
-  /bin/hostname						Px,	# sys-apps/net-tools
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/sed						Cx,	# sys-apps/sed
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/expr						Cx,	# sys-apps/coreutils
-  /usr/bin/mcookie					Px,	# sys-apps/util-linux
-  /usr/bin/deallocvt					Px,	# sys-apps/kbd
-  /usr/bin/xauth					Px,	# x11-apps/xauth
-  /usr/bin/xinit					Px,
+  /bin/uname@{t_user}					Px,	# sys-apps/coreutils
+  /bin/hostname@{t_user}				Px,	# sys-apps/net-tools
+  /bin/grep@{t_user}					Cx,	# sys-apps/grep
+  /bin/sed@{t_user}					Cx,	# sys-apps/sed
+  /bin/rm@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/expr@{t_user}					Cx,	# sys-apps/coreutils
+  /usr/bin/mcookie@{t_user}				Px,	# sys-apps/util-linux
+  /usr/bin/deallocvt@{t_user}				Px,	# sys-apps/kbd
+  /usr/bin/xauth@{t_user}				Px,	# x11-apps/xauth
+  /usr/bin/xinit@{t_user}				Px,
   
   # TEMP -----------------------------------------------
   owner /tmp/@{TMP_SH}					rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -192,7 +192,7 @@ profile xinit.startx /usr/bin/startx {
     /bin/grep						mr,
   }
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -202,7 +202,7 @@ profile xinit.startx /usr/bin/startx {
     /bin/sed						mr,
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -215,7 +215,7 @@ profile xinit.startx /usr/bin/startx {
     owner @{USER_HOME_D}/.serverauth.*			w,	# * - 1-8 символов @{pid} + 0(нет) или 2 символа {[a-z],-}
   }
   
-  profile expr /bin/expr {
+  profile expr /bin/expr@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -226,7 +226,7 @@ profile xinit.startx /usr/bin/startx {
   }
 }
 
-profile xinit.startDM.sh /etc/X11/startDM.sh {
+profile xinit.startDM.sh@{p_root} /etc/X11/startDM.sh@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -234,11 +234,10 @@ profile xinit.startDM.sh /etc/X11/startDM.sh {
   # EXECUTABLES ----------------------------------------
   /etc/X11/startDM.sh					r,
   @{shell}						mr,
-  /usr/bin/sddm						Px,	# x11-misc/sddm
+  /usr/bin/sddm@{t_user}				Px,	# x11-misc/sddm
   
   # READS/WRITES ---------------------------------------
   /etc/profile						r,	# sys-apps/baselayout
   /etc/profile.d/{,*}					r,	# x11-libs/vte (проверять, могут быть другие пакеты)
   /etc/bash/bashrc					r,	# app-shells/bash
-  /run/sddm.pid						rw,	# x11-misc/sddm
 }

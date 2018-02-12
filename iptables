@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile iptables.xtables-multi /sbin/xtables-multi {
+profile iptables.xtables-multi@{p_root} /sbin/xtables-multi@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -41,7 +41,7 @@ profile iptables.xtables-multi /sbin/xtables-multi {
   /var/lib/iptables/rules-save				rw,
 }
 
-profile iptables.init.d /etc/init.d/iptables flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile iptables.init.d@{p_root} /etc/init.d/iptables@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -52,25 +52,25 @@ profile iptables.init.d /etc/init.d/iptables flags=(attach_disconnected) {	# att
   @{SYS_D}/fs/cgroup/unified/iptables/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/dirname						Px,	# sys-apps/coreutils
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /sbin/xtables-multi					Px,
+  @{shell}@{t_root}					Cx,
+  /bin/dirname@{t_root}					Px,	# sys-apps/coreutils
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /sbin/xtables-multi@{t_root}				Px,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/iptables				r,
   /var/lib/iptables/rules-save				rw,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -83,7 +83,7 @@ profile iptables.init.d /etc/init.d/iptables flags=(attach_disconnected) {	# att
     /bin/cat						mr,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -99,7 +99,7 @@ profile iptables.init.d /etc/init.d/iptables flags=(attach_disconnected) {	# att
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -112,7 +112,7 @@ profile iptables.init.d /etc/init.d/iptables flags=(attach_disconnected) {	# att
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -130,7 +130,7 @@ profile iptables.init.d /etc/init.d/iptables flags=(attach_disconnected) {	# att
 }
 
 # Скрипт firewall-a, добавленный через portage/env.
-profile iptables.firewall /usr/sbin/firewall {
+profile iptables.firewall@{p_root} /usr/sbin/firewall@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -148,14 +148,14 @@ profile iptables.firewall /usr/sbin/firewall {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/firewall					r,
   @{shell}						mr,
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /sbin/xtables-multi					Px,
-  /etc/init.d/iptables					Px,
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /sbin/xtables-multi@{t_root}				Px,
+  /etc/init.d/iptables@{t_root}				Px,
   
   # READS/WRITES ---------------------------------------
   /etc/firewall.conf					r,
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------

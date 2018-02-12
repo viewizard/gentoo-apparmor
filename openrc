@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile openrc /sbin/openrc flags=(attach_disconnected,complain) {	# attach_disconnected, name="" comm="openrc"
+profile openrc@{p_root} /sbin/openrc@{t_root} flags=(attach_disconnected,complain) {	# attach_disconnected, name="" comm="openrc"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ncurses>
@@ -42,11 +42,11 @@ profile openrc /sbin/openrc flags=(attach_disconnected,complain) {	# attach_disc
   
   # EXECUTABLES ----------------------------------------
   /sbin/openrc						mr,
-  @{shell}						Cx,
-  /lib{,32,64}/rc/sh/init-early.sh			Px,
-  /lib{,32,64}/rc/sh/init.sh				Px,
+  @{shell}@{t_root}					Cx,
+  /lib{,32,64}/rc/sh/init-early.sh@{t_root}		Px,
+  /lib{,32,64}/rc/sh/init.sh@{t_root}			Px,
   # All scripts from ALL runlevels must have profiles!
-  /etc/init.d/*						Px,
+  /etc/init.d/*@{t_root}				Px,
   
   # READS/WRITES ---------------------------------------
   /etc/conf.d/*						r,
@@ -60,7 +60,7 @@ profile openrc /sbin/openrc flags=(attach_disconnected,complain) {	# attach_disc
   /run/openrc/**					rw,
   /run/openrc/{,**/}*					k,
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell}@{t_root} flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
@@ -77,15 +77,15 @@ profile openrc /sbin/openrc flags=(attach_disconnected,complain) {	# attach_disc
   }
 }
 
-profile openrc.openrc-init /sbin/openrc-init flags=(complain) {
+profile openrc.openrc-init@{p_root} /sbin/openrc-init@{t_root} flags=(complain) {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /sbin/openrc-init					mr,
-  /sbin/openrc						Px,
+  /sbin/openrc@{t_root}					Px,
 }
 
-profile openrc.openrc-shutdown /sbin/openrc-shutdown flags=(complain) {
+profile openrc.openrc-shutdown@{p_root} /sbin/openrc-shutdown@{t_root} flags=(complain) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -100,18 +100,18 @@ profile openrc.openrc-shutdown /sbin/openrc-shutdown flags=(complain) {
   /var/log/wtmp						wk,
 }
 
-profile openrc.rc-service /sbin/rc-service flags=(complain) {
+profile openrc.rc-service@{p_root} /sbin/rc-service@{t_root} flags=(complain) {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /sbin/rc-service					mr,
-  /etc/init.d/*						Px,
+  /etc/init.d/*@{t_root}				Px,
   
   # READS/WRITES ---------------------------------------
   /run/openrc/scheduled/				rw,
 }
 
-profile openrc.rc-update /sbin/rc-update flags=(complain) {
+profile openrc.rc-update@{p_root} /sbin/rc-update@{t_root} flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -128,7 +128,7 @@ profile openrc.rc-update /sbin/rc-update flags=(complain) {
   /run/openrc/**					rw,
 }
 
-profile openrc.rc-status /bin/rc-status flags=(attach_disconnected) {	# attach_disconnected, name="" comm="rc-status"
+profile openrc.rc-status@{p_mixed} /bin/rc-status{@{t_root},@{t_user}} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="rc-status"
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -151,7 +151,7 @@ profile openrc.rc-status /bin/rc-status flags=(attach_disconnected) {	# attach_d
   
   # EXECUTABLES ----------------------------------------
   /bin/rc-status					mr,
-  @{shell}						Cx,
+  @{shell}{@{t_root},@{t_user}}				Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/					r,
@@ -162,14 +162,14 @@ profile openrc.rc-status /bin/rc-status flags=(attach_disconnected) {	# attach_d
   /run/openrc/deptree					w,
   /run/{*.,*/,*/*.}pid					r,
   
-  profile shell @{shell} flags=(complain) {
+  profile shell @{shell}{@{t_root},@{t_user}} flags=(complain) {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
 }
 
-profile openrc.gendepends.sh /lib{,32,64}/rc/sh/gendepends.sh flags=(attach_disconnected,complain) {
+profile openrc.gendepends.sh@{p_root} /lib{,32,64}/rc/sh/gendepends.sh@{t_root} flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ncurses>
@@ -186,22 +186,21 @@ profile openrc.gendepends.sh /lib{,32,64}/rc/sh/gendepends.sh flags=(attach_disc
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						mr,
-  /bin/sed						Cx,	# sys-apps/sed
-  /bin/grep						Cx,	# sys-apps/grep
-  /sbin/openrc						Px,
-  /sbin/lvm						Px,	# sys-fs/lvm2
-  /usr/bin/gawk						Cx,	# sys-apps/gawk
   /lib{,32,64}/rc/sh/gendepends.sh			r,
-  /lib{,32,64}/rc/bin/shell_var				Px,
-  /lib{,32,64}/rc/bin/service_started			Px,
-  /lib{,32,64}/rc/bin/service_get_value			Px,
-  /lib{,32,64}/rc/bin/fstabinfo				Px,
-  /lib{,32,64}/rc/bin/eval_ecolors			Px,
+  @{shell}						mr,
+  /bin/sed@{t_root}					Cx,	# sys-apps/sed
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /sbin/openrc@{t_root}					Px,
+  /sbin/lvm@{t_root}					Px,	# sys-fs/lvm2
+  /usr/bin/gawk@{t_root}				Cx,	# sys-apps/gawk
+  /lib{,32,64}/rc/bin/shell_var@{t_root}		Px,
+  /lib{,32,64}/rc/bin/service_started@{t_root}		Px,
+  /lib{,32,64}/rc/bin/service_get_value@{t_root}	Px,
+  /lib{,32,64}/rc/bin/fstabinfo@{t_root}		Px,
+  /lib{,32,64}/rc/bin/eval_ecolors@{t_root}		Px,
   
   # READS/WRITES ---------------------------------------
   /etc/rc.conf						r,
-  /etc/zfs/zfs-functions				r,	# sys-fs/zfs
   /etc/exports.d/{,*}					r,	# net-fs/nfs-utils
   /etc/{conf,init}.d/{,*}				r,
   /usr/libexec/rc.apparmor.functions			r,	# sys-apps/apparmor
@@ -209,7 +208,7 @@ profile openrc.gendepends.sh /lib{,32,64}/rc/sh/gendepends.sh flags=(attach_disc
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   
-  profile sed /bin/sed flags=(complain) {
+  profile sed /bin/sed@{t_root} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -221,7 +220,7 @@ profile openrc.gendepends.sh /lib{,32,64}/rc/sh/gendepends.sh flags=(attach_disc
     /bin/sed						mr,
   }
   
-  profile grep /bin/grep flags=(attach_disconnected,complain) {
+  profile grep /bin/grep@{t_root} flags=(attach_disconnected,complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -240,7 +239,7 @@ profile openrc.gendepends.sh /lib{,32,64}/rc/sh/gendepends.sh flags=(attach_disc
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile gawk /usr/bin/gawk flags=(complain) {
+  profile gawk /usr/bin/gawk@{t_root} flags=(complain) {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -260,7 +259,7 @@ profile openrc.gendepends.sh /lib{,32,64}/rc/sh/gendepends.sh flags=(attach_disc
   }
 }
 
-profile openrc.init-early.sh /lib{,32,64}/rc/sh/init-early.sh flags=(complain) {
+profile openrc.init-early.sh@{p_root} /lib{,32,64}/rc/sh/init-early.sh@{t_root} flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -274,12 +273,12 @@ profile openrc.init-early.sh /lib{,32,64}/rc/sh/init-early.sh flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/rc/sh/init-early.sh			r,
   @{shell}						mr,
-  /usr/bin/setfont					Px,	# sys-apps/kbd
-  /usr/bin/loadkeys					Px,	# sys-apps/kbd
-  /usr/bin/kbd_mode					Px,	# sys-apps/kbd
+  /usr/bin/setfont@{t_root}				Px,	# sys-apps/kbd
+  /usr/bin/loadkeys@{t_root}				Px,	# sys-apps/kbd
+  /usr/bin/kbd_mode@{t_root}				Px,	# sys-apps/kbd
 }
 
-profile openrc.init.sh /lib{,32,64}/rc/sh/init.sh flags=(complain) {
+profile openrc.init.sh@{p_root} /lib{,32,64}/rc/sh/init.sh@{t_root} flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ncurses>
@@ -296,20 +295,20 @@ profile openrc.init.sh /lib{,32,64}/rc/sh/init.sh flags=(complain) {
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/rc/sh/init.sh				r,
   @{shell}						mr,
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/cp						Cx,	# sys-apps/coreutils
-  /sbin/openrc						Px,
-  /usr/bin/md5sum					Cx,	# sys-apps/coreutils
-  /lib{,32,64}/rc/bin/checkpath				Px,
-  /lib{,32,64}/rc/bin/eval_ecolors			Px,
-  /lib{,32,64}/rc/bin/einfo				Px,
-  /lib{,32,64}/rc/bin/mountinfo				Px,
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/cp@{t_root}					Cx,	# sys-apps/coreutils
+  /sbin/openrc@{t_root}					Px,
+  /usr/bin/md5sum@{t_root}				Cx,	# sys-apps/coreutils
+  /lib{,32,64}/rc/bin/checkpath@{t_root}		Px,
+  /lib{,32,64}/rc/bin/eval_ecolors@{t_root}		Px,
+  /lib{,32,64}/rc/bin/einfo@{t_root}			Px,
+  /lib{,32,64}/rc/bin/mountinfo@{t_root}		Px,
   
   # READS/WRITES ---------------------------------------
   /etc/rc.conf						r,
   /run/openrc/softlevel					w,
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -321,7 +320,7 @@ profile openrc.init.sh /lib{,32,64}/rc/sh/init.sh flags=(complain) {
     /bin/grep						mr,
   }
   
-  profile cp /bin/cp flags=(complain) {
+  profile cp /bin/cp@{t_root} flags=(complain) {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -339,7 +338,7 @@ profile openrc.init.sh /lib{,32,64}/rc/sh/init.sh flags=(complain) {
     /run/openrc/{,*}					w,
   }
   
-  profile md5sum /usr/bin/md5sum flags=(complain) {
+  profile md5sum /usr/bin/md5sum@{t_root} flags=(complain) {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -353,7 +352,7 @@ profile openrc.init.sh /lib{,32,64}/rc/sh/init.sh flags=(complain) {
   }
 }
 
-profile openrc.cgroup-release-agent.sh /lib{,32,64}/rc/sh/cgroup-release-agent.sh {
+profile openrc.cgroup-release-agent.sh@{p_root} /lib{,32,64}/rc/sh/cgroup-release-agent.sh@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -366,9 +365,9 @@ profile openrc.cgroup-release-agent.sh /lib{,32,64}/rc/sh/cgroup-release-agent.s
   # EXECUTABLES ----------------------------------------
   /lib{,32,64}/rc/sh/cgroup-release-agent.sh		r,
   @{shell}						mr,
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES ---------------------------------------
@@ -382,7 +381,7 @@ profile openrc.cgroup-release-agent.sh /lib{,32,64}/rc/sh/cgroup-release-agent.s
   }
 }
 
-profile openrc.kill_all /lib{,32,64}/rc/bin/kill_all flags=(complain) {
+profile openrc.kill_all@{p_root} /lib{,32,64}/rc/bin/kill_all@{t_root} flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -403,7 +402,7 @@ profile openrc.kill_all /lib{,32,64}/rc/bin/kill_all flags=(complain) {
   /lib{,32,64}/rc/bin/kill_all				mr,
 }
 
-profile openrc.checkpath /lib{,32,64}/rc/bin/checkpath flags=(complain) {
+profile openrc.checkpath@{p_root} /lib{,32,64}/rc/bin/checkpath@{t_root} flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   #include <abstractions/nameservice>
@@ -426,7 +425,7 @@ profile openrc.checkpath /lib{,32,64}/rc/bin/checkpath flags=(complain) {
   /run/lock/						w,	# DELEGATION! openrc.init.sh
 }
 
-profile openrc.mountinfo /lib{,32,64}/rc/bin/mountinfo flags=(complain) {
+profile openrc.mountinfo@{p_root} /lib{,32,64}/rc/bin/mountinfo@{t_root} flags=(complain) {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -447,7 +446,7 @@ profile openrc.mountinfo /lib{,32,64}/rc/bin/mountinfo flags=(complain) {
   /etc/fstab						r,
 }
 
-profile openrc.fstabinfo /lib{,32,64}/rc/bin/fstabinfo flags=(attach_disconnected,complain) {
+profile openrc.fstabinfo@{p_root} /lib{,32,64}/rc/bin/fstabinfo@{t_root} flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -465,7 +464,7 @@ profile openrc.fstabinfo /lib{,32,64}/rc/bin/fstabinfo flags=(attach_disconnecte
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile openrc.eval_ecolors /lib{,32,64}/rc/bin/eval_ecolors flags=(complain) {
+profile openrc.eval_ecolors@{p_root} /lib{,32,64}/rc/bin/eval_ecolors@{t_root} flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -481,7 +480,7 @@ profile openrc.eval_ecolors /lib{,32,64}/rc/bin/eval_ecolors flags=(complain) {
   /lib{,32,64}/rc/bin/eval_ecolors			mr,
 }
 
-profile openrc.ebegin /lib{,32,64}/rc/bin/ebegin flags=(attach_disconnected,complain) {
+profile openrc.ebegin@{p_root} /lib{,32,64}/rc/bin/ebegin@{t_root} flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -502,7 +501,7 @@ profile openrc.ebegin /lib{,32,64}/rc/bin/ebegin flags=(attach_disconnected,comp
   deny /etc/conf.d/dmcrypt				r,	# sys-fs/cryptsetup
 }
 
-profile openrc.eend /lib{,32,64}/rc/bin/eend flags=(attach_disconnected,complain) {
+profile openrc.eend@{p_root} /lib{,32,64}/rc/bin/eend@{t_root} flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -524,7 +523,7 @@ profile openrc.eend /lib{,32,64}/rc/bin/eend flags=(attach_disconnected,complain
   deny /etc/conf.d/dmcrypt				r,	# sys-fs/cryptsetup
 }
 
-profile openrc.ewend /lib{,32,64}/rc/bin/ewend flags=(complain) {
+profile openrc.ewend@{p_root} /lib{,32,64}/rc/bin/ewend@{t_root} flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -540,7 +539,7 @@ profile openrc.ewend /lib{,32,64}/rc/bin/ewend flags=(complain) {
   /lib{,32,64}/rc/bin/ewend				mr,
 }
 
-profile openrc.shell_var /lib{,32,64}/rc/bin/shell_var flags=(attach_disconnected,complain) {
+profile openrc.shell_var@{p_root} /lib{,32,64}/rc/bin/shell_var@{t_root} flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -555,7 +554,7 @@ profile openrc.shell_var /lib{,32,64}/rc/bin/shell_var flags=(attach_disconnecte
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile openrc.einfo /lib{,32,64}/rc/bin/einfo{,n} flags=(attach_disconnected,complain) {
+profile openrc.einfo@{p_root} /lib{,32,64}/rc/bin/einfo{,n}@{t_root} flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -572,7 +571,7 @@ profile openrc.einfo /lib{,32,64}/rc/bin/einfo{,n} flags=(attach_disconnected,co
   deny /etc/conf.d/dmcrypt				r,	# sys-fs/cryptsetup
 }
 
-profile openrc.ewarn /lib{,32,64}/rc/bin/ewarn{,n} flags=(attach_disconnected,complain) {
+profile openrc.ewarn@{p_root} /lib{,32,64}/rc/bin/ewarn{,n}@{t_root} flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -588,7 +587,7 @@ profile openrc.ewarn /lib{,32,64}/rc/bin/ewarn{,n} flags=(attach_disconnected,co
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile openrc.eerror /lib{,32,64}/rc/bin/eerror{,n} flags=(attach_disconnected,complain) {
+profile openrc.eerror@{p_root} /lib{,32,64}/rc/bin/eerror{,n}@{t_root} flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -604,7 +603,7 @@ profile openrc.eerror /lib{,32,64}/rc/bin/eerror{,n} flags=(attach_disconnected,
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile openrc.service /lib{,32,64}/rc/bin/service_* flags=(attach_disconnected,complain) {
+profile openrc.service@{p_root} /lib{,32,64}/rc/bin/service_*@{t_root} flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -633,7 +632,7 @@ profile openrc.service /lib{,32,64}/rc/bin/service_* flags=(attach_disconnected,
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile openrc.service_set_value /lib{,32,64}/rc/bin/service_set_value flags=(complain) {
+profile openrc.service_set_value@{p_root} /lib{,32,64}/rc/bin/service_set_value@{t_root} flags=(complain) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -649,7 +648,7 @@ profile openrc.service_set_value /lib{,32,64}/rc/bin/service_set_value flags=(co
   /run/openrc/options/**				w,
 }
 
-profile openrc.service_get_value /lib{,32,64}/rc/bin/service_get_value flags=(attach_disconnected,complain) {
+profile openrc.service_get_value@{p_root} /lib{,32,64}/rc/bin/service_get_value@{t_root} flags=(attach_disconnected,complain) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -667,11 +666,11 @@ profile openrc.service_get_value /lib{,32,64}/rc/bin/service_get_value flags=(at
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile openrc.mark_service_inactive /lib{,32,64}/rc/sbin/mark_service_inactive flags=(complain) {
+profile openrc.mark_service_inactive@{p_root} /lib{,32,64}/rc/sbin/mark_service_inactive@{t_root} flags=(complain) {
   #include <abstractions/base>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(hup) peer="*.init.d",
+  signal (send) set=(hup) peer="*.init.d@{p_root}",
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -688,7 +687,7 @@ profile openrc.mark_service_inactive /lib{,32,64}/rc/sbin/mark_service_inactive 
   /run/openrc/stopping/*				w,
 }
 
-profile openrc.netmount.init.d /etc/init.d/netmount flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.netmount.init.d@{p_root} /etc/init.d/netmount@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -702,24 +701,24 @@ profile openrc.netmount.init.d /etc/init.d/netmount flags=(attach_disconnected) 
   @{SYS_D}/fs/cgroup/unified/netmount/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /etc/init.d/dnsmasq					Px,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /bin/mount						Cx,	# sys-apps/util-linux
-  /bin/umount						Cx,	# sys-apps/util-linux
+  @{shell}@{t_root}					Cx,
+  /etc/init.d/dnsmasq@{t_root}				Px,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mount@{t_root}					Cx,	# sys-apps/util-linux
+  /bin/umount@{t_root}					Cx,	# sys-apps/util-linux
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/netmount				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -735,7 +734,7 @@ profile openrc.netmount.init.d /etc/init.d/netmount flags=(attach_disconnected) 
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -748,7 +747,7 @@ profile openrc.netmount.init.d /etc/init.d/netmount flags=(attach_disconnected) 
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -764,7 +763,7 @@ profile openrc.netmount.init.d /etc/init.d/netmount flags=(attach_disconnected) 
     /bin/rmdir						mr,
   }
   
-  profile mount /bin/mount {
+  profile mount /bin/mount@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -780,7 +779,7 @@ profile openrc.netmount.init.d /etc/init.d/netmount flags=(attach_disconnected) 
     /etc/fstab						r,
   }
   
-  profile umount /bin/umount {
+  profile umount /bin/umount@{t_root} {
     #include <abstractions/base>
     
     # MOUNT --------------------------------------------
@@ -796,7 +795,7 @@ profile openrc.netmount.init.d /etc/init.d/netmount flags=(attach_disconnected) 
   }
 }
 
-profile openrc.consolefont.init.d /etc/init.d/consolefont flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.consolefont.init.d@{p_root} /etc/init.d/consolefont@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -807,15 +806,15 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont flags=(attach_disconne
   @{SYS_D}/fs/cgroup/unified/consolefont/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /usr/bin/setfont					Px,	# sys-apps/kbd
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /usr/bin/setfont@{t_root}				Px,	# sys-apps/kbd
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/consolefont			r,
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES ---------------------------------------
@@ -834,7 +833,7 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont flags=(attach_disconne
     /lib{,32,64}/rc/console/				w,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -847,7 +846,7 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont flags=(attach_disconne
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -864,7 +863,7 @@ profile openrc.consolefont.init.d /etc/init.d/consolefont flags=(attach_disconne
   }
 }
 
-profile openrc.local.init.d /etc/init.d/local flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.local.init.d@{p_root} /etc/init.d/local@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -876,22 +875,22 @@ profile openrc.local.init.d /etc/init.d/local flags=(attach_disconnected) {	# at
   @{SYS_D}/fs/cgroup/unified/local/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/local				r,
   /etc/local.d/{,*}					r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -907,7 +906,7 @@ profile openrc.local.init.d /etc/init.d/local flags=(attach_disconnected) {	# at
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -920,7 +919,7 @@ profile openrc.local.init.d /etc/init.d/local flags=(attach_disconnected) {	# at
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -937,7 +936,7 @@ profile openrc.local.init.d /etc/init.d/local flags=(attach_disconnected) {	# at
   }
 }
 
-profile openrc.hwclock.init.d /etc/init.d/hwclock flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.hwclock.init.d@{p_root} /etc/init.d/hwclock@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -949,23 +948,23 @@ profile openrc.hwclock.init.d /etc/init.d/hwclock flags=(attach_disconnected) {	
   @{SYS_D}/fs/cgroup/unified/hwclock/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/uname						Px,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /sbin/hwclock						Px,	# sys-apps/util-linux
+  @{shell}@{t_root}					Cx,
+  /bin/uname@{t_root}					Px,	# sys-apps/coreutils
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /sbin/hwclock@{t_root}				Px,	# sys-apps/util-linux
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/hwclock				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -981,7 +980,7 @@ profile openrc.hwclock.init.d /etc/init.d/hwclock flags=(attach_disconnected) {	
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -995,7 +994,7 @@ profile openrc.hwclock.init.d /etc/init.d/hwclock flags=(attach_disconnected) {	
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1012,7 +1011,7 @@ profile openrc.hwclock.init.d /etc/init.d/hwclock flags=(attach_disconnected) {	
   }
 }
 
-profile openrc.swap.init.d /etc/init.d/swap flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.swap.init.d@{p_root} /etc/init.d/swap@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -1023,23 +1022,23 @@ profile openrc.swap.init.d /etc/init.d/swap flags=(attach_disconnected) {	# atta
   @{SYS_D}/fs/cgroup/unified/swap/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /sbin/swapon						Px,	# sys-apps/util-linux
-  /sbin/swapoff						Px,	# sys-apps/util-linux
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /sbin/swapon@{t_root}					Px,	# sys-apps/util-linux
+  /sbin/swapoff@{t_root}				Px,	# sys-apps/util-linux
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/swap				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1055,7 +1054,7 @@ profile openrc.swap.init.d /etc/init.d/swap flags=(attach_disconnected) {	# atta
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1068,7 +1067,7 @@ profile openrc.swap.init.d /etc/init.d/swap flags=(attach_disconnected) {	# atta
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1085,7 +1084,7 @@ profile openrc.swap.init.d /etc/init.d/swap flags=(attach_disconnected) {	# atta
   }
 }
 
-profile openrc.modules.init.d /etc/init.d/modules flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.modules.init.d@{p_root} /etc/init.d/modules@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -1096,23 +1095,23 @@ profile openrc.modules.init.d /etc/init.d/modules flags=(attach_disconnected) {	
   @{SYS_D}/fs/cgroup/unified/modules/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/uname						Px,	# sys-apps/coreutils
-  /bin/kmod						Px,	# sys-apps/kmod
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  @{shell}@{t_root}					Cx,
+  /bin/uname@{t_root}					Px,	# sys-apps/coreutils
+  /bin/kmod@{t_root}					Px,	# sys-apps/kmod
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/modules				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1128,7 +1127,7 @@ profile openrc.modules.init.d /etc/init.d/modules flags=(attach_disconnected) {	
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1141,7 +1140,7 @@ profile openrc.modules.init.d /etc/init.d/modules flags=(attach_disconnected) {	
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1158,7 +1157,7 @@ profile openrc.modules.init.d /etc/init.d/modules flags=(attach_disconnected) {	
   }
 }
 
-profile openrc.fsck.init.d /etc/init.d/fsck flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.fsck.init.d@{p_root} /etc/init.d/fsck@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -1172,24 +1171,24 @@ profile openrc.fsck.init.d /etc/init.d/fsck flags=(attach_disconnected) {	# atta
   @{SYS_D}/fs/cgroup/unified/fsck/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /etc/init.d/*						Px,
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /sbin/fsck						Px,	# sys-apps/util-linux
+  @{shell}@{t_root}					Cx,
+  /etc/init.d/*@{t_root}				Px,
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /sbin/fsck@{t_root}					Px,	# sys-apps/util-linux
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/fsck				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1202,7 +1201,7 @@ profile openrc.fsck.init.d /etc/init.d/fsck flags=(attach_disconnected) {	# atta
     /bin/cat						mr,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1218,7 +1217,7 @@ profile openrc.fsck.init.d /etc/init.d/fsck flags=(attach_disconnected) {	# atta
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1231,7 +1230,7 @@ profile openrc.fsck.init.d /etc/init.d/fsck flags=(attach_disconnected) {	# atta
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1248,7 +1247,7 @@ profile openrc.fsck.init.d /etc/init.d/fsck flags=(attach_disconnected) {	# atta
   }
 }
 
-profile openrc.opentmpfiles-dev.init.d /etc/init.d/opentmpfiles-dev flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.opentmpfiles-dev.init.d@{p_root} /etc/init.d/opentmpfiles-dev@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -1259,22 +1258,22 @@ profile openrc.opentmpfiles-dev.init.d /etc/init.d/opentmpfiles-dev flags=(attac
   @{SYS_D}/fs/cgroup/unified/opentmpfiles-dev/cgroup.events r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/tmpfiles						Px,	# sys-apps/opentmpfiles
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  @{shell}@{t_root}					Cx,
+  /bin/tmpfiles@{t_root}				Px,	# sys-apps/opentmpfiles
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/opentmpfiles-dev			r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1290,7 +1289,7 @@ profile openrc.opentmpfiles-dev.init.d /etc/init.d/opentmpfiles-dev flags=(attac
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1303,7 +1302,7 @@ profile openrc.opentmpfiles-dev.init.d /etc/init.d/opentmpfiles-dev flags=(attac
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1320,7 +1319,7 @@ profile openrc.opentmpfiles-dev.init.d /etc/init.d/opentmpfiles-dev flags=(attac
   }
 }
 
-profile openrc.opentmpfiles-setup.init.d /etc/init.d/opentmpfiles-setup flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.opentmpfiles-setup.init.d@{p_root} /etc/init.d/opentmpfiles-setup@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -1331,22 +1330,22 @@ profile openrc.opentmpfiles-setup.init.d /etc/init.d/opentmpfiles-setup flags=(a
   @{SYS_D}/fs/cgroup/unified/opentmpfiles-setup/cgroup.events r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/tmpfiles						Px,	# sys-apps/opentmpfiles
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  @{shell}@{t_root}					Cx,
+  /bin/tmpfiles@{t_root}				Px,	# sys-apps/opentmpfiles
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/opentmpfiles-setup			r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1362,7 +1361,7 @@ profile openrc.opentmpfiles-setup.init.d /etc/init.d/opentmpfiles-setup flags=(a
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1375,7 +1374,7 @@ profile openrc.opentmpfiles-setup.init.d /etc/init.d/opentmpfiles-setup flags=(a
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1392,7 +1391,7 @@ profile openrc.opentmpfiles-setup.init.d /etc/init.d/opentmpfiles-setup flags=(a
   }
 }
 
-profile openrc.root.init.d /etc/init.d/root flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.root.init.d@{p_root} /etc/init.d/root@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -1403,24 +1402,24 @@ profile openrc.root.init.d /etc/init.d/root flags=(attach_disconnected) {	# atta
   @{SYS_D}/fs/cgroup/unified/root/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /bin/mount						Cx,	# sys-apps/util-linux
-  audit /etc/init.d/mtab				Px,	# FIX ME! audit 17.11.2017
+  @{shell}@{t_root}					Cx,
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mount@{t_root}					Cx,	# sys-apps/util-linux
+  audit /etc/init.d/mtab@{t_root}			Px,	# FIX ME! audit 17.11.2017
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/root				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1432,7 +1431,7 @@ profile openrc.root.init.d /etc/init.d/root flags=(attach_disconnected) {	# atta
     /bin/rm						mr,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1448,7 +1447,7 @@ profile openrc.root.init.d /etc/init.d/root flags=(attach_disconnected) {	# atta
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1461,7 +1460,7 @@ profile openrc.root.init.d /etc/init.d/root flags=(attach_disconnected) {	# atta
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1477,7 +1476,7 @@ profile openrc.root.init.d /etc/init.d/root flags=(attach_disconnected) {	# atta
     /bin/rmdir						mr,
   }
   
-  profile mount /bin/mount {
+  profile mount /bin/mount@{t_root} {
     #include <abstractions/base>
     #include <local/profile_blocks/openrc.root.d/>		# Локальные правила монтирования и размонтирования.
     
@@ -1500,7 +1499,7 @@ profile openrc.root.init.d /etc/init.d/root flags=(attach_disconnected) {	# atta
   }
 }
 
-profile openrc.mtab.init.d /etc/init.d/mtab flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.mtab.init.d@{p_root} /etc/init.d/mtab@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -1511,22 +1510,22 @@ profile openrc.mtab.init.d /etc/init.d/mtab flags=(attach_disconnected) {	# atta
   @{SYS_D}/fs/cgroup/unified/mtab/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/ln						Cx,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  @{shell}@{t_root}					Cx,
+  /bin/ln@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/mtab				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile ln /bin/ln {
+  profile ln /bin/ln@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1542,7 +1541,7 @@ profile openrc.mtab.init.d /etc/init.d/mtab flags=(attach_disconnected) {	# atta
     /etc/@{TMP8}					rw,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1558,7 +1557,7 @@ profile openrc.mtab.init.d /etc/init.d/mtab flags=(attach_disconnected) {	# atta
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1571,7 +1570,7 @@ profile openrc.mtab.init.d /etc/init.d/mtab flags=(attach_disconnected) {	# atta
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1588,7 +1587,7 @@ profile openrc.mtab.init.d /etc/init.d/mtab flags=(attach_disconnected) {	# atta
   }
 }
 
-profile openrc.localmount.init.d /etc/init.d/localmount flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.localmount.init.d@{p_root} /etc/init.d/localmount@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -1599,29 +1598,29 @@ profile openrc.localmount.init.d /etc/init.d/localmount flags=(attach_disconnect
   @{SYS_D}/fs/cgroup/unified/localmount/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /etc/init.d/*						Px,
-  /bin/sed						Cx,	# sys-apps/sed
-  /bin/sync						Px,	# sys-apps/coreutils
-  /bin/fuser						Px,	# sys-process/psmisc
-  /bin/sleep						Px,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /bin/mount						Cx,	# sys-apps/util-linux
-  /bin/umount						Cx,	# sys-apps/util-linux
-  /usr/bin/timeout					Cx,	# sys-apps/coreutils
+  @{shell}@{t_root}					Cx,
+  /etc/init.d/*@{t_root}				Px,
+  /bin/sed@{t_root}					Cx,	# sys-apps/sed
+  /bin/sync@{t_root}					Px,	# sys-apps/coreutils
+  /bin/fuser@{t_root}					Px,	# sys-process/psmisc
+  /bin/sleep@{t_root}					Px,	# sys-apps/coreutils
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mount@{t_root}					Cx,	# sys-apps/util-linux
+  /bin/umount@{t_root}					Cx,	# sys-apps/util-linux
+  /usr/bin/timeout@{t_root}				Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/localmount				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1633,7 +1632,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount flags=(attach_disconnect
     /bin/sed						mr,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1649,7 +1648,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount flags=(attach_disconnect
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1662,7 +1661,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount flags=(attach_disconnect
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1678,7 +1677,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount flags=(attach_disconnect
     /bin/rmdir						mr,
   }
   
-  profile mount /bin/mount {
+  profile mount /bin/mount@{t_root} {
     #include <abstractions/base>
     #include <local/profile_blocks/openrc.localmount.d/>	# Локальные правила монтирования и размонтирования.
     
@@ -1704,7 +1703,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount flags=(attach_disconnect
     /run/mount/utab.*					rwk,
   }
   
-  profile umount /bin/umount {
+  profile umount /bin/umount@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1728,7 +1727,7 @@ profile openrc.localmount.init.d /etc/init.d/localmount flags=(attach_disconnect
     /run/mount/utab					rw,
   }
   
-  profile timeout /usr/bin/timeout {
+  profile timeout /usr/bin/timeout@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1738,11 +1737,11 @@ profile openrc.localmount.init.d /etc/init.d/localmount flags=(attach_disconnect
     
     # EXECUTABLES --------------------------------------
     /usr/bin/timeout					mr,
-    /bin/fuser						Px,	# sys-process/psmisc
+    /bin/fuser@{t_root}					Px,	# sys-process/psmisc
   }
 }
 
-profile openrc.sysctl.init.d /etc/init.d/sysctl flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.sysctl.init.d@{p_root} /etc/init.d/sysctl@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -1753,22 +1752,22 @@ profile openrc.sysctl.init.d /etc/init.d/sysctl flags=(attach_disconnected) {	# 
   @{SYS_D}/fs/cgroup/unified/sysctl/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /usr/sbin/sysctl					Px,	# sys-process/procps
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /usr/sbin/sysctl@{t_root}				Px,	# sys-process/procps
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/sysctl				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1784,7 +1783,7 @@ profile openrc.sysctl.init.d /etc/init.d/sysctl flags=(attach_disconnected) {	# 
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1797,7 +1796,7 @@ profile openrc.sysctl.init.d /etc/init.d/sysctl flags=(attach_disconnected) {	# 
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1814,7 +1813,7 @@ profile openrc.sysctl.init.d /etc/init.d/sysctl flags=(attach_disconnected) {	# 
   }
 }
 
-profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.bootmisc.init.d@{p_root} /etc/init.d/bootmisc@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -1825,20 +1824,20 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
   @{SYS_D}/fs/cgroup/unified/bootmisc/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/readlink						Cx,	# sys-apps/coreutils
-  /bin/mktemp						Cx,	# sys-apps/coreutils
-  /bin/chgrp						Cx,	# sys-apps/coreutils
-  /bin/chmod						Cx,	# sys-apps/coreutils
-  /bin/dmesg						Px,	# sys-apps/util-linux
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /bin/mount						Cx,	# sys-apps/util-linux
-  /bin/umount						Cx,	# sys-apps/util-linux
-  /sbin/halt						Px,	# sys-apps/sysvinit
-  /sbin/openrc-shutdown					Px,	# sys-apps/openrc, openrc-init
+  @{shell}@{t_root}					Cx,
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/readlink@{t_root}				Cx,	# sys-apps/coreutils
+  /bin/mktemp@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/chgrp@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/chmod@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/dmesg@{t_root}					Px,	# sys-apps/util-linux
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mount@{t_root}					Cx,	# sys-apps/util-linux
+  /bin/umount@{t_root}					Cx,	# sys-apps/util-linux
+  /sbin/halt@{t_root}					Px,	# sys-apps/sysvinit
+  /sbin/openrc-shutdown@{t_root}			Px,	# sys-apps/openrc, openrc-init
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/bootmisc				r,
@@ -1849,13 +1848,13 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
   # TEMP -----------------------------------------------
   owner /tmp/tmp.@{TMP10}/run/				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1870,7 +1869,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
     /lib{,32,64}/rc/console/{font,keymap,unicode}	w,
   }
   
-  profile readlink /bin/readlink {
+  profile readlink /bin/readlink@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1882,7 +1881,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
     /bin/readlink					mr,
   }
   
-  profile mktemp /bin/mktemp {
+  profile mktemp /bin/mktemp@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1897,7 +1896,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
     owner /tmp/tmp.@{TMP10}/				w,
   }
   
-  profile chgrp /bin/chgrp {
+  profile chgrp /bin/chgrp@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
@@ -1916,7 +1915,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
     /run/utmp						w,
   }
   
-  profile chmod /bin/chmod {
+  profile chmod /bin/chmod@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1939,7 +1938,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
     owner /tmp/.X11-unix/				w,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1960,7 +1959,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
     owner /tmp/.X11-unix/				w,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -1973,7 +1972,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -1992,7 +1991,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
     owner /tmp/tmp.@{TMP10}/				w,
   }
   
-  profile mount /bin/mount {
+  profile mount /bin/mount@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2013,7 +2012,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
     /run/mount/utab					rw,
   }
   
-  profile umount /bin/umount {
+  profile umount /bin/umount@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2035,7 +2034,7 @@ profile openrc.bootmisc.init.d /etc/init.d/bootmisc flags=(attach_disconnected) 
   }
 }
 
-profile openrc.hostname.init.d /etc/init.d/hostname flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.hostname.init.d@{p_root} /etc/init.d/hostname@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -2049,22 +2048,22 @@ profile openrc.hostname.init.d /etc/init.d/hostname flags=(attach_disconnected) 
   @{SYS_D}/fs/cgroup/unified/hostname/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/hostname						Px,	# sys-apps/net-tools
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  audit /etc/init.d/syslog-ng				Px,	# app-admin/syslog-ng	# FIX ME! audit 17.11.2017
+  @{shell}@{t_root}					Cx,
+  /bin/hostname@{t_root}				Px,	# sys-apps/net-tools
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  audit /etc/init.d/syslog-ng@{t_root}			Px,	# app-admin/syslog-ng	# FIX ME! audit 17.11.2017
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/hostname				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2080,7 +2079,7 @@ profile openrc.hostname.init.d /etc/init.d/hostname flags=(attach_disconnected) 
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -2093,7 +2092,7 @@ profile openrc.hostname.init.d /etc/init.d/hostname flags=(attach_disconnected) 
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2110,7 +2109,7 @@ profile openrc.hostname.init.d /etc/init.d/hostname flags=(attach_disconnected) 
   }
 }
 
-profile openrc.termencoding.init.d /etc/init.d/termencoding flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.termencoding.init.d@{p_root} /etc/init.d/termencoding@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -2121,24 +2120,24 @@ profile openrc.termencoding.init.d /etc/init.d/termencoding flags=(attach_discon
   @{SYS_D}/fs/cgroup/unified/termencoding/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /etc/init.d/keymaps					Px,
-  /etc/init.d/consolefont				Px,
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /etc/init.d/keymaps@{t_root}				Px,
+  /etc/init.d/consolefont@{t_root}			Px,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/termencoding			r,
   /lib{,32,64}/rc/console/unicode			w,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2157,7 +2156,7 @@ profile openrc.termencoding.init.d /etc/init.d/termencoding flags=(attach_discon
     /lib{,32,64}/rc/console/				w,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -2170,7 +2169,7 @@ profile openrc.termencoding.init.d /etc/init.d/termencoding flags=(attach_discon
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2187,7 +2186,7 @@ profile openrc.termencoding.init.d /etc/init.d/termencoding flags=(attach_discon
   }
 }
 
-profile openrc.runsvdir.init.d /etc/init.d/runsvdir flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.runsvdir.init.d@{p_root} /etc/init.d/runsvdir@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -2198,21 +2197,21 @@ profile openrc.runsvdir.init.d /etc/init.d/runsvdir flags=(attach_disconnected) 
   @{SYS_D}/fs/cgroup/unified/runsvdir/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/runsvdir				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2228,7 +2227,7 @@ profile openrc.runsvdir.init.d /etc/init.d/runsvdir flags=(attach_disconnected) 
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -2241,7 +2240,7 @@ profile openrc.runsvdir.init.d /etc/init.d/runsvdir flags=(attach_disconnected) 
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2258,7 +2257,7 @@ profile openrc.runsvdir.init.d /etc/init.d/runsvdir flags=(attach_disconnected) 
   }
 }
 
-profile openrc.keymaps.init.d /etc/init.d/keymaps flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.keymaps.init.d@{p_root} /etc/init.d/keymaps@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -2269,18 +2268,18 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps flags=(attach_disconnected) {	
   @{SYS_D}/fs/cgroup/unified/keymaps/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /usr/bin/kbd_mode					Px,	# sys-apps/kbd
-  /usr/bin/loadkeys					Px,	# sys-apps/kbd
-  /usr/bin/dumpkeys					Px,	# sys-apps/kbd
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /usr/bin/kbd_mode@{t_root}				Px,	# sys-apps/kbd
+  /usr/bin/loadkeys@{t_root}				Px,	# sys-apps/kbd
+  /usr/bin/dumpkeys@{t_root}				Px,	# sys-apps/kbd
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/keymaps				r,
   /lib{,32,64}/rc/console/keymap			w,
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2299,7 +2298,7 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps flags=(attach_disconnected) {	
     /lib{,32,64}/rc/console/				w,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -2312,7 +2311,7 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps flags=(attach_disconnected) {	
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2329,7 +2328,7 @@ profile openrc.keymaps.init.d /etc/init.d/keymaps flags=(attach_disconnected) {	
   }
 }
 
-profile openrc.urandom.init.d /etc/init.d/urandom flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.urandom.init.d@{p_root} /etc/init.d/urandom@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -2344,24 +2343,24 @@ profile openrc.urandom.init.d /etc/init.d/urandom flags=(attach_disconnected) {	
   @{SYS_D}/fs/cgroup/unified/urandom/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/dd						Cx,	# sys-apps/coreutils
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  @{shell}@{t_root}					Cx,
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/dd@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/urandom				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2381,7 +2380,7 @@ profile openrc.urandom.init.d /etc/init.d/urandom flags=(attach_disconnected) {	
     /var/lib/misc/random-seed				r,
   }
   
-  profile dd /bin/dd {
+  profile dd /bin/dd@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -2396,7 +2395,7 @@ profile openrc.urandom.init.d /etc/init.d/urandom flags=(attach_disconnected) {	
     /var/lib/misc/random-seed				w,
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -2411,7 +2410,7 @@ profile openrc.urandom.init.d /etc/init.d/urandom flags=(attach_disconnected) {	
     /var/lib/misc/random-seed				w,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2427,7 +2426,7 @@ profile openrc.urandom.init.d /etc/init.d/urandom flags=(attach_disconnected) {	
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -2440,7 +2439,7 @@ profile openrc.urandom.init.d /etc/init.d/urandom flags=(attach_disconnected) {	
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2457,7 +2456,7 @@ profile openrc.urandom.init.d /etc/init.d/urandom flags=(attach_disconnected) {	
   }
 }
 
-profile openrc.loopback.init.d /etc/init.d/loopback flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.loopback.init.d@{p_root} /etc/init.d/loopback@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -2468,23 +2467,23 @@ profile openrc.loopback.init.d /etc/init.d/loopback flags=(attach_disconnected) 
   @{SYS_D}/fs/cgroup/unified/loopback/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/ip						Px,	# sys-apps/iproute2
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  @{shell}@{t_root}					Cx,
+  /bin/ip@{t_root}					Px,	# sys-apps/iproute2
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/loopback				r,
   /etc/iproute2/rt_scopes				r,	# sys-apps/iproute2
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2500,7 +2499,7 @@ profile openrc.loopback.init.d /etc/init.d/loopback flags=(attach_disconnected) 
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -2513,7 +2512,7 @@ profile openrc.loopback.init.d /etc/init.d/loopback flags=(attach_disconnected) 
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2530,7 +2529,7 @@ profile openrc.loopback.init.d /etc/init.d/loopback flags=(attach_disconnected) 
   }
 }
 
-profile openrc.procfs.init.d /etc/init.d/procfs flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.procfs.init.d@{p_root} /etc/init.d/procfs@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -2541,21 +2540,21 @@ profile openrc.procfs.init.d /etc/init.d/procfs flags=(attach_disconnected) {	# 
   @{SYS_D}/fs/cgroup/unified/procfs/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/procfs				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2571,7 +2570,7 @@ profile openrc.procfs.init.d /etc/init.d/procfs flags=(attach_disconnected) {	# 
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -2584,7 +2583,7 @@ profile openrc.procfs.init.d /etc/init.d/procfs flags=(attach_disconnected) {	# 
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2601,7 +2600,7 @@ profile openrc.procfs.init.d /etc/init.d/procfs flags=(attach_disconnected) {	# 
   }
 }
 
-profile openrc.killprocs.init.d /etc/init.d/killprocs flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.killprocs.init.d@{p_root} /etc/init.d/killprocs@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -2617,23 +2616,23 @@ profile openrc.killprocs.init.d /etc/init.d/killprocs flags=(attach_disconnected
   @{SYS_D}/fs/cgroup/unified/killprocs/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /sbin/killall5					Px,	# sys-apps/sysvinit	# FIX ME! с openrc v0.72 не используется, скрипт изменен на kill_all
-  /lib{,32,64}/rc/bin/kill_all				Px,	# sys-apps/openrc, openrc-init
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /sbin/killall5@{t_root}				Px,	# sys-apps/sysvinit	# FIX ME! с openrc v0.72 не используется, скрипт изменен на kill_all
+  /lib{,32,64}/rc/bin/kill_all@{t_root}			Px,	# sys-apps/openrc, openrc-init
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/killprocs				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2649,7 +2648,7 @@ profile openrc.killprocs.init.d /etc/init.d/killprocs flags=(attach_disconnected
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -2662,7 +2661,7 @@ profile openrc.killprocs.init.d /etc/init.d/killprocs flags=(attach_disconnected
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2679,7 +2678,7 @@ profile openrc.killprocs.init.d /etc/init.d/killprocs flags=(attach_disconnected
   }
 }
 
-profile openrc.mount-ro.init.d /etc/init.d/mount-ro flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.mount-ro.init.d@{p_root} /etc/init.d/mount-ro@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -2690,26 +2689,26 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro flags=(attach_disconnected) 
   @{SYS_D}/fs/cgroup/unified/mount-ro/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/sync						Px,	# sys-apps/coreutils
-  /bin/sed						Cx,	# sys-apps/sed
-  /bin/fuser						Px,	# sys-process/psmisc
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /bin/umount						Cx,	# sys-apps/util-linux
-  /usr/bin/timeout					Cx,	# sys-apps/coreutils
+  @{shell}@{t_root}					Cx,
+  /bin/sync@{t_root}					Px,	# sys-apps/coreutils
+  /bin/sed@{t_root}					Cx,	# sys-apps/sed
+  /bin/fuser@{t_root}					Px,	# sys-process/psmisc
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/umount@{t_root}					Cx,	# sys-apps/util-linux
+  /usr/bin/timeout@{t_root}				Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/mount-ro				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -2719,7 +2718,7 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro flags=(attach_disconnected) 
     /bin/sed						mr,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2735,7 +2734,7 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro flags=(attach_disconnected) 
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -2748,7 +2747,7 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro flags=(attach_disconnected) 
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2764,7 +2763,7 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro flags=(attach_disconnected) 
     /bin/rmdir						mr,
   }
   
-  profile umount /bin/umount {
+  profile umount /bin/umount@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2787,7 +2786,7 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro flags=(attach_disconnected) 
     /run/mount/utab					rw,
   }
   
-  profile timeout /usr/bin/timeout {
+  profile timeout /usr/bin/timeout@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -2797,11 +2796,11 @@ profile openrc.mount-ro.init.d /etc/init.d/mount-ro flags=(attach_disconnected) 
     
     # EXECUTABLES --------------------------------------
     /usr/bin/timeout					mr,
-    /bin/fuser						Px,	# sys-process/psmisc
+    /bin/fuser@{t_root}					Px,	# sys-process/psmisc
   }
 }
 
-profile openrc.savecache.init.d /etc/init.d/savecache flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.savecache.init.d@{p_root} /etc/init.d/savecache@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -2812,25 +2811,25 @@ profile openrc.savecache.init.d /etc/init.d/savecache flags=(attach_disconnected
   @{SYS_D}/fs/cgroup/unified/savecache/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/cp						Cx,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /bin/rm						Cx,	# sys-apps/coreutils
+  @{shell}@{t_root}					Cx,
+  /bin/cp@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/savecache				r,
   /lib{,32,64}/rc/cache/*				rw,
   /run/openrc/**					r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile cp /bin/cp {
+  profile cp /bin/cp@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -2844,7 +2843,7 @@ profile openrc.savecache.init.d /etc/init.d/savecache flags=(attach_disconnected
     /lib{,32,64}/rc/cache/**				w,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2860,7 +2859,7 @@ profile openrc.savecache.init.d /etc/init.d/savecache flags=(attach_disconnected
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -2873,7 +2872,7 @@ profile openrc.savecache.init.d /etc/init.d/savecache flags=(attach_disconnected
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2889,7 +2888,7 @@ profile openrc.savecache.init.d /etc/init.d/savecache flags=(attach_disconnected
     /bin/rmdir						mr,
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -2900,7 +2899,7 @@ profile openrc.savecache.init.d /etc/init.d/savecache flags=(attach_disconnected
   }
 }
 
-profile openrc.devfs.init.d /etc/init.d/devfs flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.devfs.init.d@{p_root} /etc/init.d/devfs@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -2914,22 +2913,22 @@ profile openrc.devfs.init.d /etc/init.d/devfs flags=(attach_disconnected) {	# at
   @{SYS_D}/fs/cgroup/unified/devfs/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /bin/mount						Cx,	# sys-apps/util-linux
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mount@{t_root}					Cx,	# sys-apps/util-linux
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/devfs				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2946,7 +2945,7 @@ profile openrc.devfs.init.d /etc/init.d/devfs flags=(attach_disconnected) {	# at
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -2959,7 +2958,7 @@ profile openrc.devfs.init.d /etc/init.d/devfs flags=(attach_disconnected) {	# at
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2975,7 +2974,7 @@ profile openrc.devfs.init.d /etc/init.d/devfs flags=(attach_disconnected) {	# at
     /bin/rmdir						mr,
   }
   
-  profile mount /bin/mount {
+  profile mount /bin/mount@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -2995,7 +2994,7 @@ profile openrc.devfs.init.d /etc/init.d/devfs flags=(attach_disconnected) {	# at
   }
 }
 
-profile openrc.dmesg.init.d /etc/init.d/dmesg flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.dmesg.init.d@{p_root} /etc/init.d/dmesg@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -3006,22 +3005,22 @@ profile openrc.dmesg.init.d /etc/init.d/dmesg flags=(attach_disconnected) {	# at
   @{SYS_D}/fs/cgroup/unified/dmesg/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/dmesg						Px,	# sys-apps/util-linux
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  @{shell}@{t_root}					Cx,
+  /bin/dmesg@{t_root}					Px,	# sys-apps/util-linux
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/dmesg				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -3037,7 +3036,7 @@ profile openrc.dmesg.init.d /etc/init.d/dmesg flags=(attach_disconnected) {	# at
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -3050,7 +3049,7 @@ profile openrc.dmesg.init.d /etc/init.d/dmesg flags=(attach_disconnected) {	# at
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -3067,7 +3066,7 @@ profile openrc.dmesg.init.d /etc/init.d/dmesg flags=(attach_disconnected) {	# at
   }
 }
 
-profile openrc.kmod-static-nodes.init.d /etc/init.d/kmod-static-nodes flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.kmod-static-nodes.init.d@{p_root} /etc/init.d/kmod-static-nodes@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -3078,23 +3077,23 @@ profile openrc.kmod-static-nodes.init.d /etc/init.d/kmod-static-nodes flags=(att
   @{SYS_D}/fs/cgroup/unified/kmod-static-nodes/cgroup.events r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/kmod						Px,	# sys-apps/kmod
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  @{shell}@{t_root}					Cx,
+  /bin/kmod@{t_root}					Px,	# sys-apps/kmod
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/kmod-static-nodes			r,
   /run/tmpfiles.d/					w,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -3110,7 +3109,7 @@ profile openrc.kmod-static-nodes.init.d /etc/init.d/kmod-static-nodes flags=(att
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -3123,7 +3122,7 @@ profile openrc.kmod-static-nodes.init.d /etc/init.d/kmod-static-nodes flags=(att
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -3140,7 +3139,7 @@ profile openrc.kmod-static-nodes.init.d /etc/init.d/kmod-static-nodes flags=(att
   }
 }
 
-profile openrc.sysfs.init.d /etc/init.d/sysfs flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.sysfs.init.d@{p_root} /etc/init.d/sysfs@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -3151,22 +3150,22 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs flags=(attach_disconnected) {	# at
   @{PROC_D}/cgroups					r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /bin/mount						Cx,	# sys-apps/util-linux
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mount@{t_root}					Cx,	# sys-apps/util-linux
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/sysfs				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -3187,7 +3186,7 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs flags=(attach_disconnected) {	# at
     deny /proc/cgroups					r,	# openrc.sysfs.init.d
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -3200,7 +3199,7 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs flags=(attach_disconnected) {	# at
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -3216,7 +3215,7 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs flags=(attach_disconnected) {	# at
     /bin/rmdir						mr,
   }
   
-  profile mount /bin/mount {
+  profile mount /bin/mount@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -3252,7 +3251,7 @@ profile openrc.sysfs.init.d /etc/init.d/sysfs flags=(attach_disconnected) {	# at
   }
 }
 
-profile openrc.modules-load.init.d /etc/init.d/modules-load flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile openrc.modules-load.init.d@{p_root} /etc/init.d/modules-load@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -3263,23 +3262,23 @@ profile openrc.modules-load.init.d /etc/init.d/modules-load flags=(attach_discon
   @{SYS_D}/fs/cgroup/unified/modules-load/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/kmod						Px,	# sys-apps/kmod
-  /bin/sort						Cx,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  @{shell}@{t_root}					Cx,
+  /bin/kmod@{t_root}					Px,	# sys-apps/kmod
+  /bin/sort@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/modules-load			r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile sort /bin/sort {
+  profile sort /bin/sort@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -3291,7 +3290,7 @@ profile openrc.modules-load.init.d /etc/init.d/modules-load flags=(attach_discon
     /bin/sort						mr,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -3307,7 +3306,7 @@ profile openrc.modules-load.init.d /etc/init.d/modules-load flags=(attach_discon
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -3320,7 +3319,7 @@ profile openrc.modules-load.init.d /etc/init.d/modules-load flags=(attach_discon
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -3337,7 +3336,7 @@ profile openrc.modules-load.init.d /etc/init.d/modules-load flags=(attach_discon
   }
 }
 
-profile openrc.agetty.init.d /etc/init.d/agetty flags=(attach_disconnected,complain) {	# FIX ME! flags=(complain), проверить в работе!
+profile openrc.agetty.init.d@{p_root} /etc/init.d/agetty@{t_root} flags=(attach_disconnected,complain) {	# FIX ME! flags=(complain), проверить в работе!
   											# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
@@ -3349,23 +3348,23 @@ profile openrc.agetty.init.d /etc/init.d/agetty flags=(attach_disconnected,compl
   @{SYS_D}/fs/cgroup/unified/agetty.*/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /sbin/supervise-daemon				Cx,
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /sbin/supervise-daemon@{t_root}			Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/init.d/agetty					r,
   /etc/conf.d/agetty{,.*}				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -3381,7 +3380,7 @@ profile openrc.agetty.init.d /etc/init.d/agetty flags=(attach_disconnected,compl
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -3394,7 +3393,7 @@ profile openrc.agetty.init.d /etc/init.d/agetty flags=(attach_disconnected,compl
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -3410,12 +3409,12 @@ profile openrc.agetty.init.d /etc/init.d/agetty flags=(attach_disconnected,compl
     /bin/rmdir						mr,
   }
   
-  profile supervise-daemon /sbin/supervise-daemon flags=(complain) {	# FIX ME! flags=(complain), проверить в работе!
+  profile supervise-daemon /sbin/supervise-daemon@{t_root} flags=(complain) {	# FIX ME! flags=(complain), проверить в работе!
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
     # SIGNAL -------------------------------------------
-    signal (send) set=(term) peer="util-linux.agetty",
+    signal (send) set=(term) peer="util-linux.agetty@{p_root}",
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -3425,7 +3424,7 @@ profile openrc.agetty.init.d /etc/init.d/agetty flags=(attach_disconnected,compl
   
     # EXECUTABLES --------------------------------------
     /sbin/supervise-daemon				mr,
-    /sbin/agetty					Px,	# sys-apps/util-linux
+    /sbin/agetty@{t_root}				Px,	# sys-apps/util-linux
   
     # READS/WRITES -------------------------------------
     /run/agetty.*.pid					rw,

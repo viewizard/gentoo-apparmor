@@ -8,7 +8,7 @@
 #
 # ------------------------------------------------------------------
 
-profile local.home.evelauncher.sh /home/@{USER}/evelauncher/evelauncher.sh {
+profile local.home.evelauncher.sh@{p_user} /home/@{USER}/evelauncher/evelauncher.sh@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/X-connection-strict>
   
@@ -19,13 +19,13 @@ profile local.home.evelauncher.sh /home/@{USER}/evelauncher/evelauncher.sh {
   
   # EXECUTABLES ----------------------------------------
   owner @{USER_HOME_D}/evelauncher/evelauncher.sh	r,
-  owner @{USER_HOME_D}/evelauncher/evelauncher		px,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  owner @{USER_HOME_D}/evelauncher/evelauncher@{t_user}	px,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   @{shell}						mr,
-  /bin/sed						Cx,	# sys-apps/sed
-  /bin/basename						Px,	# sys-apps/coreutils
-  /bin/dirname						Px,	# sys-apps/coreutils
+  /bin/sed@{t_user}					Cx,	# sys-apps/sed
+  /bin/basename@{t_user}				Px,	# sys-apps/coreutils
+  /bin/dirname@{t_user}					Px,	# sys-apps/coreutils
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -37,7 +37,7 @@ profile local.home.evelauncher.sh /home/@{USER}/evelauncher/evelauncher.sh {
   }
 }
 
-profile local.home.evelauncher /home/@{USER}/evelauncher/evelauncher flags=(attach_disconnected) {
+profile local.home.evelauncher@{p_user} /home/@{USER}/evelauncher/evelauncher@{t_user} flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -58,7 +58,7 @@ profile local.home.evelauncher /home/@{USER}/evelauncher/evelauncher flags=(atta
   
   # UNIX -----------------------------------------------
   unix (send, receive)
-  		peer=(label="local.home.evelauncher.updater"),
+  		peer=(label="local.home.evelauncher.updater@{p_user}"),
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -84,12 +84,12 @@ profile local.home.evelauncher /home/@{USER}/evelauncher/evelauncher flags=(atta
   deny @{PROC_D}/@{pids}/cmdline			r,
   
   # EXECUTABLES ----------------------------------------
-  owner @{USER_HOME_D}/evelauncher/evelauncher		mr,# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
-  /usr/bin/wine						Px,	# app-emulation/wine
-  /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]*	Px,	# app-emulation/wine-*
-  owner @{USER_HOME_D}/{.eve,evelauncher}/updater	px,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
-  owner @{USER_HOME_D}/evelauncher/QtWebEngineProcess	ix,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
-  owner @{USER_HOME_D}/evelauncher/LogLite			px,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  owner @{USER_HOME_D}/evelauncher/evelauncher		mr,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  /usr/bin/wine@{t_user}				Px,	# app-emulation/wine
+  /usr/bin/wine-{any,d3d9,staging,vanilla}-[0-9]*@{t_user} Px,	# app-emulation/wine-*
+  owner @{USER_HOME_D}/{.eve,evelauncher}/updater@{t_user} px,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  owner @{USER_HOME_D}/evelauncher/QtWebEngineProcess@{t_user} ix,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  owner @{USER_HOME_D}/evelauncher/LogLite@{t_user}	px,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   
   # READS/WRITES ---------------------------------------
   /etc/os-release					r,
@@ -116,17 +116,18 @@ profile local.home.evelauncher /home/@{USER}/evelauncher/evelauncher flags=(atta
   
   # DENY INHERIT ---------------------------------------
   deny unix (send, receive) peer=(label="wine*"),		# app-emulation/wine
-  deny unix (send, receive) peer=(label="nvidia-drivers.nvidia-modprobe"),	# x11-drivers/nvidia-drivers, nvidia-drivers.nvidia-modprobe
+  deny unix (send, receive) peer=(label="nvidia-drivers.nvidia-modprobe@{p_root}"),	# x11-drivers/nvidia-drivers, nvidia-drivers.nvidia-modprobe
+  								# XORG! ? x11-base/xorg-server USE=suid
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
 }
 
-profile local.home.evelauncher.updater /home/@{USER}/{.eve,evelauncher}/updater {
+profile local.home.evelauncher.updater@{p_user} /home/@{USER}/{.eve,evelauncher}/updater@{t_user} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
   # UNIX -----------------------------------------------
   unix (send, receive)
-  		peer=(label="local.home.evelauncher"),
+  		peer=(label="local.home.evelauncher@{p_user}"),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -134,7 +135,7 @@ profile local.home.evelauncher.updater /home/@{USER}/{.eve,evelauncher}/updater 
   
   # EXECUTABLES ----------------------------------------
   owner @{USER_HOME_D}/{.eve,evelauncher}/updater	mr,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
-  owner @{USER_HOME_D}/evelauncher/evelauncher		px,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  owner @{USER_HOME_D}/evelauncher/evelauncher@{t_user}	px,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/evelauncher/{,**}		rw,
@@ -149,20 +150,20 @@ profile local.home.evelauncher.updater /home/@{USER}/{.eve,evelauncher}/updater 
   deny @{USER_HOME_D}/.local/share/CCP/EVE/QtWebEngine/Default/{,**} rw,	# evelauncher
 }
 
-profile local.home.evelauncher.LogLite.sh /home/@{USER}/evelauncher/LogLite.sh {
+profile local.home.evelauncher.LogLite.sh@{p_user} /home/@{USER}/evelauncher/LogLite.sh@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
   
   # EXECUTABLES ----------------------------------------
-  owner @{USER_HOME_D}/evelauncher/LogLite		px,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   @{shell}						mr,
-  /bin/sed						Cx,	# sys-apps/sed
-  /bin/basename						Px,	# sys-apps/coreutils
-  /bin/dirname						Px,	# sys-apps/coreutils
+  owner @{USER_HOME_D}/evelauncher/LogLite@{t_user}	px,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  /bin/sed@{t_user}					Cx,	# sys-apps/sed
+  /bin/basename@{t_user}				Px,	# sys-apps/coreutils
+  /bin/dirname@{t_user}					Px,	# sys-apps/coreutils
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_user} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -170,7 +171,7 @@ profile local.home.evelauncher.LogLite.sh /home/@{USER}/evelauncher/LogLite.sh {
   }
 }
 
-profile local.home.evelauncher.LogLite /home/@{USER}/evelauncher/LogLite {
+profile local.home.evelauncher.LogLite@{p_user} /home/@{USER}/evelauncher/LogLite@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -188,7 +189,7 @@ profile local.home.evelauncher.LogLite /home/@{USER}/evelauncher/LogLite {
   owner @{PROC_D}/@{pid}/cmdline			r,
   
   # EXECUTABLES ----------------------------------------
-  owner @{USER_HOME_D}/evelauncher/LogLite			mr,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  owner @{USER_HOME_D}/evelauncher/LogLite		mr,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/evelauncher/{,**}		r,

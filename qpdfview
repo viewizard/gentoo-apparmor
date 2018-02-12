@@ -21,7 +21,7 @@
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="[^.]*.@{local_ext}"
 
-profile qpdfview /usr/bin/qpdfview {
+profile qpdfview@{p_user} /usr/bin/qpdfview@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -82,5 +82,5 @@ profile qpdfview /usr/bin/qpdfview {
   
   # TEMP -----------------------------------------------
   audit owner /tmp/qt_temp.*.@{local_ext}		rw,	# FIX ME! audit 25.11.2017
-  audit owner /tmp/qpdfview.*.@{local_ext}		rw,	# FIX ME! audit 25.11.2017
+  owner /tmp/qpdfview.*@{pid}.@{local_ext}		rw,	# Печать.
 }

@@ -1,0 +1,45 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2018 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+# Переключение профилей, поддержка fsuid.
+# Работает только с патчем для ./security/apparmor/domain.c
+# profile_transition(), добавляет маркер fsuid в имя файла
+# при выборе профиля для переключения.
+
+# для профилей, использующих множественный доступ по fsuid
+@{p_mixed}=:mixed
+
+# обычные пользователи (1000-9999)
+@{p_user}=:user
+@{t_user}=:[1-9][0-9][0-9][0-9]
+
+# системный пользователь portage
+@{p_portage}=:portage
+@{t_portage}=:250
+
+# системный пользователь logcheck
+@{p_logcheck}=:logcheck
+@{t_logcheck}=:106
+
+# системный пользователь nullmail
+@{p_nullmail}=:nullmail
+@{t_nullmail}=:88
+
+# системный пользователь man
+@{p_man}=:man
+@{t_man}=:13
+
+# системный пользователь lp
+@{p_lp}=:lp
+@{t_lp}=:4
+
+# специальный пользователь root
+@{p_root}=:root
+@{t_root}=:0

@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile glibc.ldd /usr/bin/ldd flags=(attach_disconnected) {
+profile glibc.ldd@{p_root} /usr/bin/ldd@{t_root} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -25,11 +25,16 @@ profile glibc.ldd /usr/bin/ldd flags=(attach_disconnected) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/ldd						mr,
-  /bin/{,**/}*						cxmr -> test_run,
-  /sbin/{,**/}*						cxmr -> test_run,
-  /lib{,32,64,exec}/{,**/}*				cxmr -> test_run,
-  /opt/{,**/}*						cxmr -> test_run,
-  /usr/{,**/}*						cxmr -> test_run,
+  /bin/{,**/}*						mr,
+  /bin/{,**/}*@{t_root}					px -> glibc_ldd_root_test_run,
+  /sbin/{,**/}*						mr,
+  /sbin/{,**/}*@{t_root}				px -> glibc_ldd_root_test_run,
+  /lib{,32,64,exec}/{,**/}*				mr,
+  /lib{,32,64,exec}/{,**/}*@{t_root}			px -> glibc_ldd_root_test_run,
+  /opt/{,**/}*						mr,
+  /opt/{,**/}*@{t_root}					px -> glibc_ldd_root_test_run,
+  /usr/{,**/}*						mr,
+  /usr/{,**/}*@{t_root}					px -> glibc_ldd_root_test_run,
   
   # READS/WRITES ---------------------------------------
   /etc/ld.so.cache					r,
@@ -37,25 +42,28 @@ profile glibc.ldd /usr/bin/ldd flags=(attach_disconnected) {
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					r,	# flags=(attach_disconnected)
   deny /var/cache/revdep-rebuild/*errors*		rw,	# app-portage/gentoolkit, gentoolkit.revdep-rebuild.sh
-  
-  profile test_run {
-    # PSEUDO -------------------------------------------
-    /dev/tty[0-9]*					rw,
-    /dev/pts/[0-9]*					rw,
-    
-    # EXECUTABLES --------------------------------------
-    /bin/{,**/}*					mr,
-    /sbin/{,**/}*					mr,
-    /lib{,32,64,exec}/{,**/}*				mr,
-    /opt/{,**/}*					mr,
-    /usr/{,**/}*					mr,
-    
-    # READS/WRITES -------------------------------------
-    /etc/ld.so.cache					r,
-  }
 }
 
-profile glibc.locale /usr/bin/locale flags=(attach_disconnected) {
+# FIX ME! Сейчас (модуль ядра 3.6, утилита 2.12.0) не можем
+# использовать именованный профиль с переходом "Cx/cx ->", т.к.
+# нельзя использовать переменную в имени родительского профиля.
+profile glibc_ldd_root_test_run {
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/{,**/}*						mr,
+  /sbin/{,**/}*						mr,
+  /lib{,32,64,exec}/{,**/}*				mr,
+  /opt/{,**/}*						mr,
+  /usr/{,**/}*						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/ld.so.cache					r,
+}
+
+profile glibc.locale@{p_user} /usr/bin/locale@{t_user} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -65,19 +73,19 @@ profile glibc.locale /usr/bin/locale flags=(attach_disconnected) {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/locale					mr,
-  /bin/gzip						Cx,	# app-arch/gzip
+  /bin/gzip@{t_user}					Cx,	# app-arch/gzip
   
   # READS/WRITES ---------------------------------------
   /usr/share/i18n/charmaps/{,*.gz}			r,
   
   # DENY INHERIT ---------------------------------------
-  deny unix type=stream peer=(label="skypeforlinux"),		# net-im/skypeforlinux
-  deny unix type=seqpacket peer=(label="skypeforlinux"),	# net-im/skypeforlinux
+  deny unix type=stream peer=(label="skypeforlinux@{p_user}"),		# net-im/skypeforlinux
+  deny unix type=seqpacket peer=(label="skypeforlinux@{p_user}"),	# net-im/skypeforlinux
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   deny /opt/skypeforlinux/{,**}				rw,	# net-im/skypeforlinux
   deny /dev/shm/.org.chromium.Chromium.@{TMP6}		rw,	# net-im/skypeforlinux
   
-  profile gzip /bin/gzip {
+  profile gzip /bin/gzip@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -92,7 +100,40 @@ profile glibc.locale /usr/bin/locale flags=(attach_disconnected) {
   }
 }
 
-profile glibc.ldconfig /sbin/ldconfig flags=(attach_disconnected) {
+profile glibc.locale@{p_root} /usr/bin/locale@{t_root} flags=(attach_disconnected) {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/locale					mr,
+  /bin/gzip@{t_root}					Cx,	# app-arch/gzip
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/i18n/charmaps/{,*.gz}			r,
+  
+  # DENY INHERIT ---------------------------------------
+  deny /apparmor/.null					rw,	# flags=(attach_disconnected)
+  
+  profile gzip /bin/gzip@{t_root} {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /bin/gzip						mr,
+    
+    # READS/WRITES -------------------------------------
+    /usr/share/i18n/charmaps/*.gz			r,
+  }
+}
+
+profile glibc.ldconfig@{p_mixed} /sbin/ldconfig{@{t_root},@{t_user},@{t_portage}} flags=(attach_disconnected) {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -124,7 +165,7 @@ profile glibc.ldconfig /sbin/ldconfig flags=(attach_disconnected) {
   deny /usr/share/pyfa/imgs.zip				r,	# games-util/pyfa
 }
 
-profile glibc.getent /usr/bin/getent {
+profile glibc.getent@{p_root} /usr/bin/getent@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   

@@ -21,7 +21,7 @@
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="{qt_temp.*,[^.]*.@{local_ext}}"
 
-profile vokoscreen /usr/bin/vokoscreen {
+profile vokoscreen@{p_user} /usr/bin/vokoscreen@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -41,7 +41,7 @@ profile vokoscreen /usr/bin/vokoscreen {
   #include <abstractions-user/profile_transitions/allow-mime-related>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term) peer="vokoscreen//ffmpeg",
+  signal (send) set=(term) peer="vokoscreen@{p_user}//ffmpeg",
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -61,8 +61,8 @@ profile vokoscreen /usr/bin/vokoscreen {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/vokoscreen					mr,
-  /usr/bin/ffmpeg					Cx,	# media-video/ffmpeg
-  /usr/bin/pactl					Px,	# media-sound/pulseaudio
+  /usr/bin/ffmpeg@{t_user}				Cx,	# media-video/ffmpeg
+  /usr/bin/pactl@{t_user}				Px,	# media-sound/pulseaudio
   
   # READS/WRITES ---------------------------------------
   /etc/os-release					r,	# sys-apps/baselayout
@@ -76,7 +76,7 @@ profile vokoscreen /usr/bin/vokoscreen {
   # TEMP -----------------------------------------------
   owner /tmp/mergeFile.txt				rw,
   
-  profile ffmpeg /usr/bin/ffmpeg {
+  profile ffmpeg /usr/bin/ffmpeg@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwk>
     #include <abstractions/fs/deny-by-pattern-internet>

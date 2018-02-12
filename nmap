@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile nmap /usr/bin/nmap {
+profile nmap@{p_user} /usr/bin/nmap@{t_user} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -37,7 +37,33 @@ profile nmap /usr/bin/nmap {
   
   # READS/WRITES ---------------------------------------
   /usr/share/nmap/{,**}					r,
+}
+
+profile nmap@{p_root} /usr/bin/nmap@{t_root} {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
   
-  # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
+  # CAPABILITIES ---------------------------------------
+  capability net_raw,
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  network packet raw,
+  network inet raw,
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						r,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  owner @{PROC_D}/@{pid}/net/dev			r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/nmap						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/nmap/{,**}					r,
 }

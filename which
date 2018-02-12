@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,7 +10,21 @@
 
 #include <local/tunables.d/>
 
-profile which /usr/bin/which {
+profile which@{p_user} /usr/bin/which@{t_user} {
+  #include <abstractions/base>
+  
+  # CAPABILITIES ---------------------------------------
+  capability mknod,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/which					mr,
+}
+
+profile which@{p_root} /usr/bin/which@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------

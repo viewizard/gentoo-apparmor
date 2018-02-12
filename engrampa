@@ -18,7 +18,7 @@
 @{USERS_DIR_rwkl}="[^.]**"
 @{USERS_FILE_rwkl}="[^.]**"
 
-profile engrampa /usr/bin/engrampa {
+profile engrampa@{p_user} /usr/bin/engrampa@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -41,7 +41,7 @@ profile engrampa /usr/bin/engrampa {
   #include <abstractions-user/profile_transitions/allow-mime-related>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term) peer="engrampa//*",
+  signal (send) set=(term) peer="engrampa@{p_user}//*",
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -50,22 +50,22 @@ profile engrampa /usr/bin/engrampa {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/engrampa					mr,
-  @{shell}						Cx,
-  /bin/mv						Cx,	# sys-apps/coreutils
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/cp						Cx,	# sys-apps/coreutils
-  /bin/tar						Cx,	# app-arch/tar
-  /bin/bzip2						Cx,	# app-arch/bzip2
-  /bin/gzip						Cx,	# app-arch/gzip
-  /usr/bin/7z						Cx,	# app-arch/p7zip
-  /usr/bin/7za						Cx,	# app-arch/p7zip
-  /usr/bin/zip						Cx,	# app-arch/zip
-  /usr/bin/unzip					Cx,	# app-arch/unzip
-  /usr/bin/lzip						Cx,	# app-arch/lzip
-  /usr/bin/xz						Cx,	# app-arch/xz-utils
-  /usr/bin/dpkg-deb					Px -> engrampa_dpkg_deb,	# app-arch/dpkg
-  /usr/@{CHOST}/binutils-bin/[0-9]*/ar			Cx,	# sys-devel/binutils
-  /opt/rar/rar						Cx,	# app-arch/rar
+  @{shell}@{t_user}					Cx,
+  /bin/mv@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/rm@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/cp@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/tar@{t_user}					Cx,	# app-arch/tar
+  /bin/bzip2@{t_user}					Cx,	# app-arch/bzip2
+  /bin/gzip@{t_user}					Cx,	# app-arch/gzip
+  /usr/bin/7z@{t_user}					Cx,	# app-arch/p7zip
+  /usr/bin/7za@{t_user}					Cx,	# app-arch/p7zip
+  /usr/bin/zip@{t_user}					Cx,	# app-arch/zip
+  /usr/bin/unzip@{t_user}				Cx,	# app-arch/unzip
+  /usr/bin/lzip@{t_user}				Cx,	# app-arch/lzip
+  /usr/bin/xz@{t_user}					Cx,	# app-arch/xz-utils
+  /usr/bin/dpkg-deb@{t_user}				Px -> engrampa_dpkg_deb,	# app-arch/dpkg
+  /usr/@{CHOST}/binutils-bin/[0-9]*/ar@{t_user}		Cx,	# sys-devel/binutils
+  /opt/rar/rar@{t_user}					Cx,	# app-arch/rar
   
   # READS/WRITES ---------------------------------------
   /usr/share/engrampa/{,**}				r,
@@ -75,7 +75,7 @@ profile engrampa /usr/bin/engrampa {
   owner @{USER_HOME_D}/.config/mimeapps.list*		rw,
   owner @{USER_HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -83,10 +83,10 @@ profile engrampa /usr/bin/engrampa {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /usr/libexec/engrampa/rpm2cpio			Px -> engrampa_rpm2cpio,
+    /usr/libexec/engrampa/rpm2cpio@{t_user}		Px -> engrampa_rpm2cpio,
   }
   
-  profile mv /bin/mv {
+  profile mv /bin/mv@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -99,7 +99,7 @@ profile engrampa /usr/bin/engrampa {
     deny @{USER_HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -119,7 +119,7 @@ profile engrampa /usr/bin/engrampa {
     deny @{USER_HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
-  profile cp /bin/cp {
+  profile cp /bin/cp@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -135,7 +135,7 @@ profile engrampa /usr/bin/engrampa {
     deny @{USER_HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
-  profile tar /bin/tar {
+  profile tar /bin/tar@{t_user} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
@@ -144,11 +144,11 @@ profile engrampa /usr/bin/engrampa {
     
     # EXECUTABLES --------------------------------------
     /bin/tar						mr,
-    @{shell}						Px -> engrampa_tar_shell,
-    /bin/bzip2						ix,	# app-arch/bzip2	# Oставляем запуск через ix.
-    /bin/gzip						ix,	# app-arch/gzip		# Oставляем запуск через ix.
-    /usr/bin/lzip					ix,	# app-arch/lzip		# Oставляем запуск через ix.
-    /usr/bin/xz						ix,	# app-arch/xz-utils	# Oставляем запуск через ix.
+    @{shell}@{t_user}					Px -> engrampa_tar_shell,
+    /bin/bzip2@{t_user}					ix,	# app-arch/bzip2	# Oставляем запуск через ix.
+    /bin/gzip@{t_user}					ix,	# app-arch/gzip		# Oставляем запуск через ix.
+    /usr/bin/lzip@{t_user}				ix,	# app-arch/lzip		# Oставляем запуск через ix.
+    /usr/bin/xz@{t_user}				ix,	# app-arch/xz-utils	# Oставляем запуск через ix.
     
     # USERS --------------------------------------------
     owner @{USER_HOME_D}/.fr-@{TMP6}/{,**}		rw,
@@ -157,7 +157,7 @@ profile engrampa /usr/bin/engrampa {
     deny @{USER_HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
-  profile bzip2 /bin/bzip2 {
+  profile bzip2 /bin/bzip2@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -173,7 +173,7 @@ profile engrampa /usr/bin/engrampa {
     deny @{USER_HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
-  profile gzip /bin/gzip {
+  profile gzip /bin/gzip@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -189,7 +189,7 @@ profile engrampa /usr/bin/engrampa {
     deny @{USER_HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
-  profile 7z /usr/bin/7z {
+  profile 7z /usr/bin/7z@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -202,7 +202,7 @@ profile engrampa /usr/bin/engrampa {
     # EXECUTABLES --------------------------------------
     /usr/bin/7z						r,
     @{shell}						mr,
-    /usr/lib{,32,64}/p7zip/7z				ix,	# app-arch/p7zip	# Все правильно, для 7z используем с ix.
+    /usr/lib{,32,64}/p7zip/7z@{t_user}			ix,	# app-arch/p7zip	# Все правильно, для 7z используем с ix.
     
     # READS/WRITES -------------------------------------
     /usr/lib64/p7zip/7z.so				m,
@@ -214,7 +214,7 @@ profile engrampa /usr/bin/engrampa {
     deny @{USER_HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
-  profile 7za /usr/bin/7za {
+  profile 7za /usr/bin/7za@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -227,13 +227,13 @@ profile engrampa /usr/bin/engrampa {
     # EXECUTABLES --------------------------------------
     /usr/bin/7za					r,
     @{shell}						mr,
-    /usr/lib{,32,64}/p7zip/7za				ix,	# app-arch/p7zip	# Все правильно, для 7za используем с ix.
+    /usr/lib{,32,64}/p7zip/7za@{t_user}			ix,	# app-arch/p7zip	# Все правильно, для 7za используем с ix.
     
     # DENY INHERIT -------------------------------------
     deny @{USER_HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
-  profile zip /usr/bin/zip {
+  profile zip /usr/bin/zip@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -246,7 +246,7 @@ profile engrampa /usr/bin/engrampa {
     deny @{USER_HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
-  profile unzip /usr/bin/unzip {
+  profile unzip /usr/bin/unzip@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -259,7 +259,7 @@ profile engrampa /usr/bin/engrampa {
     deny @{USER_HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
-  profile lzip /usr/bin/lzip {
+  profile lzip /usr/bin/lzip@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -275,7 +275,7 @@ profile engrampa /usr/bin/engrampa {
     deny @{USER_HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
-  profile xz /usr/bin/xz {
+  profile xz /usr/bin/xz@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -291,7 +291,7 @@ profile engrampa /usr/bin/engrampa {
     deny @{USER_HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
-  profile ar /usr/@{CHOST}/binutils-bin/[0-9]*/ar {
+  profile ar /usr/@{CHOST}/binutils-bin/[0-9]*/ar@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -304,7 +304,7 @@ profile engrampa /usr/bin/engrampa {
     deny @{USER_HOME_D}/.local/share/gvfs-metadata/{,*}	rw,	# gnome-base/gvfs
   }
   
-  profile rar /opt/rar/rar {
+  profile rar /opt/rar/rar@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -335,9 +335,9 @@ profile engrampa_rpm2cpio {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/engrampa/rpm2cpio			mr,
-  @{shell}						Cx,
+  @{shell}@{t_user}					Cx,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -345,7 +345,7 @@ profile engrampa_rpm2cpio {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    @{shell}						Px -> engrampa_rpm2cpio_shell,
+    @{shell}@{t_user}					Px -> engrampa_rpm2cpio_shell,
   }
 }
 
@@ -362,11 +362,11 @@ profile engrampa_rpm2cpio_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/dd						Cx,	# sys-apps/coreutils
-  /bin/gzip						Cx,	# app-arch/gzip
-  /bin/cpio						Cx,	# app-arch/cpio
+  /bin/dd@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/gzip@{t_user}					Cx,	# app-arch/gzip
+  /bin/cpio@{t_user}					Cx,	# app-arch/cpio
   
-  profile dd /bin/dd {
+  profile dd /bin/dd@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -376,14 +376,14 @@ profile engrampa_rpm2cpio_shell {
     /bin/dd						mr,
   }
   
-  profile gzip /bin/gzip {
+  profile gzip /bin/gzip@{t_user} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/gzip						mr,
   }
   
-  profile cpio /bin/cpio {
+  profile cpio /bin/cpio@{t_user} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
@@ -405,8 +405,8 @@ profile engrampa_dpkg_deb {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dpkg-deb					mr,
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/tar						Cx,	# app-arch/tar
+  /bin/rm@{t_user}					Cx,	# sys-apps/coreutils
+  /bin/tar@{t_user}					Cx,	# app-arch/tar
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.fr-@{TMP6}/{,**}		rw,
@@ -415,7 +415,7 @@ profile engrampa_dpkg_deb {
   owner /tmp/dpkg-deb.@{TMP6}/				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   owner /tmp/dpkg-deb.@{TMP6}/*				r,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_user} {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -428,7 +428,7 @@ profile engrampa_dpkg_deb {
     owner /tmp/dpkg-deb.@{TMP6}/{,**}			rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
-  profile tar /bin/tar {
+  profile tar /bin/tar@{t_user} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
@@ -459,15 +459,15 @@ profile engrampa_tar_shell flags=(attach_disconnected) {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/gzip						Cx,	# app-arch/gzip
-  /bin/bzip2						Cx,	# app-arch/bzip2
-  /usr/bin/lzip						Cx,	# app-arch/lzip
-  /usr/bin/xz						Cx,	# app-arch/xz-utils
+  /bin/gzip@{t_user}					Cx,	# app-arch/gzip
+  /bin/bzip2@{t_user}					Cx,	# app-arch/bzip2
+  /usr/bin/lzip@{t_user}				Cx,	# app-arch/lzip
+  /usr/bin/xz@{t_user}					Cx,	# app-arch/xz-utils
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   
-  profile gzip /bin/gzip flags=(attach_disconnected) {
+  profile gzip /bin/gzip@{t_user} flags=(attach_disconnected) {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -480,7 +480,7 @@ profile engrampa_tar_shell flags=(attach_disconnected) {
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile bzip2 /bin/bzip2 flags=(attach_disconnected) {
+  profile bzip2 /bin/bzip2@{t_user} flags=(attach_disconnected) {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -493,7 +493,7 @@ profile engrampa_tar_shell flags=(attach_disconnected) {
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile lzip /usr/bin/lzip flags=(attach_disconnected) {
+  profile lzip /usr/bin/lzip@{t_user} flags=(attach_disconnected) {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -506,7 +506,7 @@ profile engrampa_tar_shell flags=(attach_disconnected) {
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile xz /usr/bin/xz flags=(attach_disconnected) {
+  profile xz /usr/bin/xz@{t_user} flags=(attach_disconnected) {
     #include <abstractions/base>
     #include <abstractions-user/fs/access-by-users-preset-rwkl>
     #include <abstractions/fs/deny-by-pattern-internet>
@@ -520,7 +520,7 @@ profile engrampa_tar_shell flags=(attach_disconnected) {
   }
 }
 
-profile engrampa_root {
+profile engrampa@{p_root} /usr/bin/engrampa@{t_root} {
   #include <abstractions/base>
   #include <abstractions-root/freedesktop.org>
   #include <abstractions-root/fonts>
@@ -545,7 +545,7 @@ profile engrampa_root {
   #include <abstractions-root/profile_transitions/allow-list>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term) peer="engrampa_root//*",
+  signal (send) set=(term) peer="engrampa@{p_root}//*",
   
   # PSEUDO ---------------------------------------------
   /dev/tty						rw,
@@ -554,22 +554,22 @@ profile engrampa_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/engrampa					mr,
-  @{shell}						Cx,
-  /bin/mv						Cx,	# sys-apps/coreutils
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/cp						Cx,	# sys-apps/coreutils
-  /bin/tar						Cx,	# app-arch/tar
-  /bin/bzip2						Cx,	# app-arch/bzip2
-  /bin/gzip						Cx,	# app-arch/gzip
-  /usr/bin/7z						Cx,	# app-arch/p7zip
-  /usr/bin/7za						Cx,	# app-arch/p7zip
-  /usr/bin/zip						Cx,	# app-arch/zip
-  /usr/bin/unzip					Cx,	# app-arch/unzip
-  /usr/bin/lzip						Cx,	# app-arch/lzip
-  /usr/bin/xz						Cx,	# app-arch/xz-utils
-  /usr/bin/dpkg-deb					Px -> engrampa_dpkg_deb_root,	# app-arch/dpkg
-  /usr/@{CHOST}/binutils-bin/[0-9]*/ar			Cx,	# sys-devel/binutils
-  /opt/rar/rar						Cx,	# app-arch/rar
+  @{shell}@{t_root}					Cx,
+  /bin/mv@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/cp@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/tar@{t_root}					Cx,	# app-arch/tar
+  /bin/bzip2@{t_root}					Cx,	# app-arch/bzip2
+  /bin/gzip@{t_root}					Cx,	# app-arch/gzip
+  /usr/bin/7z@{t_root}					Cx,	# app-arch/p7zip
+  /usr/bin/7za@{t_root}					Cx,	# app-arch/p7zip
+  /usr/bin/zip@{t_root}					Cx,	# app-arch/zip
+  /usr/bin/unzip@{t_root}				Cx,	# app-arch/unzip
+  /usr/bin/lzip@{t_root}				Cx,	# app-arch/lzip
+  /usr/bin/xz@{t_root}					Cx,	# app-arch/xz-utils
+  /usr/bin/dpkg-deb@{t_root}				Px -> engrampa_dpkg_deb_root,	# app-arch/dpkg
+  /usr/@{CHOST}/binutils-bin/[0-9]*/ar@{t_root}		Cx,	# sys-devel/binutils
+  /opt/rar/rar@{t_root}					Cx,	# app-arch/rar
   
   # READS/WRITES ---------------------------------------
   /usr/share/engrampa/{,**}				r,
@@ -579,7 +579,7 @@ profile engrampa_root {
   /root/.local/share/gvfs-metadata/{,*}			rw,	# gnome-base/gvfs
   /root/.cache/.fr-@{TMP6}/{,**}			rw,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -587,10 +587,10 @@ profile engrampa_root {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /usr/libexec/engrampa/rpm2cpio			Px -> engrampa_rpm2cpio_root,
+    /usr/libexec/engrampa/rpm2cpio@{t_root}		Px -> engrampa_rpm2cpio_root,
   }
   
-  profile mv /bin/mv {
+  profile mv /bin/mv@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
@@ -604,7 +604,7 @@ profile engrampa_root {
     deny /root/.local/share/gvfs-metadata/{,*}		rw,	# gnome-base/gvfs
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
@@ -625,7 +625,7 @@ profile engrampa_root {
     deny /root/.local/share/gvfs-metadata/{,*}		rw,	# gnome-base/gvfs
   }
   
-  profile cp /bin/cp {
+  profile cp /bin/cp@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
@@ -645,7 +645,7 @@ profile engrampa_root {
     deny /root/.local/share/gvfs-metadata/{,*}		rw,	# gnome-base/gvfs
   }
   
-  profile tar /bin/tar {
+  profile tar /bin/tar@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
@@ -660,11 +660,11 @@ profile engrampa_root {
     
     # EXECUTABLES --------------------------------------
     /bin/tar						mr,
-    @{shell}						Px -> engrampa_tar_shell_root,
-    /bin/bzip2						ix,	# app-arch/bzip2	# Oставляем запуск через ix.
-    /bin/gzip						ix,	# app-arch/gzip		# Oставляем запуск через ix.
-    /usr/bin/lzip					ix,	# app-arch/lzip		# Oставляем запуск через ix.
-    /usr/bin/xz						ix,	# app-arch/xz-utils	# Oставляем запуск через ix.
+    @{shell}@{t_root}					Px -> engrampa_tar_shell_root,
+    /bin/bzip2@{t_root}					ix,	# app-arch/bzip2	# Oставляем запуск через ix.
+    /bin/gzip@{t_root}					ix,	# app-arch/gzip		# Oставляем запуск через ix.
+    /usr/bin/lzip@{t_root}				ix,	# app-arch/lzip		# Oставляем запуск через ix.
+    /usr/bin/xz@{t_root}				ix,	# app-arch/xz-utils	# Oставляем запуск через ix.
     
     # USERS --------------------------------------------
     /root/.cache/.fr-@{TMP6}/{,**}			rw,
@@ -673,7 +673,7 @@ profile engrampa_root {
     deny /root/.local/share/gvfs-metadata/{,*}		rw,	# gnome-base/gvfs
   }
   
-  profile bzip2 /bin/bzip2 {
+  profile bzip2 /bin/bzip2@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
@@ -690,7 +690,7 @@ profile engrampa_root {
     deny /root/.local/share/gvfs-metadata/{,*}		rw,	# gnome-base/gvfs
   }
   
-  profile gzip /bin/gzip {
+  profile gzip /bin/gzip@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
@@ -707,7 +707,7 @@ profile engrampa_root {
     deny /root/.local/share/gvfs-metadata/{,*}		rw,	# gnome-base/gvfs
   }
   
-  profile 7z /usr/bin/7z {
+  profile 7z /usr/bin/7z@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
@@ -721,7 +721,7 @@ profile engrampa_root {
     # EXECUTABLES --------------------------------------
     /usr/bin/7z						r,
     @{shell}						mr,
-    /usr/lib{,32,64}/p7zip/7z				ix,	# app-arch/p7zip	# Все правильно, для 7z используем с ix.
+    /usr/lib{,32,64}/p7zip/7z@{t_root}			ix,	# app-arch/p7zip	# Все правильно, для 7z используем с ix.
     
     # READS/WRITES -------------------------------------
     /usr/lib64/p7zip/7z.so				m,
@@ -730,7 +730,7 @@ profile engrampa_root {
     deny /root/.local/share/gvfs-metadata/{,*}		rw,	# gnome-base/gvfs
   }
   
-  profile 7za /usr/bin/7za {
+  profile 7za /usr/bin/7za@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
@@ -744,13 +744,13 @@ profile engrampa_root {
     # EXECUTABLES --------------------------------------
     /usr/bin/7za					r,
     @{shell}						mr,
-    /usr/lib{,32,64}/p7zip/7za				ix,	# app-arch/p7zip	# Все правильно, для 7za используем с ix.
+    /usr/lib{,32,64}/p7zip/7za@{t_root}			ix,	# app-arch/p7zip	# Все правильно, для 7za используем с ix.
     
     # DENY INHERIT -------------------------------------
     deny /root/.local/share/gvfs-metadata/{,*}		rw,	# gnome-base/gvfs
   }
   
-  profile zip /usr/bin/zip {
+  profile zip /usr/bin/zip@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
@@ -764,7 +764,7 @@ profile engrampa_root {
     deny /root/.local/share/gvfs-metadata/{,*}		rw,	# gnome-base/gvfs
   }
   
-  profile unzip /usr/bin/unzip {
+  profile unzip /usr/bin/unzip@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
@@ -778,7 +778,7 @@ profile engrampa_root {
     deny /root/.local/share/gvfs-metadata/{,*}		rw,	# gnome-base/gvfs
   }
   
-  profile lzip /usr/bin/lzip {
+  profile lzip /usr/bin/lzip@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
@@ -795,7 +795,7 @@ profile engrampa_root {
     deny /root/.local/share/gvfs-metadata/{,*}		rw,	# gnome-base/gvfs
   }
   
-  profile xz /usr/bin/xz {
+  profile xz /usr/bin/xz@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
@@ -812,7 +812,7 @@ profile engrampa_root {
     deny /root/.local/share/gvfs-metadata/{,*}		rw,	# gnome-base/gvfs
   }
   
-  profile ar /usr/@{CHOST}/binutils-bin/[0-9]*/ar {
+  profile ar /usr/@{CHOST}/binutils-bin/[0-9]*/ar@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
@@ -826,7 +826,7 @@ profile engrampa_root {
     deny /root/.local/share/gvfs-metadata/{,*}		rw,	# gnome-base/gvfs
   }
   
-  profile rar /opt/rar/rar {
+  profile rar /opt/rar/rar@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
@@ -856,9 +856,9 @@ profile engrampa_rpm2cpio_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/engrampa/rpm2cpio			mr,
-  @{shell}						Cx,
+  @{shell}@{t_root}					Cx,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -866,7 +866,7 @@ profile engrampa_rpm2cpio_root {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    @{shell}						Px -> engrampa_rpm2cpio_shell_root,
+    @{shell}@{t_root}					Px -> engrampa_rpm2cpio_shell_root,
   }
 }
 
@@ -884,11 +884,11 @@ profile engrampa_rpm2cpio_shell_root {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/dd						Cx,	# sys-apps/coreutils
-  /bin/gzip						Cx,	# app-arch/gzip
-  /bin/cpio						Cx,	# app-arch/cpio
+  /bin/dd@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/gzip@{t_root}					Cx,	# app-arch/gzip
+  /bin/cpio@{t_root}					Cx,	# app-arch/cpio
   
-  profile dd /bin/dd {
+  profile dd /bin/dd@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
@@ -899,14 +899,14 @@ profile engrampa_rpm2cpio_shell_root {
     /bin/dd						mr,
   }
   
-  profile gzip /bin/gzip {
+  profile gzip /bin/gzip@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/gzip						mr,
   }
   
-  profile cpio /bin/cpio {
+  profile cpio /bin/cpio@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
@@ -930,8 +930,8 @@ profile engrampa_dpkg_deb_root {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dpkg-deb					mr,
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/tar						Cx,	# app-arch/tar
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/tar@{t_root}					Cx,	# app-arch/tar
   
   # USERS ----------------------------------------------
   /root/.cache/.fr-@{TMP6}/{,**}			rw,
@@ -940,7 +940,7 @@ profile engrampa_dpkg_deb_root {
   owner /tmp/dpkg-deb.@{TMP6}/				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   owner /tmp/dpkg-deb.@{TMP6}/*				r,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
@@ -954,7 +954,7 @@ profile engrampa_dpkg_deb_root {
     owner /tmp/dpkg-deb.@{TMP6}/{,**}			rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
-  profile tar /bin/tar {
+  profile tar /bin/tar@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
@@ -987,15 +987,15 @@ profile engrampa_tar_shell_root flags=(attach_disconnected) {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/gzip						Cx,	# app-arch/gzip
-  /bin/bzip2						Cx,	# app-arch/bzip2
-  /usr/bin/lzip						Cx,	# app-arch/lzip
-  /usr/bin/xz						Cx,	# app-arch/xz-utils
+  /bin/gzip@{t_root}					Cx,	# app-arch/gzip
+  /bin/bzip2@{t_root}					Cx,	# app-arch/bzip2
+  /usr/bin/lzip@{t_root}				Cx,	# app-arch/lzip
+  /usr/bin/xz@{t_root}					Cx,	# app-arch/xz-utils
   
   # DENY INHERIT ---------------------------------------
   deny /apparmor/.null					rw,	# flags=(attach_disconnected)
   
-  profile gzip /bin/gzip flags=(attach_disconnected) {
+  profile gzip /bin/gzip@{t_root} flags=(attach_disconnected) {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
@@ -1009,7 +1009,7 @@ profile engrampa_tar_shell_root flags=(attach_disconnected) {
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile bzip2 /bin/bzip2 flags=(attach_disconnected) {
+  profile bzip2 /bin/bzip2@{t_root} flags=(attach_disconnected) {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
@@ -1023,7 +1023,7 @@ profile engrampa_tar_shell_root flags=(attach_disconnected) {
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile lzip /usr/bin/lzip flags=(attach_disconnected) {
+  profile lzip /usr/bin/lzip@{t_root} flags=(attach_disconnected) {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
@@ -1037,7 +1037,7 @@ profile engrampa_tar_shell_root flags=(attach_disconnected) {
     deny /apparmor/.null				rw,	# flags=(attach_disconnected)
   }
   
-  profile xz /usr/bin/xz flags=(attach_disconnected) {
+  profile xz /usr/bin/xz@{t_root} flags=(attach_disconnected) {
     #include <abstractions/base>
     #include <abstractions-root/fs/access-by-users-preset-rwkl>
     #include <abstractions-root/fs/access-by-pattern-systemusers>
@@ -1052,7 +1052,7 @@ profile engrampa_tar_shell_root flags=(attach_disconnected) {
   }
 }
 
-profile engrampa_tap /usr/libexec/thunar-archive-plugin/engrampa.tap {
+profile engrampa.tap@{p_user} /usr/libexec/thunar-archive-plugin/engrampa.tap@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -1063,10 +1063,10 @@ profile engrampa_tap /usr/libexec/thunar-archive-plugin/engrampa.tap {
   # EXECUTABLES ----------------------------------------
   /usr/libexec/thunar-archive-plugin/engrampa.tap	r,
   @{shell}						mr,
-  /usr/bin/engrampa					Px,
+  /usr/bin/engrampa@{t_user}				Px,
 }
 
-profile engrampa_tap_root {
+profile engrampa.tap@{p_root} /usr/libexec/thunar-archive-plugin/engrampa.tap@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -1077,5 +1077,5 @@ profile engrampa_tap_root {
   # EXECUTABLES ----------------------------------------
   /usr/libexec/thunar-archive-plugin/engrampa.tap	r,
   @{shell}						mr,
-  /usr/bin/engrampa					Px -> engrampa_root,
+  /usr/bin/engrampa@{t_root}				Px,
 }

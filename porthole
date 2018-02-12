@@ -15,7 +15,7 @@
 
 #include <local/tunables.d/>
 
-profile porthole @{PYTHON_EXEC}/porthole {
+profile porthole@{p_user} @{PYTHON_EXEC}/porthole@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -38,10 +38,10 @@ profile porthole @{PYTHON_EXEC}/porthole {
   @{PROC_D}/@{pid}/mount{s,info}			r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						cx,
-  /bin/stty						Px,	# sys-apps/coreutils
-  /bin/bzip2						Cx,	# app-arch/bzip2
-  /usr/bin/sandbox					cx,	# sys-apps/sandbox
+  @{shell}@{t_user}					cx,
+  /bin/stty@{t_user}					Px,	# sys-apps/coreutils
+  /bin/bzip2@{t_user}					Cx,	# app-arch/bzip2
+  /usr/bin/sandbox@{t_user}				cx,	# sys-apps/sandbox
   
   # READS/WRITES ---------------------------------------
   /etc/portage/**					r,	# sys-apps/portage
@@ -59,7 +59,7 @@ profile porthole @{PYTHON_EXEC}/porthole {
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.porthole/{,prefs.xml}		rw,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -69,10 +69,10 @@ profile porthole @{PYTHON_EXEC}/porthole {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,	# sys-apps/coreutils
+    /bin/uname@{t_user}					Px,	# sys-apps/coreutils
   }
   
-  profile bzip2 /bin/bzip2 {
+  profile bzip2 /bin/bzip2@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -87,7 +87,7 @@ profile porthole @{PYTHON_EXEC}/porthole {
     /var/db/pkg/{,**}					r,
   }
   
-  profile sandbox /usr/bin/sandbox {
+  profile sandbox /usr/bin/sandbox@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -96,7 +96,7 @@ profile porthole @{PYTHON_EXEC}/porthole {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/sandbox					mr,
-    @{shell}						px -> porthole_sandbox_shell,
+    @{shell}@{t_user}					px -> porthole_sandbox_shell,
     
     # READS/WRITES -------------------------------------
     /etc/sandbox.conf					r,	# sys-apps/sandbox
@@ -115,7 +115,7 @@ profile porthole_sandbox_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		px,	# sys-apps/portage
+  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh@{t_user}	px,	# sys-apps/portage
   
   # READS/WRITES ---------------------------------------
   /usr/share/sandbox/sandbox.bashrc			r,	# sys-apps/sandbox

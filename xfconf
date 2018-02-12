@@ -10,10 +10,9 @@
 
 #include <local/tunables.d/>
 
-profile xfconf /usr/lib{,32,64}/xfce4/xfconf/xfconfd {
+profile xfconf@{p_user} /usr/lib{,32,64}/xfce4/xfconf/xfconfd@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
-  #include <abstractions-root/freedesktop.org>			# RBAC! Должен быть отдельный профиль для root.
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/session-bind>
   
@@ -37,7 +36,34 @@ profile xfconf /usr/lib{,32,64}/xfce4/xfconf/xfconfd {
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.config/xfce4/			w,
-  owner @{ROOT_HOME_D}/.config/xfce4/			w,	# RBAC! Должен быть отдельный профиль для root.
   owner @{USER_HOME_D}/.config/xfce4/xfconf/{,**}	rw,
-  owner @{ROOT_HOME_D}/.config/xfce4/xfconf/{,**}	rw,	# RBAC! Должен быть отдельный профиль для root.
+}
+
+profile xfconf@{p_root} /usr/lib{,32,64}/xfce4/xfconf/xfconfd@{t_root} {
+  #include <abstractions/base>
+  #include <abstractions-root/freedesktop.org>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/session-bind>
+  
+  # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/org/xfce/Xfconf"
+  	interface="org.xfce.Xfconf"
+  	peer=(name="org.freedesktop.DBus"),
+  dbus receive
+  	bus=session
+  	path="/org/xfce/Xfconf"
+  	interface="org.xfce.Xfconf"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/lib{,32,64}/xfce4/xfconf/xfconfd			m,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/xdg/xfce4/xfconf/{,**}				r,
+  
+  # USERS ----------------------------------------------
+  owner @{ROOT_HOME_D}/.config/xfce4/			w,
+  owner @{ROOT_HOME_D}/.config/xfce4/xfconf/{,**}	rw,
 }

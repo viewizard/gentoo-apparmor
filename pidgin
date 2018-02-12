@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile pidgin /usr/bin/pidgin {
+profile pidgin@{p_user} /usr/bin/pidgin@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -62,7 +62,7 @@ profile pidgin /usr/bin/pidgin {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pidgin					mr,
-  /usr/bin/gconftool-2					Px,	# gnome-base/gconf	# Detect proxy settings for gnome2/gnome3.
+  /usr/bin/gconftool-2@{t_user}				Px,	# gnome-base/gconf	# Detect proxy settings for gnome2/gnome3.
   
   # READS/WRITES ---------------------------------------
   /etc/pulse/client.conf				r,

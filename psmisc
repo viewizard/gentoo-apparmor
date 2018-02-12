@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile psmisc.killall /usr/bin/killall {
+profile psmisc.killall@{p_root} /usr/bin/killall@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -38,7 +38,7 @@ profile psmisc.killall /usr/bin/killall {
   /usr/bin/killall					mr,
 }
 
-profile psmisc.fuser /bin/fuser {
+profile psmisc.fuser@{p_root} /bin/fuser@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------

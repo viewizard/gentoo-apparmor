@@ -73,7 +73,7 @@
 @{USERS_DIR_rk}="[^.]**"
 @{USERS_FILE_rk}="[^.]*.@{local_ext}"
 
-profile mpv /usr/bin/mpv {
+profile mpv@{p_user} /usr/bin/mpv@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -89,5 +89,5 @@ profile mpv /usr/bin/mpv {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mpv						mr,
-  /usr/bin/xdg-screensaver				Px,	# x11-misc/xdg-utils
+  /usr/bin/xdg-screensaver@{t_user}			Px,	# x11-misc/xdg-utils
 }

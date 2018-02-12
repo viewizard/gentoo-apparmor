@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile cups.cupsd /usr/sbin/cupsd {
+profile cups.cupsd@{p_root} /usr/sbin/cupsd@{t_root} {
   #include <abstractions/base>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/nameservice>
@@ -26,29 +26,29 @@ profile cups.cupsd /usr/sbin/cupsd {
   capability kill,
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term) peer="cups.daemon",
-  signal (send) set=(term) peer="cups.driver",
-  signal (send) set=(term) peer="cups.filter",
-  signal (send) set=(term) peer="cups.backend",
-  signal (send) set=(term) peer="cups.cgi-bin",
+  signal (send) set=(term) peer="cups.daemon@{p_mixed}",
+  signal (send) set=(term) peer="cups.driver@{p_mixed}",
+  signal (send) set=(term) peer="cups.filter@{p_mixed}",
+  signal (send) set=(term) peer="cups.backend@{p_mixed}",
+  signal (send) set=(term) peer="cups.cgi-bin@{p_mixed}",
   
   # UNIX -----------------------------------------------
   unix (send, receive)
   			type=stream
   			addr=none
-  			peer=(label="cups.daemon"),
+  			peer=(label="cups.daemon@{p_mixed}"),
   unix (send, receive)
   			type=stream
   			addr=none
-  			peer=(label="cups.filter"),
+  			peer=(label="cups.filter@{p_mixed}"),
   unix (send, receive)
   			type=stream
   			addr=none
-  			peer=(label="cups.backend"),
+  			peer=(label="cups.backend@{p_mixed}"),
   unix (send, receive)
   			type=stream
   			addr=none
-  			peer=(label="poppler.pdftops"),
+  			peer=(label="poppler.pdftops@{p_mixed}"),
   
   # NETWORK --------------------------------------------
   network inet stream,
@@ -60,13 +60,14 @@ profile cups.cupsd /usr/sbin/cupsd {
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /usr/sbin/cupsd					Pxmr,
-  @{shell}						Cx,
-  /usr/libexec/cups/daemon/*				Px,
-  /usr/libexec/cups/driver/*				Px,
-  /usr/libexec/cups/cgi-bin/*				Px,
-  /usr/libexec/cups/filter/*				Px,
-  /usr/libexec/cups/backend/*				Px,
+  /usr/sbin/cupsd					mr,
+  /usr/sbin/cupsd@{t_root}				Px,
+  @{shell}@{t_root}					Cx,
+  /usr/libexec/cups/daemon/*@{t_root}			Px,
+  /usr/libexec/cups/driver/*@{t_root}			Px,
+  /usr/libexec/cups/cgi-bin/*@{t_root}			Px,
+  /usr/libexec/cups/filter/*@{t_root}			Px,
+  /usr/libexec/cups/backend/*@{t_root}			Px,
   
   # READS/WRITES ---------------------------------------
   /etc/environment					r,
@@ -83,7 +84,7 @@ profile cups.cupsd /usr/sbin/cupsd {
   /var/spool/cups/{,**}					rw,
   /var/log/cups/{,**}					rw,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -94,7 +95,7 @@ profile cups.cupsd /usr/sbin/cupsd {
   }
 }
 
-profile cups.daemon /usr/libexec/cups/daemon/* {
+profile cups.daemon@{p_mixed} /usr/libexec/cups/daemon/*{@{t_root},@{t_lp}} {
   #include <abstractions/base>
   #include <abstractions/unix/cupsd-virtual>
   
@@ -103,22 +104,23 @@ profile cups.daemon /usr/libexec/cups/daemon/* {
   capability setuid,
   
   # EXECUTABLES ----------------------------------------
-  /usr/bin/smbspool					Px,
-  /usr/libexec/cups/daemon/*				Pxmr,
-  /usr/libexec/cups/cgi-bin/*				Px,
-  /usr/libexec/cups/backend/*				Px,
-  /usr/libexec/cups/driver/*				Px,
-  /usr/libexec/cups/filter/*				Px,
+  /usr/libexec/cups/daemon/*				mr,
+  /usr/bin/smbspool@{t_lp}				Px,
+  /usr/libexec/cups/daemon/*{@{t_root},@{t_lp}}		Px,
+  /usr/libexec/cups/cgi-bin/*{@{t_root},@{t_lp}}	Px,
+  /usr/libexec/cups/backend/*{@{t_root},@{t_lp}}	Px,
+  /usr/libexec/cups/driver/*{@{t_root},@{t_lp}}		Px,
+  /usr/libexec/cups/filter/*{@{t_root},@{t_lp}}		Px,
   
   # READS/WRITES ---------------------------------------
   /usr/share/cups/{,**}					r,
   /usr/share/ppd/{,**}					r,
+  /usr/libexec/cups/{backend,driver}/			r,
   /var/spool/cups/{,**}					wr,
   /var/cache/cups/{,**}					wr,
-  /usr/libexec/cups/{backend,driver}/			r,
 }
 
-profile cups.driver /usr/libexec/cups/driver/* {
+profile cups.driver@{p_mixed} /usr/libexec/cups/driver/*{@{t_root},@{t_lp}} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
@@ -131,7 +133,7 @@ profile cups.driver /usr/libexec/cups/driver/* {
   /var/spool/cups/{,**}					wr,
 }
 
-profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* {
+profile cups.cgi-bin@{p_mixed} /usr/libexec/cups/cgi-bin/*{@{t_root},@{t_lp}} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -154,13 +156,14 @@ profile cups.cgi-bin /usr/libexec/cups/cgi-bin/* {
   owner /tmp/@{TMP13}					rw,
 }
 
-profile cups.filter /usr/libexec/cups/filter/* {
+profile cups.filter@{p_mixed} /usr/libexec/cups/filter/*{@{t_root},@{t_lp}} {
   #include <abstractions/base>
   #include <abstractions/unix/cupsd-virtual>
   
   # EXECUTABLES ----------------------------------------
-  /usr/libexec/cups/filter/*				Pxmr,
-  /usr/bin/pdftops					Px,	# app-text/poppler
+  /usr/libexec/cups/filter/*				mr,
+  /usr/libexec/cups/filter/*{@{t_root},@{t_lp}}		Px,
+  /usr/bin/pdftops{@{t_root},@{t_lp}}			Px,	# app-text/poppler
   
   # READS/WRITES ---------------------------------------
   /etc/cups/ppd/*.ppd					r,
@@ -169,15 +172,16 @@ profile cups.filter /usr/libexec/cups/filter/* {
   /var/spool/cups/*					r,
   
   # TEMP -----------------------------------------------
-  audit owner /tmp/??????*				rw,	# FIX ME! audit 25.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /tmp/@{TMP13}					rw,
 }
 
-profile cups.backend /usr/libexec/cups/backend/* {
+profile cups.backend@{p_mixed} /usr/libexec/cups/backend/*{@{t_root},@{t_lp}} {
   #include <abstractions/base>
   #include <abstractions/unix/cupsd-virtual>
   
   # CAPABILITIES ---------------------------------------
   capability wake_alarm,
+  capability setuid,
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -201,17 +205,18 @@ profile cups.backend /usr/libexec/cups/backend/* {
   /etc/cups/ppd/*.ppd					r,
   /etc/udev/udev.conf					r,
   /usr/share/cups/{,**}					r,
+  /run/udev/data/{[a-z]*[0-9]*:[0-9]*,+usb:@{USB4}}	r,
   /var/cache/cups/*.snmp				r,
 }
 
-profile cups.smbspool /usr/bin/smbspool {
+profile cups.smbspool@{p_lp} /usr/bin/smbspool@{t_lp} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/smbspool					mr,
 }
 
-profile cups.init.d /etc/init.d/cupsd flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile cups.init.d@{p_root} /etc/init.d/cupsd@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -228,25 +233,25 @@ profile cups.init.d /etc/init.d/cupsd flags=(attach_disconnected) {	# attach_dis
   @{SYS_D}/fs/cgroup/unified/cupsd/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/sbin/cupsd					Px,
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  /usr/sbin/cupsd@{t_root}				Px,
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/cupsd				r,
-  /var/cache/cups/					w,
   /run/cups/						w,
   /run/cups/certs/					w,
+  /var/cache/cups/					w,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -262,7 +267,7 @@ profile cups.init.d /etc/init.d/cupsd flags=(attach_disconnected) {	# attach_dis
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -275,7 +280,7 @@ profile cups.init.d /etc/init.d/cupsd flags=(attach_disconnected) {	# attach_dis
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

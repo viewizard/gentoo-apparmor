@@ -10,16 +10,20 @@
 
 #include <local/tunables.d/>
 
-profile hxtools.ofl /usr/bin/ofl {
+profile hxtools.ofl@{p_root} /usr/bin/ofl@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
   capability dac_override,
   capability dac_read_search,
   capability sys_ptrace,
+  capability kill,
   
   # PTRACE ---------------------------------------------
   ptrace (trace),
+  
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term,kill),				# Должен иметь возможность завершить любой процесс.
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,

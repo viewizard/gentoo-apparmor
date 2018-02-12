@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile networkmanager.NetworkManager /usr/sbin/NetworkManager {
+profile networkmanager.NetworkManager@{p_root} /usr/sbin/NetworkManager@{t_root} {
   #include <abstractions/base>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/consolekit>
@@ -29,18 +29,18 @@ profile networkmanager.NetworkManager /usr/sbin/NetworkManager {
   capability dac_override,
   
   # PTRACE ---------------------------------------------
-  ptrace (trace) peer="networkmanager.nm-online",
-  ptrace (trace) peer="nm-applet",				# gnome-extra/nm-applet
-  ptrace (trace) peer="nm-applet.nm-connection-editor",		# gnome-extra/nm-applet
-  ptrace (trace) peer="dhcp.dhclient",				# net-misc/dhcp
-  ptrace (trace) peer="dnsmasq",				# net-dns/dnsmasq
-  ptrace (trace) peer="local.home.evelauncher",			# evelauncher (локальный профиль)	# FIX ME! убрать в local
-  ptrace (trace) peer="teamspeak-client-bin.teamspeak",		# media-sound/teamspeak-client-bin
-  ptrace (trace) peer="vokoscreen",				# media-video/vokoscreen
+  ptrace (trace) peer="networkmanager.nm-online@{p_root}",
+  ptrace (trace) peer="nm-applet@{p_user}",			# gnome-extra/nm-applet
+  ptrace (trace) peer="nm-applet.nm-connection-editor@{p_user}",	# gnome-extra/nm-applet
+  ptrace (trace) peer="dhcp.dhclient@{p_root}",			# net-misc/dhcp
+  ptrace (trace) peer="dnsmasq@{p_root}",			# net-dns/dnsmasq
+  ptrace (trace) peer="local.home.evelauncher@{p_user}",	# evelauncher (локальный профиль)	# FIX ME! убрать в local
+  ptrace (trace) peer="teamspeak-client-bin.teamspeak@{p_user}",	# media-sound/teamspeak-client-bin
+  ptrace (trace) peer="vokoscreen@{p_user}",			# media-video/vokoscreen
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term, kill) peer="dhcp.dhclient",		# net-misc/dhcp
-  signal (send) set=(term, kill) peer="dnsmasq",		# net-dns/dnsmasq
+  signal (send) set=(term, kill) peer="dhcp.dhclient@{p_root}",	# net-misc/dhcp
+  signal (send) set=(term, kill) peer="dnsmasq@{p_root}",	# net-dns/dnsmasq
   
   # DBUS -----------------------------------------------
   dbus send
@@ -59,7 +59,7 @@ profile networkmanager.NetworkManager /usr/sbin/NetworkManager {
   	path="/org/freedesktop/DBus"
   	interface="org.freedesktop.DBus"
   	member={GetConnectionUnixUser,GetConnectionUnixProcessID}
-  	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon"),
+  	peer=(name="org.freedesktop.DBus",label="dbus.dbus-daemon{@{p_root},@{p_user}}"),
   dbus send
   	bus=system
   	path="/org/freedesktop/NetworkManager{,/**}"
@@ -74,53 +74,53 @@ profile networkmanager.NetworkManager /usr/sbin/NetworkManager {
   	bus=system
   	path="/org/freedesktop"
   	interface="org.freedesktop.DBus.ObjectManager"
-  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.nm-online"),
+  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.nm-online@{p_root}"),
   dbus send
   	bus=system
   	path="/org/freedesktop"
   	interface="org.freedesktop.DBus.ObjectManager"
-  	peer=(name="org.freedesktop.DBus",label="networkmanager.nm-online"),
+  	peer=(name="org.freedesktop.DBus",label="networkmanager.nm-online@{p_root}"),
   dbus receive
   	bus=system
   	path="/org/freedesktop"
   	interface="org.freedesktop.DBus.ObjectManager"
-  	peer=(name=":[0-9]*.[0-9]*",label="nm-applet.nm-connection-editor"),		# gnome-extra/nm-applet
+  	peer=(name=":[0-9]*.[0-9]*",label="nm-applet.nm-connection-editor@{p_user}"),	# gnome-extra/nm-applet
   dbus send
   	bus=system
   	path="/org/freedesktop"
   	interface="org.freedesktop.DBus.ObjectManager"
-  	peer=(name="org.freedesktop.DBus",label="nm-applet.nm-connection-editor"),	# gnome-extra/nm-applet
+  	peer=(name="org.freedesktop.DBus",label="nm-applet.nm-connection-editor@{p_user}"),	# gnome-extra/nm-applet
   dbus receive
   	bus=system
   	path="/org/freedesktop"
   	interface="org.freedesktop.DBus.ObjectManager"
-  	peer=(name=":[0-9]*.[0-9]*",label="nm-applet"),					# gnome-extra/nm-applet
+  	peer=(name=":[0-9]*.[0-9]*",label="nm-applet@{p_user}"),			# gnome-extra/nm-applet
   dbus send
   	bus=system
   	path="/org/freedesktop"
   	interface="org.freedesktop.DBus.ObjectManager"
-  	peer=(name="org.freedesktop.DBus",label="nm-applet"),				# gnome-extra/nm-applet
+  	peer=(name="org.freedesktop.DBus",label="nm-applet@{p_user}"),			# gnome-extra/nm-applet
   
   dbus (send, receive)
   	bus=system
   	path="/uk/org/thekelleys/dnsmasq"
   	interface="org.freedesktop.{NetworkManager.dnsmasq,DBus.Properties}"
-  	peer=(name=":[0-9]*.[0-9]*",label="dnsmasq"),					# net-dns/dnsmasq
+  	peer=(name=":[0-9]*.[0-9]*",label="dnsmasq@{p_root}"),				# net-dns/dnsmasq
   dbus send
   	bus=system
   	path="/org/freedesktop/ModemManager[0-9]*"
   	interface="org.freedesktop.DBus.{ObjectManager,Peer}"
-  	peer=(name="{:[0-9]*.[0-9]*,org.freedesktop.ModemManager[0-9]*}",label="modemmanager.ModemManager"),	# net-misc/modemmanager
+  	peer=(name="{:[0-9]*.[0-9]*,org.freedesktop.ModemManager[0-9]*}",label="modemmanager.ModemManager@{p_root}"),	# net-misc/modemmanager
   dbus send
   	bus=system
   	path="/org/freedesktop/nm_dispatcher"
   	interface="org.freedesktop.nm_dispatcher"
-  	peer=(name="{:[0-9]*.[0-9]*,org.freedesktop.nm_dispatcher}",label="networkmanager.nm-dispatcher"),
+  	peer=(name="{:[0-9]*.[0-9]*,org.freedesktop.nm_dispatcher}",label="networkmanager.nm-dispatcher@{p_root}"),
   dbus (send, receive)
   	bus=system
   	path="/fi/w[0-9]*/wpa_supplicant[0-9]**"
   	interface="{fi.w1.wpa_supplicant[0-9]*,org.freedesktop.DBus.{Properties,Introspectable}}"
-  	peer=(name=":[0-9]*.[0-9]*",label="wpa_supplicant"),				# net-wireless/wpa_supplicant
+  	peer=(name=":[0-9]*.[0-9]*",label="wpa_supplicant@{p_user}"),			# net-wireless/wpa_supplicant
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -153,9 +153,9 @@ profile networkmanager.NetworkManager /usr/sbin/NetworkManager {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/NetworkManager				mr,
-  /bin/arping						Px,	# net-misc/iputils (вызывается, если статический адрес на интерфейсе)
-  /sbin/dhclient					Px,	# net-misc/dhcp
-  /usr/sbin/dnsmasq					Px,	# net-dns/dnsmasq
+  /bin/arping@{t_root}					Px,	# net-misc/iputils (вызывается, если статический адрес на интерфейсе)
+  /sbin/dhclient@{t_root}				Px,	# net-misc/dhcp
+  /usr/sbin/dnsmasq@{t_root}				Px,	# net-dns/dnsmasq
   
   # READS/WRITES ---------------------------------------
   /etc/machine-id					r,
@@ -174,7 +174,7 @@ profile networkmanager.NetworkManager /usr/sbin/NetworkManager {
   /var/lib/NetworkManager/{,**}				rw,
 }
 
-profile networkmanager.nm-online /usr/bin/nm-online {
+profile networkmanager.nm-online@{p_root} /usr/bin/nm-online@{t_root} {
   #include <abstractions/base>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/networkmanager>
@@ -187,7 +187,7 @@ profile networkmanager.nm-online /usr/bin/nm-online {
   	bus=system
   	path="/org/freedesktop"
   	interface="org.freedesktop.DBus.ObjectManager"
-  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),
+  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager@{p_root}"),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -201,7 +201,7 @@ profile networkmanager.nm-online /usr/bin/nm-online {
   /etc/udev/udev.conf					r,
 }
 
-profile networkmanager.nm-dhcp-helper /usr/libexec/nm-dhcp-helper {
+profile networkmanager.nm-dhcp-helper@{p_root} /usr/libexec/nm-dhcp-helper@{t_root} {
   #include <abstractions/base>
   
   # NETWORK --------------------------------------------
@@ -215,7 +215,7 @@ profile networkmanager.nm-dhcp-helper /usr/libexec/nm-dhcp-helper {
   /run/NetworkManager/private-dhcp			rw,
 }
 
-profile networkmanager.nm-dispatcher /usr/libexec/nm-dispatcher {
+profile networkmanager.nm-dispatcher@{p_root} /usr/libexec/nm-dispatcher@{t_root} {
   #include <abstractions/base>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/system-bind>
@@ -225,7 +225,7 @@ profile networkmanager.nm-dispatcher /usr/libexec/nm-dispatcher {
   	bus=system
   	path="/org/freedesktop/nm_dispatcher"
   	interface="org.freedesktop.nm_dispatcher"
-  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),
+  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager@{p_root}"),
   dbus send
   	bus=system
   	path="/org/freedesktop/nm_dispatcher"
@@ -237,13 +237,13 @@ profile networkmanager.nm-dispatcher /usr/libexec/nm-dispatcher {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/nm-dispatcher				mr,
-  /etc/NetworkManager/dispatcher.d/10-openrc-status	Px,
+  /etc/NetworkManager/dispatcher.d/10-openrc-status@{t_root} Px,
   
   # READS/WRITES ---------------------------------------
   /etc/NetworkManager/dispatcher.d/{,*}			r,
 }
 
-profile networkmanager.10-openrc-status /etc/NetworkManager/dispatcher.d/10-openrc-status {
+profile networkmanager.10-openrc-status@{p_root} /etc/NetworkManager/dispatcher.d/10-openrc-status@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -253,11 +253,11 @@ profile networkmanager.10-openrc-status /etc/NetworkManager/dispatcher.d/10-open
   # EXECUTABLES --------------------------------------
   /etc/NetworkManager/dispatcher.d/10-openrc-status	r,
   @{shell}						mr,
-  /bin/grep						Cx,	# sys-apps/grep
-  /sbin/rc-service					Px,	# sys-apps/openrc
-  /usr/bin/nm-online					Px,
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /sbin/rc-service@{t_root}				Px,	# sys-apps/openrc
+  /usr/bin/nm-online@{t_root}				Px,
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -265,7 +265,7 @@ profile networkmanager.10-openrc-status /etc/NetworkManager/dispatcher.d/10-open
   }
 }
 
-profile networkmanager.NetworkManager.init.d /etc/init.d/NetworkManager flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile networkmanager.NetworkManager.init.d@{p_root} /etc/init.d/NetworkManager@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -276,29 +276,29 @@ profile networkmanager.NetworkManager.init.d /etc/init.d/NetworkManager flags=(a
   @{SYS_D}/fs/cgroup/unified/NetworkManager/cgroup.events r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /usr/bin/nm-online					Px,
-  /usr/sbin/NetworkManager				Px,
-  /etc/init.d/dnsmasq					Px,	# net-dns/dnsmasq
-  /etc/init.d/netmount					Px,	# sys-apps/openrc
-  /etc/init.d/tor					Px,	# net-vpn/tor
-  /etc/init.d/suricata					Px,	# net-analyzer/suricata
-  /lib{,32,64}/rc/sbin/mark_service_inactive		Px,	# sys-apps/openrc
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /usr/bin/nm-online@{t_root}				Px,
+  /usr/sbin/NetworkManager@{t_root}			Px,
+  /etc/init.d/dnsmasq@{t_root}				Px,	# net-dns/dnsmasq
+  /etc/init.d/netmount@{t_root}				Px,	# sys-apps/openrc
+  /etc/init.d/tor@{t_root}				Px,	# net-vpn/tor
+  /etc/init.d/suricata@{t_root}				Px,	# net-analyzer/suricata
+  /lib{,32,64}/rc/sbin/mark_service_inactive@{t_root}	Px,	# sys-apps/openrc
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/NetworkManager			r,
   /run/NetworkManager/NetworkManager.pid		r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -314,7 +314,7 @@ profile networkmanager.NetworkManager.init.d /etc/init.d/NetworkManager flags=(a
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -327,7 +327,7 @@ profile networkmanager.NetworkManager.init.d /etc/init.d/NetworkManager flags=(a
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile seahorse /usr/bin/seahorse {
+profile seahorse@{p_user} /usr/bin/seahorse@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -48,9 +48,9 @@ profile seahorse /usr/bin/seahorse {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/seahorse					mr,
-  /usr/bin/gpgconf					Px,	# app-crypt/gnupg
-  /usr/bin/gpg{,2}					Px,	# app-crypt/gnupg
-  /usr/bin/gpgsm					Px,	# app-crypt/gnupg
+  /usr/bin/gpgconf@{t_user}				Px,	# app-crypt/gnupg
+  /usr/bin/gpg{,2}@{t_user}				Px,	# app-crypt/gnupg
+  /usr/bin/gpgsm@{t_user}				Px,	# app-crypt/gnupg
   
   # READS/WRITES ---------------------------------------
   /usr/share/seahorse/{,**}				r,

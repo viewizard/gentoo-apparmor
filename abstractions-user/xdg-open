@@ -12,14 +12,14 @@
 
 # execution external programs with xdg-open
 @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
-/usr/bin/xdg-open					Px,
-/usr/bin/xdg-email					Px,
+/usr/bin/xdg-open@{t_user}				Px,
+/usr/bin/xdg-email@{t_user}				Px,
 # /usr/bin/xdg-screensaver используем непосредственно в профилях.
 
 # sg/newgrp for work with network connection via iptables uid/gid-owner
 # IMPROVE! После возможности блокировки адресов и портов - убрать.
-/usr/bin/newgrp						Px,	# sys-apps/shadow
-/usr/bin/id						Px,	# sys-apps/coreutils
+/usr/bin/newgrp@{t_user}				Px,	# sys-apps/shadow
+/usr/bin/id@{t_user}					Px,	# sys-apps/coreutils
 
 # DENY INHERIT -----------------------------------------
-deny unix peer=(label="xdg-utils.xdg-open"),			# xdg-utils.xdg-open
+deny unix peer=(label="xdg-utils.xdg-open@{p_user}"),		# xdg-utils.xdg-open

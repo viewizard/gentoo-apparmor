@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile net-tools.iptunnel /sbin/iptunnel {
+profile net-tools.iptunnel@{p_root} /sbin/iptunnel@{t_root} {
   #include <abstractions/base>
   
   # NETWORK --------------------------------------------
@@ -24,7 +24,7 @@ profile net-tools.iptunnel /sbin/iptunnel {
   /sbin/iptunnel					mr,
 }
 
-profile net-tools.ifconfig /bin/ifconfig {
+profile net-tools.ifconfig@{p_root} /bin/ifconfig@{t_root} {
   #include <abstractions/base>
   
   # NETWORK --------------------------------------------
@@ -38,12 +38,9 @@ profile net-tools.ifconfig /bin/ifconfig {
   
   # EXECUTABLES ----------------------------------------
   /bin/ifconfig						mr,
-  
-  # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
 }
 
-profile net-tools.netstat /bin/netstat {
+profile net-tools.netstat@{p_mixed} /bin/netstat{@{t_root},@{t_user}} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -72,13 +69,9 @@ profile net-tools.netstat /bin/netstat {
   
   # READS/WRITES ---------------------------------------
   /etc/networks						r,
-  
-  # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
-  deny /tmp/chkrootkit.cron.@{TMP6}			w,	# app-forensics/chkrootkit, chkrootkit.cron.daily
 }
 
-profile net-tools.hostname /bin/hostname {
+profile net-tools.hostname@{p_mixed} /bin/hostname{@{t_root},@{t_user},@{t_logcheck}} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   

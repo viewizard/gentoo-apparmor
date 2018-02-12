@@ -27,7 +27,7 @@
 @{USERS_DIR_rk}="[^.]**"
 @{USERS_FILE_rk}="[^.]*.@{local_ext}"
 
-profile alock /usr/bin/alock {
+profile alock@{p_user} /usr/bin/alock@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/X>
   #include <abstractions/nameservice>
@@ -41,8 +41,8 @@ profile alock /usr/bin/alock {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/alock					mr,
-  @{shell}						Cx,
-  /sbin/unix_chkpwd					Px,	# sys-libs/pam
+  @{shell}@{t_user}					Cx,
+  /sbin/unix_chkpwd@{t_user}				Px,	# sys-libs/pam
   
   # READS/WRITES ---------------------------------------
   /etc/shells						r,
@@ -50,7 +50,7 @@ profile alock /usr/bin/alock {
   /usr/local/share/backgrounds/**.@{local_ext}		r,	# FIX ME! (?) вынести в <local/profile_blocks/alock.d/>
   /run/utmp						rk,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------

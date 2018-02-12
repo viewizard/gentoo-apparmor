@@ -12,7 +12,7 @@
 
 # FIX ME! Потом внимательно просмотреть, что он может делать в /dev и /sys.
 
-profile eudev.udevadm /bin/udevadm {
+profile eudev.udevadm@{p_root} /bin/udevadm@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -50,7 +50,7 @@ profile eudev.udevadm /bin/udevadm {
   /run/udev/tags/{,**}					w,
 }
 
-profile eudev.udevd /sbin/udevd {
+profile eudev.udevd@{p_root} /sbin/udevd@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -104,20 +104,20 @@ profile eudev.udevd /sbin/udevd {
   
   # EXECUTABLES ----------------------------------------
   /sbin/udevd						mr,
-  @{shell}						Cx,
-  /sbin/dmsetup						Px,	# sys-fs/lvm2
-  /sbin/lvm						Px,	# sys-fs/lvm2
-  /sbin/mdadm						Px,	# sys-fs/mdadm
-  /usr/sbin/crda					Px,	# net-wireless/crda
-  /usr/sbin/alsactl					Px,	# media-sound/alsa-utils
-  /lib{,32,64}/udev/net.sh				Px,	# net-misc/netifrc
-  /lib{,32,64}/udev/nvidia-udev.sh			Px,	# x11-drivers/nvidia-drivers
-  /lib{,32,64}/udev/ata_id				Px,
-  /lib{,32,64}/udev/scsi_id				Px,
-  /lib{,32,64}/udev/v4l_id				Px,
-  /lib{,32,64}/udev/cdrom_id				Px,
-  /lib{,32,64}/udev/libinput-device-group		Px,	# dev-libs/libinput
-  /usr/lib{,32,64}/ConsoleKit/udev-acl			Px,	# sys-auth/consolekit
+  @{shell}@{t_root}					Cx,
+  /sbin/dmsetup@{t_root}				Px,	# sys-fs/lvm2
+  /sbin/lvm@{t_root}					Px,	# sys-fs/lvm2
+  /sbin/mdadm@{t_root}					Px,	# sys-fs/mdadm
+  /usr/sbin/crda@{t_root}				Px,	# net-wireless/crda
+  /usr/sbin/alsactl@{t_root}				Px,	# media-sound/alsa-utils
+  /lib{,32,64}/udev/net.sh@{t_root}			Px,	# net-misc/netifrc
+  /lib{,32,64}/udev/nvidia-udev.sh@{t_root}		Px,	# x11-drivers/nvidia-drivers
+  /lib{,32,64}/udev/ata_id@{t_root}			Px,
+  /lib{,32,64}/udev/scsi_id@{t_root}			Px,
+  /lib{,32,64}/udev/v4l_id@{t_root}			Px,
+  /lib{,32,64}/udev/cdrom_id@{t_root}			Px,
+  /lib{,32,64}/udev/libinput-device-group@{t_root}	Px,	# dev-libs/libinput
+  /usr/lib{,32,64}/ConsoleKit/udev-acl@{t_root}		Px,	# sys-auth/consolekit
   
   # READS/WRITES ---------------------------------------
   /etc/group						r,
@@ -128,7 +128,7 @@ profile eudev.udevd /sbin/udevd {
   /lib{,32,64}/modules/@{kernel_ver}/modules.{dep,alias,symbols,builtin}.bin r,
   /run/udev/**						rw,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
@@ -137,8 +137,8 @@ profile eudev.udevd /sbin/udevd {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/sed						Px -> eudev_udevd_sed,	# sys-apps/sed
-    /sbin/mdadm						Px,	# sys-fs/mdadm
+    /bin/sed@{t_root}					Px -> eudev_udevd_sed,	# sys-apps/sed
+    /sbin/mdadm@{t_root}				Px,	# sys-fs/mdadm
   }
 }
 
@@ -151,7 +151,7 @@ profile eudev_udevd_sed {
   /bin/sed						mr,
 }
 
-profile eudev.ata_id /lib{,32,64}/udev/ata_id {
+profile eudev.ata_id@{p_root} /lib{,32,64}/udev/ata_id@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -167,7 +167,7 @@ profile eudev.ata_id /lib{,32,64}/udev/ata_id {
   /etc/udev/udev.conf					r,
 }
 
-profile eudev.scsi_id /lib{,32,64}/udev/scsi_id {
+profile eudev.scsi_id@{p_root} /lib{,32,64}/udev/scsi_id@{t_root} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
@@ -177,7 +177,7 @@ profile eudev.scsi_id /lib{,32,64}/udev/scsi_id {
   /etc/udev/udev.conf					r,
 }
 
-profile eudev.v4l_id /lib{,32,64}/udev/v4l_id {
+profile eudev.v4l_id@{p_root} /lib{,32,64}/udev/v4l_id@{t_root} {
   #include <abstractions/base>
   #include <abstractions/camera>
   
@@ -188,7 +188,7 @@ profile eudev.v4l_id /lib{,32,64}/udev/v4l_id {
   /etc/udev/udev.conf					r,
 }
 
-profile eudev.cdrom_id /lib{,32,64}/udev/cdrom_id {
+profile eudev.cdrom_id@{p_root} /lib{,32,64}/udev/cdrom_id@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------

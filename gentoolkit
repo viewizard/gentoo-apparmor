@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check {
+profile gentoolkit.glsa-check@{p_root} @{PYTHON_EXEC}/glsa-check@{t_root} {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -25,7 +25,7 @@ profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check {
   owner @{PROC_D}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
+  @{shell}@{t_root}					Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/mime.types					r,	# app-misc/mime-types
@@ -40,7 +40,7 @@ profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check {
   # TEMP -----------------------------------------------
   owner /tmp/glsa.cron.@{TMP6}				w,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -50,14 +50,14 @@ profile gentoolkit.glsa-check @{PYTHON_EXEC}/glsa-check {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,	# sys-apps/coreutils
+    /bin/uname@{t_root}					Px,	# sys-apps/coreutils
     
     # TEMP ---------------------------------------------
     owner /tmp/glsa.cron.@{TMP6}			w,	# DELEGATION! glsa.cron.daily
   }
 }
 
-profile gentoolkit.equery @{PYTHON_EXEC}/equery {
+profile gentoolkit.equery@{p_root} @{PYTHON_EXEC}/equery@{t_root} {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/ncurses>
@@ -73,7 +73,7 @@ profile gentoolkit.equery @{PYTHON_EXEC}/equery {
   owner @{PROC_D}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
+  @{shell}@{t_root}					Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
@@ -84,7 +84,7 @@ profile gentoolkit.equery @{PYTHON_EXEC}/equery {
   /var/db/pkg/{,**}					r,
   /var/cache/edb/{,**}					r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -94,11 +94,11 @@ profile gentoolkit.equery @{PYTHON_EXEC}/equery {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,	# sys-apps/coreutils
+    /bin/uname@{t_root}					Px,	# sys-apps/coreutils
   }
 }
 
-profile gentoolkit.eclean @{PYTHON_EXEC}/eclean {
+profile gentoolkit.eclean@{p_root} @{PYTHON_EXEC}/eclean@{t_root} {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/ncurses>
@@ -118,11 +118,11 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean {
   owner @{PROC_D}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  /bin/stty						Px,	# sys-apps/coreutils
-  /bin/bzip2						Cx,	# app-arch/bzip2
-  /usr/bin/sandbox					cx,	# sys-apps/sandbox
-  /usr/bin/id						Px,	# sys-apps/coreutils
+  @{shell}@{t_root}					Cx,
+  /bin/stty@{t_root}					Px,	# sys-apps/coreutils
+  /bin/bzip2@{t_root}					Cx,	# app-arch/bzip2
+  /usr/bin/sandbox@{t_root}				cx,	# sys-apps/sandbox
+  /usr/bin/id@{t_root}					Px,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
@@ -138,10 +138,12 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean {
   /var/cache/edb/{,**}					rw,
   
   # TEMP -----------------------------------------------
-  owner /tmp/{@{TMP6},@{TMP8}}				rw,	# TMP6 - python2, TMP8 - python3	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-  owner /tmp/tmp{@{TMP6},@{TMP8}}			rwk,	# TMP6 - python2, TMP8 - python3	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /tmp/{@{TMP6},@{TMP8}}				rw,	# TMP6 - python2, TMP8 - python3
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  owner /tmp/tmp{@{TMP6},@{TMP8}}			rwk,	# TMP6 - python2, TMP8 - python3
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -151,10 +153,10 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,	# sys-apps/coreutils
+    /bin/uname@{t_root}					Px,	# sys-apps/coreutils
   }
   
-  profile bzip2 /bin/bzip2 {
+  profile bzip2 /bin/bzip2@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -168,7 +170,7 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean {
     /var/db/pkg/*/*/**.bz2				r,
   }
   
-  profile sandbox /usr/bin/sandbox {
+  profile sandbox /usr/bin/sandbox@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -178,7 +180,7 @@ profile gentoolkit.eclean @{PYTHON_EXEC}/eclean {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/sandbox					mr,
-    @{shell}						px -> gentoolkit_eclean_sandbox_shell,
+    @{shell}@{t_root}					px -> gentoolkit_eclean_sandbox_shell,
     
     # READS/WRITES -------------------------------------
     /etc/sandbox.conf					r,
@@ -195,10 +197,10 @@ profile gentoolkit_eclean_sandbox_shell {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		Px,	# sys-apps/portage
+  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh@{t_root}	Px,	# sys-apps/portage
 }
 
-profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
+profile gentoolkit.revdep-rebuild@{p_root} @{PYTHON_EXEC}/revdep-rebuild@{t_root} {
   #include <abstractions/base>
   #include <abstractions/python>
   #include <abstractions/nameservice>
@@ -213,9 +215,9 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
   owner @{PROC_D}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
-  @{shell}						Cx,
-  @{PYTHON_EXEC_WRAPPER}				Cx -> portage,	# dev-lang/python-exec
-  /usr/bin/scanelf					Cx,	# app-misc/pax-utils
+  @{shell}@{t_root}					Cx,
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx,	# dev-lang/python-exec
+  /usr/bin/scanelf@{t_root}				Cx,	# app-misc/pax-utils
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -236,7 +238,7 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
   /var/cache/edb/dep/usr/local/portage/{,**}		r,
   /var/cache/revdep-rebuild/{,**}			rw,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -246,18 +248,18 @@ profile gentoolkit.revdep-rebuild @{PYTHON_EXEC}/revdep-rebuild {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,	# sys-apps/coreutils
+    /bin/uname@{t_root}					Px,	# sys-apps/coreutils
   }
   
-  profile portage {
+  profile portage @{PYTHON_EXEC_WRAPPER}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/emerge				Px,	# sys-apps/portage
+    @{PYTHON_EXEC}/emerge@{t_root}			Px,	# sys-apps/portage
   }
   
-  profile scanelf /usr/bin/scanelf {
+  profile scanelf /usr/bin/scanelf@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile wget /usr/bin/wget {
+profile wget@{p_user} /usr/bin/wget@{t_user} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ssl-certs>
@@ -33,32 +33,16 @@ profile wget /usr/bin/wget {
   
   # READS/WRITES ---------------------------------------
   /etc/wgetrc						r,
-  /usr/portage/distfiles/**				rw,	# sys-apps/portage	# DELEGATION! portage
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.wget-hsts			rw,
-  
-  # READS/WRITES ---------------------------------------
-  deny /.wget-hsts					rwk,	# Мусорит в корень, использовать --hsts-file=file.
-  								# Процессы запущенные из cron работают некорректно с wget.
-  
-  # TEMP -----------------------------------------------
-  owner /tmp/hosts					rwk,	# DELEGATION! hosts.sh.cron.daily
-  owner /tmp/oinkmaster.@{TMP10}/**			w,	# net-analyzer/oinkmaster	# DELEGATION! oinkmaster.cron.daily
-  owner /var/tmp/portage/webrsync-@{TMP6}/**		w,	# sys-apps/portage	# DELEGATION! portage.emerge-webrsync
-  
-  # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
-  deny /tmp/oinkmaster.cron.@{TMP6}			w,	# net-analyzer/oinkmaster, oinkmaster.cron.daily
 }
 
-# Профиль должен вызываться только из shell_root,
-# для остального использовать профиль wget с делегейшен.
-profile wget_root {
+profile wget@{p_mixed} /usr/bin/wget{@{t_root},@{t_portage}} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ssl-certs>
-  #include <abstractions-root/fs/access-by-pattern-systemusers>
+#  #include <abstractions-root/fs/access-by-pattern-systemusers>	# FIX ME! потом сделать отдельный профиль для shell_root?
   
   # CAPABILITIES ---------------------------------------
   capability mknod,
@@ -77,9 +61,19 @@ profile wget_root {
   /usr/bin/wget						mr,
   
   # READS/WRITES ---------------------------------------
+  /etc/wgetrc						r,
+  /usr/portage/distfiles/**				rw,	# sys-apps/portage	# DELEGATION! portage
   deny /.wget-hsts					rwk,	# Мусорит в корень, использовать --hsts-file=file.
   								# Процессы запущенные из cron работают некорректно с wget.
   
   # USERS ----------------------------------------------
   owner @{ROOT_HOME_D}/.wget-hsts			rwk,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/hosts					rwk,	# DELEGATION! hosts.sh.cron.daily
+  owner /tmp/oinkmaster.@{TMP10}/**			w,	# net-analyzer/oinkmaster	# DELEGATION! oinkmaster.cron.daily
+  owner /var/tmp/portage/webrsync-@{TMP6}/**		w,	# sys-apps/portage	# DELEGATION! portage.emerge-webrsync
+  
+  # DENY INHERIT ---------------------------------------
+  deny /tmp/oinkmaster.cron.@{TMP6}			w,	# net-analyzer/oinkmaster, oinkmaster.cron.daily
 }

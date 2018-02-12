@@ -10,7 +10,38 @@
 
 #include <local/tunables.d/>
 
-profile procps.ps /bin/ps {
+profile procps.ps@{p_user} /bin/ps@{t_user} {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # CAPABILITIES ---------------------------------------
+  capability sys_ptrace,
+  capability dac_override,
+  capability dac_read_search,
+  
+  # PTRACE ---------------------------------------------
+  ptrace (trace),
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						r,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  @{PROC_D}/						r,
+  @{PROC_D}/uptime					r,
+  @{PROC_D}/sys/kernel/pid_max				r,
+  @{PROC_D}/sys/kernel/osrelease			r,
+  @{PROC_D}/tty/drivers					r,
+  @{PROC_D}/@{pids}/{stat,status,cmdline,wchan}		r,
+  @{PROC_D}/@{pids}/task/				r,
+  @{PROC_D}/@{pids}/task/@{pids}/			r,
+  @{PROC_D}/@{pids}/task/@{pids}/{stat,status,cmdline}	r,
+  @{PROC_D}/@{pids}/attr/current			r,	# Нужен для запуска с параметром -Z.
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/ps						mr,
+}
+
+profile procps.ps@{p_root} /bin/ps@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -44,12 +75,10 @@ profile procps.ps /bin/ps {
   /usr/src/@{kernel}/System.map				r,	# sys-kernel/gentoo-sources
   
   # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
   deny /tmp/oinkmaster.cron.@{TMP6}			w,	# net-analyzer/oinkmaster, oinkmaster.cron.daily
-  deny /tmp/chkrootkit.cron.@{TMP6}			w,	# app-forensics/chkrootkit, chkrootkit.cron.daily
 }
 
-profile procps.pidof /usr/bin/pidof {
+profile procps.pidof@{p_root} /usr/bin/pidof@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -70,7 +99,7 @@ profile procps.pidof /usr/bin/pidof {
   /usr/bin/pidof					mr,
 }
 
-profile procps.pgrep /usr/bin/pgrep {
+profile procps.pgrep@{p_root} /usr/bin/pgrep@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -95,7 +124,7 @@ profile procps.pgrep /usr/bin/pgrep {
   /usr/bin/pgrep					mr,
 }
 
-profile procps.sysctl /usr/sbin/sysctl {
+profile procps.sysctl@{p_root} /usr/sbin/sysctl@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------

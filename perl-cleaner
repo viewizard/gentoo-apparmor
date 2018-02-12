@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile perl-cleaner /usr/sbin/perl-cleaner {
+profile perl-cleaner@{p_root} /usr/sbin/perl-cleaner@{t_root} {
   #include <abstractions/base>
   #include <abstractions/perl>
   
@@ -23,24 +23,24 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /usr/sbin/perl-cleaner				mr,
-  @{shell}						pxmr -> perl_cleaner_shell,	# Все правильно, запуск и mmap.
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/tr						Px,	# sys-apps/coreutils
-  /bin/sort						Cx,	# sys-apps/coreutils
-  /bin/stty						Px,	# sys-apps/coreutils
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /sbin/consoletype					Px,	# sys-apps/gentoo-functions
-  /usr/bin/q						Px,	# app-portage/portage-utils
-  /usr/bin/xargs					Cx,	# sys-apps/findutils
-  /usr/bin/gawk						Cx,	# sys-apps/gawk
-  /usr/bin/tput						Px,	# sys-libs/ncurses
-  /usr/bin/scanelf					Cx,	# app-misc/pax-utils
-  /usr/bin/find						Cx,	# sys-apps/findutils
-  /usr/bin/realpath					Cx,	# sys-apps/coreutils
-  /usr/bin/h2ph						Px,	# dev-lang/perl
-  @{PYTHON_EXEC_WRAPPER}				Cx -> portage,	# dev-lang/python-exec
+  /usr/sbin/perl-cleaner				r,
+  @{shell}						mr,
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/tr@{t_root}					Px,	# sys-apps/coreutils
+  /bin/sort@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/stty@{t_root}					Px,	# sys-apps/coreutils
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /sbin/consoletype@{t_root}				Px,	# sys-apps/gentoo-functions
+  /usr/bin/q@{t_root}					Px,	# app-portage/portage-utils
+  /usr/bin/xargs@{t_root}				Cx,	# sys-apps/findutils
+  /usr/bin/gawk@{t_root}				Cx,	# sys-apps/gawk
+  /usr/bin/tput@{t_root}				Px,	# sys-libs/ncurses
+  /usr/bin/scanelf@{t_root}				Cx,	# app-misc/pax-utils
+  /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils
+  /usr/bin/realpath@{t_root}				Cx,	# sys-apps/coreutils
+  /usr/bin/h2ph@{t_root}				Px,	# dev-lang/perl
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /var/db/pkg/{,**}					r,
@@ -48,7 +48,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
   # TEMP -----------------------------------------------
   owner /tmp/@{TMP_SH}					rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -59,7 +59,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
     /bin/grep						mr,
   }
   
-  profile sort /bin/sort {
+  profile sort /bin/sort@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -70,7 +70,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
     /bin/sort						mr,
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -81,7 +81,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
     /bin/cat						mr,
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -92,7 +92,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
     /bin/rm						mr,
   }
   
-  profile xargs /usr/bin/xargs {
+  profile xargs /usr/bin/xargs@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -102,13 +102,14 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/xargs					mr,
-    /bin/rmdir						ix,	# sys-apps/coreutils	# Оставляем вызов через ix.
+    audit /bin/rmdir@{t_root}				ix,	# sys-apps/coreutils	# Оставляем вызов через ix.
+    audit /bin/rmdir					mr,	# sys-apps/coreutils	# FIX ME! audit 04.02.2018
     
     # READS/WRITES -------------------------------------
     /usr/lib{,32,64}/perl[0-9]*/{,**/}			w,
   }
   
-  profile gawk /usr/bin/gawk {
+  profile gawk /usr/bin/gawk@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -122,7 +123,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
     /var/db/pkg/{,**}					r,
   }
   
-  profile scanelf /usr/bin/scanelf {
+  profile scanelf /usr/bin/scanelf@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -145,7 +146,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
     deny /usr/src/{,**}					r,	# sys-kernel/gentoo-sources
   }
   
-  profile find /usr/bin/find {
+  profile find /usr/bin/find@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -160,7 +161,7 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
     /var/db/pkg/{,**}					r,
   }
   
-  profile realpath /usr/bin/realpath {
+  profile realpath /usr/bin/realpath@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -171,61 +172,12 @@ profile perl-cleaner /usr/sbin/perl-cleaner {
     /usr/bin/realpath					mr,
   }
   
-  profile portage {
+  profile portage @{PYTHON_EXEC_WRAPPER}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/emerge				Px,	# sys-apps/portage
-    @{PYTHON_EXEC}/portageq				Px,	# sys-apps/portage
-  }
-}
-
-profile perl_cleaner_shell {
-  #include <abstractions/base>
-  
-  # PSEUDO -------------------------------------------
-  /dev/tty						rw,
-  /dev/tty[0-9]*					rw,
-  /dev/pts/[0-9]*					rw,
-  
-  # EXECUTABLES --------------------------------------
-  @{shell}						mr,
-  /bin/grep						Cx,	# sys-apps/grep
-  /usr/bin/gawk						Cx,	# sys-apps/gawk
-  /usr/bin/@{CHOST}-gcc					Cx,	# sys-devel/gcc
-  /usr/@{CHOST}/gcc-bin/[0-9]*/@{CHOST}-gcc		Cx -> gcc,	# sys-devel/gcc
-  /usr/libexec/gcc/@{CHOST}/[0-9]*/cc1			Cx,	# sys-devel/gcc
-  
-  # READS/WRITES -------------------------------------
-  /etc/env.d/gcc/{,**}					r,	# sys-devel/gcc
-  /usr/include/{,**}					r,
-  
-  profile grep /bin/grep {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /bin/grep						mr,
-  }
-  
-  profile gawk /usr/bin/gawk {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /usr/bin/gawk					mr,
-  }
-  
-  profile gcc /usr/bin/@{CHOST}-gcc {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /usr/bin/@{CHOST}-gcc				mr,
-  }
-  
-  profile cc1 /usr/libexec/gcc/@{CHOST}/[0-9]*/cc1 {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /usr/libexec/gcc/@{CHOST}/[0-9]*/cc1		mr,
+    @{PYTHON_EXEC}/emerge@{t_root}			Px,	# sys-apps/portage
+    @{PYTHON_EXEC}/portageq@{t_root}			Px,	# sys-apps/portage
   }
 }

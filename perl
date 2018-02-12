@@ -10,14 +10,14 @@
 
 #include <local/tunables.d/>
 
-profile perl.h2ph /usr/bin/h2ph {
+profile perl.h2ph@{p_root} /usr/bin/h2ph@{t_root} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/h2ph						mr,
 }
 
-profile perl.pod2html /usr/bin/pod2html {
+profile perl.pod2html@{p_root} /usr/bin/pod2html@{t_root} {
   #include <abstractions/base>
   #include <abstractions/perl>
   
@@ -27,7 +27,7 @@ profile perl.pod2html /usr/bin/pod2html {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pod2html					r,
-  /bin/pwd						Px,	# sys-apps/coreutils
+  /bin/pwd@{t_root}					Px,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /var/tmp/portage/genkernel/**/pod2htmd.tmp		rw,	# DELEGATION! make, genkernel (собираем busybox)
@@ -35,7 +35,7 @@ profile perl.pod2html /usr/bin/pod2html {
   /var/log/genkernel.log				w,	# DELEGATION! make, genkernel (собираем busybox)
 }
 
-profile perl.pod2text /usr/bin/pod2text-[0-9]*-perl-[0-9]* {
+profile perl.pod2text@{p_root} /usr/bin/pod2text-[0-9]*-perl-[0-9]*@{t_root} {
   #include <abstractions/base>
   #include <abstractions/perl>
   
@@ -51,7 +51,7 @@ profile perl.pod2text /usr/bin/pod2text-[0-9]*-perl-[0-9]* {
   /var/log/genkernel.log				w,	# DELEGATION! make, genkernel (собираем busybox)
 }
 
-profile perl.pod2man /usr/bin/pod2man-[0-9]*-perl-[0-9]* {
+profile perl.pod2man@{p_root} /usr/bin/pod2man-[0-9]*-perl-[0-9]*@{t_root} {
   #include <abstractions/base>
   #include <abstractions/perl>
   

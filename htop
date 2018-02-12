@@ -10,12 +10,10 @@
 
 #include <local/tunables.d/>
 
-profile htop /usr/bin/htop {
+profile htop@{p_user} /usr/bin/htop@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
-  #include <abstractions-root/freedesktop.org>			# RBAC! Должен быть отдельный профиль для root.
   #include <abstractions-user/fonts>
-  #include <abstractions-root/fonts>				# RBAC! Должен быть отдельный профиль для root.
   #include <abstractions/nameservice>
   #include <abstractions/ncurses>
   
@@ -47,5 +45,41 @@ profile htop /usr/bin/htop {
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.config/htop/{,htoprc}		rw,
-  owner @{ROOT_HOME_D}/.config/htop/{,htoprc}		rw,	# RBAC! Должен быть отдельный профиль для root.
+}
+
+profile htop@{p_root} /usr/bin/htop@{t_root} {
+  #include <abstractions/base>
+  #include <abstractions-root/freedesktop.org>
+  #include <abstractions-root/fonts>
+  #include <abstractions/nameservice>
+  #include <abstractions/ncurses>
+  
+  # CAPABILITIES ---------------------------------------
+  capability sys_ptrace,
+  capability setuid,
+  capability kill,
+  capability sys_nice,
+  
+  # PTRACE ---------------------------------------------
+  ptrace (trace),
+  
+  # SIGNAL ---------------------------------------------
+  signal (send),						# Все правильно, должны иметь возможность передать
+  								# любой сигнал любому процессу.
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  @{PROC_D}/						r,
+  @{PROC_D}/{loadavg,uptime}				r,
+  @{PROC_D}/sys/kernel/pid_max				r,
+  @{PROC_D}/@{pids}/{stat,statm,cmdline}		r,
+  @{PROC_D}/@{pids}/task/				r,
+  @{PROC_D}/@{pids}/task/@{pids}/{stat,statm,cmdline}	r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/htop mr,
+  
+  # USERS ----------------------------------------------
+  owner @{ROOT_HOME_D}/.config/htop/{,htoprc}		rw,
 }

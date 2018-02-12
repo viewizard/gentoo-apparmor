@@ -14,7 +14,7 @@
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="[^.]*"
 
-profile rapidsvn /usr/bin/rapidsvn {
+profile rapidsvn@{p_user} /usr/bin/rapidsvn@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -44,8 +44,8 @@ profile rapidsvn /usr/bin/rapidsvn {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/rapidsvn					mr,
-  @{shell}						Cx,
-  /usr/bin/meld						Px,	# dev-util/meld
+  @{shell}@{t_user}					Cx,
+  /usr/bin/meld@{t_user}				Px,	# dev-util/meld
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.subversion/{,**}		rw,	# dev-vcs/subversion
@@ -55,7 +55,7 @@ profile rapidsvn /usr/bin/rapidsvn {
   owner /tmp/*						rw,	# * - файл из svn для передачи в meld (сравнение файлов).
   								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -65,7 +65,7 @@ profile rapidsvn /usr/bin/rapidsvn {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/uname						Px,	# sys-apps/coreutils
-    /usr/bin/lsb_release				Px,	# sys-apps/lsb-release
+    /bin/uname@{t_user}					Px,	# sys-apps/coreutils
+    /usr/bin/lsb_release@{t_user}			Px,	# sys-apps/lsb-release
   }
 }

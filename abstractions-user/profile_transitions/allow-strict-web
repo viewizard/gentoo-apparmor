@@ -10,11 +10,13 @@
 
 # sg/newgrp for work with network connection via iptables uid/gid-owner
 # IMPROVE! После возможности блокировки адресов и портов - убрать.
-/usr/bin/newgrp						Px,	# sys-apps/shadow
-/usr/bin/id						Px,	# sys-apps/coreutils
+/usr/bin/newgrp@{t_user}				Px,	# sys-apps/shadow
+/usr/bin/id@{t_user}					Px,	# sys-apps/coreutils
 
-/usr/bin/chromium-browser				Px,	# www-client/chromium
-/usr/lib{,32,64}/chromium-browser/chromium-launcher.sh	Px,	# www-client/chromium	# Используется, если установлен приложением по умолчанию.
-/usr/bin/firefox					Px,	# www-client/firefox
-/usr/lib{,32,64}/firefox/firefox			Px,	# www-client/firefox	# Используется, если установлен приложением по умолчанию.
-/usr/bin/claws-mail					Px,	# mail-client/claws-mail
+/usr/bin/chromium-browser@{t_user}			Px,	# www-client/chromium
+/usr/lib{,32,64}/chromium-browser/chromium-launcher.sh@{t_user} Px,	# www-client/chromium
+								# Используется, если установлен приложением по умолчанию.
+/usr/bin/firefox@{t_user}				Px,	# www-client/firefox
+/usr/lib{,32,64}/firefox/firefox@{t_user}		Px,	# www-client/firefox
+								# Используется, если установлен приложением по умолчанию.
+/usr/bin/claws-mail@{t_user}				Px,	# mail-client/claws-mail

@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -12,14 +12,14 @@ dbus (send, receive)
 	bus=system
 	path="/org/freedesktop/ConsoleKit/Manager"
 	interface="org.freedesktop.ConsoleKit.Manager"
-	peer=(name="{:[0-9]*.[0-9]*,org.freedesktop.ConsoleKit}",label="consolekit.console-kit-daemon"),
+	peer=(name="{:[0-9]*.[0-9]*,org.freedesktop.ConsoleKit}",label="consolekit.console-kit-daemon@{p_root}"),
 dbus send
 	bus=system
 	path="/org/freedesktop/ConsoleKit/Session[0-9]*"
 	interface="org.freedesktop.ConsoleKit.Session"
-	peer=(name="org.freedesktop.ConsoleKit",label="consolekit.console-kit-daemon"),
+	peer=(name="org.freedesktop.ConsoleKit",label="consolekit.console-kit-daemon@{p_root}"),
 dbus receive
 	bus=system
 	path="/org/freedesktop/ConsoleKit/Seat[0-9]*"
 	interface="org.freedesktop.ConsoleKit.Seat"
-	peer=(name=":[0-9]*.[0-9]*",label="consolekit.console-kit-daemon"),
+	peer=(name=":[0-9]*.[0-9]*",label="consolekit.console-kit-daemon@{p_root}"),

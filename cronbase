@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile cronbase.run-crons /usr/sbin/run-crons {
+profile cronbase.run-crons@{p_root} /usr/sbin/run-crons@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -20,22 +20,22 @@ profile cronbase.run-crons /usr/sbin/run-crons {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/run-crons					r,
   @{shell}						mr,
-  /bin/ln						Cx,	# sys-apps/coreutils
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/echo						Px,	# sys-apps/coreutils
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/tr						Px,	# sys-apps/coreutils
-  /bin/touch						Cx,	# sys-apps/coreutils
-  /bin/readlink						Cx,	# sys-apps/coreutils
-  /usr/bin/find						Cx,	# sys-apps/findutils
-  /usr/bin/whoami					Px,	# sys-apps/coreutils
-  /usr/bin/logger					Px,	# sys-apps/util-linux
-  /etc/cron.{daily,hourly,monthly,weekly}/*		Px,
+  /bin/ln@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/echo@{t_root}					Px,	# sys-apps/coreutils
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/tr@{t_root}					Px,	# sys-apps/coreutils
+  /bin/touch@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/readlink@{t_root}				Cx,	# sys-apps/coreutils
+  /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils
+  /usr/bin/whoami@{t_root}				Px,	# sys-apps/coreutils
+  /usr/bin/logger@{t_root}				Px,	# sys-apps/util-linux
+  /etc/cron.{daily,hourly,monthly,weekly}/*@{t_root}	Px,
   
   # READS/WRITES ---------------------------------------
   /etc/cron.{daily,hourly,monthly,weekly}/		r,
   
-  profile ln /bin/ln {
+  profile ln /bin/ln@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -45,7 +45,7 @@ profile cronbase.run-crons /usr/sbin/run-crons {
     /run/lock/cron.{daily,hourly,monthly,weekly}	w,
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -55,7 +55,7 @@ profile cronbase.run-crons /usr/sbin/run-crons {
     /bin/cat						mr,
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -65,7 +65,7 @@ profile cronbase.run-crons /usr/sbin/run-crons {
     /run/lock/cron.{daily,hourly,monthly,weekly}	w,
   }
   
-  profile touch /bin/touch {
+  profile touch /bin/touch@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -75,19 +75,19 @@ profile cronbase.run-crons /usr/sbin/run-crons {
     /var/spool/cron/lastrun/cron.{daily,hourly,monthly,weekly} w,
   }
   
-  profile readlink /bin/readlink {
+  profile readlink /bin/readlink@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/readlink					mr,
   }
   
-  profile find /usr/bin/find {
+  profile find /usr/bin/find@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/find					mr,
-    /bin/rm						Px -> cronbase_rm,	# sys-apps/coreutils
+    /bin/rm@{t_root}					Px -> cronbase_rm,	# sys-apps/coreutils
     
     # READS/WRITES -------------------------------------
     /var/spool/cron/lastrun/				r,

@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile logrotate /usr/bin/logrotate {
+profile logrotate@{p_root} /usr/bin/logrotate@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -29,8 +29,8 @@ profile logrotate /usr/bin/logrotate {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/logrotate					mr,
-  @{shell}						Cx,
-  /usr/bin/xz						Cx,	# app-arch/xz-utils
+  @{shell}@{t_root}					Cx,
+  /usr/bin/xz@{t_root}					Cx,	# app-arch/xz-utils
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -45,7 +45,7 @@ profile logrotate /usr/bin/logrotate {
   deny @{ROOT_HOME_D}/					r,
   deny /etc/apparmor.d/					r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -53,11 +53,11 @@ profile logrotate /usr/bin/logrotate {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/su						Px,	# sys-apps/shadow
-    /etc/init.d/syslog-ng				Px,	# app-admin/syslog-ng
+    /bin/su@{t_root}					Px,	# sys-apps/shadow
+    /etc/init.d/syslog-ng@{t_root}			Px,	# app-admin/syslog-ng
   }
   
-  profile xz /usr/bin/xz {
+  profile xz /usr/bin/xz@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -68,7 +68,7 @@ profile logrotate /usr/bin/logrotate {
   }
 }
 
-profile logrotate.cron.daily /etc/cron.daily/logrotate {
+profile logrotate.cron.daily@{p_root} /etc/cron.daily/logrotate@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -77,6 +77,6 @@ profile logrotate.cron.daily /etc/cron.daily/logrotate {
   # EXECUTABLES ----------------------------------------
   /etc/cron.daily/logrotate				r,
   @{shell}						mr,
-  /usr/bin/logger					Px,	# sys-apps/util-linux
-  /usr/bin/logrotate					Px,
+  /usr/bin/logger@{t_root}				Px,	# sys-apps/util-linux
+  /usr/bin/logrotate@{t_root}				Px,
 }

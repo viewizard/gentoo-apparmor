@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile xfce4-power-manager /usr/bin/xfce4-power-manager {
+profile xfce4-power-manager@{p_user} /usr/bin/xfce4-power-manager@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -46,23 +46,23 @@ profile xfce4-power-manager /usr/bin/xfce4-power-manager {
   	path="/org/freedesktop/PowerManagement/Inhibit"
   	interface="org.freedesktop.DBus.Properties"
 	member=GetAll
-  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-panel.wrapper-2.0"),	# Для xfce4-panel плагина.
+  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-panel.wrapper-2.0@{p_user}"),	# Для xfce4-panel плагина.
   dbus receive
   	bus=session
   	path="/org/freedesktop/PowerManagement/Inhibit"
   	interface="org.freedesktop.PowerManagement.Inhibit"
-  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-panel.wrapper-2.0"),	# Для xfce4-panel плагина.
+  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-panel.wrapper-2.0@{p_user}"),	# Для xfce4-panel плагина.
   dbus receive
   	bus=session
   	path="/org/xfce/PowerManager"
   	interface="org.xfce.Power.Manager"
-  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-power-manager.xfce4-power-manager-settings"),
+  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-power-manager.xfce4-power-manager-settings@{p_user}"),
   dbus receive
   	bus=session
   	path="/org/xfce/PowerManager"
   	interface="org.freedesktop.DBus.Properties"
   	member=GetAll
-  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-power-manager.xfce4-power-manager-settings"),
+  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-power-manager.xfce4-power-manager-settings@{p_user}"),
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -72,15 +72,15 @@ profile xfce4-power-manager /usr/bin/xfce4-power-manager {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-power-manager				mr,
-  /usr/bin/pm-is-supported				Px,	# sys-power/pm-utils
-  /usr/bin/xfce4-power-manager-settings			Px,
-  /usr/sbin/xfpm-power-backlight-helper			Px,
+  /usr/bin/pm-is-supported@{t_user}			Px,	# sys-power/pm-utils
+  /usr/bin/xfce4-power-manager-settings@{t_user}	Px,
+  /usr/sbin/xfpm-power-backlight-helper@{t_user}	Px,
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/autostart/xfce4-power-manager.desktop	r,
 }
 
-profile xfce4-power-manager.xfpm-power-backlight-helper /usr/sbin/xfpm-power-backlight-helper {
+profile xfce4-power-manager.xfpm-power-backlight-helper@{p_user} /usr/sbin/xfpm-power-backlight-helper@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -91,7 +91,7 @@ profile xfce4-power-manager.xfpm-power-backlight-helper /usr/sbin/xfpm-power-bac
   /usr/sbin/xfpm-power-backlight-helper			mr,
 }
 
-profile xfce4-power-manager.xfce4-power-manager-settings /usr/bin/xfce4-power-manager-settings {
+profile xfce4-power-manager.xfce4-power-manager-settings@{p_user} /usr/bin/xfce4-power-manager-settings@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -112,13 +112,13 @@ profile xfce4-power-manager.xfce4-power-manager-settings /usr/bin/xfce4-power-ma
   	bus=session
   	path="/org/xfce/PowerManager"
   	interface="org.xfce.Power.Manager"
-  	peer=(name="{:[0-9]*.[0-9]*,org.xfce.PowerManager}",label="xfce4-power-manager"),
+  	peer=(name="{:[0-9]*.[0-9]*,org.xfce.PowerManager}",label="xfce4-power-manager@{p_user}"),
   dbus send
   	bus=session
   	path="/org/xfce/PowerManager"
   	interface="org.freedesktop.DBus.Properties"
   	member=GetAll
-  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-power-manager"),
+  	peer=(name=":[0-9]*.[0-9]*",label="xfce4-power-manager@{p_user}"),
   dbus send
   	bus=session
   	path="/org/xfce/PowerManager/Settings"
@@ -137,8 +137,8 @@ profile xfce4-power-manager.xfce4-power-manager-settings /usr/bin/xfce4-power-ma
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-power-manager-settings			mr,
-  /usr/bin/xfce4-power-manager				Px,
-  /usr/bin/exo-open					Px,	# xfce-base/exo
+  /usr/bin/xfce4-power-manager@{t_user}			Px,
+  /usr/bin/exo-open@{t_user}				Px,	# xfce-base/exo
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.config/xfce4/help.rc		rw,

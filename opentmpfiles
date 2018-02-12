@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2017 Mikhail Kurinnoi
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile opentmpfiles.tmpfiles /bin/tmpfiles {
+profile opentmpfiles.tmpfiles@{p_root} /bin/tmpfiles@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -28,16 +28,16 @@ profile opentmpfiles.tmpfiles /bin/tmpfiles {
   # EXECUTABLES ----------------------------------------
   /bin/tmpfiles						r,
   @{shell}						mr,
-  /bin/sort						Cx,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/chmod						Cx,	# sys-apps/coreutils
-  /bin/chown						Cx,	# sys-apps/coreutils
-  /bin/chgrp						Cx,	# sys-apps/coreutils
+  /bin/sort@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/chmod@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/chown@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/chgrp@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /run/tmpfiles.d/{,*}					r,
   
-  profile sort /bin/sort {
+  profile sort /bin/sort@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -49,7 +49,7 @@ profile opentmpfiles.tmpfiles /bin/tmpfiles {
     /bin/sort						mr,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -64,7 +64,7 @@ profile opentmpfiles.tmpfiles /bin/tmpfiles {
     /run/**/						w,
   }
   
-  profile chmod /bin/chmod {
+  profile chmod /bin/chmod@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -79,7 +79,7 @@ profile opentmpfiles.tmpfiles /bin/tmpfiles {
     /run/**/						w,
   }
   
-  profile chown /bin/chown {
+  profile chown /bin/chown@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
@@ -95,7 +95,7 @@ profile opentmpfiles.tmpfiles /bin/tmpfiles {
     /run/**/						w,
   }
   
-  profile chgrp /bin/chgrp {
+  profile chgrp /bin/chgrp@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     

@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile kernel.scripts.sign-file /usr/src/@{kernel}/scripts/sign-file {
+profile kernel.scripts.sign-file@{p_root} /usr/src/@{kernel}/scripts/sign-file@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -25,7 +25,7 @@ profile kernel.scripts.sign-file /usr/src/@{kernel}/scripts/sign-file {
   /lib{,32,64}/modules/@{kernel_ver}/**.ko		rw,
 }
 
-profile kernel.gen-ima-certs /usr/src/IMA/certs/* {
+profile kernel.gen-ima-certs@{p_root} /usr/src/IMA/certs/*@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -33,20 +33,20 @@ profile kernel.gen-ima-certs /usr/src/IMA/certs/* {
   
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /usr/bin/openssl					Cx,	# dev-libs/openssl
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /usr/bin/openssl@{t_root}				Cx,	# dev-libs/openssl
   
   # READS/WRITES ---------------------------------------
   /usr/src/IMA/certs/*					rw,
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/cat						mr,
   }
   
-  profile openssl /usr/bin/openssl {
+  profile openssl /usr/bin/openssl@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -64,7 +64,7 @@ profile kernel.gen-ima-certs /usr/src/IMA/certs/* {
   }
 }
 
-profile kernel.scripts.checkpatch.pl /usr/src/@{kernel}/scripts/checkpatch.pl {
+profile kernel.scripts.checkpatch.pl@{p_root} /usr/src/@{kernel}/scripts/checkpatch.pl@{t_root} {
   #include <abstractions/base>
   #include <abstractions/perl>
   
@@ -74,7 +74,7 @@ profile kernel.scripts.checkpatch.pl /usr/src/@{kernel}/scripts/checkpatch.pl {
   
   # EXECUTABLES ----------------------------------------
   /usr/src/@{kernel}/scripts/checkpatch.pl		r,
-  /bin/pwd						Px,	# sys-apps/coreutils
+  /bin/pwd@{t_root}					Px,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /usr/src/**						r,

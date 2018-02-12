@@ -43,7 +43,7 @@
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="[^.]*.@{local_ext}"
 
-profile ristretto /usr/bin/ristretto {
+profile ristretto@{p_user} /usr/bin/ristretto@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -69,23 +69,23 @@ profile ristretto /usr/bin/ristretto {
   	bus=session
   	path="/org/xfce/FileManager"
   	interface="org.freedesktop.DBus.Properties"
-  	peer=(name=":[0-9]*.[0-9]*",label="thunar"),	# xfce-base/thunar
+  	peer=(name=":[0-9]*.[0-9]*",label="thunar@{p_user}"),	# xfce-base/thunar
   dbus send
   	bus=session
   	path="/org/xfce/FileManager"
   	interface="org.xfce.FileManager"
 	member="DisplayFileProperties"
-  	peer=(name=":[0-9]*.[0-9]*",label="thunar"),	# xfce-base/thunar	# Вызываем свойства файла (Файл > Свойства).
+  	peer=(name=":[0-9]*.[0-9]*",label="thunar@{p_user}"),	# xfce-base/thunar	# Вызываем свойства файла (Файл > Свойства).
   dbus send
   	bus=session
   	path="/org/freedesktop/thumbnails/Thumbnailer*"
   	interface="org.freedesktop.DBus.Properties"
-  	peer=(name=":[0-9]*.[0-9]*",label="tumbler"),	# xfce-extra/tumbler
+  	peer=(name=":[0-9]*.[0-9]*",label="tumbler@{p_user}"),	# xfce-extra/tumbler
   dbus send
   	bus=session
   	path="/org/freedesktop/thumbnails/Thumbnailer*"
   	interface="org.freedesktop.thumbnails.Thumbnailer*"
-  	peer=(name=":[0-9]*.[0-9]*",label="tumbler"),	# xfce-extra/tumbler
+  	peer=(name=":[0-9]*.[0-9]*",label="tumbler@{p_user}"),	# xfce-extra/tumbler
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -94,7 +94,7 @@ profile ristretto /usr/bin/ristretto {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/ristretto					mr,
-  /usr/bin/exo-open					Px,	# xfce-base/exo
+  /usr/bin/exo-open@{t_user}				Px,	# xfce-base/exo
   
   # READS/WRITES ---------------------------------------
   /usr/share/misc/magic.mgc				r,	# sys-apps/file

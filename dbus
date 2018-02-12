@@ -10,11 +10,11 @@
 
 #include <local/tunables.d/>
 
-profile dbus.dbus-cleanup-sockets /usr/bin/dbus-cleanup-sockets {
+profile dbus.dbus-cleanup-sockets@{p_root} /usr/bin/dbus-cleanup-sockets@{t_root} {
   #include <abstractions/base>
 }
 
-profile dbus.dbus-daemon /usr/bin/dbus-daemon {
+profile dbus.dbus-daemon@{p_user} /usr/bin/dbus-daemon@{t_user} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/dbus/system-strict>
@@ -58,20 +58,19 @@ profile dbus.dbus-daemon /usr/bin/dbus-daemon {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dbus-daemon					mr,
-  /usr/bin/gnome-keyring-daemon				Px,	# gnome-base/gnome-keyring
-  /usr/bin/thunar					Px,	# xfce-base/thunar
-  /usr/lib{,32,64}/xfce4/xfconf/xfconfd			Px,	# xfce-base/xfconf
-  /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd		Px,	# xfce-extra/xfce4-notifyd
-  /usr/lib{,32,64}/tumbler-1/tumblerd			Px,	# xfce-extra/tumbler
-  /usr/libexec/at-spi-bus-launcher			Px,	# app-accessibility/at-spi2-core
-  /usr/libexec/at-spi2-registryd			Px,	# app-accessibility/at-spi2-core
-  /usr/libexec/gvfsd					Px,	# gnome-base/gvfs
-  /usr/libexec/gvfsd-metadata				Px,	# gnome-base/gvfs
-  /usr/libexec/gvfs-udisks2-volume-monitor		Px,	# gnome-base/gvfs
-  /usr/libexec/dconf-service				Px,	# gnome-base/dconf
-  /usr/libexec/dbus-daemon-launch-helper		Px,
-  /usr/libexec/gconfd-2					Px,	# gnome-base/gconf
-  /usr/libexec/gcr-prompter				Px,	# app-crypt/gcr
+  /usr/bin/gnome-keyring-daemon@{t_user}		Px,	# gnome-base/gnome-keyring
+  /usr/bin/thunar@{t_user}				Px,	# xfce-base/thunar
+  /usr/lib{,32,64}/xfce4/xfconf/xfconfd@{t_user}	Px,	# xfce-base/xfconf
+  /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd@{t_user}	Px,	# xfce-extra/xfce4-notifyd
+  /usr/lib{,32,64}/tumbler-1/tumblerd@{t_user}		Px,	# xfce-extra/tumbler
+  /usr/libexec/at-spi-bus-launcher@{t_user}		Px,	# app-accessibility/at-spi2-core
+  /usr/libexec/at-spi2-registryd@{t_user}		Px,	# app-accessibility/at-spi2-core
+  /usr/libexec/gvfsd@{t_user}				Px,	# gnome-base/gvfs
+  /usr/libexec/gvfsd-metadata@{t_user}			Px,	# gnome-base/gvfs
+  /usr/libexec/gvfs-udisks2-volume-monitor@{t_user}	Px,	# gnome-base/gvfs
+  /usr/libexec/dconf-service@{t_user}			Px,	# gnome-base/dconf
+  /usr/libexec/gconfd-2@{t_user}			Px,	# gnome-base/gconf
+  /usr/libexec/gcr-prompter@{t_user}			Px,	# app-crypt/gcr
   
   # READS/WRITES ---------------------------------------
   /etc/dbus-1/**					r,
@@ -81,17 +80,75 @@ profile dbus.dbus-daemon /usr/bin/dbus-daemon {
   /run/ConsoleKit/inhibit/inhibit.@{TMP6}.pipe		w,	# sys-auth/consolekit
 }
 
-profile dbus.dbus-launch /usr/bin/dbus-launch {
+profile dbus.dbus-daemon@{p_root} /usr/bin/dbus-daemon@{t_root} {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/dbus/system-strict>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/accessibility-strict>
+  
+  # CAPABILITIES ---------------------------------------
+  capability sys_resource,
+  capability setgid,
+  capability setuid,
+  
+  # UNIX -----------------------------------------------
+  unix (bind, listen, send, receive, accept)
+  			type=stream
+  			addr="@/tmp/dbus-@{TMP10}",
+  
+  # DBUS -----------------------------------------------
+  dbus receive
+  	path="/org/freedesktop/DBus{,/**}"
+  	interface="org.freedesktop.DBus"
+  	member=Hello
+  	peer=(name=":not.active.yet"),
+  dbus receive
+  	path="/org/freedesktop/DBus{,/**}"
+  	interface="org.freedesktop.DBus{,.*}"
+  	peer=(name=":[0-9]*.[0-9]*"),
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/console						rw,
+  /dev/pts/[0-9]*					rw,
+  @{SYS_D}/module/apparmor/parameters/enabled		r,	# AppArmor dbus mediation
+  @{SYS_D}/kernel/security/apparmor/features/dbus/mask	r,	# AppArmor dbus mediation
+  @{SYS_D}/kernel/security/apparmor/.access		rw,	# AppArmor dbus mediation
+  @{PROC_D}/@{pids}/cmdline				r,
+  @{PROC_D}/@{pid}/mounts				r,	# AppArmor dbus mediation
+  								# IMPROVE! Ограничить (fsuid=messagebus && ouid=messagebus,root).
+  owner @{PROC_D}/@{pid}/oom_score_adj			w,
+  @{PROC_D}/@{pid}/attr/current				r,	# AppArmor dbus mediation
+  								# IMPROVE! Ограничить (fsuid=messagebus && ouid=messagebus,root).
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/dbus-daemon					mr,
+  audit /usr/bin/thunar@{t_root}			Px,	# xfce-base/thunar	# FIX ME! audit 10.02.2018
+  /usr/lib{,32,64}/xfce4/xfconf/xfconfd@{t_root}	Px,	# xfce-base/xfconf
+  audit /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd@{t_root} Px,	# xfce-extra/xfce4-notifyd	# FIX ME! audit 10.02.2018
+  /usr/lib{,32,64}/tumbler-1/tumblerd@{t_root}		Px,	# xfce-extra/tumbler
+  /usr/libexec/gvfsd@{t_root}				Px,	# gnome-base/gvfs
+  /usr/libexec/gvfs-udisks2-volume-monitor@{t_root}	Px,	# gnome-base/gvfs
+  /usr/libexec/dconf-service@{t_root}			Px,	# gnome-base/dconf
+  /usr/libexec/dbus-daemon-launch-helper@{t_root}	Px,
+  audit /usr/libexec/gconfd-2@{t_root}			Px,	# gnome-base/gconf	# FIX ME! audit 10.02.2018
+  
+  # READS/WRITES ---------------------------------------
+  /etc/dbus-1/**					r,
+  /usr/share/dbus-1/**					r,
+  /run/dbus.pid						rw,
+  /run/ConsoleKit/inhibit/inhibit.@{TMP6}.pipe		w,	# sys-auth/consolekit
+}
+
+profile dbus.dbus-launch@{p_user} /usr/bin/dbus-launch@{t_user} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions-user/X>
-  #include <abstractions-root/X>				# RBAC! Должен быть отдельный профиль для root.
-  #include <abstractions-sudo/X-connection-strict>		# RBAC! Нужно для запуска под root-ом через sudo
-  								# с подключением к X-сессии пользователя.
   #include <abstractions/dbus/session-strict>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term) peer="dbus.dbus-daemon",
+  signal (send) set=(term) peer="dbus.dbus-daemon@{p_user}",
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -99,16 +156,15 @@ profile dbus.dbus-launch /usr/bin/dbus-launch {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dbus-launch					mr,
-  @{shell}						Cx,
-  /usr/bin/dbus-daemon					Px,
-  /usr/bin/xfce4-session				Px,	# xfce-base/xfce4-session
-  /etc/X11/Sessions/Xfce4				Px,	# xfce-base/xfce4-session
+  @{shell}@{t_user}					Cx,
+  /usr/bin/dbus-daemon@{t_user}				Px,
+  /usr/bin/xfce4-session@{t_user}			Px,	# xfce-base/xfce4-session
+  /etc/X11/Sessions/Xfce4@{t_user}			Px,	# xfce-base/xfce4-session
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.dbus/{,**}			rw,
-  owner @{ROOT_HOME_D}/.dbus/{,**}			rw,	# RBAC! Должен быть отдельный профиль для root.
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_user} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -118,18 +174,41 @@ profile dbus.dbus-launch /usr/bin/dbus-launch {
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
     /etc/X11/Sessions/Xfce4				r,	# xfce-base/xfce4-session
-    /usr/bin/startxfce4					Px,	# xfce-base/xfce4-session
+    /usr/bin/startxfce4@{t_user}			Px,	# xfce-base/xfce4-session
   }
 }
 
-profile dbus.dbus-run-session /usr/bin/dbus-run-session {
+profile dbus.dbus-launch@{p_root} /usr/bin/dbus-launch@{t_root} {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions-root/X>
+  #include <abstractions-sudo/X-connection-strict>		# RBAC! Нужно для запуска под root-ом через sudo
+  								# с подключением к X-сессии пользователя.
+  #include <abstractions/dbus/session-strict>
+  
+  # SIGNAL ---------------------------------------------
+  signal (send) set=(term) peer="dbus.dbus-daemon@{p_root}",
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/dbus-launch					mr,
+  /usr/bin/dbus-daemon@{t_root}				Px,
+  
+  # USERS ----------------------------------------------
+  owner @{ROOT_HOME_D}/.dbus/{,**}			rw,
+}
+
+profile dbus.dbus-run-session@{p_root} /usr/bin/dbus-run-session@{t_root} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/dbus-run-session				mr,
 }
 
-profile dbus.dbus-send /usr/bin/dbus-send {
+profile dbus.dbus-send@{p_mixed} /usr/bin/dbus-send{@{t_root},@{t_user}} {
   #include <abstractions/base>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
@@ -140,8 +219,7 @@ profile dbus.dbus-send /usr/bin/dbus-send {
   	bus=session
   	path="/org/xfce/FileManager"
   	interface="org.xfce.FileManager"
-  	peer=(name="org.xfce.FileManager",label="thunar"),	# xfce-base/thunar (запуск настроек thunar через менеджер настроек).
-  								# RBAC! Для root ветки label="thunar_root".
+  	peer=(name="org.xfce.FileManager",label="thunar{@{p_root},@{p_user}}"),	# xfce-base/thunar (запуск настроек thunar через менеджер настроек).
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
@@ -151,7 +229,7 @@ profile dbus.dbus-send /usr/bin/dbus-send {
   /usr/bin/dbus-send					mr,
 }
 
-profile dbus.dbus-uuidgen /usr/bin/dbus-uuidgen {
+profile dbus.dbus-uuidgen@{p_root} /usr/bin/dbus-uuidgen@{t_root} {
   #include <abstractions/base>
   #include <abstractions/dbus/session-strict>
   
@@ -164,7 +242,7 @@ profile dbus.dbus-uuidgen /usr/bin/dbus-uuidgen {
   /usr/bin/dbus-uuidgen					mr,
 }
 
-profile dbus.dbus-daemon-launch-helper /usr/libexec/dbus-daemon-launch-helper {
+profile dbus.dbus-daemon-launch-helper@{p_root} /usr/libexec/dbus-daemon-launch-helper@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -177,20 +255,20 @@ profile dbus.dbus-daemon-launch-helper /usr/libexec/dbus-daemon-launch-helper {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/dbus-daemon-launch-helper		mr,
-  /usr/sbin/console-kit-daemon				Px,	# sys-auth/consolekit
-  /usr/sbin/ModemManager				Px,	# net-misc/modemmanager
-  /usr/sbin/wpa_supplicant				Px,	# net-wireless/wpa_supplicant
-  /usr/lib{,32,64}/polkit-1/polkitd			Px,	# sys-auth/polkit
-  /usr/lib{,32,64}/upower/upowerd			Px,	# sys-power/upower
-  /usr/libexec/udisks2/udisksd				Px,	# sys-fs/udisks
-  /usr/libexec/nm-dispatcher				Px,	# net-misc/networkmanager
+  /usr/sbin/console-kit-daemon@{t_root}			Px,	# sys-auth/consolekit
+  /usr/sbin/ModemManager@{t_root}			Px,	# net-misc/modemmanager
+  /usr/sbin/wpa_supplicant@{t_root}			Px,	# net-wireless/wpa_supplicant
+  /usr/lib{,32,64}/polkit-1/polkitd@{t_root}		Px,	# sys-auth/polkit
+  /usr/lib{,32,64}/upower/upowerd@{t_root}		Px,	# sys-power/upower
+  /usr/libexec/udisks2/udisksd@{t_root}			Px,	# sys-fs/udisks
+  /usr/libexec/nm-dispatcher@{t_root}			Px,	# net-misc/networkmanager
   
   # READS/WRITES ---------------------------------------
   /etc/dbus-1/**					r,
   /usr/share/dbus-1/**					r,
 }
 
-profile dbus.init.d /etc/init.d/dbus flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile dbus.init.d@{p_root} /etc/init.d/dbus@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -201,15 +279,15 @@ profile dbus.init.d /etc/init.d/dbus flags=(attach_disconnected) {	# attach_disc
   @{SYS_D}/fs/cgroup/unified/dbus/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
-  /etc/init.d/{cupsd,consolekit,xdm,net.*}		Px,
-  @{shell}						Cx,
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /usr/bin/dbus-uuidgen					Px,
-  /usr/bin/dbus-daemon					Px,
-  /usr/bin/dbus-send					Px,
+  /etc/init.d/{cupsd,consolekit,xdm,net.*}@{t_root}	Px,
+  @{shell}@{t_root}					Cx,
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /usr/bin/dbus-uuidgen@{t_root}			Px,
+  /usr/bin/dbus-daemon@{t_root}				Px,
+  /usr/bin/dbus-send@{t_root}				Px,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/dbus				r,
@@ -217,13 +295,13 @@ profile dbus.init.d /etc/init.d/dbus flags=(attach_disconnected) {	# attach_disc
   /run/dbus/						w,
   /run/dbus/system_bus_socket				rwk,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -241,7 +319,7 @@ profile dbus.init.d /etc/init.d/dbus flags=(attach_disconnected) {	# attach_disc
     /run/dbus/system_bus_socket				w,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -257,7 +335,7 @@ profile dbus.init.d /etc/init.d/dbus flags=(attach_disconnected) {	# attach_disc
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -270,7 +348,7 @@ profile dbus.init.d /etc/init.d/dbus flags=(attach_disconnected) {	# attach_disc
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

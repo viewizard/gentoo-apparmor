@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile at-spi2-core.at-spi-bus-launcher /usr/libexec/at-spi-bus-launcher {
+profile at-spi2-core.at-spi-bus-launcher@{p_user} /usr/libexec/at-spi-bus-launcher@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/dconf>
   #include <abstractions-user/X-connection-strict>
@@ -19,7 +19,7 @@ profile at-spi2-core.at-spi-bus-launcher /usr/libexec/at-spi-bus-launcher {
   #include <abstractions/dbus/session-bind>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term) peer="dbus.dbus-daemon",
+  signal (send) set=(term) peer="dbus.dbus-daemon@{p_user}",
   
   # DBUS -----------------------------------------------
   dbus receive
@@ -35,14 +35,14 @@ profile at-spi2-core.at-spi-bus-launcher /usr/libexec/at-spi-bus-launcher {
   
   # EXECUTABLES ----------------------------------------
   /usr/libexec/at-spi-bus-launcher			mr,
-  /usr/bin/dbus-daemon					Px,	# sys-apps/dbus
+  /usr/bin/dbus-daemon@{t_user}				Px,	# sys-apps/dbus
   
   # READS/WRITES ---------------------------------------
   /etc/at-spi2/accessibility.conf			r,
   /usr/share/glib-[0-9]*/schemas/gschemas.compiled	r,
 }
 
-profile at-spi2-core.at-spi2-registryd /usr/libexec/at-spi2-registryd {
+profile at-spi2-core.at-spi2-registryd@{p_user} /usr/libexec/at-spi2-registryd@{t_user} {
   #include <abstractions/base>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>

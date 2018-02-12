@@ -14,7 +14,7 @@
 @{USERS_DIR_rwk}="[^.]**"
 @{USERS_FILE_rwk}="[^.]*"
 
-profile mousepad /usr/bin/mousepad {
+profile mousepad@{p_user} /usr/bin/mousepad@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -66,7 +66,7 @@ profile mousepad /usr/bin/mousepad {
   owner @{USER_HOME_D}/.config/Mousepad/*		rwk,
 }
 
-profile mousepad_root {
+profile mousepad@{p_root} /usr/bin/mousepad@{t_root} {
   #include <abstractions/base>
   #include <abstractions-root/freedesktop.org>
   #include <abstractions-root/fonts>

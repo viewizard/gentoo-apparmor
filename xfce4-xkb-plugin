@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile xfce4-xkb-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-xkb-plugin {
+profile xfce4-xkb-plugin@{p_user} /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-xkb-plugin@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -28,7 +28,7 @@ profile xfce4-xkb-plugin /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-xkb-plugin {
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/panel-plugins/xfce4-xkb-plugin	m,
-  /usr/bin/xfce4-keyboard-settings			Px,	# xfce-base/xfce4-settings
+  /usr/bin/xfce4-keyboard-settings@{t_user}		Px,	# xfce-base/xfce4-settings
   
   # READS/WRITES ---------------------------------------
   /usr/share/xfce4/xkb/flags/*.svg			r,

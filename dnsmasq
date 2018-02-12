@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile dnsmasq /usr/sbin/dnsmasq {
+profile dnsmasq@{p_root} /usr/sbin/dnsmasq@{t_root} {
   #include <abstractions/base>
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/system-bind>
@@ -29,17 +29,17 @@ profile dnsmasq /usr/sbin/dnsmasq {
   	path="/uk/org/thekelleys/dnsmasq"
   	interface="org.freedesktop.DBus.Properties"
 	member="GetAll"
-  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),		# net-misc/networkmanager
+  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager@{p_root}"),	# net-misc/networkmanager
   dbus send
   	bus=system
   	path="/uk/org/thekelleys/dnsmasq"
   	interface="org.freedesktop.NetworkManager.dnsmasq"
-  	peer=(name="org.freedesktop.DBus",label="networkmanager.NetworkManager"),	# net-misc/networkmanager
+  	peer=(name="org.freedesktop.DBus",label="networkmanager.NetworkManager@{p_root}"),	# net-misc/networkmanager
   dbus receive
   	bus=system
   	path="/uk/org/thekelleys/dnsmasq"
   	interface="org.freedesktop.NetworkManager.dnsmasq"
-  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager"),		# net-misc/networkmanager
+  	peer=(name=":[0-9]*.[0-9]*",label="networkmanager.NetworkManager@{p_root}"),	# net-misc/networkmanager
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -65,7 +65,7 @@ profile dnsmasq /usr/sbin/dnsmasq {
   /var/lib/misc/dnsmasq.leases				rw,
 }
 
-profile dnsmasq.init.d /etc/init.d/dnsmasq flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile dnsmasq.init.d@{p_root} /etc/init.d/dnsmasq@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -79,24 +79,24 @@ profile dnsmasq.init.d /etc/init.d/dnsmasq flags=(attach_disconnected) {	# attac
   @{SYS_D}/fs/cgroup/unified/dnsmasq/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/sbin/dnsmasq					Px,
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /etc/init.d/net.*					Px,	# net-misc/netifrc
+  /usr/sbin/dnsmasq@{t_root}				Px,
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /etc/init.d/net.*@{t_root}				Px,	# net-misc/netifrc
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/dnsmasq				r,
   /run/dnsmasq.pid					rwk,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -112,7 +112,7 @@ profile dnsmasq.init.d /etc/init.d/dnsmasq flags=(attach_disconnected) {	# attac
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -125,7 +125,7 @@ profile dnsmasq.init.d /etc/init.d/dnsmasq flags=(attach_disconnected) {	# attac
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

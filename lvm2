@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile lvm2.lvmetad /sbin/lvmetad {
+profile lvm2.lvmetad@{p_root} /sbin/lvmetad@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -26,7 +26,7 @@ profile lvm2.lvmetad /sbin/lvmetad {
   /run/lvm/lvmetad.socket				rw,
 }
 
-profile lvm2.dmsetup /sbin/dmsetup {
+profile lvm2.dmsetup@{p_root} /sbin/dmsetup@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -45,7 +45,7 @@ profile lvm2.dmsetup /sbin/dmsetup {
   /etc/udev/udev.conf					r,
 }
 
-profile lvm2.dmeventd /sbin/dmeventd {
+profile lvm2.dmeventd@{p_root} /sbin/dmeventd@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -71,7 +71,7 @@ profile lvm2.dmeventd /sbin/dmeventd {
   
   # EXECUTABLES ----------------------------------------
   /sbin/dmeventd					mr,
-  /bin/umount						Cx,	# sys-apps/util-linux
+  /bin/umount@{t_root}					Cx,	# sys-apps/util-linux
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
@@ -91,7 +91,7 @@ profile lvm2.dmeventd /sbin/dmeventd {
   owner /tmp/dailyhomebackup.cron.@{TMP6}		w,	# DELEGATION! backup_daily.sh.cron.daily
   owner /tmp/rootbackup.cron.@{TMP6}			w,	# DELEGATION! backup_weekly.sh.cron.weekly
   
-  profile umount /bin/umount {
+  profile umount /bin/umount@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -99,7 +99,7 @@ profile lvm2.dmeventd /sbin/dmeventd {
   }
 }
 
-profile lvm2.lvm /sbin/lvm {
+profile lvm2.lvm@{p_root} /sbin/lvm@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -129,8 +129,8 @@ profile lvm2.lvm /sbin/lvm {
   
   # EXECUTABLES ----------------------------------------
   /sbin/lvm						mr,
-  /sbin/dmeventd					Px,
-  /sbin/fsadm						Px,
+  /sbin/dmeventd@{t_root}				Px,
+  /sbin/fsadm@{t_root}					Px,
   
   # READS/WRITES ---------------------------------------
   /etc/udev/udev.conf					r,
@@ -150,10 +150,9 @@ profile lvm2.lvm /sbin/lvm {
   # TEMP -----------------------------------------------
   owner /tmp/dailyhomebackup.cron.@{TMP6}		w,	# DELEGATION! backup_daily.sh.cron.daily
   owner /tmp/rootbackup.cron.@{TMP6}			w,	# DELEGATION! backup_weekly.sh.cron.weekly
-  owner /tmp/lynis.cron.@{TMP6}				w,	# DELEGATION! lynis.cron.daily
 }
 
-profile lvm2.fsadm /sbin/fsadm {
+profile lvm2.fsadm@{p_root} /sbin/fsadm@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -168,40 +167,33 @@ profile lvm2.fsadm /sbin/fsadm {
   # EXECUTABLES ----------------------------------------
   /sbin/fsadm						r,
   @{shell}						mr,
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/readlink						Cx,	# sys-apps/coreutils
-  /bin/date						Cx,	# sys-apps/coreutils
-  /bin/mount						Cx,	# sys-apps/util-linux
-  /sbin/blkid						Px,	# sys-apps/util-linux
-  /sbin/tune2fs						Px,	# sys-fs/e2fsprogs
-  /sbin/fsck						Px,	# sys-apps/util-linux
-  /sbin/e2fsck						Px,	# sys-fs/e2fsprogs
-  /sbin/resize2fs					Px,	# sys-fs/e2fsprogs
-  /sbin/blockdev					Px,	# sys-apps/util-linux
-  /sbin/lvm						Px,
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/readlink@{t_root}				Cx,	# sys-apps/coreutils
+  /bin/date@{t_root}					Px,	# sys-apps/coreutils
+  /bin/mount@{t_root}					Cx,	# sys-apps/util-linux
+  /sbin/blkid@{t_root}					Px,	# sys-apps/util-linux
+  /sbin/tune2fs@{t_root}				Px,	# sys-fs/e2fsprogs
+  /sbin/fsck@{t_root}					Px,	# sys-apps/util-linux
+  /sbin/e2fsck@{t_root}					Px,	# sys-fs/e2fsprogs
+  /sbin/resize2fs@{t_root}				Px,	# sys-fs/e2fsprogs
+  /sbin/blockdev@{t_root}				Px,	# sys-apps/util-linux
+  /sbin/lvm@{t_root}					Px,
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
   }
   
-  profile readlink /bin/readlink {
+  profile readlink /bin/readlink@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /bin/readlink					mr,
   }
   
-  profile date /bin/date {
-    #include <abstractions/base>
-    
-    # EXECUTABLES --------------------------------------
-    /bin/date						mr,
-  }
-  
-  profile mount /bin/mount {
+  profile mount /bin/mount@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
@@ -209,7 +201,7 @@ profile lvm2.fsadm /sbin/fsadm {
   }
 }
 
-profile lvm2.lvmetad.init.d /etc/init.d/lvmetad flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile lvm2.lvmetad.init.d@{p_root} /etc/init.d/lvmetad@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -220,25 +212,25 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad flags=(attach_disconnected) {	# 
   @{SYS_D}/fs/cgroup/unified/lvmetad/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  /etc/init.d/lvm					Px,
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /sbin/lvmetad						Px,
+  /etc/init.d/lvm@{t_root}				Px,
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /sbin/lvmetad@{t_root}				Px,
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/lvmetad				r,
   /run/lvm/						w,
   /run/lvmetad.pid					rwk,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -254,7 +246,7 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad flags=(attach_disconnected) {	# 
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -267,7 +259,7 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad flags=(attach_disconnected) {	# 
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -284,7 +276,7 @@ profile lvm2.lvmetad.init.d /etc/init.d/lvmetad flags=(attach_disconnected) {	# 
   }
 }
 
-profile lvm2.lvm.init.d /etc/init.d/lvm flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile lvm2.lvm.init.d@{p_root} /etc/init.d/lvm@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -295,22 +287,22 @@ profile lvm2.lvm.init.d /etc/init.d/lvm flags=(attach_disconnected) {	# attach_d
   @{SYS_D}/fs/cgroup/unified/lvm/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
-  /sbin/lvm						Px,
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  /sbin/lvm@{t_root}					Px,
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/lvm				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -326,7 +318,7 @@ profile lvm2.lvm.init.d /etc/init.d/lvm flags=(attach_disconnected) {	# attach_d
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -341,7 +333,7 @@ profile lvm2.lvm.init.d /etc/init.d/lvm flags=(attach_disconnected) {	# attach_d
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile ntp.ntpd /usr/sbin/ntpd {
+profile ntp.ntpd@{p_root} /usr/sbin/ntpd@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -50,7 +50,7 @@ profile ntp.ntpd /usr/sbin/ntpd {
   deny /usr/games/bin/					r,
 }
 
-profile ntp.ntpq /usr/bin/ntpq {
+profile ntp.ntpq@{p_root} /usr/bin/ntpq@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/ncurses>
@@ -81,12 +81,9 @@ profile ntp.ntpq /usr/bin/ntpq {
   deny /opt/bin/					r,
   deny /usr/{,s}bin/					r,
   deny /usr/local/{,s}bin/				r,
-  
-  # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
 }
 
-profile ntp.init.d /etc/init.d/ntpd flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile ntp.init.d@{p_root} /etc/init.d/ntpd@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -97,23 +94,23 @@ profile ntp.init.d /etc/init.d/ntpd flags=(attach_disconnected) {	# attach_disco
   @{SYS_D}/fs/cgroup/unified/ntpd/cgroup.events		r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/sbin/ntpd					Px,
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  /usr/sbin/ntpd@{t_root}				Px,
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/ntpd				r,
   /run/ntpd.pid						rwk,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -129,7 +126,7 @@ profile ntp.init.d /etc/init.d/ntpd flags=(attach_disconnected) {	# attach_disco
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -142,7 +139,7 @@ profile ntp.init.d /etc/init.d/ntpd flags=(attach_disconnected) {	# attach_disco
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

@@ -89,7 +89,7 @@
 @{BABL_VER}=[0-9].[0-9]
 @{GEGL_VER}=[0-9].[0-9]
 
-profile gimp /usr/bin/gimp{,-@{GIMP_VER},-console,-console-@{GIMP_VER}} {
+profile gimp@{p_user} /usr/bin/gimp{,-@{GIMP_VER},-console,-console-@{GIMP_VER}}@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -110,7 +110,7 @@ profile gimp /usr/bin/gimp{,-@{GIMP_VER},-console,-console-@{GIMP_VER}} {
   #include <abstractions/fs/deny-private-strict>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(kill) peer="gimp.plug-ins",
+  signal (send) set=(kill) peer="gimp.plug-ins@{p_user}",
   
   # DBUS -----------------------------------------------
   dbus send
@@ -131,7 +131,7 @@ profile gimp /usr/bin/gimp{,-@{GIMP_VER},-console,-console-@{GIMP_VER}} {
   # EXECUTABLES ----------------------------------------
   /usr/bin/gimp-@{GIMP_VER}				mr,
   /usr/bin/gimp-console-@{GIMP_VER}			mr,
-  /usr/lib{,32,64}/gimp/@{GIMP_VER}/plug-ins/*		Px,
+  /usr/lib{,32,64}/gimp/@{GIMP_VER}/plug-ins/*@{t_user}	Px,
   
   # READS/WRITES ---------------------------------------
   /etc/gimp/{,**}					r,
@@ -142,17 +142,20 @@ profile gimp /usr/bin/gimp{,-@{GIMP_VER},-console,-console-@{GIMP_VER}} {
   /usr/share/xml/iso-codes/*				r,
   
   # USERS ----------------------------------------------
+  owner @{USER_HOME_CACHE_D}/babl/{,**}			rw,
   owner @{USER_HOME_CACHE_D}/gegl-@{GEGL_VER}/{,**}	rw,
   owner @{USER_HOME_D}/.local/share/gegl-@{GEGL_VER}/{,**} rw,
   owner @{USER_HOME_D}/.gimp-@{GIMP_VER}/{,**}		rw,
   owner @{USER_HOME_D}/.gimp-@{GIMP_VER}/{,**/}*	k,
   
   # TEMP -----------------------------------------------
-  audit owner /tmp/gdkpixbuf-save-tmp.*			rw,	# FIX ME! audit 25.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-  audit owner /tmp/gtkprint_*				rw,	# FIX ME! audit 25.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  audit owner /tmp/gdkpixbuf-save-tmp.*			rw,	# FIX ME! audit 25.11.2017
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  audit owner /tmp/gtkprint_*				rw,	# FIX ME! audit 25.11.2017
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
 }
 
-profile gimp.plug-ins /usr/lib{,32,64}/gimp/@{GIMP_VER}/plug-ins/* {
+profile gimp.plug-ins@{p_user} /usr/lib{,32,64}/gimp/@{GIMP_VER}/plug-ins/*@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/fonts>
   #include <abstractions-user/freedesktop.org>

@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile eix /usr/bin/eix {
+profile eix@{p_root} /usr/bin/eix@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -25,8 +25,8 @@ profile eix /usr/bin/eix {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/eix						mr,
-  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh		Px,	# sys-apps/portage
-  @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,	# dev-lang/python-exec
+  /usr/lib{,32,64}/portage/@{PYTHON}/ebuild.sh@{t_portage} Px,	# sys-apps/portage
+  @{PYTHON_EXEC_WRAPPER}@{t_portage}			Cx,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /etc/eixrc/{,**}					r,
@@ -44,12 +44,12 @@ profile eix /usr/bin/eix {
   owner /tmp/ebuild-cache.@{TMP8}			rw,
   owner /tmp/portage.cron.@{TMP6}			w,	# DELEGATION! 00_update_portage.cron.daily
   
-  profile portageq {
+  profile portage @{PYTHON_EXEC_WRAPPER}@{t_portage} {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/portageq				Px,	# sys-apps/portage
+    @{PYTHON_EXEC}/portageq@{t_portage}			Px,	# sys-apps/portage
     
     # TEMP ---------------------------------------------
     /tmp/portage.cron.@{TMP6}				w,	# DELEGATION! 00_update_portage.cron.daily
@@ -57,7 +57,7 @@ profile eix /usr/bin/eix {
   }
 }
 
-profile eix.eix-test-obsolete /usr/bin/eix-test-obsolete {
+profile eix.eix-test-obsolete@{p_root} /usr/bin/eix-test-obsolete@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -71,12 +71,12 @@ profile eix.eix-test-obsolete /usr/bin/eix-test-obsolete {
   # EXECUTABLES ----------------------------------------
   /usr/bin/eix-test-obsolete				r,
   @{shell}						mr,
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /usr/bin/eix						Px,
-  /usr/bin/gettext					Px,	# sys-devel/gettext
-  /usr/bin/envsubst					Px,	# sys-devel/gettext
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /usr/bin/eix@{t_root}					Px,
+  /usr/bin/gettext@{t_root}				Px,	# sys-devel/gettext
+  /usr/bin/envsubst@{t_root}				Px,	# sys-devel/gettext
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -92,7 +92,7 @@ profile eix.eix-test-obsolete /usr/bin/eix-test-obsolete {
   }
 }
 
-profile eix.eix-sync /usr/bin/eix-sync {
+profile eix.eix-sync@{p_root} /usr/bin/eix-sync@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -103,18 +103,18 @@ profile eix.eix-sync /usr/bin/eix-sync {
   # EXECUTABLES ----------------------------------------
   /usr/bin/eix-sync					r,
   @{shell}						mr,
-  /bin/date						Px,	# sys-apps/coreutils
-  /bin/cp						Cx,	# sys-apps/coreutils
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /usr/bin/gettext					Px,	# sys-devel/gettext
-  /usr/bin/envsubst					Px,	# sys-devel/gettext
-  /usr/bin/eix						Px,
-  @{PYTHON_EXEC_WRAPPER}				Cx -> portage,	# dev-lang/python-exec
+  /bin/date@{t_root}					Px,	# sys-apps/coreutils
+  /bin/cp@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /usr/bin/gettext@{t_root}				Px,	# sys-devel/gettext
+  /usr/bin/envsubst@{t_root}				Px,	# sys-devel/gettext
+  /usr/bin/eix@{t_root}					Px,
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /usr/portage/metadata/timestamp.chk			r,
   
-  profile cp /bin/cp {
+  profile cp /bin/cp@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -135,7 +135,7 @@ profile eix.eix-sync /usr/bin/eix-sync {
     /var/cache/eix/previous.eix				rw,
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -150,11 +150,11 @@ profile eix.eix-sync /usr/bin/eix-sync {
     /usr/share/push/push.sh				r,	# app-shells/push
   }
   
-  profile portage {
+  profile portage @{PYTHON_EXEC_WRAPPER}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/emerge				Px,	# sys-apps/portage
+    @{PYTHON_EXEC}/emerge@{t_root}			Px,	# sys-apps/portage
   }
 }

@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -13,7 +13,7 @@
 
 #include <local/tunables.d/>
 
-profile binutils-config /usr/bin/binutils-config {
+profile binutils-config@{p_root} /usr/bin/binutils-config@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -28,20 +28,20 @@ profile binutils-config /usr/bin/binutils-config {
   # EXECUTABLES ----------------------------------------
   /usr/bin/binutils-config				r,
   @{shell}						mr,
-  /bin/stty						Px,	# sys-apps/coreutils
-  /bin/tr						Px,	# sys-apps/coreutils
-  /bin/ln						Cx,	# sys-apps/coreutils
-  /bin/mv						Cx,	# sys-apps/coreutils
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /sbin/consoletype					Px,	# sys-apps/gentoo-functions
-  /usr/bin/find						Cx,	# sys-apps/findutils
-  /usr/bin/tput						Px,	# sys-libs/ncurses
-  /usr/bin/scanelf					Cx,	# app-misc/pax-utils
-  /usr/bin/cmp						Cx,	# sys-apps/diffutils
-  @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,	# dev-lang/python-exec
+  /bin/stty@{t_root}					Px,	# sys-apps/coreutils
+  /bin/tr@{t_root}					Px,	# sys-apps/coreutils
+  /bin/ln@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mv@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /sbin/consoletype@{t_root}				Px,	# sys-apps/gentoo-functions
+  /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils
+  /usr/bin/tput@{t_root}				Px,	# sys-libs/ncurses
+  /usr/bin/scanelf@{t_root}				Cx,	# app-misc/pax-utils
+  /usr/bin/cmp@{t_root}					Cx,	# sys-apps/diffutils
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /etc/env.d/**						r,
@@ -52,7 +52,7 @@ profile binutils-config /usr/bin/binutils-config {
   # TEMP -----------------------------------------------
   owner /tmp/@{TMP_SH}					rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile ln /bin/ln {
+  profile ln /bin/ln@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -69,7 +69,7 @@ profile binutils-config /usr/bin/binutils-config {
     /usr/bin/.binutils-config.tmp.@{BINUTILS}		w,
   }
   
-  profile mv /bin/mv {
+  profile mv /bin/mv@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -90,7 +90,7 @@ profile binutils-config /usr/bin/binutils-config {
     /usr/bin/@{BINUTILS}				w,
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -105,7 +105,7 @@ profile binutils-config /usr/bin/binutils-config {
     /etc/env.d/binutils/config-@{CHOST}.tmp		w,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -119,7 +119,7 @@ profile binutils-config /usr/bin/binutils-config {
     /usr/@{CHOST}/**/					w,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -133,7 +133,7 @@ profile binutils-config /usr/bin/binutils-config {
     /usr/@{CHOST}/**/					w,
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -147,7 +147,7 @@ profile binutils-config /usr/bin/binutils-config {
     owner /tmp/@{TMP_SH}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
-  profile find /usr/bin/find {
+  profile find /usr/bin/find@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -156,20 +156,20 @@ profile binutils-config /usr/bin/binutils-config {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/find					mr,
-    /bin/rm						Px -> binutils_config_rm,	# sys-apps/coreutils
+    /bin/rm@{t_root}					Px -> binutils_config_rm,	# sys-apps/coreutils
     
     # READS/WRITES -------------------------------------
     /usr/@{CHOST}/**					r,
   }
   
-  profile scanelf /usr/bin/scanelf {
+  profile scanelf /usr/bin/scanelf@{t_root} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
     /usr/bin/scanelf					mr,
   }
   
-  profile cmp /usr/bin/cmp {
+  profile cmp /usr/bin/cmp@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -184,13 +184,13 @@ profile binutils-config /usr/bin/binutils-config {
     /etc/env.d/binutils/config-@{CHOST}{,.tmp}		r,
   }
   
-  profile portageq {
+  profile portage @{PYTHON_EXEC_WRAPPER}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/python-exec>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/portageq				Px,	# sys-apps/portage
-    @{PYTHON_EXEC}/env-update				Px,	# sys-apps/portage
+    @{PYTHON_EXEC}/portageq@{t_root}			Px,	# sys-apps/portage
+    @{PYTHON_EXEC}/env-update@{t_root}			Px,	# sys-apps/portage
   }
 }
 

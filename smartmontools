@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile smartmontools.smartd /usr/sbin/smartd {
+profile smartmontools.smartd@{p_root} /usr/sbin/smartd@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -28,7 +28,7 @@ profile smartmontools.smartd /usr/sbin/smartd {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/smartd					mr,
-  @{shell}						Cx,
+  @{shell}@{t_root}					Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/smartd.conf					r,
@@ -36,7 +36,7 @@ profile smartmontools.smartd /usr/sbin/smartd {
   /var/db/smartmontools/**				r,
   /run/smartd.pid					rwk,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -47,7 +47,7 @@ profile smartmontools.smartd /usr/sbin/smartd {
   }
 }
 
-profile smartmontools.smartctl /usr/sbin/smartctl {
+profile smartmontools.smartctl@{p_root} /usr/sbin/smartctl@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -68,7 +68,7 @@ profile smartmontools.smartctl /usr/sbin/smartctl {
   /var/db/smartmontools/**				r,
 }
 
-profile smartmontools.init.d /etc/init.d/smartd flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile smartmontools.init.d@{p_root} /etc/init.d/smartd@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -79,23 +79,23 @@ profile smartmontools.init.d /etc/init.d/smartd flags=(attach_disconnected) {	# 
   @{SYS_D}/fs/cgroup/unified/smartd/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/sbin/smartd					Px,
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  /usr/sbin/smartd@{t_root}				Px,
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/smartd				r,
   /run/smartd.pid					rwk,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -111,7 +111,7 @@ profile smartmontools.init.d /etc/init.d/smartd flags=(attach_disconnected) {	# 
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -124,7 +124,7 @@ profile smartmontools.init.d /etc/init.d/smartd flags=(attach_disconnected) {	# 
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

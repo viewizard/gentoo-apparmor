@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile libxfce4ui.xfce4-about /usr/bin/xfce4-about {
+profile libxfce4ui.xfce4-about@{p_user} /usr/bin/xfce4-about@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -28,7 +28,7 @@ profile libxfce4ui.xfce4-about /usr/bin/xfce4-about {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfce4-about					mr,
-  /usr/bin/exo-open					Px,	# xfce-base/exo
+  /usr/bin/exo-open@{t_user}				Px,	# xfce-base/exo
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.config/xfce4/help.rc		rw,

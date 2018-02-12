@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile discord-bin.Discord /opt/discord/share/discord/Discord {
+profile discord-bin.Discord@{p_user} /opt/discord/share/discord/Discord@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/fonts>
   #include <abstractions-user/freedesktop.org>
@@ -36,11 +36,11 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   deny ptrace (trace),
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(term) peer="lsb-release",			# sys-apps/lsb-release
+  signal (send) set=(term) peer="lsb-release@{p_user}",		# sys-apps/lsb-release
   
   # UNIX -----------------------------------------------
-  unix (send, receive) peer=(label="discord-bin.Discord//shell"),
-  deny unix (send, receive) peer=(label="lsb-release"),		# sys-apps/lsb-release
+  unix (send, receive) peer=(label="discord-bin.Discord@{p_user}//shell"),
+  deny unix (send, receive) peer=(label="lsb-release@{p_user}"),	# sys-apps/lsb-release
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -68,9 +68,10 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   deny @{PROC_D}/@{pids}/cmdline			r,	# Лазит по процессам и смотрит параметры запуска.
   
   # EXECUTABLES ----------------------------------------
-  /opt/discord/share/discord/Discord			Pxmr,
-  @{shell}						Cx,
-  /usr/bin/lsb_release					Px,	# sys-apps/lsb-release
+  /opt/discord/share/discord/Discord			mr,
+  /opt/discord/share/discord/Discord@{t_user}		Px,
+  @{shell}@{t_user}					Cx,
+  /usr/bin/lsb_release@{t_user}				Px,	# sys-apps/lsb-release
   
   # READS/WRITES ---------------------------------------
   /opt/discord/**					r,
@@ -92,11 +93,11 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
   /var/tmp/						r,
   owner /var/tmp/@{TMP_SQLITE}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_user} {
     #include <abstractions/base>
     
     # UNIX ---------------------------------------------
-    unix (send, receive) peer=(label="discord-bin.Discord"),
+    unix (send, receive) peer=(label="discord-bin.Discord@{p_user}"),
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -104,7 +105,7 @@ profile discord-bin.Discord /opt/discord/share/discord/Discord {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /usr/bin/xdg-mime					Px,
+    /usr/bin/xdg-mime@{t_user}				Px,
     
     # DENY INHERIT -------------------------------------
     deny unix,

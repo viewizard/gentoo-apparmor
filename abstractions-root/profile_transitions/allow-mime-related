@@ -13,8 +13,8 @@
 
 # sg/newgrp for work with network connection via iptables uid/gid-owner
 # IMPROVE! После возможности блокировки адресов и портов - убрать.
-/usr/bin/newgrp						Px,	# sys-apps/shadow
-/usr/bin/id						Px,	# sys-apps/coreutils
+/usr/bin/newgrp@{t_root}				Px,	# sys-apps/shadow
+/usr/bin/id@{t_root}					Px,	# sys-apps/coreutils
 
 ############################################################
 # Since all programs will be able to launch this binaries we
@@ -22,8 +22,8 @@
 # here, we need more strict rules with fixed programs list.
 ############################################################
 
-/usr/bin/ghex						Px -> ghex_root,	# app-editors/ghex
-/usr/bin/juffed						Px -> juffed_root,	# app-editors/juffed
-/usr/bin/mousepad					Px -> mousepad_root,	# app-editors/mousepad
-/usr/bin/engrampa					Px -> engrampa_root,	# app-arch/engrampa
-/usr/bin/thunar						Px -> thunar_root,	# xfce-base/thunar
+/usr/bin/ghex@{t_root}					Px,	# app-editors/ghex
+/usr/bin/juffed@{t_root}				Px,	# app-editors/juffed
+/usr/bin/mousepad@{t_root}				Px,	# app-editors/mousepad
+/usr/bin/engrampa@{t_root}				Px,	# app-arch/engrampa
+/usr/bin/thunar@{t_root}				Px,	# xfce-base/thunar

@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 #
-#  Copyright (C) 2016,2017 Mikhail Kurinnoi
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of version 2 of the GNU General Public
@@ -12,7 +12,7 @@
 
 #include <local/tunables.d/>
 
-profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
+profile gcc-config@{p_root} /usr/bin/gcc-config@{t_root} flags=(complain) {	# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
   #include <abstractions/base>
   #include <abstractions/ncurses>
   
@@ -27,33 +27,33 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.
   # EXECUTABLES ----------------------------------------
   /usr/bin/gcc-config					r,
   @{shell}						mr,
-  /bin/mv						Cx,	# sys-apps/coreutils
-  /bin/cp						Cx,	# sys-apps/coreutils
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/ln						Cx,	# sys-apps/coreutils
-  /bin/tr						Px,	# sys-apps/coreutils
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/sed						Cx,	# sys-apps/sed
-  /bin/touch						Cx,	# sys-apps/coreutils
-  /bin/sort						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/tail						Cx,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/rmdir						Cx,	# sys-apps/coreutils
-  /bin/egrep						Cx,	# sys-apps/grep
-  /sbin/consoletype					Px,	# sys-apps/gentoo-functions
-  /bin/stty						Px,	# sys-apps/coreutils
-  /usr/bin/tput						Px,	# sys-libs/ncurses
-  /usr/bin/find						Cx,	# sys-apps/findutils
-  /usr/bin/cmp						Cx,	# sys-apps/diffutils
-  /usr/bin/gawk						Cx,	# sys-apps/gawk
-  /usr/bin/tac						Cx,	# sys-apps/coreutils
-  /lib{,32,64}/rc/bin/eval_ecolors			Px,	# sys-apps/openrc
-  /lib{,32,64}/rc/bin/ebegin				Px,	# sys-apps/openrc
-  /lib{,32,64}/rc/bin/ewarn				Px,	# sys-apps/openrc
-  /lib{,32,64}/rc/bin/eend				Px,	# sys-apps/openrc
-  /lib{,32,64}/rc/bin/eerror				Px,	# sys-apps/openrc
-  @{PYTHON_EXEC_WRAPPER}				Cx -> portageq,		# dev-lang/python-exec
+  /bin/mv@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/cp@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/ln@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/tr@{t_root}					Px,	# sys-apps/coreutils
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/sed@{t_root}					Cx,	# sys-apps/sed
+  /bin/touch@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/sort@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/tail@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/egrep@{t_root}					Cx,	# sys-apps/grep
+  /sbin/consoletype@{t_root}				Px,	# sys-apps/gentoo-functions
+  /bin/stty@{t_root}					Px,	# sys-apps/coreutils
+  /usr/bin/tput{@{t_root},@{t_user}}			Px,	# sys-libs/ncurses
+  /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils
+  /usr/bin/cmp@{t_root}					Cx,	# sys-apps/diffutils
+  /usr/bin/gawk@{t_root}				Cx,	# sys-apps/gawk
+  /usr/bin/tac@{t_root}					Cx,	# sys-apps/coreutils
+  /lib{,32,64}/rc/bin/eval_ecolors@{t_root}		Px,	# sys-apps/openrc
+  /lib{,32,64}/rc/bin/ebegin@{t_root}			Px,	# sys-apps/openrc
+  /lib{,32,64}/rc/bin/ewarn@{t_root}			Px,	# sys-apps/openrc
+  /lib{,32,64}/rc/bin/eend@{t_root}			Px,	# sys-apps/openrc
+  /lib{,32,64}/rc/bin/eerror@{t_root}			Px,	# sys-apps/openrc
+  @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx,	# dev-lang/python-exec
   
   # READS/WRITES ---------------------------------------
   /							r,
@@ -68,9 +68,8 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.
   
   # TEMP -----------------------------------------------
   owner /tmp/@{TMP_SH}					rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
-  owner /tmp/Code::Blocks-@{USER}			w,	# DELEGATION! codeblocks
   
-  profile mv /bin/mv flags=(complain) {				# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
+  profile mv /bin/mv@{t_root} flags=(complain) {		# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -90,7 +89,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.
     /usr/bin/@{CHOST}-@{GCC}				w,
   }
   
-  profile cp /bin/cp flags=(complain) {				# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
+  profile cp /bin/cp@{t_root} flags=(complain) {		# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -111,7 +110,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.
     /usr/bin/.gcc.config.@{CHOST}-@{GCC}		w,
   }
   
-  profile rm /bin/rm flags=(complain) {				# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
+  profile rm /bin/rm@{t_root} flags=(complain) {		# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -129,7 +128,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.
     /usr/bin/@{CHOST}-gcc-[0-9]*			w,
   }
   
-  profile ln /bin/ln flags=(complain) {				# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
+  profile ln /bin/ln@{t_root} flags=(complain) {		# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -144,7 +143,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.
     link subset /lib{,32,64}/.gcc.config.@{pids}	-> /usr/lib{,32,64}/gcc/@{CHOST}/[0-9]*/*,
   }
   
-  profile cat /bin/cat flags=(complain) {			# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
+  profile cat /bin/cat@{t_root} flags=(complain) {		# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -161,7 +160,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.
     owner /tmp/@{TMP_SH}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -175,10 +174,11 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.
     /etc/env.d/gcc/**					rw,	# sys-devel/gcc
     
     # TEMP ---------------------------------------------
-    audit owner /tmp/sed*				rw,	# FIX ME! audit 26.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+    audit owner /tmp/sed*				rw,	# FIX ME! audit 26.11.2017
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
-  profile touch /bin/touch flags=(complain) {			# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
+  profile touch /bin/touch@{t_root} flags=(complain) {		# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -195,7 +195,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.
     /usr/bin/.gcc.config.@{CHOST}-@{GCC}		w,
   }
   
-  profile sort /bin/sort {
+  profile sort /bin/sort@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -206,7 +206,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.
     /bin/sort						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -220,7 +220,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.
     /etc/env.d/gcc/*					r,	# sys-devel/gcc
   }
   
-  profile tail /bin/tail {
+  profile tail /bin/tail@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -231,7 +231,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.
     /bin/tail						mr,
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -245,7 +245,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.
     /lib{,32,64}/.gcc.config.new/			w,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -259,7 +259,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.
     /lib{,32,64}/.gcc.config.new/			w,
   }
   
-  profile egrep /bin/egrep {
+  profile egrep /bin/egrep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -270,13 +270,13 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.
     # EXECUTABLES --------------------------------------
     /bin/egrep						r,
     @{shell}						mr,
-    /bin/grep						ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
+    /bin/grep@{t_root}					ix,	# sys-apps/grep		# Все правильно, для egrep используем с ix.
     
     # READS/WRITES -------------------------------------
     /etc/env.d/gcc/*					r,	# sys-devel/gcc
   }
   
-  profile find /usr/bin/find {
+  profile find /usr/bin/find@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -290,7 +290,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.
     /							r,
   }
   
-  profile cmp /usr/bin/cmp flags=(complain) {			# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
+  profile cmp /usr/bin/cmp@{t_root} flags=(complain) {		# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -304,7 +304,7 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.
     /etc/env.d/[0-9]*gcc-@{CHOST}{,.tmp}		r,
   }
   
-  profile gawk /usr/bin/gawk flags=(complain) {			# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
+  profile gawk /usr/bin/gawk@{t_root} flags=(complain) {		# FIX ME! complain 17.12.2017, проверить на обновлении версий GCC.
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -317,12 +317,9 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.
     # READS/WRITES -------------------------------------
     /etc/env.d/[0-9]*gcc-@{CHOST}.tmp			w,
     /etc/env.d/gcc/**					r,	# sys-devel/gcc
-    
-    # TEMP ---------------------------------------------
-    owner /tmp/Code::Blocks-@{USER}			w,	# DELEGATION! codeblocks
   }
   
-  profile tac /usr/bin/tac {
+  profile tac /usr/bin/tac@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -336,17 +333,14 @@ profile gcc-config /usr/bin/gcc-config flags=(complain) {	# FIX ME! complain 17.
     owner /tmp/tac@{TMP6}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   }
   
-  profile portageq {
+  profile portage @{PYTHON_EXEC_WRAPPER}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/python>
     #include <abstractions/python-exec>
     #include <abstractions/nameservice>
     
     # EXECUTABLES --------------------------------------
-    @{PYTHON_EXEC}/portageq				Px,	# sys-apps/portage
-    @{PYTHON_EXEC}/env-update				Px,	# sys-apps/portage
-    
-    # TEMP ---------------------------------------------
-    owner /tmp/Code::Blocks-@{USER}			w,	# DELEGATION! codeblocks
+    @{PYTHON_EXEC}/portageq@{t_root}			Px,	# sys-apps/portage
+    @{PYTHON_EXEC}/env-update@{t_root}			Px,	# sys-apps/portage
   }
 }

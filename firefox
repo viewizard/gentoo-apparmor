@@ -12,7 +12,7 @@
 
 # IMPROVE! Скрипт запуска для управления доступом к интернету.
 # Когда будет реализована работа с портами - убрать.
-profile firefox.start_script /usr/bin/firefox {
+profile firefox.start_script@{p_user} /usr/bin/firefox@{t_user} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -24,12 +24,12 @@ profile firefox.start_script /usr/bin/firefox {
   # EXECUTABLES ----------------------------------------
   /usr/bin/firefox					r,
   @{shell}						mr,
-  /usr/bin/id						Px,	# sys-apps/coreutils
-  /usr/bin/newgrp					Px,	# sys-apps/shadow
-  /usr/lib{,32,64}/firefox/firefox			Px,
+  /usr/bin/id@{t_user}					Px,	# sys-apps/coreutils
+  /usr/bin/newgrp@{t_user}				Px,	# sys-apps/shadow
+  /usr/lib{,32,64}/firefox/firefox@{t_user}		Px,
 }
 
-profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
+profile firefox@{p_user} /usr/lib{,32,64}/firefox/firefox{,-bin}@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -55,15 +55,15 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   #include <local/profile_blocks/firefox.d>
   
   # SIGNAL ---------------------------------------------
-  signal (send) set=(kill) peer="firefox.plugin-container",
+  signal (send) set=(kill) peer="firefox.plugin-container@{p_user}",
   
   # UNIX -----------------------------------------------
   unix (send, receive)
   	type=stream
-  	peer=(label="firefox.plugin-container"),
+  	peer=(label="firefox.plugin-container@{p_user}"),
   unix (send, receive)
   	type=stream
-  	peer=(label="firefox.plugin-container//shell"),
+  	peer=(label="firefox.plugin-container@{p_user}//shell"),
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -99,15 +99,15 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/firefox/firefox{,-bin}		mr,
-  /bin/ps						Px,	# sys-process/procps
-  /bin/uname						Px,	# sys-apps/coreutils
-  /bin/basename						Px,	# sys-apps/coreutils
-  /bin/dirname						Px,	# sys-apps/coreutils
-  /usr/bin/which					Px,	# sys-apps/which
-  /usr/lib{,32,64}/firefox/firefox			Px,	# Перезапуск, после установки обновлений.
-  /usr/lib{,32,64}/firefox/plugin-container		Px,
-  owner @{USER_HOME_D}/.mozilla/firefox/@{TMP8}.default/extensions/{,**/}* Px,	# Пользовательские расширения.
-  /usr/lib{,32,64}/firefox/browser/extensions/{,**/}*	Px,	# Системные расширения.
+  /bin/ps@{t_user}					Px,	# sys-process/procps
+  /bin/uname@{t_user}					Px,	# sys-apps/coreutils
+  /bin/basename@{t_user}				Px,	# sys-apps/coreutils
+  /bin/dirname@{t_user}					Px,	# sys-apps/coreutils
+  /usr/bin/which@{t_user}				Px,	# sys-apps/which
+  /usr/lib{,32,64}/firefox/firefox@{t_user}		Px,	# Перезапуск, после установки обновлений.
+  /usr/lib{,32,64}/firefox/plugin-container@{t_user}	Px,
+  owner @{USER_HOME_D}/.mozilla/firefox/@{TMP8}.default/extensions/{,**/}*@{t_user} Px,	# Пользовательские расширения.
+  /usr/lib{,32,64}/firefox/browser/extensions/{,**/}*@{t_user} Px,	# Системные расширения.
   
   # READS/WRITES ---------------------------------------
   /etc/							r,
@@ -143,22 +143,23 @@ profile firefox /usr/lib{,32,64}/firefox/firefox{,-bin} {
   owner /var/tmp/@{TMP_SQLITE}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
   # DENY INHERIT ---------------------------------------
-  deny unix peer=(label="nvidia-drivers.nvidia-modprobe"),	# nvidia-drivers.nvidia-modprobe
+  deny unix peer=(label="nvidia-drivers.nvidia-modprobe@{p_root}"),	# nvidia-drivers.nvidia-modprobe
+  									# XORG! ? x11-base/xorg-server USE=suid
 }
 
-profile firefox.user_extensions @{USER_HOME_D}/.mozilla/firefox/@{TMP8}.default/extensions/** {
+profile firefox.user_extensions@{p_user} @{USER_HOME_D}/.mozilla/firefox/@{TMP8}.default/extensions/**@{t_user} {
   #include <abstractions/base>
   
   
 }
 
-profile firefox.system_extensions /usr/lib{,32,64}/firefox/browser/extensions/** {
+profile firefox.system_extensions@{p_user} /usr/lib{,32,64}/firefox/browser/extensions/**@{t_user} {
   #include <abstractions/base>
   
   
 }
 
-profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
+profile firefox.plugin-container@{p_user} /usr/lib{,32,64}/firefox/plugin-container@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -172,12 +173,12 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   #include <abstractions/nameservice>
   
   # SIGNAL ---------------------------------------------
-  signal (receive) set=(kill) peer="firefox",
+  signal (receive) set=(kill) peer="firefox@{p_user}",
   
   # UNIX -----------------------------------------------
   unix (send, receive)
   		type=stream
-  		peer=(label="firefox"),
+  		peer=(label="firefox@{p_user}"),
   
   # PSEUDO ---------------------------------------------
   /dev/							r,
@@ -192,7 +193,7 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/firefox/plugin-container		m,
-  @{shell}						Cx,
+  @{shell}@{t_user}					Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/ssl/openssl.cnf					r,	# dev-libs/openssl
@@ -212,13 +213,13 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
   owner /tmp/plugtmp{,-[0-9]*}/plugin-*			rw,	# * - имя с расширением файла (PL_HD.txt)
   /var/tmp/						r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_user} {
     #include <abstractions/base>
     
     # UNIX -----------------------------------------------
     unix (send, receive)
     		type=stream
-    		peer=(label="firefox"),
+    		peer=(label="firefox@{p_user}"),
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -227,7 +228,7 @@ profile firefox.plugin-container /usr/lib{,32,64}/firefox/plugin-container {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /bin/ps						Px,	# sys-process/procps
+    /bin/ps@{t_user}					Px,	# sys-process/procps
     
     # DENY INHERIT -------------------------------------
     deny /tmp/FreshStream*				rw,	# firefox.plugin-container

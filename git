@@ -14,7 +14,7 @@
 @{USERS_DIR_rwkl}="[^.]**"
 @{USERS_FILE_rwkl}="[^.]**"
 
-profile git /usr/{bin,libexec/git-core}/git {
+profile git@{p_user} /usr/{bin,libexec/git-core}/git@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/fs/access-by-users-preset-rwkl>
   #include <abstractions/fs/deny-by-pattern-internet>
@@ -33,10 +33,11 @@ profile git /usr/{bin,libexec/git-core}/git {
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /usr/{bin,libexec/git-core}/git			Pxmr,
-  /bin/nano						Cx,	# app-editors/nano
-  /usr/bin/less						Cx,	# sys-apps/less
-  /usr/libexec/git-core/git-remote-http{,s}		Cx,
+  /usr/{bin,libexec/git-core}/git			mr,
+  /usr/{bin,libexec/git-core}/git@{t_user}		Px,
+  /bin/nano@{t_user}					Cx,	# app-editors/nano
+  /usr/bin/less@{t_user}				Cx,	# sys-apps/less
+  /usr/libexec/git-core/git-remote-http{,s}@{t_user}	Cx,
   
   # READS/WRITES ---------------------------------------
   /usr/share/git-core/**				r,
@@ -47,7 +48,7 @@ profile git /usr/{bin,libexec/git-core}/git {
   # TEMP -----------------------------------------------
   owner /tmp/qgit4.@{TMP6}				rw,	# dev-vcs/qgit
   
-  profile nano /bin/nano {
+  profile nano /bin/nano@{t_user} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/ncurses>
@@ -68,7 +69,7 @@ profile git /usr/{bin,libexec/git-core}/git {
     /usr/share/misc/magic.mgc				r,
   }
   
-  profile less /usr/bin/less {
+  profile less /usr/bin/less@{t_user} {
     #include <abstractions/base>
     #include <abstractions/ncurses>
     
@@ -81,7 +82,7 @@ profile git /usr/{bin,libexec/git-core}/git {
     /usr/bin/less					mr,
   }
   
-  profile git-remote-http /usr/libexec/git-core/git-remote-http{,s} {
+  profile git-remote-http /usr/libexec/git-core/git-remote-http{,s}@{t_user} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/ssl-certs>
@@ -102,14 +103,14 @@ profile git /usr/{bin,libexec/git-core}/git {
     
     # EXECUTABLES --------------------------------------
     /usr/libexec/git-core/git-remote-http{,s}		mr,
-    /usr/{bin,libexec/git-core}/git			Px,
+    /usr/{bin,libexec/git-core}/git@{t_user}		Px,
     
     # USERS --------------------------------------------
     owner @{USER_HOME_D}/.gitconfig			r,
   }
 }
 
-profile git_root {
+profile git@{p_root} /usr/{bin,libexec/git-core}/git@{t_root} {
   #include <abstractions/base>
   #include <abstractions-root/fs/access-by-users-preset-rwkl>
   #include <abstractions-root/fs/access-by-pattern-systemusers>
@@ -132,10 +133,11 @@ profile git_root {
   /dev/pts/[0-9]*					rw,
   
   # EXECUTABLES ----------------------------------------
-  /usr/{bin,libexec/git-core}/git			Pxmr -> git_root,
-  /bin/nano						Cx,	# app-editors/nano
-  /usr/bin/less						Cx,	# sys-apps/less
-  /usr/libexec/git-core/git-remote-http{,s}		Cx,
+  /usr/{bin,libexec/git-core}/git			mr,
+  /usr/{bin,libexec/git-core}/git@{t_root}		Px,
+  /bin/nano@{t_root}					Cx,	# app-editors/nano
+  /usr/bin/less@{t_root}				Cx,	# sys-apps/less
+  /usr/libexec/git-core/git-remote-http{,s}@{t_root}	Cx,
   
   # READS/WRITES ---------------------------------------
   /usr/share/git-core/**				r,
@@ -148,7 +150,7 @@ profile git_root {
   # TEMP -----------------------------------------------
   owner /tmp/qgit4.@{TMP6}				rw,	# dev-vcs/qgit
   
-  profile nano /bin/nano {
+  profile nano /bin/nano@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/ncurses>
@@ -170,7 +172,7 @@ profile git_root {
     /usr/share/misc/magic.mgc				r,
   }
   
-  profile less /usr/bin/less {
+  profile less /usr/bin/less@{t_root} {
     #include <abstractions/base>
     #include <abstractions/ncurses>
     
@@ -183,7 +185,7 @@ profile git_root {
     /usr/bin/less					mr,
   }
   
-  profile git-remote-http /usr/libexec/git-core/git-remote-http{,s} {
+  profile git-remote-http /usr/libexec/git-core/git-remote-http{,s}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/ssl-certs>
@@ -208,7 +210,7 @@ profile git_root {
     
     # EXECUTABLES --------------------------------------
     /usr/libexec/git-core/git-remote-http{,s}		mr,
-    /usr/{bin,libexec/git-core}/git			Px -> git_root,
+    /usr/{bin,libexec/git-core}/git@{t_root}		Px,
     
     # USERS --------------------------------------------
     owner @{ROOT_HOME_D}/.gitconfig			r,

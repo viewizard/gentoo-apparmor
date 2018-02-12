@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile acpid /usr/sbin/acpid {
+profile acpid@{p_root} /usr/sbin/acpid@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES ---------------------------------------
@@ -32,14 +32,14 @@ profile acpid /usr/sbin/acpid {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/acpid					mr,
-  @{shell}						Cx,
+  @{shell}@{t_root}					Cx,
   
   # READS/WRITES ---------------------------------------
   /etc/acpi/{,**}					r,
   /run/acpid.pid					rw,
   /run/acpid.socket					rw,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     
@@ -48,11 +48,11 @@ profile acpid /usr/sbin/acpid {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /etc/acpi/default.sh				Px,
+    /etc/acpi/default.sh@{t_root}			Px,
   }
 }
 
-profile acpid.default.sh /etc/acpi/default.sh {
+profile acpid.default.sh@{p_root} /etc/acpi/default.sh@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -62,11 +62,11 @@ profile acpid.default.sh /etc/acpi/default.sh {
   # EXECUTABLES ----------------------------------------
   /etc/acpi/default.sh					r,
   @{shell}						mr,
-  /usr/bin/logger					Px,	# sys-apps/util-linux
-  /etc/acpi/actions/powerbtn.sh				Px,
+  /usr/bin/logger@{t_root}				Px,	# sys-apps/util-linux
+  /etc/acpi/actions/powerbtn.sh@{t_root}		Px,
 }
 
-profile acpid.powerbtn.sh /etc/acpi/actions/powerbtn.sh {
+profile acpid.powerbtn.sh@{p_root} /etc/acpi/actions/powerbtn.sh@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -76,18 +76,18 @@ profile acpid.powerbtn.sh /etc/acpi/actions/powerbtn.sh {
   # EXECUTABLES ----------------------------------------
   /etc/acpi/actions/powerbtn.sh				r,
   @{shell}						mr,
-  /bin/ps						Px,	# sys-process/procps
-  /bin/sed						Cx,	# sys-apps/sed
-  /bin/cut						Cx,	# sys-apps/coreutils
-  /sbin/shutdown					Px,	# sys-apps/sysvinit
-  /usr/bin/fgconsole					Px,	# sys-apps/kbd
-  /usr/bin/gawk						Cx,	# sys-apps/gawk
-  /usr/bin/pinky					Px,	# sys-apps/coreutils
-  /usr/bin/pgrep					Px,	# sys-process/procps
-  /usr/bin/pidof					Px,	# sys-process/procps
-  /usr/bin/getent					Px,	# sys-libs/glibc
+  /bin/ps@{t_root}					Px,	# sys-process/procps
+  /bin/sed@{t_root}					Cx,	# sys-apps/sed
+  /bin/cut@{t_root}					Cx,	# sys-apps/coreutils
+  /sbin/shutdown@{t_root}				Px,	# sys-apps/sysvinit
+  /usr/bin/fgconsole@{t_root}				Px,	# sys-apps/kbd
+  /usr/bin/gawk@{t_root}				Cx,	# sys-apps/gawk
+  /usr/bin/pinky@{t_root}				Px,	# sys-apps/coreutils
+  /usr/bin/pgrep@{t_root}				Px,	# sys-process/procps
+  /usr/bin/pidof@{t_root}				Px,	# sys-process/procps
+  /usr/bin/getent@{t_root}				Px,	# sys-libs/glibc
   
-  profile sed /bin/sed {
+  profile sed /bin/sed@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -97,7 +97,7 @@ profile acpid.powerbtn.sh /etc/acpi/actions/powerbtn.sh {
     /bin/sed						mr,
   }
   
-  profile cut /bin/cut {
+  profile cut /bin/cut@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -107,7 +107,7 @@ profile acpid.powerbtn.sh /etc/acpi/actions/powerbtn.sh {
     /bin/cut						mr,
   }
   
-  profile gawk /usr/bin/gawk {
+  profile gawk /usr/bin/gawk@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -121,14 +121,14 @@ profile acpid.powerbtn.sh /etc/acpi/actions/powerbtn.sh {
   }
 }
 
-profile acpid.acpi_listen /usr/bin/acpi_listen {
+profile acpid.acpi_listen@{p_root} /usr/bin/acpi_listen@{t_root} {
   #include <abstractions/base>
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/acpi_listen					mr,
 }
 
-profile acpid.kacpimon /usr/sbin/kacpimon {
+profile acpid.kacpimon@{p_root} /usr/sbin/kacpimon@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -140,7 +140,7 @@ profile acpid.kacpimon /usr/sbin/kacpimon {
   /usr/sbin/kacpimon					mr,
 }
 
-profile acpid.init.d /etc/init.d/acpid flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile acpid.init.d@{p_root} /etc/init.d/acpid@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
@@ -151,22 +151,22 @@ profile acpid.init.d /etc/init.d/acpid flags=(attach_disconnected) {	# attach_di
   @{SYS_D}/fs/cgroup/unified/acpid/cgroup.events	r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/sbin/acpid					Px,
-  @{shell}						Cx,
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  /usr/sbin/acpid@{t_root}				Px,
+  @{shell}@{t_root}					Cx,
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/{conf,init}.d/acpid				r,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -182,7 +182,7 @@ profile acpid.init.d /etc/init.d/acpid flags=(attach_disconnected) {	# attach_di
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -195,7 +195,7 @@ profile acpid.init.d /etc/init.d/acpid flags=(attach_disconnected) {	# attach_di
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

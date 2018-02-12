@@ -16,7 +16,7 @@
 # Важно! Перезагрузка профиля выполняется командой:
 # apparmor_parser -r /etc/apparmor.d/2_local
 
-profile local.sbin.relabel_evm_dtp /usr/local/sbin/relabel_evm_dtp.sh {
+profile local.sbin.relabel_evm_dtp@{p_root} /usr/local/sbin/relabel_evm_dtp.sh@{t_root} {
   #include <abstractions/base>
   
   # CAPABILITIES -------------------------------------
@@ -31,14 +31,14 @@ profile local.sbin.relabel_evm_dtp /usr/local/sbin/relabel_evm_dtp.sh {
   # EXECUTABLES ----------------------------------------
   /usr/local/sbin/relabel_evm_dtp.sh			r,
   @{shell}						mr,
-  /bin/touch						Cx,	# sys-apps/coreutils
-  /bin/rm						Cx,	# sys-apps/coreutils
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /usr/bin/find						Cx,	# sys-apps/findutils
-  /usr/bin/evmctl					Px,	# app-crypt/ima-evm-utils
+  /bin/touch@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/rm@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils
+  /usr/bin/evmctl@{t_root}				Px,	# app-crypt/ima-evm-utils
   
-  profile touch /bin/touch {
+  profile touch /bin/touch@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -55,7 +55,7 @@ profile local.sbin.relabel_evm_dtp /usr/local/sbin/relabel_evm_dtp.sh {
     /**.evmdtpcreate.xattr				w,
   }
   
-  profile rm /bin/rm {
+  profile rm /bin/rm@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -72,7 +72,7 @@ profile local.sbin.relabel_evm_dtp /usr/local/sbin/relabel_evm_dtp.sh {
     /**.evmdtpcreate.xattr				w,
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -84,7 +84,7 @@ profile local.sbin.relabel_evm_dtp /usr/local/sbin/relabel_evm_dtp.sh {
     /bin/cat						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -96,7 +96,7 @@ profile local.sbin.relabel_evm_dtp /usr/local/sbin/relabel_evm_dtp.sh {
     /bin/grep						mr,
   }
   
-  profile find /usr/bin/find {
+  profile find /usr/bin/find@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

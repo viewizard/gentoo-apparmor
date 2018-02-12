@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile syslog-ng /usr/sbin/syslog-ng {
+profile syslog-ng@{p_root} /usr/sbin/syslog-ng@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -69,12 +69,9 @@ profile syslog-ng /usr/sbin/syslog-ng {
   /run/syslog-ng.pid					rwk,
   /run/syslog-ng.ctl					rw,
   /run/syslog-ng/additional-log-sockets.conf		r,
-  
-  # DENY INHERIT ---------------------------------------
-  deny /tmp/lynis.cron.@{TMP6}				w,	# app-forensics/lynis, lynis.cron.daily
 }
 
-profile syslog-ng.init.d /etc/init.d/syslog-ng flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile syslog-ng.init.d@{p_root} /etc/init.d/syslog-ng@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/authentication>
@@ -94,12 +91,12 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng flags=(attach_disconnected) {	# a
   @{PROC_D}/sys/kernel/ngroups_max			r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/sbin/syslog-ng					Px,
-  @{shell}						Cx,
-  /bin/sleep						Px,	# sys-apps/coreutils
-  /bin/mkdir						Cx,	# sys-apps/coreutils
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/rmdir						Cx,	# sys-apps/coreutils
+  /usr/sbin/syslog-ng@{t_root}				Px,
+  @{shell}@{t_root}					Cx,
+  /bin/sleep@{t_root}					Px,	# sys-apps/coreutils
+  /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
   /etc/environment					r,	# sys-libs/pam
@@ -108,13 +105,13 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng flags=(attach_disconnected) {	# a
   /run/syslog-ng.pid					rwk,
   /run/utmp						rk,
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_root} {
     #include <abstractions/base>
     #include <abstractions/nameservice>
     #include <abstractions/openrc-shell>
   }
   
-  profile mkdir /bin/mkdir {
+  profile mkdir /bin/mkdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
@@ -130,7 +127,7 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng flags=(attach_disconnected) {	# a
     /bin/mkdir						mr,
   }
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -143,7 +140,7 @@ profile syslog-ng.init.d /etc/init.d/syslog-ng flags=(attach_disconnected) {	# a
     /bin/grep						mr,
   }
   
-  profile rmdir /bin/rmdir {
+  profile rmdir /bin/rmdir@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------

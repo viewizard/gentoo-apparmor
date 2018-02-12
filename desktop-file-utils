@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile desktop-file-utils.update-desktop-database /usr/bin/update-desktop-database {
+profile desktop-file-utils.update-desktop-database@{p_user} /usr/bin/update-desktop-database@{t_user} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -27,4 +27,23 @@ profile desktop-file-utils.update-desktop-database /usr/bin/update-desktop-datab
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.local/share/applications/{,**}	r,
+}
+
+profile desktop-file-utils.update-desktop-database@{p_root} /usr/bin/update-desktop-database@{t_root} {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/update-desktop-database			mr,
+  
+  # READS/WRITES -------------------------------------
+  /opt/**.desktop					r,
+  /usr/share/applications/{,**}				r,
+  /usr/share/applications/{,.}mimeinfo.cache{,.*}	rw,
+  
+  # USERS ----------------------------------------------
+  owner @{ROOT_HOME_D}/.local/share/applications/{,**}	r,
 }

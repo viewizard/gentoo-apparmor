@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile fuse.fusermount /usr/bin/fusermount {
+profile fuse.fusermount@{p_root} /usr/bin/fusermount@{t_root} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
@@ -23,15 +23,15 @@ profile fuse.fusermount /usr/bin/fusermount {
   unix (send, receive)
   			type=stream
 			addr=none
-  			peer=(addr=none,label="gvfs.gvfsd-fuse"),
+  			peer=(addr=none,label="gvfs.gvfsd-fuse{@{p_root},@{p_user}}"),
   
   # MOUNT ----------------------------------------------
-  mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /root/.gvfs/,
-  mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /root/.gvfs/,
   mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> /run/user/@{UID}/gvfs/,
   mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> /run/user/@{UID}/gvfs/,
-  umount /root/.gvfs/,
+  mount fstype="fuse.gvfsd-fuse" options=(ro, nosuid, nodev) gvfsd-fuse -> @{ROOT_HOME_D}/.gvfs/,
+  mount fstype="fuse.gvfsd-fuse" options=(rw, nosuid, nodev) gvfsd-fuse -> @{ROOT_HOME_D}/.gvfs/,
   umount /run/user/@{UID}/gvfs/,
+  umount /root/.gvfs/,
   
   # PSEUDO ---------------------------------------------
   /dev/fuse						rw,
@@ -45,5 +45,5 @@ profile fuse.fusermount /usr/bin/fusermount {
   /run/user/@{UID}/gvfs/				r,
   
   # USERS ----------------------------------------------
-  owner /root/.gvfs/					r,
+  owner @{ROOT_HOME_D}/.gvfs/				r,
 }

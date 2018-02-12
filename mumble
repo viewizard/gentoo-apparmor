@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile mumble /usr/bin/mumble {
+profile mumble@{p_user} /usr/bin/mumble@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -64,7 +64,7 @@ profile mumble /usr/bin/mumble {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mumble					mr,
-  /usr/bin/lsb_release					Px,	# sys-apps/lsb-release
+  /usr/bin/lsb_release@{t_user}				Px,	# sys-apps/lsb-release
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.local/share/data/Mumble/{,**}	rw,

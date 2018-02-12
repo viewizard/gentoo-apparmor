@@ -17,7 +17,7 @@
 # .bmp
 @{local_ext}+=[bB][mM][pP]
 
-profile xfdesktop /usr/bin/xfdesktop {
+profile xfdesktop@{p_user} /usr/bin/xfdesktop@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -38,14 +38,12 @@ profile xfdesktop /usr/bin/xfdesktop {
   	bus=session
   	path="/org/xfce/FileManager"
   	interface="org.xfce.{FileManager,Trash}"
-  	peer=(name="org.xfce.FileManager",label="thunar"),	# xfce-base/thunar
-  								# RBAC! Для root ветки label="thunar_root".
+  	peer=(name="org.xfce.FileManager",label="thunar@{p_user}"),	# xfce-base/thunar
   dbus receive
   	bus=session
   	path="/org/xfce/FileManager"
   	interface="org.xfce.Trash"
-  	peer=(name=":[0-9]*.[0-9]*",label="thunar"),		# xfce-base/thunar
-  								# RBAC! Для root ветки label="thunar_root".
+  	peer=(name=":[0-9]*.[0-9]*",label="thunar@{p_user}"),		# xfce-base/thunar
   dbus send
   	bus=session
   	path="/org/xfce/xfdesktop"
@@ -67,13 +65,12 @@ profile xfdesktop /usr/bin/xfdesktop {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfdesktop					mr,
-  @{shell}						Cx,
-  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1		Px,	# xfce-base/exo
-  /usr/bin/exo-desktop-item-edit			Px,	# xfce-base/exo
-  /usr/bin/xfdesktop-settings				Px,
-  /usr/bin/xfce4-session-logout				Px,	# xfce-base/xfce4-session
-  /usr/libexec/thunar-archive-plugin/engrampa.tap	Px,	# xfce-extra/thunar-archive-plugin
-  								# RBAC! В случае root, использовать engrampa_tap_root
+  @{shell}@{t_user}					Cx,
+  /usr/lib{,32,64}/xfce4/exo-1/exo-helper-1@{t_user}	Px,	# xfce-base/exo
+  /usr/bin/exo-desktop-item-edit@{t_user}		Px,	# xfce-base/exo
+  /usr/bin/xfdesktop-settings@{t_user}			Px,
+  /usr/bin/xfce4-session-logout@{t_user}		Px,	# xfce-base/xfce4-session
+  /usr/libexec/thunar-archive-plugin/engrampa.tap@{t_user} Px,	# xfce-extra/thunar-archive-plugin
   
   # READS/WRITES ---------------------------------------
   /etc/xdg/menus/**.menu				r,
@@ -100,12 +97,12 @@ profile xfdesktop /usr/bin/xfdesktop {
   owner @{USER_HOME_D}/.xfce4-session.verbose-log	rw,
   
   # TEMP -----------------------------------------------
-  audit owner /tmp/gdkpixbuf-xpm-tmp.*			rw,	# FIX ME! audit 25.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  audit owner /tmp/gdkpixbuf-xpm-tmp.*			rw,	# FIX ME! audit 25.11.2017
+  								# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
   
-  profile shell @{shell} {
+  profile shell @{shell}@{t_user} {
     #include <abstractions/base>
     #include <local/profile_blocks/thunar-custom-actions.d/>	# Must be the same as thunar custom actions!
-    								# RBAC! Для root ветки <local/profile_blocks/thunar_root-custom-actions.d/>.
     
     # PSEUDO -------------------------------------------
     /dev/tty						rw,
@@ -114,11 +111,11 @@ profile xfdesktop /usr/bin/xfdesktop {
     
     # EXECUTABLES --------------------------------------
     @{shell}						mr,
-    /usr/bin/{gksu,gksudo}				Px,	# app-admin/sudo
+    /usr/bin/{gksu,gksudo}@{t_user}			Px,	# app-admin/sudo
   }
 }
 
-profile xfdesktop.xfdesktop-settings /usr/bin/xfdesktop-settings {
+profile xfdesktop.xfdesktop-settings@{p_user} /usr/bin/xfdesktop-settings@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>

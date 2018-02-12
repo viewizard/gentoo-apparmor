@@ -16,7 +16,7 @@
 # Важно! Перезагрузка профиля выполняется командой:
 # apparmor_parser -r /etc/apparmor.d/2_local
 
-profile local.sbin.relabel_ima_evm /usr/local/sbin/relabel_ima_evm.sh {
+profile local.sbin.relabel_ima_evm@{p_root} /usr/local/sbin/relabel_ima_evm.sh@{t_root} {
   #include <abstractions/base>
   
   # PSEUDO ---------------------------------------------
@@ -27,12 +27,12 @@ profile local.sbin.relabel_ima_evm /usr/local/sbin/relabel_ima_evm.sh {
   # EXECUTABLES ----------------------------------------
   /usr/local/sbin/relabel_ima_evm.sh			r,
   @{shell}						mr,
-  /bin/grep						Cx,	# sys-apps/grep
-  /bin/cat						Cx,	# sys-apps/coreutils
-  /usr/bin/find						Cx,	# sys-apps/findutils
-  /usr/bin/evmctl					Px,	# app-crypt/ima-evm-utils
+  /bin/grep@{t_root}					Cx,	# sys-apps/grep
+  /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
+  /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils
+  /usr/bin/evmctl@{t_root}				Px,	# app-crypt/ima-evm-utils
   
-  profile grep /bin/grep {
+  profile grep /bin/grep@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -44,7 +44,7 @@ profile local.sbin.relabel_ima_evm /usr/local/sbin/relabel_ima_evm.sh {
     /bin/grep						mr,
   }
   
-  profile cat /bin/cat {
+  profile cat /bin/cat@{t_root} {
     #include <abstractions/base>
     
     # PSEUDO -------------------------------------------
@@ -56,7 +56,7 @@ profile local.sbin.relabel_ima_evm /usr/local/sbin/relabel_ima_evm.sh {
     /bin/cat						mr,
   }
   
-  profile find /usr/bin/find {
+  profile find /usr/bin/find@{t_root} {
     #include <abstractions/base>
     
     # CAPABILITIES -------------------------------------
