@@ -8,24 +8,14 @@
 #
 # ------------------------------------------------------------------
 
-# Небольшие корректировки пакета через portage/env: добавляем возможность запуска
-# второго ресолвера через систему управления службами. Различие - наличие номера
-# после dnscrypt-proxy (цифра 2).
-# Базовый всегда остается как есть (dnscrypt-proxy) без номера.
-
 #include <local/tunables.d/>
 
-profile dnscrypt-proxy@{p_root} /usr/sbin/dnscrypt-proxy@{t_root} {
+profile dnscrypt-proxy@{p_dnscrypt} /usr/bin/dnscrypt-proxy@{t_dnscrypt} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   
   # CAPABILITIES ---------------------------------------
-  capability setgid,
-  capability setuid,
-  capability sys_chroot,
-  capability net_admin,
   capability net_bind_service,
-  capability dac_override,
   
   # NETWORK --------------------------------------------
   network inet dgram,
@@ -37,55 +27,56 @@ profile dnscrypt-proxy@{p_root} /usr/sbin/dnscrypt-proxy@{t_root} {
   /dev/tty[0-9]*					rw,
   /dev/console						rw,
   /dev/pts/[0-9]*					rw,
+  @{PROC_D}/sys/kernel/hostname				r,
+  @{PROC_D}/sys/net/core/somaxconn			r,
   
   # EXECUTABLES ----------------------------------------
-  /usr/sbin/dnscrypt-proxy				mr,
+  /usr/bin/dnscrypt-proxy				mr,
   
   # READS/WRITES ---------------------------------------
-  /etc/dnscrypt-proxy{,2}.conf				r,
+  /etc/dnscrypt-proxy/*					r,
   /usr/share/dnscrypt-proxy/{,*}			r,
-  /run/dnscrypt-proxy{,2}.pid				rw,
   /var/lib/dnscrypt.blacklist				r,	# FIX ME! Вынести в локальные части (?).	# Список запрещенных доменов (в конфигурации используем этот путь).
-  /var/log/dnscrypt-proxy.log				rw,
+  /var/cache/dnscrypt-proxy/*				rw,
+  /var/log/dnscrypt-proxy/{,*}				rw,
 }
 
-profile dnscrypt-proxy.hostip@{p_root} /usr/bin/hostip@{t_root} {
-  #include <abstractions/base>
-  #include <abstractions/nameservice>
-  
-  # PSEUDO ---------------------------------------------
-  /dev/tty[0-9]*					rw,
-  /dev/pts/[0-9]*					rw,
-  @{PROC_D}/sys/kernel/random/uuid			r,
-  
-  # EXECUTABLES ----------------------------------------
-  /usr/bin/hostip					mr,
-}
-
-profile dnscrypt-proxy.init.d@{p_root} /etc/init.d/dnscrypt-proxy{,2}@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
+profile dnscrypt-proxy.init.d@{p_root} /etc/init.d/dnscrypt-proxy@{t_root} flags=(attach_disconnected) {	# attach_disconnected, name="" comm="start-stop-daem"
   #include <abstractions/base>
   #include <abstractions/nameservice>
   #include <abstractions/openrc>
+  #include <abstractions/authentication>			# Change user/group to dnscrypt/dnscrypt.
   
   # CAPABILITIES ---------------------------------------
+  capability chown,
+  capability setuid,						# Change user/group to dnscrypt/dnscrypt.
+  capability setgid,						# Change user/group to dnscrypt/dnscrypt.
+  capability audit_control,					# Change user/group to dnscrypt/dnscrypt.
   capability dac_override,
   capability dac_read_search,
   
   # PSEUDO ---------------------------------------------
-  @{SYS_D}/fs/cgroup/openrc/dnscrypt-proxy{,2}/tasks	w,
-  @{SYS_D}/fs/cgroup/unified/dnscrypt-proxy{,2}/cgroup.procs w,
-  @{SYS_D}/fs/cgroup/unified/dnscrypt-proxy{,2}/cgroup.events r,
+  @{SYS_D}/fs/cgroup/openrc/dnscrypt-proxy/tasks	w,
+  @{SYS_D}/fs/cgroup/unified/dnscrypt-proxy/cgroup.procs w,
+  @{SYS_D}/fs/cgroup/unified/dnscrypt-proxy/cgroup.events r,
+  owner @{PROC_D}/@{pid}/loginuid			rw,	# Change user/group to dnscrypt/dnscrypt.
+  owner @{PROC_D}/sys/kernel/ngroups_max		r,	# Change user/group to dnscrypt/dnscrypt.
   
   # EXECUTABLES ----------------------------------------
-  /usr/sbin/dnscrypt-proxy@{t_root}			Px,
+  /usr/bin/dnscrypt-proxy@{t_dnscrypt}			Px,
   @{shell}@{t_root}					Cx,
   /bin/mkdir@{t_root}					Cx,	# sys-apps/coreutils
   /bin/grep@{t_root}					Cx,	# sys-apps/grep
   /bin/rmdir@{t_root}					Cx,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
-  /etc/{conf,init}.d/dnscrypt-proxy{,2}			r,
-  /run/dnscrypt-proxy{,2}.pid				r,
+  /etc/environment					r,	# Change user/group to dnscrypt/dnscrypt.
+  /etc/security/limits.d/				r,	# Change user/group to dnscrypt/dnscrypt.
+  /etc/{conf,init}.d/dnscrypt-proxy			r,
+  /run/utmp						rk,	# Change user/group to dnscrypt/dnscrypt.
+  /run/dnscrypt-proxy.pid				rw,
+  /var/cache/dnscrypt-proxy/				w,
+  /var/log/dnscrypt-proxy/				w,
   
   profile shell @{shell}@{t_root} {
     #include <abstractions/base>
@@ -103,7 +94,7 @@ profile dnscrypt-proxy.init.d@{p_root} /etc/init.d/dnscrypt-proxy{,2}@{t_root} f
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{SYS_D}/fs/cgroup/{openrc,unified}/dnscrypt-proxy{,2}/ w,
+    @{SYS_D}/fs/cgroup/{openrc,unified}/dnscrypt-proxy/	w,
     
     # EXECUTABLES --------------------------------------
     /bin/mkdir						mr,
@@ -116,7 +107,7 @@ profile dnscrypt-proxy.init.d@{p_root} /etc/init.d/dnscrypt-proxy{,2}@{t_root} f
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{SYS_D}/fs/cgroup/unified/dnscrypt-proxy{,2}/cgroup.procs r,
+    @{SYS_D}/fs/cgroup/unified/dnscrypt-proxy/cgroup.procs r,
     
     # EXECUTABLES --------------------------------------
     /bin/grep						mr,
@@ -132,7 +123,7 @@ profile dnscrypt-proxy.init.d@{p_root} /etc/init.d/dnscrypt-proxy{,2}@{t_root} f
     /dev/tty[0-9]*					rw,
     /dev/console					rw,
     /dev/pts/[0-9]*					rw,
-    @{SYS_D}/fs/cgroup/unified/dnscrypt-proxy{,2}/	w,
+    @{SYS_D}/fs/cgroup/unified/dnscrypt-proxy/		w,
     
     # EXECUTABLES --------------------------------------
     /bin/rmdir						mr,
