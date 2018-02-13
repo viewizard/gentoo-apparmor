@@ -19,17 +19,23 @@
 /usr/share/poppler/{,**}				r,	# app-text/poppler-data
 /var/cache/fonts/**					r,
 /var/cache/fontconfig/					rw,	# media-libs/fontconfig
-/var/cache/fontconfig/*					mr,	# media-libs/fontconfig
+/var/cache/fontconfig/*					r,	# media-libs/fontconfig
 link subset /var/cache/fontconfig/*			-> /var/cache/fontconfig/*,	# media-libs/fontconfig
 
 # USERS ------------------------------------------------
 owner @{USER_HOME_D}/.fontconfig/			r,	# media-libs/fontconfig
-owner @{USER_HOME_D}/.fontconfig/*			mrw,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
-								# media-libs/fontconfig
+owner @{USER_HOME_D}/.fontconfig/*			rw,	# media-libs/fontconfig
 owner link subset @{USER_HOME_D}/.fontconfig/*		-> @{USER_HOME_D}/.fontconfig/*,	# media-libs/fontconfig
 owner @{USER_HOME_CACHE_D}/fontconfig/			rw,	# media-libs/fontconfig
-owner @{USER_HOME_CACHE_D}/fontconfig/*			mrw,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
-								# media-libs/fontconfig
+owner @{USER_HOME_CACHE_D}/fontconfig/*			rw,	# media-libs/fontconfig
 owner link subset @{USER_HOME_CACHE_D}/fontconfig/*	-> @{USER_HOME_CACHE_D}/fontconfig/*,	# media-libs/fontconfig
 owner @{USER_HOME_D}/.config/fontconfig/{,**}		r,	# media-libs/fontconfig
 owner @{USER_HOME_D}/.local/share/fonts/{,**}		r,
+
+# Важно!
+# При загрузке устанавливаем переменную среды FONTCONFIG_USE_MMAP=0
+# (файл /etc/env.d/99fontconfig устанавливается с пакетом).
+# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+audit deny /var/cache/fontconfig/*			m,	# media-libs/fontconfig
+audit deny @{USER_HOME_D}/.fontconfig/*			m,	# media-libs/fontconfig
+audit deny @{USER_HOME_CACHE_D}/fontconfig/*		m,	# media-libs/fontconfig

@@ -26,6 +26,7 @@ capability ipc_lock,
 /etc/nvidia/nvidia-application-profiles-rc		r,
 
 # USERS ------------------------------------------------
+owner @{ROOT_HOME_D}/.glvnd@{TMP6}			rw,	# (GL Vendor-Neutral Dispatch library)
 owner @{ROOT_HOME_D}/.nv/				rw,
 owner @{ROOT_HOME_D}/.nv/GLCache/{,**}			rw,
 owner @{ROOT_HOME_D}/.nv/GLCache/{,**/}*		k,
@@ -33,5 +34,14 @@ owner @{ROOT_HOME_D}/.nv/ComputeCache/{,**}		rw,
 owner @{ROOT_HOME_D}/.nv/ComputeCache/{,**/}*		k,
 owner /root.nv/{,**}					rw,
 owner /root.nv/{,**/}*					k,
-owner /root.nv/.gl@{TMP6}				m,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
-owner /tmp/.gl@{TMP6}					mrw,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+owner /tmp/.gl@{TMP6}					rw,
+
+# Важно!
+# Запрещаем mmap.
+# Почему-то, переменная окружения __GL_WRITE_TEXT_SECTION=0 не работает
+# через ~/.bash_profile (хотя и показывает, что установлена),
+# не ставим пока audit.
+# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+deny @{ROOT_HOME_D}/.glvnd@{TMP6}			m,	# (GL Vendor-Neutral Dispatch library)
+deny /root.nv/.gl@{TMP6}				m,
+deny /tmp/.gl@{TMP6}					m,
