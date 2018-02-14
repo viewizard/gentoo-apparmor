@@ -29,7 +29,7 @@ profile man-db.mandb@{p_man} /usr/bin/mandb@{t_man} {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/mandb					mr,
-  /bin/bzip2@{t_root}					Cx,	# app-arch/bzip2
+  /bin/bzip2{@{t_root},@{t_man}}			Cx,	# app-arch/bzip2
   /usr/libexec/man-db/manconv@{t_root}			Px,
   
   # READS/WRITES ---------------------------------------
@@ -39,7 +39,7 @@ profile man-db.mandb@{p_man} /usr/bin/mandb@{t_man} {
   /var/cache/man/**					rw,
   /var/cache/man/{,**/}*				k,
   
-  profile bzip2 /bin/bzip2@{t_root} {
+  profile bzip2 /bin/bzip2{@{t_root},@{t_man}} {
     #include <abstractions/base>
     
     # EXECUTABLES --------------------------------------
