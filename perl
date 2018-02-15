@@ -27,6 +27,7 @@ profile perl.pod2html@{p_root} /usr/bin/pod2html@{t_root} {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pod2html					r,
+  @{PERL_BIN}@{t_root}					ix,
   /bin/pwd@{t_root}					Px,	# sys-apps/coreutils
   
   # READS/WRITES ---------------------------------------
@@ -45,6 +46,7 @@ profile perl.pod2text@{p_root} /usr/bin/pod2text-[0-9]*-perl-[0-9]*@{t_root} {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pod2text-[0-9]*-perl-[0-9]*			r,
+  @{PERL_BIN}@{t_root}					ix,
   
   # READS/WRITES ---------------------------------------
   /var/tmp/portage/genkernel/**/docs/**			rw,	# DELEGATION! make, genkernel (собираем busybox)
@@ -61,6 +63,7 @@ profile perl.pod2man@{p_root} /usr/bin/pod2man-[0-9]*-perl-[0-9]*@{t_root} {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/pod2man-[0-9]*-perl-[0-9]*			r,
+  @{PERL_BIN}@{t_root}					ix,
   
   # READS/WRITES ---------------------------------------
   /var/tmp/portage/genkernel/**/docs/**			rw,	# DELEGATION! make, genkernel (собираем busybox)

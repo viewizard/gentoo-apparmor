@@ -206,6 +206,7 @@ profile logcheck@{p_logcheck} /usr/sbin/logcheck@{t_logcheck} {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/mime-construct				mr,
+    @{PERL_BIN}@{t_logcheck}				ix,
     /usr/sbin/sendmail@{t_logcheck}			Px,	# mail-mta/nullmailer
     
     # TEMP ---------------------------------------------
@@ -219,6 +220,7 @@ profile logcheck.logtail2@{p_logcheck} /usr/sbin/logtail2@{t_logcheck} {
   
   # EXECUTABLES ----------------------------------------
   /usr/sbin/logtail2					mr,
+  @{PERL_BIN}@{t_logcheck}				ix,
   
   # READS/WRITES ---------------------------------------
   /var/log/						r,

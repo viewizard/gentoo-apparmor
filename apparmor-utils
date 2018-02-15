@@ -220,6 +220,7 @@ profile apparmor-utils.aa-decode@{p_root} /usr/sbin/aa-decode@{t_root} {
   # EXECUTABLES ----------------------------------------
   /usr/sbin/aa-decode					r,
   @{shell}						mr,
+  @{PERL_BIN}@{t_root}					ix,
   /bin/egrep@{t_root}					Cx,	# sys-apps/grep
   /bin/cat@{t_root}					Cx,	# sys-apps/coreutils
   
