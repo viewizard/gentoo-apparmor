@@ -40,6 +40,12 @@ profile git@{p_user} /usr/{bin,libexec/git-core}/git@{t_user} {
   /usr/libexec/git-core/git-remote-http{,s}@{t_user}	Cx,
   
   # READS/WRITES ---------------------------------------
+  /bin/							r,	# Поиск подсказки для неправильно введенной команды git.
+  /opt/bin/						r,	# Поиск подсказки для неправильно введенной команды git.
+  /usr/bin/						r,	# Поиск подсказки для неправильно введенной команды git.
+  /usr/local/bin/					r,	# Поиск подсказки для неправильно введенной команды git.
+  /usr/libexec/git-core/				r,	# Поиск подсказки для неправильно введенной команды git.
+  /usr/@{CHOST}/gcc-bin/[0-9]*/				r,	# Поиск подсказки для неправильно введенной команды git.
   /usr/share/git-core/**				r,
   
   # USERS ----------------------------------------------
@@ -98,6 +104,7 @@ profile git@{p_user} /usr/{bin,libexec/git-core}/git@{t_user} {
     network inet6 stream,
     
     # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
@@ -140,6 +147,12 @@ profile git@{p_root} /usr/{bin,libexec/git-core}/git@{t_root} {
   /usr/libexec/git-core/git-remote-http{,s}@{t_root}	Cx,
   
   # READS/WRITES ---------------------------------------
+  /bin/							r,	# Поиск подсказки для неправильно введенной команды git.
+  /opt/bin/						r,	# Поиск подсказки для неправильно введенной команды git.
+  /usr/bin/						r,	# Поиск подсказки для неправильно введенной команды git.
+  /usr/local/bin/					r,	# Поиск подсказки для неправильно введенной команды git.
+  /usr/libexec/git-core/				r,	# Поиск подсказки для неправильно введенной команды git.
+  /usr/@{CHOST}/gcc-bin/[0-9]*/				r,	# Поиск подсказки для неправильно введенной команды git.
   /usr/share/git-core/**				r,
   owner link subset /.git/objects/{,**/}*		-> /.git/objects/{,**/}*,
   owner link subset /**/.git/objects/{,**/}*		-> /**/.git/objects/{,**/}*,
@@ -205,6 +218,7 @@ profile git@{p_root} /usr/{bin,libexec/git-core}/git@{t_root} {
     network inet6 stream,
     
     # PSEUDO -------------------------------------------
+    /dev/tty						rw,
     /dev/tty[0-9]*					rw,
     /dev/pts/[0-9]*					rw,
     
