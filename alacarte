@@ -42,6 +42,9 @@ profile alacarte@{p_user} @{PYTHON2_EXEC}/alacarte@{t_user} {
   /dev/pts/[0-9]*					rw,
   @{PROC_D}/@{pid}/mounts				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
+  # EXECUTABLES ----------------------------------------
+  @{PYTHON_BIN}@{t_user}				ix,
+  
   # READS/WRITES ---------------------------------------
   /etc/xdg/menus/{,**/,**.menu}				r,
   /usr/share/alacarte/{,*}				r,

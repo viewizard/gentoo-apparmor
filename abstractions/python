@@ -9,10 +9,17 @@
 # ------------------------------------------------------------------
 
 # EXECUTABLES ------------------------------------------
-/usr/bin/@{PYTHON}{,m}					mr,
-/usr/bin/@{PYTHON}{,m}{@{t_root},@{t_user},@{t_portage}} ix,
+/usr/bin/@{PYTHON}{,m}					mr,	# ix выносим в профиль, с маркером пользователя.
 
 # READS/WRITES -----------------------------------------
+/etc/@{PYTHON}/**					r,
+/usr/lib{,32,64}/@{PYTHON}/{,**/}*.{pyc,so}		mr,
+/usr/lib{,32,64}/@{PYTHON}/**.{egg,py,pth}		r,
+/usr/lib{,32,64}/@{PYTHON}/{site,dist}-packages/	r,
+/usr/lib{,32,64}/@{PYTHON}/lib-dynload/*.so		mr,
+/usr/lib{,32,64}/wx/python/*.pth			r,	# wx paths
+/usr/include/@{PYTHON}/pyconfig.h			r,	# python build configuration and headers
+
 deny /usr/**/__pycache__/				w,	# IMA! Запрещаем создавать байткод с IMA hash подписью в /usr.
 deny /usr/**/*.{pyo,pyc}{,.*}				w,	# IMA! Запрещаем создавать байткод с IMA hash подписью в /usr.
 deny /opt/**/__pycache__/				w,	# IMA! Запрещаем создавать байткод с IMA hash подписью в /opt.
@@ -23,12 +30,3 @@ deny /opt/**/*.{pyo,pyc}{,.*}				w,	# IMA! Запрещаем создавать
 								# байткод во время выполнения и пытался его сохранить на диск).
 								# Перекрываем разрешение на запись в профилях, если оно есть.
 								# Подавляем вывод об ошибке записи (если разрешения не было).
-
-# USERS ------------------------------------------------
-/etc/@{PYTHON}/**					r,
-/usr/lib{,32,64}/@{PYTHON}/{,**/}*.{pyc,so}		mr,
-/usr/lib{,32,64}/@{PYTHON}/**.{egg,py,pth}		r,
-/usr/lib{,32,64}/@{PYTHON}/{site,dist}-packages/	r,
-/usr/lib{,32,64}/@{PYTHON}/lib-dynload/*.so		mr,
-/usr/lib{,32,64}/wx/python/*.pth			r,	# wx paths
-/usr/include/@{PYTHON}/pyconfig.h			r,	# python build configuration and headers

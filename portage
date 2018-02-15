@@ -512,6 +512,7 @@ profile portage.env-update@{p_root} @{PYTHON_EXEC}/env-update@{t_root} {
   owner @{PROC_D}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
+  @{PYTHON_BIN}@{t_root}				ix,
   @{shell}@{t_root}					Cx,
   
   # READS/WRITES ---------------------------------------
@@ -564,6 +565,7 @@ profile portage.dispatch-conf@{p_root} @{PYTHON_EXEC}/dispatch-conf@{t_root} {
   owner @{PROC_D}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
+  @{PYTHON_BIN}@{t_root}				ix,
   @{shell}@{t_root}					Px -> portage_dispatch_conf_shell,
   audit /usr/bin/diff@{t_root}				Cx,	# sys-apps/diffutils	# FIX ME! audit 15.07.2017
   /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils
@@ -670,6 +672,7 @@ profile portage.portageq@{p_mixed} @{PYTHON_EXEC}/portageq{@{t_root},@{t_portage
   @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
   
   # EXECUTABLES ----------------------------------------
+  @{PYTHON_BIN}{@{t_root},@{t_portage}}			ix,
   @{shell}{@{t_root},@{t_portage}}			Cx,
   
   # READS/WRITES ---------------------------------------
@@ -1184,6 +1187,7 @@ profile portage.emaint@{p_root} @{PYTHON_EXEC}/emaint@{t_root} {
   owner @{PROC_D}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
+  @{PYTHON_BIN}@{t_root}				ix,
   @{shell}@{t_root}					Cx,
   /usr/bin/find@{t_root}				Cx,	# sys-apps/findutils
   

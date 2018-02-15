@@ -25,6 +25,7 @@ profile gentoolkit.glsa-check@{p_root} @{PYTHON_EXEC}/glsa-check@{t_root} {
   owner @{PROC_D}/@{pid}/fd/				r,
   
   # EXECUTABLES ----------------------------------------
+  @{PYTHON_BIN}@{t_root}				ix,
   @{shell}@{t_root}					Cx,
   
   # READS/WRITES ---------------------------------------
@@ -73,6 +74,7 @@ profile gentoolkit.equery@{p_root} @{PYTHON_EXEC}/equery@{t_root} {
   owner @{PROC_D}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
+  @{PYTHON_BIN}@{t_root}				ix,
   @{shell}@{t_root}					Cx,
   
   # READS/WRITES ---------------------------------------
@@ -118,6 +120,7 @@ profile gentoolkit.eclean@{p_root} @{PYTHON_EXEC}/eclean@{t_root} {
   owner @{PROC_D}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
+  @{PYTHON_BIN}@{t_root}				ix,
   @{shell}@{t_root}					Cx,
   /bin/stty@{t_root}					Px,	# sys-apps/coreutils
   /bin/bzip2@{t_root}					Cx,	# app-arch/bzip2
@@ -215,6 +218,7 @@ profile gentoolkit.revdep-rebuild@{p_root} @{PYTHON_EXEC}/revdep-rebuild@{t_root
   owner @{PROC_D}/@{pid}/mounts				r,
   
   # EXECUTABLES ----------------------------------------
+  @{PYTHON_BIN}@{t_root}				ix,
   @{shell}@{t_root}					Cx,
   @{PYTHON_EXEC_WRAPPER}@{t_root}			Cx,	# dev-lang/python-exec
   /usr/bin/scanelf@{t_root}				Cx,	# app-misc/pax-utils

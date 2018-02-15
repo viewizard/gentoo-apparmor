@@ -51,7 +51,8 @@ profile onboard@{p_user} /usr/bin/onboard@{t_user} {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/onboard					mr,
-  /usr/bin/tput@{t_user}						Px,	# sys-libs/ncurses
+  @{PYTHON_BIN}@{t_user}				ix,
+  /usr/bin/tput@{t_user}				Px,	# sys-libs/ncurses
   @{PYTHON_EXEC_WRAPPER}@{t_user}			Px -> onboard_settings,	# dev-lang/python-exec
   								# Запускает не как /usr/bin/..., а через python-exec.
   
@@ -106,6 +107,7 @@ profile onboard_settings@{p_user} /usr/bin/onboard-settings@{t_user} {
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/onboard-settings				mr,
+  @{PYTHON_BIN}@{t_user}				ix,
   /usr/bin/tput@{t_user}				Px,	# sys-libs/ncurses
   
   # READS/WRITES ---------------------------------------

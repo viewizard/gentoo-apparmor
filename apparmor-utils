@@ -28,6 +28,9 @@ profile apparmor-utils.aa-status@{p_root} @{PYTHON_EXEC}/aa-status@{t_root} flag
   @{PROC_D}/@{pids}/attr/{current,prev,exec}		r,
   owner @{PROC_D}/@{pid}/mounts				r,
   
+  # EXECUTABLES ----------------------------------------
+  @{PYTHON_BIN}@{t_root}				ix,
+  
   # READS/WRITES ---------------------------------------
   @{PYTHON_PACKAGES_D}/apparmor/{,**/}			w,
   @{PYTHON_PACKAGES_D}/apparmor/**.pyc{,.*}		w,
@@ -63,6 +66,7 @@ profile apparmor-utils.aa-unconfined@{p_root} @{PYTHON_EXEC}/aa-unconfined@{t_ro
   
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,
+  @{PYTHON_BIN}@{t_root}				ix,
   @{shell}@{t_root}					Cx,
   /bin/netstat@{t_root}					Px,	# sys-apps/net-tools
   
@@ -115,6 +119,7 @@ profile apparmor-utils.aa-complain@{p_root} @{PYTHON_EXEC}/aa-complain@{t_root} 
   
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,
+  @{PYTHON_BIN}@{t_root}				ix,
   /sbin/apparmor_parser@{t_root}			Px,	# sys-apps/apparmor
   
   # READS/WRITES ---------------------------------------
@@ -142,6 +147,7 @@ profile apparmor-utils.aa-enforce@{p_root} @{PYTHON_EXEC}/aa-enforce@{t_root} {
   
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,
+  @{PYTHON_BIN}@{t_root}				ix,
   /sbin/apparmor_parser@{t_root}			Px,	# sys-apps/apparmor
   
   # READS/WRITES ---------------------------------------
@@ -169,6 +175,7 @@ profile apparmor-utils.aa-disable@{p_root} @{PYTHON_EXEC}/aa-disable@{t_root} {
   
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,
+  @{PYTHON_BIN}@{t_root}				ix,
   /sbin/apparmor_parser@{t_root}			Px,	# sys-apps/apparmor
   
   # READS/WRITES ---------------------------------------
@@ -197,6 +204,7 @@ profile apparmor-utils.aa-logprof@{p_root} @{PYTHON_EXEC}/aa-logprof@{t_root} {
   
   # EXECUTABLES ----------------------------------------
   /bin/env						mr,
+  @{PYTHON_BIN}@{t_root}				ix,
   
   # READS/WRITES ---------------------------------------
   /etc/inputrc						r,
