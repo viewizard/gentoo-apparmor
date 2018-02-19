@@ -194,6 +194,7 @@ profile wine.wine-preloader@{p_user} /usr/{,lib{,32,64}/wine-{any,d3d9,staging,v
   # TEMP -----------------------------------------------
   owner /tmp/.wine-@{UID}/server-*-*/{,lock}		r,
   owner /tmp/.wine-@{UID}/server-*-*/socket		rw,
+  owner /tmp/.wine-@{UID}/server-*-*/anonmap.@{TMP6}	rw,
   
   # NOISY ----------------------------------------------
   deny /						r,
@@ -258,7 +259,7 @@ profile wine.wineserver@{p_user} /usr/{,lib{,32,64}/wine-{any,d3d9,staging,vanil
   owner /tmp/.wine-@{UID}/				rw,
   owner /tmp/.wine-@{UID}/server-*-*/			rw,
   owner /tmp/.wine-@{UID}/server-*-*/{lock,socket}	rwk,
-  owner /tmp/.wine-@{UID}/server-*-*/anonmap.*		mrw,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  owner /tmp/.wine-@{UID}/server-*-*/anonmap.@{TMP6}	mrw,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   
   # NOISY ----------------------------------------------
   deny /						r,

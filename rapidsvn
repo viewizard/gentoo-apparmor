@@ -11,8 +11,8 @@
 #include <local/tunables.d/>
 
 # предустановка для abstractions/fs/access-by-user-preset-rwk
-@{USERS_DIR_rwk}="[^.]**"
-@{USERS_FILE_rwk}="[^.]*"
+@{USERS_DIR_rwkl}="[^.]**"
+@{USERS_FILE_rwkl}="[^.]**"
 
 profile rapidsvn@{p_user} /usr/bin/rapidsvn@{t_user} {
   #include <abstractions/base>
@@ -25,7 +25,7 @@ profile rapidsvn@{p_user} /usr/bin/rapidsvn@{t_user} {
   #include <abstractions/dbus/accessibility-strict>
   #include <abstractions/dbus/at-spi>
   #include <abstractions/dbus/gvfs>
-  #include <abstractions-user/fs/access-by-users-preset-rwk>
+  #include <abstractions-user/fs/access-by-users-preset-rwkl>
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/fs/deny-private-strict>
   #include <abstractions/nameservice>

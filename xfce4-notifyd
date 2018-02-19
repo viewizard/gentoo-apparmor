@@ -51,6 +51,9 @@ profile xfce4-notifyd@{p_user} /usr/lib{,32,64}/xfce4/notifyd/xfce4-notifyd@{t_u
   # USERS ----------------------------------------------
   owner @{USER_HOME_CACHE_D}/xfce4-notifyd-theme.rc*	rw,
   owner @{USER_HOME_CACHE_D}/xfce4/notifyd/{,**}	rw,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/.org.chromium.Chromium.@{TMP6}		r,	# www-client/chromium передает иконку для нотификейшена
 }
 
 profile xfce4-notifyd.xfce4-notifyd-config@{p_user} /usr/bin/xfce4-notifyd-config@{t_user} {

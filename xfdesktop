@@ -131,7 +131,7 @@ profile xfdesktop.xfdesktop-settings@{p_user} /usr/bin/xfdesktop-settings@{t_use
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner @{PROC_D}/@{pid}/mountinfo			r,
+  @{PROC_D}/@{pid}/mountinfo				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/xfdesktop-settings				mr,

@@ -28,3 +28,94 @@ profile openssh.ssh-agent@{p_user} /usr/bin/ssh-agent@{t_user} {
   # TEMP -----------------------------------------------
   owner /tmp/ssh-@{TMP12}/{,agent.@{pid}}		rw,
 }
+
+profile openssh.ssh-keygen@{p_user} /usr/bin/ssh-keygen@{t_user} {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/ssh-keygen					mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/ssl/openssl.cnf					r,
+  
+  # USERS ----------------------------------------------
+  owner @{USER_HOME_D}/.ssh/{,**}			rw,
+}
+
+profile openssh.ssh@{p_user} /usr/bin/ssh@{t_user} {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # CAPABILITIES ---------------------------------------
+  capability setuid,
+  capability setgid,
+  capability dac_read_search,
+  capability dac_override,
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/ssh						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/ssh/ssh_config					r,
+  
+  # USERS ----------------------------------------------
+  owner @{USER_HOME_D}/.ssh/{,**}			rw,
+  
+  # TEMP -----------------------------------------------
+  /tmp/ssh-@{TMP12}/agent.@{pids}			rw,
+}
+
+profile openssh.ssh@{p_root} /usr/bin/ssh@{t_root} {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # CAPABILITIES ---------------------------------------
+  capability setuid,
+  capability setgid,
+  capability dac_read_search,
+  capability dac_override,
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
+  network inet stream,
+  network inet6 stream,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  owner @{PROC_D}/@{pid}/fd/				r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/ssh						mr,
+  
+  # READS/WRITES ---------------------------------------
+  /etc/ssh/ssh_config					r,
+  
+  # USERS ----------------------------------------------
+  owner @{ROOT_HOME_D}/.ssh/{,**}			rw,
+  
+  # TEMP -----------------------------------------------
+  /tmp/ssh-@{TMP12}/agent.@{pids}			rw,
+}

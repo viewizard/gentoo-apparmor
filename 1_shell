@@ -13,6 +13,9 @@
 # предустановка для abstractions/fs/access-by-user-preset-rwk
 @{USERS_DIR_rwk}="**"
 @{USERS_FILE_rwk}="**"
+# предустановка для abstractions/fs/access-by-user-preset-rk
+@{USERS_DIR_rk}="**"
+@{USERS_FILE_rk}="**"
 
 # профиль используется службами без аутентификации
 profile shell_service @{shell}@{t_root} {
@@ -42,6 +45,7 @@ profile shell_users {
   #include <abstractions-user/shell>
   #include <abstractions/consoles>
   #include <abstractions/nameservice>
+  #include <abstractions-user/fs/access-by-users-preset-rk>
   
   # CAPABILITIES ---------------------------------------
   audit capability setuid,					# FIX ME! audit 24.10.2017
@@ -85,13 +89,20 @@ profile shell_users {
   /usr/bin/dircolors@{t_user}				Px,	# sys-apps/coreutils
   /usr/bin/libnotify-notify-send@{t_user}		Px,	# x11-libs/libnotify
   								# /usr/bin/libnotify-notify-send-users запускает в шеле пользователя.
+  /usr/bin/find@{t_user}				Cx,	# sys-apps/findutils
+  /usr/bin/ssh-keygen@{t_user}				Px,	# net-misc/openssh
+  /usr/bin/cmake@{t_user}				Px,	# dev-util/cmake
+  /usr/bin/{,g}make@{t_user}				Cx,	# sys-devel/make	# FIX ME! Билд AstroMenace из консоли.
+  								# FIX ME! (?) вынести в <local/shell/shell_users.d/>
+  /home/**/AstroMenace/AstroMenace@{t_user}		Px,	# Нужно для создания VFS файла. Запуска из консоли (отладка).
+  								# FIX ME! (?) вынести в <local/shell/shell_users.d/>
   
   # READS/WRITES ---------------------------------------
   /etc/profile.env					r,
   
   profile grep /bin/grep@{t_user} {
     #include <abstractions/base>
-    #include <abstractions-user/fs/access-by-users-preset-rwk>
+    #include <abstractions-user/fs/access-by-users-preset-rk>
     #include <abstractions/fs/deny-by-pattern-internet>
     
     # PSEUDO -------------------------------------------
@@ -140,6 +151,27 @@ profile shell_users {
     
     # EXECUTABLES --------------------------------------
     /bin/ls						mr,
+  }
+  
+  profile find /usr/bin/find@{t_user} {
+    #include <abstractions/base>
+    #include <abstractions-user/fs/access-by-users-preset-rwk>
+    #include <abstractions/fs/deny-by-pattern-internet>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/find					mr,
+    /bin/ln@{t_user}					ix,	# sys-apps/coreutils	# FIX ME!
+    /bin/sed@{t_user}					ix,	# sys-apps/sed		# FIX ME!
+  }
+  
+  profile make /usr/bin/{,g}make@{t_user} {
+    #include <abstractions/base>
+    
+    file,
   }
 }
 
@@ -271,6 +303,7 @@ profile shell_root {
   /usr/bin/eix-sync@{t_root}				Px,	# app-portage/eix
   /usr/bin/xargs@{t_root}				Cx,	# sys-apps/findutils
   /usr/bin/gpasswd@{t_root}				Px,	# sys-apps/shadow
+  /usr/bin/realpath@{t_root}				Cx,	# sys-apps/coreutils
   /usr/sbin/gdisk@{t_root}				Px,	# sys-apps/gptfdisk
   /usr/sbin/smartctl@{t_root}				Px,	# sys-apps/smartmontools
   /usr/sbin/useradd@{t_root}				Px,	# sys-apps/shadow
@@ -703,6 +736,18 @@ profile shell_root {
     /usr/bin/xargs					mr,
     /bin/grep@{t_root}					ix,	# sys-apps/grep
   								# FIX ME! потом исправить на "Px -> shell_root//grep",
+  }
+  
+  profile realpath /usr/bin/realpath@{t_root} {
+    #include <abstractions/base>
+    #include <abstractions-root/fs/access-by-pattern-systemusers>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    /usr/bin/realpath					mr,
   }
 }
 
