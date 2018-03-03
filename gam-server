@@ -1,0 +1,38 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2018 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <local/tunables.d/>
+
+profile gam-server.gam_server@{p_user} /usr/libexec/gam_server@{t_user} {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  
+  # UNIX -----------------------------------------------
+  unix (bind, listen) type=stream,
+  unix (send, receive, accept)
+  			type=stream
+  			peer=(label="codeblocks@{p_user}"),
+  unix (send, receive, accept)
+  			type=stream
+  			peer=(label="codeblocks_user_build"),
+  deny unix (send, receive) peer=(label="cppcheck@{p_user}"),
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  @{PROC_D}/@{pid}/mounts				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  @{PROC_D}/@{pids}/cmdline				r,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/libexec/gam_server				mr,
+  
+  # READS/WRITES ---------------------------------------
+  /							r,
+}
