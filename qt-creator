@@ -1,0 +1,41 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2018 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <local/tunables.d/>
+
+profile qt-creator.qtcreator@{p_user} /usr/bin/qtcreator@{t_user} flags=(attach_disconnected) {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/qt-creator					mr,
+  
+  ptrace,
+  signal,
+  unix,
+  dbus,
+  network,
+  file,
+  
+  # Важно!
+  # Запрещаем mmap.
+  # Почему-то, переменная окружения __GL_WRITE_TEXT_SECTION=0 не работает
+  # через ~/.bash_profile (хотя и показывает, что установлена),
+  # не ставим пока audit.
+  # IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  deny @{USER_HOME_D}/.glvnd@{TMP6}			m,	# (GL Vendor-Neutral Dispatch library)
+  deny /tmp/.glvnd@{TMP6}				m,	# (GL Vendor-Neutral Dispatch library)
+  deny @{USER_HOMEDIRS_D}/@{USER}.nv/.gl@{TMP6}		m,
+  deny @{USER_HOME_D}/.nv/.gl@{TMP6}			m,
+  deny /tmp/.gl@{TMP6}					m, 
+}

@@ -1,0 +1,44 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <local/tunables.d/>
+
+profile doxygen@{p_user} /usr/bin/doxygen@{t_user} {
+  #include <abstractions/base>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/doxygen					mr,
+  
+  # USERS ----------------------------------------------
+  owner @{USER_HOME_D}/**/doxygen/**			rw,
+  owner @{USER_HOME_D}/**/AstroMenace_github/**		r,	# вынести в local
+}
+
+profile doxygen.doxywizard@{p_user} /usr/bin/doxywizard@{t_user} {
+  #include <abstractions/base>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/gtk>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
+  #include <abstractions/nameservice>
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty						rw,
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/doxywizard					mr,
+}

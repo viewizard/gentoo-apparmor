@@ -37,6 +37,8 @@ profile lsb-release@{p_user} /usr/bin/lsb_release@{t_user} flags=(attach_disconn
   deny /etc/apparmor.d/					r,	# sys-apps/apparmor, apparmor
   deny /opt/discord/share/discord/{,**}			r,	# net-im/discord-bin, discord-bin.Discord
   deny /usr/share/inkscape/extensions/			r,	# media-gfx/inkscape, inkscape
+  deny /tmp/Code::Blocks-@{USER}			rw,	# codeblocks
+  deny /tmp/@{TMP6}					rw,	# codeblocks
   deny /opt/teamspeak3-client/				r,	# media-sound/teamspeak-client-bin, teamspeak-client-bin.teamspeak
   deny /run/user/@{UID}/poedit.*			rw,	# app-i18n/poedit, poedit
   deny @{USER_HOME_D}/.config/discord/[0-9]*/modules/**	r,	# net-im/discord-bin, discord-bin.Discord

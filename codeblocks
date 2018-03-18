@@ -29,6 +29,7 @@ profile codeblocks@{p_user} /usr/bin/codeblocks@{t_user} {
   #include <abstractions/fs/deny-by-pattern-internet>
   #include <abstractions/fs/deny-private-strict>
   #include <abstractions/nameservice>
+  #include <abstractions-user/profile_transitions/allow-strict-web>
   #include <local/profile_blocks/codeblocks.d/>
   
   # SIGNAL ---------------------------------------------
@@ -43,6 +44,7 @@ profile codeblocks@{p_user} /usr/bin/codeblocks@{t_user} {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
+  @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/codeblocks					mr,
@@ -51,6 +53,8 @@ profile codeblocks@{p_user} /usr/bin/codeblocks@{t_user} {
   /usr/bin/g++@{t_user}					Px -> codeblocks_user_build,	# sys-devel/gcc
   /usr/bin/llvm-ar@{t_user}				Px -> codeblocks_user_build,	# sys-devel/llvm
   /usr/bin/cppcheck@{t_user}				Px,	# dev-util/cppcheck
+  /usr/bin/doxygen@{t_user}				Px,	# app-doc/doxygen
+  /usr/bin/doxywizard@{t_user}				Px,	# app-doc/doxygen
   audit /usr/bin/{,@{CHOST}-}clang-*@{t_user}		Px -> codeblocks_user_build,	# sys-devel/clang	# FIX ME! audit 5.12.2017
   /usr/libexec/gam_server@{t_user}			Px,	# app-admin/gam-server
   /usr/lib{,32,64}/llvm/[0-9]*/bin/llvm-ar@{t_user}	Px -> codeblocks_user_build,	# sys-devel/llvm
@@ -72,6 +76,7 @@ profile codeblocks@{p_user} /usr/bin/codeblocks@{t_user} {
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.config/codeblocks/{,*}		rw,
   owner @{USER_HOME_D}/.local/share/codeblocks/{,**}	rw,
+  owner @{USER_HOME_D}/**/doxygen/{,**}			rw,
   
   # TEMP -----------------------------------------------
   owner /tmp/wxbf@{TMP6}				rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
@@ -136,8 +141,12 @@ profile codeblocks_shell {
   # EXECUTABLES ----------------------------------------
   @{shell}						mr,
   /bin/uname@{t_user}					Px,	# sys-apps/coreutils
+  /usr/bin/lsb_release@{t_user}				Px,	# sys-apps/lsb-release
   /usr/bin/g++@{t_user}					Cx,	# sys-devel/gcc
   /usr/lib{,32,64}/llvm/[0-9]*/bin/clang-[0-9]*@{t_user} Cx,	# sys-devel/clang
+  
+  # READS/WRITES ---------------------------------------
+  /usr/share/mythes/{,**}				r,
   
   # TEMP -----------------------------------------------
   owner /tmp/Code::Blocks-@{USER}			w,
@@ -165,11 +174,14 @@ profile codeblocks_shell {
     /etc/ld.so.conf					r,
     /etc/ld.so.conf.d/{,*}				r,
     /usr/libexec/gcc/@{CHOST}/[0-9]*/*.so.[0-9]*	rm,	# sys-devel/gcc
+    /usr/share/mythes/{,**}				r,
     /usr/share/gcc-data/@{CHOST}/[0-9]*/locale/**.mo	r,	# sys-devel/gcc
     /usr/share/binutils-data/@{CHOST}/[0-9]*/locale/**.mo r,	# sys-devel/binutils
     
     # TEMP ---------------------------------------------
     owner /tmp/cc*.{s,c,res,o,le,ld}			rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+    owner /tmp/Code::Blocks-@{USER}			rw,
+    owner /tmp/@{TMP6}					rw,
   }
   
   profile clang /usr/lib{,32,64}/llvm/[0-9]*/bin/clang-[0-9]*@{t_user} {
@@ -192,6 +204,11 @@ profile codeblocks_shell {
     /etc/ld.so.conf.d/{,*}				r,
     /etc/lsb-release					r,
     /etc/env.d/gcc/config-@{CHOST}			r,
+    /usr/share/mythes/{,**}				r,
     /usr/share/binutils-data/@{CHOST}/[0-9]*/locale/**.mo r,	# sys-devel/binutils
+    
+    # TEMP ---------------------------------------------
+    owner /tmp/Code::Blocks-@{USER}			rw,
+    owner /tmp/@{TMP6}					rw,
   }
 }

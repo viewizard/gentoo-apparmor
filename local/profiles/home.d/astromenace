@@ -8,7 +8,7 @@
 #
 # ------------------------------------------------------------------
 
-profile local.home.astromenace@{p_user} /home/**/AstroMenace/astromenace@{t_user} {
+profile local.home.astromenace@{p_user} /home/**/astromenace@{t_user} {
   #include <abstractions/base>
   #include <abstractions-user/freedesktop.org>
   #include <abstractions-user/fonts>
@@ -35,14 +35,16 @@ profile local.home.astromenace@{p_user} /home/**/AstroMenace/astromenace@{t_user
   @{SYS_D}/devices/**/input@{input}/capabilities/*	r,
   
   # EXECUTABLES ----------------------------------------
-  @{USER_HOME_D}/**/AstroMenace/astromenace		mr,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
+  @{USER_HOME_D}/**/astromenace				mr,	# IMA! Требуется IMA digsig xattr или исключения по fowner в правилах IMA.
   
   # USERS ----------------------------------------------
-  owner @{USER_HOME_D}/**/AstroMenace/{,**}		r,
+  owner @{USER_HOME_D}/**/{,**}				r,
   owner @{USER_HOME_D}/.config/astromenace/{,*}		rw,
-  owner @{USER_HOME_D}/**/AstroMenace/gamedata.vfs	rw,	# Создание VFS файла.
+  owner @{USER_HOME_D}/**/gamedata.vfs	rw,		# Создание VFS файла.
   owner @{USER_HOME_D}/*/AstroMenaceScreenshot[0-9]*.bmp rw,	# Создание скриншота
+  owner @{USER_HOME_D}/*/AstroMenace/gmon.out		rw,	# дебагер в Code::blocks
   
   # READS/WRITES ---------------------------------------
+  /usr/share/openal/{,**}				r,
   /run/udev/data/[a-z]*[0-9]*:[0-9]*			r,
 }
