@@ -26,6 +26,7 @@ profile hexchat@{p_user} /usr/bin/hexchat@{t_user} {
   #include <abstractions/dbus/gvfs>
   #include <abstractions/dbus/notifications>
   #include <abstractions/dbus/session-bind>
+  #include <abstractions-user/profile_transitions/allow-strict-web>
   
   # NETWORK --------------------------------------------
   network netlink raw,
@@ -37,6 +38,7 @@ profile hexchat@{p_user} /usr/bin/hexchat@{t_user} {
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
+  @{PROC_D}/@{pid}/fd/					r,	# IMPROVE! fsuid=$USER ouid=$USER,root
   
   # EXECUTABLES ----------------------------------------
   /usr/bin/hexchat					mr,
@@ -60,5 +62,8 @@ profile hexchat@{p_user} /usr/bin/hexchat@{t_user} {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/sox					mr,
+    
+    # USERS ----------------------------------------------
+    /home/viewizard/.config/hexchat/sounds/{,*}		r,
   }
 }
