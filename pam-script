@@ -10,7 +10,7 @@
 
 #include <local/tunables.d/>
 
-profile pam-script@{p_root} /etc/security/pam-script/pam_script*@{t_root} {
+profile pam-script@{p_mixed} /etc/security/pam-script/pam_script*{@{t_root},@{t_user}} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
   

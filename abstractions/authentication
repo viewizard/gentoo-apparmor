@@ -14,7 +14,7 @@
 #include <abstractions/p11-kit>					# p11-kit (PKCS#11 modules configuration)
 
 # EXECUTABLES ------------------------------------------
-/etc/security/pam-script/pam_script*@{t_root}		Px,	# sys-auth/pam-script
+/etc/security/pam-script/pam_script*{@{t_root},@{t_user}} Px,	# sys-auth/pam-script
 
 # READS/WRITES -----------------------------------------
 /etc/pam.d/*						r,	# sys-auth/pambase

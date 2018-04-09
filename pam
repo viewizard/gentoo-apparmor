@@ -13,6 +13,10 @@
 profile pam.unix_chkpwd@{p_user} /sbin/unix_chkpwd@{t_user} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
+  #include <abstractions/authentication>
+  
+  # CAPABILITIES ---------------------------------------
+  capability dac_override,
   
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
