@@ -105,9 +105,6 @@ profile xfce4-panel.wrapper-1.0@{p_user} /usr/lib{,32,64}/xfce4/panel/wrapper-1.
   #include <abstractions-user/gtk>
   #include <abstractions-user/audio>
   #include <abstractions/nameservice>
-  #include <abstractions-user/fs/access-by-users-preset-rwk>	# xfce-extra/xfce4-screenshooter
-  #include <abstractions/fs/deny-by-pattern-internet>		# xfce-extra/xfce4-screenshooter
-  #include <abstractions/fs/deny-private-strict>		# xfce-extra/xfce4-screenshooter
   #include <abstractions-user/profile_transitions/allow-list>
   #include <local/profile_blocks/xfce4-panel.d/>
   
@@ -150,36 +147,22 @@ profile xfce4-panel.wrapper-1.0@{p_user} /usr/lib{,32,64}/xfce4/panel/wrapper-1.
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/panel/wrapper-1.0		m,
-  /usr/bin/xflock4@{t_user}				Px,	# xfce-base/xfce4-session
-  /usr/bin/alock@{t_user}				Px,	# x11-misc/alock
-  /usr/bin/passwd.sh@{t_user}				Px,	# sys-apps/shadow
   /usr/bin/xfce4-notes-settings@{t_user}		Px,	# xfce-extra/xfce4-notes-plugin
   
   # READS/WRITES ---------------------------------------
-  /etc/xdg/menus/**.menu				r,
-  /etc/xdg/menus/applications-merged/			r,
   /usr/share/alacarte/*					r,	# x11-misc/alacarte
-  /usr/share/desktop-directories/{,*.directory}		r,
   /usr/share/xfce4/weather/icons/{,**.info,**.png}	r,	# xfce-extra/xfce4-weather-plugin
   /usr/share/xfce4-notes-plugin/{,**}			r,	# xfce-extra/xfce4-notes-plugin
   
   # USERS ----------------------------------------------
-  owner @{USER_HOME_D}/.face				r,
   owner @{USER_HOME_D}/@{XDG_DESKTOP_DIR}/*.desktop	rw,
-  owner @{USER_HOME_D}/.config/menus/**.menu		rw,
-  owner @{USER_HOME_D}/.config/menus/applications-merged/ r,
   owner @{USER_HOME_D}/.config/xfce4/panel/{,**}	rw,
   owner @{USER_HOME_D}/.config/xfce4/xfce4-notes.gtkrc*	rw,	# xfce-extra/xfce4-notes-plugin
   owner @{USER_HOME_D}/.config/xfce4/help.rc		r,
   owner @{USER_HOME_CACHE_D}/xfce4/			rw,
   owner @{USER_HOME_CACHE_D}/xfce4/weather/{,*}		rw,	# xfce-extra/xfce4-weather-plugin
   owner @{USER_HOME_D}/.local/share/applications/**.desktop rw,
-  owner @{USER_HOME_D}/.local/share/desktop-directories/{,*.directory} r,
   owner @{USER_HOME_D}/.local/share/notes/{,**}		rw,
-  
-  # TEMP -----------------------------------------------
-  owner /tmp/@{TMP_XFCE4_SCR}				rw,	# xfce-extra/xfce4-screenshooter
-  audit owner /tmp/gdkpixbuf-xpm-tmp.*			rw,	# xfce-extra/xfce4-whiskermenu-plugin	# FIX ME! audit 25.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
 }
 
 profile xfce4-panel.wrapper-2.0@{p_user} /usr/lib{,32,64}/xfce4/panel/wrapper-2.0@{t_user} {
@@ -189,6 +172,10 @@ profile xfce4-panel.wrapper-2.0@{p_user} /usr/lib{,32,64}/xfce4/panel/wrapper-2.
   #include <abstractions-user/X>
   #include <abstractions-user/gtk>
   #include <abstractions-user/audio>
+  #include <abstractions/nameservice>
+  #include <abstractions/sensors>				# xfce-extra/xfce4-sensors-plugin
+  #include <abstractions/unix/gvfsd-trash>			# xfce-extra/xfce4-screenshooter
+  #include <abstractions/unix/gvfsd-network>			# xfce-extra/xfce4-screenshooter
   #include <abstractions/dbus/system-strict>
   #include <abstractions/dbus/session-strict>
   #include <abstractions/dbus/accessibility-strict>
@@ -199,7 +186,11 @@ profile xfce4-panel.wrapper-2.0@{p_user} /usr/lib{,32,64}/xfce4/panel/wrapper-2.
   #include <abstractions/dbus/upower>
   #include <abstractions/dbus/notifications>
   #include <abstractions/dbus/mpris2-client>			# xfce-extra/xfce4-pulseaudio-plugin
+  #include <abstractions-user/dconf>				# xfce-extra/xfce4-screenshooter
   #include <abstractions-user/profile_transitions/allow-list>
+  #include <abstractions-user/fs/access-by-users-preset-rwk>	# xfce-extra/xfce4-screenshooter
+  #include <abstractions/fs/deny-by-pattern-internet>		# xfce-extra/xfce4-screenshooter
+  #include <abstractions/fs/deny-private-strict>		# xfce-extra/xfce4-screenshooter
   #include <local/profile_blocks/xfce4-panel.d/>
   
   # DBUS -----------------------------------------------
@@ -228,16 +219,30 @@ profile xfce4-panel.wrapper-2.0@{p_user} /usr/lib{,32,64}/xfce4/panel/wrapper-2.
   
   # EXECUTABLES ----------------------------------------
   /usr/lib{,32,64}/xfce4/panel/wrapper-2.0		m,
+  /usr/bin/xflock4@{t_user}				Px,	# xfce-base/xfce4-session
+  /usr/bin/alock@{t_user}				Px,	# x11-misc/alock
+  /usr/bin/passwd.sh@{t_user}				Px,	# sys-apps/shadow
   /usr/sbin/xfpm-power-backlight-helper@{t_user}	Px,	# xfce-extra/xfce4-power-manager
   
   # READS/WRITES ---------------------------------------
+  /etc/xdg/menus/**.menu				r,	# xfce-extra/xfce4-whiskermenu-plugin
+  /etc/xdg/menus/applications-merged/			r,	# xfce-extra/xfce4-whiskermenu-plugin
   /etc/xdg/xfce4/panel/{,**}				r,
+  /usr/share/desktop-directories/{,*.directory}		r,	# xfce-extra/xfce4-whiskermenu-plugin
   /usr/share/xfce4/xkb/flags/*.svg			r,	# xfce-extra/xfce4-xkb-plugin
   
   # USERS ----------------------------------------------
+  owner @{USER_HOME_D}/.face				r,	# xfce-extra/xfce4-whiskermenu-plugin
+  owner @{USER_HOME_D}/.config/menus/**.menu		rw,	# xfce-extra/xfce4-whiskermenu-plugin
+  owner @{USER_HOME_D}/.config/menus/applications-merged/ r,	# xfce-extra/xfce4-whiskermenu-plugin
   owner @{USER_HOME_D}/.config/xfce4/help.rc		r,
   owner @{USER_HOME_D}/.config/xfce4/panel/{,**}	rw,
   owner @{USER_HOME_CACHE_D}/xfce4/notifyd/{,**}	rw,	# xfce-extra/xfce4-notifyd
   owner @{USER_HOME_CACHE_D}/xfce4/clipman/{,*}		rw,	# xfce-extra/xfce4-clipman-plugin
+  owner @{USER_HOME_D}/.local/share/desktop-directories/{,*.directory} r,	# xfce-extra/xfce4-whiskermenu-plugin
   owner @{USER_HOME_D}/.local/share/gvfs-metadata/root{,-@{TMP8}.log} r,	# xfce-extra/xfce4-notifyd, gnome-base/gvfs
+  
+    # TEMP -----------------------------------------------
+  audit owner /tmp/@{TMP_XFCE4_SCR}			rw,	# xfce-extra/xfce4-screenshooter	# FIX ME! audit 10.03.2018
+  audit owner /tmp/gdkpixbuf-xpm-tmp.*			rw,	# xfce-extra/xfce4-whiskermenu-plugin	# FIX ME! audit 25.11.2017	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
 }
