@@ -1,0 +1,82 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2016-2018 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <local/tunables.d/>
+
+# предустановка для abstractions/fs/access-by-user-preset-rwk
+@{USERS_DIR_rwk}="[^.]**"
+@{USERS_FILE_rwk}="**"
+
+profile openshot@{p_user} @{PYTHON2_EXEC}/openshot@{t_user} {
+  #include <abstractions/base>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/gtk>
+  #include <abstractions/python>
+  #include <abstractions-user/audio>
+  #include <abstractions-user/video>
+  #include <abstractions-user/X>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/accessibility-strict>
+  #include <abstractions/dbus/at-spi>
+  #include <abstractions/dbus/gvfs>
+  #include <abstractions/nameservice>
+  #include <abstractions-user/fs/access-by-users-preset-rwk>
+  #include <abstractions/fs/deny-by-pattern-internet>
+  #include <abstractions-user/xdg-open>
+  
+  # NETWORK --------------------------------------------
+#  network netlink raw,
+  network inet dgram,
+  network inet6 dgram,
+#  network inet stream,
+#  network inet6 stream,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  owner @{PROC_D}/@{pid}/mounts				r,
+  owner @{PROC_D}/@{pid}/cmdline			r,
+  
+  # EXECUTABLES ----------------------------------------
+  /bin/env						mr,
+  @{shell}@{t_user}					Cx,
+  @{PYTHON_BIN}@{t_user}				ix,
+  /sbin/ldconfig@{t_user}				Px,	# sys-libs/glibc
+  
+  # READS/WRITES ---------------------------------------
+  /usr/lib{,32,64}/					r,
+  /usr/lib{,32,64}frei0r-1/{,**}			r,
+  /usr/lib{,32,64}/frei0r-1/*.so			m,
+  /usr/share/mlt/{,**}					r,
+  
+  # USERS ----------------------------------------------
+  owner @{USER_HOME_D}/.openshot/{,**}			rw,
+  owner @{USER_HOME_D}/.openshot/{,**/}*		k,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/tmp@{TMP6}					rw,	# IMPROVE! Потом работать с xattr, чтобы ограничить только на процесс.
+  
+    profile shell @{shell}@{t_user} {
+    #include <abstractions/base>
+    
+    # PSEUDO -------------------------------------------
+    /dev/tty						rw,
+    /dev/tty[0-9]*					rw,
+    /dev/pts/[0-9]*					rw,
+    
+    # EXECUTABLES --------------------------------------
+    @{shell}						mr,
+    /bin/uname@{t_user}					Px,	# sys-apps/coreutils
+    
+    # DENY INHERIT -------------------------------------
+    deny /usr/share/pyfa/{,**}				r,
+  }
+}

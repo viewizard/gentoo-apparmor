@@ -66,6 +66,7 @@ profile vokoscreen@{p_user} /usr/bin/vokoscreen@{t_user} {
   
   # READS/WRITES ---------------------------------------
   /etc/os-release					r,	# sys-apps/baselayout
+  owner /**/.vokoscreen-recording/			rw,
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_D}/.config/vokoscreen/{,**}		rw,
@@ -88,6 +89,9 @@ profile vokoscreen@{p_user} /usr/bin/vokoscreen@{t_user} {
     
     # EXECUTABLES --------------------------------------
     /usr/bin/ffmpeg					mr,
+    
+    # READS/WRITES -------------------------------------
+    owner /**/.vokoscreen-recording/{,*}		rw,
     
     # USERS --------------------------------------------
     owner @{USER_HOME_D}/.config/vokoscreen/ffmpeg-*.log w,

@@ -1,0 +1,66 @@
+# ------------------------------------------------------------------
+#
+#  Copyright (C) 2017,2018 Mikhail Kurinnoi
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of version 2 of the GNU General Public
+#  License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <local/tunables.d/>
+
+# предустановка для abstractions/fs/access-by-user-preset-rk
+
+profile bitcoin-qt@{p_user} /usr/bin/bitcoin-qt@{t_user} {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions-user/freedesktop.org>
+  #include <abstractions-user/fonts>
+  #include <abstractions-user/video>
+  #include <abstractions-user/qt>
+  #include <abstractions-user/X>
+  #include <abstractions/dbus/system-strict>
+  #include <abstractions/dbus/session-strict>
+  #include <abstractions/dbus/accessibility-strict>
+  #include <abstractions/dbus/at-spi>
+  #include <abstractions/dbus/gvfs>
+  #include <abstractions/dbus/notifications>
+  #include <abstractions/dbus/networkmanager>
+  
+    # DBUS -----------------------------------------------
+  dbus send
+  	bus=session
+  	path="/"
+  	interface="org.freedesktop.DBus.Introspectable"
+  	member=Introspect
+  	peer=(name="net.sourceforge.mumble.mumble",label=@{profile_name}),
+  
+  # NETWORK --------------------------------------------
+  network netlink raw,
+  network inet stream,
+  network inet6 stream,
+  network inet dgram,
+  network inet6 dgram,
+  
+  # PSEUDO ---------------------------------------------
+  /dev/tty[0-9]*					rw,
+  /dev/pts/[0-9]*					rw,
+  @{PROC_D}/@{pid}/cmdline				r,	# IMPROVE! fsuid=$USER ouid=$USER,root
+  
+  # EXECUTABLES ----------------------------------------
+  /usr/bin/bitcoin-qt					mr,
+  
+  # READS/WRITES ---------------------------------------
+  /media/{,**/}						r,	# FIX ME!
+  /media/sdb2/.bitcoin/{,**}				rw,	# FIX ME!
+  /media/sdb2/.bitcoin/{,**/}*				k,	# FIX ME!
+  
+  # USERS ----------------------------------------------
+  owner @{USER_HOME_D}/**.dat				rw,	# FIX ME! сохранения бэкапа валлета
+  owner @{USER_HOME_D}/.config/Bitcoin/{,**}		rw,
+  owner @{USER_HOME_D}/.config/Bitcoin/{,**/}*		k,
+  
+  # TEMP -----------------------------------------------
+  owner /tmp/BitcoinQt*					rw,
+}

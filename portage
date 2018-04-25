@@ -105,6 +105,9 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
   /var/{,**/}*						k,	# директорий и файлов .keep*) с {*^}/{**^}.
   audit deny /usr/local/**				w,	# Исключаем работу с /usr/local/.
   
+  # USERS ----------------------------------------------
+  @{ROOT_HOME_D}/.gconfd/{,**}				rw,	# будет создавать в chroot-е сандбокса
+  
   # TEMP -----------------------------------------------
   /tmp/*						rwk,	# IMPROVE! Ограничить (fsuid=0,250 && ouid=0,250).
   								# IMPROVE! (?) Потом работать с xattr, чтобы ограничить только на процесс.
@@ -362,6 +365,7 @@ profile portage.emerge@{p_root} @{PYTHON_EXEC}/emerge@{t_root} {
     audit deny /usr/local/**				w,	# Исключаем работу с /usr/local/.
     
     # USERS --------------------------------------------
+    @{ROOT_HOME_D}/.xauth*				rw,	# будет создавать в chroot-е сандбокса
     owner @{ROOT_HOME_D}/.wget-hsts			rw,
     
     # TEMP ---------------------------------------------
