@@ -38,6 +38,7 @@ profile git@{p_user} /usr/{bin,libexec/git-core}/git@{t_user} {
   /bin/nano@{t_user}					Cx,	# app-editors/nano
   /usr/bin/less@{t_user}				Cx,	# sys-apps/less
   /usr/bin/ssh@{t_user}					Px,	# net-misc/openssh
+  /usr/bin/gpg{,2}@{t_user}				Px,	# app-crypt/gnupg
   /usr/libexec/git-core/git-remote-http{,s}@{t_user}	Cx,
   
   # READS/WRITES ---------------------------------------
@@ -50,6 +51,7 @@ profile git@{p_user} /usr/{bin,libexec/git-core}/git@{t_user} {
   /usr/share/git-core/**				r,
   
   # USERS ----------------------------------------------
+  owner @{USER_HOME_D}/.gitconfig.lock			rwk,
   owner @{USER_HOME_D}/.gitconfig			rw,
   
   # TEMP -----------------------------------------------

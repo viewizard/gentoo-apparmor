@@ -23,12 +23,13 @@ profile gnupg.gpg-agent@{p_user} /usr/bin/gpg-agent@{t_user} {
   /usr/bin/pinentry-*@{t_user}				Px,	# app-crypt/pinentry
   
   # READS/WRITES ---------------------------------------
+  /usr/share/gnupg/{,**}				r,
   owner /run/user/@{UID}/gnupg/{,**}			rw,
   /var/lib/gentoo/gkeys/keyrings/gentoo/release/**	rw,
   
   # USERS ----------------------------------------------
   owner @{USER_HOME_CACHE_D}/gpg-agent-info		rw,
-  owner @{USER_HOME_D}/.gnupg/private-keys-*/{,**}	w,
+  owner @{USER_HOME_D}/.gnupg/private-keys-*/{,**}	rw,
 }
 
 profile gnupg.gpg@{p_user} /usr/bin/gpg{,2}@{t_user} {

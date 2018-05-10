@@ -151,7 +151,7 @@ profile wine.wine-preloader@{p_user} /usr/{,lib{,32,64}/wine-{any,d3d9,staging,v
   # PSEUDO ---------------------------------------------
   /dev/tty[0-9]*					rw,
   /dev/pts/[0-9]*					rw,
-  owner /dev/shm/#@{pids}				rw,	# очень похоже на внутренний PID в wine
+  owner /dev/shm/#*					rw,	# очень похоже на внутренний PID в wine
   								# (до 6 символов, только цифры), с PID процесса
   								# системы не совпадает.
   @{SYS_D}/bus/						r,
