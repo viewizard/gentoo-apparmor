@@ -116,8 +116,8 @@ profile cups.daemon@{p_mixed} /usr/libexec/cups/daemon/*{@{t_root},@{t_lp}} {
   /usr/share/cups/{,**}					r,
   /usr/share/ppd/{,**}					r,
   /usr/libexec/cups/{backend,driver}/			r,
-  /var/spool/cups/{,**}					wr,
-  /var/cache/cups/{,**}					wr,
+  /var/spool/cups/{,**}					rw,
+  /var/cache/cups/{,**}					rw,
 }
 
 profile cups.driver@{p_mixed} /usr/libexec/cups/driver/*{@{t_root},@{t_lp}} {
@@ -130,7 +130,7 @@ profile cups.driver@{p_mixed} /usr/libexec/cups/driver/*{@{t_root},@{t_lp}} {
   /usr/share/gutenprint/{,**}				r,	# net-print/gutenprint
   /usr/lib{,32,64}/gutenprint/{,**}			r,	# net-print/gutenprint
   /usr/lib{,32,64}/gutenprint/[0-9]*/modules/*.so	m,	# net-print/gutenprint
-  /var/spool/cups/{,**}					wr,
+  /var/spool/cups/{,**}					rw,
 }
 
 profile cups.cgi-bin@{p_mixed} /usr/libexec/cups/cgi-bin/*{@{t_root},@{t_lp}} {
@@ -149,7 +149,8 @@ profile cups.cgi-bin@{p_mixed} /usr/libexec/cups/cgi-bin/*{@{t_root},@{t_lp}} {
   /usr/share/cups/{,**}					r,
   /run/cups/certs/{,**}					r,
   /run/cups/cups.sock					rw,
-  /var/cache/cups/*					r,
+  /var/cache/cups/{,**}					rw,
+  /var/cache/cups/{,**/}*				k,
   /var/spool/cups/{,**}					r,
   
   # TEMP -----------------------------------------------
@@ -243,6 +244,7 @@ profile cups.init.d@{p_root} /etc/init.d/cupsd@{t_root} flags=(attach_disconnect
   /etc/{conf,init}.d/cupsd				r,
   /run/cups/						w,
   /run/cups/certs/					w,
+  /run/cupsd.pid					rw,
   /var/cache/cups/					w,
   
   profile shell @{shell}@{t_root} {
