@@ -1,0 +1,276 @@
+Добавляем поддержку AppArmor в initramfs:
+* сохраняем набор профилей в initramfs
+* загружаем набор профилей перед переключением на реальный рут
+
+Signed-off-by: Mikhail Kurinnoi <viewizard@viewizard.com>
+
+--- a/genkernel.conf
++++ b/genkernel.conf
+@@ -113,6 +113,14 @@
+ #EVM_KMK_FILE="/etc/keys/evm-kmk"
+ #EVM_KEY_FILE="/etc/keys/evm-key"
+ 
++# Include AppArmor profiles and binaries in initramfs.
++#APPARMOR="yes"
++# Include only binary cache and lock policy at boot.
++# You can also lock policy after regular profiles loading with kernel cmd "apparmorlock=1".
++#APPARMOR_BINARY_LOCK="yes"
++# Specify a custom AppArmor profile directory.
++#APPARMOR_PROFILE_DIR="/etc/apparmor.d"
++
+ # Add Multipath support.
+ #MULTIPATH="no"
+ 
+--- a/gen_initramfs.sh
++++ b/gen_initramfs.sh
+@@ -959,6 +959,46 @@
+     rm -rf "${TEMP}/initramfs-evm-temp" > /dev/null
+ }
+ 
++append_apparmor() {
++    if [ -d "${TEMP}/initramfs-apparmor-temp" ]
++    then
++        rm -r "${TEMP}/initramfs-apparmor-temp"
++    fi
++    mkdir -p "${TEMP}/initramfs-apparmor-temp/etc/apparmor.d/"
++
++    print_info 1 "Including AppArmor profiles and binary"
++    
++    if [[ "${APPARMOR_BINARY_LOCK}" == "yes" ]]; then
++        if [ -n $APPARMOR_PROFILE_DIR ]; then APPARMOR_PROFILE_DIR="/etc/apparmor.d"; fi
++        if [ -d "${APPARMOR_PROFILE_DIR}" ]; then
++            cp -r "${APPARMOR_PROFILE_DIR}/cache" "${TEMP}/initramfs-apparmor-temp/etc/apparmor.d/" 2> /dev/null \
++                    || gen_die "Could not copy directory ${APPARMOR_PROFILE_DIR}/cache"
++            rm -r "${TEMP}/initramfs-apparmor-temp/etc/apparmor.d/cache/.features" 2> /dev/null
++           rm -r "${TEMP}/initramfs-apparmor-temp/etc/apparmor.d/cache/.gitignore" 2> /dev/null
++        else
++            gen_die "Could not find directory ${APPARMOR_PROFILE_DIR}/cache"
++        fi
++    else
++        if [ -n $APPARMOR_PROFILE_DIR ]; then APPARMOR_PROFILE_DIR="/etc/apparmor.d"; fi
++        if [ -d "${APPARMOR_PROFILE_DIR}" ]; then
++            cp -r "${APPARMOR_PROFILE_DIR}" "${TEMP}/initramfs-apparmor-temp/etc/" 2> /dev/null \
++                    || gen_die "Could not copy directory ${APPARMOR_PROFILE_DIR}"
++            rm -r "${TEMP}/initramfs-apparmor-temp/etc/apparmor.d/.git" 2> /dev/null
++        else
++            gen_die "Could not find directory ${APPARMOR_PROFILE_DIR}"
++        fi
++    fi
++    
++    copy_binaries "${TEMP}"/initramfs-apparmor-temp/ /bin/grep /usr/bin/test /sbin/apparmor_parser
++    
++    cd "${TEMP}/initramfs-apparmor-temp/"
++    log_future_cpio_content
++    find . -print | cpio ${CPIO_ARGS} --append -F "${CPIO}" \
++            || gen_die "compressing apparmor cpio"
++    cd "${TEMP}"
++    rm -rf "${TEMP}/initramfs-apparmor-temp" > /dev/null
++}
++
+ # check for static linked file with objdump
+ is_static() {
+     LANG="C" LC_ALL="C" objdump -T $1 2>&1 | grep "not a dynamic object" > /dev/null
+@@ -1102,6 +1142,7 @@
+     append_data 'gpg' "${GPG}"
+     append_data 'ima' "${IMA}"
+     append_data 'evm' "${EVM}"
++    append_data 'apparmor' "${APPARMOR}"
+ 
+     if [ "${RAMDISKMODULES}" = '1' ]
+     then
+--- a/defaults/initrd.scripts
++++ b/defaults/initrd.scripts
+@@ -17,3 +17,4 @@
+ . /etc/initrd.d/00-sysctl.sh
+ . /etc/initrd.d/00-ima.sh
+ . /etc/initrd.d/00-evm.sh
++. /etc/initrd.d/00-apparmor.sh
+--- a/defaults/linuxrc
++++ b/defaults/linuxrc
+@@ -265,6 +265,9 @@
+         printk_ratelimit_burst=*)
+             PRINT_RATELIMIT_BURST=${x#*=}
+         ;;
++        apparmorlock=*)
++            APPARMORLOCK=${x#*=}
++        ;;
+     esac
+ done
+ 
+@@ -334,6 +337,8 @@
+ # Re-run this here, which makes sure that it at least had a chance
+ # to be called.
+ ensure_initramfs_mounts
++
++start_apparmor
+ 
+ splashcmd hasroot "${NEW_ROOT}"
+ 
+--- a/defaults/initrd.d/00-apparmor.sh
++++ b/defaults/initrd.d/00-apparmor.sh
+@@ -0,0 +1,165 @@
++#!/bin/sh
++
++. /etc/initrd.d/00-common.sh
++
++SECURITYFS=/sys/kernel/security
++PARSER=/sbin/apparmor_parser
++PROFILE_DIR=/etc/apparmor.d
++ABSTRACTIONS="-I${PROFILE_DIR}"
++APPARMORLOCK=0
++
++mount_securityfs() {
++	if grep -q securityfs /proc/filesystems ; then
++		mount -t securityfs securityfs "${SECURITYFS}" || bad_msg "Failed to mount ${SECURITYFS}"
++		return $?
++	fi
++	return 0
++}
++
++is_securityfs_mounted() {
++	test -d ${SECURITYFS} -a -d /sys/fs/cgroup/systemd || grep -q securityfs /proc/filesystems && grep -q securityfs /proc/mounts
++	return $?
++}
++
++force_complain() {
++	local profile=$1
++	local link="${PROFILE_DIR}/force-complain/`basename ${profile}`"
++	if [ -e "$link" ] ; then
++		return 0
++	fi
++	return 1
++}
++
++skip_profile() {
++	local profile=$1
++	if [ -e "${PROFILE_DIR}/disable/`basename ${profile}`" ] ; then
++		return 1
++	fi
++	return 0
++}
++
++parse_profiles() {
++	if [ ! -f "$PARSER" ]; then
++		bad_msg "AppArmor parser not found"
++		return 1
++	fi
++
++	if [ ! -d "$PROFILE_DIR" ]; then
++		bad_msg "Profile directory not found"
++		return 1
++	fi
++
++	if [ -z "$(ls $PROFILE_DIR/)" ]; then
++		bad_msg "No profiles found"
++		return 1
++	fi
++
++	# считаем кол-во файлов
++	numfiles=0
++	current_file=0
++	for profile in $PROFILE_DIR/*; do
++		if [ -f "${profile}" ] ; then numfiles=$(( $numfiles + 1 )); fi
++	done
++
++	# нет обычных профилей - загружаем бинарные кэши и блокируем работу с профилями
++	if [[ "$numfiles" == "0" ]] && [ -d "$PROFILE_DIR/cache/" ]; then
++		for profile in $PROFILE_DIR/cache/*; do
++			if [ -f "${profile}" ] && [ "$PROFILE_DIR/cache/0_default" != "${profile}" ] ; then
++				$PARSER "--add" "--quiet" "--binary" "$profile" > /dev/null
++			fi
++		done
++		# Профиль 0_default меняем последним (используем "--replace").
++		if [ -f "$PROFILE_DIR/cache/0_default" ] ; then
++			$PARSER "--replace" "--quiet" "--binary" "$PROFILE_DIR/cache/0_default" > /dev/null
++		fi
++		APPARMORLOCK=1
++		return 0
++	fi
++
++	echo -n "Starting AppArmor ...     "
++
++	for profile in $PROFILE_DIR/*; do
++		skip_profile "${profile}"
++		skip=$?
++
++		if [ -f "${profile}" ] ; then
++			current_file=$(( $current_file + 1 ))
++			statustext=$(( $current_file*100/$numfiles ))
++			backspace="\b" # мы используем символ %, учитываем это сразу
++			loopcount=${#statustext}
++			while [ $loopcount -gt 0 ]; do
++				backspace="${backspace}\b"
++				loopcount=$(( $loopcount - 1 ))
++			done
++			echo -ne "${backspace}${statustext}%"
++		fi
++
++		if [ "$skip" -eq 1 ] ; then
++			#echo "$profile skiped"
++			continue
++		elif [ "$skip" -ne 0 ]; then
++			continue
++		fi
++		if [ -f "${profile}" ] && [ "$PROFILE_DIR/0_default" != "${profile}" ] ; then
++			COMPLAIN=""
++			local cache="${PROFILE_DIR}/cache/`basename ${profile}`"
++			if force_complain "${profile}" ; then
++				COMPLAIN="-C"
++				cache=""
++			fi
++			
++			if [ -f "${cache}" ] ; then
++				$PARSER "--add" "--quiet" "--binary" "$cache" > /dev/null
++			else
++				$PARSER $ABSTRACTIONS "--add" "--quiet" $COMPLAIN "$profile" > /dev/null
++			fi
++			if [ $? -ne 0 ]; then
++				echo "$profile failed to load"
++			fi
++		fi
++	done
++	# Профиль 0_default меняем последним (используем "--replace").
++	if [ -f "$PROFILE_DIR/0_default" ] ; then
++		skip_profile "$PROFILE_DIR/0_default"
++		skip=$?
++
++		if [ "$skip" -eq 1 ] ; then
++			echo ""
++			return 0
++		elif [ "$skip" -ne 0 ]; then
++			echo ""
++			return 0
++		fi
++		COMPLAIN=""
++		local cache="${PROFILE_DIR}/cache/0_default"
++		if force_complain "$PROFILE_DIR/0_default" ; then
++			COMPLAIN="-C"
++			cache=""
++		fi
++		
++		if [ -f "${cache}" ] ; then
++			$PARSER "--replace" "--quiet" "--binary" "$cache" > /dev/null
++		else
++			$PARSER $ABSTRACTIONS "--replace" "--quiet" $COMPLAIN "$PROFILE_DIR/0_default" > /dev/null
++		fi
++		if [ $? -ne 0 ]; then
++			echo "$profile failed to load"
++		fi
++	fi
++	echo ""
++	return 0
++}
++
++start_apparmor() {
++	if [ -d "${PROFILE_DIR}" ]; then
++		if ! is_securityfs_mounted ; then
++			mount_securityfs
++		fi
++		parse_profiles
++		umount "${SECURITYFS}"
++		
++		if [[ "${APPARMORLOCK}" != "0" ]]; then
++			echo 1 > /sys/module/apparmor/parameters/lock_policy
++		fi
++	fi
++}

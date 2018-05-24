@@ -1,0 +1,42 @@
+Добавляем возможность установки параметров printk через параметры загрузки ядра.
+/proc/sys/kernel/printk_ratelimit
+/proc/sys/kernel/printk_ratelimit_burst 
+
+Signed-off-by: Mikhail Kurinnoi <viewizard@viewizard.com>
+
+--- a/defaults/initrd.d/00-sysctl.sh
++++ b/defaults/initrd.d/00-sysctl.sh
+@@ -0,0 +1,6 @@
++#!/bin/sh
++
++setup_sysctl() {
++    [ -n "${PRINT_RATELIMIT}" ] && echo "${PRINT_RATELIMIT}" > /proc/sys/kernel/printk_ratelimit
++    [ -n "${PRINT_RATELIMIT_BURST}" ] && echo "${PRINT_RATELIMIT_BURST}" > /proc/sys/kernel/printk_ratelimit_burst
++}
+--- a/defaults/initrd.scripts
++++ b/defaults/initrd.scripts
+@@ -14,3 +14,4 @@
+ . /etc/initrd.d/00-suspend.sh
+ . /etc/initrd.d/00-iscsi.sh
+ . /etc/initrd.d/00-rootdev.sh
++. /etc/initrd.d/00-sysctl.sh
+--- a/defaults/linuxrc
++++ b/defaults/linuxrc
+@@ -259,10 +259,17 @@
+         overlayfs)
+             USE_OVERLAYFS=1
+         ;;
++        printk_ratelimit=*)
++            PRINT_RATELIMIT=${x#*=}
++        ;;
++        printk_ratelimit_burst=*)
++            PRINT_RATELIMIT_BURST=${x#*=}
++        ;;
+     esac
+ done
+ 
+ quiet_kmsg
++setup_sysctl
+ 
+ maybe_setup_ld_cache
+ 

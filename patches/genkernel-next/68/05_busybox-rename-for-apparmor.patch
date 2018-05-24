@@ -1,0 +1,35 @@
+Переименовываем busybox для лучшей поддержки confined init в AppArmor.
+
+Signed-off-by: Mikhail Kurinnoi <viewizard@viewizard.com>
+
+--- a/gen_initramfs.sh
++++ b/gen_initramfs.sh
+@@ -142,7 +142,9 @@
+     mkdir -p "${TEMP}/initramfs-busybox-temp/bin/" 
+     tar -xjf "${BUSYBOX_BINCACHE}" -C "${TEMP}/initramfs-busybox-temp/bin" busybox ||
+         gen_die 'Could not extract busybox bincache!'
+-    chmod +x "${TEMP}/initramfs-busybox-temp/bin/busybox"
++    mv "${TEMP}/initramfs-busybox-temp/bin/busybox" "${TEMP}/initramfs-busybox-temp/bin/initramfs_busybox"
++    ln -s initramfs_busybox ${TEMP}/initramfs-busybox-temp/bin/busybox
++    chmod +x "${TEMP}/initramfs-busybox-temp/bin/initramfs_busybox"
+ 
+     mkdir -p "${TEMP}/initramfs-busybox-temp/usr/share/udhcpc/"
+     cp "${GK_SHARE}/defaults/udhcpc.scripts" ${TEMP}/initramfs-busybox-temp/usr/share/udhcpc/default.script
+@@ -153,7 +155,7 @@
+     default_applets+=" readlink realpath mountpoint dmesg udhcpc chmod mktemp"
+     for i in ${BUSYBOX_APPLETS:-${default_applets}}; do
+         rm -f ${TEMP}/initramfs-busybox-temp/bin/$i
+-        ln -s busybox ${TEMP}/initramfs-busybox-temp/bin/$i ||
++        ln -s initramfs_busybox ${TEMP}/initramfs-busybox-temp/bin/$i ||
+             gen_die "Busybox error: could not link ${i}!"
+     done
+ 
+@@ -167,7 +169,7 @@
+         rm -f ${TEMP}/initramfs-busybox-temp/$dir/$name
+         mkdir -p ${TEMP}/initramfs-busybox-temp/$dir ||
+             gen_die "Busybox error: could not create dir: $dir"
+-        ln -s ../bin/busybox ${TEMP}/initramfs-busybox-temp/$dir/$name ||
++        ln -s ../bin/initramfs_busybox ${TEMP}/initramfs-busybox-temp/$dir/$name ||
+             gen_die "Busybox error: could not link ${i}!"
+     done
+ 
