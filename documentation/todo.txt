@@ -4,7 +4,7 @@ out of tree patches (kernel) git://kernel.ubuntu.com/jj/apparmor-backports
 out of tree patches (user-space) git://git.launchpad.net/~jjohansen/apparmor
 
 
-- добавление коментариев в строки переменных
+- добавление комментариев в строки переменных
 https://bugs.launchpad.net/apparmor/+bug/1741584
 # .m3u
 @{local_ext_playlist}=[mM]3[uU]
@@ -17,7 +17,7 @@ https://bugs.launchpad.net/apparmor/+bug/1741584
 
 - смотреть, когда в ядро вернут default профиль (confined boot), был до 4.13, потом убрали.
 Обещают, что будет работать через команду загрузки ядра.
-Убрали т.к. не мог использоваться в убунте (нужно было рекомпилировать ядро) + не работал нормально,
+Убрали т.к. не мог использоваться в убунте (нужно было пере компилировать ядро) + не работал нормально,
 когда убирали профиль, скидывался в unconfined, а не в default (т.е. первоначальный default с unconfined).
 https://bugs.launchpad.net/apparmor/+bug/1725335
 
@@ -105,10 +105,6 @@ https://gitlab.com/apparmor/apparmor/wikis/AppArmorPolicyView
 https://gitlab.com/apparmor/apparmor/wikis/AppArmorPolicyScope
 ** the current namespace is always the namespace of the profile in the stack having its permissions evaluated
 - Позже сделать для неймспейсов ограничения в base абстракции, чтобы сингалы, и прочее не передавались туда-сюда просто так.
-
-
-- запуск приложений через Xephyr
-Доработать профиль, сделать переменные окружения, чтобы четко указывать где xorg-server, где Xephyr.
 
 
 - Using AppArmor to confine and secure X Windows applications (4.0 AppArmor kernel, 2.?? AppArmor user space)
